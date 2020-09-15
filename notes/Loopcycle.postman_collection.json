@@ -1,0 +1,2053 @@
+{
+	"info": {
+		"_postman_id": "f88ec41e-5b5b-4aeb-994a-be41482cdc22",
+		"name": "Loopcycle",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ImageUpload",
+			"item": [
+				{
+					"name": "Upload Image_ Resource",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/premr/Pictures/vlcsnap-2019-11-16-15h35m03s618.png"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/loop%7Cresource%7C1581799753175/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"loop%7Cresource%7C1581799753175",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Image_ withId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"prem \",\n  \"category\": \"Furniture\",\n  \"type\": \"Drawers\",\n  \"units\": \"units\",\n  \"volume\": 10.0,\n  \"state\": \"loose\",\n\n  \"site_id\": \"loop|site|1579017952296\",\n\n  \"availableFrom\": {\n  \t\"unit\": \"MILLISECOND\",\n  \t\"value\": {{$timestamp}}\n  },\n  \"expiry\": {\n  \t\"unit\": \"MILLISECOND\",\n  \t\"value\": {{$timestamp}}\n  }\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/loop%7Cresource%7C1581800412466/image",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"loop%7Cresource%7C1581800412466",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload without ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/premr/Pictures/life_it_goes_on-wallpaper-1920x1080.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/image\n",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"image\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload without ID base64",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/image64",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"image64"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QRCodeProductEndPoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/code/loop%7Cproduct%7C1584654682279",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"code",
+								"loop%7Cproduct%7C1584654682279"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b3a5959-b8ff-40b3-bef9-e4e2a015824a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"scorpion_rain@hotmail.com\",\n  \"password\": \"P4ssw0rd!\"\n}\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b3a5959-b8ff-40b3-bef9-e4e2a015824a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user.test.Alpha.7@parallelai.com\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/reset",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b3a5959-b8ff-40b3-bef9-e4e2a015824a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"First Name {{$timestamp}}\",\n  \"lastName\": \"Last Name {{$timestamp}}\",\n  \"phone\": \"+447711060452\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b3a5959-b8ff-40b3-bef9-e4e2a015824a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"P4ssw0rd!2\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/change",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test.1@parallelai.com\",\n  \"password\": \"P4ssw0rd!\"\n}\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User 2",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test.3@parallelai.com\",\n  \"password\": \"P4ssw0rd!\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User 2 Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"scorpion_rain@hotmail.com\",\n  \"password\": \"P4ssw0rd!\"\n}\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "renew",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik9FTXpSVFl3TURrNFFqVTBNVUkwUkRjMU16TkJNVEZCT1RNelJUa3dOREl6TWpnM05ETTNRZyJ9.eyJpc3MiOiJodHRwczovL2xvb3BjeWNsZS5ldS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWQ3MzhmYmI5OWM4NTcwZGYyNWI0NDJmIiwiYXVkIjpbImh0dHBzOi8vbG9vcGN5Y2xlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaHR0cHM6Ly9sb29wY3ljbGUuZXUuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTU2ODE0NTk3MCwiZXhwIjoxNTY4MjMyMzcwLCJhenAiOiJmRHFySFp4Nk9HREpCY2xzNHozTU5pbzFsMnVYNGlxVCIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgcmVhZDpjdXJyZW50X3VzZXIgdXBkYXRlOmN1cnJlbnRfdXNlcl9tZXRhZGF0YSBkZWxldGU6Y3VycmVudF91c2VyX21ldGFkYXRhIGNyZWF0ZTpjdXJyZW50X3VzZXJfbWV0YWRhdGEgY3JlYXRlOmN1cnJlbnRfdXNlcl9kZXZpY2VfY3JlZGVudGlhbHMgZGVsZXRlOmN1cnJlbnRfdXNlcl9kZXZpY2VfY3JlZGVudGlhbHMgdXBkYXRlOmN1cnJlbnRfdXNlcl9pZGVudGl0aWVzIiwiZ3R5IjoicGFzc3dvcmQifQ.ZcGjHs27JHiOKIgVac8aEdB2f7F_8n_D026ROCrmUzsDUY-inkU0stgVH1ph-r7LhG_j4EQ-JKBE26HEUoATtn05G-YWKbSTD2-D1Ukg4FGkbR4_CS6hEi5J-Ui-nz9c6Nl4I8T_oEJ2lEQHA-OqiOIgIphct1CNArvGbQwp3xv4aJOTqXunQRWuI2sQfLhL6WUA5uI7ZTDfRv4cm7A_rje1_TJy9h07n3n49Ar52fE2D6P5Yvlut8BaWSO2fuTLF7m8GqV53C7X31kGbzrwniOkf6-9AJa7an3_7xg4A-netEe1bsIQ84JzvdY7sG7SFKzq65K9Yg4uClX1kpErtQ\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user/renew",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user",
+								"renew"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Single User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Site Info",
+			"item": [
+				{
+					"name": "Create a Site",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"{{$randomInt}} site name\",\n\t\"contact\": \"{{$randomInt}} site contact\",\n\t\"address\": \"{{$randomInt}} site address\",\n\t\"phone\": \"{{$randomInt}} site phone\",\n\t\"email\": \"{{$randomInt}} site email\",\n\t\"others\": \"{{$randomInt}} site others\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/site",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"site"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify a Site",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"loop|GenericClassTag|1567372618628\",\n\t\"name\": \"{{$randomInt}} site name\",\n\t\"contact\": \"{{$randomInt}} site contact\",\n\t\"address\": \"{{$randomInt}} site address\",\n\t\"phone\": \"{{$randomInt}} site phone\",\n\t\"email\": \"{{$randomInt}} site email\",\n\t\"others\": \"{{$randomInt}} site others\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/site",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"site"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Site",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/site/loop|GenericClassTag|1567372618628",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"site",
+								"loop|GenericClassTag|1567372618628"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Sites",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/site",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"site"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Site",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"state\": {\n    \"type\": \"resource_loose\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392561541,\n  \"id\": \"1\",\n  \"owner\": \"1\",\n  \"expiry\": 1552392591543,\n  \"volume\": 10.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/site/loop|GenericClassTag|1567372618628",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"site",
+								"loop|GenericClassTag|1567372618628"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Resources",
+			"item": [
+				{
+					"name": "Create a Resource",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"prem \",\n  \"category\": \"Furniture\",\n  \"type\": \"Drawers\",\n  \"units\": \"units\",\n  \"volume\": 10.0,\n  \"state\": \"loose\",\n\n  \"site_id\": \"loop|site|1579017952296\",\n\n  \"availableFrom\": {\n  \t\"unit\": \"MILLISECOND\",\n  \t\"value\": {{$timestamp}}\n  },\n  \"expiry\": {\n  \t\"unit\": \"MILLISECOND\",\n  \t\"value\": {{$timestamp}}\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Resource",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": \"loop|GenericClassTag|1567374087629\",\n        \"org_id\": \"parallelai1\",\n\t\"parent_id\": \"\",\n  \"location\": \"{{site_id}}\",\n  \"state\": \"loose\",\n  \"stage\": {\n  \t\"inactive\": {}\n  },\n  \"site_id\": \"loop|GenericClassTag|1567372906691\",\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\", \"plastic/broken\", \"wood\"],\n  \"expiry\": {\n  \t\"unit\": {\n  \t\t\"MILLISECOND\": {}\n  \t},\n  \t\"value\": {{$timestamp}}\n  },\n  \"volume\": 10.0,\n  \"availableFrom\": {\n  \t\"unit\": {\n  \t\t\"MILLISECOND\": {}\n  \t},\n  \t\"value\": {{$timestamp}}\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resource Image Upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": ""
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/{{resource_id}}/upd",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"{{resource_id}}",
+								"upd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Resource",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/loop%7Cresource%7C1582910137654",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"loop%7Cresource%7C1582910137654"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Resources",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/resource",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Resource Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/category",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Resource Categories Expand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/category/expand",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"category",
+								"expand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Resource",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"state\": {\n    \"type\": \"resource_loose\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392561541,\n  \"id\": \"1\",\n  \"owner\": \"1\",\n  \"expiry\": 1552392591543,\n  \"volume\": 10.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/loop|Resource|1567376199023",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"loop|Resource|1567376199023"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromChandan04Jan2020",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/resource/loop|resource|1580144188859/expand",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"resource",
+								"loop|resource|1580144188859",
+								"expand"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create a Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\" : \"Product {{$RandomInt}} Prem\",\n  \"description\" : \"description \",\n  \"purpose\" : \"defined\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/product",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": \"loop|GenericClassTag|1567374087629\",\n        \"org_id\": \"parallelai1\",\n\t\"parent_id\": \"\",\n  \"location\": \"{{site_id}}\",\n  \"state\": \"loose\",\n  \"stage\": {\n  \t\"inactive\": {}\n  },\n  \"site_id\": \"loop|GenericClassTag|1567372906691\",\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\", \"plastic/broken\", \"wood\"],\n  \"expiry\": {\n  \t\"unit\": {\n  \t\t\"MILLISECOND\": {}\n  \t},\n  \t\"value\": {{$timestamp}}\n  },\n  \"volume\": 10.0,\n  \"availableFrom\": {\n  \t\"unit\": {\n  \t\t\"MILLISECOND\": {}\n  \t},\n  \t\"value\": {{$timestamp}}\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/product",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Product",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/product/loop|product|1579017933506/code",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product",
+								"loop|product|1579017933506",
+								"code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find product aggrigate - 17032020",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/product?loop|product|1584006061483",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product"
+							],
+							"query": [
+								{
+									"key": "loop|product|1584006061483",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/product",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"state\": {\n    \"type\": \"resource_loose\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392561541,\n  \"id\": \"1\",\n  \"owner\": \"1\",\n  \"expiry\": 1552392591543,\n  \"volume\": 10.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/product",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET_QR_Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/product/loop|product|1579017933506/code",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"product",
+								"loop|product|1579017933506",
+								"code"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Searches",
+			"item": [
+				{
+					"name": "Create a Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"prem \",\n  \"category\": \"Furniture\",\n  \"type\": \"Drawers\",\n  \"units\": \"units\",\n  \"volume\": 10.0,\n  \"state\": \"loose\",\n\n  \"site_id\": \"loop|site|1569235392096\",\n  \n  \"require_after\" : {\n    \"unit\" : \"MILLISECOND\",\n    \"value\" : 1567867463565\n  },\n  \"expiry\" : {\n    \"unit\" : \"MILLISECOND\",\n    \"value\" : 1567867463565\n  }\n}\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/search/loop|product|1579017933506",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search",
+								"loop|product|1579017933506"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": \"loop|search|1579813313532\",\n        \"stage\": \"active\"\n    }",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/search/loop|product|1579733260213",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search",
+								"loop|product|1579733260213"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Search",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/search/loop|search|1579713310503",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search",
+								"loop|search|1579713310503"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Search Expanded",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/search/{{match_id}}/expand",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search",
+								"{{match_id}}",
+								"expand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Search",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Searches Expanded",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/search/expand",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search",
+								"expand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Search",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/match/{{match_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"match",
+								"{{match_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Convert a Search to a Loop",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/search/convert/loop|search|1569235793051/resource/loop|resource|1569235485516",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"search",
+								"convert",
+								"loop|search|1569235793051",
+								"resource",
+								"loop|resource|1569235485516"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Loops",
+			"item": [
+				{
+					"name": "Loop",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"match_id\": \"1\",\n        \"state\": {\n            \"type\": \"loop_created\"\n        },\n        \"ts\": 1552392607648,\n        \"to\": {\n            \"name\": \"name\",\n            \"email\": \"email\",\n            \"contact\": \"contact\",\n            \"others\": \"others\",\n            \"address\": \"address\",\n            \"phone\": \"phone\"\n        },\n        \"consumer\": {\n            \"name\": \"Name\",\n            \"email\": \"email\",\n            \"description\": \"optional description\",\n            \"ts\": 1552391640138,\n            \"site\": [\n                {\n                    \"name\": \"name\",\n                    \"email\": \"email\",\n                    \"contact\": \"contact\",\n                    \"others\": \"others\",\n                    \"address\": \"address\",\n                    \"phone\": \"phone\"\n                }\n            ],\n            \"id\": \"1\",\n            \"kind\": {\n                \"type\": \"producer\"\n            },\n            \"mobile\": \"mobile\"\n        },\n        \"id\": \"8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f\",\n        \"resource\": {\n            \"location\": {\n                \"name\": \"name\",\n                \"email\": \"email\",\n                \"contact\": \"contact\",\n                \"others\": \"others\",\n                \"address\": \"address\",\n                \"phone\": \"phone\"\n            },\n            \"state\": {\n                \"type\": \"resource_loose\"\n            },\n            \"description\": \"description\",\n            \"tags\": [\n                \"wood/furniture/parts\"\n            ],\n            \"ts\": 1552392561541,\n            \"id\": \"1\",\n            \"owner\": \"1\",\n            \"expiry\": 1552392591543,\n            \"volume\": 10\n        },\n        \"from\": {\n            \"name\": \"name\",\n            \"email\": \"email\",\n            \"contact\": \"contact\",\n            \"others\": \"others\",\n            \"address\": \"address\",\n            \"phone\": \"phone\"\n        },\n        \"producer\": {\n            \"name\": \"Name\",\n            \"email\": \"email\",\n            \"description\": \"optional description\",\n            \"ts\": 1552391640138,\n            \"site\": [\n                {\n                    \"name\": \"name\",\n                    \"email\": \"email\",\n                    \"contact\": \"contact\",\n                    \"others\": \"others\",\n                    \"address\": \"address\",\n                    \"phone\": \"phone\"\n                }\n            ],\n            \"id\": \"1\",\n            \"kind\": {\n                \"type\": \"producer\"\n            },\n            \"mobile\": \"mobile\"\n        }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Loop",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/{{loop_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"{{loop_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Loop Expanded",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/{{loop_id}}/expand",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"{{loop_id}}",
+								"expand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Loops",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/loop",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Loops Expanded",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/expand",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"expand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/1/8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f/qr",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f",
+								"qr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop Producer Accept",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/loop|loop|1569236055342/producer_accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"loop|loop|1569236055342",
+								"producer_accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop Consumer Accept",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/loop|loop|1569236055342/consumer_accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"loop|loop|1569236055342",
+								"consumer_accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop assign_logistics",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/loop%7Cloop%7C1579714754600/assign_logistics/test.1@parallelai.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"loop%7Cloop%7C1579714754600",
+								"assign_logistics",
+								"test.1@parallelai.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop update_tracking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f/update_tracking/1415542",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f",
+								"update_tracking",
+								"1415542"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop delivered",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f/delivered",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f",
+								"delivered"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop received",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/loop|loop|1579300478170/received",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"loop|loop|1579300478170",
+								"received"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop close",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/loop|loop|1579300478170/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"loop|loop|1579300478170",
+								"close"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loop cancel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"location\": {\n    \"name\": \"name\",\n    \"email\": \"email\",\n    \"contact\": \"contact\",\n    \"others\": \"others\",\n    \"address\": \"address\",\n    \"phone\": \"phone\"\n  },\n  \"description\": \"description\",\n  \"tags\": [\"wood/furniture/parts\"],\n  \"ts\": 1552392111267,\n  \"resourceState\": {\n    \"type\": \"resource_loose\"\n  },\n  \"consumer\": \"1\",\n  \"id\": \"1\",\n  \"status\": {\n    \"type\": \"match_created\"\n  },\n  \"expiry\": 1552392141270,\n  \"volume\": 10.0,\n  \"producer\": []\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/loop/8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"loop",
+								"8ce1c3f9-f87a-4ecf-83c6-fb9557e1888f",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Organisation",
+			"item": [
+				{
+					"name": "Get Org",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/org/parallelai",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"org",
+								"parallelai"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Orgs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/org",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"org"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Org",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ts\" : {\n    \"unit\" : \"MILLISECOND\",\n    \"value\" : 1568157576812\n  },\n  \"name\" : \"OrgPrem1002\",\n  \"description\" : \"desc\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/org",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"org"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Org",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ts\" : {\n    \"unit\" : \"MILLISECOND\",\n    \"value\" : 1568157576812\n  },\n  \"name\" : \"Org\",\n  \"description\" : \"desc\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/org",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"org"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Levels",
+			"item": [
+				{
+					"name": "Get Level",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/level/loop|level|testastic",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"level",
+								"loop|level|testastic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Levels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/1/level",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Level",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ts\" : {\n    \"unit\" : \"MILLISECOND\",\n    \"value\" : 1568157576812\n  },\n  \"name\" : \"Org\",\n  \"description\" : \"desc\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/level",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Level",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ts\" : {\n    \"unit\" : \"MILLISECOND\",\n    \"value\" : 1568157576812\n  },\n  \"name\" : \"Org\",\n  \"description\" : \"desc\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/1/level/loop|level|testastic",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"1",
+								"level",
+								"loop|level|testastic"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8591ef9f-db13-4152-b34e-2b6e2c1fc69b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "da3d87f4-257a-4552-a672-987bd55e8d9c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

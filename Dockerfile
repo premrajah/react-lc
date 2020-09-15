@@ -14,9 +14,6 @@ COPY . /app
 #RUN npm install && npm audit fix && npm audit fix --force && npm install
 RUN npm install -g npm
 RUN npm install && npm audit fix
-RUN ng --version
-#RUN ng update --all
-#RUN npm run build
 RUN npm run build --prod
 
 ## Stage 1, "deployer", use nginx to deploy the code

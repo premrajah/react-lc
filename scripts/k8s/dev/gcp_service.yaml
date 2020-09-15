@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loop-ui-dev
+  labels:
+    app: loop-ui-dev
+    role: frontend
+    service: nginx
+
+spec:
+  externalTrafficPolicy: Cluster
+  type: LoadBalancer
+  selector:
+    app: loop-ui-dev
+    role: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+#    - name: https
+#      port: 443
+#      targetPort: 443
+#      protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loop-ui-dev-local
+  labels:
+    app: loop-ui-dev
+    role: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: loop-ui-dev
+    role: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

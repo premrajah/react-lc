@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loop-react-ui-${ENVIRONMENT}
+  labels:
+    app: loop-react-ui-${ENVIRONMENT}
+    role: frontend
+    service: nginx
+
+spec:
+  externalTrafficPolicy: Cluster
+  type: LoadBalancer
+  selector:
+    app: loop-react-ui-${ENVIRONMENT}
+    role: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+#    - name: https
+#      port: 443
+#      targetPort: 443
+#      protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loop-react-ui-${ENVIRONMENT}-local
+  labels:
+    app: loop-react-ui-${ENVIRONMENT}
+    role: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: loop-react-ui-${ENVIRONMENT}
+    role: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

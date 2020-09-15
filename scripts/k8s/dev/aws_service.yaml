@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loop-ui-dev
+  labels:
+    app: loop-ui-dev
+    role: frontend
+    service: nginx
+    dns: route53
+  annotations:
+    domainName: "ui.makealoop.io"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:eu-west-2:490732563102:certificate/a1fbf24e-5166-44cd-b5ba-40c3306e297f"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: loop-ui-dev
+    role: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+#    - name: https
+#      port: 443
+#      targetPort: 443
+#      protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loop-ui-dev-local
+  labels:
+    app: loop-ui-dev
+    role: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: loop-ui-dev
+    role: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

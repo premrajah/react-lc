@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: loop-ui-dev
+  labels:
+    app: loop-ui-dev
+    role: frontend
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: loop-ui-dev
+      labels:
+        app: loop-ui-dev
+        role: frontend
+    spec:
+      containers:
+        - name: loop-ui-dev
+          image: ${API_IMAGE}
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "12Gi"
+              cpu: "4"
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 1

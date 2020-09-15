@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: loop-react-ui-${ENVIRONMENT}
+  labels:
+    app: loop-react-ui-${ENVIRONMENT}
+    role: frontend
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: loop-react-ui-${ENVIRONMENT}
+      labels:
+        app: loop-react-ui-${ENVIRONMENT}
+        role: frontend
+    spec:
+      containers:
+        - name: loop-react-ui-${ENVIRONMENT}
+          image: ${API_IMAGE}
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "12Gi"
+              cpu: "4"
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 1
+          volumeMounts:
+            - name: tz-utc
+              mountPath: /etc/localtime
+      volumes:
+        - name: tz-utc
+          hostPath:
+            path: /usr/share/zoneinfo/UTC
+

@@ -1,26 +1,26 @@
-## Stage 0, "builder", based on Node.js, to build and compile the frontend
-# base image
-FROM node:alpine as builder
+FROM node:13.12.0-alpine
 
-# set working directory
+# Set working directory
 WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+# Add package.json to WORKDIR and install dependencies
+COPY package*.json ./
+RUN npm install
 
-## add app
-COPY . /app
+# Add source code files to WORKDIR
+COPY . .
 
-#RUN npm install && npm audit fix && npm audit fix --force && npm install
-RUN npm install -g npm
-RUN npm install && npm audit fix
-RUN npm run build 
+# Application port (optional)
+EXPOSE 3000
 
-## Stage 1, "deployer", use nginx to deploy the code
-## start app
-FROM nginx:alpine
+# Debugging port (optional)
+# For remote debugging, add this port to devspace.yaml: dev.ports[*].forward[*].port: 9229
+EXPOSE 9229
 
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/build/* /usr/share/nginx/html/
+# Container start command (DO NOT CHANGE and see note below)
+CMD ["npm", "start"]
 
-COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
+# To start using a different `npm run [name]` command (e.g. to use nodemon + debugger),
+# edit devspace.yaml:
+# 1) remove: images.app.injectRestartHelper (or set to false)
+# 2) add this: images.app.cmd: ["npm", "run", "dev"]

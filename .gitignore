@@ -123,3 +123,7 @@ public
 
 # DynamoDB Local files
 .dynamodb/
+
+
+# Ignore DevSpace cache and log folder
+.devspace/

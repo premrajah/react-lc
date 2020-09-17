@@ -1,0 +1,46 @@
+version: v1beta9
+images:
+  app:
+    image: devspace
+    preferSyncOverRebuild: true
+    injectRestartHelper: true
+    appendDockerfileInstructions:
+    - USER root
+    build:
+      docker:
+        skipPush: true
+deployments:
+- name: loop-react-ui
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: devspace
+      service:
+        ports:
+        - port: 80
+dev:
+  ports:
+  - imageName: app
+    forward:
+    - port: 8080
+      remotePort: 80
+  open:
+  - url: http://localhost:8080
+  sync:
+  - imageName: app
+    excludePaths:
+    - .git/
+    uploadExcludePaths:
+    - Dockerfile
+    - node_modules/
+    - devspace.yaml
+    onUpload:
+      restartContainer: true
+profiles:
+- name: production
+  patches:
+  - op: remove
+    path: images.app.injectRestartHelper
+  - op: remove
+    path: images.app.appendDockerfileInstructions

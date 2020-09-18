@@ -32,6 +32,9 @@ import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browser-resources/index";
 import Search from "./views/browser-resources/Search";
 import Filter from "./views/browser-resources/Filter";
+import AuthRoute from "./Util/AuthRoute";
+import {connect} from "react-redux";
+import * as actionCreator from "./store/actions/actions";
 
 
 
@@ -52,6 +55,12 @@ class App extends Component{
 
     }
 
+
+    componentWillMount(){
+
+
+        this.props.loadUserDetail()
+    }
     render() {
 
 
@@ -62,7 +71,7 @@ class App extends Component{
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/inbox" component={withRouter(Inbox)} />
-                        <Route exact path="/login" component={Login} />
+                        <AuthRoute exact path="/login" component={Login} />
                         <Route exact path="/account" component={Account} />
                         <Route exact path="/listings" component={Listings} />
                         <Route exact path="/my-search" component={MySearch} />
@@ -102,4 +111,38 @@ class App extends Component{
     }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        // age: state.age,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+
+
+
+
+    };
+};
+
+
+const mapDispachToProps = dispatch => {
+    return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(App);

@@ -28,7 +28,7 @@ import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, Butto
 import Close from '@material-ui/icons/Close';
 
 
-class  HeaderDark extends Component {
+class  Sidebar extends Component {
 
 
     constructor(props) {
@@ -41,7 +41,8 @@ class  HeaderDark extends Component {
             count : 0,
             nextIntervalFlag: false
         }
-this.toggleMenu=this.toggleMenu.bind(this)
+        this.toggleMenu=this.toggleMenu.bind(this)
+        this.logOut=this.logOut.bind(this)
 
     }
 
@@ -57,8 +58,11 @@ this.toggleMenu=this.toggleMenu.bind(this)
 
 
 
+    logOut = (event) => {
+        document.body.classList.remove('sidemenu-open');
+        this.props.logOut()
 
-
+    }
 
 
     handleSongLoading() {
@@ -88,9 +92,6 @@ this.toggleMenu=this.toggleMenu.bind(this)
 
 
 
-
-
-
     }
 
     intervalJasmineAnim
@@ -102,10 +103,6 @@ this.toggleMenu=this.toggleMenu.bind(this)
     render() {
 
         return (
-
-
-
-
 
 
 <>
@@ -126,15 +123,16 @@ this.toggleMenu=this.toggleMenu.bind(this)
             </div>
 
 
-            <div className="row mt-2">
+            {this.props.isLoggedIn && <div className="row mt-2">
                 <div className="col">
                     <div className="list-group main-menu">
-                        <Link className="list-group-item list-group-item-action green-text">Hello, Tesco </Link>
+                        <Link className="list-group-item list-group-item-action green-text">Hello, {this.props.userDetail.firstName} </Link>
 
 
                     </div>
                 </div>
             </div>
+            }
 
             <div className="mt-2 mb-3">
                 <div className="row">
@@ -154,7 +152,7 @@ this.toggleMenu=this.toggleMenu.bind(this)
                         <Link onClick={this.toggleMenu} to={"/browse"} className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
                         <Link onClick={this.toggleMenu} to={"/create-search"} className="white-text list-group-item list-group-item-action">Create A Search </Link>
                         <Link onClick={this.toggleMenu} to={"/create-listing"} className="white-text list-group-item list-group-item-action">Create A Listing </Link>
-                        <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resouces </Link>
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resouces </Link>}
 
                     </div>
                 </div>
@@ -169,8 +167,8 @@ this.toggleMenu=this.toggleMenu.bind(this)
             <div className="row">
                 <div className="col">
                     <div className="list-group main-menu">
-                        <Link onClick={this.toggleMenu}  to={"/login"} className="list-group-item list-group-item-action green-text">Log in </Link>
-                        <Link onClick={this.toggleMenu} onClick={this.toggleMenu} to={"/login"} className="list-group-item list-group-item-action green-text">Log out </Link>
+                        {!this.props.isLoggedIn &&   <Link onClick={this.toggleMenu}  to={"/login"} className="list-group-item list-group-item-action green-text">Log in </Link>}
+                        {this.props.isLoggedIn &&  <Link onClick={this.logOut}  to={"/login"} className="list-group-item list-group-item-action green-text">Log out </Link>}
                         <Link onClick={this.toggleMenu} to={"/"} className="list-group-item list-group-item-action green-text">My Loopcycle </Link>
 
                     </div>
@@ -195,12 +193,12 @@ const mapStateToProps = state => {
     return {
         // age: state.age,
         // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
+        userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
 
@@ -210,12 +208,15 @@ const mapStateToProps = state => {
     };
 };
 
+
 const mapDispachToProps = dispatch => {
     return {
 
 
-        songLoadingComplete: () => dispatch(actionCreator.songLoadingComplete())
-
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        logOut: (data) => dispatch(actionCreator.logOut(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
 
 
     };
@@ -223,4 +224,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(HeaderDark);
+)(Sidebar);

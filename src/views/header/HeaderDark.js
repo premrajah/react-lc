@@ -23,12 +23,7 @@ import { Router, Route, Switch , Link} from "react-router-dom";
 import history from "../../History/history";
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuOutline from '@material-ui/icons/MailOutline';
-
-
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
-
-
 
 
 class  HeaderDark extends Component {
@@ -51,9 +46,6 @@ class  HeaderDark extends Component {
 
 
 goToInbox(){
-
-
-
 
         history.push("/inbox")
 
@@ -112,10 +104,6 @@ goToInbox(){
         return (
 
 
-
-
-
-
 <>
 
 
@@ -134,12 +122,16 @@ goToInbox(){
                             <div className="col text-right ">
 
 
-                                <button  type="button" className="mt-1 btn topBtn btn-outline-primary"><Link to={"/login"}>LOG IN</Link></button>
+                                {!this.props.isLoggedIn && <button  type="button" className="mt-1 btn topBtn btn-outline-primary"><Link to={"/login"}>LOG IN</Link></button>}
+                                {this.props.isLoggedIn &&
+
                                 <button  className="btn  btn-link text-dark btn-inbox">
                                     <Link to={"/inbox"}><MenuOutline className="white-text" style={{ fontSize: 24 }} />
                                     <span className="new-notification"></span>
                                     </Link>
                                 </button>
+                                    }
+
                             </div>
 
                             <div className="col-auto">
@@ -171,12 +163,12 @@ const mapStateToProps = state => {
     return {
         // age: state.age,
         // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
         // loginFailed: state.loginFailed,
         // showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
+        userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
 
@@ -190,7 +182,6 @@ const mapDispachToProps = dispatch => {
     return {
 
 
-        songLoadingComplete: () => dispatch(actionCreator.songLoadingComplete())
 
 
 

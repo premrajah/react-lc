@@ -7,6 +7,7 @@ export const initialState = {
     isLoggedIn : false,
     rememberMe : false,
     loginFailed : false,
+    loginError : "",
     signUpFailed : false,
     isCustomer : false,
     token : {},
@@ -47,6 +48,25 @@ const reducer = (state = initialState, action) => {
 
             break;
 
+        case "LOAD_USER_DETAIL":
+
+            if (action.value) {
+                newState.loginFailed = false;
+                newState.isLoggedIn = true;
+                newState.loading = false;
+                newState.token = action.value.token
+
+                newState.userDetail = action.value
+                // sessionStorage.setItem("token", action.value.token)
+
+
+            }else {
+
+                newState.isLoggedIn = false;
+                newState.loading = false;
+            }
+
+            break;
 
         case "LOGIN":
 
@@ -54,7 +74,19 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = true;
             newState.loading = false;
             newState.token = action.value.token
+
+            newState.userDetail= getKey("user")
             sessionStorage.setItem("token",action.value.token)
+
+            break;
+
+        case "LOGIN_ERROR":
+
+            newState.loginError = action.value;
+            newState.isLoggedIn = false;
+            newState.loading = false;
+            newState.loginFailed = true
+
 
             break;
 
@@ -75,7 +107,7 @@ const reducer = (state = initialState, action) => {
             newState.userDetail = null
             newState.loading = false
             newState.favorites = []
-
+            saveKey("user",null)
 
             // window.location.href=("/")
 
@@ -192,6 +224,7 @@ const reducer = (state = initialState, action) => {
 
         case "LOGIN_FAILED":
             newState.loginFailed = true;
+            newState.loginError= action.value
             newState.isLoggedIn = false;
             newState.loading = false;
             break;

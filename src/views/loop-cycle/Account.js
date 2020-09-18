@@ -221,7 +221,6 @@ const mapDispachToProps = dispatch => {
     return {
 
 
-        songLoadingComplete: () => dispatch(actionCreator.songLoadingComplete())
 
 
 

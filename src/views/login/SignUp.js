@@ -30,7 +30,7 @@ import Close from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  Login extends Component {
+class  SignUp extends Component {
 
 
     constructor(props) {
@@ -56,14 +56,11 @@ class  Login extends Component {
         super(props)
 
         this.state = {
-            fields: {},
-            errors: {},
+
             timerEnd: false,
             count : 0,
             nextIntervalFlag: false,
-            active: 0   //0 logn. 1- sign up , 3 -search,
-
-
+            active: 0   //0 logn. 1- sign up , 3 -search
         }
         this.goToSignUp=this.goToSignUp.bind(this)
         this.goToSignIn=this.goToSignIn.bind(this)
@@ -74,8 +71,6 @@ class  Login extends Component {
         this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
 
         this.goHome=this.goHome.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleValidation = this.handleValidation.bind(this);
 
 
     }
@@ -83,87 +78,12 @@ class  Login extends Component {
 
     goHome(){
 
+
         history.push("/")
     }
 
 
 
-    handleValidation(){
-        // alert("called")
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
-
-        //Name
-        if(!fields["password"]){
-            formIsValid = false;
-            errors["password"] = "Required";
-        }
-
-
-        if(!fields["email"]){
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if(typeof fields["email"] !== "undefined"){
-
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({errors: errors});
-        return formIsValid;
-    }
-
-
-
-    handleChange(field, e){
-        let fields = this.state.fields;
-        fields[field] = e.target.value;
-        this.setState({fields});
-    }
-
-
-    handleSubmit = event => {
-
-        event.preventDefault();
-
-
-        const form = event.currentTarget;
-
-     if (this.handleValidation()){
-            this.setState({
-                btnLoading: true
-            })
-
-            const data = new FormData(event.target);
-
-            const username = data.get("email")
-            const password = data.get("password")
-
-
-            this.props.logIn({"email": username, "password": password})
-
-        // alert("valid")
-
-        }else {
-
-
-         // alert("invalid")
-     }
-
-
-
-
-
-
-    }
 
     resetPasswordSuccessLogin(){
 
@@ -244,13 +164,8 @@ class  Login extends Component {
     componentDidMount(){
 
 
+
     }
-
-
-
-
-
-
 
     intervalJasmineAnim
 
@@ -286,7 +201,7 @@ class  Login extends Component {
                 <div className="container  pt-2 pb-3">
 
                     <div className="row no-gutters">
-                        <div className="col-auto">
+                        <div className="col-10">
 
                             <img src={LogoNew} alt=""
                                  className="header-logo" />
@@ -294,7 +209,7 @@ class  Login extends Component {
                         </div>
 
 
-                        <div className="col text-right">
+                        <div className="col-auto">
 
 
                             <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
@@ -319,27 +234,18 @@ class  Login extends Component {
 
                         </div>
                     </div>
-
-                    <form  onSubmit={this.handleSubmit}>
                     <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12">
 
-                            <TextField
-                                type={"email"}
-                                onChange={this.handleChange.bind(this, "email")}
-                                id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
-
-                            {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
-
+                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} />
 
 
                         </div>
 
                         <div className="col-12 mt-4">
 
-                            <TextField type={"password"} onChange={this.handleChange.bind(this, "password")}   id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
+                            <TextField id="outlined-basic" label="Password" variant="outlined" fullWidth={true} />
 
-                            {this.state.errors["password"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["password"]}</span>}
 
                         </div>
 
@@ -348,22 +254,10 @@ class  Login extends Component {
                         </div>
 
 
-                        {this.props.loginFailed &&
-
-                        <div className="col-12 mt-4">
-                        <Alert key={"alert"} variant={"danger"}>
-                            {this.props.loginError}
-                        </Alert>
-                        </div>
-                        }
-
                         <div className="col-12 mt-4">
 
-                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Log In</button>
+                            <button  onClick={this.goToSuccess} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Log In</button>
                         </div>
-
-
-
 
 
                         <div className="col-12 mt-4">
@@ -372,14 +266,11 @@ class  Login extends Component {
                         </div>
                         <div className="col-auto mt-4 justify-content-center">
 
-                        <button
-                            onClick={this.goToSignUp}
-                                type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Sign up</button>
+                        <button onClick={this.goToSignUp}  type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Sign up</button>
                         </div>
 
                     </div>
 
-                    </form>
 
                 </div>}
 
@@ -417,6 +308,7 @@ class  Login extends Component {
                         <div className="col-12 mt-4">
 
                             <TextField id="outlined-basic" label="Company" variant="outlined" fullWidth={true} />
+
 
                         </div>
                         <div className="col-12 mt-4 justify-content-center">
@@ -460,8 +352,7 @@ class  Login extends Component {
                         </div>
                         <div className="col-auto mt-4 justify-content-center">
 
-                            <button onClick={this.handleSubmit}  type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Log In</button>
-
+                            <button onClick={this.goToSignIn}  type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Log In</button>
                         </div>
 
                     </div>
@@ -728,7 +619,7 @@ class  Login extends Component {
 
 const mapStateToProps = state => {
     return {
-        loginError: state.loginError,
+        // age: state.age,
         // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
@@ -758,4 +649,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(Login);
+)(SignUp);

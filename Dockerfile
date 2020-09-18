@@ -12,8 +12,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY . /app
 
 #RUN npm install && npm audit fix && npm audit fix --force && npm install
-RUN npm install -g npm
-RUN npm install && npm audit fix
+RUN npm install -g npm && npm install && npm audit fix
 RUN npm run build 
 
 ## Stage 1, "deployer", use nginx to deploy the code
@@ -21,6 +20,7 @@ RUN npm run build
 FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/build/* /usr/share/nginx/html/
+COPY --from=builder /app/build /usr/share/nginx/html/
 
+RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf

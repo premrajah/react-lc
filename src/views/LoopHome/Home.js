@@ -95,142 +95,153 @@ class  Home extends Component {
             <div>
 
                 <Sidebar />
+                <HeaderDark />
                 <div className="wrapper homepage">
 
-                <HeaderDark />
-                    <div className="container container-blue pt-5">
+
+                    <div className="container-fluid container-blue pt-5">
                         <div className="row no-gutters">
-                            <div className="col-auto">
+                            <div className="col-12">
                                 <img src={LogoText} alt=""
                                      className="text-logo-home" />
                             </div>
 
                         </div>
-                    </div>
-                    <div className="container container-blue  pt-5">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
 
-                                <h1 className={"white-text"}>A Platform for
-                                    the future </h1>
+                        <div className="row no-gutters">
+                        <div className="col-12  pt-5">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+
+                                    <h1 className={"white-text"}>A Platform for
+                                        the future </h1>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
 
 
-                                <p className={"white-text"}>Loopcycle is a match making platform for organisations that generate waste and for those that need waste to manufacture their products.
-                                </p>
+                                    <p className={"white-text"}>Loopcycle is a match making platform for organisations that generate waste and for those that need waste to manufacture their products.
+                                    </p>
+
+                                </div>
+
+
 
                             </div>
-
-
 
                         </div>
-
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-
-                                <img className={"img-fluid"} src={PhoneHome}  />
-                            </div>
 
 
 
                         </div>
+                        
+                        
+                        
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
 
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <p className={"white-text"}>Loopcycle uses artificial intelligence to match organizations and blockchain technology is used to ensure the transaction is secure and traceable.
-                                </p>
+                                    <img className={"img-fluid"} src={PhoneHome}  />
+                                </div>
+
+
 
                             </div>
 
+                        </div>
+                        <div className="container container-blue   pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+                                    <p className={"white-text"}>Loopcycle uses artificial intelligence to match organizations and blockchain technology is used to ensure the transaction is secure and traceable.
+                                    </p>
 
+                                </div>
+
+
+
+                            </div>
 
                         </div>
 
-                    </div>
+
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+
+                                    <img className={"img-fluid"} src={BikeHome}  />
+                                </div>
 
 
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
 
-                                <img className={"img-fluid"} src={BikeHome}  />
                             </div>
 
+                        </div>
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+                                    <h3 className={"white-text"}>Do more, with less
+                                    </h3>
 
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+                                    <p className={"white-text"}>We’re closing the loop on excess material extraction; breaking the ‘take, make waste’ cycle and empowering creators to do more, with less.
+                                    </p>
+
+                                </div>
+
+
+
+                            </div>
 
                         </div>
 
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <h3 className={"white-text"}>Do more, with less
-                                </h3>
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+
+                                    <img className={"img-fluid"} src={LoopHome}  />
+                                </div>
+
+
 
                             </div>
-
-
 
                         </div>
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+                                    <h3 className={"white-text"}>Igniting community
+                                    </h3>
 
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <p className={"white-text"}>We’re closing the loop on excess material extraction; breaking the ‘take, make waste’ cycle and empowering creators to do more, with less.
-                                </p>
+                                </div>
+
+
 
                             </div>
-
-
 
                         </div>
+                        <div className="container container-blue  pt-4">
+                            <div className="row no-gutters">
+                                <div className="col-auto">
+                                    <p className={"white-text"}>Resource exchange is just part of the process. Loopcycle is a platform for building relationships.
+                                    </p>
 
-                    </div>
-
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-
-                                <img className={"img-fluid"} src={LoopHome}  />
-                            </div>
+                                </div>
 
 
-
-                        </div>
-
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <h3 className={"white-text"}>Igniting community
-                                </h3>
 
                             </div>
-
-
-
-                        </div>
-
-                    </div>
-                    <div className="container container-blue  pt-4">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <p className={"white-text"}>Resource exchange is just part of the process. Loopcycle is a platform for building relationships.
-                                </p>
-
-                            </div>
-
-
 
                         </div>
 

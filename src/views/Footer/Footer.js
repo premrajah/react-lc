@@ -123,8 +123,6 @@ class  Footer extends Component {
                 <WaveBorder />
                 <div className="container  container-blue pt-5  footer-container">
 
-
-
                     <div className="row no-gutters mb-5">
                         <div className="col-auto">
                             <img className="header-logo" src={LogoNew} />
@@ -163,7 +161,6 @@ class  Footer extends Component {
                             <ul>
                                 <li>
                                     <p className={" "}> ©  2020  Loopcycle</p>
-
                                 </li>
                                 <li>Terms</li>
                                 <li>Privacy</li>

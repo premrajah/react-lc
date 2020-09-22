@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  ResetPassword extends Component {
+class  RecoverPassword extends Component {
 
 
     constructor(props) {
@@ -306,56 +306,48 @@ class  ResetPassword extends Component {
                 </div>
 
 
-
-
-
-                <div className="container  forgot-password-block pb-5 pt-5">
-                    <div className="row no-gutters">
+                <div className="container   pb-5 pt-5">
+                    <div className="row no-gutters justify-content-center">
                         <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Reset Password
+                            <h3 className={"blue-text text-heading"}>Success!
                             </h3>
 
                         </div>
                     </div>
-                    <div className="row no-gutters justify-content-center mt-5">
+                    <div className="row no-gutters justify-content-center p-5">
+                        <div className="col-auto p-4   justify-content-center">
 
+                          <img  src={SendIcon} className={"send-icon-middle"} />
+
+                        </div>
+
+
+                    </div>
+                    <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12 ">
 
-                            <p className={"text-mute small"}> Please enter and confirm your new password below to access your account.  </p>
+                            <p className={"text-mute "} style={{textAlign:"center"}}> A verification link has been sent to<br/>
+                                your email account.  </p>
 
                         </div>
 
 
+                        <div className="col-4 mt-5">
 
-                        <div className="col-12 mt-4">
-
-                            <TextField id="outlined-basic" label="New Password" variant="outlined" fullWidth={true} />
-
-
-                        </div>
-
-                        <div className="col-12 mt-4">
-
-                            <TextField id="outlined-basic" label="Confirm Password" variant="outlined" fullWidth={true} />
-
-
+                            <button onClick={this.goToSignIn} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green"}>Log In <NavigateNextIcon /></button>
                         </div>
 
 
                         <div className="col-12 mt-4">
-
-                            <button onClick={this.resetPasswordSuccessLogin} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
+                            <p style={{textAlign:"center"}} className={"text-mute small"}>Didn’t get a link? <span className={"forgot-password-link"}> Resend Verification</span></p>
                         </div>
-
-
 
 
                     </div>
 
 
+
                 </div>
-
-
 
 
             </>
@@ -403,4 +395,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(ResetPassword);
+)(RecoverPassword);

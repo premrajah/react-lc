@@ -44,7 +44,7 @@ body {
 	height: auto;
 	overflow-y: auto;
 	font-family:  'Nunito', sans-serif;
-	font-size: 20px;
+	font-size: 16px;
 	line-height: 30px;
 	-webkit-overflow-scrolling: touch;
 	-webkit-touch-callout: none;
@@ -2309,3 +2309,34 @@ color: #3C3972;
 .tags{min-width: 20px;float: left;margin-right: 15px;background:#07AD88 ;color:white;border-radius:25px;padding:5px 15px;}
 .search-input-field{border: none;text-align: center;font-size:16px;}
 .topBtn a{color: #07AB88!important;text-decoration: none!important;}
+.wl-link-white{color: white!important;font-size: 16px;}
+
+
+.web-only{
+
+	display: block;
+}
+
+.mobile-only{
+
+	display: none;
+}
+
+#navbar-brand>div>div>img.web-only{display: inline;}
+@media only screen and (max-width: 991px) {
+
+
+	.web-only{
+
+		display: none;
+	}
+
+	.mobile-only{
+
+		display: block;
+	}
+
+	#navbar-brand>div>div>img.web-only{display: none;}
+
+}
+

@@ -11,66 +11,97 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+import LogoNew from '../../img/logo-cropped.png';
+
+import LogoText from '../../img/logo-text.png';
+
 
 class Footer extends React.Component {
   render() {
     return (
       <footer className="footer">
         <Container>
-          <Row>
+          <Row className={""}>
             <Col md="3">
-              <h1 className="title">BLK•</h1>
+                <div className="row no-gutters mb-5">
+                    <div className="col-auto">
+                        <img className="header-logo" src={LogoNew} />
+                        <img className={"text-logo-home"} src={LogoText} />
+
+
+                    </div>
+                </div>
             </Col>
             <Col md="3">
               <Nav>
                 <NavItem>
                   <NavLink to="/" tag={Link}>
-                    Home
+                    <b>Company</b>
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/landing-page" tag={Link}>
-                    Landing
+                   About
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/register-page" tag={Link}>
-                    Register
+                    What We Do
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/profile-page" tag={Link}>
-                    Profile
+                    How It Works
                   </NavLink>
                 </NavItem>
+                  <NavItem>
+                      <NavLink to="/profile-page" tag={Link}>
+                          News
+                      </NavLink>
+                  </NavItem>
+                  <NavItem>
+                      <NavLink to="/profile-page" tag={Link}>
+                          Contact
+                      </NavLink>
+                  </NavItem>
               </Nav>
             </Col>
             <Col md="3">
-              <Nav>
-                <NavItem>
-                  <NavLink href="https://creative-tim.com/contact-us?ref=blkdsr-footer">
-                    Contact Us
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="https://creative-tim.com/about-us?ref=blkdsr-footer">
-                    About Us
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="https://creative-tim.com/blog?ref=blkdsr-footer">
-                    Blog
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="https://opensource.org/licenses/MIT">
-                    License
-                  </NavLink>
-                </NavItem>
-              </Nav>
+                <Nav>
+                    <NavItem>
+                        <NavLink to="/" tag={Link}>
+                            <b>Resources</b>
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/landing-page" tag={Link}>
+                            Browse All
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/register-page" tag={Link}>
+                            Search
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/profile-page" tag={Link}>
+                            List
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/profile-page" tag={Link}>
+                            Deliver
+                        </NavLink>
+                    </NavItem>
+
+                </Nav>
             </Col>
             <Col md="3">
-              <h3 className="title">Follow us:</h3>
+                <NavItem>
+                    <NavLink to="/profile-page" tag={Link}>
+                        <b>Connect</b>
+                    </NavLink>
+                </NavItem>
               <div className="btn-wrapper profile">
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
@@ -91,26 +122,40 @@ class Footer extends React.Component {
                   id="tooltip230450801"
                   target="_blank"
                 >
-                  <i className="fab fa-facebook-square" />
+                  <i className="fab fa-instagram" />
                 </Button>
                 <UncontrolledTooltip delay={0} target="tooltip230450801">
                   Like us
                 </UncontrolledTooltip>
-                <Button
-                  className="btn-icon btn-neutral btn-round btn-simple"
-                  color="default"
-                  href="https://dribbble.com/creativetim"
-                  id="tooltip318450378"
-                  target="_blank"
-                >
-                  <i className="fab fa-dribbble" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip318450378">
-                  Follow us
-                </UncontrolledTooltip>
+                {/*<Button*/}
+                  {/*className="btn-icon btn-neutral btn-round btn-simple"*/}
+                  {/*color="default"*/}
+                  {/*href="https://dribbble.com/creativetim"*/}
+                  {/*id="tooltip318450378"*/}
+                  {/*target="_blank"*/}
+                {/*>*/}
+                  {/*<i className="fab fa-dribbble" />*/}
+                {/*</Button>*/}
+                {/*<UncontrolledTooltip delay={0} target="tooltip318450378">*/}
+                  {/*Follow us*/}
+                {/*</UncontrolledTooltip>*/}
               </div>
             </Col>
           </Row>
+            <div className="row no-gutters mt-3 mb-3 justify-content-center">
+                <div className="col-auto copright-text">
+
+                    <ul>
+                        <li>
+                            <p className={" "}> ©  2020  Loopcycle</p>
+                        </li>
+                        <li>Terms</li>
+                        <li>Privacy</li>
+
+
+                    </ul>
+                </div>
+            </div>
         </Container>
       </footer>
     );

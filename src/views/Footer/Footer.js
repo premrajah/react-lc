@@ -21,6 +21,7 @@ import Insta from '../../img/icons/insta.png';
 import { Router, Route, Switch , Link} from "react-router-dom";
 
 import history from "../../History/history";
+import FooterNew from "../../components/Footer/Footer";
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuOutline from '@material-ui/icons/MailOutline';
 import WaveBorder from './WaveBorder'
@@ -113,64 +114,62 @@ class  Footer extends Component {
         return (
 
 
-
-
-
-
             <>
-
-
                 <WaveBorder />
-                <div className="container  container-blue pt-5  footer-container">
-
-                    <div className="row no-gutters mb-5">
-                        <div className="col-auto">
-                            <img className="header-logo" src={LogoNew} />
-                            <img className={"text-logo-home"} src={LogoText} />
+       <FooterNew/>
 
 
-                        </div>
-                    </div>
-                    <div className="row no-gutters mb-3">
-                        <div className="col-auto">
 
-                            <ul>
-                                <li>Home</li>
-                                <li>Create a Search</li>
-                                <li>Create a Listing</li>
-                                <li>Deliver Resources</li>
-                                <li>About Loopcycle</li>
-                                <li>News</li>
-                                <li>Contact </li>
-                            </ul>
-                        </div>
+                {/*<div className="container  container-blue pt-5  footer-container">*/}
 
-                    </div>
-
-                    <div className="row no-gutters mb-5">
-                        <div className="col-auto">
-                            <img className="home-icon-bottom" src={Twitter} />
-                            <img className={"home-icon-bottom"} src={Insta} />
+                    {/*<div className="row no-gutters mb-5">*/}
+                        {/*<div className="col-auto">*/}
+                            {/*<img className="header-logo" src={LogoNew} />*/}
+                            {/*<img className={"text-logo-home"} src={LogoText} />*/}
 
 
-                        </div>
-                    </div>
-                    <div className="row no-gutters mb-3">
-                        <div className="col-auto copright-text">
+                        {/*</div>*/}
+                    {/*</div>*/}
+                    {/*<div className="row no-gutters mb-3">*/}
+                        {/*<div className="col-auto">*/}
 
-                            <ul>
-                                <li>
-                                    <p className={" "}> ©  2020  Loopcycle</p>
-                                </li>
-                                <li>Terms</li>
-                                <li>Privacy</li>
+                            {/*<ul>*/}
+                                {/*<li>Home</li>*/}
+                                {/*<li>Create a Search</li>*/}
+                                {/*<li>Create a Listing</li>*/}
+                                {/*<li>Deliver Resources</li>*/}
+                                {/*<li>About Loopcycle</li>*/}
+                                {/*<li>News</li>*/}
+                                {/*<li>Contact </li>*/}
+                            {/*</ul>*/}
+                        {/*</div>*/}
+
+                    {/*</div>*/}
+
+                    {/*<div className="row no-gutters mb-5">*/}
+                        {/*<div className="col-auto">*/}
+                            {/*<img className="home-icon-bottom" src={Twitter} />*/}
+                            {/*<img className={"home-icon-bottom"} src={Insta} />*/}
 
 
-                            </ul>
-                        </div>
-                    </div>
+                        {/*</div>*/}
+                    {/*</div>*/}
+                    {/*<div className="row no-gutters mb-3">*/}
+                        {/*<div className="col-auto copright-text">*/}
 
-                </div>
+                            {/*<ul>*/}
+                                {/*<li>*/}
+                                    {/*<p className={" "}> ©  2020  Loopcycle</p>*/}
+                                {/*</li>*/}
+                                {/*<li>Terms</li>*/}
+                                {/*<li>Privacy</li>*/}
+
+
+                            {/*</ul>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
+
+                {/*</div>*/}
 
 
             </>

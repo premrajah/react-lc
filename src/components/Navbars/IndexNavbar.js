@@ -8,16 +8,22 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
+
   Container,
   Row,
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+
+import {
+
+    NavbarBrand,
+    Navbar,
+    NavItem,
+    NavLink,
+    Nav,
+
+} from "react-bootstrap";
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuOutline from '@material-ui/icons/MailOutline';
 import LogoNew from '../../img/logo-cropped.png';
@@ -93,12 +99,15 @@ class ComponentsNavbar extends React.Component {
   };
   render() {
     return (
+        
+
       <Navbar
         className={"fixed-top container-blue " }
         color-on-scroll="100"
         expand="lg"
       >
-
+         <div className={"container"}>
+             <Nav  className={"justify-content-start "}>
             <NavbarBrand
               to="/"
               tag={Link}
@@ -115,8 +124,11 @@ class ComponentsNavbar extends React.Component {
                 </div>
             </NavbarBrand>
 
+          </Nav>
 
-            <Nav  className={"justify-content-end "}>
+            <Nav  className={"justify-content-end menu-align-right"}>
+
+                <NavItem className={"web-only"}>
 
               <UncontrolledDropdown nav>
                 <DropdownToggle
@@ -126,7 +138,7 @@ class ComponentsNavbar extends React.Component {
                   href="#pablo"
                   nav
                   onClick={e => e.preventDefault()}
-                  className={"wl-link-white web-only"}
+                  className={"wl-link-white "}
                 >
                   <i className="fa fa-cogs d-lg-none d-xl-none" />
                     Search Resources
@@ -143,7 +155,7 @@ class ComponentsNavbar extends React.Component {
 
                 </DropdownMenu>
               </UncontrolledDropdown>
-
+                </NavItem>
               <NavItem className={"web-only"}>
                 <Link
                   className="nav-link d-none d-lg-block wl-link-white "
@@ -166,7 +178,7 @@ class ComponentsNavbar extends React.Component {
 
                 <NavItem className={"web-only"}>
                     <Link
-                        className="nav-link d-none d-lg-block  green-text "
+                        className="nav-link  d-lg-block  green-text "
                         color="default"
 
                     >
@@ -174,13 +186,11 @@ class ComponentsNavbar extends React.Component {
                     </Link>
                 </NavItem>
 
-
-
-              <NavItem>
+                        <NavItem>
 
 
 
-                      {!this.props.isLoggedIn && <button  type="button" className="mt-1 btn topBtn btn-outline-primary"><Link to={"/login"}>Log In</Link></button>}
+                      {!this.props.isLoggedIn && <button  type="button" className="mt-1 btn topBtn "><Link to={"/login"}>Log In</Link></button>}
                       {this.props.isLoggedIn &&
 
                       <button  className="btn  btn-link text-dark btn-inbox">
@@ -197,12 +207,16 @@ class ComponentsNavbar extends React.Component {
 
                       </button>
                 </NavItem>
+                        {/*</Col>*/}
+                    {/*</Row>*/}
 
-
+                {/*</Container>*/}
 
             </Nav>
 
+         </div>
       </Navbar>
+
     );
   }
 }

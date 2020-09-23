@@ -36,7 +36,7 @@ function WaveBorder(props) {
     ...rest
   } = props;
   return (
-    <div className={className} style={{ background: upperColor }} {...rest}>
+    <div className={className+" col-12"} style={{ background: upperColor, padding:"0px" }} {...rest}>
       <svg
         className={classes.waves}
         xmlns="http://www.w3.org/2000/svg"

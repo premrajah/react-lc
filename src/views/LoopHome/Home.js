@@ -8,8 +8,9 @@ import LogoNew from '../../img/logo-cropped.png';
 
 import LogoText from '../../img/logo-text.png';
 import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
+import BikeHome from '../../img/LoopBike.png';
 import LoopHome from '../../img/LoopHome.png';
+import LoopHomeImage from '../../img/loop-home-image.png';
 
 import HandIcon from '../../img/icons/hand.png';
 
@@ -23,6 +24,8 @@ import { Router, Route, Switch , Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import Footer from '../Footer/Footer'
+import WaveBorder from '../Footer/WaveBorder'
+
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
@@ -99,9 +102,10 @@ class  Home extends Component {
                 <div className="wrapper homepage">
 
 
-                    <div className="container-fluid container-blue pt-5">
+                    <div className="container-fluid container-light-blue pt-5">
+                        <div className="container   pt-5 pb-5">
                         <div className="row no-gutters">
-                            <div className="col-12">
+                            <div className="col-lg-12">
                                 <img src={LogoText} alt=""
                                      className="text-logo-home" />
                             </div>
@@ -109,157 +113,142 @@ class  Home extends Component {
                         </div>
 
                         <div className="row no-gutters">
-                        <div className="col-12  pt-5">
+
+
+                        <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                             <div className="row no-gutters">
-                                <div className="col-auto">
+                                <div className="col-12">
 
                                     <h1 className={"white-text"}>A Platform for
                                         the future </h1>
                                 </div>
+
+
+                                    <div className="col-12">
+
+                                        <div className="row no-gutters">
+
+                                            <p className={"white-text"}>Loopcycle is a match making platform for organisations that generate waste and for those that need waste to manufacture their products.
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+
+
                             </div>
-                        </div>
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
+
+                            <div className="row no-gutters mt-4 web-only">
                                 <div className="col-auto">
 
-
-                                    <p className={"white-text"}>Loopcycle is a match making platform for organisations that generate waste and for those that need waste to manufacture their products.
-                                    </p>
+                                    <button type="button" className="shadow-sm mr-2 btn btn-link wt_btn_border mt-2 mb-2">
+                                        Learn more <NavigateNextIcon />
+                                    </button>
 
                                 </div>
+                            </div>
+                        </div>
 
+                            <div className="col-md-6 col-sm-12 col-xs-12 ">
 
-
+                                <img className={"img-fluid"} src={PhoneHome}  />
                             </div>
 
-                        </div>
+
+
+                                    <div className="col-12 mobile-only pt-4">
+                                        <p className={"white-text"}>Loopcycle uses artificial intelligence to match organizations and blockchain technology is used to ensure the transaction is secure and traceable.
+                                        </p>
+
+                                    </div>
 
 
 
                         </div>
                         
-                        
-                        
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
 
-                                    <img className={"img-fluid"} src={PhoneHome}  />
-                                </div>
-
-
-
-                            </div>
-
-                        </div>
-                        <div className="container container-blue   pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <p className={"white-text"}>Loopcycle uses artificial intelligence to match organizations and blockchain technology is used to ensure the transaction is secure and traceable.
-                                    </p>
-
-                                </div>
-
-
-
-                            </div>
 
                         </div>
 
-
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-
-                                    <img className={"img-fluid"} src={BikeHome}  />
-                                </div>
-
-
-
-                            </div>
-
+                    </div>
+                    <div className="container-fluid container-light-blue pt-5">
+                        <div className="row no-gutters">
+                           <WaveBorder />
                         </div>
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <h3 className={"white-text"}>Do more, with less
-                                    </h3>
+                    </div>
+                    <div className="container-fluid container-blue pt-5">
+
+                        <div className="container   pt-5 pb-5">
+
+
+
+                            <div className="row  pt-4">
+
+                                <div className="col-md-6 col-sm-12 col-xs-12 mb-4 ">
+                                    <div className="row no-gutters justify-content-center">
+                                        <div className="col-10">
+
+                                            <img className={"img-fluid"} src={BikeHome}  />
+                                        </div>
+                                    </div>
+
+                                    <div className="row no-gutters justify-content-center">
+                                        <div className="col-10">
+                                            <h3 className={"white-text mt-4"}>Do more, with less
+                                            </h3>
+
+                                            <p className={"white-text mt-4"}>Resource exchange is just part of the process. Loopcycle is a platform for building relationships.
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
 
                                 </div>
 
+                                <div className="col-md-6 col-sm-12 col-xs-12 mb-4 ">
+                                    <div className="row no-gutters justify-content-center">
+                                        <div className="col-10">
 
+                                            <img className={"img-fluid"} src={LoopHomeImage}  />
+                                        </div>
+                                    </div>
 
-                            </div>
+                                    <div className="row no-gutters justify-content-center">
+                                        <div className="col-10">
+                                            <h3 className={"white-text mt-4"}>Igniting community
+                                            </h3>
+                                            <p className={"white-text mt-4"}>We’re closing the loop on excess material extraction; breaking the ‘take, make waste’ cycle and empowering creators to do more, with less.
+                                            </p>
+                                        </div>
+                                    </div>
 
-                        </div>
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <p className={"white-text"}>We’re closing the loop on excess material extraction; breaking the ‘take, make waste’ cycle and empowering creators to do more, with less.
-                                    </p>
 
                                 </div>
 
-
-
                             </div>
 
-                        </div>
-
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-
-                                    <img className={"img-fluid"} src={LoopHome}  />
-                                </div>
 
 
-
-                            </div>
-
-                        </div>
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <h3 className={"white-text"}>Igniting community
-                                    </h3>
-
-                                </div>
-
-
-
-                            </div>
-
-                        </div>
-                        <div className="container container-blue  pt-4">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <p className={"white-text"}>Resource exchange is just part of the process. Loopcycle is a platform for building relationships.
-                                    </p>
-
-                                </div>
-
-
-
-                            </div>
 
                         </div>
 
                     </div>
 
 
-                    <div className="container   p-5">
-                        <div className="row no-gutters">
+                    <div className="container mt-5 mb-5 ">
+                        <div className="row no-gutters justify-content-center">
                             <div className="col-auto">
-                                <h3 className={"blue-text"}>View all resources on<br/>
-                                    the Loopcycle<br/>
-                                    Platform.
+                                <h3 className={"blue-text text-center "}><b>View all resources on
+                                    the <br/>Loopcycle
+                                    Platform.</b>
                                 </h3>
                             </div>
 
                         </div>
 
-                                <div className="row no-gutters">
+                                <div className="row no-gutters justify-content-center mt-4">
                                     <div className="col-auto">
 
                                 <button type="button" className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
@@ -272,23 +261,56 @@ class  Home extends Component {
 
                     </div>
 
-                    <div className="container container-divider">
-                        <div className="row">
+                    <div className="container ">
+                        <div className="row container-divider">
                         </div>
                         </div>
+                    <div className="container  mb-5 mt-5 web-only">
+
+                        <div className="row no-gutters mb-3 justify-content-center">
+                            <div className="col-4">
+                                <img className={"search-icon"} src={SearchIcon} />
+                                <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
+                                </p>
+                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                    Create a search
+                                </button>
+                            </div>
+
+                            <div className="col-4">
+                                <img className={"home-icon"} src={HandIcon} />
+                                <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
+                                </p>
+                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                    Create a listing
+                                </button>
+                            </div>
+
+                            <div className="col-4">
+                                <img className={"home-icon"} src={ShippingIcon} />
+                                <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
+                                </p>
+
+                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                    Deliver Resources
+                                </button>
+
+                            </div>
+                        </div>
 
 
+                    </div>
 
 
-                    <div className="container  p-5">
+                    <div className="container  mobile-only">
 
-                        <div className="row no-gutters mb-3">
+                        <div className="row no-gutters mb-3 mt-5">
                             <div className="col-auto">
                                 <img className={"search-icon"} src={SearchIcon} />
 
                             </div>
                         </div>
-                        <div className="row no-gutters mb-3">
+                        <div className="row no-gutters  mb-3">
                             <div className="col-auto">
                                 <p className={"blue-text"}>Need resources to make your product? Start a search and enter your requirements.
                                 </p>
@@ -296,7 +318,7 @@ class  Home extends Component {
 
                         </div>
 
-                        <div className="row no-gutters">
+                        <div className="row no-gutters mb-5">
                             <div className="col-auto">
 
                                 <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -307,20 +329,18 @@ class  Home extends Component {
                         </div>
 
 
-                    </div>
-                    <div className="container container-divider">
-                        <div className="row">
-                        </div>
-                    </div>
-                    <div className="container  p-5">
 
-                        <div className="row no-gutters mb-3">
+                        <div className="row container-divider">
+                        </div>
+
+
+                        <div className="row no-gutters mt-5  mb-3">
                             <div className="col-auto">
                                 <img className={"home-icon"} src={HandIcon} />
 
                             </div>
                         </div>
-                        <div className="row no-gutters mb-3">
+                        <div className="row no-gutters mb-3 ">
                             <div className="col-auto">
                                 <p className={"blue-text"}>Do you have used resources to offer? Start listing any used resources.
                                 </p>
@@ -328,7 +348,7 @@ class  Home extends Component {
 
                         </div>
 
-                        <div className="row no-gutters">
+                        <div className="row no-gutters mb-5">
                             <div className="col-auto">
 
                                 <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -336,18 +356,13 @@ class  Home extends Component {
                                 </button>
 
                             </div>
-                        </div>
+
 
                     </div>
-                    <div className="container container-divider">
-                        <div className="row">
+                        <div className="row container-divider">
                         </div>
-                    </div>
 
-
-                    <div className="container  p-5">
-
-                        <div className="row no-gutters mb-3">
+                        <div className="row no-gutters mt-5 mb-3">
                             <div className="col-auto">
                                 <img className={"home-icon"} src={ShippingIcon} />
 
@@ -361,7 +376,7 @@ class  Home extends Component {
 
                         </div>
 
-                        <div className="row no-gutters">
+                        <div className="row no-gutters mb-5">
                             <div className="col-auto">
 
                                 <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -374,9 +389,8 @@ class  Home extends Component {
 
                     </div>
 
+
                     <Footer />
-
-
 
 
                 </div>

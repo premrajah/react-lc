@@ -30,7 +30,7 @@ import Close from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
+import { Col,Spinner, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
 
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -78,6 +78,16 @@ class  Login extends Component {
         this.handleValidation = this.handleValidation.bind(this);
 
 
+        this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+
+
+    }
+    hideLoginPopUp = (event) => {
+
+
+        // document.body.classList.add('sidemenu-open');
+        this.props.showLoginPopUp(false)
+
     }
 
 
@@ -89,6 +99,7 @@ class  Login extends Component {
 
 
     handleValidation(){
+
         // alert("called")
         let fields = this.state.fields;
         let errors = {};
@@ -209,32 +220,17 @@ class  Login extends Component {
 
 
 
+        this.props.setLoginPopUpStatus(2)
 
-        this.setState({
 
-            active:2
-        })
+        //
+        // this.setState({
+        //
+        //     active:2
+        // })
     }
 
 
-
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
-    interval
 
 
     componentWillMount(){
@@ -268,10 +264,7 @@ class  Login extends Component {
     goToSignUp(){
 
 
-        this.setState({
-
-            active:1
-        })
+       this.props.setLoginPopUpStatus(1)
     }
 
 
@@ -281,29 +274,89 @@ class  Login extends Component {
         return (
 
             <>
-                <div className="container  p-2">
-                </div>
-                <div className="container  pt-2 pb-3">
 
+                <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-auto">
-
-                            <img src={LogoNew} alt=""
-                                 className="header-logo" />
-                            <img className={"text-logo-home-right"} src={LogoText} />
-                        </div>
-
-
-                        <div className="col text-right">
-
-
-                            <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
+                        <div className="col-12">
+                            <h3 className={"blue-text text-heading text-center"}>Log in
+                            </h3>
 
                         </div>
-
-
                     </div>
+
+                    <form  onSubmit={this.handleSubmit}>
+                        <div className="row no-gutters justify-content-center">
+                            <div className="col-12">
+
+                                <TextField
+                                    type={"email"}
+                                    onChange={this.handleChange.bind(this, "email")}
+                                    id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
+
+                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+
+
+
+                            </div>
+
+                            <div className="col-12 mt-4">
+
+                                <TextField type={"password"} onChange={this.handleChange.bind(this, "password")}   id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
+
+                                {this.state.errors["password"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["password"]}</span>}
+
+                            </div>
+
+                            <div className="col-12 mt-4">
+                                <p onClick={this.forGotPass} className={"forgot-password-link text-mute small"}>Forgot your password? </p>
+                            </div>
+
+
+                            {this.props.loginFailed &&
+
+                            <div className="col-12 mt-4">
+                                <Alert key={"alert"} variant={"danger"}>
+                                    {this.props.loginError}
+                                </Alert>
+                            </div>
+                            }
+
+                            <div className="col-12 mt-4">
+
+                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
+                                    { this.props.loading && <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+
+                                    /> }
+
+                                    { this.props.loading  ? "Wait.." : "Log In"}
+
+                                    </button>
+                            </div>
+
+
+                            <div className="col-12 mt-4">
+
+                                <p className={"or-text-divider"}><span>or</span></p>
+                            </div>
+                            <div className="col-auto mt-4 justify-content-center">
+
+                                <button
+                                    onClick={this.goToSignUp}
+                                    type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Sign up</button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
                 </div>
+
+
 
 
             </>
@@ -331,6 +384,7 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
 
@@ -344,6 +398,11 @@ const mapDispachToProps = dispatch => {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+
+
 
 
     };

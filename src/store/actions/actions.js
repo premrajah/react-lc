@@ -36,6 +36,13 @@ export const loginFailed = (val) => {
     };
 };
 
+export const signUpFailed = (val) => {
+    return {
+        type: "SIGN_UP_FAILED", value: val
+    };
+};
+
+
 
 export const stopLoading = () => {
     return {
@@ -229,6 +236,22 @@ export const loginCheckoutPopUp = val => {
 
 
     return { type: "LOGIN_CHECKOUT_POPUP", value: val };
+
+
+};
+
+
+export const showLoginPopUp = val => {
+
+    return { type: "LOGIN_POPUP", value: val };
+
+
+};
+
+
+export const setLoginPopUpStatus = val => {
+
+    return { type: "LOGIN_POPUP_STATUS", value: val };
 
 
 };
@@ -594,27 +617,13 @@ export const signUpSync = (data) => dispatch => {
 
 
     console.log("sign up called")
-
-    axios.post(baseUrl+"customers.json",
+    axios.post(baseUrl+"user/signup",
+    // axios.post(baseUrl+"customers.json",
         data)
         .then(res => {
 
             console.log("sign up successfull")
 
-            if (res.data.isGuest){
-
-                setGuest()
-                console.log("guest sign up")
-
-            }
-
-
-            console.log("inistial state")
-            console.log(initialState)
-
-
-
-            dispatch(getUserDetail({username : res.data.email}));
             dispatch({type: "SIGN_UP", value : res.data})
 
 
@@ -623,7 +632,7 @@ export const signUpSync = (data) => dispatch => {
 
         // dispatch(stopLoading())
 
-        dispatch(loginFailed())
+        dispatch(signUpFailed(error.response.data.content.message))
 
         console.log(error)
         // dispatch({ type: AUTH_FAILED });

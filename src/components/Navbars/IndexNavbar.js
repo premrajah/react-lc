@@ -28,6 +28,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuOutline from '@material-ui/icons/MailOutline';
 import LogoNew from '../../img/logo-cropped.png';
 import LogoText from '../../img/logo-text.png';
+import {connect} from "react-redux";
+import * as actionCreator from "../../store/actions/actions";
 
 
 class ComponentsNavbar extends React.Component {
@@ -42,6 +44,9 @@ class ComponentsNavbar extends React.Component {
     };
 
       this.toggleMenu=this.toggleMenu.bind(this)
+      this.showLoginPopUp=this.showLoginPopUp.bind(this)
+      this.logOut=this.logOut.bind(this)
+      this.showSignUpPopUp=this.showSignUpPopUp.bind(this)
 
   }
 
@@ -52,8 +57,46 @@ class ComponentsNavbar extends React.Component {
 
     }
 
+    showLoginPopUp = (event) => {
 
-  componentDidMount() {
+
+        this.props.setLoginPopUpStatus(0)
+
+        this.props.showLoginPopUp(true)
+
+    }
+
+
+    showSignUpPopUp = (event) => {
+
+
+        this.props.setLoginPopUpStatus(1)
+
+        this.props.showLoginPopUp(true)
+
+    }
+
+    hideLoginPopUp = (event) => {
+
+
+        // document.body.classList.add('sidemenu-open');
+        this.props.setLoginPopUpStatus(0)
+
+        this.props.showLoginPopUp(true)
+
+    }
+
+
+
+    logOut = (event) => {
+
+        document.body.classList.remove('sidemenu-open');
+        this.props.logOut()
+
+    }
+
+
+    componentDidMount() {
     window.addEventListener("scroll", this.changeColor);
   }
   componentWillUnmount() {
@@ -176,7 +219,7 @@ class ComponentsNavbar extends React.Component {
                 </NavItem>
 
 
-                <NavItem className={"web-only"}>
+                {!this.props.isLoggedIn && <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
                     <Link
                         className="nav-link  d-lg-block  green-text "
                         color="default"
@@ -184,22 +227,89 @@ class ComponentsNavbar extends React.Component {
                     >
                         Sign Up
                     </Link>
-                </NavItem>
+                </NavItem>}
 
                         <NavItem>
 
 
 
-                      {!this.props.isLoggedIn && <button  type="button" className="mt-1 btn topBtn "><Link to={"/login"}>Log In</Link></button>}
+                      {!this.props.isLoggedIn && <button onClick={this.showLoginPopUp}  type="button" className="mt-1 btn topBtn "><Link >Log In</Link></button>}
+                        </NavItem>
+
                       {this.props.isLoggedIn &&
+                      <NavItem>
 
                       <button  className="btn  btn-link text-dark btn-inbox">
                           <Link to={"/inbox"}><MenuOutline className="white-text" style={{ fontSize: 24 }} />
                               <span className="new-notification"></span>
                           </Link>
                       </button>
+                      </NavItem>
                       }
-                </NavItem>
+
+
+
+                {this.props.isLoggedIn &&  <NavItem className={"web-only"}>
+
+                    <UncontrolledDropdown nav>
+                        <DropdownToggle
+                            caret
+                            color="default"
+                            data-toggle="dropdown"
+                            href="#pablo"
+                            nav
+                            onClick={e => e.preventDefault()}
+                            className={"wl-link-white "}
+                        >
+                            <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
+                            <i className="fa fa-cogs d-lg-none d-xl-none" />
+
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-with-icons">
+                            <DropdownItem href="https://demos.creative-tim.com/blk-design-system-react/#/documentation/tutorial">
+                                <i className="tim-icons icon-paper" />
+                                My Searches
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                My Listings
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                My Loops
+                            </DropdownItem>
+
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Products
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Deliveries
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Statistics
+                            </DropdownItem>
+
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Account
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to="/register-page">
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Help
+                            </DropdownItem>
+
+                            <DropdownItem onClick={this.logOut} >
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Log Out
+                            </DropdownItem>
+
+
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                </NavItem>}
 
                 <NavItem className={"mobile-only"}>
                     <button onClick={this.toggleMenu} className="btn   btn-link text-dark menu-btn">
@@ -221,4 +331,41 @@ class ComponentsNavbar extends React.Component {
   }
 }
 
-export default ComponentsNavbar;
+const mapStateToProps = state => {
+    return {
+        // age: state.age,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+
+
+
+
+    };
+};
+
+
+const mapDispachToProps = dispatch => {
+    return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        logOut: (data) => dispatch(actionCreator.logOut(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(ComponentsNavbar);

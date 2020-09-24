@@ -8,7 +8,7 @@ import { Router, Route, Switch, withRouter,  BrowserRouter } from "react-router-
 
 import Home from "./views/LoopHome/Home";
 import Inbox from "./views/inbox/index";
-import Login from "./views/login/Login";
+import LoginPopUp from "./views/login/LoginPopUp";
 import Account from "./views/loop-cycle/Account";
 import Listings from "./views/loop-cycle/Listings";
 import MySearch from "./views/loop-cycle/MySearch";
@@ -71,7 +71,7 @@ class App extends Component{
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/inbox" component={withRouter(Inbox)} />
-                        <AuthRoute exact path="/login" component={Login} />
+                        {/*<AuthRoute exact path="/login" component={Login} />*/}
                         <Route exact path="/account" component={Account} />
                         <Route exact path="/listings" component={Listings} />
                         <Route exact path="/my-search" component={MySearch} />
@@ -103,6 +103,9 @@ class App extends Component{
 
 
                     </Switch>
+
+                    {(this.props.showLoginPopUp) && <LoginPopUp/>}
+
                 {/*</Router>*/}
                 </BrowserRouter>
             </>

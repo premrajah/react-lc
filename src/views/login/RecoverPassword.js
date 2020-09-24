@@ -78,6 +78,16 @@ class  RecoverPassword extends Component {
         this.handleValidation = this.handleValidation.bind(this);
 
 
+        this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+
+
+    }
+    hideLoginPopUp = (event) => {
+
+
+        // document.body.classList.add('sidemenu-open');
+        this.props.showLoginPopUp(false)
+
     }
 
 
@@ -178,10 +188,8 @@ class  RecoverPassword extends Component {
     }
     resetPassword(){
 
-        this.setState({
+        this.props.setLoginPopUpStatus(4)
 
-            active:4
-        })
 
     }
     accountRecover(){
@@ -281,118 +289,17 @@ class  RecoverPassword extends Component {
         return (
 
             <>
-                <div className="container  p-2">
-                </div>
-                <div className="container  pt-2 pb-3">
 
+
+                <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-auto">
-
-                            <img src={LogoNew} alt=""
-                                 className="header-logo" />
-                            <img className={"text-logo-home-right"} src={LogoText} />
-                        </div>
-
-
-                        <div className="col text-right">
-
-
-                            <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-
-
-
-
-                {this.state.active == 0 &&
-                <div className="container   pb-5 pt-5">
-                    <div className="row no-gutters">
-                        <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Log in
-                            </h3>
-
-                        </div>
-                    </div>
-
-                    <form  onSubmit={this.handleSubmit}>
-                    <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12">
-
-                            <TextField
-                                type={"email"}
-                                onChange={this.handleChange.bind(this, "email")}
-                                id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
-
-                            {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
-
-
-
-                        </div>
-
-                        <div className="col-12 mt-4">
-
-                            <TextField type={"password"} onChange={this.handleChange.bind(this, "password")}   id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
-
-                            {this.state.errors["password"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["password"]}</span>}
-
-                        </div>
-
-                        <div className="col-12 mt-4">
-                            <p onClick={this.forGotPass} className={"forgot-password-link text-mute small"}>Forgot your password? </p>
-                        </div>
-
-
-                        {this.props.loginFailed &&
-
-                        <div className="col-12 mt-4">
-                        <Alert key={"alert"} variant={"danger"}>
-                            {this.props.loginError}
-                        </Alert>
-                        </div>
-                        }
-
-                        <div className="col-12 mt-4">
-
-                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Log In</button>
-                        </div>
-
-
-
-
-
-                        <div className="col-12 mt-4">
-
-                            <p className={"or-text-divider"}><span>or</span></p>
-                        </div>
-                        <div className="col-auto mt-4 justify-content-center">
-
-                        <button
-                            onClick={this.goToSignUp}
-                                type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Sign up</button>
-                        </div>
-
-                    </div>
-
-                    </form>
-
-                </div>}
-
-
-                <div className="container  forgot-password-block pb-5 pt-5">
-                    <div className="row no-gutters">
-                        <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Account Recovery
+                            <h3 className={"blue-text text-heading text-center"}>Account Recovery
                             </h3>
 
                         </div>
                     </div>
-                    <div className="row no-gutters justify-content-center mt-5">
+                    <div className="row no-gutters justify-content-center">
 
                         <div className="col-12 ">
 
@@ -427,10 +334,7 @@ class  RecoverPassword extends Component {
 
                     </div>
 
-                </div>}
-
-
-
+                </div>
 
 
 
@@ -459,6 +363,7 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
 
@@ -472,7 +377,8 @@ const mapDispachToProps = dispatch => {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
-
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
     };
 };

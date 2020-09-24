@@ -30,7 +30,7 @@ import Close from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
 
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -55,13 +55,26 @@ class  SignUp extends Component {
 
         super(props)
 
-        this.state = {
+        // this.state = {
+        //
+        //     timerEnd: false,
+        //     count : 0,
+        //     nextIntervalFlag: false,
+        //     active: 0   //0 logn. 1- sign up , 3 -search
+        // }
 
+
+        this.state = {
+            fields: {},
+            errors: {},
             timerEnd: false,
             count : 0,
             nextIntervalFlag: false,
-            active: 0   //0 logn. 1- sign up , 3 -search
+            active: 0   //0 logn. 1- sign up , 3 -search,
+
+
         }
+
         this.goToSignUp=this.goToSignUp.bind(this)
         this.goToSignIn=this.goToSignIn.bind(this)
         this.goToSuccess=this.goToSuccess.bind(this)
@@ -72,6 +85,16 @@ class  SignUp extends Component {
 
         this.goHome=this.goHome.bind(this)
 
+
+        this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+
+
+    }
+    hideLoginPopUp = (event) => {
+
+
+        // document.body.classList.add('sidemenu-open');
+        this.props.showLoginPopUp(false)
 
     }
 
@@ -138,46 +161,20 @@ class  SignUp extends Component {
 
 
 
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
-    interval
-
-
     componentWillMount(){
 
     }
 
     componentDidMount(){
 
-
-
     }
-
-    intervalJasmineAnim
 
 
 
     goToSignIn(){
 
+        this.props.setLoginPopUpStatus(0)
 
-        this.setState({
-
-            active:0
-        })
     }
 
     goToSignUp(){
@@ -191,67 +188,146 @@ class  SignUp extends Component {
 
 
 
+
+
+    handleValidation(){
+
+        // alert("called")
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["password"]){
+            formIsValid = false;
+            errors["password"] = "Required";
+        }
+        if(!fields["firstName"]){
+            formIsValid = false;
+            errors["firstName"] = "Required";
+        }
+        // if(!fields["agree"]){
+        //     formIsValid = false;
+        //     errors["agree"] = "Required";
+        // }
+
+
+        if(!fields["lastName"]){
+            formIsValid = false;
+            errors["lastName"] = "Required";
+        }
+        if(!fields["password"]){
+            formIsValid = false;
+            errors["password"] = "Required";
+        }
+
+        if(!fields["email"]){
+            formIsValid = false;
+            errors["email"] = "Required";
+        }
+
+
+
+        if(typeof fields["email"] !== "undefined"){
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+
+
+    handleChange(field, e){
+        let fields = this.state.fields;
+        fields[field] = e.target.value;
+        this.setState({fields});
+    }
+
+
+    handleSubmit = event => {
+
+        event.preventDefault();
+
+
+        const form = event.currentTarget;
+
+        if (this.handleValidation()){
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const username = data.get("email")
+            const password = data.get("password")
+            const firstName = data.get("firstName")
+            const lastName = data.get("lastName")
+
+
+            this.props.signUp({"email": username, "password": password,"lastName":lastName,"firstName":firstName})
+
+
+            // alert("valid")
+
+        }else {
+
+
+            // alert("invalid")
+        }
+
+
+
+    }
+
+
+
     render() {
 
         return (
 
             <>
-                <div className="container  p-2">
-                </div>
-                <div className="container  pt-2 pb-3">
 
+                <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-10">
-
-                            <img src={LogoNew} alt=""
-                                 className="header-logo" />
-                            <img className={"text-logo-home-right"} src={LogoText} />
-                        </div>
-
-
-                        <div className="col-auto">
-
-
-                            <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-
-
-
-                <div className="container   pb-5 pt-5">
-                    <div className="row no-gutters">
-                        <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Sign Up
+                        <div className="col-12">
+                            <h3 className={"blue-text text-heading text-center"}>Sign Up
                             </h3>
 
                         </div>
                     </div>
-                    <div className="row no-gutters justify-content-center mt-5">
+
+                    <form  onSubmit={this.handleSubmit}>
+                    <div className="row no-gutters justify-content-center ">
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="First Name" variant="outlined" fullWidth={true} />
+                            <TextField id="outlined-basic" label="First Name" variant="outlined" fullWidth={true} name={"firstName"} onChange={this.handleChange.bind(this, "firstName")} />
 
+                            {this.state.errors["firstName"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["firstName"]}</span>}
 
                         </div>
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Last Name" variant="outlined" fullWidth={true} />
+                            <TextField id="outlined-basic" label="Last Name" variant="outlined" fullWidth={true} name={"lastName"}  onChange={this.handleChange.bind(this, "lastName")} />
 
+                            {this.state.errors["lastName"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["lastName"]}</span>}
 
                         </div>
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} />
+                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
 
+                            {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
 
                         </div>
                         <div className="col-12 mt-4">
@@ -270,28 +346,39 @@ class  SignUp extends Component {
 
                             <p className={"text-mute small"}>
                                 <Checkbox
-                                defaultChecked
+                                    name={"agree"}
+                           onChange={this.handleChange.bind(this, "agree")}
+                          checked={true}
                                 // color="#07AD88"
                                 style={{color:"#07AD88"}}
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                             />
                                 I agree to the <span className={"forgot-password-link"}>Loopcycle Terms</span></p>
+                            {this.state.errors["agree"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["agree"]}</span>}
 
                         </div>
 
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Password" variant="outlined" fullWidth={true} />
+                            <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} type={"password"} />
 
+                            {this.state.errors["password"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["password"]}</span>}
 
                         </div>
 
+                        {this.props.signUpFailed &&
 
+                        <div className="col-12 mt-4">
+                            <Alert key={"alert"} variant={"danger"}>
+                                {this.props.signUpError}
+                            </Alert>
+                        </div>
+                        }
 
                         <div className="col-12 mt-4">
 
-                            <button onClick={this.goToSuccess} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create Account</button>
+                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create Account</button>
                         </div>
 
 
@@ -305,7 +392,7 @@ class  SignUp extends Component {
                         </div>
 
                     </div>
-
+                    </form>
 
                 </div>
 
@@ -331,11 +418,14 @@ const mapStateToProps = state => {
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
+        signUpFailed: state.signUpFailed,
+        signUpError: state.signUpError,
         showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
 
@@ -349,7 +439,8 @@ const mapDispachToProps = dispatch => {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
-
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
     };
 };

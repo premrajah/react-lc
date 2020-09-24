@@ -2,12 +2,14 @@ import {getKey, saveKey} from "../../LocalStorage/user";
 
 export const initialState = {
     age: 20,
-
+    loginPopUpStatus:0,
     loading : false,
     isLoggedIn : false,
     rememberMe : false,
     loginFailed : false,
     loginError : "",
+    loginFailed : false,
+    signUpError : "",
     signUpFailed : false,
     isCustomer : false,
     token : {},
@@ -74,7 +76,7 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = true;
             newState.loading = false;
             newState.token = action.value.token
-
+            newState.showLoginPopUp = false;
             newState.userDetail= getKey("user")
             sessionStorage.setItem("token",action.value.token)
 
@@ -120,8 +122,6 @@ const reducer = (state = initialState, action) => {
 
 
 
-
-
         case "LOGIN_POPUP":
 
             console.log("reducer")
@@ -129,9 +129,14 @@ const reducer = (state = initialState, action) => {
             newState.showLoginPopUp = action.value;
             console.log(action.value+" "+newState.showLoginPopUp)
 
-
             break;
 
+        case "LOGIN_POPUP_STATUS":
+
+            console.log("reducer")
+            newState.loginPopUpStatus = action.value;
+
+            break;
 
 
         case "SOCIAL_LOGIN_POPUP":
@@ -228,7 +233,12 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = false;
             newState.loading = false;
             break;
-
+        case "SIGN_UP_FAILED":
+            newState.signUpFailed = true;
+            newState.signUpError= action.value
+            newState.isLoggedIn = false;
+            newState.loading = false;
+            break;
 
         case "STOP-LOADING":
             newState.loading = false;
@@ -260,25 +270,27 @@ const reducer = (state = initialState, action) => {
         case "SIGN_UP":
 
 
-            newState.showSocialLoginPopUp = false
+            // newState.showSocialLoginPopUp = false
+            //
+            // if (action.value.isGuest) {
+            //
+            //     newState.isGuest = true;
+            //     newState.isLoggedIn = false;
+            //
+            // }else {
+            //
+            //     newState.isLoggedIn = true;
+            //     newState.isGuest = false;
+            // }
+            //
+            // console.log(" user sign up ")
+            // console.log(action.value)
+            //
+            // newState.showLoginPopUp = false
+            // newState.showLoginCheckoutPopUp = false
+            // newState.userDetail = action.value;
 
-            if (action.value.isGuest) {
-
-                newState.isGuest = true;
-                newState.isLoggedIn = false;
-
-            }else {
-
-                newState.isLoggedIn = true;
-                newState.isGuest = false;
-            }
-
-            console.log(" user sign up ")
-            console.log(action.value)
-
-            newState.showLoginPopUp = false
-            newState.showLoginCheckoutPopUp = false
-            newState.userDetail = action.value;
+            newState.loginPopUpStatus=5
             newState.loading = false;
 
             break;

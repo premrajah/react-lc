@@ -186,12 +186,12 @@ class  ForgotPassword extends Component {
     }
     accountRecover(){
 
+        this.props.setLoginPopUpStatus(3)
 
-
-        this.setState({
-
-            active:3
-        })
+        // this.setState({
+        //
+        //     active:3
+        // })
 
     }
 
@@ -281,29 +281,45 @@ class  ForgotPassword extends Component {
         return (
 
             <>
-                <div className="container  p-2">
-                </div>
-                <div className="container  pt-2 pb-3">
-
+                <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-auto">
+                        <div className="col-12">
+                            <h3 className={"blue-text text-heading text-center"}>Forgot your password ?
+                            </h3>
 
-                            <img src={LogoNew} alt=""
-                                 className="header-logo" />
-                            <img className={"text-logo-home-right"} src={LogoText} />
+                        </div>
+                    </div>
+                    <div className="row no-gutters justify-content-center ">
+
+                        <div className="col-12 ">
+
+                            <p className={"text-mute small"}> We’ll send a verification code to your email address. Click on the link in the email to reset your password. </p>
+
                         </div>
 
 
-                        <div className="col text-right">
 
+                        <div className="col-12 mt-4">
 
-                            <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
+                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} />
+
 
                         </div>
+
+
+                        <div className="col-12 mt-4">
+
+                            <button onClick={this.accountRecover} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
+                        </div>
+
+
 
 
                     </div>
+
+
                 </div>
+
 
 
 
@@ -332,6 +348,7 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
 
@@ -345,6 +362,8 @@ const mapDispachToProps = dispatch => {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
 
     };

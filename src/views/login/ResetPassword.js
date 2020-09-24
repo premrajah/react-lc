@@ -78,6 +78,16 @@ class  ResetPassword extends Component {
         this.handleValidation = this.handleValidation.bind(this);
 
 
+        this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+
+
+    }
+    hideLoginPopUp = (event) => {
+
+
+        // document.body.classList.add('sidemenu-open');
+        this.props.showLoginPopUp(false)
+
     }
 
 
@@ -167,13 +177,7 @@ class  ResetPassword extends Component {
 
     resetPasswordSuccessLogin(){
 
-
-
-        this.setState({
-
-            active:5
-        })
-
+        this.props.setLoginPopUpStatus(5)
 
     }
     resetPassword(){
@@ -281,43 +285,16 @@ class  ResetPassword extends Component {
         return (
 
             <>
-                <div className="container  p-2">
-                </div>
-                <div className="container  pt-2 pb-3">
 
+                <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-auto">
-
-                            <img src={LogoNew} alt=""
-                                 className="header-logo" />
-                            <img className={"text-logo-home-right"} src={LogoText} />
-                        </div>
-
-
-                        <div className="col text-right">
-
-
-                            <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-
-
-
-                <div className="container  forgot-password-block pb-5 pt-5">
-                    <div className="row no-gutters">
-                        <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Reset Password
+                        <div className="col-12">
+                            <h3 className={"blue-text text-heading text-center"}>Reset Password
                             </h3>
 
                         </div>
                     </div>
-                    <div className="row no-gutters justify-content-center mt-5">
+                    <div className="row no-gutters justify-content-center ">
 
                         <div className="col-12 ">
 
@@ -383,6 +360,7 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
 
@@ -396,7 +374,8 @@ const mapDispachToProps = dispatch => {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
-
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
     };
 };

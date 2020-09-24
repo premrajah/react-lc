@@ -78,6 +78,16 @@ class  RecoverPassword extends Component {
         this.handleValidation = this.handleValidation.bind(this);
 
 
+        this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+
+
+    }
+    hideLoginPopUp = (event) => {
+
+
+        // document.body.classList.add('sidemenu-open');
+        this.props.showLoginPopUp(false)
+
     }
 
 
@@ -259,10 +269,8 @@ class  RecoverPassword extends Component {
     goToSignIn(){
 
 
-        this.setState({
+        this.props.setLoginPopUpStatus(0)
 
-            active:0
-        })
     }
 
     goToSignUp(){
@@ -281,35 +289,11 @@ class  RecoverPassword extends Component {
         return (
 
             <>
-                <div className="container  p-2">
-                </div>
-                <div className="container  pt-2 pb-3">
 
+                <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-auto">
-
-                            <img src={LogoNew} alt=""
-                                 className="header-logo" />
-                            <img className={"text-logo-home-right"} src={LogoText} />
-                        </div>
-
-
-                        <div className="col text-right">
-
-
-                            <Link to={"/"} > < Close onClick={this.goHome} className="blue-text" style={{ fontSize: 32 }} /> </Link>
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-                <div className="container   pb-5 pt-5">
-                    <div className="row no-gutters justify-content-center">
-                        <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Success!
+                        <div className="col-12">
+                            <h3 className={"blue-text text-heading text-center"}>Success!
                             </h3>
 
                         </div>
@@ -375,6 +359,7 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
 
@@ -388,7 +373,8 @@ const mapDispachToProps = dispatch => {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
-
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
     };
 };

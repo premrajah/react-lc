@@ -38,6 +38,9 @@ import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
+import axios from "axios/index";
+
+import {baseUrl,baseImgUrl} from  '../../Util/Constants'
 
 
 import Twitter from '../../img/icons/twitter.png';

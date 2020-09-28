@@ -187,14 +187,14 @@ class ComponentsNavbar extends React.Component {
                     Search Resources
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-with-icons">
-                  <DropdownItem href="https://demos.creative-tim.com/blk-design-system-react/#/documentation/tutorial">
+                  <Link className={"dropdown-item"} to="/resources">
                     <i className="tim-icons icon-paper" />
                     Browse All
-                  </DropdownItem>
-                  <DropdownItem tag={Link} to="/register-page">
+                  </Link>
+                  <Link className={"dropdown-item"} tag={Link} to="/create-search">
                     <i className="tim-icons icon-bullet-list-67" />
                     Create A Search
-                  </DropdownItem>
+                  </Link>
 
                 </DropdownMenu>
               </UncontrolledDropdown>

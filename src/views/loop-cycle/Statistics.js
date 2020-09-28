@@ -87,20 +87,7 @@ class  Statistics extends Component {
 
 
 
-    handleSongLoading() {
 
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
 
 
     interval

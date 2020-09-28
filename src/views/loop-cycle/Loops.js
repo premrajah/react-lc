@@ -84,22 +84,6 @@ class  Loops extends Component {
 
 
 
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
     interval
 
 

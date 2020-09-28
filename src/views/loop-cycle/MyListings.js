@@ -63,6 +63,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
+import {baseUrl} from "../../Util/Constants";
+import axios from "axios/index";
 
 class  MyListings extends Component {
 
@@ -77,25 +79,44 @@ class  MyListings extends Component {
             count : 0,
             nextIntervalFlag: false
         }
-
-
-    }
-
-
-
-
-    handleSongLoading() {
+        this.getResources=this.getResources.bind(this)
 
     }
 
-    handleSongFinishedPlaying() {
 
 
-    }
 
-    handleSongPlaying() {
+    getResources(){
 
 
+
+
+        axios.get(baseUrl+"resource",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+                    var response = response.data;
+
+                    console.log("resource response")
+                    console.log(response)
+
+                },
+                (error) => {
+                    var status = error.response.status
+
+
+                    console.log("resource error")
+                    console.log(error)
+
+
+
+
+                }
+            );
 
     }
 

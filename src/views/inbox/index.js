@@ -27,6 +27,8 @@ import Sidebar from '../menu/Sidebar'
 
 
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import {baseUrl} from "../../Util/Constants";
+import axios from "axios/index";
 
 
 
@@ -47,6 +49,45 @@ class  Inbox extends Component {
         }
 
 
+        this.getResources=this.getResources.bind(this)
+
+    }
+
+
+
+
+    getResources(){
+
+
+
+
+        axios.get(baseUrl+"resource",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+                    var response = response.data;
+
+                    console.log("resource response")
+                    console.log(response)
+
+                },
+                (error) => {
+                    var status = error.response.status
+
+
+                    console.log("resource error")
+                    console.log(error)
+
+
+
+
+                }
+            );
+
     }
 
 
@@ -54,22 +95,6 @@ class  Inbox extends Component {
 
 
 
-
-
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
 
 
     interval

@@ -91,7 +91,7 @@ class App extends Component{
                         <Route exact path="/add-detail" component={AddDetail} />
                         <Route exact path="/delivery-resource" component={DeliveryResource} />
                         <Route exact path="/code" component={CycleCode} />
-                        <Route exact path="/browse" component={BrowseResources} />
+                        <Route exact path="/resources" component={BrowseResources} />
                         <Route exact path="/search" component={Search} />
                         <Route exact path="/filter" component={Filter} />
 

@@ -730,7 +730,12 @@ export const setUserDetail = (data) => {
 export const loadUserDetail = (data) => {
 
 
-    return { type: "LOAD_USER_DETAIL", value: getKey("user") };
+
+    var userDetials= getKey("user");
+
+    console.log("user details")
+    console.log(userDetials)
+    return { type: "LOAD_USER_DETAIL", value: userDetials };
 
 
 };

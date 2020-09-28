@@ -149,7 +149,7 @@ class  Sidebar extends Component {
                 <div className="col">
                     <div className="list-group main-menu">
                         <Link onClick={this.toggleMenu} to={"/"} className="white-text list-group-item list-group-item-action">Homes </Link>
-                        <Link onClick={this.toggleMenu} to={"/browse"} className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
+                        <Link onClick={this.toggleMenu} to={"/resources"} className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
                         <Link onClick={this.toggleMenu} to={"/create-search"} className="white-text list-group-item list-group-item-action">Create A Search </Link>
                         <Link onClick={this.toggleMenu} to={"/create-listing"} className="white-text list-group-item list-group-item-action">Create A Listing </Link>
                         {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resouces </Link>}

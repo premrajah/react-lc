@@ -63,6 +63,9 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
+import {baseUrl,baseImgUrl} from  '../../Util/Constants'
+import axios from "axios/index";
+
 
 class  BrowseResources extends Component {
 
@@ -79,25 +82,48 @@ class  BrowseResources extends Component {
         }
 
 
-    }
 
-
-
-
-    handleSongLoading() {
+        this.getResources=this.getResources.bind(this)
 
     }
 
-    handleSongFinishedPlaying() {
 
+
+
+    getResources(){
+
+
+
+
+         axios.get(baseUrl+"resource",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+                    var response = response.data;
+
+                    console.log("resource response")
+                    console.log(response)
+
+                },
+                (error) => {
+                    var status = error.response.status
+
+
+                    console.log("resource error")
+                    console.log(error)
+
+
+
+
+                }
+            );
 
     }
 
-    handleSongPlaying() {
-
-
-
-    }
 
 
     interval
@@ -109,7 +135,7 @@ class  BrowseResources extends Component {
 
     componentDidMount(){
 
-
+this.getResources()
 
     }
 
@@ -219,24 +245,6 @@ class  BrowseResources extends Component {
 
 
 
-const mapStateToProps = state => {
-    return {
-        // age: state.age,
-        // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
-
-
-
-
-    };
-};
 
 
 
@@ -521,8 +529,32 @@ function NavTabs() {
 
 
 
+const mapStateToProps = state => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+
+
+    };
+};
+
 const mapDispachToProps = dispatch => {
     return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
 
 

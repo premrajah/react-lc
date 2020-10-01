@@ -72,13 +72,11 @@ class  Login extends Component {
         this.accountRecover=this.accountRecover.bind(this)
         this.resetPassword=this.resetPassword.bind(this)
         this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-
         this.goHome=this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
-
-
         this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+
 
 
     }
@@ -168,10 +166,6 @@ class  Login extends Component {
 
          // alert("invalid")
      }
-
-
-
-
 
 
     }

@@ -16,7 +16,7 @@ import MySearch from "./views/loop-cycle/MySearch";
 import ViewSearch from "./views/loop-cycle/ViewSearch";
 import ViewSearchPage from "./views/loop-cycle/ViewSearchPage";
 import MyListings from "./views/loop-cycle/MyListings";
-import ItemDetail from "./views/loop-cycle/ItemDetail";
+import ItemDetail from "./views/browser-resources/ItemDetail";
 import Products from "./views/loop-cycle/Products";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -78,7 +78,6 @@ class App extends Component{
                         <Route exact path="/view-search" component={ViewSearch} />
                         <Route exact path="/view-search-page" component={ViewSearchPage} />
                         <Route exact path="/my-listings" component={MyListings} />
-                        <Route exact path="/item-detail" component={ItemDetail} />
                         <Route exact path="/statistics" component={Statistics} />
                         <Route exact path="/my-deliveries" component={MyDeliveries} />
                         <Route exact path="/products" component={Products} />
@@ -94,6 +93,7 @@ class App extends Component{
                         <Route exact path="/resources" component={BrowseResources} />
                         <Route exact path="/search" component={Search} />
                         <Route exact path="/filter" component={Filter} />
+                        <Route exact path="/:slug" component={ItemDetail} />
 
 
                         {/*<Route exact path="/legacy" component={Legacy} />*/}

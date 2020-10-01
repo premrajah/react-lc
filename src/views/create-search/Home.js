@@ -149,15 +149,11 @@ class  Home extends Component {
 
                                 <button type="button"
                                         className="shadow-sm mr-2 btn btn-link blue-btn mt-5 mb-2 btn-blue">
-                                    Create a Search
+                                    <Link to={"/search-form"}> Create a Search</Link>
 
                                 </button>
                             </div>
                         </div>
-
-
-
-
 
 
                     </div>

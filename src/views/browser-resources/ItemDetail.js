@@ -38,11 +38,12 @@ import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
-import axios from "axios/index";
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
+
+
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
 import { Router, Route, Switch , Link} from "react-router-dom";
+
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
@@ -56,15 +57,19 @@ import PaperImg from '../../img/paper-big.png';
 
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
 
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+
+
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -75,11 +80,14 @@ import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import Close from '@material-ui/icons/Close';
+import {baseUrl} from "../../Util/Constants";
+import axios from "axios/index";
+import Moment from 'react-moment';
 
 
+class  ItemDetail extends Component {
 
-class  DeliveryResource extends Component {
-
+    slug;
 
     constructor(props) {
 
@@ -89,9 +97,11 @@ class  DeliveryResource extends Component {
 
             timerEnd: false,
             count : 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            item:{}
         }
 
+        this.slug = props.match.params.slug
 
         this.getResources=this.getResources.bind(this)
 
@@ -103,7 +113,7 @@ class  DeliveryResource extends Component {
     getResources(){
 
 
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl+"resource/"+this.slug,
             {
                 headers: {
                     "Authorization" : "Bearer "+this.props.userDetail.token
@@ -111,17 +121,24 @@ class  DeliveryResource extends Component {
             }
         )
             .then((response) => {
-                    var response = response.data;
 
-                    console.log("resource response")
+                    var response = response.data;
+                    console.log("detail resource response")
                     console.log(response)
+
+
+                this.setState({
+
+                    item: response.content
+                })
 
                 },
                 (error) => {
+
                     var status = error.response.status
 
-
                     console.log("resource error")
+
                     console.log(error)
 
 
@@ -144,7 +161,7 @@ class  DeliveryResource extends Component {
 
     componentDidMount(){
 
-
+this.getResources()
 
     }
 
@@ -160,8 +177,7 @@ class  DeliveryResource extends Component {
             <div>
 
                 <Sidebar />
-
-                <div className="wrapper accountpage">
+                <div className="accountpage">
 
                     <div className="container-fluid " style={{padding:"0"}}>
 
@@ -184,14 +200,13 @@ class  DeliveryResource extends Component {
                         <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                             <div className="col-12">
-                                <p className={"green-text text-heading"}>@Tesco
+                                <p className={"green-text text-heading"}>@{this.state.item.tags}
                                 </p>
 
                             </div>
                             <div className="col-12 mt-2">
-                                <h5 className={"blue-text text-heading"}>Food boxes needed
+                                <h5 className={"blue-text text-heading"}>{this.state.item.name}
                                 </h5>
-
                             </div>
                         </div>
 
@@ -199,7 +214,7 @@ class  DeliveryResource extends Component {
                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                             <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Looking for disposable food boxes. Any sizes are suitable. Please message me if you have any available.
+                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.item.description}
                                 </p>
 
                             </div>
@@ -223,9 +238,9 @@ class  DeliveryResource extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Paper and Card ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Disposable Food Boxes</p>
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Category</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.category} ></p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.type}</p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
@@ -235,7 +250,7 @@ class  DeliveryResource extends Component {
                             <div className={"col-auto"}>
 
                                 <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">10 Kgs</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
                             </div>
                         </div>
 
@@ -247,7 +262,7 @@ class  DeliveryResource extends Component {
                             <div className={"col-auto"}>
 
                                 <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Bailed</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.state} </p>
                             </div>
                         </div>
 
@@ -258,7 +273,11 @@ class  DeliveryResource extends Component {
                             <div className={"col-auto"}>
 
                                 <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">June 1, 2020 </p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">
+                                    <Moment   unix  >
+                                    {this.state.item.availableFrom}
+                                </Moment>
+                                </p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
@@ -274,38 +293,10 @@ class  DeliveryResource extends Component {
                         </div>
 
 
+                        <BottomAppBar />
+
 
                     </div>
-                    <div className="container container-divider">
-                        <div className="row">
-                        </div>
-                    </div>
-                    <div className="container mt-4 ">
-
-                        <div className="row no-gutters">
-                            <div className="col-12 mb-4">
-                                <h5 className="mb-1">About the seller  </h5>
-                            </div>
-                            <div className="col-auto ">
-                                <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
-                            </div>
-                            <div className="col pl-2 align-self-center">
-                                <div className="row no-gutters">
-                                    <div className="col-12">
-
-
-                                        <p style={{fontSize:"18px"}} className=" ">@Tesco</p>
-                                        <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <BottomAppBar />
-
 
                 </div>
 
@@ -363,16 +354,16 @@ function BottomAppBar() {
                     <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
                         <div className="col-auto">
 
-                            <button type="button" className=" mr-2 btn btn-link green-btn-min mt-2 mb-2 ">
-                                Deliver
+                            <button type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                Message Seller
                             </button>
 
                         </div>
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 ">
-                                Buy
+                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                Make Offer
 
                             </button>
                         </div>
@@ -387,4 +378,40 @@ function BottomAppBar() {
 }
 
 
-export default DeliveryResource;
+const mapStateToProps = state => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+
+
+    };
+};
+
+const mapDispachToProps = dispatch => {
+    return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+
+
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(ItemDetail);

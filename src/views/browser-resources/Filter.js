@@ -500,7 +500,70 @@ function PriceRange(props) {
     );
 }
 
+const useStyles = makeStyles((theme) => ({
+    text: {
+        padding: theme.spacing(2, 2, 0),
+    },
+    paper: {
+        paddingBottom: 50,
+    },
+    list: {
+        marginBottom: theme.spacing(2),
+    },
+    subheader: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    appBar: {
+        top: 'auto',
+        bottom: 0,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    fabButton: {
+        position: 'absolute',
+        zIndex: 1,
+        top: -30,
+        left: 0,
+        right: 0,
+        margin: '0 auto',
+    },
+}));
 
+function BottomAppBar() {
+    const classes = useStyles();
+
+    return (
+        <React.Fragment>
+            <CssBaseline/>
+
+            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
+                <Toolbar>
+                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                        <div className="col-auto">
+
+                            <button type="button" className=" mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                Apply Filter
+                            </button>
+
+                        </div>
+                        <div className="col-auto">
+
+                            <button type="button"
+                                    className="shadow-sm mr-2 btn btn-link green-btn-min mt-2 mb-2 btn-blue">
+                                Reset
+
+                            </button>
+                        </div>
+                    </div>
+
+                </Toolbar>
+            </AppBar>
+        </React.Fragment>
+    );
+
+
+}
 
 
 const mapStateToProps = state => {
@@ -804,70 +867,7 @@ function NavTabs() {
 
 
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: 'auto',
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: 'absolute',
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: '0 auto',
-    },
-}));
 
-function BottomAppBar() {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline/>
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
-                        <div className="col-auto">
-
-                            <button type="button" className=" mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                Apply Filter
-                            </button>
-
-                        </div>
-                        <div className="col-auto">
-
-                            <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link green-btn-min mt-2 mb-2 btn-blue">
-                                Reset
-
-                            </button>
-                        </div>
-                    </div>
-
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-
-
-}
 
 
 

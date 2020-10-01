@@ -65,6 +65,8 @@ import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
+import axios from "axios/index";
+import {baseUrl} from "../../Util/Constants";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,10 +97,20 @@ class  SearchForm extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            active: 0   //0 logn. 1- sign up , 3 -search
+            active: 0,  //0 logn. 1- sign up , 3 -search,
+            categories: [],
+            subCategories: [],
+            catSelected: null,
+            subCatSelected: null,
+            stateSelected: null,
+            states:["Bailed","Loose", "Chips"],
+            page:1,
+            fields: {},
+            errors: {},
         }
+
         this.selectCreateSearch=this.selectCreateSearch.bind(this)
         this.selectCategory=this.selectCategory.bind(this)
         this.selectType=this.selectType.bind(this)
@@ -109,9 +121,140 @@ class  SearchForm extends Component {
         this.searchLocation=this.searchLocation.bind(this)
         this.previewSearch=this.previewSearch.bind(this)
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
+        this.getFiltersCategories = this.getFiltersCategories.bind(this)
+        this.selectSubCatType=this.selectSubCatType.bind(this)
+        this.handleNext=this.handleNext.bind(this)
+        this.handleBack=this.handleBack.bind(this)
+
+    }
+
+
+
+    nextClick(){
+
+
+        if (this.state.active<4){
+
+            this.setState({
+
+                active:4
+            })
+
+        }
+
+
+        else  if (this.state.active==4){
+
+
+            this.setState({
+
+                active:7
+            })
+
+        }
+
+        else  if (this.state.active==7){
+
+
+            this.setState({
+
+                active:8
+            })
+
+        }
+
+    }
+
+
+
+    handleBack(){
+
+
+
+        if (this.state.page==2){
+
+
+            if (this.handleValidation()){
+
+                this.setState({
+
+                    page:0,
+                    active:0
+                })
+
+
+            }
+
+
+        }
+
 
 
     }
+
+
+    handleNext(){
+
+
+
+        if (this.state.page==1){
+
+
+            if (this.handleValidation()){
+
+                alert("all valid")
+
+                this.setState({
+
+                    active:4,
+                    page: 2
+                })
+
+
+            }
+
+
+        }
+       else if (this.state.page==2){
+
+
+        }
+
+
+    }
+
+    getFiltersCategories(){
+
+        axios.get(baseUrl+"category",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        ).then((response) => {
+
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
+
+                    this.setState({
+
+                        categories:response
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("resource error")
+                    console.log(error)
+
+                }
+            );
+
+    }
+
+
 
 
 
@@ -137,7 +280,25 @@ class  SearchForm extends Component {
 
 
     }
-    selectType(){
+
+
+
+    selectType(event){
+
+
+        console.log(this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name))
+
+        this.setState({
+
+            catSelected : event.currentTarget.dataset.name
+        })
+
+        this.setState({
+
+            subCategories: this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name)[0].types
+
+        })
+
 
         this.setState({
 
@@ -145,8 +306,16 @@ class  SearchForm extends Component {
         })
 
     }
-    selectState(){
 
+
+
+    selectSubCatType(event){
+
+
+        this.setState({
+
+            subCatSelected : event.currentTarget.dataset.name
+        })
 
 
         this.setState({
@@ -154,7 +323,81 @@ class  SearchForm extends Component {
             active:3
         })
 
+
     }
+
+
+
+    selectState(event){
+
+
+        this.setState({
+
+            stateSelected : event.currentTarget.dataset.name
+        })
+
+
+        this.setState({
+
+            active:0
+        })
+
+    }
+
+
+
+
+    handleValidation(){
+
+        // alert("called")
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["title"]){
+            formIsValid = false;
+            errors["title"] = "Required";
+        }
+        if(!fields["description"]){
+            formIsValid = false;
+            errors["description"] = "Required";
+        }
+        // if(!fields["agree"]){
+        //     formIsValid = false;
+        //     errors["agree"] = "Required";
+        // }
+
+
+        if(!fields["volume"]){
+            formIsValid = false;
+            errors["volume"] = "Required";
+        }
+        if(!fields["unit"]){
+            formIsValid = false;
+            errors["unit"] = "Required";
+        }
+
+
+
+
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+
+
+    handleChange(field, e){
+        let fields = this.state.fields;
+        fields[field] = e.target.value;
+        this.setState({fields});
+    }
+
+
+
+
+
     addDetails(){
 
 
@@ -166,40 +409,7 @@ class  SearchForm extends Component {
 
     }
 
-    nextClick(){
 
-
-        if (this.state.active<4){
-
-            this.setState({
-
-                active:4
-            })
-
-        }
-
-
-       else  if (this.state.active==4){
-
-
-            this.setState({
-
-                active:7
-            })
-
-        }
-
-        else  if (this.state.active==7){
-
-
-            this.setState({
-
-                active:8
-            })
-
-        }
-
-    }
 
     linkProduct(){
 
@@ -250,12 +460,11 @@ class  SearchForm extends Component {
 
 
 
+        this.getFiltersCategories()
 
 
 
     }
-
-    intervalJasmineAnim
 
 
 
@@ -295,9 +504,9 @@ class  SearchForm extends Component {
                 <div className="container  p-2">
                 </div>
 
-                {this.state.active == 0 &&
+                &
 
-                <>
+                <div className={this.state.active == 0?"":"d-none"}>
 
                 <div className="container  pt-2 pb-3">
 
@@ -327,26 +536,35 @@ class  SearchForm extends Component {
 
                         </div>
                     </div>
+
+
+                    <form onSubmit={this.handleSubmit}>
                     <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12">
 
-                            <TextField id="outlined-basic" label="Title" variant="outlined" fullWidth={true} />
+                            <TextField name={"title"} id="outlined-basic" label="Title" variant="outlined" fullWidth={true} />
+                            {this.state.errors["title"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["title"]}</span>}
 
 
                         </div>
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Description" multiline
+                            <TextField name={"description"} id="outlined-basic" label="Description" multiline
                                        rows={4} variant="outlined" fullWidth={true} />
+                            {this.state.errors["description"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["description"]}</span>}
+
 
 
                         </div>
                         <div className="col-12 mt-4" onClick={this.selectCategory}>
 
-                            <div onClick={this.selectCategory} className={"dummy-text-field"}>Resource Category </div>
+                            <div onClick={this.selectCategory} className={"dummy-text-field"}>
 
+                                {this.state.catSelected?this.state.catSelected+">"+this.state.subCatSelected+">"+this.state.stateSelected    :"Resource Category"}
 
+                            </div>
+                            {this.state.errors["category"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["category"]}</span>}
 
 
                         </div>
@@ -355,28 +573,30 @@ class  SearchForm extends Component {
 
                     <div className="col-6 pr-2">
 
-                        {/*<TextField id="outlined-basic" label="Units" variant="outlined" fullWidth={true} />*/}
                         <UnitSelect />
+                        {this.state.errors["unit"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["unit"]}</span>}
 
 
                     </div>
                         <div className="col-6 pl-2">
 
-                            <TextField id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                            <TextField name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                            {this.state.errors["volume"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["volume"]}</span>}
 
 
                         </div>
                     </div>
+                    </form>
 
                 </div>
-</>
+         </div>
 
                 }
 
 
-                {this.state.active == 1 &&
 
-                <>
+
+                <div className={this.state.active == 1?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -399,13 +619,17 @@ class  SearchForm extends Component {
                     </div>
 
                     <div className="container   pb-3 pt-3">
-                        <div className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectType}>
+
+                    {this.state.categories.map((item)=>
+
+                        <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
                             <div className="col-2">
                                 <img className={"icon-left-select"} src={SendIcon} />
                             </div>
                             <div className="col-8">
-                                <p className={"blue-text "} style={{fontSize:"16px"}}>Paper and Card</p>
-                                <p className={"text-mute small"}  style={{fontSize:"16px"}}>4 Types</p>
+
+                                <p className={"blue-text "} style={{fontSize:"16px"}}>{item.name}</p>
+                                <p className={"text-mute small"}  style={{fontSize:"16px"}}>{item.name.types}</p>
 
                             </div>
                             <div className="col-2">
@@ -413,24 +637,10 @@ class  SearchForm extends Component {
                             </div>
                         </div>
 
-
-                        <div className="row mr-2 ml-2 selection-row unselected-row p-3  mb-3 " onClick={this.selectType}>
-                            <div className="col-2">
-                                <img className={"icon-left-select"} src={SendIcon} />
-                            </div>
-                            <div className="col-8">
-                                <p className={"blue-text "} style={{fontSize:"16px"}}>Paper and Card</p>
-                                <p className={"text-mute small"}  style={{fontSize:"16px"}}>4 Types</p>
-
-                            </div>
-                            <div className="col-2">
-                                <NavigateNextIcon/>
-                            </div>
-                        </div>
-
+                    )}
 
                     </div>
-                </>
+                </div>
 
 
                 }
@@ -438,10 +648,8 @@ class  SearchForm extends Component {
 
 
 
-                {this.state.active == 2 &&
 
-                <>
-
+                <div className={this.state.active == 2?"":"d-none"}>
                     <div className="container  pt-2 pb-3">
 
                         <div className="row no-gutters">
@@ -463,36 +671,28 @@ class  SearchForm extends Component {
                     </div>
 
                     <div className="container   pb-3 pt-3">
-                        <div className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectCreateSearch}>
+
+                        {this.state.subCategories&&this.state.subCategories.map((item) =>
+                            <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3"
+                                 onClick={this.selectSubCatType.bind(this)}
+                            >
                             <div className="col-10">
-                                <p className={" "} style={{fontSize:"16px"}}>Disposable Food Boxes</p>
+                                <p className={" "} style={{fontSize:"16px"}}>{item.name}</p>
 
                             </div>
                             <div className="col-2">
                                 <NavigateNextIcon/>
                             </div>
                         </div>
-
-                        <div className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  " onClick={this.selectCreateSearch}>
-                            <div className="col-10">
-                                <p className={" "} style={{fontSize:"16px"}}>Disposable Food Boxes</p>
-
-                            </div>
-                            <div className="col-2">
-                                <NavigateNextIcon/>
-                            </div>
-                        </div>
-
+                        )}
 
                     </div>
-                </>
-
-                }
+                </div>
 
 
-                {this.state.active == 3 &&
 
-                <>
+
+                <div className={this.state.active == 3?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -515,9 +715,12 @@ class  SearchForm extends Component {
                     </div>
 
                     <div className="container   pb-3 pt-3">
-                        <div className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  " onClick={this.selectState}>
+
+                        {this.state.states.map((item) =>
+
+                        <div data-name={item} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  " onClick={this.selectState.bind(this)}>
                             <div className="col-10">
-                                <p className={" "} style={{fontSize:"16px"}}>Bailed</p>
+                                <p className={" "} style={{fontSize:"16px"}}>{item}</p>
 
                             </div>
                             <div className="col-2">
@@ -525,32 +728,19 @@ class  SearchForm extends Component {
                             </div>
                         </div>
 
-                        <div className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectState}>
-                            <div className="col-10">
-                                <p className={" "} style={{fontSize:"16px"}}>Disposable Food Boxes</p>
-
-                            </div>
-                            <div className="col-2">
-                                <NavigateNextIcon/>
-                            </div>
-                        </div>
-
-
-
-
-
+                        )}
 
                     </div>
-                </>
-
-
-                }
+                </div>
 
 
 
-                {this.state.active == 4 &&
 
-                <>
+
+
+
+
+                <div className={this.state.active == 4?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -659,12 +849,12 @@ class  SearchForm extends Component {
 
                         </div>
                     </div>
-                </>}
+                </div>
 
 
-                {this.state.active == 5 &&
 
-                <>
+
+                <div className={this.state.active == 5?"":"d-none"}>
                         <div className="container  pt-2 pb-3">
 
                             <div className="row no-gutters">
@@ -718,7 +908,7 @@ class  SearchForm extends Component {
 
                         </div>
 
-                </>}
+                </div>}
 
 
                 {this.state.active == 7 &&
@@ -806,6 +996,7 @@ class  SearchForm extends Component {
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
                                     <p style={{fontSize:"18px"}} className="  mb-1">Paper and Card ></p>
                                     <p style={{fontSize:"18px"}} className="  mb-1">Disposable Food Boxes</p>
+
                                 </div>
                             </div>
                             <div className="row  justify-content-start search-container  pb-4">
@@ -952,6 +1143,9 @@ class  SearchForm extends Component {
                 </>}
 
                 <React.Fragment>
+
+
+
                     <CssBaseline/>
 
                     <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
@@ -960,20 +1154,20 @@ class  SearchForm extends Component {
                             {this.state.active<8 ?
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
-                                <div className="col-auto">
-                                    <button type="button"
+                                  <div className="col-auto">
+                                      {this.state.page>1&&    <button type="button" onClick={this.handleBack}
                                             className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                         Back
 
-                                    </button>
+                                    </button>}
                                 </div>
                                 <div className="col-auto" style={{margin:"auto"}}>
 
-                                    <p  className={"blue-text"}> Page 2/3</p>
+                                    <p  className={"blue-text"}> Page {this.state.page}/3</p>
                                 </div>
                                 <div className="col-auto">
 
-                                    <button onClick={this.nextClick} type="button"
+                                    <button onClick={this.handleNext} type="button"
                                             className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                         {this.state.active!=7?"Next":"Post Search"}
 
@@ -993,7 +1187,7 @@ class  SearchForm extends Component {
 
                                     <div className="col-auto">
 
-                                        <button onClick={this.nextClick} type="button"
+                                        <button onClick={this.handleNext} type="button"
                                                 className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                             Sign Up
 
@@ -1003,9 +1197,6 @@ class  SearchForm extends Component {
 
 
                             }
-
-
-
 
                         </Toolbar>
                     </AppBar>
@@ -1114,6 +1305,7 @@ function UnitSelect() {
             <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
                 <Select
+                    name={"unit"}
                     native
                     value={state.age}
                     onChange={handleChange}
@@ -1124,9 +1316,8 @@ function UnitSelect() {
                     }}
                 >
                     <option aria-label="None" value="" />
-                    <option value={10}>Ten</option>
-                    <option value={20}>Twenty</option>
-                    <option value={30}>Thirty</option>
+                    <option value={"Kg"}>Kg</option>
+
                 </Select>
             </FormControl>
 
@@ -1146,20 +1337,22 @@ const useStylesSelect = makeStyles((theme) => ({
 }));
 
 
+
+
+
 const mapStateToProps = state => {
     return {
-        // age: state.age,
+        loginError: state.loginError,
         // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
+        userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
-
-
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
     };
@@ -1167,6 +1360,12 @@ const mapStateToProps = state => {
 
 const mapDispachToProps = dispatch => {
     return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
 
 

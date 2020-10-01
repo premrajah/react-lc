@@ -2028,7 +2028,7 @@ pre {
 
 	color: #07AB88;
 	border-color: #07AB88;
-	border-radius: 25px!important;
+	/*border-radius: 25px!important;*/
 
 	font-size: 16px;
 	padding: .270rem .75rem;
@@ -2203,6 +2203,13 @@ color: #3C3972;
 
 	/*border-top: 1px solid #70707062;*/
 	border-bottom: 1px solid #70707062;
+}
+
+
+.listing-row-border-top{
+
+	/*border-top: 1px solid #70707062;*/
+	border-top: 1px solid #70707062;
 }
 
 .search-container .MuiFormControl-root{width: 100%;}
@@ -2470,5 +2477,22 @@ color: #3C3972;
 
 .MuiInputBase-input {
 	height: 1em!important;
+
+}
+.filter-page{position: fixed;background:white;top:10px;left:0px;border-radius: 10px}
+.filter-icon{cursor: pointer;}
+.filter-page{
+
+	overflow: hidden;
+	height: 100%;
+
+}
+
+.filter-page>.container{
+	height: 70%;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	margin-bottom: 100px;
+
 
 }

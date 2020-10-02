@@ -2496,3 +2496,21 @@ color: #3C3972;
 
 
 }
+
+.green-link{
+	color: white!important;
+	background: #07AD88;
+	border-radius: 7px!important;
+	vertical-align: middle;
+	min-width: 135px;
+	text-align: center;
+	margin:auto 15px;
+
+}
+
+.navbar>div>.navbar-nav>.nav-item{
+	margin: auto 5px;
+
+}
+
+.logo-link>img{display: inline;}

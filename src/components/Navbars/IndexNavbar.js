@@ -159,9 +159,12 @@ class ComponentsNavbar extends React.Component {
 
                 <div className="row no-gutters">
                     <div className="col-auto">
-                        <img className="header-logo" src={LogoNew} />
+                       <Link className={"logo-link"} to={"/"}>
+                           <>
+                           <img className="header-logo" src={LogoNew} />
                         <img className={"text-logo-home web-only"} src={LogoText} />
-
+                               </>
+                       </Link>
 
                     </div>
                 </div>
@@ -171,56 +174,100 @@ class ComponentsNavbar extends React.Component {
 
             <Nav  className={"justify-content-end menu-align-right"}>
 
-                <NavItem className={"web-only"}>
+                {this.props.isLoggedIn &&   <>
 
-              <UncontrolledDropdown nav>
-                <DropdownToggle
-                  caret
-                  color="default"
-                  data-toggle="dropdown"
-                  href="#pablo"
-                  nav
-                  onClick={e => e.preventDefault()}
-                  className={"wl-link-white "}
-                >
-                  <i className="fa fa-cogs d-lg-none d-xl-none" />
-                    Search Resources
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-with-icons">
-                  <Link className={"dropdown-item"} to="/resources">
-                    <i className="tim-icons icon-paper" />
-                    Browse All
-                  </Link>
-                  <Link className={"dropdown-item"} tag={Link} to="/create-search">
-                    <i className="tim-icons icon-bullet-list-67" />
-                    Create A Search
-                  </Link>
 
-                </DropdownMenu>
-              </UncontrolledDropdown>
-                </NavItem>
+
+                    {/*<NavItem className={"web-only"}>*/}
+
+              {/*<UncontrolledDropdown nav>*/}
+                {/*<DropdownToggle*/}
+                  {/*caret*/}
+                  {/*color="default"*/}
+                  {/*data-toggle="dropdown"*/}
+                  {/*href="#pablo"*/}
+                  {/*nav*/}
+                  {/*onClick={e => e.preventDefault()}*/}
+                  {/*className={"wl-link-white "}*/}
+                {/*>*/}
+                  {/*<i className="fa fa-cogs d-lg-none d-xl-none" />*/}
+                    {/*Search Resources*/}
+                {/*</DropdownToggle>*/}
+                {/*<DropdownMenu className="dropdown-with-icons">*/}
+                  {/*<Link className={"dropdown-item"} to="/resources">*/}
+                    {/*<i className="tim-icons icon-paper" />*/}
+                    {/*Browse All*/}
+                  {/*</Link>*/}
+                  {/*<Link className={"dropdown-item"} tag={Link} to="green-link">*/}
+                    {/*<i className="tim-icons icon-bullet-list-67" />*/}
+                    {/*Create A Search*/}
+                  {/*</Link>*/}
+
+                {/*</DropdownMenu>*/}
+              {/*</UncontrolledDropdown>*/}
+                        {/**/}
+                        {/**/}
+                        {/**/}
+                        {/**/}
+                {/*</NavItem>*/}
               <NavItem className={"web-only"}>
                 <Link
                   className="nav-link d-none d-lg-block wl-link-white "
                   color="default"
-
+                 to={"/resources"}
                 >
-                    List Resources
+                    Find Resources
                 </Link>
               </NavItem>
+
+
+
                 <NavItem className={"web-only"}>
                     <Link
+                        to={"/create-listing"}
                         className="nav-link d-none d-lg-block wl-link-white "
                         color="default"
 
                     >
-                        Deliver
+                        Sell Resources
                     </Link>
                 </NavItem>
 
 
+                    <NavItem className={"web-only"}>
+                        <Link to={"/listing-form"}
+                            className="nav-link d-none d-lg-block green-link "
+                            color="default"
+                        >
+                            New Resource
+
+                        </Link>
+                    </NavItem>
+
+
+                    <NavItem className={"web-only"}>
+                        <Link
+                            to={"/listing-form"}
+                            className="nav-link d-none d-lg-block green-link "
+                            color="default"
+                        >
+                            New Listing
+                        </Link>
+                    </NavItem>
+
+
+
+
+                </>
+
+                }
+
+
+
                 {!this.props.isLoggedIn && <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
                     <Link
+
+
                         className="nav-link  d-lg-block  green-text "
                         color="default"
 
@@ -240,8 +287,12 @@ class ComponentsNavbar extends React.Component {
                       <NavItem>
 
                       <button  className="btn  btn-link text-dark btn-inbox">
-                          <Link to={"/inbox"}><MenuOutline className="white-text" style={{ fontSize: 24 }} />
+                          <Link style={{position:"relative"}} to={"/inbox"}>
+
+                              <MenuOutline className="white-text" style={{ fontSize: 24 }} >
+                              </MenuOutline>
                               <span className="new-notification"></span>
+
                           </Link>
                       </button>
                       </NavItem>
@@ -266,40 +317,40 @@ class ComponentsNavbar extends React.Component {
 
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-with-icons">
-                            <DropdownItem href="https://demos.creative-tim.com/blk-design-system-react/#/documentation/tutorial">
+                            <Link  className={"dropdown-item"} to="/my-search">
                                 <i className="tim-icons icon-paper" />
                                 My Searches
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to="/register-page">
+                            </Link>
+                            <Link  className={"dropdown-item"} to="/my-listings">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 My Listings
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to="/register-page">
+                            </Link>
+                            <Link  className={"dropdown-item"} to="/account">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 My Loops
-                            </DropdownItem>
+                            </Link>
 
-                            <DropdownItem tag={Link} to="/register-page">
+                            <Link  className={"dropdown-item"} to="/products">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Products
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to="/register-page">
+                            </Link>
+                            <Link  className={"dropdown-item"} to="/delivery-resource">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Deliveries
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to="/register-page">
+                            </Link>
+                            <Link  className={"dropdown-item"} to="/statistics">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Statistics
-                            </DropdownItem>
+                            </Link>
 
-                            <DropdownItem tag={Link} to="/register-page">
+                            <Link  className={"dropdown-item"} to="/account">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Account
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to="/register-page">
+                            </Link>
+                            <Link  className={"dropdown-item"} to="">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Help
-                            </DropdownItem>
+                            </Link>
 
                             <DropdownItem onClick={this.logOut} >
                                 <i className="tim-icons icon-bullet-list-67" />

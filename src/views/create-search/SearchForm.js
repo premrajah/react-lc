@@ -504,7 +504,7 @@ class  SearchForm extends Component {
                 <div className="container  p-2">
                 </div>
 
-                &
+
 
                 <div className={this.state.active == 0?"":"d-none"}>
 
@@ -591,7 +591,7 @@ class  SearchForm extends Component {
                 </div>
          </div>
 
-                }
+
 
 
 
@@ -641,11 +641,6 @@ class  SearchForm extends Component {
 
                     </div>
                 </div>
-
-
-                }
-
-
 
 
 
@@ -908,12 +903,12 @@ class  SearchForm extends Component {
 
                         </div>
 
-                </div>}
+                </div>
 
 
-                {this.state.active == 7 &&
 
-                <>
+
+                <div className={this.state.active == 7?"":"d-none"}>
 
                         <div className="container  pt-3 pb-3">
 
@@ -1051,12 +1046,12 @@ class  SearchForm extends Component {
                         </div>
 
 
-                </>}
+                </div>
 
 
-                {this.state.active == 8 &&
 
-                <>
+
+                <div className={this.state.active == 8?"":"d-none"}>
 
                     <div className="container  listing-row-border">
 
@@ -1140,7 +1135,7 @@ class  SearchForm extends Component {
 
                     </div>
 
-                </>}
+                </div>
 
                 <React.Fragment>
 

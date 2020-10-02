@@ -40,27 +40,27 @@ class Footer extends React.Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/landing-page" tag={Link}>
+                  <NavLink to="/" tag={Link}>
                    About
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/register-page" tag={Link}>
+                  <NavLink to="/" tag={Link}>
                     What We Do
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/profile-page" tag={Link}>
+                  <NavLink to="/" tag={Link}>
                     How It Works
                   </NavLink>
                 </NavItem>
                   <NavItem>
-                      <NavLink to="/profile-page" tag={Link}>
+                      <NavLink to="/" tag={Link}>
                           News
                       </NavLink>
                   </NavItem>
                   <NavItem>
-                      <NavLink to="/profile-page" tag={Link}>
+                      <NavLink to="/" tag={Link}>
                           Contact
                       </NavLink>
                   </NavItem>
@@ -69,27 +69,27 @@ class Footer extends React.Component {
             <Col md="3">
                 <Nav>
                     <NavItem>
-                        <NavLink to="/" tag={Link}>
+                        <NavLink to="/resources" tag={Link}>
                             <b>Resources</b>
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/landing-page" tag={Link}>
+                        <NavLink to="/resources" tag={Link}>
                             Browse All
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/register-page" tag={Link}>
+                        <NavLink to="/create-search" tag={Link}>
                             Search
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/profile-page" tag={Link}>
+                        <NavLink to="/" tag={Link}>
                             List
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/profile-page" tag={Link}>
+                        <NavLink to="/deliver-resources" tag={Link}>
                             Deliver
                         </NavLink>
                     </NavItem>

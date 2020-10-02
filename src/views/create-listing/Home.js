@@ -151,7 +151,7 @@ class  Home extends Component {
 
                                 <button type="button"
                                         className="shadow-sm mr-2 btn btn-link blue-btn mt-5 mb-2 btn-blue">
-                                    Create Listing
+                                    <Link to={"/listing-form"} >Create Listing</Link>
 
                                 </button>
                             </div>

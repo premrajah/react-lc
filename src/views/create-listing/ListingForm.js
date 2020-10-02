@@ -359,8 +359,9 @@ class  ListingForm extends Component {
                         <div className="col-auto">
 
 
+                            <Link to={"/"}>
                             <Close  className="blue-text" style={{ fontSize: 32 }} />
-
+                            </Link>
                         </div>
 
 

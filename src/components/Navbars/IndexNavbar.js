@@ -235,11 +235,11 @@ class ComponentsNavbar extends React.Component {
 
 
                     <NavItem className={"web-only"}>
-                        <Link to={"/listing-form"}
+                        <Link to={"/create-search"}
                             className="nav-link d-none d-lg-block green-link "
                             color="default"
                         >
-                            New Resource
+                            Create a search
 
                         </Link>
                     </NavItem>
@@ -334,10 +334,10 @@ class ComponentsNavbar extends React.Component {
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Products
                             </Link>
-                            <Link  className={"dropdown-item"} to="/delivery-resource">
-                                <i className="tim-icons icon-bullet-list-67" />
-                                Deliveries
-                            </Link>
+                            {/*<Link  className={"dropdown-item"} to="/delivery-resource">*/}
+                                {/*<i className="tim-icons icon-bullet-list-67" />*/}
+                                {/*Deliveries*/}
+                            {/*</Link>*/}
                             <Link  className={"dropdown-item"} to="/statistics">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Statistics

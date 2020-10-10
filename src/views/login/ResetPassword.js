@@ -65,6 +65,7 @@ class  ResetPassword extends Component {
 
 
         }
+
         this.goToSignUp=this.goToSignUp.bind(this)
         this.goToSignIn=this.goToSignIn.bind(this)
         this.goToSuccess=this.goToSuccess.bind(this)
@@ -72,12 +73,9 @@ class  ResetPassword extends Component {
         this.accountRecover=this.accountRecover.bind(this)
         this.resetPassword=this.resetPassword.bind(this)
         this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-
         this.goHome=this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
-
-
         this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
 
 
@@ -321,7 +319,7 @@ class  ResetPassword extends Component {
 
                         <div className="col-12 mt-4">
 
-                            <button onClick={this.resetPasswordSuccessLogin} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
+                            <button onClick={this.resetPasswordSuccessLogin} className={"btn btn-default mb-4 btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
                         </div>
 
 

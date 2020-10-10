@@ -329,7 +329,7 @@ class  RecoverPassword extends Component {
 
                         <div className="col-3 mt-4">
 
-                            <button onClick={this.resetPassword} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Next</button>
+                            <button onClick={this.resetPassword} className={"btn btn-default mb-4 btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Next</button>
                         </div>
 
                     </div>

@@ -1998,17 +1998,19 @@ pre {
 	background-color: #151142;
 }
 
-.topBtn{
+.topBtn,.topBtn:hover{
 
 	color: #07AB88;
 	border-color: #07AB88;
 	border-radius: 7px!important;
-
+background: transparent;
 	font-size: 16px;
 	padding: .270rem .75rem;
 
 	border: 2px solid #07AB88;
 }
+
+.login-btn:hover{color: white;}
 
 
 .wt_btn_border,.wt_btn_border:hover{
@@ -2422,7 +2424,15 @@ color: #3C3972;
 
 .btn-icon:hover{color: white!important;}
 
+
+.logo-link>img.web-only{display: inline;}
+
+
 @media screen and (max-width: 991px) {
+
+	.logo-link>img.web-only{display: none;}
+
+
 	.footer {
 		padding-left: 0px; }
 	.footer .copyright {
@@ -2513,4 +2523,15 @@ color: #3C3972;
 
 }
 
-.logo-link>img{display: inline;}
+.body-overlay{overflow: scroll;}
+.forgot-password-link{cursor: pointer;}
+.fgt-password-text{line-height: 22px!important;}
+.btn-green:hover{color: white;}
+
+.navbar-nav {
+	/*display: flex;*/
+	flex-direction: inherit;
+	/*padding-left: 0;*/
+	/*margin-bottom: 0;*/
+	/*list-style: none;*/
+}

@@ -264,7 +264,8 @@ class ComponentsNavbar extends React.Component {
 
 
 
-                {!this.props.isLoggedIn && <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
+                {!this.props.isLoggedIn &&
+                <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
                     <Link
 
 
@@ -277,8 +278,6 @@ class ComponentsNavbar extends React.Component {
                 </NavItem>}
 
                         <NavItem>
-
-
 
                       {!this.props.isLoggedIn && <button onClick={this.showLoginPopUp}  type="button" className="mt-1 btn topBtn "><Link >Log In</Link></button>}
                         </NavItem>
@@ -300,7 +299,8 @@ class ComponentsNavbar extends React.Component {
 
 
 
-                {this.props.isLoggedIn &&  <NavItem className={"web-only"}>
+                {this.props.isLoggedIn &&
+                <NavItem className={"web-only"}>
 
                     <UncontrolledDropdown nav>
                         <DropdownToggle
@@ -368,10 +368,6 @@ class ComponentsNavbar extends React.Component {
 
                       </button>
                 </NavItem>
-                        {/*</Col>*/}
-                    {/*</Row>*/}
-
-                {/*</Container>*/}
 
             </Nav>
 

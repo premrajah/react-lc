@@ -35,6 +35,9 @@ import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, Butto
 import Checkbox from '@material-ui/core/Checkbox';
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import {saveKey, saveUserToken} from "../../LocalStorage/user";
+import axios from "axios/index";
+import {loginFailed} from "../../store/actions/actions";
 
 
 
@@ -72,7 +75,6 @@ class  ForgotPassword extends Component {
         this.accountRecover=this.accountRecover.bind(this)
         this.resetPassword=this.resetPassword.bind(this)
         this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-
         this.goHome=this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
@@ -94,11 +96,7 @@ class  ForgotPassword extends Component {
         let errors = {};
         let formIsValid = true;
 
-        //Name
-        if(!fields["password"]){
-            formIsValid = false;
-            errors["password"] = "Required";
-        }
+
 
 
         if(!fields["email"]){
@@ -124,6 +122,7 @@ class  ForgotPassword extends Component {
 
 
     handleChange(field, e){
+
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({fields});
@@ -143,19 +142,55 @@ class  ForgotPassword extends Component {
             })
 
             const data = new FormData(event.target);
-
             const username = data.get("email")
-            const password = data.get("password")
+
+            // this.props.logIn({"email": username, "password": password})
 
 
-            this.props.logIn({"email": username, "password": password})
+         // alert(data.get("email"))
 
-        // alert("valid")
+         axios.post(baseUrl+"user/reset",
+             {"email": data.email})
+             .then(res => {
+
+                 console.log(res.data)
+
+                 document.body.classList.add('search-body');
+
+
+                 if (res.data.status.code==200){
+
+
+                     console.log("login success found")
+
+
+                 } else {
+
+                     console.log("login failed "+res.data.content.message)
+
+                 }
+
+
+             }).catch(error => {
+
+             console.log("login error found ")
+             console.log(error.response.data)
+
+             // dispatch({type: "LOGIN_FAILED", value : error})
+             // dispatch(stopLoading())
+             // dispatch(loginFailed(error.response.data.content.message))
+             // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
+
+             // console.log(error)
+
+         });
+
+
+
 
         }else {
 
 
-         // alert("invalid")
      }
 
 
@@ -289,11 +324,14 @@ class  ForgotPassword extends Component {
 
                         </div>
                     </div>
+
+                    <form  onSubmit={this.handleSubmit}>
+
                     <div className="row no-gutters justify-content-center ">
 
                         <div className="col-12 ">
 
-                            <p className={"text-mute small"}> We’ll send a verification code to your email address. Click on the link in the email to reset your password. </p>
+                            <p className={"text-mute small fgt-password-text"}> We’ll send a verification code to your email address. Click on the link in the email to reset your password. </p>
 
                         </div>
 
@@ -301,22 +339,29 @@ class  ForgotPassword extends Component {
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} />
+
+                            <TextField
+                                type={"email"}
+                                onChange={this.handleChange.bind(this, "email")}
+                                id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
+
+                            {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
 
 
                         </div>
 
 
-                        <div className="col-12 mt-4">
+                        <div className="col-12 mt-4 mb-4">
 
-                            <button onClick={this.accountRecover} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
+                            <button type={"submit"}  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
                         </div>
+
 
 
 
 
                     </div>
-
+                    </form>
 
                 </div>
 

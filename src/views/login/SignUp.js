@@ -388,7 +388,7 @@ class  SignUp extends Component {
                         </div>
                         <div className="col-auto mt-4 justify-content-center">
 
-                            <button onClick={this.goToSignIn}  type="button" className="mt-1 btn topBtn btn-outline-primary sign-up-btn">Log In</button>
+                            <button onClick={this.goToSignIn}  type="button" className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">Log In</button>
                         </div>
 
                     </div>

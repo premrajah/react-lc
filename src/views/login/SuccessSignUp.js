@@ -322,7 +322,7 @@ class  RecoverPassword extends Component {
                         </div>
 
 
-                        <div className="col-12 mt-4">
+                        <div className="col-12 mt-4 mb-4">
                             <p style={{textAlign:"center"}} className={"text-mute small"}>Didn’t get a link? <span className={"forgot-password-link"}> Resend Verification</span></p>
                         </div>
 

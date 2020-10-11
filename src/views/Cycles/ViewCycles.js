@@ -24,7 +24,7 @@ import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
-
+import TruckBlue from '../../img/icons/truck-blue.png';
 
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
@@ -34,6 +34,7 @@ import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import HandGreyIcon from '../../img/icons/hand-gray.png';
+import HandBlue from '../../img/icons/hand.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
 
@@ -65,7 +66,7 @@ import FilterIcon from '@material-ui/icons/Filter';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 
-class  Listings extends Component {
+class  ViewCycles extends Component {
 
 
     constructor(props) {
@@ -152,64 +153,49 @@ class  Listings extends Component {
 
                 <Sidebar />
                 <div className="wrapper accountpage">
-                <HeaderDark />
-                    <div className="container container-blue  pb-4 pt-4">
-                        <div className="row mb-5 justify-content-center">
-                            <div className="text-center">
-                                <div className="figure-profile shadow mt-4">
-                                    <figure><img src="img/user1.png" alt="" /></figure>
-                                    <div className="btn btn-dark text-white floating-btn">
-                                        <Camera className="green-text" style={{ fontSize: 24 }} />
-                                        <input type="file" className="float-file" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className={"text-white"}>Tesco</h5>
-                                    <p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>
-                                </div>
-                            </div>
 
+                <HeaderDark />
+
+
+                    <div className="container   pb-4 pt-4">
+
+
+                        <div className="row justify-content-center">
+
+                            <div className="col-auto pb-4 pt-4">
+                               <img className={"search-icon-middle"}  src={TruckBlue} />
+
+                            </div>
+                        </div>
+                        <div className="row justify-content-center pb-2 pt-4 ">
+
+                            <div className="col-auto">
+                                <h3 className={"blue-text text-heading"}>My Deliveries
+                                </h3>
+                            </div>
+                        </div>
+
+
+                        <div className="row justify-content-center pb-4 pt-2 ">
+
+                            <div className="col-auto">
+                                <p className={"text-gray-light small"}>Accept or decline upcoming assignments.</p>
+
+                            </div>
                         </div>
 
                     </div>
-<div className={"tab-content-listing"}>
 
-                    <NavTabs col />
-</div>
-
-
+                    <NavTabs />
                 </div>
 
 
 
-            </div>
+                    </div>
+
         );
     }
 }
-
-
-
-
-
-const mapStateToProps = state => {
-    return {
-        // age: state.age,
-        // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
-
-
-
-
-    };
-};
-
 
 
 
@@ -266,7 +252,7 @@ const useStylesTabs = makeStyles((theme) => ({
     },
 }));
 
- function NavTabs() {
+function NavTabs() {
     const classes = useStylesTabs();
     const [value, setValue] = React.useState(0);
 
@@ -276,138 +262,49 @@ const useStylesTabs = makeStyles((theme) => ({
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar className={"custom-tabs-blue"} position="static">
                 <Tabs
-                    style={{backgroundColor:"#27245C", color:"#ffffff!important"}}
+                    style={{backgroundColor:"#ffffff", color:"#151142"}}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
                     onChange={handleChange}
                     aria-label="nav tabs example"
                 >
-                    <LinkTab label="Listings" href="/drafts" {...a11yProps(0)} />
-                    <LinkTab label="Loops" href="/trash" {...a11yProps(1)} />
-                    <LinkTab label="About" href="/spam" {...a11yProps(2)} />
+                    <LinkTab label="Upcoming" href="/drafts" {...a11yProps(0)} />
+                    <LinkTab label="In Progress" href="/trash" {...a11yProps(1)} />
+
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
 
-                <div className={"container"}>
+                <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
-                <div className="row  justify-content-center search-container listing-row-border pb-4">
-                    <div className={"col-12"}>
+                    {/*<div className={"col-4"}>*/}
 
-                        <TextField
-                    label={"Search this seller’s listings"}
-                    variant="outlined"
-                    className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                    id="input-with-icon-textfield"
-
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                </div>
-                </div>
-
-                <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
-
-                                    <div className="col">
-                                        <p style={{fontSize:"18px"}} className="text-mute mb-1">5 out of 5 Listings </p>
-
-                                    </div>
-                                    <div className="text-mute col-auto pl-0">
-
-                                          <span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />
-
-                                    </div>
-
-                </div>
-
-                    <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-<div className={"col-4"}>
-
-    <img className={"img-fluid"} src={Paper}/>
-</div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Paper and Card</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
-                        </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
-                            <p className={"green-text"}>£12</p>
-                        </div>
+                    {/*<img className={"img-fluid"} src={Paper}/>*/}
+                    {/*</div>*/}
+                    <div className={"col-11 content-box-listing"}>
+                        <p style={{fontSize:"18px"}} className=" mb-1">Surrey  →  London</p>
+                        <p style={{fontSize:"16px"}} className="text-mute mb-1">Paper and Cardboard</p>
+                        <p style={{fontSize:"16px"}} className="text-mute mb-1">bailed / 10 kg</p>
                     </div>
-
-                    <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-                        <div className={"col-4"}>
-
-                            <img className={"img-fluid"} src={Paper}/>
-                        </div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
-                        </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
-                            <p className={"green-text"}>Free</p>
-                        </div>
+                    <div style={{textAlign:"right"}} className={"col-1"}>
+                        <p className={"gray-text"}><NavigateNextIcon /></p>
                     </div>
-
-                    </div>
-
+                </div>
 
 
 
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <div className={"container"}>
 
-                    <div className="row  justify-content-center search-container listing-row-border pb-4">
-                        <div className={"col-12"}>
-
-                            <TextField
-                                label={"Search this seller’s loops"}
-                                variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                                id="input-with-icon-textfield"
-
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
-
-                        <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">2 Loops</p>
-
-                        </div>
-                        {/*<div className="text-mute col-auto pl-0">*/}
-
-                            {/*<span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />*/}
-
-                        {/*</div>*/}
-
-                    </div>
 
                     <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
                         {/*<div className={"col-4"}>*/}
 
-                            {/*<img className={"img-fluid"} src={Paper}/>*/}
+                        {/*<img className={"img-fluid"} src={Paper}/>*/}
                         {/*</div>*/}
                         <div className={"col-11 content-box-listing"}>
                             <p style={{fontSize:"18px"}} className=" mb-1">Tesco   →  Company B</p>
@@ -417,7 +314,7 @@ const useStylesTabs = makeStyles((theme) => ({
                         <div style={{textAlign:"right"}} className={"col-1"}>
                             <p className={"gray-text"}><NavigateNextIcon /></p>
                         </div>
-                    </div>
+
 
                 </div>
             </TabPanel>
@@ -493,16 +390,4 @@ const useStylesTabs = makeStyles((theme) => ({
 
 
 
-const mapDispachToProps = dispatch => {
-    return {
-
-
-
-
-
-    };
-};
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(Listings);
+export default ViewCycles;

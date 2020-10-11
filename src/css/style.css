@@ -32,8 +32,6 @@
 
 
 
-
-
 /* basic */
 html {
 	height: 100%;
@@ -2104,6 +2102,8 @@ color: #3C3972;
 .container-divider {height: 1px; background: #ccc;margin: auto}
 
 
+
+
 .search-icon{height: 30px;}
 
 .home-icon-bottom{height: 24px; margin-right: 20px;}
@@ -2535,3 +2535,38 @@ color: #3C3972;
 	/*margin-bottom: 0;*/
 	/*list-style: none;*/
 }
+
+.accountpage-list a{
+	color: #27245C;
+}
+
+.accountpage-list svg{
+	color: #A8A8A8;
+	float: right;
+	margin: auto;
+	vertical-align: middle;
+	margin: 5px;
+	display: block;
+}
+
+.accountpage-list>a{border: none;}
+
+.account-header-box{
+	border: 1px solid #0000001F;
+	border-radius: 25px;
+	opacity: 1;
+	margin:auto;
+	padding:20px;
+}
+
+.account-header-box>.col-6>.figure-profile{height: 65px;width: 65px;border: none;}
+.text-bold{font-weight: 600;}
+.text-blue{
+	color: #27245C;
+}
+.text-underline{text-decoration: underline;
+	text-align: center;
+
+}
+
+.account-header-box h5{margin-top: 15px;}

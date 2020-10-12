@@ -32,12 +32,13 @@ import { Router, Route, Switch , Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+// import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Camera from '@material-ui/icons/CameraAlt';
 
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 
 
@@ -127,51 +128,94 @@ class  Account extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper container-blue accountpage">
+                <div className="wrapper  accountpage">
 
                 <HeaderDark />
 
 
-                    <div className="container container-blue  pt-4">
+                    <div className="container  pt-3">
 
-                        <div className="row mb-5 justify-content-center">
+                        <div className="row mb-3 justify-content-center ">
 
-                            <div className="text-center">
-                                <div className="figure-profile shadow my-4">
-                                    <figure><img src="img/user1.png" alt="" /></figure>
-                                    <div className="btn btn-dark text-white floating-btn">
-                                        <Camera className="green-text" style={{ fontSize: 24 }} />
-                                        <input type="file" className="float-file" />
-                                    </div>
-                                </div>
+                            <div className="col-12  justify-content-center">
+                                <h4 className={"text-blue text-bold"}>My Loopcycle</h4>
+                            </div>
+                        </div>
+                        <div className="row mb-5 justify-content-center account-header-box">
+
+                            <div className="col-6  justify-content-center">
+
+                                {/*<div>*/}
+                                    <h5 className={"text-blue text-bold"}>Company A</h5>
+                                    <p className={" text-mute small"}>Joined in 2010<br/>
+                                        Surrey, UK</p>
 
 
-                                <div>
-                                    <h5 className={"text-white"}>Tesco</h5>
-                                    <p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>
+                                {/*</div>*/}
 
-                                </div>
                             </div>
 
+                            <div className="col-6   justify-content-center">
+
+                                <div className="figure-profile shadow ">
+                                    <figure><img src="img/user1.png" alt="" /></figure>
+
+
+
+                                    {/*<div className="btn btn-dark  floating-btn">*/}
+                                        {/*/!*<Camera className="green-text" style={{ fontSize: 24 }} />*!/*/}
+                                        {/*/!*<input type="file" className="float-file" />*!/*/}
+                                        {/*<p className={"text-blue text-underline"}>Upload Photo</p>*/}
+
+                                    {/*</div>*/}
+                                </div>
+                                <p className={"text-blue text-underline text-upload"}>Upload Photo</p>
+
+
+                            </div>
+
+
                         </div>
+
+
+                        {/*<div className="row mb-5 justify-content-center">*/}
+
+                            {/*<div className="text-center">*/}
+                                {/*<div className="figure-profile shadow my-4">*/}
+                                    {/*<figure><img src="img/user1.png" alt="" /></figure>*/}
+                                    {/*<div className="btn btn-dark text-white floating-btn">*/}
+                                        {/*<Camera className="green-text" style={{ fontSize: 24 }} />*/}
+                                        {/*<input type="file" className="float-file" />*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+
+
+                                {/*<div>*/}
+                                    {/*<h5 className={"text-white"}>Tesco</h5>*/}
+                                    {/*<p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>*/}
+
+                                {/*</div>*/}
+                            {/*</div>*/}
+
+                        {/*</div>*/}
 
                     <div className="row">
                         <div className="col">
                             <div className="list-group main-menu accountpage-list">
-                                <a className="list-group-item list-group-item-action ">
+                                <Link to={"/listings"} className="list-group-item list-group-item-action ">
                                     <img src={SettingsWhite} className={"account-icons truck-icon "} />
-                                Account</a>
+                                Account  <NavigateNextIcon /> </Link>
                                 <Link to={"my-search"} className="list-group-item list-group-item-action ">
                                     <img src={SearchWhite} className={"account-icons truck-icon "} />
-                                    My Searches</Link>
+                                    My Searches  <NavigateNextIcon /></Link>
 
                                 <a className="list-group-item list-group-item-action ">
                                     <img src={HandWhite} className={"account-icons truck-icon "} />
-                                    My Listings me</a>
+                                    My Listings <NavigateNextIcon /></a>
 
                                 <a className="list-group-item list-group-item-action ">
                                     <img src={Rings} className={"account-icons truck-icon "} />
-                                    My Loops</a>
+                                    My Loops <NavigateNextIcon /></a>
 
 
 
@@ -181,14 +225,14 @@ class  Account extends Component {
                     </div>
 
 
-                    <div className="container  container-divider">
+                    <div className="container ">
                         <div className="row">
                         </div>
                     </div>
 
 
 
-                    <div className="container container-blue  pt-4">
+                    <div className="container   pt-4">
 
                         <div className="row">
                             <div className="col">
@@ -196,15 +240,15 @@ class  Account extends Component {
 
                                     <a className="list-group-item list-group-item-action ">
                                         <img src={Cube} className={"account-icons truck-icon "} />
-                                        Products</a>
+                                        Products <NavigateNextIcon /></a>
 
                                     <a className="list-group-item list-group-item-action ">
                                         <img src={ShippingWhite} className={"account-icons truck-icon "} />
-                                        Deliveries</a>
+                                        Deliveries <NavigateNextIcon /></a>
 
                                     <a className="list-group-item list-group-item-action ">
                                         <img src={VerticalLines} className={"account-icons truck-icon "} />
-                                        Statistics</a>
+                                        Statistics <NavigateNextIcon /></a>
 
                                 </div>
                             </div>

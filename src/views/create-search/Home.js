@@ -119,7 +119,9 @@ class  Home extends Component {
                         <div className="row justify-content-center">
 
                             <div className="col-auto pb-4 pt-5">
-                               <img className={"search-icon-middle"}  src={SearchIcon} />
+
+
+                                <img className={"search-icon-middle"}  src={SearchIcon} />
 
                             </div>
                         </div>

@@ -39,7 +39,7 @@ import AppBar from '@material-ui/core/AppBar';
 
 import TextField from '@material-ui/core/TextField';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,ProgressBar} from 'react-bootstrap';
 
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -67,6 +67,7 @@ import StateIcon from '../../img/icons/state.png';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -102,13 +103,17 @@ class  SearchForm extends Component {
             active: 0,  //0 logn. 1- sign up , 3 -search,
             categories: [],
             subCategories: [],
-            catSelected: null,
-            subCatSelected: null,
+            catSelected: {},
+            subCatSelected: {},
             stateSelected: null,
-            states:["Bailed","Loose", "Chips"],
+            states:[],
             page:1,
             fields: {},
             errors: {},
+            units:[],
+            progressBar: 33,
+            products:[],
+            productSelected: null
         }
 
         this.selectCreateSearch=this.selectCreateSearch.bind(this)
@@ -125,10 +130,46 @@ class  SearchForm extends Component {
         this.selectSubCatType=this.selectSubCatType.bind(this)
         this.handleNext=this.handleNext.bind(this)
         this.handleBack=this.handleBack.bind(this)
+        this.getProducts=this.getProducts.bind(this)
+        this.selectProduct=this.selectProduct.bind(this)
 
     }
 
 
+
+
+    getProducts(){
+
+        axios.get(baseUrl+"product",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
+
+                    this.setState({
+
+                        products:response
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("resource error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
     nextClick(){
 
@@ -169,26 +210,20 @@ class  SearchForm extends Component {
 
     handleBack(){
 
-
-
         if (this.state.page==2){
-
 
             if (this.handleValidation()){
 
                 this.setState({
 
-                    page:0,
-                    active:0
+                    page:1,
+                    active:0,
+                    progressBar: 33
                 })
-
 
             }
 
-
         }
-
-
 
     }
 
@@ -199,27 +234,44 @@ class  SearchForm extends Component {
 
         if (this.state.page==1){
 
+            // alert("page 1")
 
             if (this.handleValidation()){
 
-                alert("all valid")
+                // alert("all valid")
 
                 this.setState({
 
                     active:4,
-                    page: 2
+                    page: 2,
+                    progressBar: 66
+                })
+
+
+            }
+
+        }
+       else if (this.state.page==2){
+
+
+
+            if (this.handleValidation()){
+
+                // alert("all valid")
+
+                this.setState({
+
+                    active:8,
+                    page: 4,
+                    progressBar: 100
                 })
 
 
             }
 
 
-        }
-       else if (this.state.page==2){
-
 
         }
-
 
     }
 
@@ -272,25 +324,40 @@ class  SearchForm extends Component {
 
     selectCategory(){
 
-
         this.setState({
 
             active:1
         })
 
-
     }
 
 
 
-    selectType(event){
+    selectProduct(event){
 
-
-        console.log(this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name))
+        // console.log(this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name))
 
         this.setState({
 
-            catSelected : event.currentTarget.dataset.name
+            productSelected : this.state.products.filter((item) => item.title == event.currentTarget.dataset.name)[0]
+        })
+
+
+
+        this.setState({
+
+            active: 4
+        })
+
+    }
+
+    selectType(event){
+
+        // console.log(this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name))
+
+        this.setState({
+
+            catSelected : this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name)[0]
         })
 
         this.setState({
@@ -299,10 +366,9 @@ class  SearchForm extends Component {
 
         })
 
-
         this.setState({
 
-            active:2
+            active: 2
         })
 
     }
@@ -314,13 +380,18 @@ class  SearchForm extends Component {
 
         this.setState({
 
-            subCatSelected : event.currentTarget.dataset.name
+            subCatSelected : this.state.subCategories.filter((item)=> event.currentTarget.dataset.name==item.name)[0]
+
         })
+
+        // alert(this.state.subCatSelected.name)
 
 
         this.setState({
 
-            active:3
+            active:3,
+            states:this.state.subCategories.filter((item)=> event.currentTarget.dataset.name==item.name)[0].state
+
         })
 
 
@@ -339,7 +410,9 @@ class  SearchForm extends Component {
 
         this.setState({
 
-            active:0
+            active:0,
+            units:this.state.subCatSelected.units
+
         })
 
     }
@@ -373,17 +446,99 @@ class  SearchForm extends Component {
             formIsValid = false;
             errors["volume"] = "Required";
         }
-        if(!fields["unit"]){
+        // if(!fields["unit"]){
+        //     formIsValid = false;
+        //     errors["unit"] = "Required";
+        // }
+
+
+
+
+        if(this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected){
+
+
+            }else{
+
+
             formIsValid = false;
-            errors["unit"] = "Required";
+            errors["category"] = "Required";
+
+        }
+
+
+        this.setState({errors: errors});
+        return formIsValid;
+
+    }
+
+
+
+    handleValidationAddDetail(){
+
+        // alert("called")
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["deliver"]){
+            formIsValid = false;
+            errors["deliver"] = "Required";
+        }
+        if(!fields["endDate"]){
+            formIsValid = false;
+            errors["endDate"] = "Required";
+        }
+
+        if(!fields["startDate"]){
+            formIsValid = false;
+            errors["startDate"] = "Required";
+        }
+
+
+
+        if(!this.state.productSelected){
+            formIsValid = false;
+            errors["product"] = "Required";
         }
 
 
 
 
 
+        // if(!fields["agree"]){
+        //     formIsValid = false;
+        //     errors["agree"] = "Required";
+        // }
+
+
+        if(!fields["volume"]){
+            formIsValid = false;
+            errors["volume"] = "Required";
+        }
+        // if(!fields["unit"]){
+        //     formIsValid = false;
+        //     errors["unit"] = "Required";
+        // }
+
+
+
+
+        if(this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected){
+
+
+        }else{
+
+
+            formIsValid = false;
+            errors["category"] = "Required";
+
+        }
+
+
         this.setState({errors: errors});
         return formIsValid;
+
     }
 
 
@@ -391,6 +546,8 @@ class  SearchForm extends Component {
     handleChange(field, e){
         let fields = this.state.fields;
         fields[field] = e.target.value;
+
+        // alert(e.target.value)
         this.setState({fields});
     }
 
@@ -413,15 +570,21 @@ class  SearchForm extends Component {
 
     linkProduct(){
 
-        alert(5)
+
+        this.getProducts()
+
+        // alert(5)
+
         this.setState({
 
             active:5
+
         })
 
-
-
     }
+
+
+
     searchLocation(){
 
 
@@ -520,7 +683,7 @@ class  SearchForm extends Component {
                         <div className="col-auto">
 
 
-                            <Close  className="blue-text" style={{ fontSize: 32 }} />
+                            <Link to={"/create-search"}><Close  className="blue-text" style={{ fontSize: 32 }} /></Link>
 
                         </div>
 
@@ -542,7 +705,7 @@ class  SearchForm extends Component {
                     <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12">
 
-                            <TextField name={"title"} id="outlined-basic" label="Title" variant="outlined" fullWidth={true} />
+                            <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} id="outlined-basic" label="Title" variant="outlined" fullWidth={true} />
                             {this.state.errors["title"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["title"]}</span>}
 
 
@@ -550,7 +713,7 @@ class  SearchForm extends Component {
 
                         <div className="col-12 mt-4">
 
-                            <TextField name={"description"} id="outlined-basic" label="Description" multiline
+                            <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} id="outlined-basic" label="Description" multiline
                                        rows={4} variant="outlined" fullWidth={true} />
                             {this.state.errors["description"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["description"]}</span>}
 
@@ -561,7 +724,10 @@ class  SearchForm extends Component {
 
                             <div onClick={this.selectCategory} className={"dummy-text-field"}>
 
-                                {this.state.catSelected?this.state.catSelected+">"+this.state.subCatSelected+">"+this.state.stateSelected    :"Resource Category"}
+                                {this.state.catSelected&&this.state.catSelected.name&&this.state.subCatSelected && this.state.stateSelected?
+
+                                    this.state.catSelected.name+ ">"+this.state.subCatSelected.name+">"+this.state.stateSelected :"Resource Category"}
+
 
                             </div>
                             {this.state.errors["category"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["category"]}</span>}
@@ -573,14 +739,37 @@ class  SearchForm extends Component {
 
                     <div className="col-6 pr-2">
 
-                        <UnitSelect />
-                        {this.state.errors["unit"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["unit"]}</span>}
+                        <UnitSelect units={this.state.units} />
+
+                        {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+                            {/*<InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>*/}
+                            {/*<Select*/}
+                                {/*// onChange={this.handleChange.bind(this, "unit")}*/}
+                                {/*name={"unit"}*/}
+                                {/*native*/}
+
+                                {/*inputProps={{*/}
+                                    {/*name: 'unit',*/}
+                                    {/*id: 'outlined-age-native-simple',*/}
+                                {/*}}*/}
+                            {/*>*/}
+
+                                {/*{this.state.units.map((item)=>*/}
+
+                                    {/*<option value={"Kg"}>{item}</option>*/}
+
+                                {/*)}*/}
+
+                            {/*</Select>*/}
+                        {/*</FormControl>*/}
+
+                        {/*{this.state.errors["unit"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["unit"]}</span>}*/}
 
 
                     </div>
                         <div className="col-6 pl-2">
 
-                            <TextField name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                            <TextField onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
                             {this.state.errors["volume"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["volume"]}</span>}
 
 
@@ -656,7 +845,6 @@ class  SearchForm extends Component {
 
                             <div className="col-auto">
 
-
                                 <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
@@ -667,11 +855,12 @@ class  SearchForm extends Component {
 
                     <div className="container   pb-3 pt-3">
 
-                        {this.state.subCategories&&this.state.subCategories.map((item) =>
+                        {this.state.subCategories && this.state.subCategories.map((item) =>
+
                             <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3"
-                                 onClick={this.selectSubCatType.bind(this)}
-                            >
+                                 onClick={this.selectSubCatType.bind(this)}>
                             <div className="col-10">
+
                                 <p className={" "} style={{fontSize:"16px"}}>{item.name}</p>
 
                             </div>
@@ -731,10 +920,6 @@ class  SearchForm extends Component {
 
 
 
-
-
-
-
                 <div className={this.state.active == 4?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
@@ -749,7 +934,7 @@ class  SearchForm extends Component {
                             <div className="col-auto">
 
 
-                                <Close  className="blue-text" style={{ fontSize: 32 }} />
+                                <Close onClick={this.handleBack}  className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
 
@@ -766,18 +951,22 @@ class  SearchForm extends Component {
                             </div>
                         </div>
                         <div className="row no-gutters justify-content-center mt-5">
-                            <div className="col-12 mb-3">
+                            <div onClick={this.linkProduct}  className="col-12 mb-3">
 
 
-                                <div  onClick={this.linkProduct} className={"dummy-text-field"}>
-                                    Link new a product
+                                <div  className={"dummy-text-field"}>
+                                    {this.state.productSelected?this.state.productSelected.title:"Link new a product"}
                                     <img  className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }}/>
                                 </div>
+                                {this.state.errors["linkProduct"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["linkProduct"]}</span>}
+
 
                             </div>
                             <div className="col-12 mb-3">
 
                                 <TextField
+                                    name={"deliver"}
+                                    onChange={this.handleChange.bind(this, "deliver")}
                                     label={"Deliver to "}
                                     variant="outlined"
                                     className={clsx(classes.margin, classes.textField)+" full-width-field" }
@@ -792,10 +981,17 @@ class  SearchForm extends Component {
                                     }}
                                 />
 
+                                {this.state.errors["deliver"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["deliver"]}</span>}
+
+
                             </div>
                             <div className="col-12 mb-3">
 
                                 <TextField
+
+                                    onChange={this.handleChange.bind(this, "startDate")}
+
+                                    name={"startDate"}
                                     id="input-with-icon-textfield"
 
                                     InputLabelProps={{
@@ -815,11 +1011,15 @@ class  SearchForm extends Component {
                                         ),
                                     }}
                                 />
+                                {this.state.errors["startDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["startDate"]}</span>}
+
 
                             </div>
                             <div className="col-12 mb-3">
 
                                 <TextField
+                                    name={"endDate"}
+                                    onChange={this.handleChange.bind(this, "endDate")}
                                     id="input-with-icon-textfield"
 
                                     InputLabelProps={{
@@ -839,6 +1039,8 @@ class  SearchForm extends Component {
                                         ),
                                     }}
                                 />
+                                {this.state.errors["endDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["endDate"]}</span>}
+
 
                             </div>
 
@@ -850,6 +1052,8 @@ class  SearchForm extends Component {
 
 
                 <div className={this.state.active == 5?"":"d-none"}>
+
+
                         <div className="container  pt-2 pb-3">
 
                             <div className="row no-gutters">
@@ -870,13 +1074,15 @@ class  SearchForm extends Component {
                             </div>
                         </div>
 
+
                         <div className="container   pb-3 pt-3">
-                            <div className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectType}>
+                            {this.state.products.map((item)=>
+                                <div  data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} />
                                 </div>
                                 <div className="col-8">
-                                    <p className={"blue-text "} style={{fontSize:"16px"}}>Aggregate 02</p>
+                                    <p className={"blue-text "} style={{fontSize:"16px"}}>{item.title}</p>
                                     <p className={"text-mute small"}  style={{fontSize:"16px"}}>2 Searches</p>
 
                                 </div>
@@ -885,20 +1091,22 @@ class  SearchForm extends Component {
                                 </div>
                             </div>
 
+                        )}
 
-                            <div className="row mr-2 ml-2 selection-row unselected-row p-3  mb-3 " onClick={this.selectType}>
-                                <div className="col-2">
-                                    <img className={"icon-left-select"} src={SendIcon} />
-                                </div>
-                                <div className="col-8">
-                                    <p className={"blue-text "} style={{fontSize:"16px"}}>Prototype 01</p>
-                                    <p className={"text-mute small"}  style={{fontSize:"16px"}}>5 Searches</p>
 
-                                </div>
-                                <div className="col-2">
-                                    <NavigateNextIcon/>
-                                </div>
-                            </div>
+                            {/*<div className="row mr-2 ml-2 selection-row unselected-row p-3  mb-3 " onClick={this.selectType}>*/}
+                                {/*<div className="col-2">*/}
+                                    {/*<img className={"icon-left-select"} src={SendIcon} />*/}
+                                {/*</div>*/}
+                                {/*<div className="col-8">*/}
+                                    {/*<p className={"blue-text "} style={{fontSize:"16px"}}>Prototype 01</p>*/}
+                                    {/*<p className={"text-mute small"}  style={{fontSize:"16px"}}>5 Searches</p>*/}
+
+                                {/*</div>*/}
+                                {/*<div className="col-2">*/}
+                                    {/*<NavigateNextIcon/>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
 
 
                         </div>
@@ -1062,7 +1270,7 @@ class  SearchForm extends Component {
                             </div>
 
                             <div className="col text-left blue-text"  style={{margin:"auto"}}>
-                                <p>Preview Search </p>
+                                <p>View Matches </p>
                             </div>
 
                             <div className="col-auto">
@@ -1131,8 +1339,6 @@ class  SearchForm extends Component {
 
 
 
-
-
                     </div>
 
                 </div>
@@ -1144,10 +1350,13 @@ class  SearchForm extends Component {
                     <CssBaseline/>
 
                     <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                        {/*<ProgressBar now={this.state.progressBar}  />*/}
+                        <LinearProgress variant="determinate" value={this.state.progressBar} />
                         <Toolbar>
 
                             {this.state.active<8 ?
-                            <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+
+                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
                                   <div className="col-auto">
                                       {this.state.page>1&&    <button type="button" onClick={this.handleBack}
@@ -1195,6 +1404,9 @@ class  SearchForm extends Component {
 
                         </Toolbar>
                     </AppBar>
+
+
+
                 </React.Fragment>
 
             </>
@@ -1279,7 +1491,7 @@ function BottomAppBar() {
 
 
 
-function UnitSelect() {
+function UnitSelect(props) {
     const classes = useStylesSelect();
     const [state, setState] = React.useState({
         unit: '',
@@ -1310,8 +1522,12 @@ function UnitSelect() {
                         id: 'outlined-age-native-simple',
                     }}
                 >
-                    <option aria-label="None" value="" />
-                    <option value={"Kg"}>Kg</option>
+
+                    {props.units.map((item)=>
+
+                    <option value={"Kg"}>{item}</option>
+
+                        )}
 
                 </Select>
             </FormControl>

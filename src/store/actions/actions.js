@@ -5,9 +5,6 @@ import axios from "axios/index";
 import {baseUrl,baseImgUrl} from  '../../Util/Constants'
 
 
-
-
-
 export const enableCartLoading = () => {
 
     return {

@@ -37,6 +37,7 @@ import HeaderDark from '../header/HeaderDark'
 import Footer from '../Footer/Footer'
 import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -82,7 +83,10 @@ class  BrowseResources extends Component {
             categories: [],
             showFilter:false,
             activeFilters: {},
-            states:["Bailed","Loose", "Chips"]
+            states:["Bailed","Loose", "Chips"],
+            page:1,
+            pageSize:2,
+            pages:[1,2,3,4,5]
 
         }
 
@@ -93,9 +97,47 @@ class  BrowseResources extends Component {
     }
 
 
+
+    changePage(e){
+
+        this.setState({
+
+            page:e.currentTarget.dataset.page
+
+        })
+
+
+        this.getResources()
+
+
+    }
+
     getResources(){
 
-        axios.get(baseUrl+"resource",
+        const filters =  this.state.activeFilters
+
+
+
+
+        var url = baseUrl+"resource?m=a&f="+this.state.page+"&s="+this.state.pageSize
+        
+
+        console.log(url)
+
+        if (filters.category){
+
+            url =url +"&t=category.keyword:"+filters.category[0];
+        }
+
+
+        // if (filters.category>0&&filters.category.length>0){
+        //
+        //
+        //     url =url +"category.keyword:"+filters.category[0]
+        // }
+        
+        
+        axios.get(url,
             {
                 headers: {
                     "Authorization" : "Bearer "+this.props.userDetail.token
@@ -107,6 +149,8 @@ class  BrowseResources extends Component {
                     var response = response.data.content;
                     console.log("resource response")
                     console.log(response)
+
+
 
                 this.setState({
 
@@ -183,8 +227,11 @@ class  BrowseResources extends Component {
         console.log("selection filters")
         console.log(this.state.activeFilters)
 
-
-
+        
+        
+        
+        this.getResources()
+        
     }
 
 
@@ -199,7 +246,6 @@ class  BrowseResources extends Component {
 
 
         this.toggleFilter()
-
 
 
 
@@ -282,11 +328,22 @@ class  BrowseResources extends Component {
                                 <div className={"col-auto"} >
                             <nav aria-label="Page navigation example">
                                 <ul className="pagination">
-                                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                                    <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
+
+                                    {this.state.page>1 &&  <li  className="page-item page-next"><a data-page={(this.state.page-1)} className="page-link" onClick={this.changePage.bind(this)}>
+                                        <NavigateBeforeIcon style={{color:"white"}} />
+                                    </a></li>}
+
+                                    {this.state.pages.map(item=>
+
+                                        <li className={this.state.page==item?"page-item active-page":"page-item "}><a  data-page={item} className="page-link" onClick={this.changePage.bind(this)}>{item}</a></li>
+
+                                    )}
+
+                                    {(this.state.pages.length>this.state.page) &&  <li className="page-item page-next">
+                                        <a data-page={(this.state.page+1)} className="page-link " onClick={this.changePage.bind(this)}>
+                                            <NavigateNextIcon style={{color:"white"}} />
+                                        </a>
+                                    </li>}
                                 </ul>
                             </nav>
                                 </div>
@@ -385,7 +442,7 @@ class  BrowseResources extends Component {
 
                             </div>
 
-                            <div className="container   search-container pt-3" >
+                            <div className="container price-filter pb-5  search-container pt-5" >
 
                                 <div className="row no-gutters  pb-4">
 
@@ -489,7 +546,6 @@ function  FiltersCat (props){
 
         setItems(values)
 
-
         // for(var i=0; i<props.items.length;i++){
         //
         //     if (event.target.value.indexOf(props.items[i].name)>-1){
@@ -505,8 +561,8 @@ function  FiltersCat (props){
 
 
         // }
-        console.log("values")
-        console.log(values)
+        // console.log("values")
+        // console.log(values)
 
 
     }
@@ -925,7 +981,7 @@ function  Filters (props){
 
             </div>
 
-            <div className="container   search-container pt-3" >
+            <div className="container price-container pb-3  search-container pt-3" >
 
                 <div className="row no-gutters  pb-4">
 

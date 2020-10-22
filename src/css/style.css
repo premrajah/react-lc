@@ -2414,7 +2414,7 @@ color: #3C3972;
 	text-transform: uppercase;
 	text-decoration: none; }
 .footer .nav-link:hover {
-	text-decoration: none; }
+	text-decoration: none; color: #07AD88;}
 .footer .title {
 	text-align: left !important; }
 .footer .copyright {

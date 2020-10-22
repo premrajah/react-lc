@@ -14,7 +14,7 @@ import {
 import LogoNew from '../../img/logo-cropped.png';
 
 import LogoText from '../../img/logo-text.png';
-
+import styles from './Footer.module.css';
 
 class Footer extends React.Component {
   render() {
@@ -35,34 +35,22 @@ class Footer extends React.Component {
             <Col md="3">
               <Nav>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    <b>Company</b>
-                  </NavLink>
+                  <a className={styles.footerlink} href="https://loopcycle.io/" target="_blank" rel="noopener noreferrer"><b>Company</b></a>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    About
-                  </NavLink>
+                  <a className={styles.footerlink} href="https://loopcycle.io/about-us/" target="_blank" rel="noopener noreferrer">About</a>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    What We Do
-                  </NavLink>
+                  <a className={styles.footerlink} href="https://loopcycle.io/what-we-do/" target="_blank" rel="noopener noreferrer">What We Do</a>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    How It Works
-                  </NavLink>
+                  <a className={styles.footerlink} href="https://loopcycle.io/how-it-works/" target="_blank" rel="noopener noreferrer">How It Works</a>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    News
-                      </NavLink>
+                  <a className={styles.footerlink} href="https://loopcycle.io/news/" target="_blank" rel="noopener noreferrer">News</a>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    Contact
-                      </NavLink>
+                  <a className={styles.footerlink} href="https://loopcycle.io/contact-us/" target="_blank" rel="noopener noreferrer">Contact</a>
                 </NavItem>
               </Nav>
             </Col>
@@ -84,14 +72,14 @@ class Footer extends React.Component {
                         </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
-                    List
+                  <NavLink to="/my-listings" tag={Link}>
+                    Listings
                         </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/deliver-resources" tag={Link}>
                     Deliver
-                        </NavLink>
+                  </NavLink>
                 </NavItem>
 
               </Nav>
@@ -106,7 +94,7 @@ class Footer extends React.Component {
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
                   color="default"
-                  href="https://twitter.com/creativetim"
+                  href="https://twitter.com/Loopcycle_"
                   id="tooltip622135962"
                   target="_blank"
                 >
@@ -118,7 +106,7 @@ class Footer extends React.Component {
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
                   color="default"
-                  href="https://www.facebook.com/creativetim"
+                  href="https://www.instagram.com/loopcycle_io"
                   id="tooltip230450801"
                   target="_blank"
                 >

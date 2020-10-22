@@ -23,14 +23,14 @@ class Footer extends React.Component {
         <Container>
           <Row className={""}>
             <Col md="3">
-                <div className="row no-gutters mb-5">
-                    <div className="col-auto">
-                        <img className="header-logo" src={LogoNew} />
-                        <img className={"text-logo-home"} src={LogoText} />
+              <div className="row no-gutters mb-5">
+                <div className="col-auto">
+                  <img className="header-logo" src={LogoNew} alt="logo" />
+                  <img className={"text-logo-home"} src={LogoText} alt="logo-text" />
 
 
-                    </div>
                 </div>
+              </div>
             </Col>
             <Col md="3">
               <Nav>
@@ -41,7 +41,7 @@ class Footer extends React.Component {
                 </NavItem>
                 <NavItem>
                   <NavLink to="/" tag={Link}>
-                   About
+                    About
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -54,54 +54,54 @@ class Footer extends React.Component {
                     How It Works
                   </NavLink>
                 </NavItem>
-                  <NavItem>
-                      <NavLink to="/" tag={Link}>
-                          News
+                <NavItem>
+                  <NavLink to="/" tag={Link}>
+                    News
                       </NavLink>
-                  </NavItem>
-                  <NavItem>
-                      <NavLink to="/" tag={Link}>
-                          Contact
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/" tag={Link}>
+                    Contact
                       </NavLink>
-                  </NavItem>
+                </NavItem>
               </Nav>
             </Col>
             <Col md="3">
-                <Nav>
-                    <NavItem>
-                        <NavLink to="/resources" tag={Link}>
-                            <b>Resources</b>
+              <Nav>
+                <NavItem>
+                  <NavLink to="/resources" tag={Link}>
+                    <b>Resources</b>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/resources" tag={Link}>
+                    Browse All
                         </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/resources" tag={Link}>
-                            Browse All
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/create-search" tag={Link}>
+                    Search
                         </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/create-search" tag={Link}>
-                            Search
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/" tag={Link}>
+                    List
                         </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/" tag={Link}>
-                            List
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/deliver-resources" tag={Link}>
+                    Deliver
                         </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/deliver-resources" tag={Link}>
-                            Deliver
-                        </NavLink>
-                    </NavItem>
+                </NavItem>
 
-                </Nav>
+              </Nav>
             </Col>
             <Col md="3">
-                <NavItem>
-                    <NavLink to="/profile-page" tag={Link}>
-                        <b>Connect</b>
-                    </NavLink>
-                </NavItem>
+              <NavItem>
+                <NavLink to="/profile-page" tag={Link}>
+                  <b>Connect</b>
+                </NavLink>
+              </NavItem>
               <div className="btn-wrapper profile">
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
@@ -128,34 +128,34 @@ class Footer extends React.Component {
                   Like us
                 </UncontrolledTooltip>
                 {/*<Button*/}
-                  {/*className="btn-icon btn-neutral btn-round btn-simple"*/}
-                  {/*color="default"*/}
-                  {/*href="https://dribbble.com/creativetim"*/}
-                  {/*id="tooltip318450378"*/}
-                  {/*target="_blank"*/}
+                {/*className="btn-icon btn-neutral btn-round btn-simple"*/}
+                {/*color="default"*/}
+                {/*href="https://dribbble.com/creativetim"*/}
+                {/*id="tooltip318450378"*/}
+                {/*target="_blank"*/}
                 {/*>*/}
-                  {/*<i className="fab fa-dribbble" />*/}
+                {/*<i className="fab fa-dribbble" />*/}
                 {/*</Button>*/}
                 {/*<UncontrolledTooltip delay={0} target="tooltip318450378">*/}
-                  {/*Follow us*/}
+                {/*Follow us*/}
                 {/*</UncontrolledTooltip>*/}
               </div>
             </Col>
           </Row>
-            <div className="row no-gutters mt-3 mb-3 justify-content-center">
-                <div className="col-auto copright-text">
+          <div className="row no-gutters mt-3 mb-3 justify-content-center">
+            <div className="col-auto copright-text">
 
-                    <ul>
-                        <li>
-                            <p className={" "}> ©  2020  Loopcycle</p>
-                        </li>
-                        <li>Terms</li>
-                        <li>Privacy</li>
+              <ul>
+                <li>
+                  <p className={" "}> ©  2020  Loopcycle</p>
+                </li>
+                <li>Terms</li>
+                <li>Privacy</li>
 
 
-                    </ul>
-                </div>
+              </ul>
             </div>
+          </div>
         </Container>
       </footer>
     );

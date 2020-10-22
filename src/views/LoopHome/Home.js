@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component, Fragment, useState } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -19,7 +19,7 @@ import SearchIcon from '../../img/icons/search-icon.png';
 import ShippingIcon from '../../img/icons/shipping-icon.png';
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
@@ -29,13 +29,13 @@ import WaveBorder from '../Footer/WaveBorder'
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar } from 'react-bootstrap';
 
 
 
 
 
-class  Home extends Component {
+class Home extends Component {
 
 
     constructor(props) {
@@ -45,7 +45,7 @@ class  Home extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
@@ -73,11 +73,11 @@ class  Home extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -104,68 +104,68 @@ class  Home extends Component {
 
                     <div className="container-fluid container-light-blue pt-5">
                         <div className="container   pt-5 pb-5">
-                        <div className="row no-gutters">
-                            <div className="col-lg-12">
-                                <img src={LogoText} alt=""
-                                     className="text-logo-home" />
-                            </div>
-
-                        </div>
-
-                        <div className="row no-gutters">
-
-
-                        <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                             <div className="row no-gutters">
-                                <div className="col-12">
-
-                                    <h1 className={"white-text"}>A Platform for
-                                        the future </h1>
+                                <div className="col-lg-12">
+                                    <img src={LogoText} alt=""
+                                        className="text-logo-home" />
                                 </div>
 
+                            </div>
 
-                                    <div className="col-12">
+                            <div className="row no-gutters">
 
-                                        <div className="row no-gutters">
 
-                                            <p className={"white-text"}>Loopcycle is a match making platform for organisations that generate waste and for those that need waste to manufacture their products.
+                                <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
+                                    <div className="row no-gutters">
+                                        <div className="col-12">
+
+                                            <h1 className={"white-text"}>A Platform for
+                                        the future </h1>
+                                        </div>
+
+
+                                        <div className="col-12">
+
+                                            <div className="row no-gutters">
+
+                                                <p className={"white-text"}>Loopcycle is a match making platform for organisations that generate waste and for those that need waste to manufacture their products.
                                             </p>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div className="row no-gutters mt-4 web-only">
+                                        <div className="col-auto">
+
+                                            <button type="button" className="shadow-sm mr-2 btn btn-link wt_btn_border mt-2 mb-2">
+                                                Learn more <NavigateNextIcon />
+                                            </button>
 
                                         </div>
                                     </div>
-
-
-
-                            </div>
-
-                            <div className="row no-gutters mt-4 web-only">
-                                <div className="col-auto">
-
-                                    <button type="button" className="shadow-sm mr-2 btn btn-link wt_btn_border mt-2 mb-2">
-                                        Learn more <NavigateNextIcon />
-                                    </button>
-
                                 </div>
-                            </div>
-                        </div>
 
-                            <div className="col-md-6 col-sm-12 col-xs-12 ">
+                                <div className="col-md-6 col-sm-12 col-xs-12 ">
 
-                                <img className={"img-fluid"} src={PhoneHome}  />
-                            </div>
+                                    <img className={"img-fluid"} src={PhoneHome} alt="" />
+                                </div>
 
 
 
-                                    <div className="col-12 mobile-only pt-4">
-                                        <p className={"white-text"}>Loopcycle uses artificial intelligence to match organizations and blockchain technology is used to ensure the transaction is secure and traceable.
+                                <div className="col-12 mobile-only pt-4">
+                                    <p className={"white-text"}>Loopcycle uses artificial intelligence to match organizations and blockchain technology is used to ensure the transaction is secure and traceable.
                                         </p>
 
-                                    </div>
+                                </div>
 
 
 
-                        </div>
-                        
+                            </div>
+
 
 
                         </div>
@@ -173,7 +173,7 @@ class  Home extends Component {
                     </div>
                     <div className="container-fluid container-light-blue pt-5">
                         <div className="row no-gutters">
-                           <WaveBorder />
+                            <WaveBorder />
                         </div>
                     </div>
                     <div className="container-fluid container-blue pt-5">
@@ -188,7 +188,7 @@ class  Home extends Component {
                                     <div className="row no-gutters justify-content-center">
                                         <div className="col-10">
 
-                                            <img className={"img-fluid"} src={BikeHome}  />
+                                            <img className={"img-fluid"} src={BikeHome} alt="" />
                                         </div>
                                     </div>
 
@@ -211,7 +211,7 @@ class  Home extends Component {
                                     <div className="row no-gutters justify-content-center">
                                         <div className="col-10">
 
-                                            <img className={"img-fluid"} src={LoopHomeImage}  />
+                                            <img className={"img-fluid"} src={LoopHomeImage} alt="" />
                                         </div>
                                     </div>
 
@@ -241,22 +241,22 @@ class  Home extends Component {
                         <div className="row no-gutters justify-content-center">
                             <div className="col-auto">
                                 <h3 className={"blue-text text-center "}><b>View all resources on
-                                    the <br/>Loopcycle
+                                    the <br />Loopcycle
                                     Platform.</b>
                                 </h3>
                             </div>
 
                         </div>
 
-                                <div className="row no-gutters justify-content-center mt-4">
-                                    <div className="col-auto">
+                        <div className="row no-gutters justify-content-center mt-4">
+                            <div className="col-auto">
 
                                 <button type="button" className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                     Browse all resources <NavigateNextIcon />
                                 </button>
 
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
 
 
                     </div>
@@ -264,12 +264,12 @@ class  Home extends Component {
                     <div className="container ">
                         <div className="row container-divider">
                         </div>
-                        </div>
+                    </div>
                     <div className="container  mb-5 mt-5 web-only">
 
                         <div className="row no-gutters mb-3 justify-content-center">
                             <div className="col-4">
-                                <img className={"search-icon"} src={SearchIcon} />
+                                <img className={"search-icon"} src={SearchIcon} alt="search" />
                                 <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
                                 </p>
                                 <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -278,8 +278,8 @@ class  Home extends Component {
                             </div>
 
                             <div className="col-4">
-                                <img className={"home-icon"} src={HandIcon} />
-                                <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
+                                <img className={"home-icon"} src={HandIcon} alt="listing" />
+                                <p className={"blue-text mt-4"}>Do you have used resources to offer? Start listing any used resources.
                                 </p>
                                 <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                     Create a listing
@@ -287,8 +287,8 @@ class  Home extends Component {
                             </div>
 
                             <div className="col-4">
-                                <img className={"home-icon"} src={ShippingIcon} />
-                                <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
+                                <img className={"home-icon"} src={ShippingIcon} alt="resources" />
+                                <p className={"blue-text mt-4"}>Able to collect and deliver resources? Register your company on the platform.
                                 </p>
 
                                 <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -306,7 +306,7 @@ class  Home extends Component {
 
                         <div className="row no-gutters mb-3 mt-5">
                             <div className="col-auto">
-                                <img className={"search-icon"} src={SearchIcon} />
+                                <img className={"search-icon"} src={SearchIcon} alt="search" />
 
                             </div>
                         </div>
@@ -336,7 +336,7 @@ class  Home extends Component {
 
                         <div className="row no-gutters mt-5  mb-3">
                             <div className="col-auto">
-                                <img className={"home-icon"} src={HandIcon} />
+                                <img className={"home-icon"} src={HandIcon} alt="resources" />
 
                             </div>
                         </div>
@@ -358,13 +358,13 @@ class  Home extends Component {
                             </div>
 
 
-                    </div>
+                        </div>
                         <div className="row container-divider">
                         </div>
 
                         <div className="row no-gutters mt-5 mb-3">
                             <div className="col-auto">
-                                <img className={"home-icon"} src={ShippingIcon} />
+                                <img className={"home-icon"} src={ShippingIcon} alt="home" />
 
                             </div>
                         </div>
@@ -404,7 +404,7 @@ class  Home extends Component {
 function VoiceOver() {
 
 
-    return(
+    return (
         <>
 
 

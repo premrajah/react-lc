@@ -38,6 +38,7 @@ import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
+import TescoImg from '../../img/tesco.png';
 
 
 import Twitter from '../../img/icons/twitter.png';
@@ -83,6 +84,9 @@ import Close from '@material-ui/icons/Close';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
+import { withRouter } from 'react-router-dom'
+
+
 
 
 class  ItemDetail extends Component {
@@ -107,6 +111,16 @@ class  ItemDetail extends Component {
 
     }
 
+
+
+    handleBack = () => {
+        this.props.history.goBack()
+    }
+
+    handleForward = () => {
+        console.log(this.props.history)
+        this.props.history.go(+1)
+    }
 
 
 
@@ -186,7 +200,7 @@ this.getResources()
 
                             <div className="floating-back-icon" style={{margin:"auto"}}>
 
-                                <NavigateBefore  style={{ fontSize: 32, color:"white" }}/>
+                                <NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32, color:"white" }}/>
                             </div>
 
 
@@ -286,14 +300,39 @@ this.getResources()
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Location  </p>
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Delivery From</p>
                                 <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
                                 <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
                             </div>
                         </div>
 
+                        <div className="container container-divider">
+                            <div className="row">
+                            </div>
+                        </div>
+                        <div className="container mt-4 mb-5 pb-5 ">
 
-                        <BottomAppBar />
+                            <div className="row no-gutters mb-5">
+                                <div className="col-12 mb-4">
+                                    <h5 className="mb-1">About the seller  </h5>
+                                </div>
+                                <div className="col-auto ">
+                                    <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                                </div>
+                                <div className="col pl-2 align-self-center">
+                                    <div className="row no-gutters">
+                                        <div className="col-12">
+
+
+                                            <p style={{fontSize:"18px"}} className=" ">@Tesco</p>
+                                            <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <BottomAppBar slug={this.slug}/>
 
 
                     </div>
@@ -342,7 +381,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar() {
+function BottomAppBar(props) {
     const classes = useStyles();
 
     return (
@@ -354,9 +393,9 @@ function BottomAppBar() {
                     <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
                         <div className="col-auto">
 
-                            <button type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <Link to={"/message-seller/"+props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 Message Seller
-                            </button>
+                            </Link>
 
                         </div>
                         <div className="col-auto">

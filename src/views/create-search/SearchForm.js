@@ -26,6 +26,8 @@ import history from "../../History/history";
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuOutline from '@material-ui/icons/MailOutline';
 import Close from '@material-ui/icons/Close';
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -64,7 +66,6 @@ import RingGray from '../../img/icons/ring-gray.png';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';

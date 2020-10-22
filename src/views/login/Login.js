@@ -61,10 +61,11 @@ class  Login extends Component {
             timerEnd: false,
             count : 0,
             nextIntervalFlag: false,
-            active: 0   //0 logn. 1- sign up , 3 -search,
-
+            active: 0  , //0 logn. 1- sign up , 3 -search,
+            formValid : false
 
         }
+
         this.goToSignUp=this.goToSignUp.bind(this)
         this.goToSignIn=this.goToSignIn.bind(this)
         this.goToSuccess=this.goToSuccess.bind(this)
@@ -92,6 +93,53 @@ class  Login extends Component {
     goHome(){
 
         history.push("/")
+    }
+
+
+
+    handleValidationSubmitGreen(){
+
+        // alert("called")
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["password"]){
+            formIsValid = false;
+            // errors["password"] = "Required";
+        }
+
+
+        if(!fields["email"]){
+            formIsValid = false;
+            // errors["email"] = "Required";
+        }
+
+        if(typeof fields["email"] !== "undefined"){
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                // errors["email"] = "Invalid email address";
+            }
+        }
+
+
+
+
+            this.setState({formValid: formIsValid});
+
+
+
+
+        // return formIsValid;
+
+
+
+
     }
 
 
@@ -136,6 +184,8 @@ class  Login extends Component {
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({fields});
+
+        this.handleValidationSubmitGreen()
     }
 
 
@@ -317,7 +367,7 @@ class  Login extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
+                                <button type={"submit"} className={this.state.formValid?"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn":"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
                                     { this.props.loading && <Spinner
                                         as="span"
                                         animation="border"
@@ -342,6 +392,9 @@ class  Login extends Component {
                                 <button
                                     onClick={this.goToSignUp}
                                     type="button" className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">Sign up</button>
+
+
+
                             </div>
 
                         </div>

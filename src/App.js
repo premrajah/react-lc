@@ -30,9 +30,14 @@ import AddDetail from "./views/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browser-resources/index";
+import MessageSeller from "./views/browser-resources/message-seller";
+
+
 import Search from "./views/browser-resources/Search";
 import Filter from "./views/browser-resources/Filter";
+
 import AuthRoute from "./Util/AuthRoute";
+import LoggedInRoute from "./Util/LoggedInRoute";
 import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
 
@@ -70,30 +75,31 @@ class App extends Component{
                 {/*<Router history={hist}>*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
-                        <Route exact path="/inbox" component={withRouter(Inbox)} />
+                        <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
                         {/*<AuthRoute exact path="/login" component={Login} />*/}
-                        <Route exact path="/account" component={Account} />
-                        <Route exact path="/listings" component={Listings} />
-                        <Route exact path="/my-search" component={MySearch} />
-                        <Route exact path="/view-search" component={ViewSearch} />
-                        <Route exact path="/view-search-page" component={ViewSearchPage} />
-                        <Route exact path="/my-listings" component={MyListings} />
-                        <Route exact path="/statistics" component={Statistics} />
-                        <Route exact path="/my-deliveries" component={MyDeliveries} />
-                        <Route exact path="/products" component={Products} />
-                        <Route exact path="/loops" component={Loops} />
-                        <Route exact path="/loop-detail" component={LoopDetail} />
-                        <Route exact path="/create-search" component={CreateSearchHome} />
-                        <Route exact path="/create-listing" component={CreateListingHome} />
-                        <Route exact path="/search-form" component={SearchForm} />
-                        <Route exact path="/listing-form" component={ListingForm} />
-                        <Route exact path="/add-detail" component={AddDetail} />
-                        <Route exact path="/delivery-resource" component={DeliveryResource} />
-                        <Route exact path="/code" component={CycleCode} />
-                        <Route exact path="/resources" component={BrowseResources} />
-                        <Route exact path="/search" component={Search} />
-                        <Route exact path="/filter" component={Filter} />
-                        <Route exact path="/:slug" component={ItemDetail} />
+                        <LoggedInRoute exact path="/account" component={Account} />
+                        <LoggedInRoute exact path="/listings" component={Listings} />
+                        <LoggedInRoute exact path="/my-search" component={MySearch} />
+                        <LoggedInRoute exact path="/view-search" component={ViewSearch} />
+                        <LoggedInRoute exact path="/view-search-page" component={ViewSearchPage} />
+                        <LoggedInRoute exact path="/my-listings" component={MyListings} />
+                        <LoggedInRoute exact path="/statistics" component={Statistics} />
+                        <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
+                        <LoggedInRoute exact path="/products" component={Products} />
+                        <LoggedInRoute exact path="/loops" component={Loops} />
+                        <LoggedInRoute exact path="/loop-detail" component={LoopDetail} />
+                        <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
+                        <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
+                        <LoggedInRoute exact path="/search-form" component={SearchForm} />
+                        <LoggedInRoute exact path="/listing-form" component={ListingForm} />
+                        <LoggedInRoute exact path="/add-detail" component={AddDetail} />
+                        <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
+                        <LoggedInRoute exact path="/code" component={CycleCode} />
+                        <LoggedInRoute exact path="/resources" component={BrowseResources} />
+                        <LoggedInRoute exact path="/search" component={Search} />
+                        <LoggedInRoute exact path="/filter" component={Filter} />
+                        <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
+                        <LoggedInRoute exact path="/:slug" component={ItemDetail} />
 
 
                         {/*<Route exact path="/legacy" component={Legacy} />*/}

@@ -141,9 +141,9 @@ class Home extends Component {
                                     <div className="row no-gutters mt-4 web-only">
                                         <div className="col-auto">
 
-                                            <button type="button" className="shadow-sm mr-2 btn btn-link wt_btn_border mt-2 mb-2">
+                                            <a href="https://loopcycle.io/" target="_blank" rel="noopener noreferrer" type="button" style={{ textDecoration: 'none' }} className="shadow-sm mr-2 btn btn-link wt_btn_border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />
-                                            </button>
+                                            </a>
 
                                         </div>
                                     </div>
@@ -272,29 +272,21 @@ class Home extends Component {
                                 <img className={"search-icon"} src={SearchIcon} alt="search" />
                                 <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
                                 </p>
-                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                    Create a search
-                                </button>
+                                <Link to="/create-search" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a search</Link>
                             </div>
 
                             <div className="col-4">
                                 <img className={"home-icon"} src={HandIcon} alt="listing" />
                                 <p className={"blue-text mt-4"}>Do you have used resources to offer? Start listing any used resources.
                                 </p>
-                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                    Create a listing
-                                </button>
+                                <Link to="/listing-form" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a listing</Link>
                             </div>
 
                             <div className="col-4">
                                 <img className={"home-icon"} src={ShippingIcon} alt="resources" />
                                 <p className={"blue-text mt-4"}>Able to collect and deliver resources? Register your company on the platform.
                                 </p>
-
-                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                    Deliver Resources
-                                </button>
-
+                                <Link to="/" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Deliver Resources</Link>
                             </div>
                         </div>
 

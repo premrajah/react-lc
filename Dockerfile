@@ -1,6 +1,6 @@
 ## Stage 0, "builder", based on Node.js, to build and compile the frontend
 # base image
-FROM node:alpine as builder
+FROM node:current-alpine3.10 as builder
 
 # set working directory
 WORKDIR /app

@@ -1,6 +1,6 @@
 ## Stage 0, "builder", based on Node.js, to build and compile the frontend
 # base image
-FROM node:current-alpine3.10 as builder
+FROM node:alpine as builder
 
 # set working directory
 WORKDIR /app
@@ -14,17 +14,19 @@ COPY . /app
 # delete node modules to fix discrepancies
 #RUN rm -rf node_modules/
 
+RUN node -v
+RUN npm -v
+
 #RUN npm install && npm audit fix && npm audit fix --force && npm install
 #RUN npm cache clear 
 #RUN npm install npm-clean -g && npm-clean
 
 # Long winded way tof ix the read-only AUFS layer issue with npm install.
 RUN echo '{ "allow_root": true  }' > /root/.bowerrc
-RUN rm -rf node_modules/ && mkdir node_modules && mv ./node_modules ./node_modules.tmp \
-  && mv ./node_modules.tmp ./node_modules \
-  && npm install -g npm
+#RUN rm -rf node_modules/ && mkdir node_modules && mv ./node_modules ./node_modules.tmp \
+#  && mv ./node_modules.tmp ./node_modules \
+#  && npm install -g npm
 
-#RUN npm install -g npm --force
 RUN npm install && npm audit fix
 RUN npm run build 
 

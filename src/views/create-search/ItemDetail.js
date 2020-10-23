@@ -163,19 +163,13 @@ class  ItemDetail extends Component {
 
 
 
-
-
-
-    interval
-
-
     componentWillMount(){
 
     }
 
     componentDidMount(){
 
-this.getResources()
+        this.getResources()
 
     }
 

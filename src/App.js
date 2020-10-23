@@ -31,6 +31,7 @@ import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browser-resources/index";
 import MessageSeller from "./views/browser-resources/message-seller";
+import MakeOffer from "./views/browser-resources/make-offer";
 
 
 import Search from "./views/browser-resources/Search";
@@ -99,6 +100,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
+                        <LoggedInRoute exact path="/make-offer/:slug" component={MakeOffer} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
 
 

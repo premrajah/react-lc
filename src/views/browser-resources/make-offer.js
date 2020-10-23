@@ -100,7 +100,7 @@ import { ChatController,MuiChat } from 'chat-ui-react'
 
 
 
-class  MessageSeller extends Component {
+class  MakeOffer extends Component {
 
     slug;
 
@@ -201,14 +201,37 @@ class  MessageSeller extends Component {
 
                 <div className="container   pb-4 ">
 
-                    {this.state.item&&<ResourceItem item={this.state.item}/>}
-                    <div className="row   ">
-                        <div className={"message-container col-12"}>
-
-                       <ChatBox />
+                    <div className="row mt-5  ">
+                        <div className={" col-12"}>
+                            <h4 className={"text-bold"}>Make an offer</h4>
+                            <p>Please contact the seller to arrange for a delivery provider.  </p>
 
                         </div>
 
+
+                    </div>
+                    {this.state.item&&<ResourceItem item={this.state.item}/>}
+
+
+
+                    <div className="row mt-2 justify-content-center ">
+                        <div className={" col-12"}>
+                            <Grid justify="center" container spacing={2} alignItems="center">
+                                <Grid  xs={1} item>
+                                    £
+                                </Grid>
+                                <Grid  xs={11} item>
+                                    <TextField id="input-with-icon-grid"  variant="outlined" />
+                                </Grid>
+                            </Grid>
+
+                        </div>
+                    </div>
+
+
+                    <div>
+
+                        <BottomAppBar />
 
                     </div>
 
@@ -219,76 +242,66 @@ class  MessageSeller extends Component {
     }
 }
 
+const useStyles = makeStyles((theme) => ({
+    text: {
+        padding: theme.spacing(2, 2, 0),
+    },
+    paper: {
+        paddingBottom: 50,
+    },
+    list: {
+        marginBottom: theme.spacing(2),
+    },
+    subheader: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    appBar: {
+        top: 'auto',
+        bottom: 0,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    fabButton: {
+        position: 'absolute',
+        zIndex: 1,
+        top: -30,
+        left: 0,
+        right: 0,
+        margin: '0 auto',
+    },
+}));
 
 
+function BottomAppBar(props) {
+    const classes = useStyles();
 
-function ChatBox(props) {
+    return (
+        <React.Fragment>
+            <CssBaseline/>
 
+            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
+                <Toolbar>
+                    <div className="row  justify-content-center search-container " style={{margin:"auto",width:"100%"}}>
 
+                        <div className="col-12">
 
-    const [chatCtl] = React.useState(new ChatController());
+                            <Link style={{margin:"auto",width:"100%"}} to={""} type="button"
+                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                Make Offer
 
-    React.useMemo(async () => {
-        // Chat content is displayed using ChatController
+                            </Link>
+                        </div>
+                    </div>
 
-
-
-        // await chatCtl.addMessage({
-        //     type: 'text',
-        //     content: `Select a message or write your own below.`,
-        //     self: false,
-        // });
-        // const name1 = await chatCtl.setActionRequest({ type: 'text',always:true });
-        //
-        const response = await chatCtl.setActionRequest({
-            type: 'text',
-            always: true,
-        });
-
-        // const response = await chatCtl.setActionRequest({
-        //     // type: 'select',
-        //     type: 'multi-select',
-        //
-        //     always: true,
-        //     options: [
-        //         {
-        //             value: 'a',
-        //             text: 'A',
-        //         },
-        //         {
-        //             value: 'b',
-        //             text: 'B',
-        //         },
-        //     ],
-        // });
-
-        // const response = await chatCtl.setActionRequest({
-        //     type: 'Select a message or write your own below.',
-        //     options: [
-        //         {
-        //             value: 'a',
-        //             text: 'Hi, is this available still?',
-        //         },
-        //         {
-        //             value: 'b',
-        //             text: 'Hi, is this available still?',
-        //         },
-        //     ],
-        // });
-
-        // const name2 = await chatCtl.setActionRequest({ type: 'text' });
+                </Toolbar>
+            </AppBar>
+        </React.Fragment>
+    );
 
 
-        // const response = await chatCtl.setActionRequest({
-        //     type: 'audio',
-        // });
-
-
-    }, [chatCtl]);
-
-    // Only one component used for display
-    return <MuiChat chatController={chatCtl} />;
 }
+
 
 
 
@@ -333,4 +346,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(MessageSeller);
+)(MakeOffer);

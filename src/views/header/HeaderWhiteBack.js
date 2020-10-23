@@ -113,7 +113,7 @@ goToInbox(){
             <div className="col-auto">
 
                 <button className="btn   btn-link text-dark menu-btn">
-                    <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
+                    <Close onClick={this.handleBack}  className="" style={{ fontSize: 32 }} />
 
                 </button>
             </div>

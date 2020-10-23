@@ -2617,3 +2617,23 @@ color: #3C3972;
 }
 
 
+.message-container {
+	position: absolute;
+	margin: auto;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	background: #ffffff;
+}
+.message-container>div{
+
+	background: white
+}
+
+.message-container .MuiBox-root>div{background: #05AD88;}
+
+.message-container button{background: none;color: #05AD88;}
+.btn-next{
+
+	color: white
+}

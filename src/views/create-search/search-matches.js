@@ -70,6 +70,7 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
+import ResourceItem from  '../item/ResourceItem'
 
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 // pick a date util library
@@ -85,6 +86,8 @@ import {
     DateTimePicker,
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+import {saveKey, saveUserToken} from "../../LocalStorage/user";
+import {loginFailed} from "../../store/actions/actions";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -133,7 +136,16 @@ class  SearchForm extends Component {
             productSelected: null,
             nextBlue: false,
             nextBlueAddDetail: false,
-            matches:[]
+            nextBlueViewSearch: false,
+            matches:[],
+            unitSelected: null,
+            volumeSelected: null,
+            title: null,
+            description: null,
+            volume:null,
+            createSearchData:null,
+            resourcesMatched:[]
+
         }
 
         this.selectCreateSearch=this.selectCreateSearch.bind(this)
@@ -153,11 +165,11 @@ class  SearchForm extends Component {
         this.getProducts=this.getProducts.bind(this)
         this.selectProduct=this.selectProduct.bind(this)
         this.handleDateChange=this.handleDateChange.bind(this)
-        this.getMatches=this.getMatches.bind(this)
+        this.createSearch=this.createSearch.bind(this)
+
+        this.loadMatches=this.loadMatches.bind(this)
 
     }
-
-
 
 
     getProducts(){
@@ -195,39 +207,101 @@ class  SearchForm extends Component {
 
 
 
-    getMatches(){
+    createSearch(){
 
-        axios.get(baseUrl+"search/"+this.state.productSelected.id,
-            {
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+        var data= {
+
+                "name":this.state.title,
+                "description": this.state.description,
+                "category": this.state.catSelected.name,
+                "type": this.state.subCatSelected.name,
+                "units": "10.0",
+                "volume": this.state.volume,
+                "state": this.state.stateSelected,
+                "site_id": "loop|site|1569235392096",
+                "require_after" : {
+                    "unit" : "MILLISECOND",
+                    "value" : 1603381408
+                },
+                "expiry" : {
+                    "unit" : "MILLISECOND",
+                    "value" : 1605830400000
                 }
             }
-        )
-            .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
+            console.log("create search data")
+            console.log(data)
 
-                    this.setState({
+        axios.post(baseUrl+"search/"+this.state.productSelected.id,
+            data,{
+             headers: {
+            "Authorization" : "Bearer "+this.props.userDetail.token
+        }}
+            )
+            .then(res => {
 
-                        matches:response
+                console.log(res.data.content)
 
-                    })
 
-                },
-                (error) => {
+                this.setState({
+                    createSearchData: res.data.content
+                })
 
-                    var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+            }).catch(error => {
 
-                }
-            );
+            console.log("login error found ")
+            console.log(error.response.data)
+
+        });
 
     }
 
+
+
+    loadMatches(){
+
+
+        for (var i=0;i<this.state.createSearchData.resources.length;i++){
+
+            axios.get(baseUrl+"resource/"+this.state.createSearchData.resources[i],
+                {
+                    headers: {
+                        "Authorization" : "Bearer "+this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var response = response.data.content;
+                        console.log("resource response")
+                        console.log(response)
+
+
+
+                    var resources = this.state.resourcesMatched
+
+                    resources.push(response)
+
+                        this.setState({
+
+                            resourcesMatched: resources
+                        })
+
+                    },
+                    (error) => {
+
+                        var status = error.response.status
+                        console.log("resource error")
+                        console.log(error)
+
+                    }
+                );
+
+
+        }
+
+
+    }
 
 
     nextClick(){
@@ -241,7 +315,6 @@ class  SearchForm extends Component {
             })
 
         }
-
 
         else  if (this.state.active==4){
 
@@ -289,15 +362,9 @@ class  SearchForm extends Component {
 
     handleNext(){
 
-
-
         if (this.state.page==1){
 
-            // alert("page 1")
-
             if (this.handleValidation()){
-
-                // alert("all valid")
 
                 this.setState({
 
@@ -306,33 +373,67 @@ class  SearchForm extends Component {
                     progressBar: 66
                 })
 
-
             }
 
         }
-       else if (this.state.page==2){
 
+       else if (this.state.page==2){
 
 
             if (this.handleValidationAddDetail()){
 
-                // alert("all valid")
-
                 this.setState({
 
-                    active:8,
-                    page: 4,
+                    active:6,
+                    page: 3,
                     progressBar: 100
                 })
 
-
+                this.createSearch()
             }
-
-
 
         }
 
+
+        else if (this.state.page==3){
+
+
+            alert("on page 4")
+
+            this.setState({
+
+                active:7,
+                page: 4,
+                progressBar: 100
+            })
+
+        }
+
+
+        else if (this.state.active==7){
+
+
+            alert("here ")
+
+            this.setState({
+
+                active:8,
+
+            })
+
+        }
+
+
+
     }
+
+
+    getResources(){
+
+
+
+    }
+
 
     getFiltersCategories(){
 
@@ -374,7 +475,8 @@ class  SearchForm extends Component {
 
         this.setState({
 
-            active:0
+            active:0,
+            page:1
         })
 
 
@@ -435,7 +537,6 @@ class  SearchForm extends Component {
     }
 
 
-
     selectSubCatType(event){
 
 
@@ -472,7 +573,8 @@ class  SearchForm extends Component {
         this.setState({
 
             active:0,
-            units:this.state.subCatSelected.units
+
+            units: this.state.subCatSelected.units
 
         })
 
@@ -496,11 +598,33 @@ class  SearchForm extends Component {
         if(!fields["title"]){
             formIsValid = false;
             errors["title"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                title:fields["title"]
+            })
         }
+
+
+
         if(!fields["description"]){
             formIsValid = false;
             errors["description"] = "Required";
+        }else{
+
+
+           this.setState({
+               description:fields["description"]
+
+           })
+
         }
+
+
+
+
         // if(!fields["agree"]){
         //     formIsValid = false;
         //     errors["agree"] = "Required";
@@ -510,7 +634,17 @@ class  SearchForm extends Component {
         if(!fields["volume"]){
             formIsValid = false;
             errors["volume"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                volume:fields["volume"]
+            })
         }
+
+
+
         // if(!fields["unit"]){
         //     formIsValid = false;
         //     errors["unit"] = "Required";
@@ -721,15 +855,19 @@ class  SearchForm extends Component {
 
 
     handleChange(field, e){
+
+
         let fields = this.state.fields;
         fields[field] = e.target.value;
 
         // alert(e.target.value)
         this.setState({fields});
 
+        // if (st)
 
         this.handleValidationNextColor()
         this.handleValidationAddDetailNextColor()
+
     }
 
 
@@ -1251,32 +1389,75 @@ class  SearchForm extends Component {
 
                         )}
 
-
-                            {/*<div className="row mr-2 ml-2 selection-row unselected-row p-3  mb-3 " onClick={this.selectType}>*/}
-                                {/*<div className="col-2">*/}
-                                    {/*<img className={"icon-left-select"} src={SendIcon} />*/}
-                                {/*</div>*/}
-                                {/*<div className="col-8">*/}
-                                    {/*<p className={"blue-text "} style={{fontSize:"16px"}}>Prototype 01</p>*/}
-                                    {/*<p className={"text-mute small"}  style={{fontSize:"16px"}}>5 Searches</p>*/}
-
-                                {/*</div>*/}
-                                {/*<div className="col-2">*/}
-                                    {/*<NavigateNextIcon/>*/}
-                                {/*</div>*/}
-                            {/*</div>*/}
-
-
                         </div>
 
                 </div>
 
 
 
+                <div className={this.state.active == 6?"":"d-none"}>
+
+                    <div className="container  pt-3 pb-3">
+
+                        <div className="row no-gutters justify-content-end">
+
+                            <div className="col-auto">
+
+                                <button className="btn   btn-link text-dark menu-btn">
+                                    <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
+
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div className="container   pb-4 pt-4">
+
+                        <div className="row justify-content-center pb-2 pt-4 ">
+
+                            <div className="col-auto">
+                                <h4 className={"blue-text text-heading text-bold"}>Success!
+                                </h4>
+
+                            </div>
+                        </div>
+
+
+                        <div className="row justify-content-center">
+
+                            <div className="col-auto pb-4 pt-5">
+
+
+                                <img className={"search-icon-middle"}  src={SearchIcon} />
+
+                            </div>
+                        </div>
+
+                        <div className="row justify-content-center pb-4 pt-2 ">
+
+                            <div className="col-auto">
+                                <p className={"text-blue text-center"}>Your search has been created.
+                                    You will be notified when a
+                                    match is found.
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
 
                 <div className={this.state.active == 7?"":"d-none"}>
 
-                        <div className="container  pt-3 pb-3">
+
+                    {this.state.createSearchData &&
+                        <>
+                      <div className="container  pt-3 pb-3">
 
                             <div className="row no-gutters">
                                 <div className="col-auto" style={{margin:"auto"}}>
@@ -1285,7 +1466,7 @@ class  SearchForm extends Component {
                                 </div>
 
                                 <div className="col text-center blue-text"  style={{margin:"auto"}}>
-                                    <p>Preview Search </p>
+                                    <p>View Search </p>
                                 </div>
 
                                 <div className="col-auto">
@@ -1319,7 +1500,7 @@ class  SearchForm extends Component {
 
                                 </div>
                                 <div className="col-12 mt-2">
-                                    <h5 className={"blue-text text-heading"}>Food boxes needed
+                                    <h5 className={"blue-text text-heading"}>{this.state.createSearchData.name}
                                     </h5>
 
                                 </div>
@@ -1329,7 +1510,7 @@ class  SearchForm extends Component {
                             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                                 <div className="col-auto">
-                                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Looking for disposable food boxes. Any sizes are suitable. Please message me if you have any available.
+                                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.createSearchData.description}
                                     </p>
 
                                 </div>
@@ -1355,8 +1536,8 @@ class  SearchForm extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">Paper and Card ></p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">Disposable Food Boxes</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.category} ></p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.type}</p>
 
                                 </div>
                             </div>
@@ -1367,7 +1548,7 @@ class  SearchForm extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">10 Kgs</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.volume} {this.state.createSearchData.units}</p>
                                 </div>
                             </div>
 
@@ -1379,7 +1560,7 @@ class  SearchForm extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">Bailed</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.state}</p>
                                 </div>
                             </div>
 
@@ -1390,7 +1571,7 @@ class  SearchForm extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">June 1, 2020 </p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">Oct 1, 2020 </p>
                                 </div>
                             </div>
                             <div className="row  justify-content-start search-container  pb-4">
@@ -1406,14 +1587,16 @@ class  SearchForm extends Component {
                             </div>
 
 
-                            <BottomAppBar />
+                            {/*<BottomAppBar />*/}
 
 
                         </div>
 
 
-                </div>
 
+                        </>
+                    }
+                </div>
 
 
 
@@ -1421,91 +1604,24 @@ class  SearchForm extends Component {
 
 
 
-                    <HeaderWhiteBack history={this.props.history} heading={"View Matches"}/>
+                    <HeaderWhiteBack history={this.props.history} heading={"Preview Matches"}/>
 
-
-                    {/*<div className="container  listing-row-border">*/}
-
-                        {/*<div className="row no-gutters">*/}
-                            {/*<div className="col-auto" style={{margin:"auto"}}>*/}
-
-                                {/*<NavigateBefore  style={{ fontSize: 32 }}/>*/}
-                            {/*</div>*/}
-
-                            {/*<div className="col text-left blue-text"  style={{margin:"auto"}}>*/}
-                                {/*<p>View Matches </p>*/}
-                            {/*</div>*/}
-
-                            {/*<div className="col-auto">*/}
-
-                                {/*<button className="btn   btn-link text-dark menu-btn">*/}
-                                    {/*<Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />*/}
-
-                                {/*</button>*/}
-                            {/*</div>*/}
-
-
-                        {/*</div>*/}
-                    {/*</div>*/}
 
                     <div className="container   pb-4 ">
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-                            <div className={"col-4"}>
-
-                                <img className={"img-fluid"} src={PaperImg}/>
-                            </div>
-                            <div className={"col-6 pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
-                            </div>
-                            <div style={{textAlign:"right"}} className={"col-2"}>
-                                <p className={"orange-text small"}>Matched</p>
-                            </div>
-                        </div>
 
 
+                        {this.state.resourcesMatched.map((item)=>
 
-                        <div className="row justify-content-center pb-2 pt-5 mt-5 ">
+                        <ResourceItem item={item}/>
 
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Almost there?
-                                </h3>
-
-                            </div>
-                        </div>
-
-                        <div className="row justify-content-center pb-4 pt-2 pd-5 ">
-
-                            <div className="col-auto">
-                                <p className={"text-gray-light small text-center"}>Please log in or sign up to complete your search.
-                                </p>
-
-                            </div>
-                        </div>
-
-
-
-                        <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
-
-                            <div className="col-auto">
-
-                                <button type="button"
-                                        className="shadow-sm mr-2 btn btn-link blue-btn mt-5 mb-2 btn-blue">
-                                    Create a Search
-
-                                </button>
-                            </div>
-                        </div>
-
-
+                            )}
 
 
                     </div>
 
                 </div>
 
+                {this.state.active<8 &&
                 <React.Fragment>
 
 
@@ -1514,15 +1630,15 @@ class  SearchForm extends Component {
 
                     <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
                         {/*<ProgressBar now={this.state.progressBar}  />*/}
-                        <LinearProgress variant="determinate" value={this.state.progressBar} />
+                        {this.state.page<4 &&  <LinearProgress variant="determinate" value={this.state.progressBar} />}
                         <Toolbar>
 
-                            {this.state.active<8 ?
+                            {this.state.active<7 &&
 
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                            <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
                                   <div className="col-auto">
-                                      {this.state.page>1&&    <button type="button" onClick={this.handleBack}
+                                      {this.state.page>1&&this.state.page<3 &&  <button type="button" onClick={this.handleBack}
                                             className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                         Back
 
@@ -1536,7 +1652,7 @@ class  SearchForm extends Component {
 
                                     {this.state.page ==1 &&
                                     <button onClick={this.handleNext} type="button"
-                                            className={this.state.nextBlue?"btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 ":"btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
+                                            className={this.state.nextBlue?"btn-next shadow-sm mr-2 btn btn-link blue-btn   mt-2 mb-2 ":"btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                         Next
 
                                     </button>}
@@ -1550,38 +1666,46 @@ class  SearchForm extends Component {
                                     </button>}
 
 
+                                    {this.state.page ==3 &&
+                                    <button onClick={this.handleNext} type="button"
+                                            className={this.state.nextBlueAddDetail?"btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 ":"btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
+                                        View Search
+
+                                    </button>
+                                    }
+
+
                                 </div>
-                            </div>:
+                            </div>}
 
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                            {this.state.active ==7 &&
+                            <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
+                                <div className="col-auto">
+                                     <button type="button" onClick={this.selectCreateSearch}
+                                                                                      className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                        Cancel Search
+
+                                    </button>
+                                </div>
                                     <div className="col-auto">
-                                        <Link to={"/create-search"} type="button"
-                                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                            Create New Search
+                                        <button type="button" onClick={this.handleNext}
+                                                                                          className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                            View ({this.state.createSearchData.resources.length}) Matches
 
-                                        </Link>
+                                        </button>
                                     </div>
-
-                                    {/*<div className="col-auto">*/}
-
-                                        {/*<button onClick={this.handleNext} type="button"*/}
-                                                {/*className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">*/}
-                                            {/*Sign Up*/}
-
-                                        {/*</button>*/}
-                                    {/*</div>*/}
                                 </div>
-
-
-                            }
+                                }
 
                         </Toolbar>
                     </AppBar>
 
 
 
-                </React.Fragment>
+                </React.Fragment>}
+
+
 
             </>
 

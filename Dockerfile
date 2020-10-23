@@ -15,7 +15,7 @@ COPY . /app
 RUN rm -rf node_modules/
 
 #RUN npm install && npm audit fix && npm audit fix --force && npm install
-RUN npm install -g npm 
+RUN npm install -g npm@7.0.5 
 RUN npm cache clear 
 RUN npm install npm-clean -g && npm-clean
 RUN npm install && npm audit fix

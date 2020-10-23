@@ -12,10 +12,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY . /app
 
 # delete node modules to fix discrepancies
-RUN rm -rf node_modules 
+RUN rm -rf node_modules/
 
 #RUN npm install && npm audit fix && npm audit fix --force && npm install
-RUN npm install -g npm@latest && npm install && npm audit fix
+RUN npm install -g npm@7.0.3 && npm install && npm audit fix
 RUN npm run build 
 
 ## Stage 1, "deployer", use nginx to deploy the code

@@ -18,7 +18,7 @@ RUN rm -rf node_modules/
 #RUN npm install -g npm@7.0.5 
 #RUN npm cache clear 
 #RUN npm install npm-clean -g && npm-clean
-RUN npm install && npm audit fix
+RUN npm install && npm audit fix --force
 RUN npm run build 
 
 ## Stage 1, "deployer", use nginx to deploy the code

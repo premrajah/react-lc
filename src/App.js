@@ -26,13 +26,14 @@ import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
 import SearchForm from "./views/create-search/SearchForm";
+import SearchMatches from "./views/create-search/search-matches";
 import AddDetail from "./views/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browser-resources/index";
 import MessageSeller from "./views/browser-resources/message-seller";
 import MakeOffer from "./views/browser-resources/make-offer";
-
+import ItemDetailMatch from "./views/create-search/ItemDetail";
 
 import Search from "./views/browser-resources/Search";
 import Filter from "./views/browser-resources/Filter";
@@ -100,8 +101,13 @@ class App extends Component{
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
-                        <LoggedInRoute exact path="/make-offer/:slug" component={MakeOffer} />
+                        <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
+                        <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
+                        <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
+
+
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
+
 
 
                         {/*<Route exact path="/legacy" component={Legacy} />*/}

@@ -96,9 +96,6 @@ class  Home extends Component {
 
     }
 
-    intervalJasmineAnim
-
-
 
 
 
@@ -111,8 +108,7 @@ class  Home extends Component {
                 <div className="wrapper accountpage">
 
                 <HeaderDark />
-
-
+                    
                     <div className="container   pb-4 pt-4">
 
 
@@ -143,8 +139,6 @@ class  Home extends Component {
                             </div>
                         </div>
 
-
-
                         <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
                             <div className="col-auto">
@@ -160,10 +154,7 @@ class  Home extends Component {
 
                     </div>
 
-
-
                 </div>
-
 
 
             </div>

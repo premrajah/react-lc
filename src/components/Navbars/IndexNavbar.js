@@ -297,8 +297,6 @@ class ComponentsNavbar extends React.Component {
                       </NavItem>
                       }
 
-
-
                 {this.props.isLoggedIn &&
                 <NavItem className={"web-only"}>
 

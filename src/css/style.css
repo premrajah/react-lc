@@ -2637,3 +2637,11 @@ color: #3C3972;
 
 	color: white
 }
+.preview-search-box>.preview-search-item{height:80px;width:80px;margin:auto;}
+.preview-search-item{text-align: center;margin: auto;display: flex;background: #eee;}
+.preview-search-item svg{text-align: center;margin:auto;}
+.preview-search-box{cursor: pointer;}
+.site-popup{width: 90%!important;padding:20px;
+	height: auto!important;
+	top: 20px;
+}

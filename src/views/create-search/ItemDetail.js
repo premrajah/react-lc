@@ -85,6 +85,7 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
+import {withStyles} from "@material-ui/core/styles/index";
 
 
 
@@ -92,6 +93,7 @@ import { withRouter } from 'react-router-dom'
 class  ItemDetail extends Component {
 
     slug;
+    searchId
 
     constructor(props) {
 
@@ -106,11 +108,75 @@ class  ItemDetail extends Component {
         }
 
         this.slug = props.match.params.slug
+        this.searchId = props.match.params.search
 
         this.getResources=this.getResources.bind(this)
+        this.acceptMatch=this.acceptMatch.bind(this)
+        this.declineMatch=this.declineMatch.bind(this)
 
     }
 
+
+
+
+
+
+    declineMatch(){
+
+
+    }
+
+
+    acceptMatch(){
+
+
+            // var data= {
+            //
+            //     "name":this.state.title,
+            //     "description": this.state.description,
+            //     "category": this.state.catSelected.name,
+            //     "type": this.state.subCatSelected.name,
+            //     "units": "10.0",
+            //     "volume": this.state.volume,
+            //     "state": this.state.stateSelected,
+            //     "site_id": "loop|site|1569235392096",
+            //     "require_after" : {
+            //         "unit" : "MILLISECOND",
+            //         "value" : 1603381408
+            //     },
+            //     "expiry" : {
+            //         "unit" : "MILLISECOND",
+            //         "value" : 1605830400000
+            //     }
+            // }
+
+            console.log("create loop ")
+            // console.log(data)
+
+            axios.post(baseUrl+"search/convert/"+this.searchId+"/resource/"+this.slug,
+                {},{
+                    headers: {
+                        "Authorization" : "Bearer "+this.props.userDetail.token
+                    }}
+            )
+                .then(res => {
+
+                    console.log(res.data.content)
+
+
+                    // this.setState({
+                    //     createSearchData: res.data.content
+                    // })
+
+                }).catch(error => {
+
+                console.log("loop convert error found ")
+                console.log(error.response.data)
+
+            });
+
+
+    }
 
 
     handleBack = () => {
@@ -171,15 +237,18 @@ class  ItemDetail extends Component {
 
         this.getResources()
 
-    }
+        // alert(this.searchId)
 
-    intervalJasmineAnim
+    }
 
 
 
 
 
     render() {
+
+        const    classes = withStyles();
+        const classesBottom = withStyles();
 
         return (
             <div>
@@ -326,7 +395,34 @@ class  ItemDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <BottomAppBar slug={this.slug}/>
+
+
+                        <React.Fragment>
+
+                            <CssBaseline/>
+
+                            <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                                <Toolbar>
+                                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+
+                                        <div className="col-auto">
+                                            <button onClick={this.declineMatch} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                Decline Match
+
+                                            </button>
+                                        </div>
+                                        <div className="col-auto">
+                                            <button onClick={this.acceptMatch} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                                Accept Match
+
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Toolbar>
+                            </AppBar>
+                        </React.Fragment>}
 
 
                     </div>

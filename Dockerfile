@@ -19,7 +19,8 @@ COPY . /app
 #RUN npm install npm-clean -g && npm-clean
 
 # Long winded way tof ix the read-only AUFS layer issue with npm install.
-RUN mv ./node_modules ./node_modules.tmp \
+RUN echo '{ "allow_root": true  }' > /root/.bowerrc
+RUN rm -rf node_modules/ && mkdir node_modules && mv ./node_modules ./node_modules.tmp \
   && mv ./node_modules.tmp ./node_modules \
   && npm install -g npm
 

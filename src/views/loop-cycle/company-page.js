@@ -24,6 +24,7 @@ import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
+import BuildingIcon from '../../img/icons/building-icon.png';
 
 
 import Twitter from '../../img/icons/twitter.png';
@@ -64,8 +65,10 @@ import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
+import TescoImg from '../../img/tesco.png';
 
-class  Listings extends Component {
+
+class  CompanyPage extends Component {
 
 
     constructor(props) {
@@ -153,23 +156,69 @@ class  Listings extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage">
                 <HeaderDark />
-                    <div className="container container-blue  pb-4 pt-4">
-                        <div className="row mb-5 justify-content-center">
-                            <div className="text-center">
-                                <div className="figure-profile shadow mt-4">
-                                    <figure><img src="img/user1.png" alt="" /></figure>
-                                    <div className="btn btn-dark text-white floating-btn">
-                                        <Camera className="green-text" style={{ fontSize: 24 }} />
-                                        <input type="file" className="float-file" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className={"text-white"}>Tesco</h5>
-                                    <p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>
+                    <div className="container ">
+
+
+
+                        <div className="row mb-5 container-blue justify-content-center company-header">
+
+                            <div className="col-11  justify-content-center">
+                                <div className="figure-profile account-figure shadow ">
+
+                                    <figure>
+                                        <Link to={"/company"}><img src={BuildingIcon} alt="" /></Link>
+                                    </figure>
+
                                 </div>
                             </div>
-
                         </div>
+
+                            <div className="row mb-5 justify-content-center company-details">
+
+                            <div className="col-10 mt-4  justify-content-start">
+
+                                <h5 className={"text-blue text-bold"}>Company A</h5>
+                                <p className={" text-mute small"}>Joined in 2010<br/>
+                                    Surrey, UK</p>
+
+                            </div>
+
+                            <div className="col-6   justify-content-center d-none">
+
+                                <div className="figure-profile account-figure shadow ">
+
+                                    <figure>
+                                        <Link to={"/company"}><img src={BuildingIcon} alt="" /></Link>
+                                    </figure>
+
+                                </div>
+
+                                <p className={"text-blue text-underline text-upload"}>
+
+                                    Upload Photo
+
+                                </p>
+
+                            </div>
+                        </div>
+
+
+                        {/*<div className="row mb-5 justify-content-center">*/}
+                            {/*<div className="text-center">*/}
+                                {/*<div className="figure-profile shadow mt-4">*/}
+                                    {/*<figure><img src={TescoImg} alt="" /></figure>*/}
+                                    {/*<div className="btn btn-dark text-white floating-btn">*/}
+                                        {/*<Camera className="green-text" style={{ fontSize: 24 }} />*/}
+                                        {/*<input type="file" className="float-file" />*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+                                {/*<div>*/}
+                                    {/*<h5 className={"text-white"}>Tesco</h5>*/}
+                                    {/*<p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+
+                        {/*</div>*/}
 
                     </div>
 <div className={"tab-content-listing"}>
@@ -278,7 +327,7 @@ const useStylesTabs = makeStyles((theme) => ({
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs
-                    style={{backgroundColor:"#27245C", color:"#ffffff!important"}}
+                    style={{backgroundColor:"#ffffff", color:"#07AD88!important"}}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
@@ -505,4 +554,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(Listings);
+)(CompanyPage);

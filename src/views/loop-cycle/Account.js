@@ -2,46 +2,25 @@ import React, {Component, Fragment, useState} from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Logo from '../../img/logo-2x.png';
-import LogoSmall from '../../img/logo-small.png';
-import LogoNew from '../../img/logo-cropped.png';
-
-import LogoText from '../../img/logo-text.png';
-import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
-import LoopHome from '../../img/LoopHome.png';
-
-import HandIcon from '../../img/icons/hand.png';
-
-import SearchIcon from '../../img/icons/search-icon.png';
-
 import ShippingIcon from '../../img/icons/shipping-icon.png';
-import ShippingWhite from '../../img/icons/truck.png';
-import SettingsWhite from '../../img/icons/settings-24px.png';
+import ShippingWhite from '../../img/icons/delivery-blue.png';
+import SettingsWhite from '../../img/icons/settings-blue.png';
 import HandWhite from '../../img/icons/hand-white.png';
 import Cube from '../../img/icons/cube.png';
-import SearchWhite from '../../img/icons/search-white.png';
-import VerticalLines from '../../img/icons/vertical-lines.png';
-import Rings from '../../img/icons/rings.png';
-
-
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
+import SearchWhite from '../../img/icons/search-blue.png';
+import VerticalLines from '../../img/icons/stat-blue-2.png';
+import Rings from '../../img/icons/ring-blue.png';
+import BuildingIcon from '../../img/icons/building-icon.png';
+import ProductBlue from '../../img/icons/product-blue.png';
+import ListingBlue from '../../img/icons/listing-blue.png';
 import { Router, Route, Switch , Link} from "react-router-dom";
 
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-
-// import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Camera from '@material-ui/icons/CameraAlt';
-
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-
-
 
 
 class  Account extends Component {
@@ -64,11 +43,7 @@ class  Account extends Component {
     }
 
 
-
-
     getResources(){
-
-
 
 
         axios.get(baseUrl+"resource",
@@ -116,10 +91,6 @@ class  Account extends Component {
 
     }
 
-    intervalJasmineAnim
-
-
-
 
 
     render() {
@@ -141,40 +112,34 @@ class  Account extends Component {
                                 <h4 className={"text-blue text-bold"}>My Loopcycle</h4>
                             </div>
                         </div>
+
                         <div className="row mb-5 justify-content-center account-header-box">
 
                             <div className="col-6  justify-content-center">
 
-                                {/*<div>*/}
                                     <h5 className={"text-blue text-bold"}>Company A</h5>
                                     <p className={" text-mute small"}>Joined in 2010<br/>
                                         Surrey, UK</p>
-
-
-                                {/*</div>*/}
 
                             </div>
 
                             <div className="col-6   justify-content-center">
 
-                                <div className="figure-profile shadow ">
-                                    <figure><img src="img/user1.png" alt="" /></figure>
+                                <div className="figure-profile account-figure shadow ">
 
+                                    <figure>
+                                        <Link to={"/company"}><img src={BuildingIcon} alt="" /></Link>
+                                    </figure>
 
-
-                                    {/*<div className="btn btn-dark  floating-btn">*/}
-                                        {/*/!*<Camera className="green-text" style={{ fontSize: 24 }} />*!/*/}
-                                        {/*/!*<input type="file" className="float-file" />*!/*/}
-                                        {/*<p className={"text-blue text-underline"}>Upload Photo</p>*/}
-
-                                    {/*</div>*/}
                                 </div>
-                                <p className={"text-blue text-underline text-upload"}>Upload Photo</p>
 
+                                <p className={"text-blue text-underline text-upload"}>
+
+                                    Upload Photo
+
+                                </p>
 
                             </div>
-
-
                         </div>
 
 
@@ -209,13 +174,13 @@ class  Account extends Component {
                                     <img src={SearchWhite} className={"account-icons truck-icon "} />
                                     My Searches  <NavigateNextIcon /></Link>
 
-                                <a className="list-group-item list-group-item-action ">
-                                    <img src={HandWhite} className={"account-icons truck-icon "} />
-                                    My Listings <NavigateNextIcon /></a>
+                                <Link to={"/listings"} className="list-group-item list-group-item-action ">
+                                    <img src={ListingBlue} className={"account-icons truck-icon "} />
+                                    My Listings <NavigateNextIcon /></Link>
 
-                                <a className="list-group-item list-group-item-action ">
+                                <Link to={"/loops"} className="list-group-item list-group-item-action ">
                                     <img src={Rings} className={"account-icons truck-icon "} />
-                                    My Loops <NavigateNextIcon /></a>
+                                    My Loops <NavigateNextIcon /></Link>
 
 
 
@@ -230,25 +195,23 @@ class  Account extends Component {
                         </div>
                     </div>
 
-
-
                     <div className="container   pt-4">
 
                         <div className="row">
                             <div className="col">
                                 <div className="list-group main-menu accountpage-list">
 
-                                    <a className="list-group-item list-group-item-action ">
-                                        <img src={Cube} className={"account-icons truck-icon "} />
-                                        Products <NavigateNextIcon /></a>
+                                    <Link to={"/my-products"} className="list-group-item list-group-item-action ">
+                                        <img src={ProductBlue} className={"account-icons truck-icon "} />
+                                        Products <NavigateNextIcon /></Link>
 
-                                    <a className="list-group-item list-group-item-action ">
+                                    <Link to={"/my-deliveries"} className="list-group-item list-group-item-action ">
                                         <img src={ShippingWhite} className={"account-icons truck-icon "} />
-                                        Deliveries <NavigateNextIcon /></a>
+                                        Deliveries <NavigateNextIcon /></Link>
 
-                                    <a className="list-group-item list-group-item-action ">
+                                    <Link to={"/statistics"} className="list-group-item list-group-item-action ">
                                         <img src={VerticalLines} className={"account-icons truck-icon "} />
-                                        Statistics <NavigateNextIcon /></a>
+                                        Statistics <NavigateNextIcon /></Link>
 
                                 </div>
                             </div>

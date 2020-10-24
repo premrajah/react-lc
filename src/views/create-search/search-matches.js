@@ -148,6 +148,7 @@ class  SearchMatches extends Component {
             resourcesMatched:[],
 
 
+
         }
 
         this.slug = props.match.params.slug
@@ -177,8 +178,6 @@ class  SearchMatches extends Component {
                     var resources = this.state.resourcesMatched
 
 
-                    // alert(resources.name)
-
                     resources.push(response)
 
                         this.setState({
@@ -195,18 +194,12 @@ class  SearchMatches extends Component {
 
                     }
                 );
-
-
         }
-
 
     }
 
 
-
-
     interval
-
 
     componentWillMount(){
 
@@ -297,7 +290,8 @@ class  SearchMatches extends Component {
                     <HeaderWhiteBack history={this.props.history} heading={"View Matches"}/>
 
 
-                    <div className="container   pb-4 ">
+                {this.state.resourcesMatched&& <>
+                    {this.state.resourcesMatched.length>0?<div className="container   pb-4 ">
 
 
                         {this.state.resourcesMatched.map((item)=>
@@ -307,7 +301,13 @@ class  SearchMatches extends Component {
                         )}
 
 
-                    </div>
+                </div>:<div className={" column-empty-message"}>
+                    <p>This search currently has no matches</p>
+                </div>
+
+                    }
+                    </>
+                        }
             </>
 
         );

@@ -109,7 +109,7 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
-class  SearchForm extends Component {
+class  CreateListing extends Component {
 
 
     constructor(props) {
@@ -1216,7 +1216,7 @@ class  SearchForm extends Component {
             <>
 
 
-                <div className="container  p-2">
+                <div className="container  p-2 ">
                 </div>
 
 
@@ -1228,7 +1228,7 @@ class  SearchForm extends Component {
                     <div className="row no-gutters">
                         <div className="col-10">
 
-                            <h6>Create a Search </h6>
+                            <h6>Create a Listing </h6>
                         </div>
 
 
@@ -1246,14 +1246,14 @@ class  SearchForm extends Component {
                 <div className="container   pb-5 pt-5">
                     <div className="row no-gutters">
                         <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>The Basics
+                            <h3 className={"blue-text text-heading"}>Create a Listing
                             </h3>
 
                         </div>
                     </div>
 
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit} className={"mb-5"}>
                     <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12">
 
@@ -1286,14 +1286,78 @@ class  SearchForm extends Component {
 
 
                         </div>
+
+                        <div className="col-12 mt-4">
+
+                            <TextField onChange={this.handleChange.bind(this, "brand")} name={"brand"} id="outlined-basic" label="Brand" variant="outlined" fullWidth={true} />
+                            {this.state.errors["brand"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["brand"]}</span>}
+
+                        </div>
+
+
+                        <div className="col-12 mt-4">
+
+                            <TextField onChange={this.handleChange.bind(this, "model")} name={"model"} id="outlined-basic" label="Model Number" variant="outlined" fullWidth={true} />
+                            {this.state.errors["model"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["model"]}</span>}
+
+                        </div>
+
+                        <div className="col-12 mt-4">
+
+                            <TextField onChange={this.handleChange.bind(this, "serial")} name={"serial"} id="outlined-basic" label="Serial Number" variant="outlined" fullWidth={true} />
+                            {this.state.errors["serial"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["serial"]}</span>}
+
+                        </div>
+
+
+                        <div className="col-12  mt-4">
+
+                            <TextField
+                                onChange={this.handleChange.bind(this, "manufacture")}
+                                name={"startDate"}
+                                id="input-with-icon-textfield"
+
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                label="Date Of Manufacture"
+                                type={"date"}
+                                variant="outlined"
+                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                id="input-with-icon-textfield"
+                                minDate={new Date()}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <img  className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            {this.state.errors["startDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["startDate"]}</span>}
+
+
+                        </div>
+
+
+
+                        <div className="col-12 mt-4">
+
+                            <TextField onChange={this.handleChange.bind(this, "brand")} name={"brand"} id="outlined-basic" label="Brand" variant="outlined" fullWidth={true} />
+                            {this.state.errors["brand"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["brand"]}</span>}
+
+                        </div>
+
+
                     </div>
+
+
+
                     <div className="row no-gutters justify-content-center mt-4">
 
                     <div className="col-6 pr-2">
 
                         <UnitSelect units={this.state.units} />
-
-
 
 
                     </div>
@@ -1529,15 +1593,7 @@ class  SearchForm extends Component {
                             </div>
                             <div className="col-12 mb-3">
 
-                                {/*<MuiPickersUtilsProvider utils={DateFnsUtils}>*/}
 
-                                {/*<DatePicker*/}
-                                    {/*label="Basic example"*/}
-                                    {/*value={new Date()}*/}
-                                    {/*onChange={this.handleChange}*/}
-                                    {/*animateYearScrolling*/}
-                                {/*/>*/}
-                                {/*</MuiPickersUtilsProvider>*/}
                                 <TextField
                                     onChange={this.handleChange.bind(this, "startDate")}
                                     name={"startDate"}
@@ -2236,4 +2292,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(SearchForm);
+)(CreateListing);

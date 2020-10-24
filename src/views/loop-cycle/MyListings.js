@@ -34,7 +34,6 @@ import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import HandGreyIcon from '../../img/icons/hand-gray.png';
-import HandBlue from '../../img/icons/hand.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
 
@@ -65,6 +64,20 @@ import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
+import SearchItem from './search-item'
+
+import PaperImg from '../../img/paper.png';
+
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import Toolbar from '@material-ui/core/Toolbar';
+import {withStyles} from "@material-ui/core/styles/index";
+
+
+
+
+import ProductBlue from '../../img/icons/product-blue.png';
 
 class  MyListings extends Component {
 
@@ -77,21 +90,37 @@ class  MyListings extends Component {
 
             timerEnd: false,
             count : 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            items: []
         }
-        this.getResources=this.getResources.bind(this)
+
+
+        this.getItems=this.getItems.bind(this)
 
     }
 
 
 
 
-    getResources(){
+    componentDidMount(){
+
+
+        this.getItems()
+    }
 
 
 
 
-        axios.get(baseUrl+"resource",
+    getItems(){
+
+
+        var url = baseUrl+"search"
+
+
+        console.log(url)
+
+
+        axios.get(url,
             {
                 headers: {
                     "Authorization" : "Bearer "+this.props.userDetail.token
@@ -99,21 +128,22 @@ class  MyListings extends Component {
             }
         )
             .then((response) => {
-                    var response = response.data;
 
-                    console.log("resource response")
+                    var response = response.data.content;
+                    console.log("my search response")
                     console.log(response)
+
+                    this.setState({
+
+                        items:response
+                    })
 
                 },
                 (error) => {
+
                     var status = error.response.status
-
-
                     console.log("resource error")
                     console.log(error)
-
-
-
 
                 }
             );
@@ -121,26 +151,18 @@ class  MyListings extends Component {
     }
 
 
-    interval
+
 
 
     componentWillMount(){
 
     }
-
-    componentDidMount(){
-
-
-
-    }
-
-    intervalJasmineAnim
-
-
-
+    
 
 
     render() {
+        const    classes = withStyles();
+        const classesBottom = withStyles();
 
         return (
             <div>
@@ -154,14 +176,14 @@ class  MyListings extends Component {
                     <div className="container   pb-4 pt-4">
 
 
-                        <div className="row justify-content-center">
+                        <div className="row ">
 
                             <div className="col-auto pb-4 pt-4">
-                               <img className={"search-icon-middle"}  src={HandBlue} />
+                               <img className={"search-icon-middle"}  src={ProductBlue} />
 
                             </div>
                         </div>
-                        <div className="row justify-content-center pb-2 pt-4 ">
+                        <div className="row  pb-2 pt-4 ">
 
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>My Listings
@@ -171,10 +193,11 @@ class  MyListings extends Component {
                         </div>
 
 
-                        <div className="row justify-content-center pb-4 pt-2 ">
+                        <div className="row  pb-4 pt-2 ">
 
                             <div className="col-auto">
-                                <p className={"text-gray-light small"}>Accept or decline a match to start a loop.</p>
+                                <p className={"text-gray-light small"}>Accept or decline a match to start a loop.
+                                </p>
 
                             </div>
                         </div>
@@ -192,7 +215,7 @@ class  MyListings extends Component {
                             <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
 
                                 <div className="col">
-                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">2 Searches </p>
+                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">{this.state.items.length} Searches </p>
 
                                 </div>
                                 <div className="text-mute col-auto pl-0">
@@ -203,39 +226,16 @@ class  MyListings extends Component {
 
                             </div>
 
-                            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-                                <div className={"col-4"}>
-
-                                    <img className={"img-fluid"} src={Paper}/>
-                                </div>
-                                <div className={"col-6 pl-3 content-box-listing"}>
-                                    <p style={{fontSize:"18px"}} className=" mb-1">Paper and Card</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
-                                </div>
-                                <div style={{textAlign:"right"}} className={"col-2"}>
-                                    <p className={"text-gray-light small"}>Active</p>
-                                </div>
-                            </div>
-
-                            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-                                <div className={"col-4"}>
-
-                                    <img className={"img-fluid"} src={Paper}/>
-                                </div>
-                                <div className={"col-6 pl-3 content-box-listing"}>
-                                    <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
-                                </div>
-                                <div style={{textAlign:"right"}} className={"col-2"}>
-                                    <p className={"orange-text small"}>Matched</p>
-                                </div>
-                            </div>
 
 
+
+                        {this.state.items.map((item)=>
+
+
+                        <SearchItem item={item} />
+
+
+                        )}
 
 
 
@@ -243,6 +243,33 @@ class  MyListings extends Component {
 
                     </div>
 
+
+
+
+                    <React.Fragment>
+
+                        <CssBaseline/>
+
+                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                            <Toolbar>
+
+
+                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+
+                                    <div className="col-auto">
+
+                                        <Link to={"/create-search"}><p className={"green-text bottom-bar-text"}> Create New Search </p></Link>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </Toolbar>
+                        </AppBar>
+
+                    </React.Fragment>
 
 
                 </div>
@@ -289,4 +316,38 @@ function SearchField() {
 
 
 
-export default MyListings;
+
+const mapStateToProps = state => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+
+
+    };
+};
+
+const mapDispachToProps = dispatch => {
+    return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(MyListings);

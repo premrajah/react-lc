@@ -54,21 +54,6 @@ class Home extends Component {
 
 
 
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
 
     interval
 
@@ -79,14 +64,7 @@ class Home extends Component {
 
     componentDidMount() {
 
-
-
-
-
-
     }
-
-    intervalJasmineAnim
 
 
 
@@ -100,8 +78,6 @@ class Home extends Component {
                 <Sidebar />
                 <HeaderDark />
                 <div className="wrapper homepage">
-
-
                     <div className="container-fluid container-light-blue pt-5">
                         <div className="container   pt-5 pb-5">
                             <div className="row no-gutters">

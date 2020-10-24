@@ -15,14 +15,14 @@ import Paper from '../../img/paper.png';
 import clsx from 'clsx';
 import SearchIcon from '../../img/icons/search-icon.png';
 
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import ShippingWhite from '../../img/icons/truck.png';
+import ShippingIcon from '../../img/icons/delivery-blue.png.png';
+import ShippingWhite from '../../img/icons/delivery-blue.png.png';
 import SettingsWhite from '../../img/icons/settings-24px.png';
 import HandWhite from '../../img/icons/hand-white.png';
 import Cube from '../../img/icons/cube.png';
 import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
-import Rings from '../../img/icons/rings.png';
+import Rings from '../../img/icons/ring-blue.png';
 import FilterImg from '../../img/icons/filter-icon.png';
 import TruckBlue from '../../img/icons/truck-blue.png';
 
@@ -373,7 +373,7 @@ function NavTabs() {
                     </div>
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={RingGray} />
+                            <img className={"icon-about"} src={Rings} />
                         </div>
                         <div className={"col-auto"}>
 

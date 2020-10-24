@@ -19,6 +19,7 @@ import ShippingIcon from '../../img/icons/shipping-icon.png';
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
 import { Router, Route, Switch , Link} from "react-router-dom";
+import TescoImg from '../../img/tesco.png';
 
 import history from "../../History/history";
 
@@ -137,7 +138,7 @@ class  Sidebar extends Component {
             <div className="mt-2 mb-3">
                 <div className="row">
                     <div className="col-auto">
-                        <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
+                        <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
                     </div>
                     {/*<div className="col pl-0 align-self-center">*/}
                     {/*<h5 className="mb-1">Ammy Jahnson</h5>*/}
@@ -169,7 +170,7 @@ class  Sidebar extends Component {
                     <div className="list-group main-menu">
                         {!this.props.isLoggedIn &&   <Link onClick={this.toggleMenu}  to={"/login"} className="list-group-item list-group-item-action green-text">Log in </Link>}
                         {this.props.isLoggedIn &&  <Link onClick={this.logOut}  to={"/login"} className="list-group-item list-group-item-action green-text">Log out </Link>}
-                        <Link onClick={this.toggleMenu} to={"/"} className="list-group-item list-group-item-action green-text">My Loopcycle </Link>
+                        <Link onClick={this.toggleMenu} to={"/account"} className="list-group-item list-group-item-action green-text">My Loopcycle </Link>
 
                     </div>
                 </div>

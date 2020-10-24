@@ -63,6 +63,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
+import axios from "axios/index";
+import {baseUrl} from "../../Util/Constants";
 
 class  Loops extends Component {
 
@@ -75,17 +77,47 @@ class  Loops extends Component {
 
             timerEnd: false,
             count : 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            loops:[]
         }
 
+        this.getLoops=this.getLoops.bind(this)
 
     }
 
 
+    getLoops(){
 
+        axios.get(baseUrl+"loop",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
 
-    interval
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
 
+                    this.setState({
+
+                        loops:response
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("resource error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
     componentWillMount(){
 
@@ -93,11 +125,10 @@ class  Loops extends Component {
 
     componentDidMount(){
 
-
+    this.getLoops()
 
     }
 
-    intervalJasmineAnim
 
 
 
@@ -117,32 +148,32 @@ class  Loops extends Component {
                     <div className="container   pb-4 pt-4">
 
 
-                        <div className="row justify-content-center">
+                        <div className="row ">
 
                             <div className="col-auto pb-4 pt-4">
                                <img className={"search-icon-middle"}  src={RingBlue} />
 
                             </div>
                         </div>
-                        <div className="row justify-content-center pb-2 pt-4 ">
+                        <div className="row  pb-2 pt-4 ">
 
                             <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Loops
+                                <h3 className={"blue-text text-heading"}>Cycles
                                 </h3>
 
                             </div>
                         </div>
 
 
-                        <div className="row justify-content-center pb-4 pt-2 ">
+                        <div className="row  pb-4 pt-2 ">
 
                             <div className="col-auto" >
-                                <p className={"text-gray-light small text-center"}>Matches that have been accepted are displayed here as loops.</p>
+                                <p className={"text-gray-light "}>Cycles are transactions in progress. Keep track of cycles in progress as well as  </p>
 
                             </div>
                         </div>
 
-                        <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
+                        <div className="row   search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
                         <SearchField />
 
@@ -167,22 +198,26 @@ class  Loops extends Component {
                             </div>
 
 
-                        <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
+                        {this.state.loops.map((item) =>
 
-                            {/*<div className={"col-4"}>*/}
+                            <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
-                            {/*<img className={"img-fluid"} src={Paper}/>*/}
-                            {/*</div>*/}
                             <div className={"col-8 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Surrey  →  London</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">Paper and Cardboard</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">bailed / 10 kg</p>
+                                <h5 style={{fontSize:"18px"}} className=" mb-1">{item.resource.name}</h5>
+                                <p style={{fontSize:"18px"}} className=" mb-1">{item.from.org_id}  →  {item.to.org_id}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.resource.category}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.resource.state} / {item.resource.volume} {item.resource.units}</p>
+
+
                             </div>
                             <div style={{textAlign:"right"}} className={"col-4"}>
-                                <p className={"orange-text text-mute small" } ><img src={RefreshIcon} style={{marginRight:"5px"}} />Pending</p>
+                                <p className={"green-text text-mute small" } >
+                                    {/*<img src={RefreshIcon} style={{marginRight:"5px"}} />*/}
+                                    {item.state}</p>
                             </div>
                         </div>
 
+                        )}
 
 
 
@@ -232,7 +267,37 @@ function SearchField() {
 
 
 
+const mapStateToProps = state => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
 
 
+    };
+};
 
-export default Loops;
+const mapDispachToProps = dispatch => {
+
+    return {
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(Loops);
+

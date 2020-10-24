@@ -30,6 +30,7 @@ import LogoNew from '../../img/logo-cropped.png';
 import LogoText from '../../img/logo-text.png';
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
+import TescoImg from '../../img/tesco.png';
 
 
 class ComponentsNavbar extends React.Component {
@@ -310,7 +311,7 @@ class ComponentsNavbar extends React.Component {
                             onClick={e => e.preventDefault()}
                             className={"wl-link-white "}
                         >
-                            <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
+                            <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
                             <i className="fa fa-cogs d-lg-none d-xl-none" />
 
                         </DropdownToggle>
@@ -328,7 +329,7 @@ class ComponentsNavbar extends React.Component {
                                 My Cycles
                             </Link>
 
-                            <Link  className={"dropdown-item"} to="/products">
+                            <Link  className={"dropdown-item"} to="/my-products">
                                 <i className="tim-icons icon-bullet-list-67" />
                                 Products
                             </Link>

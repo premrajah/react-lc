@@ -10,14 +10,15 @@ import Home from "./views/LoopHome/Home";
 import Inbox from "./views/inbox/index";
 import LoginPopUp from "./views/login/LoginPopUp";
 import Account from "./views/loop-cycle/Account";
-import Listings from "./views/loop-cycle/Listings";
+import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
 
 import ViewSearch from "./views/loop-cycle/ViewSearch";
 import ViewSearchPage from "./views/loop-cycle/ViewSearchPage";
-import MyListings from "./views/loop-cycle/MyListings";
+import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browser-resources/ItemDetail";
 import Products from "./views/loop-cycle/Products";
+import CreateProduct from "./views/create-product/create-product";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
 import Loops from "./views/loop-cycle/Loops";
@@ -25,6 +26,7 @@ import LoopDetail from "./views/loop-cycle/LoopDetail";
 import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
+import CreateListing from "./views/create-listing/create-listing";
 import SearchForm from "./views/create-search/SearchForm";
 import SearchMatches from "./views/create-search/search-matches";
 import AddDetail from "./views/create-search/AddDetail";
@@ -80,20 +82,22 @@ class App extends Component{
                         <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
                         {/*<AuthRoute exact path="/login" component={Login} />*/}
                         <LoggedInRoute exact path="/account" component={Account} />
-                        <LoggedInRoute exact path="/listings" component={Listings} />
+                        <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/view-search" component={ViewSearch} />
                         <LoggedInRoute exact path="/view-search-page" component={ViewSearchPage} />
-                        <LoggedInRoute exact path="/my-listings" component={MyListings} />
+                        <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
-                        <LoggedInRoute exact path="/products" component={Products} />
+                        <LoggedInRoute exact path="/my-products" component={Products} />
+                        <LoggedInRoute exact path="/create-product" component={CreateProduct} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/loop-detail" component={LoopDetail} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/listing-form" component={ListingForm} />
+                        <LoggedInRoute exact path="/list-form" component={CreateListing} />
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />

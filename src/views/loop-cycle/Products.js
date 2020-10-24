@@ -19,7 +19,7 @@ import ShippingIcon from '../../img/icons/shipping-icon.png';
 import ShippingWhite from '../../img/icons/truck.png';
 import SettingsWhite from '../../img/icons/settings-24px.png';
 import HandWhite from '../../img/icons/hand-white.png';
-import CubeBlue from '../../img/icons/cube-blue.png';
+import CubeBlue from '../../img/icons/product-icon-big.png';
 import SearchWhite from '../../img/icons/search-white.png';
 import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
@@ -65,6 +65,11 @@ import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import Toolbar from '@material-ui/core/Toolbar';
+import {withStyles} from "@material-ui/core/styles/index";
+
 
 class  Products extends Component {
 
@@ -77,23 +82,21 @@ class  Products extends Component {
 
             timerEnd: false,
             count : 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            products:[]
         }
 
 
-        this.getResources=this.getResources.bind(this)
+        this.getProducts=this.getProducts.bind(this)
 
     }
 
 
 
 
-    getResources(){
+    getProducts(){
 
-
-
-
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl+"product",
             {
                 headers: {
                     "Authorization" : "Bearer "+this.props.userDetail.token
@@ -101,26 +104,31 @@ class  Products extends Component {
             }
         )
             .then((response) => {
-                    var response = response.data;
 
+                    var response = response.data.content;
                     console.log("resource response")
                     console.log(response)
 
+                    this.setState({
+
+                        products:response
+
+                    })
+
                 },
                 (error) => {
+
                     var status = error.response.status
-
-
                     console.log("resource error")
                     console.log(error)
-
-
-
 
                 }
             );
 
     }
+
+
+
 
 
 
@@ -137,17 +145,23 @@ class  Products extends Component {
 
     componentDidMount(){
 
+        this.getProducts()
 
 
     }
 
-    intervalJasmineAnim
 
 
 
 
 
     render() {
+
+
+        const    classes = withStyles();
+        const classesBottom = withStyles();
+
+
 
         return (
             <div>
@@ -161,14 +175,14 @@ class  Products extends Component {
                     <div className="container   pb-4 pt-4">
 
 
-                        <div className="row justify-content-center">
+                        <div className="row ">
 
                             <div className="col-auto pb-4 pt-4">
                                <img className={"search-icon-middle"}  src={CubeBlue} />
 
                             </div>
                         </div>
-                        <div className="row justify-content-center pb-2 pt-4 ">
+                        <div className="row  pb-2 pt-2 ">
 
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>Products
@@ -178,10 +192,10 @@ class  Products extends Component {
                         </div>
 
 
-                        <div className="row justify-content-center pb-4 pt-2 ">
+                        <div className="row  pb-4 pt-2 ">
 
                             <div className="col-auto">
-                                <p className={"text-gray-light small"}>Accept or decline a match to start a loop.</p>
+                                <p className={"text-gray-light "}>Products created can be assigned to resource searches</p>
 
                             </div>
                         </div>
@@ -195,11 +209,10 @@ class  Products extends Component {
                         </div>
 
 
-
                             <div className="row  justify-content-center filter-row listing-row-border   pt-3 pb-3">
 
                                 <div className="col">
-                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">Products </p>
+                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">{this.state.products.length} Products </p>
 
                                 </div>
                                 <div className="text-mute col-auto pl-0">
@@ -210,33 +223,21 @@ class  Products extends Component {
 
                             </div>
 
-                            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
+                        {this.state.products.map((item) =>
 
-                                <div className={"col-10  content-box-listing"}>
-                                    <p style={{fontSize:"18px"}} className=" mb-1">Agg 02</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">Aggregate</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">2 Searches</p>
-                                </div>
-                                <div style={{textAlign:"right"}} className={"col-2"}>
-                                    <p className={"text-gray-light small"}>9/5/2020</p>
-                                </div>
-                            </div>
-
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-
-                            <div className={"col-10  content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Pallet Bench</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">Aggregate</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">2 Searches</p>
+                                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+                                    <div className={"col-10  content-box-listing"}>
+                                <p style={{fontSize:"18px"}} className=" mb-1">{item.title}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.purpose}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.searches.length} Searches</p>
                             </div>
                             <div style={{textAlign:"right"}} className={"col-2"}>
                                 <p className={"text-gray-light small"}>9/5/2020</p>
                             </div>
                         </div>
 
-
+                            )}
 
 
 
@@ -244,6 +245,33 @@ class  Products extends Component {
 
                     </div>
 
+
+
+
+                    <React.Fragment>
+
+                        <CssBaseline/>
+
+                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                            <Toolbar>
+
+
+                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+
+                                    <div className="col-auto">
+
+                                        <Link to={"/create-product"}><p className={"green-text bottom-bar-text"}> Create New Product </p></Link>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </Toolbar>
+                        </AppBar>
+
+                    </React.Fragment>
 
 
                 </div>
@@ -290,4 +318,42 @@ function SearchField() {
 
 
 
-export default Products;
+
+
+const mapStateToProps = state => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+
+
+    };
+};
+
+const mapDispachToProps = dispatch => {
+    return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+
+
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(Products);

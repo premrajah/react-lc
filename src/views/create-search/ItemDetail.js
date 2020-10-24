@@ -39,6 +39,7 @@ import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
 import TescoImg from '../../img/tesco.png';
+import GrayLoop from '../../img/icons/gray-loop.png';
 
 
 import Twitter from '../../img/icons/twitter.png';
@@ -63,7 +64,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Modal,ModalBody,ModalHeader} from 'react-bootstrap';
 
 
 import PropTypes from 'prop-types';
@@ -104,7 +105,9 @@ class  ItemDetail extends Component {
             timerEnd: false,
             count : 0,
             nextIntervalFlag: false,
-            item:{}
+            item:{},
+            showPopUp:false,
+            loopError: null
         }
 
         this.slug = props.match.params.slug
@@ -113,12 +116,18 @@ class  ItemDetail extends Component {
         this.getResources=this.getResources.bind(this)
         this.acceptMatch=this.acceptMatch.bind(this)
         this.declineMatch=this.declineMatch.bind(this)
+        this.showPopUp=this.showPopUp.bind(this)
 
     }
 
 
+    showPopUp(){
 
+        this.setState({
+            showPopUp:!this.state.showPopUp
+        })
 
+    }
 
 
     declineMatch(){
@@ -130,28 +139,8 @@ class  ItemDetail extends Component {
     acceptMatch(){
 
 
-            // var data= {
-            //
-            //     "name":this.state.title,
-            //     "description": this.state.description,
-            //     "category": this.state.catSelected.name,
-            //     "type": this.state.subCatSelected.name,
-            //     "units": "10.0",
-            //     "volume": this.state.volume,
-            //     "state": this.state.stateSelected,
-            //     "site_id": "loop|site|1569235392096",
-            //     "require_after" : {
-            //         "unit" : "MILLISECOND",
-            //         "value" : 1603381408
-            //     },
-            //     "expiry" : {
-            //         "unit" : "MILLISECOND",
-            //         "value" : 1605830400000
-            //     }
-            // }
+            console.log("create loop")
 
-            console.log("create loop ")
-            // console.log(data)
 
             axios.post(baseUrl+"search/convert/"+this.searchId+"/resource/"+this.slug,
                 {},{
@@ -163,15 +152,25 @@ class  ItemDetail extends Component {
 
                     console.log(res.data.content)
 
+                    this.setState({
 
-                    // this.setState({
-                    //     createSearchData: res.data.content
-                    // })
+                        showPopUp: true
+                    })
+
 
                 }).catch(error => {
 
+
+
                 console.log("loop convert error found ")
                 console.log(error.response.data)
+
+
+                this.setState({
+
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
+                })
 
             });
 
@@ -423,6 +422,54 @@ class  ItemDetail extends Component {
                                 </Toolbar>
                             </AppBar>
                         </React.Fragment>}
+
+
+
+
+                        <Modal className={"loop-popup"} size="lg"
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+
+                            <ModalBody>
+                            <div className={"row justify-content-start"}>
+                                <div className={"col-4"}>
+                                    <img className={"ring-pop-pup"} src={GrayLoop}   />
+                                </div>
+                            </div>
+
+
+                                {this.state.loopError?
+                                    <>
+                                    <div className={"row"}>
+                                        <div className={"col-12"}>
+                                    <p className={"text-bold"}>Failed</p>
+                                            {this.state.loopError}
+                                    </div>
+                                    </div>
+                                    </>
+                                    :
+                                <>
+                                    <div className={"row"}>
+                                    <div className={"col-12"}>
+                                    <p className={"text-bold"}>Match Accepted</p>
+                                    A cycle has been created. Send a message to the seller to arrange a delivery time.
+                                    </div>
+                                    </div>
+                                    <div className={"row justify-content-end"}>
+                                    <div className={"col-4"}>
+                                        <Link to={"/message-seller/"+this.slug}> <p onClick={this.showPopUp} className={"green-text"}>Chat</p></Link>
+                                    </div>
+                                        <div className={"col-4"}>
+                                        <p onClick={this.showPopUp} className={"green-text"}>Cancel</p>
+                                        </div>
+                                    </div>
+                                </>
+
+
+                            }
+                            </ModalBody>
+
+                        </Modal>
 
 
                     </div>

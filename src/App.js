@@ -23,6 +23,7 @@ import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
 import Loops from "./views/loop-cycle/Loops";
 import LoopDetail from "./views/loop-cycle/LoopDetail";
+import ViewCycle from "./views/loop-cycle/view-cycle";
 import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
@@ -92,7 +93,6 @@ class App extends Component{
                         <LoggedInRoute exact path="/my-products" component={Products} />
                         <LoggedInRoute exact path="/create-product" component={CreateProduct} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
-                        <LoggedInRoute exact path="/loop-detail" component={LoopDetail} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
@@ -104,6 +104,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
+                        <LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />

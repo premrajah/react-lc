@@ -2714,3 +2714,7 @@ color: #3C3972;
 
 }
 .create-product-row .MuiFormControl-root{width: 100%;}
+.add-listing-container .MuiFormControl-root{
+
+	width: 100%;
+}

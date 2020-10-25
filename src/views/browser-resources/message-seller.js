@@ -97,9 +97,6 @@ import { withRouter } from 'react-router-dom'
 import { ChatController,MuiChat } from 'chat-ui-react'
 
 
-
-
-
 class  MessageSeller extends Component {
 
     slug;

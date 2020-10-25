@@ -90,6 +90,9 @@ import {saveKey, saveUserToken} from "../../LocalStorage/user";
 import {loginFailed} from "../../store/actions/actions";
 import {signUpFailed} from "../../store/actions/actions";
 
+import CameraGray from '../../img/icons/camera-gray.png';
+import PlusGray from '../../img/icons/plus-icon.png';
+import ComponentImg from '../../img/component.png';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -135,7 +138,7 @@ class  CreateListing extends Component {
             fieldsSite: {},
             errorsSite: {},
             units:[],
-            progressBar: 33,
+            progressBar: 25,
             products:[],
             productSelected: null,
             nextBlue: false,
@@ -147,10 +150,13 @@ class  CreateListing extends Component {
             title: null,
             description: null,
             volume:null,
-            createSearchData:null,
+            listResourceData:null,
             resourcesMatched:[],
             showCreateSite: false,
-            siteSelected: null
+            showAddComponent: false,
+            siteSelected: null,
+            serial:null,
+            free: false
 
         }
 
@@ -159,7 +165,6 @@ class  CreateListing extends Component {
         this.selectType=this.selectType.bind(this)
         this.selectState=this.selectState.bind(this)
         this.addDetails=this.addDetails.bind(this)
-        this.nextClick=this.nextClick.bind(this)
         this.linkProduct=this.linkProduct.bind(this)
         this.searchLocation=this.searchLocation.bind(this)
         this.previewSearch=this.previewSearch.bind(this)
@@ -171,13 +176,45 @@ class  CreateListing extends Component {
         this.getProducts=this.getProducts.bind(this)
         this.selectProduct=this.selectProduct.bind(this)
         this.handleDateChange=this.handleDateChange.bind(this)
-        this.createSearch=this.createSearch.bind(this)
+        this.createListing=this.createListing.bind(this)
 
         this.loadMatches=this.loadMatches.bind(this)
         this.showCreateSite=this.showCreateSite.bind(this)
         this.getSites=this.getSites.bind(this)
+        this.toggleAddComponent=this.toggleAddComponent.bind(this)
         this.toggleSite=this.toggleSite.bind(this)
+        this.toggleFree=this.toggleFree.bind(this)
+        this.toggleSale=this.toggleSale.bind(this)
 
+
+
+    }
+
+
+
+
+    toggleSale(){
+
+
+        this.setState({
+            free: false
+        })
+    }
+
+    toggleFree(){
+
+
+        this.setState({
+            free: true
+        })
+    }
+
+
+    toggleSite(){
+
+        this.setState({
+            showCreateSite: !this.state.showCreateSite
+        })
     }
 
 
@@ -247,7 +284,7 @@ class  CreateListing extends Component {
 
     }
 
-    createSearch(){
+    createListing(){
 
         var data= {
 
@@ -255,11 +292,11 @@ class  CreateListing extends Component {
                 "description": this.state.description,
                 "category": this.state.catSelected.name,
                 "type": this.state.subCatSelected.name,
-                "units": "10.0",
+                "units": "units",
                 "volume": this.state.volume,
                 "state": this.state.stateSelected,
                 "site_id": this.state.siteSelected,
-                "require_after" : {
+                "availableFrom" : {
                     "unit" : "MILLISECOND",
                     "value" : 1603381408
                 },
@@ -269,10 +306,7 @@ class  CreateListing extends Component {
                 }
             }
 
-            // console.log("create search data")
-            // console.log(data)
-
-        axios.post(baseUrl+"search/"+this.state.productSelected.id,
+        axios.post(baseUrl+"resource",
             data,{
              headers: {
             "Authorization" : "Bearer "+this.props.userDetail.token
@@ -284,7 +318,7 @@ class  CreateListing extends Component {
 
 
                 this.setState({
-                    createSearchData: res.data.content
+                    listResourceData: res.data.content
                 })
 
             }).catch(error => {
@@ -297,10 +331,10 @@ class  CreateListing extends Component {
     }
 
 
-    toggleSite(){
+    toggleAddComponent(){
 
         this.setState({
-            showCreateSite: !this.state.showCreateSite
+            showAddComponent: !this.state.showAddComponent
         })
     }
 
@@ -322,9 +356,9 @@ class  CreateListing extends Component {
     loadMatches(){
 
 
-        for (var i=0;i<this.state.createSearchData.resources.length;i++){
+        for (var i=0;i<this.state.listResourceData.resources.length;i++){
 
-            axios.get(baseUrl+"resource/"+this.state.createSearchData.resources[i],
+            axios.get(baseUrl+"resource/"+this.state.listResourceData.resources[i],
                 {
                     headers: {
                         "Authorization" : "Bearer "+this.props.userDetail.token
@@ -365,39 +399,6 @@ class  CreateListing extends Component {
     }
 
 
-    nextClick(){
-
-
-        if (this.state.active<4){
-
-            this.setState({
-
-                active:4
-            })
-
-        }
-
-        else  if (this.state.active==4){
-
-
-            this.setState({
-
-                active:7
-            })
-
-        }
-
-        else  if (this.state.active==7){
-
-
-            this.setState({
-
-                active:8
-            })
-
-        }
-
-    }
 
 
 
@@ -434,7 +435,7 @@ class  CreateListing extends Component {
 
                     active:4,
                     page: 2,
-                    progressBar: 66
+                    progressBar: 50
                 })
 
             }
@@ -444,17 +445,17 @@ class  CreateListing extends Component {
        else if (this.state.page==2){
 
 
-            if (this.handleValidationAddDetail()){
+            // if (this.handleValidationAddDetail()){
 
                 this.setState({
 
-                    active:6,
+                    active:5,
                     page: 3,
-                    progressBar: 100
+                    progressBar: 75
                 })
 
-                this.createSearch()
-            }
+                // this.createSearch()
+            // }
 
         }
 
@@ -466,15 +467,17 @@ class  CreateListing extends Component {
 
             this.setState({
 
-                active:7,
+                active:8,
                 page: 4,
                 progressBar: 100
             })
 
+            this.createListing()
+
         }
 
 
-        else if (this.state.active==7){
+        else if (this.state.active==8){
 
 
             // alert("here ")
@@ -573,7 +576,7 @@ class  CreateListing extends Component {
 
         this.setState({
 
-            active: 4
+            active: 5
         })
 
     }
@@ -689,17 +692,73 @@ class  CreateListing extends Component {
         }
 
 
-        if(!fields["volume"]){
+        // if(!fields["volume"]){
+        //     formIsValid = false;
+        //     errors["volume"] = "Required";
+        // }else{
+        //
+        //
+        //     this.setState({
+        //
+        //         volume:fields["volume"]
+        //     })
+        // }
+
+
+
+        if(!fields["serial"]){
             formIsValid = false;
-            errors["volume"] = "Required";
+            errors["serial"] = "Required";
         }else{
 
 
             this.setState({
 
-                volume:fields["volume"]
+                serial:fields["serial"]
             })
         }
+
+
+        if(!fields["brand"]){
+            formIsValid = false;
+            errors["brand"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                serial:fields["brand"]
+            })
+        }
+
+
+        if(!fields["manufacturedDate"]){
+            formIsValid = false;
+            errors["manufacturedDate"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                serial:fields["manufacturedDate"]
+            })
+        }
+
+
+        if(!fields["model"]){
+            formIsValid = false;
+            errors["model"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                serial:fields["model"]
+            })
+        }
+
+
+
 
 
 
@@ -960,7 +1019,7 @@ class  CreateListing extends Component {
 
         this.setState({
 
-            active:5
+            active:6
 
         })
 
@@ -1205,6 +1264,18 @@ class  CreateListing extends Component {
     }
 
 
+
+    handleSubmitComponent = event => {
+
+
+        event.preventDefault();
+
+
+        this.toggleAddComponent()
+
+    }
+
+
     render() {
 
         const    classes = withStyles();
@@ -1243,7 +1314,7 @@ class  CreateListing extends Component {
                     </div>
                 </div>
 
-                <div className="container   pb-5 pt-5">
+                <div className="container add-listing-container   pb-5 pt-5">
                     <div className="row no-gutters">
                         <div className="col-auto">
                             <h3 className={"blue-text text-heading"}>Create a Listing
@@ -1313,8 +1384,8 @@ class  CreateListing extends Component {
                         <div className="col-12  mt-4">
 
                             <TextField
-                                onChange={this.handleChange.bind(this, "manufacture")}
-                                name={"startDate"}
+                                onChange={this.handleChange.bind(this, "manufacturedDate")}
+                                name={"manufacturedDate"}
                                 id="input-with-icon-textfield"
 
                                 InputLabelProps={{
@@ -1334,17 +1405,40 @@ class  CreateListing extends Component {
                                     ),
                                 }}
                             />
-                            {this.state.errors["startDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["startDate"]}</span>}
-
+                            {this.state.errors["manufacturedDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["manufacturedDate"]}</span>}
 
                         </div>
 
 
 
                         <div className="col-12 mt-4">
+                            <div className={"custom-label text-bold text-blue mb-3"}>Add Photos</div>
 
-                            <TextField onChange={this.handleChange.bind(this, "brand")} name={"brand"} id="outlined-basic" label="Brand" variant="outlined" fullWidth={true} />
-                            {this.state.errors["brand"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["brand"]}</span>}
+                            <div className="container  pb-5 ">
+
+                                <div className="row camera-grids   no-gutters   ">
+                                    <div className="col-4 p-1 text-center ">
+
+                                        <div className="card shadow border-0 mb-3 container-gray border-rounded">
+                                            <div className={"card-body"}>
+                                                <img src={CameraGray} className={"camera-icon-preview"}/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div className="col-4  p-1 text-center ">
+
+                                        <div className="card shadow border-0 mb-3 container-gray border-rounded ">
+                                            <div className={"card-body"}>
+
+                                                <img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
@@ -1353,22 +1447,22 @@ class  CreateListing extends Component {
 
 
 
-                    <div className="row no-gutters justify-content-center mt-4">
+                    {/*<div className="row no-gutters justify-content-center mt-4">*/}
 
-                    <div className="col-6 pr-2">
+                    {/*<div className="col-6 pr-2">*/}
 
-                        <UnitSelect units={this.state.units} />
-
-
-                    </div>
-                        <div className="col-6 pl-2">
-
-                            <TextField onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
-                            {this.state.errors["volume"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["volume"]}</span>}
+                        {/*<UnitSelect units={this.state.units} />*/}
 
 
-                        </div>
-                    </div>
+                    {/*</div>*/}
+                        {/*<div className="col-6 pl-2">*/}
+
+                            {/*<TextField onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />*/}
+                            {/*{this.state.errors["volume"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["volume"]}</span>}*/}
+
+
+                        {/*</div>*/}
+                    {/*</div>*/}
                     </form>
 
                 </div>
@@ -1391,7 +1485,6 @@ class  CreateListing extends Component {
 
 
                             <div className="col-auto">
-
 
                                 <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
 
@@ -1520,6 +1613,57 @@ class  CreateListing extends Component {
                         <div className="row no-gutters">
                             <div className="col-10">
 
+                                <h6>List Components </h6>
+                            </div>
+
+
+                            <div className="col-auto">
+
+                                <Close onClick={this.handleBack}  className="blue-text" style={{ fontSize: 32 }} />
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div className="container  search-container pb-5 pt-3">
+                        <div className="row no-gutters">
+                            <div className="col-auto">
+                                <h3 className={"blue-text text-heading"}>List Components
+                                </h3>
+                                <p>Does this resource have any components that you wish to sell? List them below.</p>
+
+                            </div>
+                        </div>
+                        <div className="row no-gutters  mt-2">
+
+                            <div className={"custom-label text-bold text-blue mb-3"}>Components</div>
+
+
+                        <ComponentItem />
+
+
+                            <div className="col-12 mb-3">
+
+                                <p style={{margin:"10px 0"}} onClick={this.toggleAddComponent} className={"green-text forgot-password-link text-mute small"}>+ Add Component</p>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div className={this.state.active == 5?"":"d-none"}>
+
+                    <div className="container  pt-2 pb-3">
+
+                        <div className="row no-gutters">
+                            <div className="col-10">
+
                                 <h6>Add Details </h6>
                             </div>
 
@@ -1621,14 +1765,71 @@ class  CreateListing extends Component {
 
                             </div>
 
+
+
+                            <div className="col-12 mb-3">
+
+
+                                <TextField
+                                    onChange={this.handleChange.bind(this, "endDate")}
+                                    name={"endDate"}
+                                    id="input-with-icon-textfield"
+
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    label="Required by"
+                                    type={"date"}
+                                    variant="outlined"
+                                    className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                    id="input-with-icon-textfield"
+                                    minDate={new Date()}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <img  className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                {this.state.errors["endDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["endDate"]}</span>}
+
+
+                            </div>
+
+
+                            <div className="col-12 mb-3">
+
+                                <p>Price</p>
+
+                                <div onClick={this.toggleSale} className={!this.state.free?"btn-select-free green-bg":"btn-select-free"}>For Sale</div>
+
+                                <div  onClick={this.toggleFree} className={this.state.free?"btn-select-free green-bg":"btn-select-free"}>Free</div>
+
+
+                            </div>
+
+                            {!this.state.free && <div className="col-12 mb-5">
+
+                                <TextField
+                                    id="input-with-icon-textfield"
+                                    label="Enter Value"
+                                    variant="outlined"
+                                    className={clsx(classes.margin, classes.textField) + " full-width-field"}
+                                    id="input-with-icon-textfield"
+
+                                />
+
+                            </div>
+                            }
+
                         </div>
                     </div>
                 </div>
 
 
 
-
-                <div className={this.state.active == 5?"":"d-none"}>
+                <div className={this.state.active == 6?"":"d-none"}>
 
 
                         <div className="container  pt-2 pb-3">
@@ -1672,11 +1873,14 @@ class  CreateListing extends Component {
 
                         </div>
 
+
+
+
                 </div>
 
 
 
-                <div className={this.state.active == 6?"":"d-none"}>
+                <div className={this.state.active == 7?"":"d-none"}>
 
                     <div className="container  pt-3 pb-3">
 
@@ -1720,7 +1924,8 @@ class  CreateListing extends Component {
                         <div className="row justify-content-center pb-4 pt-2 ">
 
                             <div className="col-auto">
-                                <p className={"text-blue text-center"}>Your search has been created.
+                                <p className={"text-blue text-center"}>
+                                    Your listing has been created.
                                     You will be notified when a
                                     match is found.
                                 </p>
@@ -1733,10 +1938,10 @@ class  CreateListing extends Component {
                 </div>
 
 
-                <div className={this.state.active == 7?"":"d-none"}>
+                <div className={this.state.active == 8?"":"d-none"}>
 
 
-                    {this.state.createSearchData &&
+                    {this.state.listResourceData &&
                         <>
                       <div className="container  pt-3 pb-3">
 
@@ -1781,7 +1986,7 @@ class  CreateListing extends Component {
 
                                 </div>
                                 <div className="col-12 mt-2">
-                                    <h5 className={"blue-text text-heading"}>{this.state.createSearchData.name}
+                                    <h5 className={"blue-text text-heading"}>{this.state.listResourceData.name}
                                     </h5>
 
                                 </div>
@@ -1791,7 +1996,7 @@ class  CreateListing extends Component {
                             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                                 <div className="col-auto">
-                                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.createSearchData.description}
+                                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.listResourceData.description}
                                     </p>
 
                                 </div>
@@ -1817,8 +2022,8 @@ class  CreateListing extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.category} ></p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.type}</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.listResourceData.category} ></p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.listResourceData.type}</p>
 
                                 </div>
                             </div>
@@ -1829,7 +2034,7 @@ class  CreateListing extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.volume} {this.state.createSearchData.units}</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.listResourceData.volume} {this.state.listResourceData.units}</p>
                                 </div>
                             </div>
 
@@ -1841,7 +2046,7 @@ class  CreateListing extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.state}</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.listResourceData.state}</p>
                                 </div>
                             </div>
 
@@ -1881,7 +2086,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 8?"":"d-none"}>
+                <div className={this.state.active == 9?"":"d-none"}>
 
 
 
@@ -1902,17 +2107,36 @@ class  CreateListing extends Component {
 
                 </div>
 
-                {this.state.active<8 &&
+                {this.state.active<9 &&
                 <React.Fragment>
 
                     <CssBaseline/>
+
+
+
+
 
                     <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
                         {/*<ProgressBar now={this.state.progressBar}  />*/}
                         {this.state.page<4 &&  <LinearProgress variant="determinate" value={this.state.progressBar} />}
                         <Toolbar>
 
-                            {this.state.active<7 &&
+
+                            {this.state.active==6 &&
+
+                            <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+
+                                <div className="col-auto">
+                                    <p style={{margin:"10px 0"}}  className={"green-text forgot-password-link text-mute small"}>
+                                        <Link to={"/create-product"} >Create New Product  </Link> </p>
+
+                                </div>
+
+                            </div>
+                            }
+
+
+                            {this.state.active<7 && this.state.active!=6 &&
 
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
@@ -1925,7 +2149,7 @@ class  CreateListing extends Component {
                                 </div>
                                 <div className="col-auto" style={{margin:"auto"}}>
 
-                                    <p  className={"blue-text"}> Page {this.state.page}/3</p>
+                                    <p  className={"blue-text"}> Page {this.state.page}/4</p>
                                 </div>
                                 <div className="col-auto">
 
@@ -1957,21 +2181,22 @@ class  CreateListing extends Component {
                                 </div>
                             </div>}
 
-                            {this.state.active ==7 &&
+                            {this.state.active ==8 &&
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
                                 <div className="col-auto">
-                                     <button type="button" onClick={this.selectCreateSearch}
+                                     <Link to={"/create-listing"} type="button"
                                                                                       className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                        Cancel Search
 
-                                    </button>
+                           Create Listing
+                                    </Link>
                                 </div>
                                     <div className="col-auto">
-                                        <Link  to={"/matches/"+this.state.createSearchData.id}  type="button"
-                                               // onClick={this.handleNext}
-                                                                                          className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                            View ({this.state.createSearchData.resources.length}) Matches
+
+
+                                        <Link  to={"/my-listings"}  type="button" className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+
+                                            View My Listings
 
                                         </Link>
                                     </div>
@@ -1986,7 +2211,7 @@ class  CreateListing extends Component {
 
 
 
-                {this.state.showCreateSite &&
+                {this.state.showAddComponent &&
 
                     <>
                 <div className={"body-overlay"}>
@@ -1994,19 +2219,19 @@ class  CreateListing extends Component {
                         <div className=" text-right ">
 
 
-                            <Link to={"/"} > < Close onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} /> </Link>
+                             < Close onClick={this.toggleAddComponent} className="blue-text" style={{ fontSize: 32 }} />
 
                         </div>
 
 
                         <div className={"row"}>
                             <div className={"col-12"}>
-                           <form  onSubmit={this.handleSubmitSite}>
+                           <form  onSubmit={this.handleSubmitComponent}>
                     <div className="row no-gutters justify-content-center ">
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+                            <TextField id="outlined-basic" label="Component Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
 
                             {this.state.errors["name"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["name"]}</span>}
 
@@ -2014,44 +2239,58 @@ class  CreateListing extends Component {
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"}  onChange={this.handleChangeSite.bind(this, "contact")} />
+                            <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"brand"}  onChange={this.handleChangeSite.bind(this, "brand")} />
 
-                            {this.state.errors["contact"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["contact"]}</span>}
-
-                        </div>
-
-                        <div className="col-12 mt-4">
-
-                            <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                            {this.state.errors["address"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["address"]}</span>}
-
-                        </div>
-                        <div className="col-12 mt-4">
-
-                            <TextField id="outlined-basic"  type={"number"} name={"phone"} label="Phone" variant="outlined" fullWidth={true} />
-
+                            {this.state.errors["brand"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["brand"]}</span>}
 
                         </div>
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+                            <TextField id="outlined-basic" label="Model Number(If Applicable)" variant="outlined" fullWidth={true} name={"model"} type={"text"} onChange={this.handleChangeSite.bind(this, "model")} />
 
-                            {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+                            {this.state.errors["model"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["model"]}</span>}
 
                         </div>
                         <div className="col-12 mt-4">
 
-                            <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+                            <TextField id="outlined-basic"  type={"serial"} name={"serial"} label="Serial Number" variant="outlined" fullWidth={true} />
 
-                            {this.state.errors["others"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["others"]}</span>}
 
                         </div>
+                        <div className="col-12 mt-4">
+
+                        <div className="  ">
+
+                            <div className="row camera-grids   no-gutters   ">
+                                <div className="col-4 p-1 text-center ">
+
+                                    <div className="card shadow border-0 mb-3 container-gray border-rounded">
+                                        <div className={"card-body"}>
+                                            <img src={CameraGray} className={"camera-icon-preview"}/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="col-4  p-1 text-center ">
+
+                                    <div className="card shadow border-0 mb-3 container-gray border-rounded ">
+                                        <div className={"card-body"}>
+
+                                            <img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
 
                         <div className="col-12 mt-4">
 
-                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Component</button>
                         </div>
 
 
@@ -2063,6 +2302,87 @@ class  CreateListing extends Component {
 
                     </div>
                 </div>
+                </>
+                }
+
+
+                {this.state.showCreateSite &&
+
+                <>
+                    <div className={"body-overlay"}>
+                        <div className={"modal-popup site-popup"}>
+                            <div className=" text-right ">
+
+
+                                <Link to={"/"} > < Close onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} /> </Link>
+
+                            </div>
+
+
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    <form  onSubmit={this.handleSubmitSite}>
+                                        <div className="row no-gutters justify-content-center ">
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+
+                                                {this.state.errors["name"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["name"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"}  onChange={this.handleChangeSite.bind(this, "contact")} />
+
+                                                {this.state.errors["contact"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["contact"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
+
+                                                {this.state.errors["address"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["address"]}</span>}
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic"  type={"number"} name={"phone"} label="Phone" variant="outlined" fullWidth={true} />
+
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+
+                                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+
+                                                {this.state.errors["others"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["others"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                            </div>
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
                 </>
                 }
 
@@ -2128,7 +2448,7 @@ function BottomAppBar() {
                         </div>
                         <div className="col-auto" style={{margin:"auto"}}>
 
-                         <p  className={"blue-text"}> Page 2/3</p>
+                         <p  className={"blue-text"}> Page 2/4</p>
                         </div>
                         <div className="col-auto">
 
@@ -2251,6 +2571,34 @@ const useStylesSelect = makeStyles((theme) => ({
         marginTop: theme.spacing(0),
     },
 }));
+
+
+
+
+function ComponentItem() {
+
+    return(
+        <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+
+
+            <div className={"col-4"}>
+
+                 <img className={"img-fluid"} src={ComponentImg}/>
+            </div>
+            <div className={"col-8 pl-3 content-box-listing"}>
+                <p style={{fontSize:"18px"}} className=" mb-1">{"MO31 Bi-Directional Motor"}</p>
+                <p style={{fontSize:"16px"}} className="text-mute mb-1">{"Commercial Ovens > "}</p>
+                <p style={{fontSize:"16px"}} className="text-mute mb-1">{"Spare parts"}</p>
+            </div>
+
+
+
+        </div>
+
+    )
+
+
+}
 
 
 

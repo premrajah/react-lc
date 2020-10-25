@@ -203,16 +203,18 @@ class  Loops extends Component {
                             <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
                             <div className={"col-8 content-box-listing"}>
+                                <Link  to={"loop-detail/"+item.id}>
+                                    <>
                                 <h5 style={{fontSize:"18px"}} className=" mb-1">{item.resource.name}</h5>
                                 <p style={{fontSize:"18px"}} className=" mb-1">{item.from.org_id}  →  {item.to.org_id}</p>
                                 <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.resource.category}</p>
                                 <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.resource.state} / {item.resource.volume} {item.resource.units}</p>
-
+                               </>
+                                </Link>
 
                             </div>
                             <div style={{textAlign:"right"}} className={"col-4"}>
                                 <p className={"green-text text-mute small" } >
-                                    {/*<img src={RefreshIcon} style={{marginRight:"5px"}} />*/}
                                     {item.state}</p>
                             </div>
                         </div>

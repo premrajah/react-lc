@@ -65,6 +65,7 @@ import FilterIcon from '@material-ui/icons/Filter';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import SearchItem from './search-item'
+import ResourceItem from '../item/ResourceItem'
 
 import PaperImg from '../../img/paper.png';
 
@@ -100,8 +101,6 @@ class  MyListings extends Component {
     }
 
 
-
-
     componentDidMount(){
 
 
@@ -114,7 +113,7 @@ class  MyListings extends Component {
     getItems(){
 
 
-        var url = baseUrl+"search"
+        var url = baseUrl+"resource"
 
 
         console.log(url)
@@ -232,7 +231,7 @@ class  MyListings extends Component {
                         {this.state.items.map((item)=>
 
 
-                        <SearchItem item={item} />
+                        <ResourceItem item={item} />
 
 
                         )}
@@ -258,8 +257,7 @@ class  MyListings extends Component {
 
                                     <div className="col-auto">
 
-                                        <Link to={"/create-search"}><p className={"green-text bottom-bar-text"}> Create New Search </p></Link>
-
+                                        <Link to={"/list-form"}><p className={"green-text bottom-bar-text"}> Create New Listing </p></Link>
 
                                     </div>
 

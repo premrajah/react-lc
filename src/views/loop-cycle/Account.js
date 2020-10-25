@@ -180,7 +180,7 @@ class  Account extends Component {
 
                                 <Link to={"/loops"} className="list-group-item list-group-item-action ">
                                     <img src={Rings} className={"account-icons truck-icon "} />
-                                    My Loops <NavigateNextIcon /></Link>
+                                    My Cycles <NavigateNextIcon /></Link>
 
 
 

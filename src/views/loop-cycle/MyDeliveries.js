@@ -377,7 +377,7 @@ function NavTabs() {
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">2 Loops</p>
+                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Cycles</p>
                         </div>
                     </div>
 

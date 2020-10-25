@@ -196,7 +196,7 @@ function NavTabs() {
                     aria-label="nav tabs example"
                 >
                     <LinkTab label="Listings" href="/drafts" {...a11yProps(0)} />
-                    <LinkTab label="Loops" href="/trash" {...a11yProps(1)} />
+                    <LinkTab label="Cycles" href="/trash" {...a11yProps(1)} />
                     <LinkTab label="About" href="/spam" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
@@ -283,7 +283,7 @@ function NavTabs() {
                         <div className={"col-12"}>
 
                             <TextField
-                                label={"Search this seller’s loops"}
+                                label={"Search this seller’s Cycles"}
                                 variant="outlined"
                                 className={clsx(classes.margin, classes.textField)+" full-width-field" }
                                 id="input-with-icon-textfield"
@@ -302,7 +302,7 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">2 Loops</p>
+                            <p style={{fontSize:"18px"}} className="text-mute mb-1">Cycles</p>
 
                         </div>
                         {/*<div className="text-mute col-auto pl-0">*/}
@@ -390,7 +390,7 @@ function NavTabs() {
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">2 Loops</p>
+                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Cycles</p>
                         </div>
                     </div>
 

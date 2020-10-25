@@ -186,7 +186,7 @@ class  Loops extends Component {
                             <div className="row  justify-content-center filter-row listing-row-border  pt-3 pb-3">
 
                                 <div className="col">
-                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">2 Loops </p>
+                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">Cycles</p>
 
                                 </div>
                                 <div className="text-mute col-auto pl-0">

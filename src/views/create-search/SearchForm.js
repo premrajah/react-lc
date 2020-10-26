@@ -71,6 +71,7 @@ import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from  '../item/ResourceItem'
+import HeaderDark from '../header/HeaderDark'
 
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 // pick a date util library
@@ -79,6 +80,7 @@ import ResourceItem from  '../item/ResourceItem'
 // import LuxonUtils from '@date-io/luxon';
 // import DateFnsUtils from 'date-i-fns';
 // import DateFnsUtils from '@date-io/date-fns';
+import Sidebar from '../menu/Sidebar'
 
 import {
     DatePicker,
@@ -1216,31 +1218,39 @@ class  SearchForm extends Component {
             <>
 
 
-                <div className="container  p-2">
-                </div>
+                {/*<div className="container  p-2">*/}
+                {/*</div>*/}
+                <Sidebar />
+                <HeaderDark />
+
+                <div className={this.state.active == 0?"mb-5 pb-5":"d-none"}>
+
+                <div className="mt-5  pt-5 pb-3">
 
 
+                    {/*<HeaderWhiteBack    />*/}
 
-                <div className={this.state.active == 0?"":"d-none"}>
-
-                <div className="container  pt-2 pb-3">
-
-                    <div className="row no-gutters">
-                        <div className="col-10">
-
-                            <h6>Create a Search </h6>
-                        </div>
+                    <HeaderWhiteBack history={this.props.history} heading={"Create Search"}/>
 
 
-                        <div className="col-auto">
+                    {/*<div className="row no-gutters">*/}
+                        {/*<div className="col-10">*/}
+
+                            {/*<h6>Create a Search </h6>*/}
+                        {/*</div>*/}
 
 
-                            <Link to={"/create-search"}><Close  className="blue-text" style={{ fontSize: 32 }} /></Link>
-
-                        </div>
+                        {/*<div className="col-auto">*/}
 
 
-                    </div>
+                            {/*<Link to={"/create-search"}><Close  className="blue-text" style={{ fontSize: 32 }} /></Link>*/}
+
+                        {/*</div>*/}
+
+
+                    {/*</div>*/}
+
+
                 </div>
 
                 <div className="container   pb-5 pt-5">
@@ -1308,7 +1318,7 @@ class  SearchForm extends Component {
                     </form>
 
                 </div>
-         </div>
+              </div>
 
 
 
@@ -1317,7 +1327,7 @@ class  SearchForm extends Component {
 
                 <div className={this.state.active == 1?"":"d-none"}>
 
-                    <div className="container  pt-2 pb-3">
+                    <div className="container mb-5  pt-2 pb-5">
 
                         <div className="row no-gutters">
                             <div className="col-10">
@@ -1337,7 +1347,7 @@ class  SearchForm extends Component {
                         </div>
                     </div>
 
-                    <div className="container   pb-3 pt-3">
+                    <div className="container   pb-5 mb-5 pt-3">
 
                     {this.state.categories.map((item)=>
 
@@ -1364,7 +1374,7 @@ class  SearchForm extends Component {
 
 
                 <div className={this.state.active == 2?"":"d-none"}>
-                    <div className="container  pt-2 pb-3">
+                    <div className="container  pt-2 mb-5 pb-5">
 
                         <div className="row no-gutters">
                             <div className="col-10">
@@ -1382,7 +1392,7 @@ class  SearchForm extends Component {
                         </div>
                     </div>
 
-                    <div className="container   pb-3 pt-3">
+                    <div className="container   pb-5 mb-5 pt-3">
 
                         {this.state.subCategories && this.state.subCategories.map((item) =>
 
@@ -1407,7 +1417,7 @@ class  SearchForm extends Component {
 
                 <div className={this.state.active == 3?"":"d-none"}>
 
-                    <div className="container  pt-2 pb-3">
+                    <div className="container  pt-2 pb-5 mb-5">
 
                         <div className="row no-gutters">
                             <div className="col-10">
@@ -1596,7 +1606,7 @@ class  SearchForm extends Component {
                         </div>
 
 
-                        <div className="container   pb-3 pt-3">
+                        <div className="container mb-5   pb-5 pt-3">
                             {this.state.products.map((item)=>
                                 <div  data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
                                 <div className="col-2">
@@ -1622,7 +1632,7 @@ class  SearchForm extends Component {
 
                 <div className={this.state.active == 6?"":"d-none"}>
 
-                    <div className="container  pt-3 pb-3">
+                    <div className="container  pt-3 pb-5 mb-5">
 
                         <div className="row no-gutters justify-content-end">
 

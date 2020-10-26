@@ -17,6 +17,7 @@ import ViewSearch from "./views/loop-cycle/ViewSearch";
 import ViewSearchPage from "./views/loop-cycle/ViewSearchPage";
 import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browser-resources/ItemDetail";
+import ItemCycleDetail from "./views/browser-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
 import CreateProduct from "./views/create-product/create-product";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
@@ -104,14 +105,15 @@ class App extends Component{
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
+                        <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
+                        <LoggedInRoute exact path="/product-cycle-detail/:slug" component={ItemCycleDetail} />
                         <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
-
-
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
+
 
 
 

@@ -100,7 +100,7 @@ goToInbox(){
 
     <div className="container header-white listing-row-border">
 
-        <div className="row no-gutters p-2">
+        <div className="row no-gutters p-0">
             <div className="col-auto" style={{margin:"auto"}}>
 
                 <NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32 }}/>

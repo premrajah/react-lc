@@ -421,7 +421,9 @@ class  ItemDetail extends Component {
                                     </div>
                                 </Toolbar>
                             </AppBar>
-                        </React.Fragment>}
+                        </React.Fragment>
+
+                        }
 
 
 

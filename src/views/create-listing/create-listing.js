@@ -93,6 +93,8 @@ import {signUpFailed} from "../../store/actions/actions";
 import CameraGray from '../../img/icons/camera-gray.png';
 import PlusGray from '../../img/icons/plus-icon.png';
 import ComponentImg from '../../img/component.png';
+import ProductBlue from '../../img/icons/product-blue.png';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -110,6 +112,7 @@ const useStylesTabs = makeStyles((theme) => ({
 
     },
 }));
+
 
 
 class  CreateListing extends Component {
@@ -426,8 +429,6 @@ class  CreateListing extends Component {
 
         if (this.state.page==1){
 
-
-
             this.getSites()
             if (this.handleValidation()){
 
@@ -467,7 +468,7 @@ class  CreateListing extends Component {
 
             this.setState({
 
-                active:8,
+                active:7,
                 page: 4,
                 progressBar: 100
             })
@@ -1746,7 +1747,7 @@ class  CreateListing extends Component {
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
-                                    label="Required by"
+                                    label="Available From"
                                     type={"date"}
                                     variant="outlined"
                                     className={clsx(classes.margin, classes.textField)+" full-width-field" }
@@ -1774,11 +1775,10 @@ class  CreateListing extends Component {
                                     onChange={this.handleChange.bind(this, "endDate")}
                                     name={"endDate"}
                                     id="input-with-icon-textfield"
-
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
-                                    label="Required by"
+                                    label="Expires"
                                     type={"date"}
                                     variant="outlined"
                                     className={clsx(classes.margin, classes.textField)+" full-width-field" }
@@ -1916,7 +1916,7 @@ class  CreateListing extends Component {
                             <div className="col-auto pb-4 pt-5">
 
 
-                                <img className={"search-icon-middle"}  src={SearchIcon} />
+                                <img className={"search-icon-middle"}  src={ProductBlue} />
 
                             </div>
                         </div>
@@ -2112,10 +2112,6 @@ class  CreateListing extends Component {
 
                     <CssBaseline/>
 
-
-
-
-
                     <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
                         {/*<ProgressBar now={this.state.progressBar}  />*/}
                         {this.state.page<4 &&  <LinearProgress variant="determinate" value={this.state.progressBar} />}
@@ -2149,7 +2145,7 @@ class  CreateListing extends Component {
                                 </div>
                                 <div className="col-auto" style={{margin:"auto"}}>
 
-                                    <p  className={"blue-text"}> Page {this.state.page}/4</p>
+                                    <p  className={"blue-text"}> Page {this.state.page}/3</p>
                                 </div>
                                 <div className="col-auto">
 
@@ -2172,7 +2168,7 @@ class  CreateListing extends Component {
                                     {this.state.page ==3 &&
                                     <button onClick={this.handleNext} type="button"
                                             className={this.state.nextBlueAddDetail?"btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 ":"btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
-                                        View Search
+                                        Post Listing
 
                                     </button>
                                     }
@@ -2181,25 +2177,19 @@ class  CreateListing extends Component {
                                 </div>
                             </div>}
 
-                            {this.state.active ==8 &&
+                            {this.state.active ==7 &&
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
-                                <div className="col-auto">
-                                     <Link to={"/create-listing"} type="button"
-                                                                                      className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
 
-                           Create Listing
-                                    </Link>
-                                </div>
-                                    <div className="col-auto">
+                                {this.state.listResourceData &&<div className="col-auto">
 
 
-                                        <Link  to={"/my-listings"}  type="button" className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                        <Link  to={"/"+this.state.listResourceData&&this.state.listResourceData.id}  type="button" className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
 
-                                            View My Listings
+                                            View Listing
 
                                         </Link>
-                                    </div>
+                                    </div>}
                                 </div>
                                 }
 
@@ -2448,7 +2438,7 @@ function BottomAppBar() {
                         </div>
                         <div className="col-auto" style={{margin:"auto"}}>
 
-                         <p  className={"blue-text"}> Page 2/4</p>
+                         <p  className={"blue-text"}> Page 2/3</p>
                         </div>
                         <div className="col-auto">
 

@@ -85,7 +85,12 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import HeaderWhiteBack from '../header/HeaderWhiteBack'
+import {withStyles} from "@material-ui/core/styles/index";
+import TescoImg from '../../img/tesco.png';
+import BuyerImg from '../../img/buyer-img.png';
+import LogiImg from '../../img/logistics-img.png';
+import GrayLoop from '../../img/icons/gray-loop.png';
 
 
 class  LoopDetail extends Component {
@@ -102,88 +107,37 @@ class  LoopDetail extends Component {
             nextIntervalFlag: false
         }
 
-
     }
-
-
-
-
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
-    interval
 
 
     componentWillMount(){
 
     }
-
     componentDidMount(){
 
-
-
     }
-
-    intervalJasmineAnim
-
-
 
 
 
     render() {
 
+        const    classes = withStyles();
+        const classesBottom = withStyles();
+
+
+
         return (
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage">
+                <div className="wrapper accountpage loop-cycle-page">
 
-                    <div className="container header-container pt-3 pb-3">
-
-                        <div className="row no-gutters ">
-                            <div className="col-auto" style={{margin:"auto"}}>
-
-                                <NavigateBefore  style={{ fontSize: 32 }}/>
-                            </div>
-
-                            <div className="col text-center blue-text"  style={{margin:"auto"}}>
-                                <p>Loop Details </p>
-                            </div>
-
-                            <div className="col-auto">
-
-                                <button className="btn   btn-link text-dark menu-btn">
-                                    <Close className="" style={{ fontSize: 32 }} />
-
-                                </button>
-                            </div>
+                    <HeaderWhiteBack history={this.props.history} heading={"View Cycle"}/>
 
 
-                        </div>
-                    </div>
-
-
-                    <BottomAppBar/>
                     <div className="container  pt-3 pb-3">
-
-
-                        <LoopAccordion />
+                        <LoopAccordion  loop={this.props.loop}/>
                     </div>
-
-
 
                 </div>
 
@@ -208,12 +162,14 @@ const useStylesAccordian = makeStyles((theme) => ({
 
 
 
- function LoopAccordion() {
+ function LoopAccordion(props) {
+
+
+     // alert(props.logistics.email)
     const classes = useStylesAccordian();
 
     return (
         <div className={classes.root}>
-            <p className={"heading-accordian small"}>From</p>
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -221,16 +177,16 @@ const useStylesAccordian = makeStyles((theme) => ({
                     id="panel1a-header"
                 >
                     <Typography className={classes.heading}>
-
+                        <p className={"heading-accordian text-blue text-bold"}>Seller</p>
                         <div className="row no-gutters justify-content-center ">
 
                             <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
+                                <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Tesco</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">Paper Card</p>
+                                <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.producer.org.name}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{props.loop.producer.email}</p>
 
                             </div>
 
@@ -245,7 +201,6 @@ const useStylesAccordian = makeStyles((theme) => ({
                     </Typography>
                 </AccordionDetails>
             </Accordion>
-            <p className={"heading-accordian small"}>To</p>
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -253,16 +208,18 @@ const useStylesAccordian = makeStyles((theme) => ({
                     id="panel2a-header"
                 >
                     <Typography className={classes.heading}>
+                        <p className={"heading-accordian text-blue text-bold"}>Buyer</p>
 
                         <div className="row no-gutters justify-content-center ">
 
                             <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
+                                <figure className="avatar avatar-60 border-0"><img src={BuyerImg} alt="" /></figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Company B</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@company-b</p>
+                                <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.consumer.org.name}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@{props.loop.consumer.email}</p>
+                                {/*<p style={{fontSize:"16px"}} className="text-mute mb-1">@{props.loop.consumer.email}</p>*/}
 
                             </div>
 
@@ -276,7 +233,9 @@ const useStylesAccordian = makeStyles((theme) => ({
                     </Typography>
                 </AccordionDetails>
             </Accordion>
-            <p className={"heading-accordian small"}>Via</p>
+
+
+            {props.loop.logistics &&
             <Accordion >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -284,15 +243,18 @@ const useStylesAccordian = makeStyles((theme) => ({
                     id="panel3a-header"
                 >
                     <Typography className={classes.heading}>
+                        <p className={"heading-accordian text-blue text-bold"}>Logistics</p>
+
                         <div className="row no-gutters justify-content-center ">
 
                             <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0"><img src="img/user1.png" alt="" /></figure>
+                                <figure className="avatar avatar-60 border-0"><img src={LogiImg} alt="" /></figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">DPD Group</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@dpd</p>
+
+                                <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.logistics.org.name}</p>
+                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{props.loop.producer.email}</p>
 
                             </div>
 
@@ -301,10 +263,10 @@ const useStylesAccordian = makeStyles((theme) => ({
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        <ViaContent />
+                        <ViaContent loop={props.loop} />
                     </Typography>
                 </AccordionDetails>
-            </Accordion>
+            </Accordion>}
         </div>
     );
 }
@@ -426,7 +388,7 @@ function ToContent() {
         </>
     );
 }
-function ViaContent() {
+function ViaContent(props) {
 
 
 
@@ -437,25 +399,16 @@ function ViaContent() {
         <>
 
 
-            <div className="row no-gutters  justify-content-center">
-
-
-
-                <div className="col-auto ">
-                    <img className={"img-fluid"}  src={PaperImg} />
-
-                </div>
-            </div>
 
             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                <div className="col-12">
-                    <p className={"green-text text-heading"}>@Tesco
-                    </p>
+                {/*<div className="col-12">*/}
+                    {/*<p className={"green-text text-heading"}>@Tesco*/}
+                    {/*</p>*/}
 
-                </div>
+                {/*</div>*/}
                 <div className="col-12 mt-2">
-                    <h5 className={"blue-text text-heading"}>Food boxes needed
+                    <h5 className={"blue-text text-heading"}>Contact Deails
                     </h5>
 
                 </div>
@@ -465,8 +418,8 @@ function ViaContent() {
             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                 <div className="col-auto">
-                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Lots of disposable food boxes. In good condition, cleaned thoroughly. Only used once.
-                        Please message if you are interested.
+                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
+                        Email : {props.loop.logistics.email}
                     </p>
 
                 </div>
@@ -475,8 +428,10 @@ function ViaContent() {
 
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
-                    <h6 className={""}>Item Details
+                    <h6 className={""}>Tracking Details
                     </h6>
+
+                    <p>Tracking Number:  {props.loop.tracking}</p>
 
                 </div>
             </div>

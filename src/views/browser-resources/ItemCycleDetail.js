@@ -53,6 +53,7 @@ import StateIcon from '../../img/icons/state.png';
 import PaperImg from '../../img/paper-big.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+import ItemDetail from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
@@ -77,7 +78,7 @@ import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
 
-class  ItemDetail extends Component {
+class  ItemCycleDetail extends Component {
 
     slug;
 
@@ -175,7 +176,6 @@ class  ItemDetail extends Component {
 
                     <HeaderDark />
                     <div className="container-fluid " style={{padding:"0"}}>
-
 
                         <div className="row no-gutters  justify-content-center">
 
@@ -434,4 +434,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(ItemDetail);
+)(ItemCycleDetail);

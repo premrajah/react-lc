@@ -48,35 +48,45 @@ import HandGreyIcon from '../../img/icons/hand-gray.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
 import ListIcon from '../../img/icons/list.png';
+import BottomDetail from '../../img/bottom-detail.png';
+import BottomDetailInfo from '../../img/bottom-detail-info.png';
+
+import ProImg from '../../img/img-product.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
 import PaperImg from '../../img/paper-big.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import ItemDetail from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Spinner, Alert} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import SearchGray from '@material-ui/icons/Search';
-import FilterIcon from '@material-ui/icons/Filter';
-import Close from '@material-ui/icons/Close';
+
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
+import CubeBlue from '../../img/icons/product-icon-big.png';
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+import FastfoodIcon from '@material-ui/icons/Fastfood';
+import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import HotelIcon from '@material-ui/icons/Hotel';
+import BusinessIcon from '@material-ui/icons/Business';
+import RepeatIcon from '@material-ui/icons/Repeat';
+import TextField from '@material-ui/core/TextField';
+
 
 class  ItemCycleDetail extends Component {
 
@@ -91,12 +101,22 @@ class  ItemCycleDetail extends Component {
             timerEnd: false,
             count : 0,
             nextIntervalFlag: false,
-            item:{}
+            item:{},
+            codeImg:null,
+            searches:[],
+            fields: {},
+            errors: {},
+            active: 0  , //0 logn. 1- sign up , 3 -search,
+            formValid : false
         }
 
         this.slug = props.match.params.slug
 
         this.getResources=this.getResources.bind(this)
+        this.getQrCode=this.getQrCode.bind(this)
+        this.loadSearches=this.loadSearches.bind(this)
+
+
 
     }
 
@@ -113,10 +133,216 @@ class  ItemCycleDetail extends Component {
 
 
 
+
+    handleValidationSubmitGreen(){
+
+        // alert("called")
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["password"]){
+            formIsValid = false;
+            // errors["password"] = "Required";
+        }
+
+
+        if(!fields["email"]){
+            formIsValid = false;
+            // errors["email"] = "Required";
+        }
+
+        if(typeof fields["email"] !== "undefined"){
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                // errors["email"] = "Invalid email address";
+            }
+        }
+
+
+        this.setState({formValid: formIsValid});
+
+
+    }
+
+
+
+    handleValidation(){
+
+        // alert("called")
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["password"]){
+            formIsValid = false;
+            errors["password"] = "Required";
+        }
+
+
+        if(!fields["email"]){
+            formIsValid = false;
+            errors["email"] = "Required";
+        }
+
+        if(typeof fields["email"] !== "undefined"){
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+
+
+    handleChange(field, e){
+        let fields = this.state.fields;
+        fields[field] = e.target.value;
+        this.setState({fields});
+
+        this.handleValidationSubmitGreen()
+    }
+
+
+    handleSubmit = event => {
+
+        event.preventDefault();
+
+
+        const form = event.currentTarget;
+
+        if (this.handleValidation()){
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const username = data.get("email")
+            const password = data.get("password")
+
+
+            this.props.logIn({"email": username, "password": password})
+
+        }else {
+
+            }
+
+
+    }
+
+
+
+    loadSearches(){
+
+
+        for (var i=0;i<this.state.item.searches.length;i++){
+
+
+            axios.get(baseUrl+"search/"+this.state.item.searches[i],
+                {
+                    headers: {
+                        "Authorization" : "Bearer "+this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var response = response.data;
+
+                        console.log("search code")
+
+                        console.log(response)
+
+                        var searches = this.state.searches
+
+                        searches.push(response.content)
+
+                        this.setState({
+
+                            searches: searches
+
+                        })
+                    },
+                    (error) => {
+
+                        var status = error.response.status
+
+                        console.log("search error")
+
+                        console.log(error)
+
+                    }
+                );
+
+
+        }
+
+
+
+
+    }
+
+    getQrCode(){
+
+
+
+        axios.get(baseUrl+"product/"+this.slug+"/code",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data;
+                    console.log("qr code")
+                    console.log(response)
+
+
+                    this.setState({
+
+                        codeImg: response
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+
+                    console.log("resource error")
+
+                    console.log(error)
+
+
+                }
+            );
+
+
+
+
+    }
+
+
+
     getResources(){
 
 
-        axios.get(baseUrl+"resource/"+this.slug,
+        axios.get(baseUrl+"product/"+this.slug,
             {
                 headers: {
                     "Authorization" : "Bearer "+this.props.userDetail.token
@@ -130,10 +356,14 @@ class  ItemCycleDetail extends Component {
                     console.log(response)
 
 
-                this.setState({
+                    this.setState({
 
-                    item: response.content
-                })
+                        item: response.content
+                    })
+
+
+                    this.loadSearches()
+                    this.getQrCode()
 
                 },
                 (error) => {
@@ -168,6 +398,8 @@ class  ItemCycleDetail extends Component {
 
     render() {
 
+
+
         return (
             <div>
 
@@ -175,153 +407,279 @@ class  ItemCycleDetail extends Component {
                 <div className="accountpage">
 
                     <HeaderDark />
-                    <div className="container-fluid " style={{padding:"0"}}>
 
-                        <div className="row no-gutters  justify-content-center">
-
-                            <div className="floating-back-icon" style={{margin:"auto"}}>
-
-                                <NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32, color:"white" }}/>
-                            </div>
+                    <div className="container mt-5 pt-5 ">
 
 
-                            <div className="col-auto ">
-                                <img className={"img-fluid"}  src={PaperImg} />
 
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container ">
-                        <div className="row justify-content-start pb-3 pt-4 listing-row-border">
+                        {this.props.isLoggedIn &&   <>
+
+                            <div className="row justify-content-start pb-3 pt-4 listing-row-border ">
 
                             <div className="col-12">
-                                <p className={"green-text text-heading"}>@{this.state.item.tags}
-                                </p>
-
-                            </div>
-                            <div className="col-12 mt-2">
-                                <h5 className={"blue-text text-heading"}>{this.state.item.name}
-                                </h5>
-                            </div>
-                        </div>
-
-
-                        <div className="row justify-content-start pb-3 pt-3 listing-row-border">
-
-                            <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.item.description}
-                                </p>
+                                <h3 className={"blue-text text-heading"}>Register my product
+                                </h3>
 
                             </div>
 
                         </div>
+                          <div className="row   ">
+                            <div className="row no-gutters">
+                                <div className="col-12 p-3">
+                                    <p >Congratulations on your recent purchase!
+                                    </p>
 
-                        <div className="row justify-content-start pb-4 pt-3 ">
-                            <div className="col-auto">
-                                <h6 className={""}>Item Details
-                                </h6>
+                                    <p >To register your product with Loopcycle, please sign in below or <span className={"blue-text forgot-password-link"}>sign up</span>.
 
-                            </div>
-                        </div>
+                                    </p>
 
-                    </div>
-                    <div className={"container"}>
+                                    <p >Register your product and we’ll give you back 5% of the product’s original cost if you eventually sell it on the platform.
 
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={ListIcon} />
-                            </div>
-                            <div className={"col-auto"}>
+                                    </p>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Category</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.category} ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.type}</p>
-                            </div>
-                        </div>
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={AmountIcon} />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
-                            </div>
-                        </div>
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.state} </p>
-                            </div>
-                        </div>
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={CalenderIcon} />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">
-                                    <Moment   unix  >
-                                    {this.state.item.availableFrom}
-                                </Moment>
-                                </p>
-                            </div>
-                        </div>
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
-                            </div>
-                        </div>
-
-                        <div className="container container-divider">
-                            <div className="row">
-                            </div>
-                        </div>
-                        <div className="container mt-4 mb-5 pb-5 ">
-
-                            <div className="row no-gutters mb-5">
-                                <div className="col-12 mb-4">
-                                    <h5 className="mb-1">About the seller  </h5>
                                 </div>
-                                <div className="col-auto ">
-                                    <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
-                                </div>
-                                <div className="col pl-2 align-self-center">
-                                    <div className="row no-gutters">
-                                        <div className="col-12">
+                            </div>
+
+                              <div className="row no-gutters">
 
 
-                                            <p style={{fontSize:"18px"}} className=" ">@Tesco</p>
-                                            <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
 
-                                        </div>
+
+                                  <div className="col-12 p-3">
+
+                                <form  onSubmit={this.handleSubmit}>
+                                <div className="row no-gutters justify-content-center">
+                                    <div className="col-12">
+
+                                        <TextField
+                                            type={"email"}
+                                            onChange={this.handleChange.bind(this, "email")}
+                                            id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
+
+                                        {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+
+
+
                                     </div>
+
+                                    <div className="col-12 mt-4">
+
+                                        <TextField type={"password"} onChange={this.handleChange.bind(this, "password")}   id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
+
+                                        {this.state.errors["password"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["password"]}</span>}
+
+                                    </div>
+
+                                    <div className="col-12 mt-4">
+                                        <p onClick={this.forGotPass} className={"forgot-password-link text-mute small"}>Forgot your password? </p>
+                                    </div>
+
+
+                                    {this.props.loginFailed &&
+
+                                    <div className="col-12 mt-4">
+                                        <Alert key={"alert"} variant={"danger"}>
+                                            {this.props.loginError}
+                                        </Alert>
+                                    </div>
+                                    }
+
+                                    <div className="col-12 mt-4">
+
+                                        <button type={"submit"} className={this.state.formValid?"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn":"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
+                                            { this.props.loading && <Spinner
+                                                as="span"
+                                                animation="border"
+                                                size="sm"
+                                                role="status"
+                                                aria-hidden="true"
+
+                                            /> }
+
+                                            { this.props.loading  ? "Wait.." : "Log In"}
+
+                                        </button>
+                                    </div>
+
+
                                 </div>
+
+                            </form>
+                                  </div>
+
+                              </div>
+
+                        </div>
+
+                        </>}
+
+
+
+                        <div>
+
+                            <div className="col-12 mt-5 mb-4" >
+                                <h3 className={"blue-text text-heading"}>Product Details
+                                </h3>
+
+                            </div>
+
+                            <div className="col-12 mt-5 mb-4" >
+
+                                <img src={ProImg}  />
+                            </div>
+
+                        </div>
+
+
+                        <div className="row justify-content-start pb-3 pt-4 ">
+
+
+
+                            <div className="col-12">
+                                <h3 className={"blue-text text-bold"}>{this.state.item.title  }</h3>
+                            </div>
+
+                            <div className="col-12  pb-3 listing-row-border">
+                                <p>Manufactured by  By <span className={"green-text"}> {this.state.item.org_id}</span></p>
+                            </div>
+
+                            <div className="col-12 mt-3 pb-3 listing-row-border">
+                                <p>{this.state.item.description  }</p>
+                            </div>
+                            {/*<div className="col-12 mt-3 pb-3 ">*/}
+                                {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{this.state.item.purpose  }</p>*/}
+
+                                {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"Shelving" }</p>*/}
+                                {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"PP" }</p>*/}
+
+                            {/*</div>*/}
+
+                        </div>
+
+
+                        <div className="row justify-content-start pb-3 pt-4 border-box">
+
+                            <div className="col-12">
+
+                                {/*{this.state.codeImg && <img src={this.state.codeImg} />}*/}
+
+                                {this.state.codeImg && <img src={"data:image/png;base64,"+this.state.codeImg}/> }
+
+                                {/*{this.state.codeImg && <img src={this.state.codeImg}/> }*/}
+
+
+
                             </div>
                         </div>
 
 
-                        {this.state.item.id && (this.props.userDetail.orgId != this.state.item.org_id) &&
-                        <BottomAppBar slug={this.slug}/>
 
-                        }
+                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
+
+                            {/*<div className="col-12">*/}
+                                {/*<h5 className={"text-bold blue-text"}>Product Journey</h5>*/}
+                            {/*</div>*/}
+
+                            {/*<div className="col-12">*/}
+                                {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
+                                    {/*Click on an icon to see more information.*/}
+                                {/*</p>*/}
+
+                            {/*</div>*/}
+
+                        {/*</div>*/}
+
+
+                        <div className="row justify-content-center pb-3 pt-4 ">
+
+                            <div style={{textAlign:"center"}} className="col-12">
+
+
+                                <img style={{width:"98%"}} src={BottomDetailInfo} />
+                            </div>
+                        </div>
+
+
+
+                        <div className="row justify-content-start pb-3 pt-3 ">
+
+                            <div className="col-12">
+                                <h5 className={"text-bold blue-text"}>Product Provenance</h5>
+                            </div>
+
+                            <div className="col-12">
+                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
+                                    See where this product has travelled since the day it was created.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="row justify-content-center pb-3 pt-4 border-box">
+
+                            <div style={{textAlign:"center"}} className="col-12">
+
+
+                                <img style={{width:"90%"}} src={BottomDetail} />
+
+                            </div>
+                        </div>
+
+
+
+
+
+                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
+                        
+                            {/*<div className="col-12">*/}
+                                {/*<h5 className={"text-bold blue-text"}>Searches</h5>*/}
+                            {/*</div>*/}
+                        
+                            {/*<div className="col-12">*/}
+                                {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
+                                    {/*All searches assigned to this product.*/}
+                                {/*</p>*/}
+                        
+                            {/*</div>*/}
+                        
+                        {/*</div>*/}
+
+
+
+                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
+
+                            {/*<div className="col-12">*/}
+
+
+
+
+                                {/*{this.state.searches.map((item)=>*/}
+                                    {/*<div  style={{border:"none"}} data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>*/}
+
+                                        {/*<div  className="col-10">*/}
+                                            {/*/!*<Link to={"/search"}>*!/*/}
+                                            {/*<p className={"blue-text "} style={{fontSize:"16px"}}>{item.name}</p>*/}
+                                            {/*/!*</Link>*!/*/}
+                                        {/*</div>*/}
+                                        {/*<div className="col-2">*/}
+                                            {/*<NavigateNextIcon/>*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+
+                                {/*)}*/}
+
+
+
+                            {/*</div>*/}
+                        {/*</div>*/}
+
+
 
 
                     </div>
+
 
                 </div>
 
@@ -334,73 +692,96 @@ class  ItemCycleDetail extends Component {
 
 
 
-
-
-
 const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
     paper: {
-        paddingBottom: 50,
+        padding: '6px 16px',
     },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: 'auto',
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: 'absolute',
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: '0 auto',
+    secondaryTail: {
+        backgroundColor: theme.palette.secondary.main,
     },
 }));
 
-function BottomAppBar(props) {
+function CustomizedTimeline() {
     const classes = useStyles();
 
     return (
-        <React.Fragment>
-            <CssBaseline/>
+        <Timeline align="alternate">
+            <TimelineItem>
+                {/*<TimelineOppositeContent>*/}
+                {/*<Typography variant="body2" color="textSecondary">*/}
+                {/*9:30 am*/}
+                {/*</Typography>*/}
+                {/*</TimelineOppositeContent>*/}
+                <TimelineSeparator>
+                    <TimelineDot>
+                        <BusinessIcon />
+                    </TimelineDot>
+                    <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                    <Paper elevation={3} className={classes.paper}>
+                        <Typography variant="h6" component="h1">
+                            Company A
+                        </Typography>
+                        <Typography>
+                            <p className={"text-blue"}>Plastics</p>
+                            <p>4 Kgs</p>
+                        </Typography>
+                    </Paper>
+                </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+                {/*<TimelineOppositeContent>*/}
+                {/*<Typography variant="body2" color="textSecondary">*/}
+                {/*10:00 am*/}
+                {/*</Typography>*/}
+                {/*</TimelineOppositeContent>*/}
+                <TimelineSeparator>
+                    <TimelineDot color="primary">
+                        <BusinessIcon />
+                    </TimelineDot>
+                    <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                    <Paper elevation={3} className={classes.paper}>
+                        <Typography variant="h6" component="h1">
+                            Company B
+                        </Typography>
+                        <Typography>
+                            <p className={"text-blue"}>Paper and Card </p>
+                            <p>5 Kgs</p>
 
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
-                        <div className="col-auto">
+                        </Typography>
+                    </Paper>
+                </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+                <TimelineSeparator>
+                    <TimelineDot color="primary" variant="outlined">
+                        <BusinessIcon />
+                    </TimelineDot>
+                    <TimelineConnector className={classes.secondaryTail} />
+                </TimelineSeparator>
+                <TimelineContent>
+                    <Paper elevation={3} className={classes.paper}>
+                        <Typography variant="h6" component="h1">
+                            Company C
+                        </Typography>
+                        <Typography>
+                            <p className={"text-blue"}>Other </p>
+                            <p>9 Kgs</p>
 
-                            <Link to={"/message-seller/"+props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Message Seller
-                            </Link>
+                        </Typography>
+                    </Paper>
+                </TimelineContent>
+            </TimelineItem>
 
-                        </div>
-                        <div className="col-auto">
-
-                            <Link to={"/make-offer/"+props.slug} type="button"
-                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Make Offer
-
-                            </Link>
-                        </div>
-                    </div>
-
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
+        </Timeline>
     );
-
-
 }
+
+
+
 
 
 const mapStateToProps = state => {

@@ -2727,3 +2727,4 @@ color: #3C3972;
 .MuiAccordion-root {
 	margin-bottom:20px;
 }
+.border-box{margin: 1%; border: 2px solid #eee; border-radius:5px;padding: 10px;}

@@ -19,6 +19,7 @@ import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browser-resources/ItemDetail";
 import ItemCycleDetail from "./views/browser-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
+import ProductDetail from "./views/loop-cycle/ProductDetail";
 import CreateProduct from "./views/create-product/create-product";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -107,6 +108,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />
+                        <LoggedInRoute exact path="/product/:slug" component={ProductDetail} />
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />

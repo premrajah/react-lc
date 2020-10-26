@@ -404,17 +404,17 @@ class  ItemDetail extends Component {
                                 <Toolbar>
                                     <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
-                                        <div className="col-auto">
-                                            <button onClick={this.declineMatch} type="button"
-                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                                Decline Match
+                                        {/*<div className="col-auto">*/}
+                                            {/*<button onClick={this.declineMatch} type="button"*/}
+                                                    {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
+                                                {/*Decline Match*/}
 
-                                            </button>
-                                        </div>
+                                            {/*</button>*/}
+                                        {/*</div>*/}
                                         <div className="col-auto">
                                             <button onClick={this.acceptMatch} type="button"
                                                     className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                                Accept Match
+                                                Create Capp
 
                                             </button>
                                         </div>

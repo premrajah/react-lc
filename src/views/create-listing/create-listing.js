@@ -159,7 +159,8 @@ class  CreateListing extends Component {
             showAddComponent: false,
             siteSelected: null,
             serial:null,
-            free: false
+            free: false,
+            price : null
 
         }
 
@@ -289,9 +290,15 @@ class  CreateListing extends Component {
 
     createListing(){
 
-        var data= {
 
-                "name":this.state.title,
+
+        var data={}
+
+        if (this.state.price) {
+
+             data = {
+
+                "name": this.state.title,
                 "description": this.state.description,
                 "category": this.state.catSelected.name,
                 "type": this.state.subCatSelected.name,
@@ -299,16 +306,45 @@ class  CreateListing extends Component {
                 "volume": this.state.volume,
                 "state": this.state.stateSelected,
                 "site_id": this.state.siteSelected,
-                "availableFrom" : {
-                    "unit" : "MILLISECOND",
-                    "value" : 1603381408
+                "availableFrom": {
+                    "unit": "MILLISECOND",
+                    "value": 1603381408
                 },
-                "expiry" : {
-                    "unit" : "MILLISECOND",
-                    "value" : 1605830400000
+                "expiry": {
+                    "unit": "MILLISECOND",
+                    "value": 1605830400000
+                },
+                 "price": {
+                     "value": this.state.price,
+                     "currency": "gbp"
+                 },
+             }
+
+
+        }else {
+
+             data = {
+
+                "name": this.state.title,
+                "description": this.state.description,
+                "category": this.state.catSelected.name,
+                "type": this.state.subCatSelected.name,
+                "units": "units",
+                "volume": this.state.volume,
+                "state": this.state.stateSelected,
+                "site_id": this.state.siteSelected,
+                "availableFrom": {
+                    "unit": "MILLISECOND",
+                    "value": 1603381408
+                },
+                "expiry": {
+                    "unit": "MILLISECOND",
+                    "value": 1605830400000
                 }
             }
 
+
+        }
         axios.post(baseUrl+"resource",
             data,{
              headers: {
@@ -916,10 +952,10 @@ class  CreateListing extends Component {
 
 
 
-        if(!this.state.productSelected){
-            formIsValid = false;
-            errors["product"] = "Required";
-        }
+        // if(!this.state.productSelected){
+        //     formIsValid = false;
+        //     errors["product"] = "Required";
+        // }
 
 
 
@@ -990,6 +1026,13 @@ class  CreateListing extends Component {
         this.handleValidationAddDetailNextColor()
 
 
+        this.setState({
+
+            price : fields["price"]
+        })
+
+
+        // alert(fields["price"])
 
 
     }
@@ -1388,11 +1431,10 @@ class  CreateListing extends Component {
                                 onChange={this.handleChange.bind(this, "manufacturedDate")}
                                 name={"manufacturedDate"}
                                 id="input-with-icon-textfield"
-
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                label="Date Of Manufacture"
+                                label="Year Of Manufacture"
                                 type={"date"}
                                 variant="outlined"
                                 className={clsx(classes.margin, classes.textField)+" full-width-field" }
@@ -1495,7 +1537,7 @@ class  CreateListing extends Component {
                         </div>
                     </div>
 
-                    <div className="container   pb-3 pt-3">
+                    <div className="container  mt-5 mb-5 pb-5  pt-3">
 
                     {this.state.categories.map((item)=>
 
@@ -1540,7 +1582,7 @@ class  CreateListing extends Component {
                         </div>
                     </div>
 
-                    <div className="container   pb-3 pt-3">
+                    <div className="container mt-5 mb-5 pb-5  ">
 
                         {this.state.subCategories && this.state.subCategories.map((item) =>
 
@@ -1688,17 +1730,17 @@ class  CreateListing extends Component {
                             </div>
                         </div>
                         <div className="row no-gutters justify-content-center mt-5">
-                            <div onClick={this.linkProduct}  className="col-12 mb-3">
+                            {/*<div onClick={this.linkProduct}  className="col-12 mb-3">*/}
 
 
-                                <div  className={"dummy-text-field"}>
-                                    {this.state.productSelected?this.state.productSelected.title:"Link new a product"}
-                                    <img  className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                                </div>
-                                {this.state.errors["product"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["linkProduct"]}</span>}
+                                {/*<div  className={"dummy-text-field"}>*/}
+                                    {/*{this.state.productSelected?this.state.productSelected.title:"Link new a product"}*/}
+                                    {/*<img  className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }}/>*/}
+                                {/*</div>*/}
+                                {/*{this.state.errors["product"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["linkProduct"]}</span>}*/}
 
 
-                            </div>
+                            {/*</div>*/}
                             <div className="col-12 mb-3">
 
 
@@ -1812,6 +1854,7 @@ class  CreateListing extends Component {
                             {!this.state.free && <div className="col-12 mb-5">
 
                                 <TextField
+                                    onChange={this.handleChange.bind(this, "price")}
                                     id="input-with-icon-textfield"
                                     label="Enter Value"
                                     variant="outlined"
@@ -2229,7 +2272,7 @@ class  CreateListing extends Component {
 
                         <div className="col-12 mt-4">
 
-                            <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"brand"}  onChange={this.handleChangeSite.bind(this, "brand")} />
+                            <TextField id="outlined-basic" label="Brand " variant="outlined" fullWidth={true} name={"brand"}  onChange={this.handleChangeSite.bind(this, "brand")} />
 
                             {this.state.errors["brand"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["brand"]}</span>}
 

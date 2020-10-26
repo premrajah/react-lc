@@ -228,14 +228,18 @@ class  Products extends Component {
 
                                 <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
                                     <div className={"col-10  content-box-listing"}>
+
+                                        <Link to={"/product/"+item.id}>
                                 <p style={{fontSize:"18px"}} className=" mb-1">{item.title}</p>
                                 <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.purpose}</p>
                                 <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.searches.length} Searches</p>
+                                        </Link>
                             </div>
                             <div style={{textAlign:"right"}} className={"col-2"}>
                                 <p className={"text-gray-light small"}>9/5/2020</p>
+
                             </div>
-                        </div>
+                              </div>
 
                             )}
 

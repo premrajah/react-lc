@@ -849,7 +849,7 @@ class  ViewCycle extends Component {
                                         <div className="col-auto">
                                             <button onClick={this.confirmOffer} type="button"
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                Confirm Offer
+                                                Accept Offer
 
                                             </button>
                                         </div>
@@ -1378,13 +1378,13 @@ class  ViewCycle extends Component {
                                     }
 
 
-                                    <div className="col-auto">
-                                        <button onClick={this.declineOffer} type="button"
-                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Cancel Loop
+                                    {/*<div className="col-auto">*/}
+                                        {/*<button onClick={this.declineOffer} type="button"*/}
+                                                {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
+                                            {/*Cancel Loop*/}
 
-                                        </button>
-                                    </div>
+                                        {/*</button>*/}
+                                    {/*</div>*/}
 
 
                                 </div>

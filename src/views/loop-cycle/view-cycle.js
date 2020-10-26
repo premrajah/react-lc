@@ -209,7 +209,7 @@ class  ViewCycle extends Component {
 
 
 
-            alert("username"+ username)
+            // alert("username"+ username)
 
 
             axios.post(baseUrl+"loop/"+this.slug+"/assign_logistics/"+username,
@@ -282,7 +282,7 @@ class  ViewCycle extends Component {
 
 
 
-            alert("username"+ username)
+            // alert("username"+ username)
 
 
             axios.post(baseUrl+"loop/"+this.slug+"/update_tracking/"+username,
@@ -1509,7 +1509,7 @@ class  ViewCycle extends Component {
                                     <div className="col-auto">
                                         <button onClick={this.orderClose} type="button"
                                                 className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Close
+                                            Close Cycle
 
                                         </button>
                                     </div>

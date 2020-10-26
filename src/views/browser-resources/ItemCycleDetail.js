@@ -333,8 +333,6 @@ class  ItemCycleDetail extends Component {
             );
 
 
-
-
     }
 
 
@@ -342,12 +340,20 @@ class  ItemCycleDetail extends Component {
     getResources(){
 
 
-        axios.get(baseUrl+"product/"+this.slug,
-            {
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }
-            }
+
+        var url = baseUrl+"code/"+this.slug;
+
+        console.log(url)
+
+        // baseUrl+"product/"+this.slug
+
+
+        axios.get(url
+            // {
+            //     headers: {
+            //         "Authorization" : "Bearer "+this.props.userDetail.token
+            //     }
+            // }
         )
             .then((response) => {
 
@@ -370,7 +376,7 @@ class  ItemCycleDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("resource error")
+                    console.log("Code  error")
 
                     console.log(error)
 
@@ -412,7 +418,7 @@ class  ItemCycleDetail extends Component {
 
 
 
-                        {this.props.isLoggedIn &&   <>
+                        {!this.props.isLoggedIn &&   <>
 
                             <div className="row justify-content-start pb-3 pt-4 listing-row-border ">
 
@@ -563,9 +569,12 @@ class  ItemCycleDetail extends Component {
 
                                 {/*{this.state.codeImg && <img src={this.state.codeImg} />}*/}
 
-                                {this.state.codeImg && <img src={"data:image/png;base64,"+this.state.codeImg}/> }
+                                {/*{this.state.codeImg && <img src={"base64,"+this.state.codeImg}/> }*/}
 
                                 {/*{this.state.codeImg && <img src={this.state.codeImg}/> }*/}
+
+
+                                <img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} />
 
 
 

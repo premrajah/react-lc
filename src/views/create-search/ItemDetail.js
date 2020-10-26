@@ -253,6 +253,7 @@ class  ItemDetail extends Component {
             <div>
 
                 <Sidebar />
+                <HeaderDark/>
                 <div className="accountpage">
 
                     <div className="container-fluid " style={{padding:"0"}}>
@@ -414,7 +415,7 @@ class  ItemDetail extends Component {
                                         <div className="col-auto">
                                             <button onClick={this.acceptMatch} type="button"
                                                     className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                                Create Capp
+                                                Create Cycle
 
                                             </button>
                                         </div>

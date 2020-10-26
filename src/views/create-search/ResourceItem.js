@@ -100,12 +100,14 @@ class  ResourceItem extends Component {
                                   <Link to={"/match/"+this.props.item.id+"/"+this.props.searchId}> <img className={"img-fluid"} src={Paper}/></Link>
                                 </div>
                                 <div className={"col-6 pl-3 content-box-listing"}>
+                                    <Link to={"/match/"+this.props.item.id+"/"+this.props.searchId}>
                                     <p style={{fontSize:"18px"}} className=" mb-1">{this.props.item.name}</p>
                                     <p style={{fontSize:"16px"}} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
                                     <p style={{fontSize:"16px"}} className="text-mute mb-1">@{this.props.item.tags}</p>
+                                    </Link>
                                 </div>
                                 <div style={{textAlign:"right"}} className={"col-2"}>
-                                    <p className={"green-text"}>{this.props.item.price?this.props.item.price:"Free"}</p>
+                                    {/*<p className={"green-text"}>{this.props.item.price?this.props.item.price:"Free"}</p>*/}
                                 </div>
 
 

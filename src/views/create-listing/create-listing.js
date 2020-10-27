@@ -121,6 +121,9 @@ const useStylesTabs = makeStyles((theme) => ({
 class  CreateListing extends Component {
 
 
+    
+    
+    activeScreen =0
     constructor(props) {
 
         super(props)
@@ -130,7 +133,7 @@ class  CreateListing extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            active: 0,  //0 logn. 1- sign up , 3 -search,
+            activePage: 0,  //0 logn. 1- sign up , 3 -search,
             categories: [],
             subCategories: [],
             catSelected: {},
@@ -163,7 +166,8 @@ class  CreateListing extends Component {
             siteSelected: null,
             serial:null,
             free: false,
-            price : null
+            price : null,
+            site:{}
 
         }
 
@@ -192,12 +196,47 @@ class  CreateListing extends Component {
         this.toggleSite=this.toggleSite.bind(this)
         this.toggleFree=this.toggleFree.bind(this)
         this.toggleSale=this.toggleSale.bind(this)
+        this.getSite=this.getSite.bind(this)
 
 
 
     }
 
 
+
+
+    getSite(){
+
+        axios.get(baseUrl+"site/"+this.state.siteSelected,
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
+
+                    this.setState({
+
+                        site:response
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("resource error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
 
     toggleSale(){
@@ -258,38 +297,7 @@ class  CreateListing extends Component {
 
     }
 
-    getSites(){
 
-        axios.get(baseUrl+"site",
-            {
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data.content;
-                    console.log("sites  response")
-                    console.log(response)
-
-                    this.setState({
-
-                        sites:response
-
-                    })
-
-                },
-                (error) => {
-
-                    var status = error.response.status
-                    console.log("sites error")
-                    console.log(error)
-
-                }
-            );
-
-    }
 
     createListing(){
 
@@ -457,7 +465,7 @@ class  CreateListing extends Component {
                 this.setState({
 
                     page:1,
-                    active:0,
+                    activePage:0,
                     progressBar: 33
                 })
 
@@ -470,39 +478,50 @@ class  CreateListing extends Component {
 
     handleNext(){
 
-        if (this.state.page==1){
 
 
-            // alert("page two")
+
+        alert(this.activeScreen)
+
+        if (this.activeScreen==0){
 
 
 
             if (this.handleValidation()){
 
+                this.activeScreen=4
+
+
                 this.setState({
 
-                    active: 4,
+                    activePage: 4,
                     page: 2,
                     progressBar: 66
                 })
 
+
+                this.getSites()
             }
 
-            this.getSites()
 
 
-            alert(this.state.active)
+
+            // alert(this.activeScreen)
         }
 
-       else if (this.state.page==2){
+       else if (this.activeScreen==4){
 
 
 
             // if (this.handleValidationAddDetail()){
 
+                this.activeScreen=5
+
+
                 this.setState({
 
-                    active:5,
+
+                    activePage:5,
                     page: 3,
                     progressBar: 100
                 })
@@ -510,17 +529,20 @@ class  CreateListing extends Component {
                 // this.createSearch()
             // }
 
+
+
         }
 
 
-        else if (this.state.page==3){
+        else if (this.activeScreen==5){
 
 
+            this.activeScreen=7
             // alert("on page 4")
 
             this.setState({
 
-                active:7,
+                activePage:7,
                 page: 4,
                 progressBar: 100
             })
@@ -530,14 +552,16 @@ class  CreateListing extends Component {
         }
 
 
-        else if (this.state.active==8){
+        else if (this.activeScreen==7){
 
+
+            this.activeScreen=8
 
             // alert("here ")
 
             this.setState({
 
-                active:8,
+                activePage:8,
 
             })
 
@@ -593,9 +617,11 @@ class  CreateListing extends Component {
     selectCreateSearch(){
 
 
+        this.activeScreen= 0
+
         this.setState({
 
-            active:0,
+            activePage:0,
             page:1
         })
 
@@ -605,9 +631,12 @@ class  CreateListing extends Component {
 
     selectCategory(){
 
+
+
+        this.activeScreen= 1
         this.setState({
 
-            active:1
+            activePage:1
         })
 
     }
@@ -627,9 +656,11 @@ class  CreateListing extends Component {
 
         console.log(this.state.products.filter((item) => item.title == event.currentTarget.dataset.name)[0])
 
+
+        this.activeScreen= 5
         this.setState({
 
-            active: 5
+            activePage: 5
         })
 
     }
@@ -649,9 +680,11 @@ class  CreateListing extends Component {
 
         })
 
+
+        this.activeScreen= 2
         this.setState({
 
-            active: 2
+            activePage: 2
         })
 
     }
@@ -668,10 +701,10 @@ class  CreateListing extends Component {
 
         // alert(this.state.subCatSelected.name)
 
-
+        this.activeScreen= 3
         this.setState({
 
-            active:3,
+            activePage:3,
             states:this.state.subCategories.filter((item)=> event.currentTarget.dataset.name==item.name)[0].state
 
         })
@@ -684,6 +717,8 @@ class  CreateListing extends Component {
     selectState(event){
 
 
+
+        this.activeScreen= 0
         this.setState({
 
             stateSelected : event.currentTarget.dataset.name
@@ -692,7 +727,7 @@ class  CreateListing extends Component {
 
         this.setState({
 
-            active:0,
+            activePage:0,
 
             units: this.state.subCatSelected.units
 
@@ -726,7 +761,6 @@ class  CreateListing extends Component {
                 title:fields["title"]
             })
         }
-
 
 
         if(!fields["description"]){
@@ -793,8 +827,6 @@ class  CreateListing extends Component {
                 serial:fields["model"]
             })
         }
-
-
 
 
 
@@ -1075,7 +1107,6 @@ class  CreateListing extends Component {
 
 
 
-
         let fields = this.state.fields;
         fields[field] = e.target.value;
 
@@ -1104,10 +1135,12 @@ class  CreateListing extends Component {
     addDetails(){
 
 
+        this.activeScreen= 4
+
 
         this.setState({
 
-            active:4
+            activePage:4
         })
 
     }
@@ -1117,13 +1150,15 @@ class  CreateListing extends Component {
     linkProduct(){
 
 
+        this.activeScreen = 6
+
         this.getProducts()
 
         // alert(5)
 
         this.setState({
 
-            active:6
+            activePage:6
 
         })
 
@@ -1135,10 +1170,10 @@ class  CreateListing extends Component {
 
 
 
-
+        this.activeScreen= 46
         this.setState({
 
-            active:6
+            activePage:6
         })
     }
 
@@ -1146,11 +1181,13 @@ class  CreateListing extends Component {
     previewSearch(){
 
 
+        this.activeScreen= 7
+
 
 
         this.setState({
 
-            active:7
+            activePage:7
         })
     }
 
@@ -1182,7 +1219,7 @@ class  CreateListing extends Component {
 
         this.setState({
 
-            active:0
+            activePage:0
         })
     }
 
@@ -1191,7 +1228,7 @@ class  CreateListing extends Component {
 
         this.setState({
 
-            active:1
+            activePage:1
         })
     }
 
@@ -1396,7 +1433,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 0?"":"d-none"}>
+                <div className={this.activeScreen == 0?"":"d-none"}>
 
                 <div className="container  pt-2 pb-3">
 
@@ -1521,16 +1558,16 @@ class  CreateListing extends Component {
 
                                 <div className="row camera-grids   no-gutters   ">
 
-                                    <div className="col-4 p-1 text-center ">
+                                    {/*<div className="col-4 p-1 text-center ">*/}
 
-                                        <div className="card shadow border-0 mb-3 container-gray border-rounded">
-                                            <div className={"card-body"}>
-                                                {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
-                                                <UploadFileBootStrap/>
-                                            </div>
-                                        </div>
+                                        {/*<div className="card shadow border-0 mb-3 container-gray border-rounded">*/}
+                                            {/*<div className={"card-body"}>*/}
+                                                {/*/!*<img src={CameraGray} className={"camera-icon-preview"}/>*!/*/}
+                                                {/*<UploadFileBootStrap/>*/}
+                                            {/*</div>*/}
+                                        {/*</div>*/}
 
-                                    </div>
+                                    {/*</div>*/}
                                     <div className="col-4 p-1 text-center ">
 
                                         <div className="card shadow border-0 mb-3 container-gray border-rounded">
@@ -1589,7 +1626,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 1?"":"d-none"}>
+                <div className={this.activeScreen == 1?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1636,7 +1673,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 2?"":"d-none"}>
+                <div className={this.activeScreen == 2?"":"d-none"}>
                     <div className="container  pt-2 pb-3">
 
                         <div className="row no-gutters">
@@ -1678,7 +1715,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 3?"":"d-none"}>
+                <div className={this.activeScreen == 3?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1722,9 +1759,12 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 4?"":"d-none"}>
+                <div className={this.activeScreen == 4?"":"d-none"}>
 
-                    <div className="container  pt-2 pb-3">
+
+                {/*{this.activeScreen == 4&&<div className={""}>*/}
+
+                <div className="container  pt-2 pb-3">
 
                         <div className="row no-gutters">
                             <div className="col-10">
@@ -1773,7 +1813,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 5?"":"d-none"}>
+                <div className={this.activeScreen == 5?"":"d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1943,7 +1983,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 6?"":"d-none"}>
+                <div className={this.activeScreen == 6?"":"d-none"}>
 
 
                         <div className="container  pt-2 pb-3">
@@ -1995,7 +2035,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 7?"":"d-none"}>
+                <div className={this.activeScreen == 7?"":"d-none"}>
 
                     <div className="container  pt-3 pb-3">
 
@@ -2053,7 +2093,7 @@ class  CreateListing extends Component {
                 </div>
 
 
-                <div className={this.state.active == 8?"":"d-none"}>
+                <div className={this.activeScreen == 8?"":"d-none"}>
 
 
                     {this.state.listResourceData &&
@@ -2201,7 +2241,7 @@ class  CreateListing extends Component {
 
 
 
-                <div className={this.state.active == 9?"":"d-none"}>
+                <div className={this.activeScreen == 9?"":"d-none"}>
 
 
 
@@ -2222,7 +2262,7 @@ class  CreateListing extends Component {
 
                 </div>
 
-                {this.state.active<9 &&
+                {this.activeScreen<9 &&
                 <React.Fragment>
 
                     <CssBaseline/>
@@ -2233,7 +2273,7 @@ class  CreateListing extends Component {
                         <Toolbar>
 
 
-                            {this.state.active==6 &&
+                            {this.activeScreen==6 &&
 
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
@@ -2247,7 +2287,7 @@ class  CreateListing extends Component {
                             }
 
 
-                            {this.state.active<7 && this.state.active!=6 &&
+                            {this.activeScreen<7 && this.activeScreen!=6 &&
 
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
@@ -2292,7 +2332,7 @@ class  CreateListing extends Component {
                                 </div>
                             </div>}
 
-                            {this.state.active ==7 &&
+                            {this.activeScreen ==7 &&
                             <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
 
 

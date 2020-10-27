@@ -64,7 +64,7 @@ import Box from '@material-ui/core/Box';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import {baseUrl} from "../../Util/Constants";
+import {baseImgUrl, baseUrl,frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
@@ -330,6 +330,7 @@ class  ProductDetail extends Component {
 
                         <div className="row justify-content-start pb-3 pt-4 border-box">
 
+
                             <div className="col-12">
                             <h3 className={"blue-text text-bold"}>{this.state.item.title  }</h3>
                             </div>
@@ -404,12 +405,9 @@ class  ProductDetail extends Component {
                             <div className="col-12">
 
                                 {/*{this.state.codeImg && <img src={this.state.codeImg} />}*/}
-
                                 {/*{this.state.codeImg && <img src={`data:image/png;base64,${this.state.codeImg}`}/> }*/}
 
-                                <img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} />
-
-
+                                <img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id} />
 
                             </div>
                         </div>

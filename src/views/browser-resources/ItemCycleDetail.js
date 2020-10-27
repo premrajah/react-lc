@@ -358,7 +358,7 @@ class  ItemCycleDetail extends Component {
             .then((response) => {
 
                     var response = response.data;
-                    console.log("detail resource response")
+                    console.log("qr code detail resource response")
                     console.log(response)
 
 
@@ -376,7 +376,7 @@ class  ItemCycleDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("Code  error")
+                    console.log("product detail  error")
 
                     console.log(error)
 

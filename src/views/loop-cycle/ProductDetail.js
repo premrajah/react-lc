@@ -405,7 +405,10 @@ class  ProductDetail extends Component {
 
                                 {/*{this.state.codeImg && <img src={this.state.codeImg} />}*/}
 
-                                {this.state.codeImg && <img src={`data:image/png;base64,${this.state.codeImg}`}/> }
+                                {/*{this.state.codeImg && <img src={`data:image/png;base64,${this.state.codeImg}`}/> }*/}
+
+                                <img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} />
+
 
 
                             </div>
@@ -413,29 +416,29 @@ class  ProductDetail extends Component {
 
 
 
-                        <div className="row justify-content-start pb-3 pt-3 ">
+                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
 
-                            <div className="col-12">
-                                <h5 className={"text-bold blue-text"}>Product Journey</h5>
-                            </div>
+                            {/*<div className="col-12">*/}
+                                {/*<h5 className={"text-bold blue-text"}>Product Journey</h5>*/}
+                            {/*</div>*/}
 
-                            <div className="col-12">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
-                                    Click on an icon to see more information.
-                                </p>
+                            {/*<div className="col-12">*/}
+                                {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
+                                    {/*Click on an icon to see more information.*/}
+                                {/*</p>*/}
 
-                            </div>
+                            {/*</div>*/}
 
-                        </div>
+                        {/*</div>*/}
 
-                        <div className="row justify-content-start pb-3 pt-4 border-box">
+                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
 
-                            <div className="col-12">
+                            {/*<div className="col-12">*/}
 
 
-                 <CustomizedTimeline />
-                            </div>
-                        </div>
+                          {/*<CustomizedTimeline />*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
 

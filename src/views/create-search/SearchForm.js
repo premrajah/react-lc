@@ -157,6 +157,7 @@ class  SearchForm extends Component {
             siteSelected: null,
             productSelection:false,
             purpose:["defined","prototype","aggregate"],
+            site:{}
 
 
         }
@@ -182,6 +183,7 @@ class  SearchForm extends Component {
         this.loadMatches=this.loadMatches.bind(this)
         this.showCreateSite=this.showCreateSite.bind(this)
         this.getSites=this.getSites.bind(this)
+        this.getSite=this.getSite.bind(this)
         this.toggleSite=this.toggleSite.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
 
@@ -310,10 +312,13 @@ class  SearchForm extends Component {
 
                     // this.handleBack()
 
-                    this.setState({
+                    // this.setState({
+                    //
+                    //     showProductSelection: !this.state.showProductSelection
+                    // })
 
-                        showProductSelection: !this.state.showProductSelection
-                    })
+
+                    this.showProductSelection()
 
                     this.getProducts()
 
@@ -367,6 +372,41 @@ class  SearchForm extends Component {
                     this.setState({
 
                         products:response
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("resource error")
+                    console.log(error)
+
+                }
+            );
+
+    }
+
+
+
+    getSite(){
+
+        axios.get(baseUrl+"site/"+this.state.siteSelected,
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
+
+                    this.setState({
+
+                        site:response
 
                     })
 
@@ -454,6 +494,9 @@ class  SearchForm extends Component {
                 this.setState({
                     createSearchData: res.data.content
                 })
+
+
+                this.getSite()
 
             }).catch(error => {
 
@@ -2008,15 +2051,15 @@ class  SearchForm extends Component {
 
                         </div>
 
-                        <div className={"container"}>
+                        <div className={"container pb-5"}>
 
-                            <div className="row  justify-content-start search-container  pb-4">
+                            <div className="row  justify-content-start search-container  pb-3 ">
                                 <div className={"col-1"}>
                                     <img className={"icon-about"} src={ListIcon} />
                                 </div>
                                 <div className={"col-auto"}>
 
-                                    <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
+                                    <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">{this.state.site.name}, {this.state.site.address}</p>
                                     <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.category} ></p>
                                     <p style={{fontSize:"18px"}} className="  mb-1">{this.state.createSearchData.type}</p>
 
@@ -2062,8 +2105,8 @@ class  SearchForm extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Location  </p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                    <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.site.name},{this.state.site.contact}</p>
+                                    <p style={{fontSize:"18px"}} className="  mb-1">{this.state.site.address}</p>
                                 </div>
                             </div>
 
@@ -2123,10 +2166,13 @@ class  SearchForm extends Component {
                         {/*</div>*/}
                         <div className="row  pb-2 pt-4 ">
 
-                            <div className="col-auto">
+                            <div className="col-10">
                                 <h3 className={"blue-text text-heading"}>Create A Product
                                 </h3>
 
+                            </div>
+                            <div className="col-2 text-right">
+                            <Close  onClick={this.showProductSelection} className="blue-text" style={{ fontSize: 32 }} />
                             </div>
                         </div>
 
@@ -2246,7 +2292,7 @@ class  SearchForm extends Component {
 
 
 
-                {/*{(this.state.active == 0  ||this.state.active==4 ||this.state.active==7 )&&*/}
+                {(this.state.active == 0  ||this.state.active==4 ||this.state.active==6||this.state.active==7 )&&
 
 
 
@@ -2332,7 +2378,7 @@ class  SearchForm extends Component {
 
 
 
-                // }
+                }
 
 
 

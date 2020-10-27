@@ -70,6 +70,8 @@ import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from  './ResourceItem'
+import HeaderDark from '../header/HeaderDark'
+import Sidebar from '../menu/Sidebar'
 
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 // pick a date util library
@@ -284,6 +286,14 @@ class  SearchMatches extends Component {
         return (
 
             <>
+
+
+                <Sidebar />
+
+                    <HeaderDark />
+
+
+
                 <div className="container  p-2">
                 </div>
 

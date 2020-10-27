@@ -70,6 +70,7 @@ import StateIcon from '../../img/icons/state.png';
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
+
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from  '../item/ResourceItem'
 
@@ -471,21 +472,30 @@ class  CreateListing extends Component {
 
         if (this.state.page==1){
 
-            this.getSites()
+
+            // alert("page two")
+
+
+
             if (this.handleValidation()){
 
                 this.setState({
 
-                    active:4,
+                    active: 4,
                     page: 2,
-                    progressBar: 50
+                    progressBar: 66
                 })
 
             }
 
+            this.getSites()
+
+
+            alert(this.state.active)
         }
 
        else if (this.state.page==2){
+
 
 
             // if (this.handleValidationAddDetail()){
@@ -494,7 +504,7 @@ class  CreateListing extends Component {
 
                     active:5,
                     page: 3,
-                    progressBar: 75
+                    progressBar: 100
                 })
 
                 // this.createSearch()
@@ -699,8 +709,6 @@ class  CreateListing extends Component {
 
     handleValidation(){
 
-        // alert("called")
-
 
         let fields = this.state.fields;
         let errors = {};
@@ -733,20 +741,6 @@ class  CreateListing extends Component {
            })
 
         }
-
-
-        // if(!fields["volume"]){
-        //     formIsValid = false;
-        //     errors["volume"] = "Required";
-        // }else{
-        //
-        //
-        //     this.setState({
-        //
-        //         volume:fields["volume"]
-        //     })
-        // }
-
 
 
         if(!fields["serial"]){
@@ -816,6 +810,9 @@ class  CreateListing extends Component {
 
 
         this.setState({errors: errors});
+
+
+        console.log(errors)
         return formIsValid;
 
     }
@@ -880,7 +877,7 @@ class  CreateListing extends Component {
     }
     handleValidationNextColor(){
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -889,34 +886,91 @@ class  CreateListing extends Component {
         if(!fields["title"]){
             formIsValid = false;
             errors["title"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                title:fields["title"]
+            })
         }
+
+
+
         if(!fields["description"]){
             formIsValid = false;
             errors["description"] = "Required";
+        }else{
+
+
+            this.setState({
+                description:fields["description"]
+
+            })
+
         }
-        // if(!fields["agree"]){
-        //     formIsValid = false;
-        //     errors["agree"] = "Required";
-        // }
 
 
-        if(!fields["volume"]){
+        if(!fields["serial"]){
             formIsValid = false;
-            errors["volume"] = "Required";
-        }
-        // if(!fields["unit"]){
-        //     formIsValid = false;
-        //     errors["unit"] = "Required";
-        // }
+            errors["serial"] = "Required";
+        }else{
 
+
+            this.setState({
+
+                serial:fields["serial"]
+            })
+        }
+
+
+        if(!fields["brand"]){
+            formIsValid = false;
+            errors["brand"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                serial:fields["brand"]
+            })
+        }
+
+
+        if(!fields["manufacturedDate"]){
+            formIsValid = false;
+            errors["manufacturedDate"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                serial:fields["manufacturedDate"]
+            })
+        }
+
+
+        if(!fields["model"]){
+
+            formIsValid = false;
+            errors["model"] = "Required";
+
+
+
+        }else{
+
+
+            this.setState({
+
+                serial:fields["model"]
+            })
+        }
 
 
 
         if(this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected){
 
-
         }else{
-
 
             formIsValid = false;
             errors["category"] = "Required";
@@ -1681,7 +1735,7 @@ class  CreateListing extends Component {
 
                             <div className="col-2 text-right">
 
-                                <Close onClick={this.handleBack}  className="blue-text" style={{ fontSize: 32 }} />
+                                <Close   className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
 
@@ -1732,7 +1786,7 @@ class  CreateListing extends Component {
 
                             <div className="col-auto">
 
-                                <Close onClick={this.handleBack}  className="blue-text" style={{ fontSize: 32 }} />
+                                <Link to={this.handleBack}><Close   className="blue-text" style={{ fontSize: 32 }} /></Link>
 
                             </div>
 
@@ -1799,7 +1853,6 @@ class  CreateListing extends Component {
                             </div>
                             <div className="col-12 mb-3">
 
-
                                 <TextField
                                     onChange={this.handleChange.bind(this, "startDate")}
                                     name={"startDate"}
@@ -1824,8 +1877,7 @@ class  CreateListing extends Component {
                                 />
                                 {this.state.errors["startDate"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["startDate"]}</span>}
 
-
-                            </div>
+                                </div>
 
 
 
@@ -1916,6 +1968,7 @@ class  CreateListing extends Component {
 
 
                         <div className="container   pb-3 pt-3">
+
                             {this.state.products.map((item)=>
                                 <div  data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
                                 <div className="col-2">

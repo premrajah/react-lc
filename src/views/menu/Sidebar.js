@@ -141,12 +141,13 @@ class  Sidebar extends Component {
                         <figure className="avatar avatar-60 border-0">
                             {/*<img src={TescoImg} alt="" />*/}
 
-                            <span className={"word-user-big"}>
-                                    {this.props.userDetail.email=="test.3@parallelai.com" &&   "M"}
-                                {this.props.userDetail.email=="crajah@karedo.co.uk" &&   "L"}
-                                {this.props.userDetail.email=="scorpion_rain@yahoo.com" &&   "C"}
+                            {this.props.isLoggedIn && <span className={"word-user-big"}>
+                                    {this.props.userDetail.email == "test.3@parallelai.com" && "M"}
+                                {this.props.userDetail.email == "crajah@karedo.co.uk" && "L"}
+                                {this.props.userDetail.email == "scorpion_rain@yahoo.com" && "C"}
 
                                 </span>
+                            }
 
                         </figure>
                     </div>
@@ -156,26 +157,42 @@ class  Sidebar extends Component {
                     {/*</div>*/}
                 </div>
             </div>
+            {this.props.isLoggedIn&&
             <div className="row">
                 <div className="col">
                     <div className="list-group main-menu">
-                        <Link onClick={this.toggleMenu} to={"/"} className="white-text list-group-item list-group-item-action">Homes </Link>
-                        <Link onClick={this.toggleMenu} to={"/resources"} className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
-                        <Link onClick={this.toggleMenu} to={"/create-search"} className="white-text list-group-item list-group-item-action">Create A Search </Link>
-                        <Link onClick={this.toggleMenu} to={"/create-listing"} className="white-text list-group-item list-group-item-action">Create A Listing </Link>
+                        <Link onClick={this.toggleMenu} to={"/"}
+                              className="white-text list-group-item list-group-item-action">Homes </Link>
+                        <Link onClick={this.toggleMenu} to={"/resources"}
+                              className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
+                        <Link onClick={this.toggleMenu} to={"/create-search"}
+                              className="white-text list-group-item list-group-item-action">Create A Search </Link>
+                        <Link onClick={this.toggleMenu} to={"/create-listing"}
+                              className="white-text list-group-item list-group-item-action">Create A Listing </Link>
                         {/*{this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resources </Link>}*/}
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/account"} className="white-text list-group-item list-group-item-action">Account</Link>}
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/loops"} className="white-text list-group-item list-group-item-action">My Cycles</Link>}
+                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/account"}
+                                                        className="white-text list-group-item list-group-item-action">Account</Link>}
+                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/loops"}
+                                                        className="white-text list-group-item list-group-item-action">My
+                            Cycles</Link>}
 
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/my-listings"} className="white-text list-group-item list-group-item-action">My Listings </Link>}
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/searches"} className="white-text list-group-item list-group-item-action">My Searches </Link>}
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/my-products"} className="white-text list-group-item list-group-item-action">My Products </Link>}
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/statistics"} className="white-text list-group-item list-group-item-action">Statistics</Link>}
+                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/my-listings"}
+                                                        className="white-text list-group-item list-group-item-action">My
+                            Listings </Link>}
+                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/searches"}
+                                                        className="white-text list-group-item list-group-item-action">My
+                            Searches </Link>}
+                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/my-products"}
+                                                        className="white-text list-group-item list-group-item-action">My
+                            Products </Link>}
+                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/statistics"}
+                                                        className="white-text list-group-item list-group-item-action">Statistics</Link>}
 
 
                     </div>
                 </div>
             </div>
+            }
             <div className="row mt-3 mb-3">
                 <div className="col">
                     <div className={"menu_divider_line"}></div>

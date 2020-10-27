@@ -134,6 +134,8 @@ class  SearchForm extends Component {
             page:1,
             fields: {},
             errors: {},
+            fieldsProduct: {},
+            errorsProduct: {},
             fieldsSite: {},
             errorsSite: {},
             units:[],
@@ -152,7 +154,10 @@ class  SearchForm extends Component {
             createSearchData:null,
             resourcesMatched:[],
             showCreateSite: false,
-            siteSelected: null
+            siteSelected: null,
+            productSelection:false,
+            purpose:["defined","prototype","aggregate"],
+
 
         }
 
@@ -178,6 +183,168 @@ class  SearchForm extends Component {
         this.showCreateSite=this.showCreateSite.bind(this)
         this.getSites=this.getSites.bind(this)
         this.toggleSite=this.toggleSite.bind(this)
+        this.showProductSelection=this.showProductSelection.bind(this)
+
+    }
+
+
+
+    showProductSelection(){
+
+        this.setState({
+
+                productSelection: !this.state.productSelection
+            }
+        )
+    }
+
+    handleValidationProduct(){
+
+        // alert("called")
+        let fields = this.state.fieldsProduct;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if(!fields["purpose"]){
+            formIsValid = false;
+            errors["purpose"] = "Required";
+        }
+        if(!fields["title"]){
+            formIsValid = false;
+            errors["title"] = "Required";
+        }
+        // if(!fields["agree"]){
+        //     formIsValid = false;
+        //     errors["agree"] = "Required";
+        // }
+
+
+        if(!fields["description"]){
+            formIsValid = false;
+            errors["description"] = "Required";
+        }
+        if(!fields["category"]){
+            formIsValid = false;
+            errors["category"] = "Required";
+        }
+
+        // if(!fields["email"]){
+        //     formIsValid = false;
+        //     errors["email"] = "Required";
+        // }
+
+
+
+        if(typeof fields["email"] !== "undefined"){
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({errorsProduct: errors});
+        return formIsValid;
+    }
+
+
+    handleChangeProduct(field, e){
+        let fields = this.state.fieldsProduct;
+        fields[field] = e.target.value;
+        this.setState({fields});
+    }
+
+
+
+    handleSubmitProduct = event => {
+
+        event.preventDefault();
+
+
+        const form = event.currentTarget;
+
+        if (this.handleValidationProduct()){
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const title = data.get("title")
+            const purpose = data.get("purpose")
+            const description = data.get("description")
+            const lastName = data.get("category")
+
+
+
+
+            axios.post(baseUrl+"product",
+
+                {
+                    "title": title,
+                    "purpose": purpose,
+                    "description" : description,
+
+
+                }
+                ,{
+                    headers: {
+                        "Authorization" : "Bearer "+this.props.userDetail.token
+                    }
+                })
+                .then(res => {
+
+
+                    console.log(res.data.content)
+                    console.log("product added succesfully")
+
+                    // dispatch({type: "SIGN_UP", value : res.data})
+
+                    // this.toggleSite()
+                    //
+                    // this.getSites()
+
+                    // this.handleBack()
+
+                    this.setState({
+
+                        showProductSelection: !this.state.showProductSelection
+                    })
+
+                    this.getProducts()
+
+
+
+
+
+                }).catch(error => {
+
+                // dispatch(stopLoading())
+
+                // dispatch(signUpFailed(error.response.data.content.message))
+
+                console.log(error)
+                // dispatch({ type: AUTH_FAILED });
+                // dispatch({ type: ERROR, payload: error.data.error.message });
+
+
+            });
+
+
+
+
+
+        }else {
+
+
+            // alert("invalid")
+        }
+
+
 
     }
 
@@ -1635,7 +1802,7 @@ class  SearchForm extends Component {
 
 
 
-                <div className={this.state.active == 5?"":"d-none"}>
+                <div className={(this.state.active == 5 && !this.state.productSelection)?"":"d-none"}>
 
 
                         <div className="container  pt-2 pb-3">
@@ -1692,7 +1859,7 @@ class  SearchForm extends Component {
 
                                     <div className="col-auto">
 
-                                        <Link to={"/create-product"}><p className={"green-text bottom-bar-text"}> Create New Product </p></Link>
+                                        <p  onClick={this.showProductSelection} className={"green-text bottom-bar-text"}> Create New Product </p>
 
 
                                     </div>
@@ -1935,7 +2102,154 @@ class  SearchForm extends Component {
 
                 </div>
 
-                {(this.state.active == 0  ||this.state.active==4 )&&
+
+
+                {this.state.productSelection &&<div>
+
+                    <HeaderWhiteBack history={this.props.history} heading={this.state.item&&this.state.item.name}/>
+
+
+
+
+                    <div className="container   pb-4 pt-4">
+
+
+                        {/*<div className="row ">*/}
+
+                        {/*<div className="col-auto pb-4 pt-4">*/}
+                        {/*<img className={"search-icon-middle"}  src={CubeBlue} />*/}
+
+                        {/*</div>*/}
+                        {/*</div>*/}
+                        <div className="row  pb-2 pt-4 ">
+
+                            <div className="col-auto">
+                                <h3 className={"blue-text text-heading"}>Create A Product
+                                </h3>
+
+                            </div>
+                        </div>
+
+
+                        {/*<div className="row  pb-4 pt-2 ">*/}
+
+                        {/*<div className="col-10">*/}
+                        {/*<p className={"text-blue text-bold "}>What is the purpose of your new product? </p>*/}
+
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+                    </div>
+
+
+
+
+
+
+                    <div className={"row justify-content-center create-product-row"}>
+                        <div className={"col-11"}>
+                            <form  onSubmit={this.handleSubmitProduct}>
+                                <div className="row no-gutters justify-content-center ">
+
+
+                                    <div className="col-12 mb-3">
+                                        <div className={"custom-label text-bold text-blue mb-3"}>What is the purpose of your new product?</div>
+                                        <FormControl variant="outlined" className={classes.formControl}>
+                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                            <Select
+                                                native
+                                                onChange={this.handleChangeProduct.bind(this, "purpose")}
+
+                                                inputProps={{
+                                                    name: 'purpose',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+                                                {this.state.purpose.map((item)=>
+
+                                                    <option value={item}>{item}</option>
+
+                                                )}
+
+                                            </Select>
+                                        </FormControl>
+                                        {this.state.errorsProduct["purpose"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errorsProduct["purpose"]}</span>}
+
+
+                                    </div>
+
+
+                                    <div className="col-12 mb-3">
+                                        <div className={"custom-label text-bold text-blue mb-3"}>What resources do you need to make this product?</div>
+                                        <FormControl variant="outlined" className={classes.formControl}>
+                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                            <Select
+                                                native
+                                                onChange={this.handleChangeProduct.bind(this, "category")}
+                                                inputProps={{
+                                                    name: 'category',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+                                                {this.state.categories.map((item)=>
+
+                                                    <option value={item}>{item.name}</option>
+
+                                                )}
+
+                                            </Select>
+                                        </FormControl>
+                                        {this.state.errorsProduct["category"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errorsProduct["category"]}</span>}
+
+
+                                    </div>
+                                    <div className="col-12 mt-4">
+                                        <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>
+
+                                        <TextField id="outlined-basic"  type={"text"} label="Title" variant="outlined" fullWidth={true} name={"title"} onChange={this.handleChangeProduct.bind(this, "title")} />
+
+                                        {this.state.errorsProduct["title"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errorsProduct["title"]}</span>}
+
+                                    </div>
+
+                                    <div className="col-12 mt-4">
+                                        <div className={"custom-label text-bold text-blue mb-3"}>Give it a description</div>
+
+                                        <TextField multiline
+                                                   rows={4}  type={"text"} id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"}  onChange={this.handleChangeProduct.bind(this, "description")} />
+
+                                        {this.state.errorsProduct["description"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errorsProduct["description"]}</span>}
+
+                                    </div>
+
+
+                                    <div className="col-12 mt-4 mb-5">
+
+                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                </div>}
+
+
+
+                {/*{(this.state.active == 0  ||this.state.active==4 ||this.state.active==7 )&&*/}
+
+
+
                 <React.Fragment>
 
                     <CssBaseline/>
@@ -2015,7 +2329,10 @@ class  SearchForm extends Component {
                     </AppBar>
 
                 </React.Fragment>
-                }
+
+
+
+                // }
 
 
 

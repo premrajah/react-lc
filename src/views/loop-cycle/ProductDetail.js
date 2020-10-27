@@ -446,8 +446,6 @@ class  ProductDetail extends Component {
                             <div className="col-12">
 
 
-
-
                                 {this.state.searches.map((item)=>
                                     <div  style={{border:"none"}} data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
 
@@ -462,7 +460,6 @@ class  ProductDetail extends Component {
                                     </div>
 
                                 )}
-
 
 
                             </div>

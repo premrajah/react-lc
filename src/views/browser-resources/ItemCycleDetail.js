@@ -249,47 +249,6 @@ class  ItemCycleDetail extends Component {
     loadSearches(){
 
 
-        for (var i=0;i<this.state.item.searches.length;i++){
-
-
-            axios.get(baseUrl+"search/"+this.state.item.searches[i],
-                {
-                    headers: {
-                        "Authorization" : "Bearer "+this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                        var response = response.data;
-
-                        console.log("search code")
-
-                        console.log(response)
-
-                        var searches = this.state.searches
-
-                        searches.push(response.content)
-
-                        this.setState({
-
-                            searches: searches
-
-                        })
-                    },
-                    (error) => {
-
-                        var status = error.response.status
-
-                        console.log("search error")
-
-                        console.log(error)
-
-                    }
-                );
-
-
-        }
 
 
 
@@ -300,13 +259,7 @@ class  ItemCycleDetail extends Component {
 
 
 
-        axios.get(baseUrl+"product/"+this.slug+"/code",
-            {
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl+"product/"+this.slug+"/code")
             .then((response) => {
 
                     var response = response.data;
@@ -563,27 +516,203 @@ class  ItemCycleDetail extends Component {
                         </div>
 
 
-                        <div className="row justify-content-start pb-3 pt-4 border-box">
+                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
 
-                            <div className="col-12">
+                            {/*<div className="col-12">*/}
 
-                                {/*{this.state.codeImg && <img src={this.state.codeImg} />}*/}
+                                {/*/!*{this.state.codeImg && <img src={this.state.codeImg} />}*!/*/}
 
-                                {/*{this.state.codeImg && <img src={"base64,"+this.state.codeImg}/> }*/}
+                                {/*/!*{this.state.codeImg && <img src={"base64,"+this.state.codeImg}/> }*!/*/}
 
-                                {/*{this.state.codeImg && <img src={this.state.codeImg}/> }*/}
+                                {/*/!*{this.state.codeImg && <img src={this.state.codeImg}/> }*!/*/}
 
 
-                                <img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} />
+                                {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} />*/}
 
+
+
+                            {/*</div>*/}
+                        {/*</div>*/}
+
+                        <div className="container justify-content-start pb-4 pt-3 ">
+
+
+                        <div className="row justify-content-start pb-4 pt-3 ">
+                            <div className="col-auto">
+                                <h5 className={"text-bold"}>Product Info
+                                </h5>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className={"container"}>
+
+                        <div className="row  justify-content-start search-container  pb-4">
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*</div>*/}
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Category</p>
+
+
+
+                                {this.state.item.searches&&this.state.item.searches.length>0 &&
+                                    <>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.searches[0].tags} ></p>
+                                {/*<p style={{fontSize:"18px"}} className="  mb-1"></p>*/}
+                                    </>
+                                }
 
 
                             </div>
                         </div>
 
+                        <div className="row  justify-content-start search-container  pb-4">
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*</div>*/}
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Manufacturer</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.org_id} </p>
+                            </div>
+                        </div>
+
+                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                            {/*/!*<div className={"col-1"}>*!/*/}
+                            {/*/!*<img className={"icon-about"} src={ListIcon} />*!/*/}
+                            {/*/!*</div>*!/*/}
+                            {/*<div className={"col-auto"}>*/}
+
+                                {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Purpose</p>*/}
+                                {/*<p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.purpose} </p>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
-                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
+                        <div className="row  justify-content-start search-container  pb-4">
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*</div>*/}
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1"> October 16, 2019 (1 year old)</p>
+                            </div>
+                        </div>
+
+
+
+
+                        <div className="row  justify-content-start search-container  pb-4">
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*</div>*/}
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Model Number</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">CO133 </p>
+                            </div>
+                        </div>
+
+                        <div className="row  justify-content-start search-container  pb-4">
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*</div>*/}
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Serial Number</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">CE0460D0G </p>
+                            </div>
+                        </div>
+
+
+                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                        {/*<div className={"col-1"}>*/}
+                        {/*<img className={"icon-about"} src={AmountIcon} />*/}
+                        {/*</div>*/}
+                        {/*<div className={"col-auto"}>*/}
+
+                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
+                        {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+
+                        <div className="row  justify-content-start search-container  pb-4">
+                            <div className={"col-1"}>
+                                <img className={"icon-about"} src={StateIcon} />
+                            </div>
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.state} </p>
+                            </div>
+                        </div>
+
+                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                        {/*<div className={"col-1"}>*/}
+                        {/*<img className={"icon-about"} src={CalenderIcon} />*/}
+                        {/*</div>*/}
+                        {/*<div className={"col-auto"}>*/}
+
+                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
+                        {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
+                        {/*<Moment   unix  >*/}
+                        {/*{this.state.item.availableFrom}*/}
+                        {/*</Moment>*/}
+                        {/*</p>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+                        <div className="row  justify-content-start search-container  pb-4">
+                            <div className={"col-1"}>
+                                <img className={"icon-about"} src={MarkerIcon} />
+                            </div>
+                            <div className={"col-auto"}>
+
+                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Delivery From</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.site&&this.state.site.name}</p>
+                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.site&&this.state.site.address}</p>
+                            </div>
+                        </div>
+
+                        <div className="container container-divider">
+                            <div className="row">
+                            </div>
+                        </div>
+                        <div className="container mt-4 mb-5 pb-5 ">
+
+                            <div className="row no-gutters mb-5">
+                                <div className="col-12 mb-4">
+                                    <h5 className="mb-1">About the seller  </h5>
+                                </div>
+                                <div className="col-auto ">
+                                    <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                                </div>
+                                <div className="col pl-2 align-self-center">
+                                    <div className="row no-gutters">
+                                        <div className="col-12">
+
+
+                                            <p style={{fontSize:"18px"}} className=" ">{this.state.item.org_id}</p>
+                                            <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+
+                    {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
 
                             {/*<div className="col-12">*/}
                                 {/*<h5 className={"text-bold blue-text"}>Product Journey</h5>*/}
@@ -599,14 +728,14 @@ class  ItemCycleDetail extends Component {
                         {/*</div>*/}
 
 
-                        <div className="row justify-content-center pb-3 pt-4 ">
+                        {/*<div className="row justify-content-center pb-3 pt-4 ">*/}
 
-                            <div style={{textAlign:"center"}} className="col-12">
+                            {/*<div style={{textAlign:"center"}} className="col-12">*/}
 
 
-                                <img style={{width:"98%"}} src={BottomDetailInfo} />
-                            </div>
-                        </div>
+                                {/*<img style={{width:"98%"}} src={BottomDetailInfo} />*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
 

@@ -89,10 +89,12 @@ import RepeatIcon from '@material-ui/icons/Repeat';
 
 class  ProductDetail extends Component {
 
-    slug;
+    slug
 
+    item
 
     productQrCode;
+
     constructor(props) {
 
         super(props)
@@ -182,54 +184,17 @@ class  ProductDetail extends Component {
 
     }
 
-    getQrCode(){
+    getQrCode(id){
+
+         // alert("called")
+
+        this.productQrCode= "http://api.makealoop.io/api/1/product/"+id+"/code?u="+frontEndUrl+"product-cycle-detail";
 
 
+        // this.productQrCode= "http://api.makealoop.io/api/1/product/"+id+"/code/";
 
 
-
-        this.productQrCode= "http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id;
-
-
-        axios.get(baseUrl+"product/"+this.slug+"/code",
-            {
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data;
-                    console.log("qr code")
-                    console.log(response)
-
-
-
-
-                    this.setState({
-
-                        codeImg: response
-                    })
-
-
-
-
-                },
-                (error) => {
-
-                    var status = error.response.status
-
-                    console.log("resource error")
-
-                    console.log(error)
-
-
-                }
-            );
-
-
-
+        // alert(this.productQrCode)
 
     }
 
@@ -259,7 +224,7 @@ class  ProductDetail extends Component {
 
 
                 this.loadSearches()
-                this.getQrCode()
+                this.getQrCode(response.content.id)
 
                 },
                 (error) => {
@@ -422,6 +387,8 @@ class  ProductDetail extends Component {
                                 {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id} />*/}
 
                                 <img src={this.productQrCode} />
+
+                                <Link to={"/product-cycle-detail/"+this.state.item.id}> Go To Preview Page</Link>
 
 
                             </div>

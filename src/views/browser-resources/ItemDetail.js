@@ -195,8 +195,19 @@ class  ItemDetail extends Component {
                         <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                             <div className="col-12">
+
+                                <div className="row">
+                                <div className="col-7">
                                 <p className={"green-text text-heading"}>@{this.state.item.tags}
                                 </p>
+                                </div>
+
+                                <div className="col-3 green-text text-heading text-right">
+                                    {this.state.item.price?<>{this.state.item.price.currency} {this.state.item.price.value}</>:"Free"}
+
+                                </div>
+
+                                </div>
 
                             </div>
                             <div className="col-12 mt-2">

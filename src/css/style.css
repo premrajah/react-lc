@@ -2728,3 +2728,4 @@ color: #3C3972;
 	margin-bottom:20px;
 }
 .border-box{margin: 1%; border: 2px solid #eee; border-radius:5px;padding: 10px;}
+.MuiFormControl-root{width: 100%;}

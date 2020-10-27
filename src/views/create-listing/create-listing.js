@@ -27,6 +27,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuOutline from '@material-ui/icons/MailOutline';
 import Close from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
+import AddIcon from '@material-ui/icons/Add';
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -94,6 +95,7 @@ import CameraGray from '../../img/icons/camera-gray.png';
 import PlusGray from '../../img/icons/plus-icon.png';
 import ComponentImg from '../../img/component.png';
 import ProductBlue from '../../img/icons/product-blue.png';
+import UploadFileBootStrap from "../../Util/UploadFileBootStrap";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -291,6 +293,9 @@ class  CreateListing extends Component {
     createListing(){
 
 
+        // alert(this.state.price +" "+this.state.unitSelected)
+
+
 
         var data={}
 
@@ -383,6 +388,7 @@ class  CreateListing extends Component {
         //
         // const name = event.target.name;
         //
+
         // setState({
         //     ...state,
         //     [name]: event.target.value,
@@ -1347,10 +1353,10 @@ class  CreateListing extends Component {
                         </div>
 
 
-                        <div className="col-auto">
+                        <div className="col-2 text-right">
 
 
-                            <Link to={"/create-search"}><Close  className="blue-text" style={{ fontSize: 32 }} /></Link>
+                            <Link to={"/create-listing"}><Close  className="blue-text" style={{ fontSize: 32 }} /></Link>
 
                         </div>
 
@@ -1460,6 +1466,17 @@ class  CreateListing extends Component {
                             <div className="container  pb-5 ">
 
                                 <div className="row camera-grids   no-gutters   ">
+
+                                    <div className="col-4 p-1 text-center ">
+
+                                        <div className="card shadow border-0 mb-3 container-gray border-rounded">
+                                            <div className={"card-body"}>
+                                                {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+                                                <UploadFileBootStrap/>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                     <div className="col-4 p-1 text-center ">
 
                                         <div className="card shadow border-0 mb-3 container-gray border-rounded">
@@ -1474,7 +1491,9 @@ class  CreateListing extends Component {
                                         <div className="card shadow border-0 mb-3 container-gray border-rounded ">
                                             <div className={"card-body"}>
 
-                                                <img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>
+                                                {/*<img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>*/}
+
+                                                <AddIcon style={{color:"#747474",fontSize:"32px"}}/>
 
                                             </div>
                                         </div>
@@ -1660,7 +1679,7 @@ class  CreateListing extends Component {
                             </div>
 
 
-                            <div className="col-auto">
+                            <div className="col-2 text-right">
 
                                 <Close onClick={this.handleBack}  className="blue-text" style={{ fontSize: 32 }} />
 

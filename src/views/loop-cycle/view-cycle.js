@@ -224,7 +224,7 @@ class  ViewCycle extends Component {
 
                     this.setState({
 
-                        showPopUp: true
+                        showPopUpLogistics: !this.state.showPopUpLogistics
                     })
 
                     this.getResources()
@@ -242,7 +242,7 @@ class  ViewCycle extends Component {
 
                 this.setState({
 
-                    showPopUp: true,
+                    showPopUpLogistics: false,
                     loopError: error.response.data.content.message
                 })
 
@@ -297,7 +297,7 @@ class  ViewCycle extends Component {
 
                     this.setState({
 
-                        showPopUp: true
+                        showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
                     })
 
                     this.getResources()
@@ -315,7 +315,7 @@ class  ViewCycle extends Component {
 
                 this.setState({
 
-                    showPopUp: true,
+                    showPopUpTrackingNumber: false,
                     loopError: error.response.data.content.message
                 })
 

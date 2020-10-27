@@ -107,7 +107,14 @@ class  ResourceItem extends Component {
                                     </Link>
                                 </div>
                                 <div style={{textAlign:"right"}} className={"col-2"}>
-                                    {/*<p className={"green-text"}>{this.props.item.price?this.props.item.price:"Free"}</p>*/}
+                                    <p className={"green-text"}>
+                                        {/*{this.props.item.price?this.props.item.price:"Free"}*/}
+                                        {this.props.item.price?<>{this.props.item.price.currency} {this.props.item.price.value}</>:"Free"}
+
+
+                                    </p>
+
+
                                 </div>
 
 

@@ -153,7 +153,15 @@ class  Sidebar extends Component {
                         <Link onClick={this.toggleMenu} to={"/resources"} className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
                         <Link onClick={this.toggleMenu} to={"/create-search"} className="white-text list-group-item list-group-item-action">Create A Search </Link>
                         <Link onClick={this.toggleMenu} to={"/create-listing"} className="white-text list-group-item list-group-item-action">Create A Listing </Link>
-                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resouces </Link>}
+                        {/*{this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resources </Link>}*/}
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/account"} className="white-text list-group-item list-group-item-action">Account</Link>}
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/loops"} className="white-text list-group-item list-group-item-action">My Cycles</Link>}
+
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/my-listings"} className="white-text list-group-item list-group-item-action">My Listings </Link>}
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/searches"} className="white-text list-group-item list-group-item-action">My Searches </Link>}
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/my-products"} className="white-text list-group-item list-group-item-action">My Products </Link>}
+                        {this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/statistics"} className="white-text list-group-item list-group-item-action">Statistics</Link>}
+
 
                     </div>
                 </div>

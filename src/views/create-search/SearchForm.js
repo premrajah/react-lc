@@ -174,7 +174,6 @@ class  SearchForm extends Component {
         this.selectProduct=this.selectProduct.bind(this)
         this.handleDateChange=this.handleDateChange.bind(this)
         this.createSearch=this.createSearch.bind(this)
-
         this.loadMatches=this.loadMatches.bind(this)
         this.showCreateSite=this.showCreateSite.bind(this)
         this.getSites=this.getSites.bind(this)
@@ -257,8 +256,8 @@ class  SearchForm extends Component {
                 "description": this.state.description,
                 "category": this.state.catSelected.name,
                 "type": this.state.subCatSelected.name,
-                "units": "10.0",
-                "volume": this.state.volume,
+                "units": this.state.unitSelected,
+                "volume": this.state.volumeSelected,
                 "state": this.state.stateSelected,
                 "site_id": this.state.siteSelected,
                 "require_after" : {
@@ -664,8 +663,10 @@ class  SearchForm extends Component {
 
         //Name
         if(!fields["title"]){
+
             formIsValid = false;
             errors["title"] = "Required";
+
         }else{
 
 
@@ -673,6 +674,7 @@ class  SearchForm extends Component {
 
                 title:fields["title"]
             })
+
         }
 
 
@@ -699,7 +701,22 @@ class  SearchForm extends Component {
 
             this.setState({
 
-                volume:fields["volume"]
+                volumeSelected:fields["volume"]
+            })
+        }
+
+
+
+        if(!fields["unit"]){
+
+            formIsValid = false;
+            errors["unit"] = "Required";
+
+        }else{
+
+            this.setState({
+
+                unitSelected:fields["unit"]
             })
         }
 
@@ -804,6 +821,13 @@ class  SearchForm extends Component {
             formIsValid = false;
             errors["volume"] = "Required";
         }
+
+
+        if(!fields["unit"]){
+            formIsValid = false;
+            errors["unit"] = "Required";
+        }
+
         // if(!fields["unit"]){
         //     formIsValid = false;
         //     errors["unit"] = "Required";
@@ -931,6 +955,7 @@ class  SearchForm extends Component {
         this.handleValidationNextColor()
         this.handleValidationAddDetailNextColor()
 
+        // alert(fields["unit"])
 
 
 
@@ -1301,9 +1326,37 @@ class  SearchForm extends Component {
 
                     <div className="col-6 pr-2">
 
-                        <UnitSelect units={this.state.units} />
+                        {/*<UnitSelect units={this.state.units} />*/}
 
 
+
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
+                            <Select
+                                name={"unit"}
+                                native
+
+                                    onChange={this.handleChange.bind(this, "unit")}
+
+                                label="Age"
+                                inputProps={{
+                                    name: 'unit',
+                                    id: 'outlined-age-native-simple',
+                                }}
+                            >
+
+                                <option value={null}>Select</option>
+
+
+                                {this.state.units.map((item)=>
+
+                                    <option value={item}>{item}</option>
+
+                                )}
+
+                            </Select>
+                        </FormControl>
+                        {this.state.errors["unit"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["unit"]}</span>}
 
 
                     </div>
@@ -1626,6 +1679,32 @@ class  SearchForm extends Component {
 
                         </div>
 
+
+                    <React.Fragment>
+
+                        <CssBaseline/>
+
+                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                            <Toolbar>
+
+
+                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+
+                                    <div className="col-auto">
+
+                                        <Link to={"/create-product"}><p className={"green-text bottom-bar-text"}> Create New Product </p></Link>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </Toolbar>
+                        </AppBar>
+
+                    </React.Fragment>
+
                 </div>
 
 
@@ -1856,7 +1935,7 @@ class  SearchForm extends Component {
 
                 </div>
 
-                {this.state.active<8 &&
+                {(this.state.active == 0  ||this.state.active==4 )&&
                 <React.Fragment>
 
                     <CssBaseline/>

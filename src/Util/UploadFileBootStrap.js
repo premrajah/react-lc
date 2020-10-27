@@ -18,28 +18,69 @@ class UploadFileBootStrap extends Component {
     }
 
 
-    handleChange(event) {
+    handleClickOutside = event => {
 
-        console.log(event.target.files)
+        // alert("click")
+        console.log(event.target)
 
-        var files=[]
-        var filesUrl = []
+        // if (event.target.className=="file-upload-img-thumbnail-cancel"&&event.target.className!="country-dropdown-a-list-item") {
+        //
+        //     this.setState({cityDropDown: false});
+        //
+        // }
+        // alert("clciekd")
 
-        for (var i=0;i<event.target.files.length;i++){
 
+        if (event.target.className!="file-upload-img-thumbnail-cancel") {
 
-            files.push(event.target.files[i])
-            filesUrl.push(URL.createObjectURL(event.target.files[i]))
+            // alert("hello")
 
-            console.log(URL.createObjectURL(event.target.files[i]))
+            this.setState({openLightBox: false});
 
+        }else{
+            // alert("no")
         }
 
-        this.setState({
-            files: files,
-            filesUrl : filesUrl
-        })
     }
+
+
+
+    componentDidMount () {
+
+        window.scrollTo(0, 0)
+        document.addEventListener('click', this.handleClickOutside, true);
+    }
+
+
+
+        handleChange(event) {
+
+            console.log(event.target.files)
+
+            var files = []
+            var filesUrl = []
+
+
+            // if (event.target.files) {
+            //
+            //     alert("here")
+
+                for (var i = 0; i < event.target.files.length; i++) {
+
+
+                    files.push(event.target.files[i])
+                    filesUrl.push(URL.createObjectURL(event.target.files[i]))
+
+                    console.log(URL.createObjectURL(event.target.files[i]))
+
+                }
+
+                this.setState({
+                    files: files,
+                    filesUrl: filesUrl
+                })
+            // }
+        }
 
     handleLightBox(e){
 
@@ -51,7 +92,7 @@ class UploadFileBootStrap extends Component {
             this.setState({
 
                 imageIndexLightBox : index,
-                openLightBox : true
+                openLightBox : false
             })
 
 
@@ -67,7 +108,6 @@ class UploadFileBootStrap extends Component {
         var url = e.currentTarget.dataset.url;
 
         console.log("image selected "+index)
-
 
 
         var files = this.state.files.filter((item) => item.name != name)
@@ -87,8 +127,8 @@ class UploadFileBootStrap extends Component {
     render() {
         return (
             <>
-            <div className={"file-uploader-box"}>
-                <input multiple type="file" onChange={this.handleChange}/>
+            <div onClick={this.handleChange} className={"file-uploader-box"}>
+                <input className={""} multiple type="file" onChange={this.handleChange}/>
                 <div className={"file-uploader-img-container"}>
 
                 {this.state.files && this.state.files.map((item,index)=>
@@ -104,9 +144,6 @@ class UploadFileBootStrap extends Component {
                     </div>
 
                 )}
-
-
-
 
                 </div>
 

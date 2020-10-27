@@ -91,6 +91,8 @@ class  ProductDetail extends Component {
 
     slug;
 
+
+    productQrCode;
     constructor(props) {
 
         super(props)
@@ -184,6 +186,11 @@ class  ProductDetail extends Component {
 
 
 
+
+
+        this.productQrCode= "http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id;
+
+
         axios.get(baseUrl+"product/"+this.slug+"/code",
             {
                 headers: {
@@ -198,10 +205,15 @@ class  ProductDetail extends Component {
                     console.log(response)
 
 
+
+
                     this.setState({
 
                         codeImg: response
                     })
+
+
+
 
                 },
                 (error) => {
@@ -407,7 +419,10 @@ class  ProductDetail extends Component {
                                 {/*{this.state.codeImg && <img src={this.state.codeImg} />}*/}
                                 {/*{this.state.codeImg && <img src={`data:image/png;base64,${this.state.codeImg}`}/> }*/}
 
-                                <img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id} />
+                                {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id} />*/}
+
+                                <img src={this.productQrCode} />
+
 
                             </div>
                         </div>

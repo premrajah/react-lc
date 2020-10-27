@@ -182,7 +182,16 @@ const useStylesAccordian = makeStyles((theme) => ({
 
                             <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                                <figure className="avatar avatar-60 border-0">
+
+
+                                      <span className={"word-user  word-user-cycle"}>
+                                       M
+
+                                </span>
+
+
+                                </figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
                                 <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.producer.org.name}</p>
@@ -197,7 +206,7 @@ const useStylesAccordian = makeStyles((theme) => ({
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                       <FromContent />
+                       <FromContent  loop={props.loop} />
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -214,7 +223,12 @@ const useStylesAccordian = makeStyles((theme) => ({
 
                             <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0"><img src={BuyerImg} alt="" /></figure>
+                                <figure className="avatar avatar-60 border-0">
+                                <span className={"word-user  word-user-cycle"}>
+                                       C
+
+                                </span>
+                                </figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
                                 <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.consumer.org.name}</p>
@@ -229,7 +243,7 @@ const useStylesAccordian = makeStyles((theme) => ({
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        <ToContent />
+                        <ToContent loop={props.loop} />
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -249,7 +263,16 @@ const useStylesAccordian = makeStyles((theme) => ({
 
                             <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0"><img src={LogiImg} alt="" /></figure>
+                                <figure className="avatar avatar-60 border-0">
+
+                                    {/*<img src={LogiImg} alt="" />*/}
+
+                                    <span className={"word-user  word-user-cycle"}>
+                                       L
+
+                                </span>
+
+                                </figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
 
@@ -272,7 +295,7 @@ const useStylesAccordian = makeStyles((theme) => ({
 }
 
 
-function FromContent() {
+function FromContent(props) {
 
 
 
@@ -296,12 +319,12 @@ function FromContent() {
              <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                  <div className="col-12">
-                     <p className={"green-text text-heading"}>@Tesco
+                     <p className={"green-text text-heading"}>{props.loop.producer.org.id}
                      </p>
 
                  </div>
                  <div className="col-12 mt-2">
-                     <h5 className={"blue-text text-heading"}>Food boxes needed
+                     <h5 className={"blue-text text-heading"}>{props.loop.resource.name}
                      </h5>
 
                  </div>
@@ -311,8 +334,8 @@ function FromContent() {
              <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                  <div className="col-auto">
-                     <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Lots of disposable food boxes. In good condition, cleaned thoroughly. Only used once.
-                         Please message if you are interested.
+                     <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
+                         {props.loop.resource.description}
                      </p>
 
                  </div>
@@ -321,8 +344,28 @@ function FromContent() {
 
              <div className="row justify-content-start pb-4 pt-3 ">
                  <div className="col-auto">
-                     <h6 className={""}>Item Details
+                     <h6 className={""}>Category
                      </h6>
+                     <p>{props.loop.resource.category}</p>
+
+                 </div>
+             </div>
+
+
+             <div className="row justify-content-start pb-4 pt-3 ">
+                 <div className="col-auto">
+                     <h6 className={""}>Amount
+                     </h6>
+                     <p>{props.loop.resource.volume} {props.loop.resource.units}</p>
+
+                 </div>
+             </div>
+
+             <div className="row justify-content-start pb-4 pt-3 ">
+                 <div className="col-auto">
+                     <h6 className={""}>Delivery From
+                     </h6>
+                     <p>{props.loop.from.name}, {props.loop.from.address}</p>
 
                  </div>
              </div>
@@ -330,7 +373,7 @@ function FromContent() {
          </>
      );
 }
-function ToContent() {
+function ToContent(props) {
 
 
 
@@ -341,25 +384,25 @@ function ToContent() {
         <>
 
 
-            <div className="row no-gutters  justify-content-center">
+            {/*<div className="row no-gutters  justify-content-center">*/}
 
 
 
-                <div className="col-auto ">
-                    <img className={"img-fluid"}  src={PaperImg} />
+                {/*<div className="col-auto ">*/}
+                    {/*<img className={"img-fluid"}  src={PaperImg} />*/}
 
-                </div>
-            </div>
+                {/*</div>*/}
+            {/*</div>*/}
 
             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                 <div className="col-12">
-                    <p className={"green-text text-heading"}>@Tesco
+                    <p className={"green-text text-heading"}>{props.loop.consumer.org.id}
                     </p>
 
                 </div>
                 <div className="col-12 mt-2">
-                    <h5 className={"blue-text text-heading"}>Food boxes needed
+                    <h5 className={"blue-text text-heading"}>{props.loop.consumer.name}
                     </h5>
 
                 </div>
@@ -369,8 +412,8 @@ function ToContent() {
             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                 <div className="col-auto">
-                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Lots of disposable food boxes. In good condition, cleaned thoroughly. Only used once.
-                        Please message if you are interested.
+                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
+                        {props.loop.resource.description}
                     </p>
 
                 </div>
@@ -379,11 +422,32 @@ function ToContent() {
 
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
-                    <h6 className={""}>Item Details
+                    <h6 className={""}>Category
                     </h6>
+                    <p>{props.loop.resource.category}</p>
 
                 </div>
             </div>
+
+
+            <div className="row justify-content-start pb-4 pt-3 ">
+                <div className="col-auto">
+                    <h6 className={""}>Amount
+                    </h6>
+                    <p>{props.loop.resource.volume} {props.loop.resource.units}</p>
+
+                </div>
+            </div>
+
+            <div className="row justify-content-start pb-4 pt-3 ">
+                <div className="col-auto">
+                    <h6 className={""}>Delivery To
+                    </h6>
+                    <p>{props.loop.from.name}, {props.loop.from.address}</p>
+
+                </div>
+            </div>
+
 
         </>
     );

@@ -310,7 +310,17 @@ class ComponentsNavbar extends React.Component {
                             onClick={e => e.preventDefault()}
                             className={"wl-link-white "}
                         >
-                            <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                            <figure className="avatar avatar-60 border-0">
+
+                                {/*<img src={TescoImg} alt="" />*/}
+                                <span className={"word-user"}>
+                                    {this.props.userDetail.email=="test.3@parallelai.com" &&   "M"}
+                                    {this.props.userDetail.email=="crajah@karedo.co.uk" &&   "L"}
+                                    {this.props.userDetail.email=="scorpion_rain@yahoo.com" &&   "C"}
+
+                                </span>
+
+                            </figure>
                             <i className="fa fa-cogs d-lg-none d-xl-none" />
 
                         </DropdownToggle>

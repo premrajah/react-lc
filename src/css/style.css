@@ -2729,3 +2729,35 @@ color: #3C3972;
 }
 .border-box{margin: 1%; border: 2px solid #eee; border-radius:5px;padding: 10px;}
 .MuiFormControl-root{width: 100%;}
+
+
+.word-user{
+
+	background: white ;
+	color: #27245C!important;
+	font-weight: 700;
+	font-size: 18px!important;
+	opacity: 1!important;
+	line-height: 10px!important;
+}
+
+
+
+.word-user-big{
+
+	background: white ;
+	color: #27245C!important;
+	font-weight: 700;
+	font-size: 18px!important;
+	opacity: 1!important;
+	line-height: 60px!important;
+}
+
+.word-user-cycle{
+	line-height: 50px!important;
+
+}
+
+
+
+.avatar-60{line-height:32px!important;}

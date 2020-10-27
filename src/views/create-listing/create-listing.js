@@ -166,8 +166,7 @@ class  CreateListing extends Component {
             siteSelected: null,
             serial:null,
             free: false,
-            price : null,
-            site:{}
+            price : null
 
         }
 
@@ -196,7 +195,6 @@ class  CreateListing extends Component {
         this.toggleSite=this.toggleSite.bind(this)
         this.toggleFree=this.toggleFree.bind(this)
         this.toggleSale=this.toggleSale.bind(this)
-        this.getSite=this.getSite.bind(this)
 
 
 
@@ -205,38 +203,7 @@ class  CreateListing extends Component {
 
 
 
-    getSite(){
 
-        axios.get(baseUrl+"site/"+this.state.siteSelected,
-            {
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
-
-                    this.setState({
-
-                        site:response
-
-                    })
-
-                },
-                (error) => {
-
-                    var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
-
-                }
-            );
-
-    }
 
 
     toggleSale(){
@@ -297,7 +264,52 @@ class  CreateListing extends Component {
 
     }
 
+    getSites(){
 
+
+
+
+        this.activeScreen= 4
+
+        this.setState({
+
+            activePage: 4,
+
+
+        })
+
+        alert(this.activeScreen)
+
+        axios.get(baseUrl+"site",
+            {
+                headers: {
+                    "Authorization" : "Bearer "+this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data.content;
+                    console.log("sites  response")
+                    console.log(response)
+
+                    this.setState({
+
+                        sites:response
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("sites error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
     createListing(){
 
@@ -1582,9 +1594,9 @@ class  CreateListing extends Component {
                                         <div className="card shadow border-0 mb-3 container-gray border-rounded ">
                                             <div className={"card-body"}>
 
-                                                {/*<img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>*/}
+                                                <img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>
 
-                                                <AddIcon style={{color:"#747474",fontSize:"32px"}}/>
+                                                {/*<AddIcon style={{color:"#747474",fontSize:"32px"}}/>*/}
 
                                             </div>
                                         </div>

@@ -138,7 +138,17 @@ class  Sidebar extends Component {
             <div className="mt-2 mb-3">
                 <div className="row">
                     <div className="col-auto">
-                        <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                        <figure className="avatar avatar-60 border-0">
+                            {/*<img src={TescoImg} alt="" />*/}
+
+                            <span className={"word-user-big"}>
+                                    {this.props.userDetail.email=="test.3@parallelai.com" &&   "M"}
+                                {this.props.userDetail.email=="crajah@karedo.co.uk" &&   "L"}
+                                {this.props.userDetail.email=="scorpion_rain@yahoo.com" &&   "C"}
+
+                                </span>
+
+                        </figure>
                     </div>
                     {/*<div className="col pl-0 align-self-center">*/}
                     {/*<h5 className="mb-1">Ammy Jahnson</h5>*/}

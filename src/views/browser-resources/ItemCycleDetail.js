@@ -689,7 +689,16 @@ class  ItemCycleDetail extends Component {
                                     <h5 className="mb-1">About the seller  </h5>
                                 </div>
                                 <div className="col-auto ">
-                                    <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                                    <figure className="avatar avatar-60 border-0">
+
+                                        {/*<img src={TescoImg} alt="" />*/}
+
+                                        <span className={"word-user word-user-sellor"}>
+                                      M
+
+                                </span>
+
+                                    </figure>
                                 </div>
                                 <div className="col pl-2 align-self-center">
                                     <div className="row no-gutters">
@@ -742,7 +751,7 @@ class  ItemCycleDetail extends Component {
                         <div className="row justify-content-start pb-3 pt-3 ">
 
                             <div className="col-12">
-                                <h5 className={"text-bold blue-text"}>Product Provenance</h5>
+                                <h5 className={"text-bold blue-text"}>Product Provenance (Illustration)</h5>
                             </div>
 
                             <div className="col-12">

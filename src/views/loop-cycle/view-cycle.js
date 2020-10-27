@@ -815,7 +815,16 @@ class  ViewCycle extends Component {
                                     <h5 className="mb-1">About the seller  </h5>
                                 </div>
                                 <div className="col-auto ">
-                                    <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                                    <figure className="avatar avatar-60 border-0">
+                                        {/*<img src={TescoImg} alt="" />*/}
+
+                                        <span className={"word-user-sellor"}>
+                                      M
+
+
+                                </span>
+
+                                    </figure>
                                 </div>
                                 <div className="col pl-2 align-self-center">
                                     <div className="row no-gutters">
@@ -848,7 +857,7 @@ class  ViewCycle extends Component {
 
                                         <div className="col-auto">
                                             <button onClick={this.confirmOffer} type="button"
-                                                    className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                                 Accept Offer
 
                                             </button>
@@ -857,7 +866,7 @@ class  ViewCycle extends Component {
                                         <div className="col-auto">
 
                                             <button onClick={this.declineOffer} type="button"
-                                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                                    className="shadow-sm mr-2 blue-btn-border btn btn-link  mt-2 mb-2 btn-blue">
 
                                                 Reject Offer
 
@@ -905,7 +914,7 @@ class  ViewCycle extends Component {
 
                                     <div className="col-auto">
                                         <button onClick={this.consumerConfirmOffer} type="button"
-                                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
                                             Confirm Offer
 
                                         </button>
@@ -914,7 +923,7 @@ class  ViewCycle extends Component {
                                     <div className="col-auto">
 
                                         <button onClick={this.declineOffer} type="button"
-                                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-green">
 
                                             Reject Offer
 

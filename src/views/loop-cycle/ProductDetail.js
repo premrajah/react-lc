@@ -322,26 +322,26 @@ class  ProductDetail extends Component {
                             <div className="col-12 mt-3 pb-3 ">
                                 <p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{this.state.item.purpose  }</p>
 
-                                <p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"Shelving" }</p>
-                                <p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"PP" }</p>
+                                {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"Shelving" }</p>*/}
+                                {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"PP" }</p>*/}
 
                             </div>
-                            <div className="col-12 mt-3 pb-3 ">
+                            {/*<div className="col-12 mt-3 pb-3 ">*/}
 
-                                <div className="row ">
-                                <div className="col-1 ">
-                                    <img style={{width: "40px"}} className={"search-icon-middle"}  src={CubeBlue} />
-                                </div>
-                                <div className="col-11 ">
-                                     <div className={"col-12 blue-text text-bold"}>Purpose</div>
-                                    <div className={"col-12 "}>Aggregate, an intermediary product which aggregates to another large product.</div>
-
-
-                                </div>
-                                </div>
+                                {/*<div className="row ">*/}
+                                {/*<div className="col-1 ">*/}
+                                    {/*<img style={{width: "40px"}} className={"search-icon-middle"}  src={CubeBlue} />*/}
+                                {/*</div>*/}
+                                {/*<div className="col-11 ">*/}
+                                     {/*<div className={"col-12 blue-text text-bold"}>Purpose</div>*/}
+                                    {/*<div className={"col-12 "}>Aggregate, an intermediary product which aggregates to another large product.</div>*/}
 
 
-                            </div>
+                                {/*</div>*/}
+                                {/*</div>*/}
+
+
+                            {/*</div>*/}
 
                             <div className="col-12 mt-3 pb-3 ">
                                 <div className="row ">

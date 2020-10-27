@@ -278,7 +278,7 @@ class  CreateListing extends Component {
 
         })
 
-        alert(this.activeScreen)
+        // alert(this.activeScreen)
 
         axios.get(baseUrl+"site",
             {
@@ -493,7 +493,7 @@ class  CreateListing extends Component {
 
 
 
-        alert(this.activeScreen)
+        // alert(this.activeScreen)
 
         if (this.activeScreen==0){
 

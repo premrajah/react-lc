@@ -1243,7 +1243,7 @@ class  CreateListing extends Component {
 
 
 
-            alert(fields["startDate"])
+            // alert(fields["startDate"])
             this.setState({
 
                 startDate:fields["startDate"]
@@ -1536,7 +1536,7 @@ class  CreateListing extends Component {
 
 
 
-        alert("site submit")
+        // alert("site submit")
         const form = event.currentTarget;
 
 

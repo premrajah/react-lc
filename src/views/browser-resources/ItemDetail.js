@@ -400,7 +400,12 @@ class  ItemDetail extends Component {
                                     <h5 className="mb-1">About the seller  </h5>
                                 </div>
                                 <div className="col-auto ">
-                                    <figure className="avatar avatar-60 border-0"><img src={TescoImg} alt="" /></figure>
+                                    <figure className="avatar avatar-60 border-0">
+
+
+                                        <span className={"word-user-sellor"}>M</span>
+
+                                    </figure>
                                 </div>
                                 <div className="col pl-2 align-self-center">
                                     <div className="row no-gutters">

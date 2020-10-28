@@ -269,7 +269,7 @@ class  ItemDetail extends Component {
 
                             <div className="col-auto ">
 
-                                {this.state.item.images &&this.state.item.images.length>0? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]}/>:    <img className={"img-fluid"} src={Paper}/>}
+                                {this.state.item.images &&this.state.item.images.length>0? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]}/>:    <img className={"img-fluid"} src={PaperImg}/>}
 
 
                                 {/*<img className={"img-fluid"}  src={PaperImg} />*/}

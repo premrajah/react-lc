@@ -473,7 +473,7 @@ class  ItemDetail extends Component {
                                         <Link to={"/message-seller/"+this.slug}> <p onClick={this.showPopUp} className={"green-text"}>Chat</p></Link>
                                     </div>
                                         <div className={"col-4"}>
-                                        <p onClick={this.showPopUp} className={"green-text"}>Cancel</p>
+                                        <p onClick={this.showPopUp} className={"green-text"}>Ok</p>
                                         </div>
                                     </div>
                                 </>

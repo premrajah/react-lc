@@ -3,7 +3,10 @@ import './upload-file.css'
 import  {Cancel} from '@material-ui/icons';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-
+import axios from "axios/index";
+import {baseUrl} from "./Constants";
+import {connect} from "react-redux";
+import * as actionCreator from "../store/actions/actions";
 
 class UploadFileBootStrap extends Component {
     constructor(props){
@@ -79,7 +82,12 @@ class UploadFileBootStrap extends Component {
                     files: files,
                     filesUrl: filesUrl
                 })
+
             // }
+
+
+
+            this.uploadImage()
         }
 
     handleLightBox(e){
@@ -124,6 +132,111 @@ class UploadFileBootStrap extends Component {
 
 
     }
+
+     getBase64(file) {
+
+         // const reader = new FileReader();
+         // reader.readAsDataURL(file);
+         //
+         //
+         // return reader.result;
+         // reader.onload = () => resolve(reader.result);
+         // reader.onerror = error => reject(error);
+
+
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsBinaryString(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+
+
+     uploadImage(){
+
+
+
+
+
+
+         if (this.state.files&&this.state.files.length>0) {
+
+             alert("file exist")
+
+
+
+
+             this.getBase64(this.state.files[0]).then(
+
+                 data => {
+                     console.log(data)
+
+
+                     axios.post(baseUrl + "resource/image64", btoa(data)
+                         , {
+                             headers: {
+                                 "Authorization": "Bearer " + this.props.userDetail.token
+                             }
+                         }
+                     )
+                         .then(res => {
+
+                             console.log(res.data.content)
+
+
+                             this.setState({
+                                 listResourceData: res.data.content
+                             })
+
+                         }).catch(error => {
+
+                         console.log("image upload found ")
+                         console.log(error.response.data)
+
+                     })
+
+                 }
+
+
+             );
+
+
+             // var imgDate =   await this.getBase64(this.state.files[0])
+
+
+         //     console.log(imgDate)
+         //
+         //     axios.post(baseUrl + "resource/image64", imgDate
+         //         , {
+         //             headers: {
+         //                 "Authorization": "Bearer " + this.props.userDetail.token
+         //             }
+         //         }
+         //     )
+         //         .then(res => {
+         //
+         //             console.log(res.data.content)
+         //
+         //
+         //             this.setState({
+         //                 listResourceData: res.data.content
+         //             })
+         //
+         //         }).catch(error => {
+         //
+         //         console.log("image upload found ")
+         //         console.log(error.response.data)
+         //
+         //     });
+
+
+         }
+
+
+     }
     render() {
         return (
             <>
@@ -174,4 +287,42 @@ class UploadFileBootStrap extends Component {
         );
     }
 }
-export default UploadFileBootStrap;
+
+
+const mapStateToProps = state => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+
+
+    };
+};
+
+const mapDispachToProps = dispatch => {
+    return {
+
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
+
+
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(UploadFileBootStrap);

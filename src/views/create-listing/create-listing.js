@@ -28,7 +28,8 @@ import MenuOutline from '@material-ui/icons/MailOutline';
 import Close from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import AddIcon from '@material-ui/icons/Add';
-
+import '../../Util/upload-file.css'
+import  {Cancel} from '@material-ui/icons';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -73,7 +74,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from  '../item/ResourceItem'
-
+// import moment from 'react-moment    '
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 // pick a date util library
 // import MomentUtils from '@date-io/moment';
@@ -120,8 +121,6 @@ const useStylesTabs = makeStyles((theme) => ({
 
 class  CreateListing extends Component {
 
-
-    
     
     activeScreen =0
     constructor(props) {
@@ -164,9 +163,18 @@ class  CreateListing extends Component {
             showCreateSite: false,
             showAddComponent: false,
             siteSelected: null,
-            serial:null,
+            files: [],
+            filesUrl: [],
             free: false,
-            price : null
+            price : null,
+
+            brand:null,
+            manufacturedDate:null,
+            model:null,
+            serial:null,
+            startDate:null,
+            images:[]
+
 
         }
 
@@ -195,6 +203,8 @@ class  CreateListing extends Component {
         this.toggleSite=this.toggleSite.bind(this)
         this.toggleFree=this.toggleFree.bind(this)
         this.toggleSale=this.toggleSale.bind(this)
+        this.handleChangeFile=this.handleChangeFile.bind(this)
+        this.handleCancel=this.handleCancel.bind(this)
 
 
 
@@ -204,6 +214,154 @@ class  CreateListing extends Component {
 
 
 
+
+
+
+    handleChangeFile(event) {
+
+
+
+
+        console.log(event.target.files)
+
+        var files = []
+        var filesUrl = []
+
+
+        // if (event.target.files) {
+        //
+        //     alert("here")
+
+        for (var i = 0; i < event.target.files.length; i++) {
+
+
+            files.push(event.target.files[i])
+            filesUrl.push(URL.createObjectURL(event.target.files[i]))
+
+            console.log(URL.createObjectURL(event.target.files[i]))
+
+        }
+
+        this.setState({
+            files: files,
+            filesUrl: filesUrl
+        })
+
+        // }
+
+
+
+        this.uploadImage(files)
+    }
+
+
+    handleCancel(e){
+
+
+        e.preventDefault()
+
+        var index = e.currentTarget.dataset.index;
+        var name = e.currentTarget.dataset.name;
+        var url = e.currentTarget.dataset.url;
+
+        console.log("image selected "+index)
+
+
+        var files = this.state.files.filter((item) => item.name != name)
+        var filesUrl = this.state.filesUrl.filter((item) => item.url!=url)
+
+
+
+        this.setState({
+
+            files : files,
+            filesUrl : filesUrl
+        })
+
+
+
+    }
+
+    getBase64(file) {
+
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
+        //
+        //
+        // return reader.result;
+        // reader.onload = () => resolve(reader.result);
+        // reader.onerror = error => reject(error);
+
+
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsBinaryString(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+
+
+    uploadImage(files){
+
+
+
+
+        if (files&&files.length>0) {
+
+
+
+            for (var i = 0; i < files.length;i++){
+
+
+                this.getBase64(files[0]).then(
+                    data => {
+                        console.log(data)
+
+
+                        axios.post(baseUrl + "resource/image64", btoa(data)
+                            , {
+                                headers: {
+                                    "Authorization": "Bearer " + this.props.userDetail.token
+                                }
+                            }
+                        )
+                            .then(res => {
+
+                                console.log(res.data.content)
+
+
+                                var images = this.state.images
+
+                                images.push(res.data.content)
+
+
+                                this.setState({
+                                    images: images
+                                })
+
+                            }).catch(error => {
+
+                            console.log("image upload error ")
+                            // console.log(error.response.data)
+
+                        })
+
+                    }
+                );
+
+        }
+
+
+
+
+
+        }
+
+
+    }
 
 
     toggleSale(){
@@ -317,10 +475,13 @@ class  CreateListing extends Component {
         // alert(this.state.price +" "+this.state.unitSelected)
 
 
+        //
+        // alert(this.state.manufacturedDate+"manu -  start"+this.state.startDate)
+        //
+        // return
 
         var data={}
 
-        if (this.state.price) {
 
              data = {
 
@@ -329,48 +490,35 @@ class  CreateListing extends Component {
                 "category": this.state.catSelected.name,
                 "type": this.state.subCatSelected.name,
                 "units": "units",
+
+                 "serial": this.state.serial,
+                 "model": this.state.model,
+                 "brand": this.state.brand,
+
                 "volume": this.state.volume,
                 "state": this.state.stateSelected,
                 "site_id": this.state.siteSelected,
+                 "age": {
+                     "unit": "MILLISECOND",
+                     "value": new Date(this.state.manufacturedDate).getTime()
+                 },
                 "availableFrom": {
                     "unit": "MILLISECOND",
-                    "value": 1603381408
-                },
+                    "value": new Date(this.state.startDate).getTime()
+               },
                 "expiry": {
                     "unit": "MILLISECOND",
-                    "value": 1605830400000
+                    "value": new Date(this.state.startDate).getTime()+8640000000
                 },
                  "price": {
                      "value": this.state.price,
                      "currency": "gbp"
                  },
+                 "images":this.state.images
              }
 
 
-        }else {
 
-             data = {
-
-                "name": this.state.title,
-                "description": this.state.description,
-                "category": this.state.catSelected.name,
-                "type": this.state.subCatSelected.name,
-                "units": "units",
-                "volume": this.state.volume,
-                "state": this.state.stateSelected,
-                "site_id": this.state.siteSelected,
-                "availableFrom": {
-                    "unit": "MILLISECOND",
-                    "value": 1603381408
-                },
-                "expiry": {
-                    "unit": "MILLISECOND",
-                    "value": 1605830400000
-                }
-            }
-
-
-        }
         axios.post(baseUrl+"resource",
             data,{
              headers: {
@@ -525,7 +673,6 @@ class  CreateListing extends Component {
 
 
 
-            // if (this.handleValidationAddDetail()){
 
                 this.activeScreen=5
 
@@ -539,7 +686,7 @@ class  CreateListing extends Component {
                 })
 
                 // this.createSearch()
-            // }
+
 
 
 
@@ -549,17 +696,20 @@ class  CreateListing extends Component {
         else if (this.activeScreen==5){
 
 
-            this.activeScreen=7
-            // alert("on page 4")
+            if (this.handleValidationAddDetail()) {
 
-            this.setState({
+                this.activeScreen = 7
+                // alert("on page 4")
 
-                activePage:7,
-                page: 4,
-                progressBar: 100
-            })
+                this.setState({
 
-            this.createListing()
+                    activePage: 7,
+                    page: 4,
+                    progressBar: 100
+                })
+
+                this.createListing()
+            }
 
         }
 
@@ -800,8 +950,6 @@ class  CreateListing extends Component {
                 serial:fields["serial"]
             })
         }
-
-
         if(!fields["brand"]){
             formIsValid = false;
             errors["brand"] = "Required";
@@ -810,20 +958,37 @@ class  CreateListing extends Component {
 
             this.setState({
 
-                serial:fields["brand"]
+                brand:fields["brand"]
             })
         }
-
-
-        if(!fields["manufacturedDate"]){
+        if(!fields["model"]){
             formIsValid = false;
-            errors["manufacturedDate"] = "Required";
+            errors["model"] = "Required";
         }else{
 
 
             this.setState({
 
-                serial:fields["manufacturedDate"]
+                model:fields["model"]
+            })
+        }
+
+
+
+
+        if(!fields["manufacturedDate"]){
+
+            formIsValid = false;
+            errors["manufacturedDate"] = "Required";
+
+        }else{
+
+
+            // alert(fields["manufacturedDate"])
+
+            this.setState({
+
+                manufacturedDate:fields["manufacturedDate"]
             })
         }
 
@@ -836,7 +1001,7 @@ class  CreateListing extends Component {
 
             this.setState({
 
-                serial:fields["model"]
+                model:fields["model"]
             })
         }
 
@@ -895,6 +1060,22 @@ class  CreateListing extends Component {
             formIsValid = false;
             errors["volume"] = "Required";
         }
+
+
+
+
+        if(!fields["startDate"]){
+            formIsValid = false;
+            errors["startDate"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                startDate:fields["startDate"]
+            })
+        }
+
         // if(!fields["unit"]){
         //     formIsValid = false;
         //     errors["unit"] = "Required";
@@ -940,7 +1121,6 @@ class  CreateListing extends Component {
         }
 
 
-
         if(!fields["description"]){
             formIsValid = false;
             errors["description"] = "Required";
@@ -966,8 +1146,6 @@ class  CreateListing extends Component {
                 serial:fields["serial"]
             })
         }
-
-
         if(!fields["brand"]){
             formIsValid = false;
             errors["brand"] = "Required";
@@ -976,9 +1154,21 @@ class  CreateListing extends Component {
 
             this.setState({
 
-                serial:fields["brand"]
+                brand:fields["brand"]
             })
         }
+        if(!fields["model"]){
+            formIsValid = false;
+            errors["model"] = "Required";
+        }else{
+
+
+            this.setState({
+
+                model:fields["model"]
+            })
+        }
+
 
 
         if(!fields["manufacturedDate"]){
@@ -989,26 +1179,23 @@ class  CreateListing extends Component {
 
             this.setState({
 
-                serial:fields["manufacturedDate"]
+                manufacturedDate:fields["manufacturedDate"]
             })
         }
 
 
         if(!fields["model"]){
-
             formIsValid = false;
             errors["model"] = "Required";
-
-
-
         }else{
 
 
             this.setState({
 
-                serial:fields["model"]
+                model:fields["model"]
             })
         }
+
 
 
 
@@ -1052,6 +1239,15 @@ class  CreateListing extends Component {
         if(!fields["startDate"]){
             formIsValid = false;
             errors["startDate"] = "Required";
+        }else{
+
+
+
+            alert(fields["startDate"])
+            this.setState({
+
+                startDate:fields["startDate"]
+            })
         }
 
 
@@ -1062,6 +1258,11 @@ class  CreateListing extends Component {
         // }
 
 
+
+        // alert(fields["startDate"])
+
+
+        console.log(errors)
 
         this.setState({errors: errors});
         return formIsValid;
@@ -1095,7 +1296,16 @@ class  CreateListing extends Component {
         if(!fields["startDate"]){
             formIsValid = false;
             errors["startDate"] = "Required";
+        }else{
+
+            this.setState({
+
+                startDate:fields["startDate"]
+            })
+
         }
+
+
 
 
 
@@ -1135,7 +1345,10 @@ class  CreateListing extends Component {
         })
 
 
-        // alert(fields["price"])
+
+
+
+        // alert(new Date(fields["manufacturedDate"]).getTime())
 
 
     }
@@ -1542,6 +1755,7 @@ class  CreateListing extends Component {
                                 id="input-with-icon-textfield"
                                 InputLabelProps={{
                                     shrink: true,
+                                    name:"manufacturedDate"
                                 }}
                                 label="Year Of Manufacture"
                                 type={"date"}
@@ -1570,38 +1784,61 @@ class  CreateListing extends Component {
 
                                 <div className="row camera-grids   no-gutters   ">
 
+                                    <div className="col-4 p-1 text-center ">
+
+                                        <div className="">
+                                            <div className={"card-body"}>
+                                                {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+
+                                                <div  className={"file-uploader-box"}>
+                                                    <input className={""} multiple type="file" onChange={this.handleChangeFile}/>
+                                                    <div className={"file-uploader-img-container"}>
+
+                                                        {this.state.files && this.state.files.map((item,index)=>
+
+                                                            <div className={"file-uploader-thumbnail-container"}>
+
+                                                                {/*<img src={URL.createObjectURL(item)}/>*/}
+                                                                <div   data-index={index} data-url={URL.createObjectURL(item)}
+
+                                                                        className={"file-uploader-thumbnail"} style={{backgroundImage:"url("+URL.createObjectURL(item)+ ")"}}>
+                                                                    <Cancel data-name={item.name} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"}/>
+                                                                </div>
+                                                            </div>
+
+                                                        )}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
                                     {/*<div className="col-4 p-1 text-center ">*/}
 
                                         {/*<div className="card shadow border-0 mb-3 container-gray border-rounded">*/}
                                             {/*<div className={"card-body"}>*/}
-                                                {/*/!*<img src={CameraGray} className={"camera-icon-preview"}/>*!/*/}
-                                                {/*<UploadFileBootStrap/>*/}
+                                                {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
                                             {/*</div>*/}
                                         {/*</div>*/}
 
                                     {/*</div>*/}
-                                    <div className="col-4 p-1 text-center ">
+                                    {/*<div className="col-4  p-1 text-center ">*/}
 
-                                        <div className="card shadow border-0 mb-3 container-gray border-rounded">
-                                            <div className={"card-body"}>
-                                                <img src={CameraGray} className={"camera-icon-preview"}/>
-                                            </div>
-                                        </div>
+                                        {/*<div className="card shadow border-0 mb-3 container-gray border-rounded ">*/}
+                                            {/*<div className={"card-body"}>*/}
 
-                                    </div>
-                                    <div className="col-4  p-1 text-center ">
+                                                {/*<img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>*/}
 
-                                        <div className="card shadow border-0 mb-3 container-gray border-rounded ">
-                                            <div className={"card-body"}>
+                                                {/*/!*<AddIcon style={{color:"#747474",fontSize:"32px"}}/>*!/*/}
 
-                                                <img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>
+                                            {/*</div>*/}
+                                        {/*</div>*/}
 
-                                                {/*<AddIcon style={{color:"#747474",fontSize:"32px"}}/>*/}
-
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                    {/*</div>*/}
                                 </div>
                             </div>
 
@@ -2756,6 +2993,9 @@ function ComponentItem() {
 
 
 }
+
+
+
 
 
 

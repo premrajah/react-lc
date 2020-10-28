@@ -93,7 +93,11 @@ class  ResourceItem extends Component {
 
                               <div className={"col-4"}>
 
-                                  <Link to={this.props.item.id}> <img className={"img-fluid"} src={Paper}/></Link>
+                                  <Link to={"/match/"+this.props.item.id+"/"+this.props.searchId}>
+
+                                      {this.props.item.images.length>0? <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]}/>:    <img className={"img-fluid"} src={Paper}/>}
+
+                                  </Link>
                                 </div>
                                 <div className={"col-6 pl-3 content-box-listing"}>
                                     <p style={{fontSize:"18px"}} className=" mb-1">{this.props.item.name}</p>

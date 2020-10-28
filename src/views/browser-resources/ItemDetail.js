@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -40,7 +40,7 @@ import FilterImg from '../../img/icons/filter-icon.png';
 import TescoImg from '../../img/tesco.png';
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
@@ -50,13 +50,16 @@ import RingGray from '../../img/icons/ring-gray.png';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
+
 import PaperImg from '../../img/paper-big.png';
+import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
+
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -72,12 +75,12 @@ import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import Close from '@material-ui/icons/Close';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
 
-class  ItemDetail extends Component {
+class ItemDetail extends Component {
 
     slug;
 
@@ -88,41 +91,41 @@ class  ItemDetail extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            item:{}
+            item: {}
         }
 
         this.slug = props.match.params.slug
 
-        this.getResources=this.getResources.bind(this)
-        this.getSite=this.getSite.bind(this)
+        this.getResources = this.getResources.bind(this)
+        this.getSite = this.getSite.bind(this)
 
     }
 
 
-    getSite(){
+    getSite() {
 
-        axios.get(baseUrl+"site/"+this.state.item.site_id,
+        axios.get(baseUrl + "site/" + this.state.item.site_id,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
+                var response = response.data.content;
+                console.log("resource response")
+                console.log(response)
 
-                    this.setState({
+                this.setState({
 
-                        site:response
+                    site: response
 
-                    })
+                })
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -147,21 +150,21 @@ class  ItemDetail extends Component {
 
 
 
-    getResources(){
+    getResources() {
 
 
-        axios.get(baseUrl+"resource/"+this.slug,
+        axios.get(baseUrl + "resource/" + this.slug,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data;
-                    console.log("detail resource response")
-                    console.log(response)
+                var response = response.data;
+                console.log("detail resource response")
+                console.log(response)
 
 
                 this.setState({
@@ -172,16 +175,9 @@ class  ItemDetail extends Component {
 
                 this.getSite()
 
-                },
+            },
                 (error) => {
-
-                    var status = error.response.status
-
-                    console.log("resource error")
-
-                    console.log(error)
-
-
+                    console.log("resource error", error)
                 }
             );
 
@@ -189,11 +185,11 @@ class  ItemDetail extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.getResources()
 
@@ -212,20 +208,19 @@ class  ItemDetail extends Component {
                 <div className="accountpage">
 
                     <HeaderDark />
-                    <div className="container-fluid " style={{padding:"0"}}>
+                    <div className="container-fluid " style={{ padding: "0" }}>
 
 
                         <div className="row no-gutters  justify-content-center">
 
-                            <div className="floating-back-icon" style={{margin:"auto"}}>
+                            <div className="floating-back-icon" style={{ margin: "auto" }}>
 
-                                <NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32, color:"white" }}/>
+                                <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
                             </div>
 
 
                             <div className="col-auto ">
-                                <img className={"img-fluid"}  src={PaperImg} />
-
+                                <img className={"img-fluid"} src={FabricatingImg} alt="" />
                             </div>
                         </div>
                     </div>
@@ -235,15 +230,15 @@ class  ItemDetail extends Component {
                             <div className="col-12">
 
                                 <div className="row">
-                                <div className="col-7">
-                                <p className={"green-text text-heading"}>@{this.state.item.tags}
-                                </p>
-                                </div>
+                                    <div className="col-7">
+                                        <p className={"green-text text-heading"}>@{this.state.item.tags}
+                                        </p>
+                                    </div>
 
-                                <div className="col-3 green-text text-heading text-right">
-                                    {this.state.item.price?<>{this.state.item.price.currency} {this.state.item.price.value}</>:"Free"}
+                                    <div className="col-3 green-text text-heading text-right">
+                                        {this.state.item.price ? <>{this.state.item.price.currency} {this.state.item.price.value}</> : "Free"}
 
-                                </div>
+                                    </div>
 
                                 </div>
 
@@ -260,7 +255,7 @@ class  ItemDetail extends Component {
                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                             <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.item.description}
+                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.description}
                                 </p>
 
                             </div>
@@ -269,9 +264,7 @@ class  ItemDetail extends Component {
 
                         <div className="row justify-content-start pb-4 pt-3 ">
                             <div className="col-auto">
-                                <h6 className={""}>Product Info
-                                </h6>
-
+                                <h6 className={""}>Product Info</h6>
                             </div>
                         </div>
 
@@ -280,13 +273,13 @@ class  ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*<img className={"icon-about"} src={ListIcon} />*/}
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Category</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.category} ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.type}</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
                             </div>
                         </div>
 
@@ -296,8 +289,8 @@ class  ItemDetail extends Component {
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Manufacturer</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.org_id} </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Manufacturer</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
                             </div>
                         </div>
 
@@ -309,8 +302,8 @@ class  ItemDetail extends Component {
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1"> October 16, 2019 (1 year old)</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
                             </div>
                         </div>
 
@@ -323,8 +316,8 @@ class  ItemDetail extends Component {
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Model Number</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">CO133 </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Model Number</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">ECF1212 </p>
                             </div>
                         </div>
 
@@ -334,21 +327,21 @@ class  ItemDetail extends Component {
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Serial Number</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">CE0460D0G </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Serial Number</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">1245780 </p>
                             </div>
                         </div>
 
 
                         {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                            {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={AmountIcon} />*/}
-                            {/*</div>*/}
-                            {/*<div className={"col-auto"}>*/}
+                        {/*<div className={"col-1"}>*/}
+                        {/*<img className={"icon-about"} src={AmountIcon} />*/}
+                        {/*</div>*/}
+                        {/*<div className={"col-auto"}>*/}
 
-                                {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
-                                {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
-                            {/*</div>*/}
+                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
+                        {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
+                        {/*</div>*/}
                         {/*</div>*/}
 
 
@@ -358,24 +351,24 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.state} </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
                             </div>
                         </div>
 
                         {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                            {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={CalenderIcon} />*/}
-                            {/*</div>*/}
-                            {/*<div className={"col-auto"}>*/}
+                        {/*<div className={"col-1"}>*/}
+                        {/*<img className={"icon-about"} src={CalenderIcon} />*/}
+                        {/*</div>*/}
+                        {/*<div className={"col-auto"}>*/}
 
-                                {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
-                                {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
-                                    {/*<Moment   unix  >*/}
-                                    {/*{this.state.item.availableFrom}*/}
-                                {/*</Moment>*/}
-                                {/*</p>*/}
-                            {/*</div>*/}
+                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
+                        {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
+                        {/*<Moment   unix  >*/}
+                        {/*{this.state.item.availableFrom}*/}
+                        {/*</Moment>*/}
+                        {/*</p>*/}
+                        {/*</div>*/}
                         {/*</div>*/}
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
@@ -383,9 +376,9 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.site&&this.state.site.name}</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.site&&this.state.site.address}</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>
                             </div>
                         </div>
 
@@ -412,8 +405,8 @@ class  ItemDetail extends Component {
                                         <div className="col-12">
 
 
-                                            <p style={{fontSize:"18px"}} className=" ">{this.state.item.org_id}</p>
-                                            <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
+                                            <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
+                                            <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
 
                                         </div>
                                     </div>
@@ -423,7 +416,7 @@ class  ItemDetail extends Component {
 
 
                         {this.state.item.id && (this.props.userDetail.orgId != this.state.item.org_id) &&
-                        <BottomAppBar slug={this.slug}/>
+                            <BottomAppBar slug={this.slug} />
 
                         }
 
@@ -479,22 +472,22 @@ function BottomAppBar(props) {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
-                            <Link to={"/message-seller/"+props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <Link to={"/message-seller/" + props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 Message Seller
                             </Link>
 
                         </div>
                         <div className="col-auto">
 
-                            <Link to={"/make-offer/"+props.slug} type="button"
-                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                            <Link to={"/make-offer/" + props.slug} type="button"
+                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Make Offer
 
                             </Link>

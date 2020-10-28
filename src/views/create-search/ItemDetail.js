@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component, Fragment, useState } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -44,7 +44,7 @@ import GrayLoop from '../../img/icons/gray-loop.png';
 
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
@@ -64,7 +64,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Modal,ModalBody,ModalHeader} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, Modal, ModalBody, ModalHeader } from 'react-bootstrap';
 
 
 import PropTypes from 'prop-types';
@@ -82,16 +82,16 @@ import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import Close from '@material-ui/icons/Close';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 
 
 
 
-class  ItemDetail extends Component {
+class ItemDetail extends Component {
 
     slug;
     searchId
@@ -103,62 +103,63 @@ class  ItemDetail extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            item:{},
-            showPopUp:false,
+            item: {},
+            showPopUp: false,
             loopError: null
         }
 
         this.slug = props.match.params.slug
         this.searchId = props.match.params.search
 
-        this.getResources=this.getResources.bind(this)
-        this.acceptMatch=this.acceptMatch.bind(this)
-        this.declineMatch=this.declineMatch.bind(this)
-        this.showPopUp=this.showPopUp.bind(this)
+        this.getResources = this.getResources.bind(this)
+        this.acceptMatch = this.acceptMatch.bind(this)
+        this.declineMatch = this.declineMatch.bind(this)
+        this.showPopUp = this.showPopUp.bind(this)
 
     }
 
 
-    showPopUp(){
+    showPopUp() {
 
         this.setState({
-            showPopUp:!this.state.showPopUp
+            showPopUp: !this.state.showPopUp
         })
 
     }
 
 
-    declineMatch(){
+    declineMatch() {
 
 
     }
 
 
-    acceptMatch(){
+    acceptMatch() {
 
 
-            console.log("create loop")
+        console.log("create loop")
 
 
-            axios.post(baseUrl+"search/convert/"+this.searchId+"/resource/"+this.slug,
-                {},{
-                    headers: {
-                        "Authorization" : "Bearer "+this.props.userDetail.token
-                    }}
-            )
-                .then(res => {
+        axios.post(baseUrl + "search/convert/" + this.searchId + "/resource/" + this.slug,
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
+        )
+            .then(res => {
 
-                    console.log(res.data.content)
+                console.log(res.data.content)
 
-                    this.setState({
+                this.setState({
 
-                        showPopUp: true
-                    })
+                    showPopUp: true
+                })
 
 
-                }).catch(error => {
+            }).catch(error => {
 
 
 
@@ -189,21 +190,21 @@ class  ItemDetail extends Component {
 
 
 
-    getResources(){
+    getResources() {
 
 
-        axios.get(baseUrl+"resource/"+this.slug,
+        axios.get(baseUrl + "resource/" + this.slug,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data;
-                    console.log("detail resource response")
-                    console.log(response)
+                var response = response.data;
+                console.log("detail resource response")
+                console.log(response)
 
 
                 this.setState({
@@ -211,7 +212,7 @@ class  ItemDetail extends Component {
                     item: response.content
                 })
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -228,11 +229,11 @@ class  ItemDetail extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.getResources()
 
@@ -246,30 +247,30 @@ class  ItemDetail extends Component {
 
     render() {
 
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
         return (
             <div>
 
                 <Sidebar />
-                <HeaderDark/>
+                <HeaderDark />
                 <div className="accountpage">
 
-                    <div className="container-fluid " style={{padding:"0"}}>
+                    <div className="container-fluid " style={{ padding: "0" }}>
 
 
                         <div className="row no-gutters  justify-content-center">
 
-                            <div className="floating-back-icon" style={{margin:"auto"}}>
+                            <div className="floating-back-icon" style={{ margin: "auto" }}>
 
-                                <NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32, color:"white" }}/>
+                                <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
                             </div>
 
 
                             <div className="col-auto ">
 
-                                {this.state.item.images &&this.state.item.images.length>0? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]}/>:    <img className={"img-fluid"} src={PaperImg}/>}
+                                {this.state.item.images && this.state.item.images.length > 0 ? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]} /> : <img className={"img-fluid"} src={PaperImg} />}
 
 
                                 {/*<img className={"img-fluid"}  src={PaperImg} />*/}
@@ -295,7 +296,7 @@ class  ItemDetail extends Component {
                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                             <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.item.description}
+                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.description}
                                 </p>
 
                             </div>
@@ -319,9 +320,9 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Category</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.category} ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.type}</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
@@ -330,8 +331,8 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
                             </div>
                         </div>
 
@@ -342,8 +343,8 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.state} </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
                             </div>
                         </div>
 
@@ -353,11 +354,11 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">
-                                    <Moment   unix  >
-                                    {this.state.item.availableFrom}
-                                </Moment>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">
+                                    <Moment unix  >
+                                        {this.state.item.availableFrom}
+                                    </Moment>
                                 </p>
                             </div>
                         </div>
@@ -367,9 +368,9 @@ class  ItemDetail extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
                             </div>
                         </div>
 
@@ -389,7 +390,7 @@ class  ItemDetail extends Component {
 
 
                                         <span className={"word-user-sellor"}>
-                                      M
+                                            M
 
 
                                 </span>
@@ -401,8 +402,8 @@ class  ItemDetail extends Component {
                                         <div className="col-12">
 
 
-                                            <p style={{fontSize:"18px"}} className=" ">@Tesco</p>
-                                            <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
+                                            <p style={{ fontSize: "18px" }} className=" ">Seller Company</p>
+                                            <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
 
                                         </div>
                                     </div>
@@ -413,22 +414,22 @@ class  ItemDetail extends Component {
 
                         <React.Fragment>
 
-                            <CssBaseline/>
+                            <CssBaseline />
 
-                            <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
                                 <Toolbar>
-                                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                                         {/*<div className="col-auto">*/}
-                                            {/*<button onClick={this.declineMatch} type="button"*/}
-                                                    {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
-                                                {/*Decline Match*/}
+                                        {/*<button onClick={this.declineMatch} type="button"*/}
+                                        {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
+                                        {/*Decline Match*/}
 
-                                            {/*</button>*/}
+                                        {/*</button>*/}
                                         {/*</div>*/}
                                         <div className="col-auto">
                                             <button onClick={this.acceptMatch} type="button"
-                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                                 Create Cycle
 
                                             </button>
@@ -444,46 +445,46 @@ class  ItemDetail extends Component {
 
 
                         <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+                            aria-labelledby="contained-modal-title-vcenter"
+                            centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
 
                             <ModalBody>
-                            <div className={"row justify-content-start"}>
-                                <div className={"col-4"}>
-                                    <img className={"ring-pop-pup"} src={GrayLoop}   />
+                                <div className={"row justify-content-start"}>
+                                    <div className={"col-4"}>
+                                        <img className={"ring-pop-pup"} src={GrayLoop} />
+                                    </div>
                                 </div>
-                            </div>
 
 
-                                {this.state.loopError?
+                                {this.state.loopError ?
                                     <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                    <p className={"text-bold"}>Failed</p>
-                                            {this.state.loopError}
-                                    </div>
-                                    </div>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Failed</p>
+                                                {this.state.loopError}
+                                            </div>
+                                        </div>
                                     </>
                                     :
-                                <>
-                                    <div className={"row"}>
-                                    <div className={"col-12"}>
-                                    <p className={"text-bold"}>Match Accepted</p>
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Match Accepted</p>
                                     A cycle has been created. Send a message to the seller to arrange a delivery time.
                                     </div>
-                                    </div>
-                                    <div className={"row justify-content-end"}>
-                                    <div className={"col-4"}>
-                                        <Link to={"/message-seller/"+this.slug}> <p onClick={this.showPopUp} className={"green-text"}>Chat</p></Link>
-                                    </div>
-                                        <div className={"col-4"}>
-                                        <p onClick={this.showPopUp} className={"green-text"}>Ok</p>
                                         </div>
-                                    </div>
-                                </>
+                                        <div className={"row justify-content-end"}>
+                                            <div className={"col-4"}>
+                                                <Link to={"/message-seller/" + this.slug}> <p onClick={this.showPopUp} className={"green-text"}>Chat</p></Link>
+                                            </div>
+                                            <div className={"col-4"}>
+                                                <p onClick={this.showPopUp} className={"green-text"}>Ok</p>
+                                            </div>
+                                        </div>
+                                    </>
 
 
-                            }
+                                }
                             </ModalBody>
 
                         </Modal>
@@ -540,22 +541,22 @@ function BottomAppBar(props) {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
-                            <Link to={"/message-seller/"+props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <Link to={"/message-seller/" + props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 Message Seller
                             </Link>
 
                         </div>
                         <div className="col-auto">
 
-                            <Link to={"/make-offer/"+props.slug} type="button"
-                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                            <Link to={"/make-offer/" + props.slug} type="button"
+                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Make Offer
 
                             </Link>

@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component, Fragment, useState } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -43,7 +43,7 @@ import TescoImg from '../../img/tesco.png';
 
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
@@ -64,7 +64,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Modal,ModalBody,ModalHeader} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, Modal, ModalBody, ModalHeader } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 
 
@@ -83,16 +83,16 @@ import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
 import FilterIcon from '@material-ui/icons/Filter';
 import Close from '@material-ui/icons/Close';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 
 
 
 
-class  ViewCycle extends Component {
+class ViewCycle extends Component {
 
     slug;
 
@@ -103,50 +103,50 @@ class  ViewCycle extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            item:{},
+            item: {},
             fields: {},
             errors: {},
-            showPopUpLogistics:false,
-            showPopUpTrackingNumber:false
+            showPopUpLogistics: false,
+            showPopUpTrackingNumber: false
         }
 
         this.slug = props.match.params.slug
 
-        this.getResources=this.getResources.bind(this)
-        this.confirmOffer=this.confirmOffer.bind(this)
-        this.consumerConfirmOffer=this.consumerConfirmOffer.bind(this)
-        this.declineOffer=this.declineOffer.bind(this)
-        this.orderDelivered=this.orderDelivered.bind(this)
-        this.orderReceived=this.orderReceived.bind(this)
-        this.orderClose=this.orderClose.bind(this)
+        this.getResources = this.getResources.bind(this)
+        this.confirmOffer = this.confirmOffer.bind(this)
+        this.consumerConfirmOffer = this.consumerConfirmOffer.bind(this)
+        this.declineOffer = this.declineOffer.bind(this)
+        this.orderDelivered = this.orderDelivered.bind(this)
+        this.orderReceived = this.orderReceived.bind(this)
+        this.orderClose = this.orderClose.bind(this)
 
 
-        this.showPopUpLogistics=this.showPopUpLogistics.bind(this)
-        this.showPopUpTrackingNumber=this.showPopUpTrackingNumber.bind(this)
+        this.showPopUpLogistics = this.showPopUpLogistics.bind(this)
+        this.showPopUpTrackingNumber = this.showPopUpTrackingNumber.bind(this)
         // this.enterTracking=this.enterTracking.bind(this)
 
     }
 
-    showPopUpTrackingNumber(){
+    showPopUpTrackingNumber() {
 
         this.setState({
-            showPopUpTrackingNumber:!this.state.showPopUpTrackingNumber
+            showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
         })
 
     }
 
 
-    showPopUpLogistics(){
+    showPopUpLogistics() {
 
         this.setState({
-            showPopUpLogistics:!this.state.showPopUpLogistics
+            showPopUpLogistics: !this.state.showPopUpLogistics
         })
 
     }
 
-    handleValidation(){
+    handleValidation() {
 
         // alert("called")
         let fields = this.state.fields;
@@ -160,12 +160,12 @@ class  ViewCycle extends Component {
         // }
 
 
-        if(!fields["email"]){
+        if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
@@ -176,16 +176,16 @@ class  ViewCycle extends Component {
             }
         }
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
 
 
-    handleChange(field, e){
+    handleChange(field, e) {
         let fields = this.state.fields;
         fields[field] = e.target.value;
-        this.setState({fields});
+        this.setState({ fields });
 
         // this.handleValidationSubmitGreen()
     }
@@ -198,7 +198,7 @@ class  ViewCycle extends Component {
 
         const form = event.currentTarget;
 
-        if (this.handleValidation()){
+        if (this.handleValidation()) {
             this.setState({
                 btnLoading: true
             })
@@ -212,11 +212,12 @@ class  ViewCycle extends Component {
             // alert("username"+ username)
 
 
-            axios.post(baseUrl+"loop/"+this.slug+"/assign_logistics/"+username,
-                {},{
-                    headers: {
-                        "Authorization" : "Bearer "+this.props.userDetail.token
-                    }}
+            axios.post(baseUrl + "loop/" + this.slug + "/assign_logistics/" + username,
+                {}, {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
             )
                 .then(res => {
 
@@ -236,24 +237,24 @@ class  ViewCycle extends Component {
 
 
 
-                console.log("loop confirm error found ")
-                console.log(error.response.data)
+                    console.log("loop confirm error found ")
+                    console.log(error.response.data)
 
 
-                this.setState({
+                    this.setState({
 
-                    showPopUpLogistics: false,
-                    loopError: error.response.data.content.message
-                })
+                        showPopUpLogistics: false,
+                        loopError: error.response.data.content.message
+                    })
 
-            });
-
-
-
+                });
 
 
 
-        }else {
+
+
+
+        } else {
 
 
             // alert("invalid")
@@ -276,36 +277,37 @@ class  ViewCycle extends Component {
         //         btnLoading: true
         //     })
 
-            const data = new FormData(event.target);
+        const data = new FormData(event.target);
 
-            const username = data.get("tracking")
-
-
-
-            // alert("username"+ username)
-
-
-            axios.post(baseUrl+"loop/"+this.slug+"/update_tracking/"+username,
-                {},{
-                    headers: {
-                        "Authorization" : "Bearer "+this.props.userDetail.token
-                    }}
-            )
-                .then(res => {
-
-                    console.log(res.data.content)
-
-                    this.setState({
-
-                        showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
-                    })
-
-                    this.getResources()
+        const username = data.get("tracking")
 
 
 
+        // alert("username"+ username)
 
-                }).catch(error => {
+
+        axios.post(baseUrl + "loop/" + this.slug + "/update_tracking/" + username,
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
+        )
+            .then(res => {
+
+                console.log(res.data.content)
+
+                this.setState({
+
+                    showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
+                })
+
+                this.getResources()
+
+
+
+
+            }).catch(error => {
 
 
 
@@ -335,17 +337,18 @@ class  ViewCycle extends Component {
     }
 
 
-    confirmOffer(){
+    confirmOffer() {
 
 
 
 
 
-        axios.post(baseUrl+"loop/"+this.slug+"/producer_accept",
-            {},{
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }}
+        axios.post(baseUrl + "loop/" + this.slug + "/producer_accept",
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
         )
             .then(res => {
 
@@ -365,31 +368,32 @@ class  ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+                console.log("loop confirm error found ")
+                console.log(error.response.data)
 
 
-            this.setState({
+                this.setState({
 
-                showPopUp: true,
-                loopError: error.response.data.content.message
-            })
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
+                })
 
-        });
+            });
 
 
     }
 
 
-    consumerConfirmOffer(){
+    consumerConfirmOffer() {
 
 
 
-        axios.post(baseUrl+"loop/"+this.state.item.id+"/consumer_accept",
-            {},{
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }}
+        axios.post(baseUrl + "loop/" + this.state.item.id + "/consumer_accept",
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
         )
             .then(res => {
 
@@ -409,74 +413,34 @@ class  ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+                console.log("loop confirm error found ")
+                console.log(error.response.data)
 
-
-            this.setState({
-
-                showPopUp: true,
-                loopError: error.response.data.content.message
-            })
-
-        });
-
-
-    }
-
-
-
-
-    orderDelivered(){
-
-
-
-        axios.post(baseUrl+"loop/"+this.state.item.id+"/delivered",
-            {},{
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }}
-        )
-            .then(res => {
-
-                console.log(res.data.content)
 
                 this.setState({
 
-                    showPopUp: true
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
                 })
 
-                this.getResources()
-
-
-            }).catch(error => {
-
-
-
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
-
-
-            this.setState({
-
-                showPopUp: true,
-                loopError: error.response.data.content.message
-            })
-
-        });
+            });
 
 
     }
 
 
 
-    orderReceived(){
 
-        axios.post(baseUrl+"loop/"+this.state.item.id+"/received",
-            {},{
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }}
+    orderDelivered() {
+
+
+
+        axios.post(baseUrl + "loop/" + this.state.item.id + "/delivered",
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
         )
             .then(res => {
 
@@ -489,32 +453,36 @@ class  ViewCycle extends Component {
 
                 this.getResources()
 
+
             }).catch(error => {
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
 
 
-            this.setState({
+                console.log("loop confirm error found ")
+                console.log(error.response.data)
 
-                showPopUp: true,
-                loopError: error.response.data.content.message
-            })
 
-        });
+                this.setState({
+
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
+                })
+
+            });
 
 
     }
 
 
 
-    orderClose(){
+    orderReceived() {
 
-        axios.post(baseUrl+"loop/"+this.state.item.id+"/close",
-            {},{
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }}
+        axios.post(baseUrl + "loop/" + this.state.item.id + "/received",
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
         )
             .then(res => {
 
@@ -529,32 +497,72 @@ class  ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+                console.log("loop confirm error found ")
+                console.log(error.response.data)
 
 
-            this.setState({
+                this.setState({
 
-                showPopUp: true,
-                loopError: error.response.data.content.message
-            })
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
+                })
 
-        });
+            });
 
 
     }
 
 
-    declineOffer(){
+
+    orderClose() {
+
+        axios.post(baseUrl + "loop/" + this.state.item.id + "/close",
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
+        )
+            .then(res => {
+
+                console.log(res.data.content)
+
+                this.setState({
+
+                    showPopUp: true
+                })
+
+                this.getResources()
+
+            }).catch(error => {
+
+                console.log("loop confirm error found ")
+                console.log(error.response.data)
+
+
+                this.setState({
+
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
+                })
+
+            });
+
+
+    }
+
+
+    declineOffer() {
 
 
 
 
-        axios.post(baseUrl+"loop/"+this.slug+"/cancel",
-            {},{
-                headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
-                }}
+        axios.post(baseUrl + "loop/" + this.slug + "/cancel",
+            {}, {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
         )
             .then(res => {
 
@@ -574,17 +582,17 @@ class  ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+                console.log("loop confirm error found ")
+                console.log(error.response.data)
 
 
-            this.setState({
+                this.setState({
 
-                showPopUp: true,
-                loopError: error.response.data.content.message
-            })
+                    showPopUp: true,
+                    loopError: error.response.data.content.message
+                })
 
-        });
+            });
 
     }
 
@@ -600,50 +608,50 @@ class  ViewCycle extends Component {
 
 
 
-    getResources(){
+    getResources() {
 
-        axios.get(baseUrl+"loop/"+this.slug,
+        axios.get(baseUrl + "loop/" + this.slug,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         ).then((response) => {
 
-                    var response = response.data;
-                    console.log("loop detail response")
-                    console.log(response)
+            var response = response.data;
+            console.log("loop detail response")
+            console.log(response)
 
 
-                  // alert(response.content.producer.org.id+ response.content.state )
+            // alert(response.content.producer.org.id+ response.content.state )
 
-                    this.setState({
+            this.setState({
 
-                        item: response.content
-                    })
+                item: response.content
+            })
 
-                },
-                (error) => {
+        },
+            (error) => {
 
-                    var status = error.response.status
+                var status = error.response.status
 
-                    console.log("lop error")
+                console.log("lop error")
 
-                    console.log(error)
-
-
-                }
-            );
-
-    }
+                console.log(error)
 
 
-
-    componentWillMount(){
+            }
+        );
 
     }
 
-    componentDidMount(){
+
+
+    componentWillMount() {
+
+    }
+
+    componentDidMount() {
 
         this.getResources()
 
@@ -655,7 +663,7 @@ class  ViewCycle extends Component {
 
     render() {
 
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
 
@@ -665,277 +673,277 @@ class  ViewCycle extends Component {
                 <Sidebar />
 
                 <div className="accountpage">
-                        <HeaderDark />
+                    <HeaderDark />
 
-                        {this.state.item &&this.state.item.id&&
+                    {this.state.item && this.state.item.id &&
                         <>
-                            {this.state.item.state=="created" ?
-                        <>
-                    <div className="container-fluid " style={{padding:"0"}}>
+                            {this.state.item.state == "created" ?
+                                <>
+                                    <div className="container-fluid " style={{ padding: "0" }}>
 
 
-                        <div className="row no-gutters  justify-content-center">
+                                        <div className="row no-gutters  justify-content-center">
 
-                            <div className="floating-back-icon" style={{margin:"auto"}}>
+                                            <div className="floating-back-icon" style={{ margin: "auto" }}>
 
-                                <NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32, color:"white" }}/>
-                            </div>
-
-
-                            <div className="col-auto ">
-                                <img className={"img-fluid"}  src={PaperImg} />
-
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container ">
-                        <div className="row justify-content-start pb-3 pt-4 listing-row-border">
-
-                            <div className="col-12">
-                                <p className={"green-text text-heading"}>@{this.state.item.tags}
-                                </p>
-
-                            </div>
-                            <div className="col-12 mt-2">
-                                <h5 className={"blue-text text-heading"}>{this.state.item.name}
-                                </h5>
-                            </div>
-                        </div>
+                                                <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
+                                            </div>
 
 
-                        <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+                                            <div className="col-auto ">
+                                                <img className={"img-fluid"} src={PaperImg} />
 
-                            <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>{this.state.item.description}
-                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="container ">
+                                        <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                            </div>
+                                            <div className="col-12">
+                                                <p className={"green-text text-heading"}>@{this.state.item.tags}
+                                                </p>
 
-                        </div>
+                                            </div>
+                                            <div className="col-12 mt-2">
+                                                <h5 className={"blue-text text-heading"}>{this.state.item.name}
+                                                </h5>
+                                            </div>
+                                        </div>
 
-                        <div className="row justify-content-start pb-4 pt-3 ">
-                            <div className="col-auto">
-                                <h6 className={""}>
-                                    Item Details
+
+                                        <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+
+                                            <div className="col-auto">
+                                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.description}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div className="row justify-content-start pb-4 pt-3 ">
+                                            <div className="col-auto">
+                                                <h6 className={""}>
+                                                    Item Details
                                 </h6>
 
-                            </div>
-                        </div>
+                                            </div>
+                                        </div>
 
-                        <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
+                                        <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
-                            {this.state.item &&this.state.item.id &&<div className={"col-8 content-box-listing"}>
-                                    <>
-                                        <h5 style={{fontSize:"18px"}} className=" mb-1">{this.state.item.resource.name}</h5>
-                                        <p style={{fontSize:"18px"}} className=" mb-1">{this.state.item.from.org_id}  →  {this.state.item.to.org_id}</p>
-                                        <p style={{fontSize:"16px"}} className="text-mute mb-1">{this.state.item.resource.category}</p>
-                                        <p style={{fontSize:"16px"}} className="text-mute mb-1">{this.state.item.resource.state} / {this.state.item.resource.volume} {this.state.item.resource.units}</p>
-                                    </>
+                                            {this.state.item && this.state.item.id && <div className={"col-8 content-box-listing"}>
+                                                <>
+                                                    <h5 style={{ fontSize: "18px" }} className=" mb-1">{this.state.item.resource.name}</h5>
+                                                    <p style={{ fontSize: "18px" }} className=" mb-1">{this.state.item.from.org_id}  →  {this.state.item.to.org_id}</p>
+                                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.state.item.resource.category}</p>
+                                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.state.item.resource.state} / {this.state.item.resource.volume} {this.state.item.resource.units}</p>
+                                                </>
 
-                            </div>}
-                            <div style={{textAlign:"right"}} className={"col-4"}>
-                                <p className={"green-text text-mute small" } >
-                                    {this.state.item.state}</p>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                    <div className={"container"}>
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={ListIcon} />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Category</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.category} ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.type}</p>
-                            </div>
-                        </div>
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={AmountIcon} />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
-                            </div>
-                        </div>
+                                            </div>}
+                                            <div style={{ textAlign: "right" }} className={"col-4"}>
+                                                <p className={"green-text text-mute small"} >
+                                                    {this.state.item.state}</p>
+                                            </div>
+                                        </div>
 
 
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} />
-                            </div>
-                            <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.state} </p>
-                            </div>
-                        </div>
+                                    </div>
+                                    <div className={"container"}>
 
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={CalenderIcon} />
-                            </div>
-                            <div className={"col-auto"}>
+                                        <div className="row  justify-content-start search-container  pb-4">
+                                            <div className={"col-1"}>
+                                                <img className={"icon-about"} src={ListIcon} />
+                                            </div>
+                                            <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">
-                                    <Moment   unix  >
-                                        {this.state.item.availableFrom}
-                                    </Moment>
-                                </p>
-                            </div>
-                        </div>
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} />
-                            </div>
-                            <div className={"col-auto"}>
+                                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
+                                            </div>
+                                        </div>
+                                        <div className="row  justify-content-start search-container  pb-4">
+                                            <div className={"col-1"}>
+                                                <img className={"icon-about"} src={AmountIcon} />
+                                            </div>
+                                            <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
-                            </div>
-                        </div>
+                                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
+                                            </div>
+                                        </div>
 
-                        <div className="container container-divider">
-                            <div className="row">
-                            </div>
-                        </div>
-                        <div className="container mt-4 mb-5 pb-5 ">
 
-                            <div className="row no-gutters mb-5">
-                                <div className="col-12 mb-4">
-                                    <h5 className="mb-1">About the seller  </h5>
-                                </div>
-                                <div className="col-auto ">
-                                    <figure className="avatar avatar-60 border-0">
-                                        {/*<img src={TescoImg} alt="" />*/}
+                                        <div className="row  justify-content-start search-container  pb-4">
+                                            <div className={"col-1"}>
+                                                <img className={"icon-about"} src={StateIcon} />
+                                            </div>
+                                            <div className={"col-auto"}>
 
-                                        <span className={"word-user-sellor"}>
-                                      M
+                                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="row  justify-content-start search-container  pb-4">
+                                            <div className={"col-1"}>
+                                                <img className={"icon-about"} src={CalenderIcon} />
+                                            </div>
+                                            <div className={"col-auto"}>
+
+                                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">
+                                                    <Moment unix  >
+                                                        {this.state.item.availableFrom}
+                                                    </Moment>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="row  justify-content-start search-container  pb-4">
+                                            <div className={"col-1"}>
+                                                <img className={"icon-about"} src={MarkerIcon} />
+                                            </div>
+                                            <div className={"col-auto"}>
+
+                                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="container container-divider">
+                                            <div className="row">
+                                            </div>
+                                        </div>
+                                        <div className="container mt-4 mb-5 pb-5 ">
+
+                                            <div className="row no-gutters mb-5">
+                                                <div className="col-12 mb-4">
+                                                    <h5 className="mb-1">About the seller  </h5>
+                                                </div>
+                                                <div className="col-auto ">
+                                                    <figure className="avatar avatar-60 border-0">
+                                                        {/*<img src={TescoImg} alt="" />*/}
+
+                                                        <span className={"word-user-sellor"}>
+                                                            M
 
 
                                 </span>
 
-                                    </figure>
-                                </div>
-                                <div className="col pl-2 align-self-center">
-                                    <div className="row no-gutters">
-                                        <div className="col-12">
+                                                    </figure>
+                                                </div>
+                                                <div className="col pl-2 align-self-center">
+                                                    <div className="row no-gutters">
+                                                        <div className="col-12">
 
 
-                                            <p style={{fontSize:"18px"}} className=" ">@Tesco</p>
-                                            <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
+                                                            <p style={{ fontSize: "18px" }} className=" ">Seller Company</p>
+                                                            <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
 
-                        <React.Fragment>
+                                        <React.Fragment>
 
-                                    {this.state.item.id&&(this.props.userDetail.orgId == this.state.item.producer.org.id )&&this.state.item.state=="created"&&
-                                    <>
+                                            {this.state.item.id && (this.props.userDetail.orgId == this.state.item.producer.org.id) && this.state.item.state == "created" &&
+                                                <>
 
-                                  <CssBaseline/>
+                                                    <CssBaseline />
 
-                                  <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                                      <Toolbar>
+                                                    <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                                        <Toolbar>
 
-                                      <div className="row  justify-content-center search-container "
-                                         style={{margin: "auto"}}>
+                                                            <div className="row  justify-content-center search-container "
+                                                                style={{ margin: "auto" }}>
 
-                                        <div className="col-auto">
-                                            <button onClick={this.confirmOffer} type="button"
-                                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                                Accept Offer
+                                                                <div className="col-auto">
+                                                                    <button onClick={this.confirmOffer} type="button"
+                                                                        className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                                                        Accept Offer
 
                                             </button>
-                                        </div>
+                                                                </div>
 
-                                        <div className="col-auto">
+                                                                <div className="col-auto">
 
-                                            <button onClick={this.declineOffer} type="button"
-                                                    className="shadow-sm mr-2 blue-btn-border btn btn-link  mt-2 mb-2 btn-blue">
+                                                                    <button onClick={this.declineOffer} type="button"
+                                                                        className="shadow-sm mr-2 blue-btn-border btn btn-link  mt-2 mb-2 btn-blue">
 
-                                                Reject Offer
+                                                                        Reject Offer
 
                                             </button>
-                                        </div>
-                                    </div>
+                                                                </div>
+                                                            </div>
 
 
-                                      </Toolbar>
-                                  </AppBar>
+                                                        </Toolbar>
+                                                    </AppBar>
 
-                                  </>
+                                                </>
 
-                                    }
-
-
-                        </React.Fragment>
+                                            }
 
 
+                                        </React.Fragment>
 
-                    </div></>
+
+
+                                    </div></>
 
                                 : <LoopDetail loop={this.state.item} />
 
                             }
 
-                </>}
+                        </>}
 
-            </div>
+                </div>
 
 
 
                 <React.Fragment>
 
-                    {this.state.item.id&&(this.props.userDetail.orgId == this.state.item.consumer.org.id )&&this.state.item.state=="accepted"&&
-                    <>
+                    {this.state.item.id && (this.props.userDetail.orgId == this.state.item.consumer.org.id) && this.state.item.state == "accepted" &&
+                        <>
 
-                        <CssBaseline/>
+                            <CssBaseline />
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                            <Toolbar>
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <Toolbar>
 
-                                <div className="row  justify-content-center search-container "
-                                     style={{margin: "auto"}}>
+                                    <div className="row  justify-content-center search-container "
+                                        style={{ margin: "auto" }}>
 
-                                    <div className="col-auto">
-                                        <button onClick={this.consumerConfirmOffer} type="button"
+                                        <div className="col-auto">
+                                            <button onClick={this.consumerConfirmOffer} type="button"
                                                 className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Confirm Offer
+                                                Confirm Offer
 
                                         </button>
-                                    </div>
+                                        </div>
 
-                                    <div className="col-auto">
+                                        <div className="col-auto">
 
-                                        <button onClick={this.declineOffer} type="button"
+                                            <button onClick={this.declineOffer} type="button"
                                                 className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-green">
 
-                                            Reject Offer
+                                                Reject Offer
 
                                         </button>
+                                        </div>
                                     </div>
-                                </div>
 
 
-                            </Toolbar>
-                        </AppBar>
+                                </Toolbar>
+                            </AppBar>
 
-                    </>
+                        </>
 
                     }
 
@@ -946,54 +954,54 @@ class  ViewCycle extends Component {
                 <React.Fragment>
 
 
-                    {this.state.item&&this.state.item.state=="confirmed" &&
+                    {this.state.item && this.state.item.state == "confirmed" &&
 
-                    <>
-                        <CssBaseline/>
+                        <>
+                            <CssBaseline />
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <Toolbar>
+                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
-                                    <div className="col-auto">
-                                        <button onClick={this.showPopUpLogistics} type="button"
+                                        <div className="col-auto">
+                                            <button onClick={this.showPopUpLogistics} type="button"
                                                 className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Assign Logistics
+                                                Assign Logistics
 
                                         </button>
-                                    </div>
+                                        </div>
 
 
-                                    <div className="col-auto">
-                                        <button onClick={this.declineOffer} type="button"
+                                        <div className="col-auto">
+                                            <button onClick={this.declineOffer} type="button"
                                                 className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Cancel Cycle
+                                                Cancel Cycle
 
                                         </button>
+                                        </div>
+
+
                                     </div>
 
 
-                                </div>
 
 
 
-
-
-                            </Toolbar>
-                        </AppBar>
+                                </Toolbar>
+                            </AppBar>
 
 
 
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                        </div>
                                     </div>
-                                </div>
 
 
                                     <>
@@ -1004,13 +1012,13 @@ class  ViewCycle extends Component {
                                             </div>
                                         </div>
                                         <div className={"row justify-content-center"}>
-                                            <form  onSubmit={this.handleSubmit}>
-                                            <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
 
-                                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
-                                            </div>
-                                            <div className={"col-12 mt-2"}>
+                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                </div>
+                                                <div className={"col-12 mt-2"}>
 
 
                                                     <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
@@ -1019,64 +1027,64 @@ class  ViewCycle extends Component {
                                                         Submit
                                                     </button>
 
-                                            </div>
+                                                </div>
                                             </form>
                                         </div>
                                     </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
+                            </Modal>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a tracking :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmit}>
-                                            <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"}  />
 
+
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Please provide a tracking :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
+
+                                                </div>
+                                                <div className={"col-12"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
+                            </Modal>
 
-                    </>}
+                        </>}
 
 
 
@@ -1088,557 +1096,557 @@ class  ViewCycle extends Component {
                 <React.Fragment>
 
 
-                    {this.state.item&&this.state.item.state=="agreed" &&
+                    {this.state.item && this.state.item.state == "agreed" &&
 
-                    <>
-                        <CssBaseline/>
+                        <>
+                            <CssBaseline />
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <Toolbar>
+                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
-                                    {this.state.item.id && (this.props.userDetail.orgId == this.state.item.logistics.org.id) && this.state.item.state == "agreed" &&
+                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.logistics.org.id) && this.state.item.state == "agreed" &&
 
-                                    <div className="col-auto">
-                                        <button onClick={this.showPopUpTrackingNumber} type="button"
-                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Enter Tracking Number
-
-                                        </button>
-                                    </div>
-
-                                    }
-
-
-                                    <div className="col-auto">
-                                        <button onClick={this.declineOffer} type="button"
-                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Cancel Cycle
+                                            <div className="col-auto">
+                                                <button onClick={this.showPopUpTrackingNumber} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                    Enter Tracking Number
 
                                         </button>
+                                            </div>
+
+                                        }
+
+
+                                        <div className="col-auto">
+                                            <button onClick={this.declineOffer} type="button"
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                Cancel Cycle
+
+                                        </button>
+                                        </div>
+
+
                                     </div>
 
 
-                                </div>
 
 
 
-
-
-                            </Toolbar>
-                        </AppBar>
+                                </Toolbar>
+                            </AppBar>
 
 
 
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
-
-
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmit}>
+
+
+                                    <>
+                                        <div className={"row"}>
                                             <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12 mt-2"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+
+                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                </div>
+                                                <div className={"col-12 mt-2"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
+                            </Modal>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a tracking :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmitTracking}>
-                                            <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"}  />
 
+
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Please provide a tracking :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmitTracking}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
+
+                                                </div>
+                                                <div className={"col-12"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
+
+
+
+                                </ModalBody>
+
+                            </Modal>
+
+                        </>}
+
+
+
+                    {this.state.item && this.state.item.state == "progress" &&
+
+                        <>
+                            <CssBaseline />
+
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <Toolbar>
+                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
+
+                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.logistics.org.id) && this.state.item.state == "progress" &&
+
+                                            <div className="col-auto">
+                                                <button onClick={this.orderDelivered} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                    Delivered
+
+                                        </button>
                                             </div>
-                                        </form>
-                                    </div>
-                                </>
+
+                                        }
 
 
-
-                            </ModalBody>
-
-                        </Modal>
-
-                    </>}
-
-
-
-                    {this.state.item&&this.state.item.state=="progress" &&
-
-                    <>
-                        <CssBaseline/>
-
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
-
-                                    {this.state.item.id && (this.props.userDetail.orgId == this.state.item.logistics.org.id) && this.state.item.state == "progress" &&
-
-                                    <div className="col-auto">
-                                        <button onClick={this.orderDelivered} type="button"
+                                        <div className="col-auto">
+                                            <button onClick={this.declineOffer} type="button"
                                                 className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Delivered
+                                                Cancel Cycle
 
                                         </button>
-                                    </div>
-
-                                    }
+                                        </div>
 
 
-                                    <div className="col-auto">
-                                        <button onClick={this.declineOffer} type="button"
-                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Cancel Cycle
-
-                                        </button>
                                     </div>
 
 
-                                </div>
 
 
 
-
-
-                            </Toolbar>
-                        </AppBar>
+                                </Toolbar>
+                            </AppBar>
 
 
 
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
-
-
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmit}>
+
+
+                                    <>
+                                        <div className={"row"}>
                                             <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12 mt-2"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+
+                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                </div>
+                                                <div className={"col-12 mt-2"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
+                            </Modal>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a tracking :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmitTracking}>
-                                            <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"}  />
 
+
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Please provide a tracking :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmitTracking}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
+
+                                                </div>
+                                                <div className={"col-12"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
+                            </Modal>
 
-                    </>}
-
-
+                        </>}
 
 
-                    {this.state.item&&this.state.item.state=="delivered" &&
 
-                    <>
-                        <CssBaseline/>
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    {this.state.item && this.state.item.state == "delivered" &&
 
-                                    {this.state.item.id && (this.props.userDetail.orgId == this.state.item.consumer.org.id) && this.state.item.state == "delivered" &&
+                        <>
+                            <CssBaseline />
 
-                                    <div className="col-auto">
-                                        <button onClick={this.orderReceived} type="button"
-                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Received
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <Toolbar>
+                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
+
+                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.consumer.org.id) && this.state.item.state == "delivered" &&
+
+                                            <div className="col-auto">
+                                                <button onClick={this.orderReceived} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                    Received
 
                                         </button>
-                                    </div>
+                                            </div>
 
-                                    }
+                                        }
 
 
-                                    {/*<div className="col-auto">*/}
+                                        {/*<div className="col-auto">*/}
                                         {/*<button onClick={this.declineOffer} type="button"*/}
-                                                {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
-                                            {/*Cancel Cycle*/}
+                                        {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
+                                        {/*Cancel Cycle*/}
 
                                         {/*</button>*/}
-                                    {/*</div>*/}
+                                        {/*</div>*/}
 
 
-                                </div>
-
-
-
-
-
-                            </Toolbar>
-                        </AppBar>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
                                     </div>
-                                </div>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+
+
+                                </Toolbar>
+                            </AppBar>
+
+
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmit}>
+
+
+                                    <>
+                                        <div className={"row"}>
                                             <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12 mt-2"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+
+                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                </div>
+                                                <div className={"col-12 mt-2"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
+                            </Modal>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a tracking :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmitTracking}>
-                                            <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"}  />
 
+
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Please provide a tracking :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmitTracking}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
+
+                                                </div>
+                                                <div className={"col-12"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
+                            </Modal>
 
-                    </>}
-
-
+                        </>}
 
 
-                    {this.state.item&&this.state.item.state=="received" &&
 
-                    <>
-                        <CssBaseline/>
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    {this.state.item && this.state.item.state == "received" &&
 
-                                    {this.state.item.id && (this.props.userDetail.orgId == this.state.item.producer.org.id) && this.state.item.state == "received" &&
+                        <>
+                            <CssBaseline />
 
-                                    <div className="col-auto">
-                                        <button onClick={this.orderClose} type="button"
-                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                            Close Cycle
+                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <Toolbar>
+                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
+
+                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.producer.org.id) && this.state.item.state == "received" &&
+
+                                            <div className="col-auto">
+                                                <button onClick={this.orderClose} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                    Close Cycle
 
                                         </button>
-                                    </div>
+                                            </div>
 
-                                    }
+                                        }
 
 
-                                    {/*<div className="col-auto">*/}
+                                        {/*<div className="col-auto">*/}
                                         {/*<button onClick={this.declineOffer} type="button"*/}
-                                                {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
-                                            {/*Cancel Cycle*/}
+                                        {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
+                                        {/*Cancel Cycle*/}
 
                                         {/*</button>*/}
-                                    {/*</div>*/}
+                                        {/*</div>*/}
 
 
-                                </div>
-
-
-
-
-
-                            </Toolbar>
-                        </AppBar>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
                                     </div>
-                                </div>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+
+
+                                </Toolbar>
+                            </AppBar>
+
+
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmit}>
+
+
+                                    <>
+                                        <div className={"row"}>
                                             <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12 mt-2"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+
+                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                </div>
+                                                <div className={"col-12 mt-2"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
-
-
-
-                        <Modal className={"loop-popup"} size="lg"
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop}   />
-                                    </div>
-                                </div>
+                            </Modal>
 
 
-                                <>
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <p className={"text-bold"}>Please provide a tracking :</p>
-                                            {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+
+                            <Modal className={"loop-popup"} size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
                                         </div>
                                     </div>
-                                    <div className={"row justify-content-center"}>
-                                        <form  onSubmit={this.handleSubmitTracking}>
-                                            <div className={"col-12"}>
-                                                <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"}  />
 
+
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <p className={"text-bold"}>Please provide a tracking :</p>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
-                                            <div className={"col-12"}>
+                                        </div>
+                                        <div className={"row justify-content-center"}>
+                                            <form onSubmit={this.handleSubmitTracking}>
+                                                <div className={"col-12"}>
+                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
+
+                                                </div>
+                                                <div className={"col-12"}>
 
 
-                                                <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
-                                                    Submit
+                                                        Submit
                                                 </button>
 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </>
 
 
 
-                            </ModalBody>
+                                </ModalBody>
 
-                        </Modal>
+                            </Modal>
 
-                    </>}
+                        </>}
 
                 </React.Fragment>
 
@@ -1688,22 +1696,22 @@ function BottomAppBar(props) {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
-                            <Link to={"/message-seller/"+props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <Link to={"/message-seller/" + props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 Accept
                             </Link>
 
                         </div>
                         <div className="col-auto">
 
-                            <Link to={"/make-offer/"+props.slug} type="button"
-                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                            <Link to={"/make-offer/" + props.slug} type="button"
+                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Reject
 
                             </Link>

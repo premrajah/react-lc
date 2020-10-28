@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component, Fragment, useState } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -39,10 +39,10 @@ import VerticalLines from '../../img/icons/vertical-lines.png';
 import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
 import axios from "axios/index";
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
+import { baseUrl, baseImgUrl } from '../../Util/Constants'
 import Twitter from '../../img/icons/twitter.png';
 import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
@@ -60,7 +60,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Camera from '@material-ui/icons/CameraAlt';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -78,7 +78,7 @@ import Close from '@material-ui/icons/Close';
 
 
 
-class  DeliveryResource extends Component {
+class DeliveryResource extends Component {
 
 
     constructor(props) {
@@ -88,35 +88,35 @@ class  DeliveryResource extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
 
-        this.getResources=this.getResources.bind(this)
+        this.getResources = this.getResources.bind(this)
 
     }
 
 
 
 
-    getResources(){
+    getResources() {
 
 
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl + "resource",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
-                    var response = response.data;
+                var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+                console.log("resource response")
+                console.log(response)
 
-                },
+            },
                 (error) => {
                     var status = error.response.status
 
@@ -138,11 +138,11 @@ class  DeliveryResource extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -163,19 +163,19 @@ class  DeliveryResource extends Component {
 
                 <div className="wrapper accountpage">
 
-                    <div className="container-fluid " style={{padding:"0"}}>
+                    <div className="container-fluid " style={{ padding: "0" }}>
 
 
                         <div className="row no-gutters  justify-content-center">
 
-                            <div className="floating-back-icon" style={{margin:"auto"}}>
+                            <div className="floating-back-icon" style={{ margin: "auto" }}>
 
-                                <NavigateBefore  style={{ fontSize: 32, color:"white" }}/>
+                                <NavigateBefore style={{ fontSize: 32, color: "white" }} />
                             </div>
 
 
                             <div className="col-auto ">
-                                <img className={"img-fluid"}  src={PaperImg} />
+                                <img className={"img-fluid"} src={PaperImg} />
 
                             </div>
                         </div>
@@ -199,7 +199,7 @@ class  DeliveryResource extends Component {
                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                             <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Looking for disposable food boxes. Any sizes are suitable. Please message me if you have any available.
+                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>Looking for disposable food boxes. Any sizes are suitable. Please message me if you have any available.
                                 </p>
 
                             </div>
@@ -223,9 +223,9 @@ class  DeliveryResource extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Paper and Card ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Disposable Food Boxes</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Surrey, UK</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Paper and Card ></p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Disposable Food Boxes</p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
@@ -234,8 +234,8 @@ class  DeliveryResource extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">10 Kgs</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">10 Kgs</p>
                             </div>
                         </div>
 
@@ -246,8 +246,8 @@ class  DeliveryResource extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Bailed</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Bailed</p>
                             </div>
                         </div>
 
@@ -257,8 +257,8 @@ class  DeliveryResource extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">June 1, 2020 </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">June 1, 2020 </p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
@@ -267,9 +267,9 @@ class  DeliveryResource extends Component {
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Location  </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Location  </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
                             </div>
                         </div>
 
@@ -294,8 +294,8 @@ class  DeliveryResource extends Component {
                                     <div className="col-12">
 
 
-                                        <p style={{fontSize:"18px"}} className=" ">@Tesco</p>
-                                        <p style={{fontSize:"18px"}} className="">48 items listed | 4 cycles</p>
+                                        <p style={{ fontSize: "18px" }} className=" ">Seller Company</p>
+                                        <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
 
                                     </div>
                                 </div>
@@ -356,11 +356,11 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
                             <button type="button" className=" mr-2 btn btn-link green-btn-min mt-2 mb-2 ">
@@ -371,7 +371,7 @@ function BottomAppBar() {
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 ">
+                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 ">
                                 Buy
 
                             </button>

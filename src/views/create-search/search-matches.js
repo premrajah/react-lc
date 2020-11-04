@@ -73,20 +73,7 @@ import ResourceItem from  './ResourceItem'
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 
-// import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-// pick a date util library
-// import MomentUtils from '@date-io/moment';
-// import DateFnsUtils from '@date-io/date-fns';
-// import LuxonUtils from '@date-io/luxon';
-// import DateFnsUtils from 'date-i-fns';
-// import DateFnsUtils from '@date-io/date-fns';
 
-import {
-    DatePicker,
-    TimePicker,
-    DateTimePicker,
-    MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
 import {saveKey, saveUserToken} from "../../LocalStorage/user";
 import {loginFailed} from "../../store/actions/actions";
 

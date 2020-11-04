@@ -2,77 +2,28 @@ import React, { Component, Fragment, useState } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Logo from '../../img/logo-2x.png';
-import LogoSmall from '../../img/logo-small.png';
-import LogoNew from '../../img/logo-cropped.png';
 
-import LogoText from '../../img/logo-text.png';
-import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
-import LoopHome from '../../img/LoopHome.png';
-import clsx from 'clsx';
-import SearchIcon from '../../img/icons/search-big-gray.png';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Avatar from '@material-ui/core/Avatar';
-import MenuIcon from '@material-ui/icons/Menu';
-import AddIcon from '@material-ui/icons/Add';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import AppBar from '@material-ui/core/AppBar';
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import ShippingWhite from '../../img/icons/truck.png';
-import SettingsWhite from '../../img/icons/settings-24px.png';
-import HandWhite from '../../img/icons/hand-white.png';
-import Cube from '../../img/icons/cube.png';
-import SearchWhite from '../../img/icons/search-white.png';
-import VerticalLines from '../../img/icons/vertical-lines.png';
-import Rings from '../../img/icons/rings.png';
-import FilterImg from '../../img/icons/filter-icon.png';
-import TescoImg from '../../img/tesco.png';
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch, Link } from "react-router-dom";
-import LangIcon from '../../img/icons/lang.png';
+
 import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
-import ListIcon from '../../img/icons/list.png';
+
 import BottomDetail from '../../img/bottom-detail.png';
-import BottomDetailInfo from '../../img/bottom-detail-info.png';
 
 import ProImg from '../../img/img-product.png';
-import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
-import PaperImg from '../../img/paper-big.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import Camera from '@material-ui/icons/CameraAlt';
+
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, Spinner, Alert } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import Moment from 'react-moment';
 import { withRouter } from 'react-router-dom'
-import CubeBlue from '../../img/icons/product-icon-big.png';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
@@ -80,11 +31,8 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import HotelIcon from '@material-ui/icons/Hotel';
+
 import BusinessIcon from '@material-ui/icons/Business';
-import RepeatIcon from '@material-ui/icons/Repeat';
 import TextField from '@material-ui/core/TextField';
 
 

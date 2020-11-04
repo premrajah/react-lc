@@ -30,7 +30,6 @@ import LogoNew from '../../img/logo-cropped.png';
 import LogoText from '../../img/logo-text.png';
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import TescoImg from '../../img/tesco.png';
 
 
 class ComponentsNavbar extends React.Component {

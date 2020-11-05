@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -6,23 +6,16 @@ import Logo from '../../img/logo-2x.png';
 
 import Paper from '../../img/paper.png';
 import clsx from 'clsx';
-import SearchIcon from '../../img/icons/search-icon.png';
 
 import FilterImg from '../../img/icons/filter-icon.png';
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import HandGreyIcon from '../../img/icons/hand-gray.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
-import HeaderDark from '../header/HeaderDark'
-import Footer from '../Footer/Footer'
-import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -38,7 +31,7 @@ import SearchGray from '@material-ui/icons/Search';
 
 
 
-class  ResourceItem extends Component {
+class ResourceItem extends Component {
 
 
     constructor(props) {
@@ -48,17 +41,17 @@ class  ResourceItem extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
     }
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
     }
 
@@ -72,38 +65,38 @@ class  ResourceItem extends Component {
         return (
 
 
-                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                              <div className={"col-4"}>
+                <div className={"col-4"}>
 
-                                  <Link to={"/match/"+this.props.item.id+"/"+this.props.searchId}>
+                    <Link to={"/match/" + this.props.item.id + "/" + this.props.searchId}>
 
-                                      {this.props.item.images.length>0? <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]}/>:    <img className={"img-fluid"} src={Paper}/>}
+                        {this.props.item.images.length > 0 ? <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={Paper} alt="" />}
 
-                                  </Link>
-                                </div>
-                                <div className={"col-6 pl-3 content-box-listing"}>
-                                    <Link to={"/match/"+this.props.item.id+"/"+this.props.searchId}>
-                                    <p style={{fontSize:"18px"}} className=" mb-1">{this.props.item.name}</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">@{this.props.item.tags}</p>
-                                    </Link>
-                                </div>
-                                <div style={{textAlign:"right"}} className={"col-2"}>
-                                    <p className={"green-text"}>
-                                        {/*{this.props.item.price?this.props.item.price:"Free"}*/}
-                                        {this.props.item.price?<>{this.props.item.price.currency} {this.props.item.price.value}</>:"Free"}
-
-
-                                    </p>
+                    </Link>
+                </div>
+                <div className={"col-6 pl-3 content-box-listing"}>
+                    <Link to={"/match/" + this.props.item.id + "/" + this.props.searchId}>
+                        <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>
+                    </Link>
+                </div>
+                <div style={{ textAlign: "right" }} className={"col-2"}>
+                    <p className={"green-text"}>
+                        {/*{this.props.item.price?this.props.item.price:"Free"}*/}
+                        {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
 
 
-                                </div>
+                    </p>
+
+
+                </div>
 
 
 
-    </div>
+            </div>
         );
     }
 }
@@ -181,7 +174,7 @@ function NavTabs() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs
-                    style={{backgroundColor:"#27245C", color:"#ffffff!important"}}
+                    style={{ backgroundColor: "#27245C", color: "#ffffff!important" }}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
@@ -203,13 +196,13 @@ function NavTabs() {
                             <TextField
                                 label={"Search this seller’s listings"}
                                 variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                 id="input-with-icon-textfield"
 
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -220,12 +213,12 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">5 out of 5 Listings </p>
+                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">5 out of 5 Listings </p>
 
                         </div>
                         <div className="text-mute col-auto pl-0">
 
-                            <span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />
+                            <span style={{ fontSize: "18px" }}>Filter</span>   <img src={FilterImg} className={"filter-icon"} alt="" />
 
                         </div>
 
@@ -235,14 +228,14 @@ function NavTabs() {
 
                         <div className={"col-4"}>
 
-                            <img className={"img-fluid"} src={Paper}/>
+                            <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
                         <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Paper and Card</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Paper and Card</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
+                        <div style={{ textAlign: "right" }} className={"col-2"}>
                             <p className={"green-text"}>£12</p>
                         </div>
                     </div>
@@ -251,14 +244,14 @@ function NavTabs() {
 
                         <div className={"col-4"}>
 
-                            <img className={"img-fluid"} src={Paper}/>
+                            <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
                         <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Metal</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
+                        <div style={{ textAlign: "right" }} className={"col-2"}>
                             <p className={"green-text"}>Free</p>
                         </div>
                     </div>
@@ -278,13 +271,13 @@ function NavTabs() {
                             <TextField
                                 label={"Search this seller’s Cycles"}
                                 variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                 id="input-with-icon-textfield"
 
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -295,7 +288,7 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">Cycles</p>
+                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                         </div>
                         {/*<div className="text-mute col-auto pl-0">*/}
@@ -313,11 +306,11 @@ function NavTabs() {
                         {/*<img className={"img-fluid"} src={Paper}/>*/}
                         {/*</div>*/}
                         <div className={"col-11 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Tesco   →  Company B</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Paper and Cardboard</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">bailed / 10 kg</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Tesco   →  Company B</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Paper and Cardboard</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">bailed / 10 kg</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-1"}>
+                        <div style={{ textAlign: "right" }} className={"col-1"}>
                             <p className={"gray-text"}><NavigateNextIcon /></p>
                         </div>
                     </div>
@@ -329,61 +322,61 @@ function NavTabs() {
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={MarkerIcon} />
+                            <img className={"icon-about"} src={MarkerIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
+                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Surrey, UK</p>
                         </div>
                     </div>
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={CalenderIcon} />
+                            <img className={"icon-about"} src={CalenderIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
+                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
                             </p>
                         </div>
                     </div>
                     <div className="row  justify-content-start search-container listing-row-border pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={LangIcon} />
+                            <img className={"icon-about"} src={LangIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
+                            <p style={{ fontSize: "18px" }} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
                         </div>
                     </div>
                     <div className="row  justify-content-start filter-row listing-row-border  mb-4 pt-5 pb-5">
 
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={EditGray} />
+                            <img className={"icon-about"} src={EditGray} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Description</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Description</p>
                         </div>
 
                     </div>
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={HandGreyIcon} />
+                            <img className={"icon-about"} src={HandGreyIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">5 Listings</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">5 Listings</p>
                         </div>
                     </div>
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={RingGray} />
+                            <img className={"icon-about"} src={RingGray} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Cycles</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Cycles</p>
                         </div>
                     </div>
 

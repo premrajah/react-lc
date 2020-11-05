@@ -1,110 +1,44 @@
-import React, { Component, Fragment, useState } from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Logo from '../../img/logo-2x.png';
-import LogoSmall from '../../img/logo-small.png';
-import LogoNew from '../../img/logo-cropped.png';
-
-import LogoText from '../../img/logo-text.png';
-import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
-import LoopHome from '../../img/LoopHome.png';
 import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
-import HandIcon from '../../img/icons/hand.png';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import SearchIcon from '../../img/icons/search-icon.png';
-
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
-import history from "../../History/history";
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuOutline from '@material-ui/icons/MailOutline';
 import Close from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import AddIcon from '@material-ui/icons/Add';
 import '../../Util/upload-file.css'
 import { Cancel } from '@material-ui/icons';
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PaperImg from '../../img/paper.png';
-
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
 import AppBar from '@material-ui/core/AppBar';
-
 import TextField from '@material-ui/core/TextField';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, ProgressBar, Alert } from 'react-bootstrap';
-
-import Checkbox from '@material-ui/core/Checkbox';
-
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
 import clsx from 'clsx';
-import SearchGray from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from "@material-ui/core/styles/index";
 import CalGrey from '../../img/icons/calender-dgray.png';
-
-import MarkerGrey from '../../img/icons/marker-dgray.png';
-
-import LinkGray from '../../img/icons/link-icon.png';
-import ViewSearch from "../loop-cycle/ViewSearch";
-
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
-
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from '../item/ResourceItem'
-// import moment from 'react-moment    '
-// import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-// pick a date util library
-// import MomentUtils from '@date-io/moment';
-// import DateFnsUtils from '@date-io/date-fns';
-// import LuxonUtils from '@date-io/luxon';
-// import DateFnsUtils from 'date-i-fns';
-// import DateFnsUtils from '@date-io/date-fns';
-
-import {
-    DatePicker,
-    TimePicker,
-    DateTimePicker,
-    MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import { saveKey, saveUserToken } from "../../LocalStorage/user";
-import { loginFailed } from "../../store/actions/actions";
-import { signUpFailed } from "../../store/actions/actions";
-
+import PumpImg from '../../img/components/Pump_Assembly_650.png';
+import ProductBlue from '../../img/icons/product-blue.png';
+import MaceratingImg from '../../img/components/Macerating_unit_1400.png';
+import DewateringImg from '../../img/components/Dewatering_Unit_1950.png';
 import CameraGray from '../../img/icons/camera-gray.png';
 import PlusGray from '../../img/icons/plus-icon.png';
-
-import ComponentImg from '../../img/component.png';
 import ControlImg from '../../img/components/Control_Panel_1450.png';
-import DewateringImg from '../../img/components/Dewatering_Unit_1950.png';
-import MaceratingImg from '../../img/components/Macerating_unit_1400.png';
-import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
-import PumpImg from '../../img/components/Pump_Assembly_650.png';
 
-import ProductBlue from '../../img/icons/product-blue.png';
-import UploadFileBootStrap from "../../Util/UploadFileBootStrap";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -626,7 +560,7 @@ class CreateListing extends Component {
 
     handleBack() {
 
-        if (this.state.page == 2) {
+        if (this.state.page === 2) {
 
             if (this.handleValidation()) {
 
@@ -651,7 +585,7 @@ class CreateListing extends Component {
 
         // alert(this.activeScreen)
 
-        if (this.activeScreen == 0) {
+        if (this.activeScreen === 0) {
 
 
 
@@ -677,7 +611,7 @@ class CreateListing extends Component {
             // alert(this.activeScreen)
         }
 
-        else if (this.activeScreen == 4) {
+        else if (this.activeScreen === 4) {
 
 
 
@@ -701,7 +635,7 @@ class CreateListing extends Component {
         }
 
 
-        else if (this.activeScreen == 5) {
+        else if (this.activeScreen === 5) {
 
 
             if (this.handleValidationAddDetail()) {
@@ -722,7 +656,7 @@ class CreateListing extends Component {
         }
 
 
-        else if (this.activeScreen == 7) {
+        else if (this.activeScreen === 7) {
 
 
             this.activeScreen = 8
@@ -815,16 +749,16 @@ class CreateListing extends Component {
 
     selectProduct(event) {
 
-        // console.log(this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name))
+        // console.log(this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name))
 
         this.setState({
 
-            productSelected: this.state.products.filter((item) => item.title == event.currentTarget.dataset.name)[0]
+            productSelected: this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0]
         })
 
 
 
-        console.log(this.state.products.filter((item) => item.title == event.currentTarget.dataset.name)[0])
+        console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
 
 
         this.activeScreen = 5
@@ -837,16 +771,16 @@ class CreateListing extends Component {
 
     selectType(event) {
 
-        // console.log(this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name))
+        // console.log(this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name))
 
         this.setState({
 
-            catSelected: this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name)[0]
+            catSelected: this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name)[0]
         })
 
         this.setState({
 
-            subCategories: this.state.categories.filter((item) => item.name == event.currentTarget.dataset.name)[0].types
+            subCategories: this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name)[0].types
 
         })
 
@@ -865,7 +799,7 @@ class CreateListing extends Component {
 
         this.setState({
 
-            subCatSelected: this.state.subCategories.filter((item) => event.currentTarget.dataset.name == item.name)[0]
+            subCatSelected: this.state.subCategories.filter((item) => event.currentTarget.dataset.name === item.name)[0]
 
         })
 
@@ -875,7 +809,7 @@ class CreateListing extends Component {
         this.setState({
 
             activePage: 3,
-            states: this.state.subCategories.filter((item) => event.currentTarget.dataset.name == item.name)[0].state
+            states: this.state.subCategories.filter((item) => event.currentTarget.dataset.name === item.name)[0].state
 
         })
 
@@ -1519,7 +1453,7 @@ class CreateListing extends Component {
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
@@ -1666,7 +1600,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 0 ? "" : "d-none"}>
+                <div className={this.activeScreen === 0 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1774,7 +1708,7 @@ class CreateListing extends Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                                 </InputAdornment>
                                             ),
                                         }}
@@ -1883,7 +1817,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 1 ? "" : "d-none"}>
+                <div className={this.activeScreen === 1 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1910,7 +1844,7 @@ class CreateListing extends Component {
 
                             <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
                                 <div className="col-2">
-                                    <img className={"icon-left-select"} src={SendIcon} />
+                                    <img className={"icon-left-select"} src={SendIcon} alt="" />
                                 </div>
                                 <div className="col-8">
 
@@ -1930,7 +1864,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 2 ? "" : "d-none"}>
+                <div className={this.activeScreen === 2 ? "" : "d-none"}>
                     <div className="container  pt-2 pb-3">
 
                         <div className="row no-gutters">
@@ -1972,7 +1906,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 3 ? "" : "d-none"}>
+                <div className={this.activeScreen === 3 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -2016,10 +1950,10 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 4 ? "" : "d-none"}>
+                <div className={this.activeScreen === 4 ? "" : "d-none"}>
 
 
-                    {/*{this.activeScreen == 4&&<div className={""}>*/}
+                    {/*{this.activeScreen === 4&&<div className={""}>*/}
 
                     <div className="container  pt-2 pb-3">
 
@@ -2073,7 +2007,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 5 ? "" : "d-none"}>
+                <div className={this.activeScreen === 5 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -2170,7 +2104,7 @@ class CreateListing extends Component {
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -2200,7 +2134,7 @@ class CreateListing extends Component {
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -2243,7 +2177,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 6 ? "" : "d-none"}>
+                <div className={this.activeScreen === 6 ? "" : "d-none"}>
 
 
                     <div className="container  pt-2 pb-3">
@@ -2272,7 +2206,7 @@ class CreateListing extends Component {
                         {this.state.products.map((item) =>
                             <div data-name={item.title} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
                                 <div className="col-2">
-                                    <img className={"icon-left-select"} src={SendIcon} />
+                                    <img className={"icon-left-select"} src={SendIcon} alt="" />
                                 </div>
                                 <div className="col-8">
                                     <p className={"blue-text "} style={{ fontSize: "16px" }}>{item.title}</p>
@@ -2295,7 +2229,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 7 ? "" : "d-none"}>
+                <div className={this.activeScreen === 7 ? "" : "d-none"}>
 
                     <div className="container  pt-3 pb-3">
 
@@ -2331,7 +2265,7 @@ class CreateListing extends Component {
                             <div className="col-auto pb-4 pt-5">
 
 
-                                <img className={"search-icon-middle"} src={ProductBlue} />
+                                <img className={"search-icon-middle"} src={ProductBlue} alt="" />
 
                             </div>
                         </div>
@@ -2353,7 +2287,7 @@ class CreateListing extends Component {
                 </div>
 
 
-                <div className={this.activeScreen == 8 ? "" : "d-none"}>
+                <div className={this.activeScreen === 8 ? "" : "d-none"}>
 
 
                     {this.state.listResourceData &&
@@ -2389,7 +2323,7 @@ class CreateListing extends Component {
                                 <div className="row container-gray justify-content-center pb-5 pt-5">
 
                                     <div className="col-auto pb-5 pt-5">
-                                        <img className={"my-search-icon-middle"} src={SearchIcon} />
+                                        <img className={"my-search-icon-middle"} src={SearchIcon} alt="" />
 
                                     </div>
                                 </div>
@@ -2432,7 +2366,7 @@ class CreateListing extends Component {
 
                                 <div className="row  justify-content-start search-container  pb-4">
                                     <div className={"col-1"}>
-                                        <img className={"icon-about"} src={ListIcon} />
+                                        <img className={"icon-about"} src={ListIcon} alt="" />
                                     </div>
                                     <div className={"col-auto"}>
 
@@ -2444,7 +2378,7 @@ class CreateListing extends Component {
                                 </div>
                                 <div className="row  justify-content-start search-container  pb-4">
                                     <div className={"col-1"}>
-                                        <img className={"icon-about"} src={AmountIcon} />
+                                        <img className={"icon-about"} src={AmountIcon} alt="" />
                                     </div>
                                     <div className={"col-auto"}>
 
@@ -2456,7 +2390,7 @@ class CreateListing extends Component {
 
                                 <div className="row  justify-content-start search-container  pb-4">
                                     <div className={"col-1"}>
-                                        <img className={"icon-about"} src={StateIcon} />
+                                        <img className={"icon-about"} src={StateIcon} alt="" />
                                     </div>
                                     <div className={"col-auto"}>
 
@@ -2467,7 +2401,7 @@ class CreateListing extends Component {
 
                                 <div className="row  justify-content-start search-container  pb-4">
                                     <div className={"col-1"}>
-                                        <img className={"icon-about"} src={CalenderIcon} />
+                                        <img className={"icon-about"} src={CalenderIcon} alt="" />
                                     </div>
                                     <div className={"col-auto"}>
 
@@ -2477,7 +2411,7 @@ class CreateListing extends Component {
                                 </div>
                                 <div className="row  justify-content-start search-container  pb-4">
                                     <div className={"col-1"}>
-                                        <img className={"icon-about"} src={MarkerIcon} />
+                                        <img className={"icon-about"} src={MarkerIcon} alt="" />
                                     </div>
                                     <div className={"col-auto"}>
 
@@ -2501,7 +2435,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen == 9 ? "" : "d-none"}>
+                <div className={this.activeScreen === 9 ? "" : "d-none"}>
 
 
 
@@ -2533,7 +2467,7 @@ class CreateListing extends Component {
                             <Toolbar>
 
 
-                                {this.activeScreen == 6 &&
+                                {this.activeScreen === 6 &&
 
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
@@ -2564,7 +2498,7 @@ class CreateListing extends Component {
                                         </div>
                                         <div className="col-auto">
 
-                                            {this.state.page == 1 &&
+                                            {this.state.page === 1 &&
                                                 <button onClick={this.handleNext} type="button"
                                                     className={this.state.nextBlue ? "btn-next shadow-sm mr-2 btn btn-link blue-btn   mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                                     Next
@@ -2572,7 +2506,7 @@ class CreateListing extends Component {
                                     </button>}
 
 
-                                            {this.state.page == 2 &&
+                                            {this.state.page === 2 &&
                                                 <button onClick={this.handleNext} type="button"
                                                     className={this.state.nextBlueAddDetail ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                                     Next
@@ -2580,7 +2514,7 @@ class CreateListing extends Component {
                                     </button>}
 
 
-                                            {this.state.page == 3 &&
+                                            {this.state.page === 3 &&
                                                 <button onClick={this.handleNext} type="button"
                                                     className={this.state.nextBlueAddDetail ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                                     Post Listing
@@ -2592,7 +2526,7 @@ class CreateListing extends Component {
                                         </div>
                                     </div>}
 
-                                {this.activeScreen == 7 &&
+                                {this.activeScreen === 7 &&
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
 
@@ -2672,7 +2606,7 @@ class CreateListing extends Component {
 
                                                                 <div className="card shadow border-0 mb-3 container-gray border-rounded">
                                                                     <div className={"card-body"}>
-                                                                        <img src={CameraGray} className={"camera-icon-preview"} />
+                                                                        <img src={CameraGray} className={"camera-icon-preview"} alt="" />
                                                                     </div>
                                                                 </div>
 
@@ -2682,7 +2616,7 @@ class CreateListing extends Component {
                                                                 <div className="card shadow border-0 mb-3 container-gray border-rounded ">
                                                                     <div className={"card-body"}>
 
-                                                                        <img style={{ padding: "10px" }} src={PlusGray} className={"camera-icon-preview"} />
+                                                                        <img style={{ padding: "10px" }} src={PlusGray} className={"camera-icon-preview"} alt="" />
 
                                                                     </div>
                                                                 </div>

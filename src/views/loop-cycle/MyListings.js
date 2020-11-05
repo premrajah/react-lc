@@ -1,32 +1,27 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 
 import clsx from 'clsx';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from '../item/ResourceItem'
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Toolbar from '@material-ui/core/Toolbar';
-import {withStyles} from "@material-ui/core/styles/index";
-
-
-
-
+import { withStyles } from "@material-ui/core/styles/index";
 import ProductBlue from '../../img/icons/product-blue.png';
 
-class  MyListings extends Component {
+class MyListings extends Component {
 
 
     constructor(props) {
@@ -36,18 +31,18 @@ class  MyListings extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
             items: []
         }
 
 
-        this.getItems=this.getItems.bind(this)
+        this.getItems = this.getItems.bind(this)
 
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
 
 
         this.getItems()
@@ -56,10 +51,10 @@ class  MyListings extends Component {
 
 
 
-    getItems(){
+    getItems() {
 
 
-        var url = baseUrl+"resource"
+        var url = baseUrl + "resource"
 
 
         console.log(url)
@@ -68,22 +63,22 @@ class  MyListings extends Component {
         axios.get(url,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("my search response")
-                    console.log(response)
+                var response = response.data.content;
+                console.log("my search response")
+                console.log(response)
 
-                    this.setState({
+                this.setState({
 
-                        items:response
-                    })
+                    items: response
+                })
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -99,14 +94,14 @@ class  MyListings extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
-    
+
 
 
     render() {
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
         return (
@@ -115,7 +110,7 @@ class  MyListings extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage">
 
-                <HeaderDark />
+                    <HeaderDark />
 
 
                     <div className="container   pb-4 pt-4">
@@ -124,7 +119,7 @@ class  MyListings extends Component {
                         <div className="row ">
 
                             <div className="col-auto pb-4 pt-4">
-                               <img className={"search-icon-middle"}  src={ProductBlue} />
+                                <img className={"search-icon-middle"} src={ProductBlue} alt="" />
 
                             </div>
                         </div>
@@ -149,7 +144,7 @@ class  MyListings extends Component {
 
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
-                        <SearchField />
+                                <SearchField />
 
 
                             </div>
@@ -157,27 +152,27 @@ class  MyListings extends Component {
 
 
 
-                            <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
+                        <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
 
-                                <div className="col">
-                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">{this.state.items.length} Searches </p>
+                            <div className="col">
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Searches </p>
 
-                                </div>
-                                <div className="text-mute col-auto pl-0">
+                            </div>
+                            <div className="text-mute col-auto pl-0">
 
-                                    <span style={{fontSize:"18px"}}>Status</span>
-
-                                </div>
+                                <span style={{ fontSize: "18px" }}>Status</span>
 
                             </div>
 
+                        </div>
 
 
 
-                        {this.state.items.map((item)=>
+
+                        {this.state.items.map((item) =>
 
 
-                        <ResourceItem item={item} />
+                            <ResourceItem item={item} />
 
 
                         )}
@@ -193,13 +188,13 @@ class  MyListings extends Component {
 
                     <React.Fragment>
 
-                        <CssBaseline/>
+                        <CssBaseline />
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                        <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
                             <Toolbar>
 
 
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                                <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                                     <div className="col-auto">
 
@@ -237,20 +232,20 @@ function SearchField() {
 
     const classes = useStylesTabs();
 
-        return (
-            <TextField
-                variant="outlined"
-                className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                id="input-with-icon-textfield"
+    return (
+        <TextField
+            variant="outlined"
+            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+            id="input-with-icon-textfield"
 
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
+                    </InputAdornment>
+                ),
+            }}
+        />
 
     );
 }

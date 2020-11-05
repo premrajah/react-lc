@@ -1,19 +1,15 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import LogoNew from '../../img/logo-cropped.png';
 
 import LogoText from '../../img/logo-text.png';
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
 
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Close from '@material-ui/icons/Close';
 
 import { makeStyles } from '@material-ui/core/styles';
-
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
 
 
 import Login from './Login';
@@ -35,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  LoginPopUp extends Component {
+class LoginPopUp extends Component {
 
 
     constructor(props) {
@@ -46,7 +42,7 @@ class  LoginPopUp extends Component {
             fields: {},
             errors: {},
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
             active: 0   //0 logn. 1- sign up , 3 -search,
 
@@ -76,14 +72,14 @@ class  LoginPopUp extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
 
         // alert("show")
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
     }
@@ -96,21 +92,21 @@ class  LoginPopUp extends Component {
 
 
 
-    goToSignIn(){
+    goToSignIn() {
 
 
         this.setState({
 
-            active:0
+            active: 0
         })
     }
 
-    goToSignUp(){
+    goToSignUp() {
 
 
         this.setState({
 
-            active:1
+            active: 1
         })
     }
 
@@ -140,8 +136,8 @@ class  LoginPopUp extends Component {
                                 <div className="col-auto">
 
                                     <img src={LogoNew} alt=""
-                                         className="header-logo" />
-                                    <img className={"text-logo-home-right"} src={LogoText} />
+                                        className="header-logo" />
+                                    <img className={"text-logo-home-right"} src={LogoText} alt="" />
                                 </div>
 
 
@@ -155,13 +151,13 @@ class  LoginPopUp extends Component {
 
                             </div>
                         </div>
-                        {this.props.loginPopUpStatus == 0 &&    <Login />}
-                        {this.props.loginPopUpStatus == 1 &&  <SignUp/>}
-                        {this.props.loginPopUpStatus == 2 &&   <ForgotPassword/>}
+                        {this.props.loginPopUpStatus === 0 && <Login />}
+                        {this.props.loginPopUpStatus === 1 && <SignUp />}
+                        {this.props.loginPopUpStatus === 2 && <ForgotPassword />}
 
-                        {this.props.loginPopUpStatus == 3 && <RecoverPassword/>}
-                        {this.props.loginPopUpStatus == 4 &&  <ResetPassword/>}
-                        {this.props.loginPopUpStatus == 5 && <SuccessSignUp/>}
+                        {this.props.loginPopUpStatus === 3 && <RecoverPassword />}
+                        {this.props.loginPopUpStatus === 4 && <ResetPassword />}
+                        {this.props.loginPopUpStatus === 5 && <SuccessSignUp />}
                     </div>
                 </div>
 

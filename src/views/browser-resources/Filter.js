@@ -1,18 +1,11 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
+import React, { Component } from 'react';
 import { connect } from "react-redux";
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import Slider from "@material-ui/core/Slider/index";
 import Paper from '../../img/paper.png';
 import clsx from 'clsx';
-
 import FilterImg from '../../img/icons/filter-icon.png';
-
-
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
@@ -20,32 +13,23 @@ import HandGreyIcon from '../../img/icons/hand-gray.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
 import CalGrey from '../../img/icons/calender-dgray.png';
-
 import Sidebar from '../menu/Sidebar'
 import Checkbox from '@material-ui/core/Checkbox';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
 import Close from '@material-ui/icons/Close';
-
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 
-class  Filter extends Component {
+class Filter extends Component {
 
 
     constructor(props) {
@@ -55,7 +39,7 @@ class  Filter extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
     }
@@ -80,11 +64,11 @@ class  Filter extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -106,11 +90,11 @@ class  Filter extends Component {
                         <div className="row no-gutters listing-row-border pb-4">
                             {/*<div className="col-auto" style={{margin:"auto"}}>*/}
 
-                                {/*<NavigateBefore  style={{ fontSize: 32 }}/>*/}
+                            {/*<NavigateBefore  style={{ fontSize: 32 }}/>*/}
                             {/*</div>*/}
 
-                            <div className="col text-left blue-text"  style={{margin:"auto"}}>
-                               <h6 className={" text-heading"}>Filters</h6>
+                            <div className="col text-left blue-text" style={{ margin: "auto" }}>
+                                <h6 className={" text-heading"}>Filters</h6>
                             </div>
 
                             <div className="col-auto">
@@ -130,7 +114,7 @@ class  Filter extends Component {
 
                         <div className="row no-gutters   pb-4">
 
-                            <div className="col text-left blue-text"  style={{margin:"auto"}}>
+                            <div className="col text-left blue-text" style={{ margin: "auto" }}>
                                 <h6 className={" text-heading"}>Resource Category </h6>
                             </div>
 
@@ -144,7 +128,7 @@ class  Filter extends Component {
 
                                             defaultChecked
                                             // color="#07AD88"
-                                            style={{color:"#07AD88"}}
+                                            style={{ color: "#07AD88" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -157,7 +141,7 @@ class  Filter extends Component {
                                     control={
                                         <Checkbox
                                             // color="#07AD88"
-                                            style={{color:"#cccccc"}}
+                                            style={{ color: "#cccccc" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -175,7 +159,7 @@ class  Filter extends Component {
 
                                             defaultChecked
                                             // color="#07AD88"
-                                            style={{color:"#07AD88"}}
+                                            style={{ color: "#07AD88" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -188,7 +172,7 @@ class  Filter extends Component {
                                     control={
                                         <Checkbox
                                             // color="#07AD88"
-                                            style={{color:"#cccccc"}}
+                                            style={{ color: "#cccccc" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -205,7 +189,7 @@ class  Filter extends Component {
 
                         <div className="row no-gutters  pb-4">
 
-                            <div className="col text-left blue-text"  style={{margin:"auto"}}>
+                            <div className="col text-left blue-text" style={{ margin: "auto" }}>
                                 <h6 className={" text-heading"}>Subcategory</h6>
                             </div>
 
@@ -219,7 +203,7 @@ class  Filter extends Component {
 
                                             defaultChecked
                                             // color="#07AD88"
-                                            style={{color:"#07AD88"}}
+                                            style={{ color: "#07AD88" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -232,7 +216,7 @@ class  Filter extends Component {
                                     control={
                                         <Checkbox
                                             // color="#07AD88"
-                                            style={{color:"#cccccc"}}
+                                            style={{ color: "#cccccc" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -250,7 +234,7 @@ class  Filter extends Component {
 
                                             defaultChecked
                                             // color="#07AD88"
-                                            style={{color:"#07AD88"}}
+                                            style={{ color: "#07AD88" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -263,7 +247,7 @@ class  Filter extends Component {
                                     control={
                                         <Checkbox
                                             // color="#07AD88"
-                                            style={{color:"#cccccc"}}
+                                            style={{ color: "#cccccc" }}
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
                                     }
@@ -280,7 +264,7 @@ class  Filter extends Component {
 
                         <div className="row no-gutters  pb-4">
 
-                            <div className="col text-left blue-text"  style={{margin:"auto"}}>
+                            <div className="col text-left blue-text" style={{ margin: "auto" }}>
                                 <h6 className={" text-heading"}>Availability</h6>
                             </div>
 
@@ -293,13 +277,13 @@ class  Filter extends Component {
                                 <TextField
                                     type="date"
                                     variant="outlined"
-                                    className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                    className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                     id="input-with-icon-textfield"
 
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <img  className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -311,13 +295,13 @@ class  Filter extends Component {
                                 <TextField
                                     type={"date"}
                                     variant="outlined"
-                                    className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                    className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                     id="input-with-icon-textfield"
 
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <img  className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -334,16 +318,16 @@ class  Filter extends Component {
 
                         <div className="row no-gutters  pb-4">
 
-                            <div className="col text-left blue-text"  style={{margin:"auto"}}>
+                            <div className="col text-left blue-text" style={{ margin: "auto" }}>
                                 <h6 className={" text-heading"}>Price Range</h6>
                             </div>
 
 
                         </div>
                         <div className="row  justify-content-center  pb-2">
-                            <div className="col-auto"  style={{margin:"auto"}}>
+                            <div className="col-auto" style={{ margin: "auto" }}>
 
-<PriceRange />
+                                <PriceRange />
                             </div>
 
                         </div>
@@ -365,10 +349,10 @@ class  Filter extends Component {
 function AirbnbThumbComponent(props) {
     return (
         <span {...props}>
-        {/*<span className="bar" />*/}
             {/*<span className="bar" />*/}
             {/*<span className="bar" />*/}
-      </span>
+            {/*<span className="bar" />*/}
+        </span>
     );
 }
 
@@ -436,14 +420,14 @@ function PriceRange(props) {
 
     };
 
-    const handleChange = (event,newValue) => {
+    const handleChange = (event, newValue) => {
 
         setShow(true)
         setValue(newValue)
-        console.log( newValue)
+        console.log(newValue)
         setActive(true);
 
-        props.setFilters({"name":props.type,"value":newValue})
+        props.setFilters({ "name": props.type, "value": newValue })
 
 
 
@@ -456,7 +440,7 @@ function PriceRange(props) {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-    return(
+    return (
 
         <AirbnbSlider
             onChange={handleChange}
@@ -509,11 +493,11 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
                             <button type="button" className=" mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
@@ -524,7 +508,7 @@ function BottomAppBar() {
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link green-btn-min mt-2 mb-2 btn-blue">
+                                className="shadow-sm mr-2 btn btn-link green-btn-min mt-2 mb-2 btn-blue">
                                 Reset
 
                             </button>
@@ -627,7 +611,7 @@ function NavTabs() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs
-                    style={{backgroundColor:"#27245C", color:"#ffffff!important"}}
+                    style={{ backgroundColor: "#27245C", color: "#ffffff!important" }}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
@@ -649,13 +633,13 @@ function NavTabs() {
                             <TextField
                                 label={"Search this seller’s listings"}
                                 variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                 id="input-with-icon-textfield"
 
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -666,12 +650,12 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">5 out of 5 Listings </p>
+                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">5 out of 5 Listings </p>
 
                         </div>
                         <div className="text-mute col-auto pl-0">
 
-                            <span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />
+                            <span style={{ fontSize: "18px" }}>Filter</span>   <img src={FilterImg} className={"filter-icon"} alt="" />
 
                         </div>
 
@@ -681,14 +665,14 @@ function NavTabs() {
 
                         <div className={"col-4"}>
 
-                            <img className={"img-fluid"} src={Paper}/>
+                            <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
                         <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Paper and Card</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Paper and Card</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
+                        <div style={{ textAlign: "right" }} className={"col-2"}>
                             <p className={"green-text"}>£12</p>
                         </div>
                     </div>
@@ -697,14 +681,14 @@ function NavTabs() {
 
                         <div className={"col-4"}>
 
-                            <img className={"img-fluid"} src={Paper}/>
+                            <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
                         <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Metal</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
+                        <div style={{ textAlign: "right" }} className={"col-2"}>
                             <p className={"green-text"}>Free</p>
                         </div>
                     </div>
@@ -724,13 +708,13 @@ function NavTabs() {
                             <TextField
                                 label={"Search this seller’s cycles"}
                                 variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                 id="input-with-icon-textfield"
 
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -741,7 +725,7 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">Cycles</p>
+                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                         </div>
                         {/*<div className="text-mute col-auto pl-0">*/}
@@ -759,11 +743,11 @@ function NavTabs() {
                         {/*<img className={"img-fluid"} src={Paper}/>*/}
                         {/*</div>*/}
                         <div className={"col-11 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Tesco   →  Company B</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Paper and Cardboard</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">bailed / 10 kg</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Tesco   →  Company B</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Paper and Cardboard</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">bailed / 10 kg</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-1"}>
+                        <div style={{ textAlign: "right" }} className={"col-1"}>
                             <p className={"gray-text"}><NavigateNextIcon /></p>
                         </div>
                     </div>
@@ -775,61 +759,61 @@ function NavTabs() {
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={MarkerIcon} />
+                            <img className={"icon-about"} src={MarkerIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
+                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Surrey, UK</p>
                         </div>
                     </div>
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={CalenderIcon} />
+                            <img className={"icon-about"} src={CalenderIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
+                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
                             </p>
                         </div>
                     </div>
                     <div className="row  justify-content-start search-container listing-row-border pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={LangIcon} />
+                            <img className={"icon-about"} src={LangIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
+                            <p style={{ fontSize: "18px" }} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
                         </div>
                     </div>
                     <div className="row  justify-content-start filter-row listing-row-border  mb-4 pt-5 pb-5">
 
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={EditGray} />
+                            <img className={"icon-about"} src={EditGray} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Description</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Description</p>
                         </div>
 
                     </div>
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={HandGreyIcon} />
+                            <img className={"icon-about"} src={HandGreyIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">5 Listings</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">5 Listings</p>
                         </div>
                     </div>
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={RingGray} />
+                            <img className={"icon-about"} src={RingGray} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Cycles</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Cycles</p>
                         </div>
                     </div>
 

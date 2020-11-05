@@ -2,11 +2,8 @@ import React, {Component, Fragment, useState} from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import ShippingIcon from '../../img/icons/shipping-icon.png';
 import ShippingWhite from '../../img/icons/delivery-blue.png';
 import SettingsWhite from '../../img/icons/settings-blue.png';
-import HandWhite from '../../img/icons/hand-white.png';
-import Cube from '../../img/icons/cube.png';
 import SearchWhite from '../../img/icons/search-blue.png';
 import VerticalLines from '../../img/icons/stat-blue-2.png';
 import Rings from '../../img/icons/ring-blue.png';

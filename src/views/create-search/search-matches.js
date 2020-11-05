@@ -1,70 +1,15 @@
 import React, {Component, Fragment, useState} from 'react';
-
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Logo from '../../img/logo-2x.png';
-import LogoSmall from '../../img/logo-small.png';
-import LogoNew from '../../img/logo-cropped.png';
-import LogoText from '../../img/logo-text.png';
-import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
-import LoopHome from '../../img/LoopHome.png';
-import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
-import HandIcon from '../../img/icons/hand.png';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import SearchIcon from '../../img/icons/search-icon.png';
-
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
-import history from "../../History/history";
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuOutline from '@material-ui/icons/MailOutline';
-import Close from '@material-ui/icons/Close';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PaperImg from '../../img/paper.png';
-
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
 import AppBar from '@material-ui/core/AppBar';
-
-import TextField from '@material-ui/core/TextField';
-
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,ProgressBar} from 'react-bootstrap';
-
-import Checkbox from '@material-ui/core/Checkbox';
-
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-import clsx from 'clsx';
-import SearchGray from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import {withStyles} from "@material-ui/core/styles/index";
-import CalGrey from '../../img/icons/calender-dgray.png';
-
-import MarkerGrey from '../../img/icons/marker-dgray.png';
-
-import LinkGray from '../../img/icons/link-icon.png';
-import ViewSearch from "../loop-cycle/ViewSearch";
-
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
-import ListIcon from '../../img/icons/list.png';
-import AmountIcon from '../../img/icons/amount.png';
-import StateIcon from '../../img/icons/state.png';
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';

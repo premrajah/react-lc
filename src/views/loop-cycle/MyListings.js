@@ -2,74 +2,20 @@ import React, {Component, Fragment, useState} from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Logo from '../../img/logo-2x.png';
-import LogoSmall from '../../img/logo-small.png';
-import LogoNew from '../../img/logo-cropped.png';
 
-import LogoText from '../../img/logo-text.png';
-import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
-import LoopHome from '../../img/LoopHome.png';
-
-import Paper from '../../img/paper.png';
 import clsx from 'clsx';
-import SearchIcon from '../../img/icons/search-icon.png';
-
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import ShippingWhite from '../../img/icons/truck.png';
-import SettingsWhite from '../../img/icons/settings-24px.png';
-import HandWhite from '../../img/icons/hand-white.png';
-import Cube from '../../img/icons/cube.png';
-import SearchWhite from '../../img/icons/search-white.png';
-import VerticalLines from '../../img/icons/vertical-lines.png';
-import Rings from '../../img/icons/rings.png';
-import FilterImg from '../../img/icons/filter-icon.png';
-
-
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
 import { Router, Route, Switch , Link} from "react-router-dom";
-
-import LangIcon from '../../img/icons/lang.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
-
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Camera from '@material-ui/icons/CameraAlt';
-
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
-
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-
 import { makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
-import FilterIcon from '@material-ui/icons/Filter';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import SearchItem from './search-item'
 import ResourceItem from '../item/ResourceItem'
-
-import PaperImg from '../../img/paper.png';
-
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Toolbar from '@material-ui/core/Toolbar';

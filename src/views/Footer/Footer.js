@@ -102,60 +102,10 @@ class  Footer extends Component {
 
             <>
                 <WaveBorder />
-       <FooterNew/>
+              <FooterNew/>
 
 
 
-                {/*<div className="container  container-blue pt-5  footer-container">*/}
-
-                    {/*<div className="row no-gutters mb-5">*/}
-                        {/*<div className="col-auto">*/}
-                            {/*<img className="header-logo" src={LogoNew} />*/}
-                            {/*<img className={"text-logo-home"} src={LogoText} />*/}
-
-
-                        {/*</div>*/}
-                    {/*</div>*/}
-                    {/*<div className="row no-gutters mb-3">*/}
-                        {/*<div className="col-auto">*/}
-
-                            {/*<ul>*/}
-                                {/*<li>Home</li>*/}
-                                {/*<li>Create a Search</li>*/}
-                                {/*<li>Create a Listing</li>*/}
-                                {/*<li>Deliver Resources</li>*/}
-                                {/*<li>About Loopcycle</li>*/}
-                                {/*<li>News</li>*/}
-                                {/*<li>Contact </li>*/}
-                            {/*</ul>*/}
-                        {/*</div>*/}
-
-                    {/*</div>*/}
-
-                    {/*<div className="row no-gutters mb-5">*/}
-                        {/*<div className="col-auto">*/}
-                            {/*<img className="home-icon-bottom" src={Twitter} />*/}
-                            {/*<img className={"home-icon-bottom"} src={Insta} />*/}
-
-
-                        {/*</div>*/}
-                    {/*</div>*/}
-                    {/*<div className="row no-gutters mb-3">*/}
-                        {/*<div className="col-auto copright-text">*/}
-
-                            {/*<ul>*/}
-                                {/*<li>*/}
-                                    {/*<p className={" "}> ©  2020  Loopcycle</p>*/}
-                                {/*</li>*/}
-                                {/*<li>Terms</li>*/}
-                                {/*<li>Privacy</li>*/}
-
-
-                            {/*</ul>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
-
-                {/*</div>*/}
 
 
             </>

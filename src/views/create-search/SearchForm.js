@@ -16,53 +16,26 @@ import HandIcon from '../../img/icons/hand.png';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import SearchIcon from '../../img/icons/search-icon.png';
-
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
 import { Router, Route, Switch , Link} from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
-import history from "../../History/history";
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuOutline from '@material-ui/icons/MailOutline';
 import Close from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PaperImg from '../../img/paper.png';
-
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
 import AppBar from '@material-ui/core/AppBar';
 
 import TextField from '@material-ui/core/TextField';
-
 import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,ProgressBar,Alert} from 'react-bootstrap';
-
-import Checkbox from '@material-ui/core/Checkbox';
-
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import clsx from 'clsx';
-import SearchGray from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {withStyles} from "@material-ui/core/styles/index";
 import CalGrey from '../../img/icons/calender-dgray.png';
-
-import MarkerGrey from '../../img/icons/marker-dgray.png';
-
 import LinkGray from '../../img/icons/link-icon.png';
-import ViewSearch from "../loop-cycle/ViewSearch";
-
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
@@ -72,26 +45,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from  '../item/ResourceItem'
 import HeaderDark from '../header/HeaderDark'
-
-// import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-// pick a date util library
-// import MomentUtils from '@date-io/moment';
-// import DateFnsUtils from '@date-io/date-fns';
-// import LuxonUtils from '@date-io/luxon';
-// import DateFnsUtils from 'date-i-fns';
-// import DateFnsUtils from '@date-io/date-fns';
 import Sidebar from '../menu/Sidebar'
-
-import {
-    DatePicker,
-    TimePicker,
-    DateTimePicker,
-    MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
-import {loginFailed} from "../../store/actions/actions";
-import {signUpFailed} from "../../store/actions/actions";
-
 
 const useStyles = makeStyles((theme) => ({
     root: {

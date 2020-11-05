@@ -1,22 +1,16 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
 import clsx from 'clsx';
-
-
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import HandBlue from '../../img/icons/hand.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 
 
-class  Home extends Component {
+class Home extends Component {
 
 
     constructor(props) {
@@ -26,7 +20,7 @@ class  Home extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
@@ -41,11 +35,11 @@ class  Home extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -65,7 +59,7 @@ class  Home extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage">
 
-                <HeaderDark />
+                    <HeaderDark />
 
 
                     <div className="container   pb-4 pt-4">
@@ -74,7 +68,7 @@ class  Home extends Component {
                         <div className="row justify-content-center">
 
                             <div className="col-auto pb-4 pt-5">
-                               <img className={"search-icon-middle"}  src={HandBlue} />
+                                <img className={"search-icon-middle"} src={HandBlue} alt="" />
 
                             </div>
                         </div>
@@ -98,12 +92,12 @@ class  Home extends Component {
 
 
 
-                        <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                        <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                             <div className="col-auto">
 
                                 <button type="button"
-                                        className="shadow-sm mr-2 btn btn-link blue-btn mt-5 mb-2 btn-blue">
+                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-5 mb-2 btn-blue">
                                     <Link to={"/list-form"} >Create Listing</Link>
 
                                 </button>
@@ -140,20 +134,20 @@ function SearchField() {
 
     const classes = useStylesTabs();
 
-        return (
-            <TextField
-                variant="outlined"
-                className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                id="input-with-icon-textfield"
+    return (
+        <TextField
+            variant="outlined"
+            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+            id="input-with-icon-textfield"
 
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
+                    </InputAdornment>
+                ),
+            }}
+        />
 
     );
 }

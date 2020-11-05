@@ -236,7 +236,7 @@ class AddDetail extends Component {
         return (
 
             <>
-                {this.state.active == 0 &&
+                {this.state.active === 0 &&
 
                     <>
 

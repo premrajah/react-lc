@@ -1,28 +1,27 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import Paper from '../../img/paper.png';
 import clsx from 'clsx';
 import CubeBlue from '../../img/icons/product-icon-big.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Toolbar from '@material-ui/core/Toolbar';
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 
 
-class  Products extends Component {
+class Products extends Component {
 
 
     constructor(props) {
@@ -32,41 +31,41 @@ class  Products extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            products:[]
+            products: []
         }
 
 
-        this.getProducts=this.getProducts.bind(this)
+        this.getProducts = this.getProducts.bind(this)
 
     }
 
 
 
 
-    getProducts(){
+    getProducts() {
 
-        axios.get(baseUrl+"product",
+        axios.get(baseUrl + "product",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
+                var response = response.data.content;
+                console.log("resource response")
+                console.log(response)
 
-                    this.setState({
+                this.setState({
 
-                        products:response
+                    products: response
 
-                    })
+                })
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -90,11 +89,11 @@ class  Products extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.getProducts()
 
@@ -109,7 +108,7 @@ class  Products extends Component {
     render() {
 
 
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
 
@@ -120,7 +119,7 @@ class  Products extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage">
 
-                <HeaderDark />
+                    <HeaderDark />
 
 
                     <div className="container   pb-4 pt-4">
@@ -129,7 +128,7 @@ class  Products extends Component {
                         <div className="row ">
 
                             <div className="col-auto pb-4 pt-4">
-                               <img className={"search-icon-middle"}  src={CubeBlue} />
+                                <img className={"search-icon-middle"} src={CubeBlue} alt="" />
 
                             </div>
                         </div>
@@ -153,46 +152,46 @@ class  Products extends Component {
 
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
-                        <SearchField />
+                                <SearchField />
 
 
                             </div>
                         </div>
 
 
-                            <div className="row  justify-content-center filter-row listing-row-border   pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row listing-row-border   pt-3 pb-3">
 
-                                <div className="col">
-                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">{this.state.products.length} Products </p>
-
-                                </div>
-                                <div className="text-mute col-auto pl-0">
-
-                                    <span style={{fontSize:"18px"}}>Created</span>
-
-                                </div>
+                            <div className="col">
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.products.length} Products </p>
 
                             </div>
+                            <div className="text-mute col-auto pl-0">
+
+                                <span style={{ fontSize: "18px" }}>Created</span>
+
+                            </div>
+
+                        </div>
 
 
                         {this.state.products.map((item) =>
 
-                                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-                                    <div className={"col-10  content-box-listing"}>
+                            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+                                <div className={"col-10  content-box-listing"}>
 
-                                        <Link to={"/product/"+item.id}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">{item.title}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.purpose}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.searches.length} Searches</p>
-                                        </Link>
+                                    <Link to={"/product/" + item.id}>
+                                        <p style={{ fontSize: "18px" }} className=" mb-1">{item.title}</p>
+                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.purpose}</p>
+                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.searches.length} Searches</p>
+                                    </Link>
+                                </div>
+                                <div style={{ textAlign: "right" }} className={"col-2"}>
+                                    <p className={"text-gray-light small"}>9/5/2020</p>
+
+                                </div>
                             </div>
-                            <div style={{textAlign:"right"}} className={"col-2"}>
-                                <p className={"text-gray-light small"}>9/5/2020</p>
 
-                            </div>
-                              </div>
-
-                            )}
+                        )}
 
 
 
@@ -205,13 +204,13 @@ class  Products extends Component {
 
                     <React.Fragment>
 
-                        <CssBaseline/>
+                        <CssBaseline />
 
-                        <AppBar  position="fixed" color="#ffffff" className={classesBottom.appBar+"  custom-bottom-appbar"}>
+                        <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
                             <Toolbar>
 
 
-                                <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                                <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                                     <div className="col-auto">
 
@@ -250,20 +249,20 @@ function SearchField() {
 
     const classes = useStylesTabs();
 
-        return (
-            <TextField
-                variant="outlined"
-                className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                id="input-with-icon-textfield"
+    return (
+        <TextField
+            variant="outlined"
+            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+            id="input-with-icon-textfield"
 
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
+                    </InputAdornment>
+                ),
+            }}
+        />
 
     );
 }

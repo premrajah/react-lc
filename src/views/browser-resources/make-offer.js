@@ -1,46 +1,24 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-
-import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import AppBar from '@material-ui/core/AppBar';
-
-import { Router, Route, Switch , Link} from "react-router-dom";
-
-
+import { Link } from "react-router-dom";
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import Sidebar from '../menu/Sidebar'
-
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import Camera from '@material-ui/icons/CameraAlt';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
-
-
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import Moment from 'react-moment';
-import ResourceItem from  '../item/ResourceItem'
-import { withRouter } from 'react-router-dom'
+import ResourceItem from '../item/ResourceItem'
 
 
 
 
 
 
-class  MakeOffer extends Component {
+class MakeOffer extends Component {
 
     slug;
 
@@ -58,7 +36,7 @@ class  MakeOffer extends Component {
 
 
         this.slug = props.match.params.slug
-        this.getResource=this.getResource.bind(this)
+        this.getResource = this.getResource.bind(this)
 
 
 
@@ -67,29 +45,29 @@ class  MakeOffer extends Component {
 
 
 
-    getResource(){
+    getResource() {
 
 
-        axios.get(baseUrl+"resource/"+this.slug,
+        axios.get(baseUrl + "resource/" + this.slug,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data;
-                    console.log("detail resource response")
-                    console.log(response)
+                var response = response.data;
+                console.log("detail resource response")
+                console.log(response)
 
 
-                    this.setState({
+                this.setState({
 
-                        item: response.content
-                    })
+                    item: response.content
+                })
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -117,11 +95,11 @@ class  MakeOffer extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.getResource()
 
@@ -136,7 +114,7 @@ class  MakeOffer extends Component {
         return (
             <div>
 
-                <HeaderWhiteBack history={this.props.history} heading={this.state.item&&this.state.item.name}/>
+                <HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />
 
 
                 <div className="container   pb-4 ">
@@ -150,18 +128,18 @@ class  MakeOffer extends Component {
 
 
                     </div>
-                    {this.state.item&&<ResourceItem item={this.state.item}/>}
+                    {this.state.item && <ResourceItem item={this.state.item} />}
 
 
 
                     <div className="row mt-2 justify-content-center ">
                         <div className={" col-12"}>
                             <Grid justify="center" container spacing={2} alignItems="center">
-                                <Grid  xs={1} item>
+                                <Grid xs={1} item>
                                     £
                                 </Grid>
-                                <Grid  xs={11} item>
-                                    <TextField id="input-with-icon-grid"  variant="outlined" />
+                                <Grid xs={11} item>
+                                    <TextField id="input-with-icon-grid" variant="outlined" />
                                 </Grid>
                             </Grid>
 
@@ -218,16 +196,16 @@ function BottomAppBar(props) {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto",width:"100%"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto", width: "100%" }}>
 
                         <div className="col-12">
 
-                            <Link style={{margin:"auto",width:"100%"}} to={""} type="button"
-                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                            <Link style={{ margin: "auto", width: "100%" }} to={""} type="button"
+                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Make Offer
 
                             </Link>

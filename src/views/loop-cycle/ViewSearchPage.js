@@ -1,28 +1,17 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import PaperImg from '../../img/paper.png';
-
-
 import AppBar from '@material-ui/core/AppBar';
 import Sidebar from '../menu/Sidebar'
-
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import Camera from '@material-ui/icons/CameraAlt';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import Close from '@material-ui/icons/Close';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 
-class  ViewSearchPage extends Component {
+class ViewSearchPage extends Component {
 
 
     constructor(props) {
@@ -32,37 +21,37 @@ class  ViewSearchPage extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
 
-        this.getResources=this.getResources.bind(this)
+        this.getResources = this.getResources.bind(this)
 
     }
 
 
 
 
-    getResources(){
+    getResources() {
 
 
 
 
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl + "resource",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
-                    var response = response.data;
+                var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+                console.log("resource response")
+                console.log(response)
 
-                },
+            },
                 (error) => {
                     var status = error.response.status
 
@@ -86,11 +75,11 @@ class  ViewSearchPage extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -113,12 +102,12 @@ class  ViewSearchPage extends Component {
                     <div className="container  pt-3 pb-3 listing-row-border">
 
                         <div className="row no-gutters">
-                            <div className="col-auto" style={{margin:"auto"}}>
+                            <div className="col-auto" style={{ margin: "auto" }}>
 
-                                <NavigateBefore  style={{ fontSize: 32 }}/>
+                                <NavigateBefore style={{ fontSize: 32 }} />
                             </div>
 
-                            <div className="col text-center blue-text"  style={{margin:"auto"}}>
+                            <div className="col text-center blue-text" style={{ margin: "auto" }}>
                                 <p>View Search </p>
                             </div>
 
@@ -142,15 +131,15 @@ class  ViewSearchPage extends Component {
 
                             <div className={"col-4"}>
 
-                                <img className={"img-fluid"} src={PaperImg}/>
+                                <img className={"img-fluid"} src={PaperImg} alt="" />
                             </div>
                             <div className={"col-6 pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                                <p style={{ fontSize: "18px" }} className=" mb-1">Metal</p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                             </div>
-                            <div style={{textAlign:"right"}} className={"col-2"}>
-                                <p className={"gray-text"}><NavigateNextIcon  style={{ fontSize: 32 }} /></p>
+                            <div style={{ textAlign: "right" }} className={"col-2"}>
+                                <p className={"gray-text"}><NavigateNextIcon style={{ fontSize: 32 }} /></p>
 
                             </div>
                         </div>
@@ -166,15 +155,15 @@ class  ViewSearchPage extends Component {
 
                             <div className={"col-4"}>
 
-                                <img className={"img-fluid"} src={PaperImg}/>
+                                <img className={"img-fluid"} src={PaperImg} alt="" />
                             </div>
                             <div className={"col-6 pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                                <p style={{ fontSize: "18px" }} className=" mb-1">Metal</p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                             </div>
-                            <div style={{textAlign:"right"}} className={"col-2"}>
-                                <p className={"gray-text"}><NavigateNextIcon style={{ fontSize: 32 }}  /></p>
+                            <div style={{ textAlign: "right" }} className={"col-2"}>
+                                <p className={"gray-text"}><NavigateNextIcon style={{ fontSize: 32 }} /></p>
 
                             </div>
                         </div>
@@ -235,11 +224,11 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
                             <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -250,7 +239,7 @@ function BottomAppBar() {
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                 View (0) Matches
 
                             </button>

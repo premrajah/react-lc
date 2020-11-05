@@ -1,8 +1,7 @@
-import {saveGuestData, saveUserData, saveUserToken,saveKey,getKey} from '../../LocalStorage/user'
-import  {initialState} from "../reducers/reducer"
+import { saveUserData, saveUserToken, saveKey, getKey } from '../../LocalStorage/user'
 import axios from "axios/index";
 
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
+import { baseUrl } from '../../Util/Constants'
 
 
 export const enableCartLoading = () => {
@@ -29,7 +28,7 @@ export const loading = () => {
 
 export const loginFailed = (val) => {
     return {
-          type: "LOGIN_FAILED", value: val
+        type: "LOGIN_FAILED", value: val
     };
 };
 
@@ -110,7 +109,7 @@ export const setLocation = val => {
 export const setReviewBoxOpen = val => {
 
     console.log("edit cart action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "REVIEW_BOX_OPEN", value: val };
 
 
@@ -119,7 +118,7 @@ export const setReviewBoxOpen = val => {
 export const setEditCartPopUp = val => {
 
     console.log("edit cart action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "SET_EDIT_CART_POPUP", value: val };
 
 
@@ -128,7 +127,7 @@ export const setEditCartPopUp = val => {
 export const editCartPopUp = val => {
 
     console.log("edit cart action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "EDIT_CART_POPUP", value: val };
 
 
@@ -137,7 +136,7 @@ export const editCartPopUp = val => {
 export const addBundleCartItem = val => {
 
     console.log("edit cart action")
-    console.log("login "+val)
+    console.log("login " + val)
 
 
     return { type: "ADD_BUNDLE_CART_ITEM", value: val };
@@ -160,7 +159,7 @@ export const setEditBundleCartPopUp = val => {
 export const editBundleCartPopUp = val => {
 
     console.log("edit cart action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "EDIT_BUNDLE_CART_POPUP", value: val };
 
 
@@ -178,7 +177,7 @@ export const showNewsletter = val => {
 export const loginPopUp = val => {
 
     console.log("action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "LOGIN_POPUP", value: val };
 
 
@@ -188,7 +187,7 @@ export const loginPopUp = val => {
 export const stayAtHomeAddress = val => {
 
     console.log("action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "STAY_AT_HOME_ADDRESS", value: val };
 
 
@@ -197,7 +196,7 @@ export const stayAtHomeAddress = val => {
 export const addressExist = val => {
 
     console.log("action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "ADDRESS_EXIST", value: val };
 
 
@@ -209,7 +208,7 @@ export const addressExist = val => {
 export const socialLoginPopUp = val => {
 
     console.log("social login action pop up")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "SOCIAL_LOGIN_POPUP", value: val };
 
 
@@ -219,7 +218,7 @@ export const socialLoginPopUp = val => {
 export const setSocialUserInfo = val => {
 
     console.log("action")
-    console.log("login "+val)
+    console.log("login " + val)
     return { type: "SOCIAL_USER_INFO", value: val };
 
 
@@ -229,7 +228,7 @@ export const loginCheckoutPopUp = val => {
 
     console.log("action")
 
-    console.log("login "+val)
+    console.log("login " + val)
 
 
     return { type: "LOGIN_CHECKOUT_POPUP", value: val };
@@ -274,7 +273,7 @@ export const ageUp = val => {
 
 
 export const logIn = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
         dispatch(loading());
         dispatch(logInSync(data));
@@ -284,7 +283,7 @@ export const logIn = (data) => {
 
 
 export const loadFavorites = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
         dispatch(loadFavoriteSync(data));
 
@@ -293,7 +292,7 @@ export const loadFavorites = (data) => {
 
 
 export const loadSalesQuote = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
         dispatch(loading());
 
         dispatch(loadSalesQuoteSync(data));
@@ -308,21 +307,21 @@ export const loadSalesQuoteSync = (data) => dispatch => {
 
     console.log("load sales quotes")
 
-    axios.get(baseUrl+"customers/"+data.id+"?groups[]=sales-quotes")
+    axios.get(baseUrl + "customers/" + data.id + "?groups[]=sales-quotes")
         .then(res => {
 
 
             console.log(res.data)
-            dispatch({type: "LOAD_CART_ITEMS", value : res.data})
+            dispatch({ type: "LOAD_CART_ITEMS", value: res.data })
 
 
         }).catch(error => {
 
-        console.log("cart Items error found "+error)
-        console.log(error)
+            console.log("cart Items error found " + error)
+            console.log(error)
 
 
-    });
+        });
 
 };
 
@@ -330,37 +329,37 @@ export const loadSalesQuoteSync = (data) => dispatch => {
 
 export const loadFavoriteSync = (data) => dispatch => {
 
-    axios.get(baseUrl+"customers/"+data.id+"?groups[]=favorites")
+    axios.get(baseUrl + "customers/" + data.id + "?groups[]=favorites")
         .then(res => {
 
 
             // console.log(res.data)
-            dispatch({type: "FAVORITES", value : res.data})
+            dispatch({ type: "FAVORITES", value: res.data })
 
 
         }).catch(error => {
 
-        console.log("favorites error found "+error)
-        console.log("favorites error found "+error)
+            console.log("favorites error found " + error)
+            console.log("favorites error found " + error)
 
-        // dispatch({type: "LOGIN_FAILED", value : error})
-        // dispatch(stopLoading())
-
-
-        dispatch(loginFailed(error))
-
-        console.log(error)
+            // dispatch({type: "LOGIN_FAILED", value : error})
+            // dispatch(stopLoading())
 
 
-    });
+            dispatch(loginFailed(error))
+
+            console.log(error)
+
+
+        });
 
 };
 
 
 export const logInSync = (data) => dispatch => {
 
-    axios.post(baseUrl+"user/login",
-        {"email": data.email, "password": data.password})
+    axios.post(baseUrl + "user/login",
+        { "email": data.email, "password": data.password })
         .then(res => {
 
             console.log(res.data)
@@ -370,35 +369,35 @@ export const logInSync = (data) => dispatch => {
 
             document.body.classList.add('search-body');
 
-            
-            if (res.data.status.code==200){
+
+            if (res.data.status.code === 200) {
                 console.log("login success found")
-                saveKey("user",res.data['content'])
-                dispatch({type: "LOGIN", value : res.data})
+                saveKey("user", res.data['content'])
+                dispatch({ type: "LOGIN", value: res.data })
 
 
             } else {
-                console.log("login failed "+res.data.content.message)
+                console.log("login failed " + res.data.content.message)
 
-                dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
+                dispatch({ type: "LOGIN_ERROR", value: res.data.content.message })
             }
 
 
         }).catch(error => {
 
-        console.log("login error found ")
-        console.log(error.response.data)
+            console.log("login error found ")
+            console.log(error.response.data)
 
-        // dispatch({type: "LOGIN_FAILED", value : error})
-        // dispatch(stopLoading())
+            // dispatch({type: "LOGIN_FAILED", value : error})
+            // dispatch(stopLoading())
 
 
-        dispatch(loginFailed(error.response.data.content.message))
-        // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
+            dispatch(loginFailed(error.response.data.content.message))
+            // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
 
-        // console.log(error)
+            // console.log(error)
 
-    });
+        });
 
 };
 
@@ -408,7 +407,7 @@ export const logInSync = (data) => dispatch => {
 
 
 export const signUpWithCartItem = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
 
         // alert("sign up")
@@ -427,16 +426,16 @@ export const signUpWithCartItemSync = (data) => dispatch => {
     console.log(data)
 
 
-    var  user = data.user
+    var user = data.user
 
-    axios.post(baseUrl+"customers.json",
+    axios.post(baseUrl + "customers.json",
         user)
         .then(res => {
 
             console.log("sign up successfull")
 
 
-            if (res.data.isGuest){
+            if (res.data.isGuest) {
 
                 setGuest()
 
@@ -463,26 +462,26 @@ export const signUpWithCartItemSync = (data) => dispatch => {
 
                 }))
 
-                dispatch({type: "SIGN_UP", value: res.data})
+                dispatch({ type: "SIGN_UP", value: res.data })
 
-            }else {
+            } else {
 
-                dispatch({type: "SIGN_UP", value: res.data})
+                dispatch({ type: "SIGN_UP", value: res.data })
             }
 
 
         }).catch(error => {
 
-        // dispatch(stopLoading())
+            // dispatch(stopLoading())
 
-        dispatch(loginFailed())
+            dispatch(loginFailed())
 
-        console.log(error)
-        // dispatch({ type: AUTH_FAILED });
-        // dispatch({ type: ERROR, payload: error.data.error.message });
+            console.log(error)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
-    });
+        });
 
 
 };
@@ -491,7 +490,7 @@ export const signUpWithCartItemSync = (data) => dispatch => {
 
 
 export const reviewSubmit = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
         dispatch(loadingSpinner());
         dispatch(reviewSubmitSync(data));
@@ -506,7 +505,7 @@ export const reviewSubmitSync = (data) => dispatch => {
 
     console.log("review submit  called")
 
-    axios.post(baseUrl+"activity_reviews.json?groups[]=reviews",
+    axios.post(baseUrl + "activity_reviews.json?groups[]=reviews",
         data)
         .then(res => {
 
@@ -515,26 +514,26 @@ export const reviewSubmitSync = (data) => dispatch => {
 
 
 
-            dispatch({type: "REVIEW_SUBMIT", value : res.data})
+            dispatch({ type: "REVIEW_SUBMIT", value: res.data })
 
 
         }).catch(error => {
 
 
 
-        console.log(error)
-        // dispatch(stopLoading());
+            console.log(error)
+            // dispatch(stopLoading());
 
 
 
 
-    });
+        });
 
 
 };
 
 export const signUp = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
 
         // alert("sign up")
@@ -547,7 +546,7 @@ export const signUp = (data) => {
 
 
 export const signUpHost = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
 
         // alert("sign up")
@@ -567,7 +566,7 @@ export const signUpHostSync = (data) => dispatch => {
     console.log("host sign up called")
     console.log(data)
 
-    axios.post(baseUrl+"hosts.json",
+    axios.post(baseUrl + "hosts.json",
         data
         // ,{
         //     headers:
@@ -584,26 +583,26 @@ export const signUpHostSync = (data) => dispatch => {
 
 
 
-            dispatch(getUserDetail({username : res.data.email}));
-            dispatch({type: "SIGN_UP", value : res.data})
+            dispatch(getUserDetail({ username: res.data.email }));
+            dispatch({ type: "SIGN_UP", value: res.data })
 
 
 
         }).catch(error => {
 
-        console.log("host sign up error")
+            console.log("host sign up error")
 
 
-        // dispatch(stopLoading())
+            // dispatch(stopLoading())
 
-        dispatch(loginFailed())
+            dispatch(loginFailed())
 
-        console.log(error)
-        // dispatch({ type: AUTH_FAILED });
-        // dispatch({ type: ERROR, payload: error.data.error.message });
+            console.log(error)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
-    });
+        });
 
 
 };
@@ -614,29 +613,29 @@ export const signUpSync = (data) => dispatch => {
 
 
     console.log("sign up called")
-    axios.post(baseUrl+"user/signup",
-    // axios.post(baseUrl+"customers.json",
+    axios.post(baseUrl + "user/signup",
+        // axios.post(baseUrl+"customers.json",
         data)
         .then(res => {
 
             console.log("sign up successfull")
 
-            dispatch({type: "SIGN_UP", value : res.data})
+            dispatch({ type: "SIGN_UP", value: res.data })
 
 
 
         }).catch(error => {
 
-        // dispatch(stopLoading())
+            // dispatch(stopLoading())
 
-        dispatch(signUpFailed(error.response.data.content.message))
+            dispatch(signUpFailed(error.response.data.content.message))
 
-        console.log(error)
-        // dispatch({ type: AUTH_FAILED });
-        // dispatch({ type: ERROR, payload: error.data.error.message });
+            console.log(error)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
-    });
+        });
 
 
 };
@@ -646,9 +645,9 @@ export const signUpSync = (data) => dispatch => {
 
 
 export const setRememberUserDetail = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
-        dispatch({type: "USER_DETAIL", value : data})
+        dispatch({ type: "USER_DETAIL", value: data })
 
 
     };
@@ -659,7 +658,7 @@ export const setRememberUserDetail = (data) => {
 
 
 export const checkGuestCartItems = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
 
         dispatch(loading());
@@ -674,7 +673,7 @@ export const checkGuestCartItemsSync = (data) => dispatch => {
 
 
 
-    var    url = baseUrl+"customers.json?groups[]=customer&email="+data.username;
+    var url = baseUrl + "customers.json?groups[]=customer&email=" + data.username;
 
     console.log(url)
 
@@ -685,12 +684,12 @@ export const checkGuestCartItemsSync = (data) => dispatch => {
 
 
 
-            if (data.cartItems.length>0) {
+            if (data.cartItems.length > 0) {
 
                 console.log("cart  abondoned item exits")
 
 
-                dispatch(addCartItem({ "user": res.data.user, "cartItem" : data.cartItems[0]  }))
+                dispatch(addCartItem({ "user": res.data.user, "cartItem": data.cartItems[0] }))
                 dispatch(loadSalesQuote(data.user))
 
 
@@ -701,16 +700,16 @@ export const checkGuestCartItemsSync = (data) => dispatch => {
 
         }).catch(error => {
 
-        // dispatch(stopLoading())
+            // dispatch(stopLoading())
 
-        dispatch(loginFailed())
+            dispatch(loginFailed())
 
-        console.log(error)
-        // dispatch({ type: AUTH_FAILED });
-        // dispatch({ type: ERROR, payload: error.data.error.message });
+            console.log(error)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
-    });
+        });
 
 
 };
@@ -728,7 +727,7 @@ export const loadUserDetail = (data) => {
 
 
 
-    var userDetials= getKey("user");
+    var userDetials = getKey("user");
 
     console.log("user details")
     console.log(userDetials)
@@ -739,7 +738,7 @@ export const loadUserDetail = (data) => {
 
 
 export const getUserDetail = (data) => {
-    return dispatch  =>  {
+    return dispatch => {
 
         dispatch(loading());
         dispatch(getUserDetailSync(data));
@@ -756,7 +755,7 @@ export const getUserDetailSync = (data) => dispatch => {
 
 
 
-    var    url = baseUrl+"customers.json?groups[]=customer&email="+data.username;
+    var url = baseUrl + "customers.json?groups[]=customer&email=" + data.username;
 
     console.log(url)
 
@@ -769,7 +768,7 @@ export const getUserDetailSync = (data) => dispatch => {
 
             console.log(res.data)
 
-            dispatch({type: "USER_DETAIL", value : res.data[0]})
+            dispatch({ type: "USER_DETAIL", value: res.data[0] })
             saveUserData(res.data[0])
 
 
@@ -781,16 +780,16 @@ export const getUserDetailSync = (data) => dispatch => {
 
         }).catch(error => {
 
-        // dispatch(stopLoading())
+            // dispatch(stopLoading())
 
-        dispatch(loginFailed())
+            dispatch(loginFailed())
 
-        console.log(error)
-        // dispatch({ type: AUTH_FAILED });
-        // dispatch({ type: ERROR, payload: error.data.error.message });
+            console.log(error)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
-    });
+        });
 
 
 };
@@ -846,7 +845,7 @@ export const removeCartItem = val => {
 
 export const removeCartItemSync = (val) => {
 
-    return function(dispatch) {
+    return function (dispatch) {
 
         var url = baseUrl + "customer_carts";
 
@@ -868,7 +867,7 @@ export const removeCartItemSync = (val) => {
         }
         // }
 
-        // else if (val.itemType==1) {
+        // else if (val.itemType===1) {
         //
         //
         //     data = {
@@ -891,20 +890,20 @@ export const removeCartItemSync = (val) => {
                 // return { type: "REMOVE_CART_ITEM", value: val };
 
 
-                dispatch(loadSalesQuote({id: val.user}));
+                dispatch(loadSalesQuote({ id: val.user }));
 
 
             }).catch(error => {
 
 
-            return {type: "REMOVE_CART_ITEM", value: val};
+                return { type: "REMOVE_CART_ITEM", value: val };
 
 
 
-        });
+            });
 
 
-        return {type: "REMOVE_CART_ITEM", value: val};
+        return { type: "REMOVE_CART_ITEM", value: val };
 
     }
 
@@ -919,7 +918,7 @@ export const removeCartItemSync = (val) => {
 
 export const addCartItem = (val) => {
 
-    if(val.user) {
+    if (val.user) {
         return dispatch => {
 
 
@@ -931,12 +930,12 @@ export const addCartItem = (val) => {
 
         };
 
-    }else {
+    } else {
 
 
         console.log("add cart item guest called")
 
-        return {type: "ADD_CART_ITEM_GUEST", value: val};
+        return { type: "ADD_CART_ITEM_GUEST", value: val };
 
 
     }
@@ -984,7 +983,7 @@ export const addCoupon = (val) => {
 export const setGuest = () => {
 
 
-    return {type: "IS_GUEST"};
+    return { type: "IS_GUEST" };
 
 
 
@@ -993,7 +992,7 @@ export const setGuest = () => {
 export const loadingCoupon = () => {
 
 
-    return {type: "LOADING_COUPON"};
+    return { type: "LOADING_COUPON" };
 
 
 
@@ -1004,7 +1003,7 @@ export const loadingCoupon = () => {
 export const disableCouponLoading = () => {
 
 
-    return {type: "DISABLE_COUPON"};
+    return { type: "DISABLE_COUPON" };
 
 
 
@@ -1013,7 +1012,7 @@ export const disableCouponLoading = () => {
 
 export const removeCouponSync = (val) => {
 
-    return function(dispatch) {
+    return function (dispatch) {
 
         var url = baseUrl + "customer_discount_codes";
 
@@ -1032,16 +1031,16 @@ export const removeCouponSync = (val) => {
                 console.log(res.data)
 
                 dispatch(disableCouponLoading())
-                dispatch(loadSalesQuote({id:val.customer}));
+                dispatch(loadSalesQuote({ id: val.customer }));
 
 
             }).catch(error => {
 
-            console.log(error)
-            return {type: "ERROR_REQUEST", value: error};
+                console.log(error)
+                return { type: "ERROR_REQUEST", value: error };
 
 
-        });
+            });
 
 
     }
@@ -1051,7 +1050,7 @@ export const removeCouponSync = (val) => {
 
 export const addCouponSync = (val) => {
 
-    return function(dispatch) {
+    return function (dispatch) {
 
         var url = baseUrl + "customer_discount_codes";
 
@@ -1070,16 +1069,16 @@ export const addCouponSync = (val) => {
                 console.log(res.data)
 
                 dispatch(loadingCoupon())
-                dispatch(loadSalesQuote({id:val.customer}));
+                dispatch(loadSalesQuote({ id: val.customer }));
 
 
             }).catch(error => {
 
-            console.log(error)
-            return {type: "ERROR_REQUEST", value: error};
+                console.log(error)
+                return { type: "ERROR_REQUEST", value: error };
 
 
-        });
+            });
 
 
     }
@@ -1114,7 +1113,7 @@ export const removeFavoriteItem = val => {
 export const addCartItemSync = (val) => {
 
 
-    return function(dispatch) {
+    return function (dispatch) {
 
 
 
@@ -1141,7 +1140,7 @@ export const addCartItemSync = (val) => {
 
 
 
-        if (val.cartItem.itemType==0){
+        if (val.cartItem.itemType == 0) {
 
             data = {
 
@@ -1150,12 +1149,12 @@ export const addCartItemSync = (val) => {
                 addToCart: true,
                 removeFromCart: false,
                 customer: (val.user.id),
-                itemType : 0
+                itemType: 0
 
             }
 
 
-        }else if (val.cartItem.itemType==1){
+        } else if (val.cartItem.itemType === 1) {
 
             data = {
 
@@ -1164,7 +1163,7 @@ export const addCartItemSync = (val) => {
                 addToCart: true,
                 removeFromCart: false,
                 customer: (val.user.id),
-                itemType : 1
+                itemType: 1
 
             }
 
@@ -1182,19 +1181,19 @@ export const addCartItemSync = (val) => {
 
                 console.log(res.data)
 
-                dispatch(loadSalesQuote({id: val.user.id}));
+                dispatch(loadSalesQuote({ id: val.user.id }));
 
 
             }).catch(error => {
 
-            console.log("Add Cart Error")
+                console.log("Add Cart Error")
 
-            console.log(error)
+                console.log(error)
 
-            return {type: "ERROR_REQUEST", value: error};
+                return { type: "ERROR_REQUEST", value: error };
 
 
-        });
+            });
 
 
     }

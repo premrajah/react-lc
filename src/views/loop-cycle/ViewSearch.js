@@ -1,32 +1,21 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-
+import React, { Component } from 'react';
 import SearchIcon from '../../img/icons/search-big-gray.png';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Router, Route, Switch , Link} from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
-
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
-
 import Sidebar from '../menu/Sidebar'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 
-class  ViewSearch extends Component {
+class ViewSearch extends Component {
 
 
     constructor(props) {
@@ -36,37 +25,37 @@ class  ViewSearch extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
 
-        this.getResources=this.getResources.bind(this)
+        this.getResources = this.getResources.bind(this)
 
     }
 
 
 
 
-    getResources(){
+    getResources() {
 
 
 
 
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl + "resource",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
-                    var response = response.data;
+                var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+                console.log("resource response")
+                console.log(response)
 
-                },
+            },
                 (error) => {
                     var status = error.response.status
 
@@ -85,11 +74,11 @@ class  ViewSearch extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -112,12 +101,12 @@ class  ViewSearch extends Component {
                     <div className="container  pt-3 pb-3">
 
                         <div className="row no-gutters">
-                            <div className="col-auto" style={{margin:"auto"}}>
+                            <div className="col-auto" style={{ margin: "auto" }}>
 
-                                <NavigateBefore  style={{ fontSize: 32 }}/>
+                                <NavigateBefore style={{ fontSize: 32 }} />
                             </div>
 
-                            <div className="col text-center blue-text"  style={{margin:"auto"}}>
+                            <div className="col text-center blue-text" style={{ margin: "auto" }}>
                                 <p>View Search </p>
                             </div>
 
@@ -140,7 +129,7 @@ class  ViewSearch extends Component {
                         <div className="row container-gray justify-content-center pb-5 pt-5">
 
                             <div className="col-auto pb-5 pt-5">
-                               <img className={"my-search-icon-middle"}  src={SearchIcon} />
+                                <img className={"my-search-icon-middle"} src={SearchIcon} alt="" />
 
                             </div>
                         </div>
@@ -162,7 +151,7 @@ class  ViewSearch extends Component {
                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                             <div className="col-auto">
-                                <p  style={{fontSize:"16px"}} className={"text-gray-light "}>Looking for disposable food boxes. Any sizes are suitable. Please message me if you have any available.
+                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>Looking for disposable food boxes. Any sizes are suitable. Please message me if you have any available.
                                 </p>
 
                             </div>
@@ -183,57 +172,57 @@ class  ViewSearch extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={ListIcon} />
+                                <img className={"icon-about"} src={ListIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Paper and Card ></p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Disposable Food Boxes</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Surrey, UK</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Paper and Card ></p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Disposable Food Boxes</p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={AmountIcon} />
+                                <img className={"icon-about"} src={AmountIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">10 Kgs</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">10 Kgs</p>
                             </div>
                         </div>
 
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} />
+                                <img className={"icon-about"} src={StateIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Bailed</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Bailed</p>
                             </div>
                         </div>
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={CalenderIcon} />
+                                <img className={"icon-about"} src={CalenderIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">June 1, 2020 </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">June 1, 2020 </p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} />
+                                <img className={"icon-about"} src={MarkerIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Location  </p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                <p style={{fontSize:"18px"}} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Location  </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
                             </div>
                         </div>
 
@@ -293,11 +282,11 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
                             <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -308,7 +297,7 @@ function BottomAppBar() {
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                 View (0) Matches
 
                             </button>

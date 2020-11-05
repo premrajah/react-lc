@@ -1,19 +1,14 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import QRCodeImg from '../../img/qr-code.png';
-
 import CubeBlue from '../../img/icons/cube-blue.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 
-class  CycleCode extends Component {
+class CycleCode extends Component {
 
 
     constructor(props) {
@@ -23,7 +18,7 @@ class  CycleCode extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
@@ -37,11 +32,11 @@ class  CycleCode extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -61,21 +56,21 @@ class  CycleCode extends Component {
                 <Sidebar />
 
                 <div className="wrapper accountpage">
-                    <HeaderDark/>
+                    <HeaderDark />
 
-                    <div className="container p-2 " style={{padding:"0"}}>
+                    <div className="container p-2 " style={{ padding: "0" }}>
 
 
                         <div className="row no-gutters  justify-content-center listing-row-border">
 
                             {/*<div className="floating-back-icon" style={{margin:"auto"}}>*/}
 
-                                {/*<NavigateBefore  style={{ fontSize: 32, color:"white" }}/>*/}
+                            {/*<NavigateBefore  style={{ fontSize: 32, color:"white" }}/>*/}
                             {/*</div>*/}
 
 
                             <div className="col-8 ">
-                                <img className={"img-fluid"}  src={QRCodeImg} />
+                                <img className={"img-fluid"} src={QRCodeImg} alt="" />
 
                             </div>
                         </div>
@@ -98,7 +93,7 @@ class  CycleCode extends Component {
                         <div className="row justify-content-start pb-2 pt-2 listing-row-border">
 
                             <div className="col-auto">
-                                <p  style={{fontSize:"18px"}} className={"text-gray-light "}>Product Description
+                                <p style={{ fontSize: "18px" }} className={"text-gray-light "}>Product Description
                                 </p>
 
                             </div>
@@ -118,15 +113,15 @@ class  CycleCode extends Component {
                         <div className="row justify-content-start pb-4 pt-3 ">
                             <div className="col-6">
 
-                                <img  style={{height:"24px"}} src={CubeBlue} className={""} />
+                                <img style={{ height: "24px" }} src={CubeBlue} alt="" />
                                 <h6 className={"mt-3"}>Purpose</h6>
-                            <p className={"mt-3"}>Aggregate, an intermediary product which aggregates to another large product.</p>
+                                <p className={"mt-3"}>Aggregate, an intermediary product which aggregates to another large product.</p>
 
                             </div>
 
                             <div className="col-6">
 
-                                <img style={{height:"24px"}} src={CubeBlue} className={""} />
+                                <img style={{ height: "24px" }} src={CubeBlue} alt="" />
                                 <h6 className={"mt-3"}>Created</h6>
                                 <p className={"mt-3"}>June 9, 2020 at 9:34 AM</p>
 
@@ -190,11 +185,11 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
                             <button type="button" className=" mr-2 btn btn-link green-btn-min mt-2 mb-2 ">
@@ -205,7 +200,7 @@ function BottomAppBar() {
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 ">
+                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 ">
                                 Buy
 
                             </button>

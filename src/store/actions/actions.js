@@ -853,7 +853,7 @@ export const removeCartItemSync = (val) => {
 
         var data;
 
-        // if (val.itemType==0) {
+        // if (val.itemType===0) {
 
         data = {
 
@@ -1140,7 +1140,7 @@ export const addCartItemSync = (val) => {
 
 
 
-        if (val.cartItem.itemType == 0) {
+        if (val.cartItem.itemType === 0) {
 
             data = {
 

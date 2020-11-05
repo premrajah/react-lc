@@ -292,7 +292,7 @@ class BrowseResources extends Component {
 
                                         {this.state.pages.map(item =>
 
-                                            <li className={this.state.page == item ? "page-item active-page" : "page-item "}><a data-page={item} className="page-link" onClick={this.changePage.bind(this)}>{item}</a></li>
+                                            <li className={this.state.page === item ? "page-item active-page" : "page-item "}><a data-page={item} className="page-link" onClick={this.changePage.bind(this)}>{item}</a></li>
 
                                         )}
 

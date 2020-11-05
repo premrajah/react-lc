@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import Select from '@material-ui/core/Select';
@@ -8,19 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,ProgressBar} from 'react-bootstrap';
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { baseUrl } from "../../Util/Constants";
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import ResourceItem from  './ResourceItem'
+import ResourceItem from './ResourceItem'
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-
-
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
-import {loginFailed} from "../../store/actions/actions";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +35,7 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
-class  SearchMatches extends Component {
+class SearchMatches extends Component {
 
 
 
@@ -61,65 +55,65 @@ class  SearchMatches extends Component {
             catSelected: {},
             subCatSelected: {},
             stateSelected: null,
-            states:[],
-            page:1,
+            states: [],
+            page: 1,
             fields: {},
             errors: {},
-            units:[],
+            units: [],
             progressBar: 33,
-            products:[],
+            products: [],
             productSelected: null,
             nextBlue: false,
             nextBlueAddDetail: false,
             nextBlueViewSearch: false,
-            matches:[],
+            matches: [],
             unitSelected: null,
             volumeSelected: null,
             title: null,
             description: null,
-            volume:null,
-            createSearchData:null,
-            resourcesMatched:[],
+            volume: null,
+            createSearchData: null,
+            resourcesMatched: [],
 
 
 
         }
 
         this.slug = props.match.params.slug
-        this.loadMatches=this.loadMatches.bind(this)
+        this.loadMatches = this.loadMatches.bind(this)
 
     }
 
 
-    loadMatches(){
+    loadMatches() {
 
 
-        for (var i=0;i<this.state.createSearchData.resources.length;i++){
+        for (var i = 0; i < this.state.createSearchData.resources.length; i++) {
 
-            axios.get(baseUrl+"resource/"+this.state.createSearchData.resources[i],
+            axios.get(baseUrl + "resource/" + this.state.createSearchData.resources[i],
                 {
                     headers: {
-                        "Authorization" : "Bearer "+this.props.userDetail.token
+                        "Authorization": "Bearer " + this.props.userDetail.token
                     }
                 }
             )
                 .then((response) => {
 
-                        var response = response.data.content;
-                        console.log("resource response")
-                        console.log(response)
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
 
                     var resources = this.state.resourcesMatched
 
 
                     resources.push(response)
 
-                        this.setState({
+                    this.setState({
 
-                            resourcesMatched: resources
-                        })
+                        resourcesMatched: resources
+                    })
 
-                    },
+                },
                     (error) => {
 
                         var status = error.response.status
@@ -135,43 +129,43 @@ class  SearchMatches extends Component {
 
     interval
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.getResources()
     }
 
 
 
-    getResources(){
+    getResources() {
 
 
-        axios.get(baseUrl+"search/"+this.slug,
+        axios.get(baseUrl + "search/" + this.slug,
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data;
-                    console.log("detail resource response")
-                    console.log(response)
+                var response = response.data;
+                console.log("detail resource response")
+                console.log(response)
 
 
-                    this.setState({
+                this.setState({
 
-                        createSearchData: response.content
-                    })
+                    createSearchData: response.content
+                })
 
 
                 this.loadMatches()
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -187,31 +181,31 @@ class  SearchMatches extends Component {
     }
 
 
-    goToSignIn(){
+    goToSignIn() {
 
 
         this.setState({
 
-            active:0
+            active: 0
         })
     }
 
-    goToSignUp(){
+    goToSignUp() {
 
 
         this.setState({
 
-            active:1
+            active: 1
         })
     }
 
-     classes = useStylesSelect;
+    classes = useStylesSelect;
 
 
 
     render() {
 
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
 
@@ -222,34 +216,34 @@ class  SearchMatches extends Component {
 
                 <Sidebar />
 
-                    <HeaderDark />
+                <HeaderDark />
 
 
 
                 <div className="container  p-2">
                 </div>
 
-                    <HeaderWhiteBack history={this.props.history} heading={"View Matches"}/>
+                <HeaderWhiteBack history={this.props.history} heading={"View Matches"} />
 
 
-                {this.state.resourcesMatched&& <>
-                    {this.state.resourcesMatched.length>0?<div className="container   pb-4 ">
+                {this.state.resourcesMatched && <>
+                    {this.state.resourcesMatched.length > 0 ? <div className="container   pb-4 ">
 
 
-                        {this.state.resourcesMatched.map((item)=>
+                        {this.state.resourcesMatched.map((item) =>
 
-                        <ResourceItem item={item} searchId={this.state.createSearchData.id}/>
+                            <ResourceItem item={item} searchId={this.state.createSearchData.id} />
 
                         )}
 
 
-                </div>:<div className={" column-empty-message"}>
-                    <p>This search currently has no matches</p>
-                </div>
+                    </div> : <div className={" column-empty-message"}>
+                            <p>This search currently has no matches</p>
+                        </div>
 
                     }
-                    </>
-                        }
+                </>
+                }
             </>
 
         );
@@ -291,27 +285,27 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                         <div className="col-auto">
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                 Back
 
                             </button>
                         </div>
-                        <div className="col-auto" style={{margin:"auto"}}>
+                        <div className="col-auto" style={{ margin: "auto" }}>
 
-                         <p  className={"blue-text"}> Page 2/3</p>
+                            <p className={"blue-text"}> Page 2/3</p>
                         </div>
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                 Next
 
                             </button>
@@ -360,11 +354,11 @@ function UnitSelect(props) {
                     }}
                 >
 
-                    {props.units.map((item)=>
+                    {props.units.map((item) =>
 
-                    <option value={"Kg"}>{item}</option>
+                        <option value={"Kg"}>{item}</option>
 
-                        )}
+                    )}
 
                 </Select>
             </FormControl>

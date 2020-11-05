@@ -1,17 +1,9 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
-
-import { Router, Route, Switch , Link} from "react-router-dom";
-
 import history from "../../History/history";
-
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  ResetPassword extends Component {
+class ResetPassword extends Component {
 
 
     constructor(props) {
@@ -34,21 +26,21 @@ class  ResetPassword extends Component {
             fields: {},
             errors: {},
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
             active: 0   //0 logn. 1- sign up , 3 -search,
 
 
         }
 
-        this.goToSignUp=this.goToSignUp.bind(this)
-        this.goToSignIn=this.goToSignIn.bind(this)
-        this.goToSuccess=this.goToSuccess.bind(this)
-        this.forGotPass=this.forGotPass.bind(this)
-        this.accountRecover=this.accountRecover.bind(this)
-        this.resetPassword=this.resetPassword.bind(this)
-        this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-        this.goHome=this.goHome.bind(this)
+        this.goToSignUp = this.goToSignUp.bind(this)
+        this.goToSignIn = this.goToSignIn.bind(this)
+        this.goToSuccess = this.goToSuccess.bind(this)
+        this.forGotPass = this.forGotPass.bind(this)
+        this.accountRecover = this.accountRecover.bind(this)
+        this.resetPassword = this.resetPassword.bind(this)
+        this.resetPasswordSuccessLogin = this.resetPasswordSuccessLogin.bind(this)
+        this.goHome = this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
         this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
@@ -64,52 +56,52 @@ class  ResetPassword extends Component {
     }
 
 
-    goHome(){
+    goHome() {
 
         history.push("/")
     }
 
 
 
-    handleValidation(){
+    handleValidation() {
         // alert("called")
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
 
         //Name
-        if(!fields["password"]){
+        if (!fields["password"]) {
             formIsValid = false;
             errors["password"] = "Required";
         }
 
 
-        if(!fields["email"]){
+        if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
         }
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
 
 
-    handleChange(field, e){
+    handleChange(field, e) {
         let fields = this.state.fields;
         fields[field] = e.target.value;
-        this.setState({fields});
+        this.setState({ fields });
     }
 
 
@@ -120,7 +112,7 @@ class  ResetPassword extends Component {
 
         const form = event.currentTarget;
 
-     if (this.handleValidation()){
+        if (this.handleValidation()) {
             this.setState({
                 btnLoading: true
             })
@@ -131,15 +123,15 @@ class  ResetPassword extends Component {
             const password = data.get("password")
 
 
-            this.props.logIn({"email": username, "password": password})
+            this.props.logIn({ "email": username, "password": password })
 
-        // alert("valid")
+            // alert("valid")
 
-        }else {
+        } else {
 
 
-         // alert("invalid")
-     }
+            // alert("invalid")
+        }
 
 
 
@@ -148,48 +140,48 @@ class  ResetPassword extends Component {
 
     }
 
-    resetPasswordSuccessLogin(){
+    resetPasswordSuccessLogin() {
 
         this.props.setLoginPopUpStatus(5)
 
     }
-    resetPassword(){
+    resetPassword() {
 
         this.setState({
 
-            active:4
+            active: 4
         })
 
     }
-    accountRecover(){
+    accountRecover() {
 
 
 
         this.setState({
 
-            active:3
+            active: 3
         })
 
     }
 
-    goToSuccess(){
+    goToSuccess() {
         this.setState({
 
-            active:6
+            active: 6
         })
 
 
 
     }
 
-    forGotPass(){
+    forGotPass() {
 
 
 
 
         this.setState({
 
-            active:2
+            active: 2
         })
     }
 
@@ -214,11 +206,11 @@ class  ResetPassword extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
     }
@@ -233,21 +225,21 @@ class  ResetPassword extends Component {
 
 
 
-    goToSignIn(){
+    goToSignIn() {
 
 
         this.setState({
 
-            active:0
+            active: 0
         })
     }
 
-    goToSignUp(){
+    goToSignUp() {
 
 
         this.setState({
 
-            active:1
+            active: 1
         })
     }
 

@@ -1,19 +1,15 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
+import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Router, Route, Switch , Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 
 
 
 
 
-class  Inbox extends Component {
+class Inbox extends Component {
 
 
     constructor(props) {
@@ -23,37 +19,37 @@ class  Inbox extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
 
-        this.getResources=this.getResources.bind(this)
+        this.getResources = this.getResources.bind(this)
 
     }
 
 
 
 
-    getResources(){
+    getResources() {
 
 
 
 
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl + "resource",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
-                    var response = response.data;
+                var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+                console.log("resource response")
+                console.log(response)
 
-                },
+            },
                 (error) => {
                     var status = error.response.status
 
@@ -79,11 +75,11 @@ class  Inbox extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -225,7 +221,7 @@ class  Inbox extends Component {
 function VoiceOver() {
 
 
-    return(
+    return (
         <>
 
 

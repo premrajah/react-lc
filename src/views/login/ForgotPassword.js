@@ -1,18 +1,11 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
-import { Router, Route, Switch , Link} from "react-router-dom";
-
+import { baseUrl } from '../../Util/Constants'
 import history from "../../History/history";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
 import axios from "axios/index";
-import {loginFailed} from "../../store/actions/actions";
 
 
 
@@ -26,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  ForgotPassword extends Component {
+class ForgotPassword extends Component {
 
 
     constructor(props) {
@@ -37,20 +30,20 @@ class  ForgotPassword extends Component {
             fields: {},
             errors: {},
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
             active: 0   //0 logn. 1- sign up , 3 -search,
 
 
         }
-        this.goToSignUp=this.goToSignUp.bind(this)
-        this.goToSignIn=this.goToSignIn.bind(this)
-        this.goToSuccess=this.goToSuccess.bind(this)
-        this.forGotPass=this.forGotPass.bind(this)
-        this.accountRecover=this.accountRecover.bind(this)
-        this.resetPassword=this.resetPassword.bind(this)
-        this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-        this.goHome=this.goHome.bind(this)
+        this.goToSignUp = this.goToSignUp.bind(this)
+        this.goToSignIn = this.goToSignIn.bind(this)
+        this.goToSuccess = this.goToSuccess.bind(this)
+        this.forGotPass = this.forGotPass.bind(this)
+        this.accountRecover = this.accountRecover.bind(this)
+        this.resetPassword = this.resetPassword.bind(this)
+        this.resetPasswordSuccessLogin = this.resetPasswordSuccessLogin.bind(this)
+        this.goHome = this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
 
@@ -58,14 +51,14 @@ class  ForgotPassword extends Component {
     }
 
 
-    goHome(){
+    goHome() {
 
         history.push("/")
     }
 
 
 
-    handleValidation(){
+    handleValidation() {
         // alert("called")
         let fields = this.state.fields;
         let errors = {};
@@ -74,33 +67,33 @@ class  ForgotPassword extends Component {
 
 
 
-        if(!fields["email"]){
+        if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
         }
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
 
 
-    handleChange(field, e){
+    handleChange(field, e) {
 
         let fields = this.state.fields;
         fields[field] = e.target.value;
-        this.setState({fields});
+        this.setState({ fields });
     }
 
 
@@ -111,7 +104,7 @@ class  ForgotPassword extends Component {
 
         const form = event.currentTarget;
 
-     if (this.handleValidation()){
+        if (this.handleValidation()) {
             this.setState({
                 btnLoading: true
             })
@@ -122,51 +115,51 @@ class  ForgotPassword extends Component {
             // this.props.logIn({"email": username, "password": password})
 
 
-         // alert(data.get("email"))
+            // alert(data.get("email"))
 
-         axios.post(baseUrl+"user/reset",
-             {"email": data.email})
-             .then(res => {
+            axios.post(baseUrl + "user/reset",
+                { "email": data.email })
+                .then(res => {
 
-                 console.log(res.data)
+                    console.log(res.data)
 
-                 document.body.classList.add('search-body');
-
-
-                 if (res.data.status.code==200){
+                    document.body.classList.add('search-body');
 
 
-                     console.log("login success found")
+                    if (res.data.status.code === 200) {
 
 
-                 } else {
-
-                     console.log("login failed "+res.data.content.message)
-
-                 }
+                        console.log("login success found")
 
 
-             }).catch(error => {
+                    } else {
 
-             console.log("login error found ")
-             console.log(error.response.data)
+                        console.log("login failed " + res.data.content.message)
 
-             // dispatch({type: "LOGIN_FAILED", value : error})
-             // dispatch(stopLoading())
-             // dispatch(loginFailed(error.response.data.content.message))
-             // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
-
-             // console.log(error)
-
-         });
+                    }
 
 
+                }).catch(error => {
+
+                    console.log("login error found ")
+                    console.log(error.response.data)
+
+                    // dispatch({type: "LOGIN_FAILED", value : error})
+                    // dispatch(stopLoading())
+                    // dispatch(loginFailed(error.response.data.content.message))
+                    // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
+
+                    // console.log(error)
+
+                });
 
 
-        }else {
 
 
-     }
+        } else {
+
+
+        }
 
 
 
@@ -175,26 +168,26 @@ class  ForgotPassword extends Component {
 
     }
 
-    resetPasswordSuccessLogin(){
+    resetPasswordSuccessLogin() {
 
 
 
         this.setState({
 
-            active:5
+            active: 5
         })
 
 
     }
-    resetPassword(){
+    resetPassword() {
 
         this.setState({
 
-            active:4
+            active: 4
         })
 
     }
-    accountRecover(){
+    accountRecover() {
 
         this.props.setLoginPopUpStatus(3)
 
@@ -205,24 +198,24 @@ class  ForgotPassword extends Component {
 
     }
 
-    goToSuccess(){
+    goToSuccess() {
         this.setState({
 
-            active:6
+            active: 6
         })
 
 
 
     }
 
-    forGotPass(){
+    forGotPass() {
 
 
 
 
         this.setState({
 
-            active:2
+            active: 2
         })
     }
 
@@ -247,11 +240,11 @@ class  ForgotPassword extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
     }
@@ -266,21 +259,21 @@ class  ForgotPassword extends Component {
 
 
 
-    goToSignIn(){
+    goToSignIn() {
 
 
         this.setState({
 
-            active:0
+            active: 0
         })
     }
 
-    goToSignUp(){
+    goToSignUp() {
 
 
         this.setState({
 
-            active:1
+            active: 1
         })
     }
 
@@ -300,42 +293,42 @@ class  ForgotPassword extends Component {
                         </div>
                     </div>
 
-                    <form  onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit}>
 
-                    <div className="row no-gutters justify-content-center ">
+                        <div className="row no-gutters justify-content-center ">
 
-                        <div className="col-12 ">
+                            <div className="col-12 ">
 
-                            <p className={"text-mute small fgt-password-text"}> We’ll send a verification code to your email address. Click on the link in the email to reset your password. </p>
+                                <p className={"text-mute small fgt-password-text"}> We’ll send a verification code to your email address. Click on the link in the email to reset your password. </p>
+
+                            </div>
+
+
+
+                            <div className="col-12 mt-4">
+
+
+                                <TextField
+                                    type={"email"}
+                                    onChange={this.handleChange.bind(this, "email")}
+                                    id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} />
+
+                                {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+
+
+                            </div>
+
+
+                            <div className="col-12 mt-4 mb-4">
+
+                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
+                            </div>
+
+
+
+
 
                         </div>
-
-
-
-                        <div className="col-12 mt-4">
-
-
-                            <TextField
-                                type={"email"}
-                                onChange={this.handleChange.bind(this, "email")}
-                                id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
-
-                            {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
-
-
-                        </div>
-
-
-                        <div className="col-12 mt-4 mb-4">
-
-                            <button type={"submit"}  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Get Verification Code</button>
-                        </div>
-
-
-
-
-
-                    </div>
                     </form>
 
                 </div>

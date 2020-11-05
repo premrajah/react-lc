@@ -1,6 +1,4 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
+import React, { Component } from 'react';
 import { connect } from "react-redux";
 import ShippingWhite from '../../img/icons/delivery-blue.png';
 import SettingsWhite from '../../img/icons/settings-blue.png';
@@ -10,17 +8,15 @@ import Rings from '../../img/icons/ring-blue.png';
 import BuildingIcon from '../../img/icons/building-icon.png';
 import ProductBlue from '../../img/icons/product-blue.png';
 import ListingBlue from '../../img/icons/listing-blue.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 
-class  Account extends Component {
+class Account extends Component {
 
 
     constructor(props) {
@@ -30,33 +26,33 @@ class  Account extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
 
-        this.getResources=this.getResources.bind(this)
+        this.getResources = this.getResources.bind(this)
 
     }
 
 
-    getResources(){
+    getResources() {
 
 
-        axios.get(baseUrl+"resource",
+        axios.get(baseUrl + "resource",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
-                    var response = response.data;
+                var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+                console.log("resource response")
+                console.log(response)
 
-                },
+            },
                 (error) => {
                     var status = error.response.status
 
@@ -78,11 +74,11 @@ class  Account extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -98,7 +94,7 @@ class  Account extends Component {
                 <Sidebar />
                 <div className="wrapper  accountpage">
 
-                <HeaderDark />
+                    <HeaderDark />
 
 
                     <div className="container  pt-3">
@@ -114,8 +110,8 @@ class  Account extends Component {
 
                             <div className="col-6  justify-content-center">
 
-                                    <h5 className={"text-blue text-bold"}>Company A</h5>
-                                    <p className={" text-mute small"}>Joined in 2010<br/>
+                                <h5 className={"text-blue text-bold"}>Company A</h5>
+                                <p className={" text-mute small"}>Joined in 2010<br />
                                         Surrey, UK</p>
 
                             </div>
@@ -142,48 +138,48 @@ class  Account extends Component {
 
                         {/*<div className="row mb-5 justify-content-center">*/}
 
-                            {/*<div className="text-center">*/}
-                                {/*<div className="figure-profile shadow my-4">*/}
-                                    {/*<figure><img src="img/user1.png" alt="" /></figure>*/}
-                                    {/*<div className="btn btn-dark text-white floating-btn">*/}
-                                        {/*<Camera className="green-text" style={{ fontSize: 24 }} />*/}
-                                        {/*<input type="file" className="float-file" />*/}
-                                    {/*</div>*/}
-                                {/*</div>*/}
+                        {/*<div className="text-center">*/}
+                        {/*<div className="figure-profile shadow my-4">*/}
+                        {/*<figure><img src="img/user1.png" alt="" /></figure>*/}
+                        {/*<div className="btn btn-dark text-white floating-btn">*/}
+                        {/*<Camera className="green-text" style={{ fontSize: 24 }} />*/}
+                        {/*<input type="file" className="float-file" />*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
 
 
-                                {/*<div>*/}
-                                    {/*<h5 className={"text-white"}>Tesco</h5>*/}
-                                    {/*<p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>*/}
+                        {/*<div>*/}
+                        {/*<h5 className={"text-white"}>Tesco</h5>*/}
+                        {/*<p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>*/}
 
-                                {/*</div>*/}
-                            {/*</div>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
 
                         {/*</div>*/}
 
-                    <div className="row">
-                        <div className="col">
-                            <div className="list-group main-menu accountpage-list">
-                                <Link to={"/listings"} className="list-group-item list-group-item-action ">
-                                    <img src={SettingsWhite} className={"account-icons truck-icon "} />
+                        <div className="row">
+                            <div className="col">
+                                <div className="list-group main-menu accountpage-list">
+                                    <Link to={"/listings"} className="list-group-item list-group-item-action ">
+                                        <img src={SettingsWhite} className={"account-icons truck-icon "} alt="" />
                                 Account  <NavigateNextIcon /> </Link>
-                                <Link to={"my-search"} className="list-group-item list-group-item-action ">
-                                    <img src={SearchWhite} className={"account-icons truck-icon "} />
+                                    <Link to={"my-search"} className="list-group-item list-group-item-action ">
+                                        <img src={SearchWhite} className={"account-icons truck-icon "} alt="" />
                                     My Searches  <NavigateNextIcon /></Link>
 
-                                <Link to={"/listings"} className="list-group-item list-group-item-action ">
-                                    <img src={ListingBlue} className={"account-icons truck-icon "} />
+                                    <Link to={"/listings"} className="list-group-item list-group-item-action ">
+                                        <img src={ListingBlue} className={"account-icons truck-icon "} alt="" />
                                     My Listings <NavigateNextIcon /></Link>
 
-                                <Link to={"/loops"} className="list-group-item list-group-item-action ">
-                                    <img src={Rings} className={"account-icons truck-icon "} />
+                                    <Link to={"/loops"} className="list-group-item list-group-item-action ">
+                                        <img src={Rings} className={"account-icons truck-icon "} alt="" />
                                     My Cycles <NavigateNextIcon /></Link>
 
 
 
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </div>
 
 
@@ -199,15 +195,15 @@ class  Account extends Component {
                                 <div className="list-group main-menu accountpage-list">
 
                                     <Link to={"/my-products"} className="list-group-item list-group-item-action ">
-                                        <img src={ProductBlue} className={"account-icons truck-icon "} />
+                                        <img src={ProductBlue} className={"account-icons truck-icon "} alt="" />
                                         Products <NavigateNextIcon /></Link>
 
                                     <Link to={"/my-deliveries"} className="list-group-item list-group-item-action ">
-                                        <img src={ShippingWhite} className={"account-icons truck-icon "} />
+                                        <img src={ShippingWhite} className={"account-icons truck-icon "} alt="" />
                                         Deliveries <NavigateNextIcon /></Link>
 
                                     <Link to={"/statistics"} className="list-group-item list-group-item-action ">
-                                        <img src={VerticalLines} className={"account-icons truck-icon "} />
+                                        <img src={VerticalLines} className={"account-icons truck-icon "} alt="" />
                                         Statistics <NavigateNextIcon /></Link>
 
                                 </div>

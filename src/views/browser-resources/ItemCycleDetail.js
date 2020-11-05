@@ -1,10 +1,9 @@
-import React, { Component, Fragment, useState } from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 
 import MarkerIcon from '../../img/icons/marker.png';
@@ -16,20 +15,18 @@ import StateIcon from '../../img/icons/state.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, Spinner, Alert } from 'react-bootstrap';
+import { Spinner, Alert } from 'react-bootstrap';
 
 
 import { makeStyles } from '@material-ui/core/styles';
 
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import { withRouter } from 'react-router-dom'
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 
 import BusinessIcon from '@material-ui/icons/Business';
@@ -84,7 +81,6 @@ class ItemCycleDetail extends Component {
 
     handleValidationSubmitGreen() {
 
-        // alert("called")
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -106,7 +102,7 @@ class ItemCycleDetail extends Component {
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 // errors["email"] = "Invalid email address";
             }
@@ -122,7 +118,6 @@ class ItemCycleDetail extends Component {
 
     handleValidation() {
 
-        // alert("called")
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -144,7 +139,7 @@ class ItemCycleDetail extends Component {
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
@@ -211,8 +206,7 @@ class ItemCycleDetail extends Component {
             .then((response) => {
 
                 var response = response.data;
-                console.log("qr code")
-                console.log(response)
+                console.log("qr code", response);
 
 
                 this.setState({
@@ -225,9 +219,7 @@ class ItemCycleDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("resource error")
-
-                    console.log(error)
+                    console.log("resource error ", error)
 
 
                 }
@@ -259,8 +251,7 @@ class ItemCycleDetail extends Component {
             .then((response) => {
 
                 var response = response.data;
-                console.log("qr code detail resource response")
-                console.log(response)
+                console.log("qr code detail resource response ", response)
 
 
                 this.setState({
@@ -277,9 +268,7 @@ class ItemCycleDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("product detail  error")
-
-                    console.log(error)
+                    console.log("product detail  error ", error)
 
 
                 }
@@ -468,14 +457,14 @@ class ItemCycleDetail extends Component {
 
                         {/*<div className="col-12">*/}
 
-                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} />}*!/*/}
+                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} alt="" />}*!/*/}
 
-                        {/*/!*{this.state.codeImg && <img src={"base64,"+this.state.codeImg}/> }*!/*/}
+                        {/*/!*{this.state.codeImg && <img src={"base64,"+this.state.codeImg} alt=""/> }*!/*/}
 
-                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg}/> }*!/*/}
+                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} alt=""/> }*!/*/}
 
 
-                        {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} />*/}
+                        {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} alt=""/>*/}
 
 
 
@@ -498,7 +487,7 @@ class ItemCycleDetail extends Component {
 
                             <div className="row  justify-content-start search-container  pb-4">
                                 {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} />*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                                 {/*</div>*/}
                                 <div className={"col-auto"}>
 
@@ -519,7 +508,7 @@ class ItemCycleDetail extends Component {
 
                             <div className="row  justify-content-start search-container  pb-4">
                                 {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} />*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                                 {/*</div>*/}
                                 <div className={"col-auto"}>
 
@@ -530,7 +519,7 @@ class ItemCycleDetail extends Component {
 
                             {/*<div className="row  justify-content-start search-container  pb-4">*/}
                             {/*/!*<div className={"col-1"}>*!/*/}
-                            {/*/!*<img className={"icon-about"} src={ListIcon} />*!/*/}
+                            {/*/!*<img className={"icon-about"} src={ListIcon} alt=""/>*!/*/}
                             {/*/!*</div>*!/*/}
                             {/*<div className={"col-auto"}>*/}
 
@@ -542,7 +531,7 @@ class ItemCycleDetail extends Component {
 
                             <div className="row  justify-content-start search-container  pb-4">
                                 {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} />*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                                 {/*</div>*/}
                                 <div className={"col-auto"}>
 
@@ -556,7 +545,7 @@ class ItemCycleDetail extends Component {
 
                             <div className="row  justify-content-start search-container  pb-4">
                                 {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} />*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                                 {/*</div>*/}
                                 <div className={"col-auto"}>
 
@@ -567,7 +556,7 @@ class ItemCycleDetail extends Component {
 
                             <div className="row  justify-content-start search-container  pb-4">
                                 {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} />*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                                 {/*</div>*/}
                                 <div className={"col-auto"}>
 
@@ -579,7 +568,7 @@ class ItemCycleDetail extends Component {
 
                             {/*<div className="row  justify-content-start search-container  pb-4">*/}
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={AmountIcon} />*/}
+                            {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
                             {/*</div>*/}
                             {/*<div className={"col-auto"}>*/}
 
@@ -591,7 +580,7 @@ class ItemCycleDetail extends Component {
 
                             <div className="row  justify-content-start search-container  pb-4">
                                 <div className={"col-1"}>
-                                    <img className={"icon-about"} src={StateIcon} />
+                                    <img className={"icon-about"} src={StateIcon} alt="" />
                                 </div>
                                 <div className={"col-auto"}>
 
@@ -602,7 +591,7 @@ class ItemCycleDetail extends Component {
 
                             {/*<div className="row  justify-content-start search-container  pb-4">*/}
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={CalenderIcon} />*/}
+                            {/*<img className={"icon-about"} src={CalenderIcon} alt=""/>*/}
                             {/*</div>*/}
                             {/*<div className={"col-auto"}>*/}
 
@@ -616,7 +605,7 @@ class ItemCycleDetail extends Component {
                             {/*</div>*/}
                             <div className="row  justify-content-start search-container  pb-4">
                                 <div className={"col-1"}>
-                                    <img className={"icon-about"} src={MarkerIcon} />
+                                    <img className={"icon-about"} src={MarkerIcon} alt="" />
                                 </div>
                                 <div className={"col-auto"}>
 
@@ -690,7 +679,7 @@ class ItemCycleDetail extends Component {
                         {/*<div style={{textAlign:"center"}} className="col-12">*/}
 
 
-                        {/*<img style={{width:"98%"}} src={BottomDetailInfo} />*/}
+                        {/*<img style={{width:"98%"}} src={BottomDetailInfo} alt=""/>*/}
                         {/*</div>*/}
                         {/*</div>*/}
 
@@ -717,7 +706,7 @@ class ItemCycleDetail extends Component {
                             <div style={{ textAlign: "center" }} className="col-12">
 
 
-                                <img style={{ width: "90%" }} src={BottomDetail} />
+                                <img style={{ width: "90%" }} src={BottomDetail} alt="" />
 
                             </div>
                         </div>

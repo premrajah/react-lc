@@ -1,71 +1,30 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
+import React, { Component } from 'react';
 import { connect } from "react-redux";
-import Logo from '../../img/logo-2x.png';
-import LogoSmall from '../../img/logo-small.png';
-import LogoNew from '../../img/logo-cropped.png';
-
-import LogoText from '../../img/logo-text.png';
-import PhoneHome from '../../img/phone-home.png';
-import BikeHome from '../../img/bike-home.png';
-import LoopHome from '../../img/LoopHome.png';
-
 import Paper from '../../img/paper.png';
 import clsx from 'clsx';
-import SearchIcon from '../../img/icons/search-icon.png';
-
-import ShippingIcon from '../../img/icons/shipping-icon.png';
-import ShippingWhite from '../../img/icons/truck.png';
-import SettingsWhite from '../../img/icons/settings-24px.png';
-import HandWhite from '../../img/icons/hand-white.png';
-import Cube from '../../img/icons/cube.png';
-import SearchWhite from '../../img/icons/search-white.png';
-import VerticalLines from '../../img/icons/vertical-lines.png';
-import Rings from '../../img/icons/rings.png';
 import FilterImg from '../../img/icons/filter-icon.png';
-
-
-import Twitter from '../../img/icons/twitter.png';
-import Insta from '../../img/icons/insta.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
-
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import HandGreyIcon from '../../img/icons/hand-gray.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
-
-import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Camera from '@material-ui/icons/CameraAlt';
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-
 import Close from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import SearchGray from '@material-ui/icons/Search';
-import FilterIcon from '@material-ui/icons/Filter';
 
-class  Search extends Component {
+class Search extends Component {
 
 
     constructor(props) {
@@ -75,7 +34,7 @@ class  Search extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
@@ -104,11 +63,11 @@ class  Search extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -127,18 +86,18 @@ class  Search extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage" style={{background:"#eeeeee"}}>
+                <div className="wrapper accountpage" style={{ background: "#eeeeee" }}>
 
-                    <div className="container  header-container  pt-3 pb-3" style={{background:"white"}}>
+                    <div className="container  header-container  pt-3 pb-3" style={{ background: "white" }}>
 
                         <div className="row no-gutters">
-                            <div className="col-auto" style={{margin:"auto"}}>
+                            <div className="col-auto" style={{ margin: "auto" }}>
 
-                                <NavigateBefore  style={{ fontSize: 32 }}/>
+                                <NavigateBefore style={{ fontSize: 32 }} />
                             </div>
 
-                            <div className="col text-center blue-text"  style={{margin:"auto"}}>
-                               <input  className={"search-input-field"} placeholder={"Search Resources"}/>
+                            <div className="col text-center blue-text" style={{ margin: "auto" }}>
+                                <input className={"search-input-field"} placeholder={"Search Resources"} />
                             </div>
 
                             <div className="col-auto">
@@ -152,7 +111,7 @@ class  Search extends Component {
 
                         </div>
                     </div>
-                    
+
 
 
 
@@ -257,7 +216,7 @@ function NavTabs() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs
-                    style={{backgroundColor:"#27245C", color:"#ffffff!important"}}
+                    style={{ backgroundColor: "#27245C", color: "#ffffff!important" }}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
@@ -279,13 +238,13 @@ function NavTabs() {
                             <TextField
                                 label={"Search this seller’s listings"}
                                 variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                 id="input-with-icon-textfield"
 
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -296,12 +255,12 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">5 out of 5 Listings </p>
+                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">5 out of 5 Listings </p>
 
                         </div>
                         <div className="text-mute col-auto pl-0">
 
-                            <span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />
+                            <span style={{ fontSize: "18px" }}>Filter</span>   <img src={FilterImg} className={"filter-icon"} alt="" />
 
                         </div>
 
@@ -311,14 +270,14 @@ function NavTabs() {
 
                         <div className={"col-4"}>
 
-                            <img className={"img-fluid"} src={Paper}/>
+                            <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
                         <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Paper and Card</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Paper and Card</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
+                        <div style={{ textAlign: "right" }} className={"col-2"}>
                             <p className={"green-text"}>£12</p>
                         </div>
                     </div>
@@ -327,14 +286,14 @@ function NavTabs() {
 
                         <div className={"col-4"}>
 
-                            <img className={"img-fluid"} src={Paper}/>
+                            <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
                         <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Metal</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">@Tescos</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Metal</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-2"}>
+                        <div style={{ textAlign: "right" }} className={"col-2"}>
                             <p className={"green-text"}>Free</p>
                         </div>
                     </div>
@@ -354,13 +313,13 @@ function NavTabs() {
                             <TextField
                                 label={"Search this seller’s Cycles"}
                                 variant="outlined"
-                                className={clsx(classes.margin, classes.textField)+" full-width-field" }
+                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                 id="input-with-icon-textfield"
 
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
+                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -371,7 +330,7 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
 
                         <div className="col">
-                            <p style={{fontSize:"18px"}} className="text-mute mb-1">Cycles</p>
+                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                         </div>
                         {/*<div className="text-mute col-auto pl-0">*/}
@@ -389,11 +348,11 @@ function NavTabs() {
                         {/*<img className={"img-fluid"} src={Paper}/>*/}
                         {/*</div>*/}
                         <div className={"col-11 content-box-listing"}>
-                            <p style={{fontSize:"18px"}} className=" mb-1">Tesco   →  Company B</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">Paper and Cardboard</p>
-                            <p style={{fontSize:"16px"}} className="text-mute mb-1">bailed / 10 kg</p>
+                            <p style={{ fontSize: "18px" }} className=" mb-1">Tesco   →  Company B</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Paper and Cardboard</p>
+                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">bailed / 10 kg</p>
                         </div>
-                        <div style={{textAlign:"right"}} className={"col-1"}>
+                        <div style={{ textAlign: "right" }} className={"col-1"}>
                             <p className={"gray-text"}><NavigateNextIcon /></p>
                         </div>
                     </div>
@@ -405,61 +364,61 @@ function NavTabs() {
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={MarkerIcon} />
+                            <img className={"icon-about"} src={MarkerIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Surrey, UK</p>
+                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Surrey, UK</p>
                         </div>
                     </div>
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={CalenderIcon} />
+                            <img className={"icon-about"} src={CalenderIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
+                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
                             </p>
                         </div>
                     </div>
                     <div className="row  justify-content-start search-container listing-row-border pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={LangIcon} />
+                            <img className={"icon-about"} src={LangIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
+                            <p style={{ fontSize: "18px" }} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
                         </div>
                     </div>
                     <div className="row  justify-content-start filter-row listing-row-border  mb-4 pt-5 pb-5">
 
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={EditGray} />
+                            <img className={"icon-about"} src={EditGray} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Description</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Description</p>
                         </div>
 
                     </div>
 
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={HandGreyIcon} />
+                            <img className={"icon-about"} src={HandGreyIcon} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">5 Listings</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">5 Listings</p>
                         </div>
                     </div>
                     <div className="row  justify-content-start search-container  pb-4">
                         <div className={"col-1"}>
-                            <img className={"icon-about"} src={RingGray} />
+                            <img className={"icon-about"} src={RingGray} alt="" />
                         </div>
                         <div className={"col-auto"}>
 
-                            <p style={{fontSize:"18px"}} className=" text-mute text-gray-light mb-1">Cycles</p>
+                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Cycles</p>
                         </div>
                     </div>
 

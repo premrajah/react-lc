@@ -1,11 +1,10 @@
-import React, { Component, Fragment, useState } from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Router, Route, Switch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import ListIcon from '../../img/icons/list.png';
@@ -16,19 +15,13 @@ import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import LoopDetail from './LoopDetail'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, Modal, ModalBody, ModalHeader } from 'react-bootstrap';
+import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
-import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
-import { withRouter } from 'react-router-dom'
 import { withStyles } from "@material-ui/core/styles/index";
 
 
@@ -112,7 +105,7 @@ class ViewCycle extends Component {
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
@@ -619,7 +612,7 @@ class ViewCycle extends Component {
 
                     {this.state.item && this.state.item.id &&
                         <>
-                            {this.state.item.state == "created" ?
+                            {this.state.item.state === "created" ?
                                 <>
                                     <div className="container-fluid " style={{ padding: "0" }}>
 
@@ -633,7 +626,7 @@ class ViewCycle extends Component {
 
 
                                             <div className="col-auto ">
-                                                <img className={"img-fluid"} src={PaperImg} />
+                                                <img className={"img-fluid"} src={PaperImg} alt="" />
 
                                             </div>
                                         </div>
@@ -696,7 +689,7 @@ class ViewCycle extends Component {
 
                                         <div className="row  justify-content-start search-container  pb-4">
                                             <div className={"col-1"}>
-                                                <img className={"icon-about"} src={ListIcon} />
+                                                <img className={"icon-about"} src={ListIcon} alt="" />
                                             </div>
                                             <div className={"col-auto"}>
 
@@ -707,7 +700,7 @@ class ViewCycle extends Component {
                                         </div>
                                         <div className="row  justify-content-start search-container  pb-4">
                                             <div className={"col-1"}>
-                                                <img className={"icon-about"} src={AmountIcon} />
+                                                <img className={"icon-about"} src={AmountIcon} alt="" />
                                             </div>
                                             <div className={"col-auto"}>
 
@@ -719,7 +712,7 @@ class ViewCycle extends Component {
 
                                         <div className="row  justify-content-start search-container  pb-4">
                                             <div className={"col-1"}>
-                                                <img className={"icon-about"} src={StateIcon} />
+                                                <img className={"icon-about"} src={StateIcon} alt="" />
                                             </div>
                                             <div className={"col-auto"}>
 
@@ -730,7 +723,7 @@ class ViewCycle extends Component {
 
                                         <div className="row  justify-content-start search-container  pb-4">
                                             <div className={"col-1"}>
-                                                <img className={"icon-about"} src={CalenderIcon} />
+                                                <img className={"icon-about"} src={CalenderIcon} alt="" />
                                             </div>
                                             <div className={"col-auto"}>
 
@@ -744,7 +737,7 @@ class ViewCycle extends Component {
                                         </div>
                                         <div className="row  justify-content-start search-container  pb-4">
                                             <div className={"col-1"}>
-                                                <img className={"icon-about"} src={MarkerIcon} />
+                                                <img className={"icon-about"} src={MarkerIcon} alt="" />
                                             </div>
                                             <div className={"col-auto"}>
 
@@ -794,7 +787,7 @@ class ViewCycle extends Component {
 
                                         <React.Fragment>
 
-                                            {this.state.item.id && (this.props.userDetail.orgId == this.state.item.producer.org.id) && this.state.item.state == "created" &&
+                                            {this.state.item.id && (this.props.userDetail.orgId === this.state.item.producer.org.id) && this.state.item.state === "created" &&
                                                 <>
 
                                                     <CssBaseline />
@@ -851,7 +844,7 @@ class ViewCycle extends Component {
 
                 <React.Fragment>
 
-                    {this.state.item.id && (this.props.userDetail.orgId == this.state.item.consumer.org.id) && this.state.item.state == "accepted" &&
+                    {this.state.item.id && (this.props.userDetail.orgId === this.state.item.consumer.org.id) && this.state.item.state === "accepted" &&
                         <>
 
                             <CssBaseline />
@@ -896,7 +889,7 @@ class ViewCycle extends Component {
                 <React.Fragment>
 
 
-                    {this.state.item && this.state.item.state == "confirmed" &&
+                    {this.state.item && this.state.item.state === "confirmed" &&
 
                         <>
                             <CssBaseline />
@@ -941,7 +934,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -989,7 +982,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1038,7 +1031,7 @@ class ViewCycle extends Component {
                 <React.Fragment>
 
 
-                    {this.state.item && this.state.item.state == "agreed" &&
+                    {this.state.item && this.state.item.state === "agreed" &&
 
                         <>
                             <CssBaseline />
@@ -1047,7 +1040,7 @@ class ViewCycle extends Component {
                                 <Toolbar>
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
-                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.logistics.org.id) && this.state.item.state == "agreed" &&
+                                        {this.state.item.id && (this.props.userDetail.orgId === this.state.item.logistics.org.id) && this.state.item.state === "agreed" &&
 
                                             <div className="col-auto">
                                                 <button onClick={this.showPopUpTrackingNumber} type="button"
@@ -1087,7 +1080,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1135,7 +1128,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1176,7 +1169,7 @@ class ViewCycle extends Component {
 
 
 
-                    {this.state.item && this.state.item.state == "progress" &&
+                    {this.state.item && this.state.item.state === "progress" &&
 
                         <>
                             <CssBaseline />
@@ -1185,7 +1178,7 @@ class ViewCycle extends Component {
                                 <Toolbar>
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
-                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.logistics.org.id) && this.state.item.state == "progress" &&
+                                        {this.state.item.id && (this.props.userDetail.orgId === this.state.item.logistics.org.id) && this.state.item.state === "progress" &&
 
                                             <div className="col-auto">
                                                 <button onClick={this.orderDelivered} type="button"
@@ -1225,7 +1218,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1273,7 +1266,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1315,7 +1308,7 @@ class ViewCycle extends Component {
 
 
 
-                    {this.state.item && this.state.item.state == "delivered" &&
+                    {this.state.item && this.state.item.state === "delivered" &&
 
                         <>
                             <CssBaseline />
@@ -1324,7 +1317,7 @@ class ViewCycle extends Component {
                                 <Toolbar>
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
-                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.consumer.org.id) && this.state.item.state == "delivered" &&
+                                        {this.state.item.id && (this.props.userDetail.orgId === this.state.item.consumer.org.id) && this.state.item.state === "delivered" &&
 
                                             <div className="col-auto">
                                                 <button onClick={this.orderReceived} type="button"
@@ -1364,7 +1357,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1412,7 +1405,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1454,7 +1447,7 @@ class ViewCycle extends Component {
 
 
 
-                    {this.state.item && this.state.item.state == "received" &&
+                    {this.state.item && this.state.item.state === "received" &&
 
                         <>
                             <CssBaseline />
@@ -1463,7 +1456,7 @@ class ViewCycle extends Component {
                                 <Toolbar>
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
-                                        {this.state.item.id && (this.props.userDetail.orgId == this.state.item.producer.org.id) && this.state.item.state == "received" &&
+                                        {this.state.item.id && (this.props.userDetail.orgId === this.state.item.producer.org.id) && this.state.item.state === "received" &&
 
                                             <div className="col-auto">
                                                 <button onClick={this.orderClose} type="button"
@@ -1503,7 +1496,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 
@@ -1551,7 +1544,7 @@ class ViewCycle extends Component {
                                 <ModalBody>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                         </div>
                                     </div>
 

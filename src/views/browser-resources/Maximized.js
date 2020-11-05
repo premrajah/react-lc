@@ -20,7 +20,6 @@ import {
     Fit,
     IconButton,
     SendButton,
-    EmojiIcon,
     CloseIcon,
     Column,
     RateGoodIcon,
@@ -39,19 +38,19 @@ const getAvatarForUser = (userId, users) => {
 const parseUrl = (url) => url && 'https://' + url.replace(/^(http(s)?\:\/\/)/, '').replace(/^\/\//, '')
 
 const Maximized = ({
-                       chatState,
-                       events,
-                       onMessageSend,
-                       users,
-                       ownId,
-                       currentAgent,
-                       minimize,
-                       maximizeChatWidget,
-                       sendMessage,
-                       rateGood,
-                       rateBad,
-                       rate,
-                   }) => {
+    chatState,
+    events,
+    onMessageSend,
+    users,
+    ownId,
+    currentAgent,
+    minimize,
+    maximizeChatWidget,
+    sendMessage,
+    rateGood,
+    rateBad,
+    rate,
+}) => {
     return (
         <div
             style={{
@@ -80,18 +79,18 @@ const Maximized = ({
                         </Column>
                         <Column flexFit>
                             {chatState === 'CHATTING' &&
-                            <Row>
-                                <IconButton onClick={ rateGood }>
-                                    <RateGoodIcon style={{
-                                        opacity: rate === 'good' ? '1' : '0.5'
-                                    }} />
-                                </IconButton>
-                                <IconButton onClick={ rateBad }>
-                                    <RateBadIcon style={{
-                                        opacity: rate === 'bad' ? '1' : '0.5'
-                                    }} />
-                                </IconButton>
-                            </Row>
+                                <Row>
+                                    <IconButton onClick={rateGood}>
+                                        <RateGoodIcon style={{
+                                            opacity: rate === 'good' ? '1' : '0.5'
+                                        }} />
+                                    </IconButton>
+                                    <IconButton onClick={rateBad}>
+                                        <RateBadIcon style={{
+                                            opacity: rate === 'bad' ? '1' : '0.5'
+                                        }} />
+                                    </IconButton>
+                                </Row>
                             }
                         </Column>
                     </Row>
@@ -119,23 +118,23 @@ const Maximized = ({
                                         {message.text && <MessageText>{message.text}</MessageText>}
                                         {message.imageUrl && (
                                             <MessageMedia>
-                                                <img src={message.imageUrl} />
+                                                <img src={message.imageUrl} alt="" />
                                             </MessageMedia>
                                         )}
                                         {message.buttons &&
-                                        message.buttons.length !== 0 && (
-                                            <MessageButtons>
-                                                {message.buttons.map((button, buttonIndex) => (
-                                                    <MessageButton
-                                                        key={buttonIndex}
-                                                        label={button.title}
-                                                        onClick={() => {
-                                                            sendMessage(button.postback)
-                                                        }}
-                                                    />
-                                                ))}
-                                            </MessageButtons>
-                                        )}
+                                            message.buttons.length !== 0 && (
+                                                <MessageButtons>
+                                                    {message.buttons.map((button, buttonIndex) => (
+                                                        <MessageButton
+                                                            key={buttonIndex}
+                                                            label={button.title}
+                                                            onClick={() => {
+                                                                sendMessage(button.postback)
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </MessageButtons>
+                                            )}
                                     </Bubble>
                                 </Message>
                             ))}

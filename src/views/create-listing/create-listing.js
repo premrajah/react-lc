@@ -208,8 +208,8 @@ class CreateListing extends Component {
         console.log("image selected " + index)
 
 
-        var files = this.state.files.filter((item) => item.name != name)
-        var filesUrl = this.state.filesUrl.filter((item) => item.url != url)
+        var files = this.state.files.filter((item) => item.name !== name)
+        var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
 
@@ -2481,7 +2481,7 @@ class CreateListing extends Component {
                                 }
 
 
-                                {this.activeScreen < 7 && this.activeScreen != 6 &&
+                                {this.activeScreen < 7 && this.activeScreen !== 6 &&
 
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 

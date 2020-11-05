@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import AppBar from '@material-ui/core/AppBar';
-
-import { Router, Route, Switch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
-
 import StateIcon from '../../img/icons/state.png';
-
 import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
-
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar } from 'react-bootstrap';
+
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -220,7 +213,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
@@ -232,7 +225,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
@@ -245,7 +238,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
@@ -259,7 +252,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
@@ -270,7 +263,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} />*/}
+                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                             {/*</div>*/}
                             <div className={"col-auto"}>
 
@@ -282,7 +275,7 @@ class ItemDetail extends Component {
 
                         {/*<div className="row  justify-content-start search-container  pb-4">*/}
                         {/*<div className={"col-1"}>*/}
-                        {/*<img className={"icon-about"} src={AmountIcon} />*/}
+                        {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
                         {/*</div>*/}
                         {/*<div className={"col-auto"}>*/}
 
@@ -294,7 +287,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} />
+                                <img className={"icon-about"} src={StateIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
@@ -305,7 +298,7 @@ class ItemDetail extends Component {
 
                         {/*<div className="row  justify-content-start search-container  pb-4">*/}
                         {/*<div className={"col-1"}>*/}
-                        {/*<img className={"icon-about"} src={CalenderIcon} />*/}
+                        {/*<img className={"icon-about"} src={CalenderIcon} alt=""/>*/}
                         {/*</div>*/}
                         {/*<div className={"col-auto"}>*/}
 
@@ -319,7 +312,7 @@ class ItemDetail extends Component {
                         {/*</div>*/}
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} />
+                                <img className={"icon-about"} src={MarkerIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 

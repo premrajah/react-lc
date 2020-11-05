@@ -1,29 +1,20 @@
-import React, { Component, Fragment, useState } from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
+import React, { Component } from 'react';
 import { connect } from "react-redux";
-
 import LogoText from '../../img/logo-text.png';
 import PhoneHome from '../../img/phone-home.png';
 import BikeHome from '../../img/LoopBike.png';
 import LoopHomeImage from '../../img/loop-home-image.png';
-
 import HandIcon from '../../img/icons/hand.png';
-
 import SearchIcon from '../../img/icons/search-icon.png';
-
 import ShippingIcon from '../../img/icons/shipping-icon.png';
-import { Router, Route, Switch, Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import Footer from '../Footer/Footer'
 import WaveBorder from '../Footer/WaveBorder'
-
-
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar } from 'react-bootstrap';
+
 
 
 

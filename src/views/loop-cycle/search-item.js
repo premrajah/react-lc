@@ -1,16 +1,12 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import { Router, Route, Switch , Link} from "react-router-dom";
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { Link } from "react-router-dom";
+import { withStyles } from '@material-ui/core/styles';
 import SearchGray from '@material-ui/icons/Search';
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
-import axios from "axios/index";
 
 
-class  SearchItem extends Component {
+class SearchItem extends Component {
 
 
     constructor(props) {
@@ -20,14 +16,14 @@ class  SearchItem extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
             items: []
         }
 
     }
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
@@ -39,31 +35,31 @@ class  SearchItem extends Component {
         return (
 
 
-                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                              <div className={"col-4 search-column-left"}>
+                <div className={"col-4 search-column-left"}>
 
-                                  <Link to={"/matches/"+this.props.item.id}>
+                    <Link to={"/matches/" + this.props.item.id}>
 
-                                      <SearchGray style={{color:"#C8C8C8"}}/>
+                        <SearchGray style={{ color: "#C8C8C8" }} />
 
-                                  </Link>
-                                </div>
-                                <div className={"col-6 pl-3 content-box-listing"}>
-                                    <Link to={"/matches/"+this.props.item.id}>
-                                    <p style={{fontSize:"18px"}} className=" mb-1">{this.props.item.name}</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
-                                    <p style={{fontSize:"16px"}} className="text-mute mb-1">@{this.props.item.tags}</p>
-                                    </Link>
-                                </div>
-                                <div style={{textAlign:"right"}} className={"col-2"}>
-                                    <p className={(this.props.item.stage=="matched"&&"orange-text " )+(this.props.item.stage=="active"&&" green-text")+"   search-stage"}>{this.props.item.stage}</p>
-                                </div>
+                    </Link>
+                </div>
+                <div className={"col-6 pl-3 content-box-listing"}>
+                    <Link to={"/matches/" + this.props.item.id}>
+                        <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>
+                    </Link>
+                </div>
+                <div style={{ textAlign: "right" }} className={"col-2"}>
+                    <p className={(this.props.item.stage === "matched" && "orange-text ") + (this.props.item.stage === "active" && " green-text") + "   search-stage"}>{this.props.item.stage}</p>
+                </div>
 
 
 
-    </div>
+            </div>
         );
     }
 }

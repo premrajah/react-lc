@@ -18,7 +18,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import { withRouter } from 'react-router-dom'
 
 class ItemDetail extends Component {
 
@@ -355,7 +354,7 @@ class ItemDetail extends Component {
                         </div>
 
 
-                        {this.state.item.id && (this.props.userDetail.orgId != this.state.item.org_id) &&
+                        {this.state.item.id && (this.props.userDetail.orgId !== this.state.item.org_id) &&
                             <BottomAppBar slug={this.slug} />
 
                         }

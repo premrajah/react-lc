@@ -1,20 +1,16 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
 import clsx from 'clsx';
 import StatBLue from '../../img/icons/stat-blue.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import {Bar, Pie, Doughnut} from 'react-chartjs-2';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
+import { Doughnut } from 'react-chartjs-2';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 
 
-class  Statistics extends Component {
+class Statistics extends Component {
 
 
     constructor(props) {
@@ -24,7 +20,7 @@ class  Statistics extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
@@ -40,11 +36,11 @@ class  Statistics extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
 
@@ -64,7 +60,7 @@ class  Statistics extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage">
 
-                <HeaderDark />
+                    <HeaderDark />
 
 
                     <div className="container   pb-4 pt-4">
@@ -73,7 +69,7 @@ class  Statistics extends Component {
                         <div className="row justify-content-center">
 
                             <div className="col-auto pb-4 pt-4">
-                               <img className={"search-icon-middle"}  src={StatBLue} />
+                                <img className={"search-icon-middle"} src={StatBLue} alt="" />
 
                             </div>
                         </div>
@@ -90,11 +86,11 @@ class  Statistics extends Component {
 
                         <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
 
-                            <PieChart corporate={"this.props.corporate"}/>
+                            <PieChart corporate={"this.props.corporate"} />
 
 
 
-                       </div>
+                        </div>
                     </div>
 
 
@@ -120,20 +116,20 @@ function SearchField() {
 
     const classes = useStylesTabs();
 
-        return (
-            <TextField
-                variant="outlined"
-                className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                id="input-with-icon-textfield"
+    return (
+        <TextField
+            variant="outlined"
+            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+            id="input-with-icon-textfield"
 
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
+                    </InputAdornment>
+                ),
+            }}
+        />
 
     );
 }
@@ -163,13 +159,13 @@ function PieChart(props) {
     var options = {
 
 
-        title:{
-            display:"My Title",
-            fontSize:25
+        title: {
+            display: "My Title",
+            fontSize: 25
         },
-        legend:{
-            display:true,
-            position:"bottom",
+        legend: {
+            display: true,
+            position: "bottom",
             labels: {
                 // fontFamily: "Comic Sans MS",
                 boxWidth: 20,
@@ -190,7 +186,7 @@ function PieChart(props) {
 
         ],
         datasets: [{
-            data: [5, 2, 3,1,4,2],
+            data: [5, 2, 3, 1, 4, 2],
             backgroundColor: [
                 // '#5D6574',
                 // '#7A89C2',
@@ -221,7 +217,7 @@ function PieChart(props) {
     return (
         <Doughnut data={data}
 
-             options= {options}
+            options={options}
 
         />
 

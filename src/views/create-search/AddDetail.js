@@ -280,7 +280,7 @@ class AddDetail extends Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                    <img className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                                 </InputAdornment>
                                             ),
                                         }}
@@ -298,7 +298,7 @@ class AddDetail extends Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={MarkerGrey} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                    <img className={"input-field-icon"} src={MarkerGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                                 </InputAdornment>
                                             ),
                                         }}
@@ -316,7 +316,7 @@ class AddDetail extends Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                                 </InputAdornment>
                                             ),
                                         }}
@@ -334,7 +334,7 @@ class AddDetail extends Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} />
+                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                                 </InputAdornment>
                                             ),
                                         }}

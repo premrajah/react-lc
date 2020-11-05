@@ -1,11 +1,10 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import SendIcon from '../../img/send-icon.png';
 import history from "../../History/history";
 import { makeStyles } from '@material-ui/core/styles';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  RecoverPassword extends Component {
+class RecoverPassword extends Component {
 
 
     constructor(props) {
@@ -31,21 +30,21 @@ class  RecoverPassword extends Component {
             fields: {},
             errors: {},
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
             active: 0   //0 logn. 1- sign up , 3 -search,
 
 
         }
-        this.goToSignUp=this.goToSignUp.bind(this)
-        this.goToSignIn=this.goToSignIn.bind(this)
-        this.goToSuccess=this.goToSuccess.bind(this)
-        this.forGotPass=this.forGotPass.bind(this)
-        this.accountRecover=this.accountRecover.bind(this)
-        this.resetPassword=this.resetPassword.bind(this)
-        this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
+        this.goToSignUp = this.goToSignUp.bind(this)
+        this.goToSignIn = this.goToSignIn.bind(this)
+        this.goToSuccess = this.goToSuccess.bind(this)
+        this.forGotPass = this.forGotPass.bind(this)
+        this.accountRecover = this.accountRecover.bind(this)
+        this.resetPassword = this.resetPassword.bind(this)
+        this.resetPasswordSuccessLogin = this.resetPasswordSuccessLogin.bind(this)
 
-        this.goHome=this.goHome.bind(this)
+        this.goHome = this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
 
@@ -63,32 +62,32 @@ class  RecoverPassword extends Component {
     }
 
 
-    goHome(){
+    goHome() {
 
         history.push("/")
     }
 
 
 
-    handleValidation(){
+    handleValidation() {
         // alert("called")
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
 
         //Name
-        if(!fields["password"]){
+        if (!fields["password"]) {
             formIsValid = false;
             errors["password"] = "Required";
         }
 
 
-        if(!fields["email"]){
+        if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
@@ -99,16 +98,16 @@ class  RecoverPassword extends Component {
             }
         }
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
 
 
-    handleChange(field, e){
+    handleChange(field, e) {
         let fields = this.state.fields;
         fields[field] = e.target.value;
-        this.setState({fields});
+        this.setState({ fields });
     }
 
 
@@ -119,7 +118,7 @@ class  RecoverPassword extends Component {
 
         const form = event.currentTarget;
 
-     if (this.handleValidation()){
+        if (this.handleValidation()) {
             this.setState({
                 btnLoading: true
             })
@@ -130,15 +129,15 @@ class  RecoverPassword extends Component {
             const password = data.get("password")
 
 
-            this.props.logIn({"email": username, "password": password})
+            this.props.logIn({ "email": username, "password": password })
 
-        // alert("valid")
+            // alert("valid")
 
-        }else {
+        } else {
 
 
-         // alert("invalid")
-     }
+            // alert("invalid")
+        }
 
 
 
@@ -147,54 +146,54 @@ class  RecoverPassword extends Component {
 
     }
 
-    resetPasswordSuccessLogin(){
+    resetPasswordSuccessLogin() {
 
 
 
         this.setState({
 
-            active:5
+            active: 5
         })
 
 
     }
-    resetPassword(){
+    resetPassword() {
 
         this.setState({
 
-            active:4
+            active: 4
         })
 
     }
-    accountRecover(){
+    accountRecover() {
 
 
 
         this.setState({
 
-            active:3
+            active: 3
         })
 
     }
 
-    goToSuccess(){
+    goToSuccess() {
         this.setState({
 
-            active:6
+            active: 6
         })
 
 
 
     }
 
-    forGotPass(){
+    forGotPass() {
 
 
 
 
         this.setState({
 
-            active:2
+            active: 2
         })
     }
 
@@ -219,11 +218,11 @@ class  RecoverPassword extends Component {
     interval
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
     }
@@ -238,19 +237,19 @@ class  RecoverPassword extends Component {
 
 
 
-    goToSignIn(){
+    goToSignIn() {
 
 
         this.props.setLoginPopUpStatus(0)
 
     }
 
-    goToSignUp(){
+    goToSignUp() {
 
 
         this.setState({
 
-            active:1
+            active: 1
         })
     }
 
@@ -273,7 +272,7 @@ class  RecoverPassword extends Component {
                     <div className="row no-gutters justify-content-center p-5">
                         <div className="col-auto p-4   justify-content-center">
 
-                          <img  src={SendIcon} className={"send-icon-middle"} />
+                            <img src={SendIcon} className={"send-icon-middle"} alt="" />
 
                         </div>
 
@@ -282,7 +281,7 @@ class  RecoverPassword extends Component {
                     <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12 ">
 
-                            <p className={"text-mute "} style={{textAlign:"center"}}> A verification link has been sent to<br/>
+                            <p className={"text-mute "} style={{ textAlign: "center" }}> A verification link has been sent to<br />
                                 your email account.  </p>
 
                         </div>
@@ -295,7 +294,7 @@ class  RecoverPassword extends Component {
 
 
                         <div className="col-12 mt-4 mb-4">
-                            <p style={{textAlign:"center"}} className={"text-mute small"}>Didn’t get a link? <span className={"forgot-password-link"}> Resend Verification</span></p>
+                            <p style={{ textAlign: "center" }} className={"text-mute small"}>Didn’t get a link? <span className={"forgot-password-link"}> Resend Verification</span></p>
                         </div>
 
 

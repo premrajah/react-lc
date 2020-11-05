@@ -1,40 +1,25 @@
-import React, { Component, Fragment, useState } from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import AppBar from '@material-ui/core/AppBar';
-
 import GrayLoop from '../../img/icons/gray-loop.png';
-
-
-import { Router, Route, Switch, Link } from "react-router-dom";
-
-
+import { Link } from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
 import PaperImg from '../../img/paper-big.png';
-
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar, Modal, ModalBody, ModalHeader } from 'react-bootstrap';
-
-
+import { Modal, ModalBody } from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
-import { withRouter } from 'react-router-dom'
 import { withStyles } from "@material-ui/core/styles/index";
 
 
@@ -219,10 +204,10 @@ class ItemDetail extends Component {
 
                             <div className="col-auto ">
 
-                                {this.state.item.images && this.state.item.images.length > 0 ? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]} /> : <img className={"img-fluid"} src={PaperImg} />}
+                                {this.state.item.images && this.state.item.images.length > 0 ? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]} alt="" /> : <img className={"img-fluid"} src={PaperImg} alt="" />}
 
 
-                                {/*<img className={"img-fluid"}  src={PaperImg} />*/}
+                                {/*<img className={"img-fluid"}  src={PaperImg} alt=""/>*/}
 
                             </div>
                         </div>
@@ -265,7 +250,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={ListIcon} />
+                                <img className={"icon-about"} src={ListIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
@@ -276,7 +261,7 @@ class ItemDetail extends Component {
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={AmountIcon} />
+                                <img className={"icon-about"} src={AmountIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
@@ -288,7 +273,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} />
+                                <img className={"icon-about"} src={StateIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
@@ -299,7 +284,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={CalenderIcon} />
+                                <img className={"icon-about"} src={CalenderIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
@@ -313,7 +298,7 @@ class ItemDetail extends Component {
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} />
+                                <img className={"icon-about"} src={MarkerIcon} alt="" />
                             </div>
                             <div className={"col-auto"}>
 
@@ -400,7 +385,7 @@ class ItemDetail extends Component {
                             <ModalBody>
                                 <div className={"row justify-content-start"}>
                                     <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop} />
+                                        <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                     </div>
                                 </div>
 

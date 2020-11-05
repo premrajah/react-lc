@@ -1,14 +1,10 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
-import { Router, Route, Switch , Link} from "react-router-dom";
 import history from "../../History/history";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
-import { Col,Spinner, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
+import { Spinner, Alert } from 'react-bootstrap';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-class  Login extends Component {
+class Login extends Component {
 
 
     constructor(props) {
@@ -32,21 +28,21 @@ class  Login extends Component {
             fields: {},
             errors: {},
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            active: 0  , //0 logn. 1- sign up , 3 -search,
-            formValid : false
+            active: 0, //0 logn. 1- sign up , 3 -search,
+            formValid: false
 
         }
 
-        this.goToSignUp=this.goToSignUp.bind(this)
-        this.goToSignIn=this.goToSignIn.bind(this)
-        this.goToSuccess=this.goToSuccess.bind(this)
-        this.forGotPass=this.forGotPass.bind(this)
-        this.accountRecover=this.accountRecover.bind(this)
-        this.resetPassword=this.resetPassword.bind(this)
-        this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-        this.goHome=this.goHome.bind(this)
+        this.goToSignUp = this.goToSignUp.bind(this)
+        this.goToSignIn = this.goToSignIn.bind(this)
+        this.goToSuccess = this.goToSuccess.bind(this)
+        this.forGotPass = this.forGotPass.bind(this)
+        this.accountRecover = this.accountRecover.bind(this)
+        this.resetPassword = this.resetPassword.bind(this)
+        this.resetPasswordSuccessLogin = this.resetPasswordSuccessLogin.bind(this)
+        this.goHome = this.goHome.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
         this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
@@ -63,14 +59,14 @@ class  Login extends Component {
     }
 
 
-    goHome(){
+    goHome() {
 
         history.push("/")
     }
 
 
 
-    handleValidationSubmitGreen(){
+    handleValidationSubmitGreen() {
 
         // alert("called")
         let fields = this.state.fields;
@@ -78,23 +74,23 @@ class  Login extends Component {
         let formIsValid = true;
 
         //Name
-        if(!fields["password"]){
+        if (!fields["password"]) {
             formIsValid = false;
             // errors["password"] = "Required";
         }
 
 
-        if(!fields["email"]){
+        if (!fields["email"]) {
             formIsValid = false;
             // errors["email"] = "Required";
         }
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 // errors["email"] = "Invalid email address";
             }
@@ -103,7 +99,7 @@ class  Login extends Component {
 
 
 
-            this.setState({formValid: formIsValid});
+        this.setState({ formValid: formIsValid });
 
 
 
@@ -117,7 +113,7 @@ class  Login extends Component {
 
 
 
-    handleValidation(){
+    handleValidation() {
 
         // alert("called")
         let fields = this.state.fields;
@@ -125,38 +121,38 @@ class  Login extends Component {
         let formIsValid = true;
 
         //Name
-        if(!fields["password"]){
+        if (!fields["password"]) {
             formIsValid = false;
             errors["password"] = "Required";
         }
 
 
-        if(!fields["email"]){
+        if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
 
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
         }
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
 
 
-    handleChange(field, e){
+    handleChange(field, e) {
         let fields = this.state.fields;
         fields[field] = e.target.value;
-        this.setState({fields});
+        this.setState({ fields });
 
         this.handleValidationSubmitGreen()
     }
@@ -169,7 +165,7 @@ class  Login extends Component {
 
         const form = event.currentTarget;
 
-     if (this.handleValidation()){
+        if (this.handleValidation()) {
             this.setState({
                 btnLoading: true
             })
@@ -180,60 +176,60 @@ class  Login extends Component {
             const password = data.get("password")
 
 
-            this.props.logIn({"email": username, "password": password})
+            this.props.logIn({ "email": username, "password": password })
 
-        // alert("valid")
+            // alert("valid")
 
-        }else {
+        } else {
 
 
-         // alert("invalid")
-     }
+            // alert("invalid")
+        }
 
 
     }
 
-    resetPasswordSuccessLogin(){
+    resetPasswordSuccessLogin() {
 
 
 
         this.setState({
 
-            active:5
+            active: 5
         })
 
 
     }
-    resetPassword(){
+    resetPassword() {
 
         this.setState({
 
-            active:4
+            active: 4
         })
 
     }
-    accountRecover(){
+    accountRecover() {
 
 
 
         this.setState({
 
-            active:3
+            active: 3
         })
 
     }
 
-    goToSuccess(){
+    goToSuccess() {
         this.setState({
 
-            active:6
+            active: 6
         })
 
 
 
     }
 
-    forGotPass(){
+    forGotPass() {
 
 
 
@@ -250,11 +246,11 @@ class  Login extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
 
     }
@@ -269,19 +265,19 @@ class  Login extends Component {
 
 
 
-    goToSignIn(){
+    goToSignIn() {
 
 
         this.setState({
 
-            active:0
+            active: 0
         })
     }
 
-    goToSignUp(){
+    goToSignUp() {
 
 
-       this.props.setLoginPopUpStatus(1)
+        this.props.setLoginPopUpStatus(1)
     }
 
 
@@ -301,16 +297,16 @@ class  Login extends Component {
                         </div>
                     </div>
 
-                    <form  onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center">
                             <div className="col-12">
 
                                 <TextField
                                     type={"email"}
                                     onChange={this.handleChange.bind(this, "email")}
-                                    id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"}/>
+                                    id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} />
 
-                                {this.state.errors["email"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["email"]}</span>}
+                                {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
 
 
 
@@ -318,9 +314,9 @@ class  Login extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField type={"password"} onChange={this.handleChange.bind(this, "password")}   id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
+                                <TextField type={"password"} onChange={this.handleChange.bind(this, "password")} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
 
-                                {this.state.errors["password"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["password"]}</span>}
+                                {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
 
                             </div>
 
@@ -331,28 +327,28 @@ class  Login extends Component {
 
                             {this.props.loginFailed &&
 
-                            <div className="col-12 mt-4">
-                                <Alert key={"alert"} variant={"danger"}>
-                                    {this.props.loginError}
-                                </Alert>
-                            </div>
+                                <div className="col-12 mt-4">
+                                    <Alert key={"alert"} variant={"danger"}>
+                                        {this.props.loginError}
+                                    </Alert>
+                                </div>
                             }
 
                             <div className="col-12 mt-4">
 
-                                <button type={"submit"} className={this.state.formValid?"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn":"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
-                                    { this.props.loading && <Spinner
+                                <button type={"submit"} className={this.state.formValid ? "btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn" : "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
+                                    {this.props.loading && <Spinner
                                         as="span"
                                         animation="border"
                                         size="sm"
                                         role="status"
                                         aria-hidden="true"
 
-                                    /> }
+                                    />}
 
-                                    { this.props.loading  ? "Wait.." : "Log In"}
+                                    {this.props.loading ? "Wait.." : "Log In"}
 
-                                    </button>
+                                </button>
                             </div>
 
 

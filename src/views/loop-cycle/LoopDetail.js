@@ -1,28 +1,20 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-
+import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
-import { Router, Route, Switch , Link} from "react-router-dom";
-
 import PaperImg from '../../img/paper-big.png';
-
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 
 
-class  LoopDetail extends Component {
+class LoopDetail extends Component {
 
 
     constructor(props) {
@@ -32,17 +24,17 @@ class  LoopDetail extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false
         }
 
     }
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
-    componentDidMount(){
+    componentDidMount() {
 
     }
 
@@ -50,7 +42,7 @@ class  LoopDetail extends Component {
 
     render() {
 
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
 
@@ -61,11 +53,11 @@ class  LoopDetail extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage loop-cycle-page">
 
-                    <HeaderWhiteBack history={this.props.history} heading={"View Cycle"}/>
+                    <HeaderWhiteBack history={this.props.history} heading={"View Cycle"} />
 
 
                     <div className="container  pt-3 pb-3">
-                        <LoopAccordion  loop={this.props.loop}/>
+                        <LoopAccordion loop={this.props.loop} />
                     </div>
 
                 </div>
@@ -91,10 +83,10 @@ const useStylesAccordian = makeStyles((theme) => ({
 
 
 
- function LoopAccordion(props) {
+function LoopAccordion(props) {
 
 
-     // alert(props.logistics.email)
+    // alert(props.logistics.email)
     const classes = useStylesAccordian();
 
     return (
@@ -114,8 +106,8 @@ const useStylesAccordian = makeStyles((theme) => ({
                                 <figure className="avatar avatar-60 border-0">
 
 
-                                      <span className={"word-user  word-user-cycle"}>
-                                       M
+                                    <span className={"word-user  word-user-cycle"}>
+                                        M
 
                                 </span>
 
@@ -123,8 +115,8 @@ const useStylesAccordian = makeStyles((theme) => ({
                                 </figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.producer.org.name}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{props.loop.producer.email}</p>
+                                <p style={{ fontSize: "18px" }} className=" mb-1">{props.loop.producer.org.name}</p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">{props.loop.producer.email}</p>
 
                             </div>
 
@@ -135,7 +127,7 @@ const useStylesAccordian = makeStyles((theme) => ({
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                       <FromContent  loop={props.loop} />
+                        <FromContent loop={props.loop} />
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -153,15 +145,15 @@ const useStylesAccordian = makeStyles((theme) => ({
                             <div className={"col-auto"}>
 
                                 <figure className="avatar avatar-60 border-0">
-                                <span className={"word-user  word-user-cycle"}>
-                                       C
+                                    <span className={"word-user  word-user-cycle"}>
+                                        C
 
                                 </span>
                                 </figure>
                             </div>
                             <div className={"col-auto pl-3 content-box-listing"}>
-                                <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.consumer.org.name}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">@{props.loop.consumer.email}</p>
+                                <p style={{ fontSize: "18px" }} className=" mb-1">{props.loop.consumer.org.name}</p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">@{props.loop.consumer.email}</p>
                                 {/*<p style={{fontSize:"16px"}} className="text-mute mb-1">@{props.loop.consumer.email}</p>*/}
 
                             </div>
@@ -179,46 +171,46 @@ const useStylesAccordian = makeStyles((theme) => ({
 
 
             {props.loop.logistics &&
-            <Accordion >
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3a-content"
-                    id="panel3a-header"
-                >
-                    <Typography className={classes.heading}>
-                        <p className={"heading-accordian text-blue text-bold"}>Logistics</p>
+                <Accordion >
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel3a-content"
+                        id="panel3a-header"
+                    >
+                        <Typography className={classes.heading}>
+                            <p className={"heading-accordian text-blue text-bold"}>Logistics</p>
 
-                        <div className="row no-gutters justify-content-center ">
+                            <div className="row no-gutters justify-content-center ">
 
-                            <div className={"col-auto"}>
+                                <div className={"col-auto"}>
 
-                                <figure className="avatar avatar-60 border-0">
+                                    <figure className="avatar avatar-60 border-0">
 
-                                    {/*<img src={LogiImg} alt="" />*/}
+                                        {/*<img src={LogiImg} alt="" />*/}
 
-                                    <span className={"word-user  word-user-cycle"}>
-                                       L
+                                        <span className={"word-user  word-user-cycle"}>
+                                            L
 
                                 </span>
 
-                                </figure>
+                                    </figure>
+                                </div>
+                                <div className={"col-auto pl-3 content-box-listing"}>
+
+                                    <p style={{ fontSize: "18px" }} className=" mb-1">{props.loop.logistics.org.name}</p>
+                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{props.loop.producer.email}</p>
+
+                                </div>
+
                             </div>
-                            <div className={"col-auto pl-3 content-box-listing"}>
-
-                                <p style={{fontSize:"18px"}} className=" mb-1">{props.loop.logistics.org.name}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{props.loop.producer.email}</p>
-
-                            </div>
-
-                        </div>
-                    </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Typography>
-                        <ViaContent loop={props.loop} />
-                    </Typography>
-                </AccordionDetails>
-            </Accordion>}
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography>
+                            <ViaContent loop={props.loop} />
+                        </Typography>
+                    </AccordionDetails>
+                </Accordion>}
         </div>
     );
 }
@@ -229,85 +221,85 @@ function FromContent(props) {
 
 
 
-     return(
+    return (
 
 
-         <>
+        <>
 
 
-             <div className="row no-gutters  justify-content-center">
+            <div className="row no-gutters  justify-content-center">
 
 
 
-                 <div className="col-auto ">
-                     <img className={"img-fluid"}  src={PaperImg} />
+                <div className="col-auto ">
+                    <img className={"img-fluid"} src={PaperImg} alt="" />
 
-                 </div>
-             </div>
+                </div>
+            </div>
 
-             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
+            <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                 <div className="col-12">
-                     <p className={"green-text text-heading"}>{props.loop.producer.org.id}
-                     </p>
+                <div className="col-12">
+                    <p className={"green-text text-heading"}>{props.loop.producer.org.id}
+                    </p>
 
-                 </div>
-                 <div className="col-12 mt-2">
-                     <h5 className={"blue-text text-heading"}>{props.loop.resource.name}
-                     </h5>
+                </div>
+                <div className="col-12 mt-2">
+                    <h5 className={"blue-text text-heading"}>{props.loop.resource.name}
+                    </h5>
 
-                 </div>
-             </div>
+                </div>
+            </div>
 
 
-             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+            <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
-                 <div className="col-auto">
-                     <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
-                         {props.loop.resource.description}
-                     </p>
+                <div className="col-auto">
+                    <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
+                        {props.loop.resource.description}
+                    </p>
 
-                 </div>
+                </div>
 
-             </div>
+            </div>
 
-             <div className="row justify-content-start pb-4 pt-3 ">
-                 <div className="col-auto">
-                     <h6 className={""}>Category
+            <div className="row justify-content-start pb-4 pt-3 ">
+                <div className="col-auto">
+                    <h6 className={""}>Category
                      </h6>
-                     <p>{props.loop.resource.category}</p>
+                    <p>{props.loop.resource.category}</p>
 
-                 </div>
-             </div>
+                </div>
+            </div>
 
 
-             <div className="row justify-content-start pb-4 pt-3 ">
-                 <div className="col-auto">
-                     <h6 className={""}>Amount
+            <div className="row justify-content-start pb-4 pt-3 ">
+                <div className="col-auto">
+                    <h6 className={""}>Amount
                      </h6>
-                     <p>{props.loop.resource.volume} {props.loop.resource.units}</p>
+                    <p>{props.loop.resource.volume} {props.loop.resource.units}</p>
 
-                 </div>
-             </div>
+                </div>
+            </div>
 
-             <div className="row justify-content-start pb-4 pt-3 ">
-                 <div className="col-auto">
-                     <h6 className={""}>Delivery From
+            <div className="row justify-content-start pb-4 pt-3 ">
+                <div className="col-auto">
+                    <h6 className={""}>Delivery From
                      </h6>
-                     <p>{props.loop.from.name}, {props.loop.from.address}</p>
+                    <p>{props.loop.from.name}, {props.loop.from.address}</p>
 
-                 </div>
-             </div>
+                </div>
+            </div>
 
-         </>
-     );
+        </>
+    );
 }
 function ToContent(props) {
 
 
 
 
-    return(
+    return (
 
 
         <>
@@ -317,10 +309,10 @@ function ToContent(props) {
 
 
 
-                {/*<div className="col-auto ">*/}
-                    {/*<img className={"img-fluid"}  src={PaperImg} />*/}
+            {/*<div className="col-auto ">*/}
+            {/*<img className={"img-fluid"}  src={PaperImg} />*/}
 
-                {/*</div>*/}
+            {/*</div>*/}
             {/*</div>*/}
 
             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
@@ -341,7 +333,7 @@ function ToContent(props) {
             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                 <div className="col-auto">
-                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
+                    <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
                         {props.loop.resource.description}
                     </p>
 
@@ -386,7 +378,7 @@ function ViaContent(props) {
 
 
 
-    return(
+    return (
 
 
         <>
@@ -396,8 +388,8 @@ function ViaContent(props) {
             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                 {/*<div className="col-12">*/}
-                    {/*<p className={"green-text text-heading"}>@Tesco*/}
-                    {/*</p>*/}
+                {/*<p className={"green-text text-heading"}>@Tesco*/}
+                {/*</p>*/}
 
                 {/*</div>*/}
                 <div className="col-12 mt-2">
@@ -411,7 +403,7 @@ function ViaContent(props) {
             <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                 <div className="col-auto">
-                    <p  style={{fontSize:"16px"}} className={"text-gray-light "}>
+                    <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
                         Email : {props.loop.logistics.email}
                     </p>
 
@@ -468,11 +460,11 @@ function BottomAppBar() {
 
     return (
         <React.Fragment>
-            <CssBaseline/>
+            <CssBaseline />
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{margin:"auto"}}>
+                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
                         <div className="col-auto">
 
                             <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
@@ -483,7 +475,7 @@ function BottomAppBar() {
                         <div className="col-auto">
 
                             <button type="button"
-                                    className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                 Select Provider
 
                             </button>

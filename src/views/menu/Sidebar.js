@@ -118,9 +118,9 @@ class Sidebar extends Component {
                                         {/*<img src={TescoImg} alt="" />*/}
 
                                         {this.props.isLoggedIn && <span className={"word-user-big"}>
-                                            {this.props.userDetail.email == "test.3@parallelai.com" && "M"}
-                                            {this.props.userDetail.email == "crajah@karedo.co.uk" && "L"}
-                                            {this.props.userDetail.email == "scorpion_rain@yahoo.com" && "C"}
+                                            {this.props.userDetail.email === "test.3@parallelai.com" && "M"}
+                                            {this.props.userDetail.email === "crajah@karedo.co.uk" && "L"}
+                                            {this.props.userDetail.email === "scorpion_rain@yahoo.com" && "C"}
 
                                         </span>
                                         }

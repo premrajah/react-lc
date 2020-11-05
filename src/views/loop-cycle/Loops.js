@@ -1,22 +1,20 @@
-import React, {Component, Fragment, useState} from 'react';
+import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import clsx from 'clsx';
 import RingBlue from '../../img/icons/ring-blue.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 
-class  Loops extends Component {
+class Loops extends Component {
 
 
     constructor(props) {
@@ -26,38 +24,38 @@ class  Loops extends Component {
         this.state = {
 
             timerEnd: false,
-            count : 0,
+            count: 0,
             nextIntervalFlag: false,
-            loops:[]
+            loops: []
         }
 
-        this.getLoops=this.getLoops.bind(this)
+        this.getLoops = this.getLoops.bind(this)
 
     }
 
 
-    getLoops(){
+    getLoops() {
 
-        axios.get(baseUrl+"loop",
+        axios.get(baseUrl + "loop",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         )
             .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
+                var response = response.data.content;
+                console.log("resource response")
+                console.log(response)
 
-                    this.setState({
+                this.setState({
 
-                        loops:response
+                    loops: response
 
-                    })
+                })
 
-                },
+            },
                 (error) => {
 
                     var status = error.response.status
@@ -69,13 +67,13 @@ class  Loops extends Component {
 
     }
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
-    this.getLoops()
+        this.getLoops()
 
     }
 
@@ -92,7 +90,7 @@ class  Loops extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage">
 
-                <HeaderDark />
+                    <HeaderDark />
 
 
                     <div className="container   pb-4 pt-4">
@@ -101,7 +99,7 @@ class  Loops extends Component {
                         <div className="row ">
 
                             <div className="col-auto pb-4 pt-4">
-                               <img className={"search-icon-middle"}  src={RingBlue} />
+                                <img className={"search-icon-middle"} src={RingBlue} alt="" />
 
                             </div>
                         </div>
@@ -125,7 +123,7 @@ class  Loops extends Component {
 
                         <div className="row   search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
-                        <SearchField />
+                                <SearchField />
 
 
                             </div>
@@ -133,41 +131,41 @@ class  Loops extends Component {
 
 
 
-                            <div className="row  justify-content-center filter-row listing-row-border  pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row listing-row-border  pt-3 pb-3">
 
-                                <div className="col">
-                                    <p style={{fontSize:"18px"}} className="text-mute mb-1">Cycles</p>
-
-                                </div>
-                                <div className="text-mute col-auto pl-0">
-
-                                    <span style={{fontSize:"18px"}}>Status</span>
-
-                                </div>
+                            <div className="col">
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                             </div>
+                            <div className="text-mute col-auto pl-0">
+
+                                <span style={{ fontSize: "18px" }}>Status</span>
+
+                            </div>
+
+                        </div>
 
 
                         {this.state.loops.map((item) =>
 
                             <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
-                            <div className={"col-8 content-box-listing"}>
-                                <Link  to={"loop-detail/"+item.id}>
-                                    <>
-                                <h5 style={{fontSize:"18px"}} className=" mb-1">{item.resource.name}</h5>
-                                <p style={{fontSize:"18px"}} className=" mb-1">{item.from.org_id}  →  {item.to.org_id}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.resource.category}</p>
-                                <p style={{fontSize:"16px"}} className="text-mute mb-1">{item.resource.state} / {item.resource.volume} {item.resource.units}</p>
-                               </>
-                                </Link>
+                                <div className={"col-8 content-box-listing"}>
+                                    <Link to={"loop-detail/" + item.id}>
+                                        <>
+                                            <h5 style={{ fontSize: "18px" }} className=" mb-1">{item.resource.name}</h5>
+                                            <p style={{ fontSize: "18px" }} className=" mb-1">{item.from.org_id}  →  {item.to.org_id}</p>
+                                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.resource.category}</p>
+                                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.resource.state} / {item.resource.volume} {item.resource.units}</p>
+                                        </>
+                                    </Link>
 
+                                </div>
+                                <div style={{ textAlign: "right" }} className={"col-4"}>
+                                    <p className={"green-text text-mute small"} >
+                                        {item.state}</p>
+                                </div>
                             </div>
-                            <div style={{textAlign:"right"}} className={"col-4"}>
-                                <p className={"green-text text-mute small" } >
-                                    {item.state}</p>
-                            </div>
-                        </div>
 
                         )}
 
@@ -199,20 +197,20 @@ function SearchField() {
 
     const classes = useStylesTabs();
 
-        return (
-            <TextField
-                variant="outlined"
-                className={clsx(classes.margin, classes.textField)+" full-width-field" }
-                id="input-with-icon-textfield"
+    return (
+        <TextField
+            variant="outlined"
+            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+            id="input-with-icon-textfield"
 
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchGray  style={{ fontSize: 24, color: "#B2B2B2" }}/>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
+                    </InputAdornment>
+                ),
+            }}
+        />
 
     );
 }

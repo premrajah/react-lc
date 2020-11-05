@@ -1,32 +1,31 @@
-import store from 'store'
-import axios from "axios/index";
+import store from 'store';
 
 
 export const loadUserData = () => {
 
- if(store.get('user')){
+    if (store.get('user')) {
 
-    // console.log(store.get("user"))
-    //  console.log(store.get("token"))
-    //  console.log(" user exists")
-
-
-     if (store.get("user").isGuest){
-
-         // console.log(" user is guest")
-
-     }
-     return store.get("user")
+        // console.log(store.get("user"))
+        //  console.log(store.get("token"))
+        //  console.log(" user exists")
 
 
- }else {
+        if (store.get("user").isGuest) {
+
+            // console.log(" user is guest")
+
+        }
+        return store.get("user")
 
 
-     // console.log("no user exists")
+    } else {
 
-     return null
 
- }
+        // console.log("no user exists")
+
+        return null
+
+    }
 
 
 }
@@ -42,33 +41,33 @@ export const getUserToken = () => {
 
 export const saveUserToken = (token) => {
 
-    store.set('token', token )
+    store.set('token', token)
 
 }
 
 
-export const saveKey = (key,value) => {
+export const saveKey = (key, value) => {
 
-    store.set(key, value )
+    store.set(key, value)
 
 }
 
 export const removeKey = (key) => {
 
-    store.remove(key )
+    store.remove(key)
 
 }
 
 export const getKey = (key) => {
 
-  return  store.get(key)
+    return store.get(key)
 
 }
 
 
 export const saveUserData = (user) => {
 
-    store.set('user', user )
+    store.set('user', user)
 
 }
 

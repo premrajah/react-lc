@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import './upload-file.css'
-import  {Cancel} from '@material-ui/icons';
+import { Cancel } from '@material-ui/icons';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import axios from "axios/index";
-import {baseUrl} from "./Constants";
-import {connect} from "react-redux";
+import { baseUrl } from "./Constants";
+import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 
 class UploadFileBootStrap extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             files: [],
             filesUrl: [],
-            imageIndexLightBox : 0,
-            openLightBox : false
+            imageIndexLightBox: 0,
+            openLightBox: false
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -26,7 +26,7 @@ class UploadFileBootStrap extends Component {
         // alert("click")
         console.log(event.target)
 
-        // if (event.target.className=="file-upload-img-thumbnail-cancel"&&event.target.className!="country-dropdown-a-list-item") {
+        // if (event.target.className=="file-upload-img-thumbnail-cancel"&&event.target.className!=="country-dropdown-a-list-item") {
         //
         //     this.setState({cityDropDown: false});
         //
@@ -34,13 +34,13 @@ class UploadFileBootStrap extends Component {
         // alert("clciekd")
 
 
-        if (event.target.className!="file-upload-img-thumbnail-cancel") {
+        if (event.target.className !== "file-upload-img-thumbnail-cancel") {
 
             // alert("hello")
 
-            this.setState({openLightBox: false});
+            this.setState({ openLightBox: false });
 
-        }else{
+        } else {
             // alert("no")
         }
 
@@ -48,7 +48,7 @@ class UploadFileBootStrap extends Component {
 
 
 
-    componentDidMount () {
+    componentDidMount() {
 
         window.scrollTo(0, 0)
         document.addEventListener('click', this.handleClickOutside, true);
@@ -56,57 +56,57 @@ class UploadFileBootStrap extends Component {
 
 
 
-        handleChange(event) {
+    handleChange(event) {
 
-            console.log(event.target.files)
+        console.log(event.target.files)
 
-            var files = []
-            var filesUrl = []
-
-
-            // if (event.target.files) {
-            //
-            //     alert("here")
-
-                for (var i = 0; i < event.target.files.length; i++) {
+        var files = []
+        var filesUrl = []
 
 
-                    files.push(event.target.files[i])
-                    filesUrl.push(URL.createObjectURL(event.target.files[i]))
+        // if (event.target.files) {
+        //
+        //     alert("here")
 
-                    console.log(URL.createObjectURL(event.target.files[i]))
-
-                }
-
-                this.setState({
-                    files: files,
-                    filesUrl: filesUrl
-                })
-
-            // }
+        for (var i = 0; i < event.target.files.length; i++) {
 
 
+            files.push(event.target.files[i])
+            filesUrl.push(URL.createObjectURL(event.target.files[i]))
 
-            this.uploadImage()
+            console.log(URL.createObjectURL(event.target.files[i]))
+
         }
 
-    handleLightBox(e){
+        this.setState({
+            files: files,
+            filesUrl: filesUrl
+        })
+
+        // }
+
+
+
+        this.uploadImage()
+    }
+
+    handleLightBox(e) {
 
         var index = e.currentTarget.dataset.index;
 
-        console.log("image selected "+index)
+        console.log("image selected " + index)
 
 
-            this.setState({
+        this.setState({
 
-                imageIndexLightBox : index,
-                openLightBox : false
-            })
+            imageIndexLightBox: index,
+            openLightBox: false
+        })
 
 
     }
 
-    handleCancel(e){
+    handleCancel(e) {
 
 
         e.preventDefault()
@@ -115,33 +115,33 @@ class UploadFileBootStrap extends Component {
         var name = e.currentTarget.dataset.name;
         var url = e.currentTarget.dataset.url;
 
-        console.log("image selected "+index)
+        console.log("image selected " + index)
 
 
-        var files = this.state.files.filter((item) => item.name != name)
-        var filesUrl = this.state.filesUrl.filter((item) => item.url!=url)
+        var files = this.state.files.filter((item) => item.name !== name)
+        var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
 
         this.setState({
 
-            files : files,
-            filesUrl : filesUrl
+            files: files,
+            filesUrl: filesUrl
         })
 
 
 
     }
 
-     getBase64(file) {
+    getBase64(file) {
 
-         // const reader = new FileReader();
-         // reader.readAsDataURL(file);
-         //
-         //
-         // return reader.result;
-         // reader.onload = () => resolve(reader.result);
-         // reader.onerror = error => reject(error);
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
+        //
+        //
+        // return reader.result;
+        // reader.onload = () => resolve(reader.result);
+        // reader.onerror = error => reject(error);
 
 
 
@@ -155,112 +155,112 @@ class UploadFileBootStrap extends Component {
 
 
 
-     uploadImage(){
+    uploadImage() {
 
 
 
 
 
 
-         if (this.state.files&&this.state.files.length>0) {
+        if (this.state.files && this.state.files.length > 0) {
 
-             alert("file exist")
-
-
+            alert("file exist")
 
 
-             this.getBase64(this.state.files[0]).then(
-
-                 data => {
-                     console.log(data)
 
 
-                     axios.post(baseUrl + "resource/image64", btoa(data)
-                         , {
-                             headers: {
-                                 "Authorization": "Bearer " + this.props.userDetail.token
-                             }
-                         }
-                     )
-                         .then(res => {
+            this.getBase64(this.state.files[0]).then(
 
-                             console.log(res.data.content)
+                data => {
+                    console.log(data)
 
 
-                             this.setState({
-                                 listResourceData: res.data.content
-                             })
+                    axios.post(baseUrl + "resource/image64", btoa(data)
+                        , {
+                            headers: {
+                                "Authorization": "Bearer " + this.props.userDetail.token
+                            }
+                        }
+                    )
+                        .then(res => {
 
-                         }).catch(error => {
-
-                         console.log("image upload found ")
-                         console.log(error.response.data)
-
-                     })
-
-                 }
+                            console.log(res.data.content)
 
 
-             );
+                            this.setState({
+                                listResourceData: res.data.content
+                            })
+
+                        }).catch(error => {
+
+                            console.log("image upload found ")
+                            console.log(error.response.data)
+
+                        })
+
+                }
 
 
-             // var imgDate =   await this.getBase64(this.state.files[0])
+            );
 
 
-         //     console.log(imgDate)
-         //
-         //     axios.post(baseUrl + "resource/image64", imgDate
-         //         , {
-         //             headers: {
-         //                 "Authorization": "Bearer " + this.props.userDetail.token
-         //             }
-         //         }
-         //     )
-         //         .then(res => {
-         //
-         //             console.log(res.data.content)
-         //
-         //
-         //             this.setState({
-         //                 listResourceData: res.data.content
-         //             })
-         //
-         //         }).catch(error => {
-         //
-         //         console.log("image upload found ")
-         //         console.log(error.response.data)
-         //
-         //     });
+            // var imgDate =   await this.getBase64(this.state.files[0])
 
 
-         }
+            //     console.log(imgDate)
+            //
+            //     axios.post(baseUrl + "resource/image64", imgDate
+            //         , {
+            //             headers: {
+            //                 "Authorization": "Bearer " + this.props.userDetail.token
+            //             }
+            //         }
+            //     )
+            //         .then(res => {
+            //
+            //             console.log(res.data.content)
+            //
+            //
+            //             this.setState({
+            //                 listResourceData: res.data.content
+            //             })
+            //
+            //         }).catch(error => {
+            //
+            //         console.log("image upload found ")
+            //         console.log(error.response.data)
+            //
+            //     });
 
 
-     }
+        }
+
+
+    }
     render() {
         return (
             <>
-            <div onClick={this.handleChange} className={"file-uploader-box"}>
-                <input className={""} multiple type="file" onChange={this.handleChange}/>
-                <div className={"file-uploader-img-container"}>
+                <div onClick={this.handleChange} className={"file-uploader-box"}>
+                    <input className={""} multiple type="file" onChange={this.handleChange} />
+                    <div className={"file-uploader-img-container"}>
 
-                {this.state.files && this.state.files.map((item,index)=>
+                        {this.state.files && this.state.files.map((item, index) =>
 
-                    <div className={"file-uploader-thumbnail-container"}>
+                            <div className={"file-uploader-thumbnail-container"}>
 
-                        {/*<img src={URL.createObjectURL(item)}/>*/}
-                        <div   data-index={index} data-url={URL.createObjectURL(item)}
+                                {/*<img src={URL.createObjectURL(item)}/>*/}
+                                <div data-index={index} data-url={URL.createObjectURL(item)}
 
-                                  onClick={this.handleLightBox.bind(this)} className={"file-uploader-thumbnail"} style={{backgroundImage:"url("+URL.createObjectURL(item)+ ")"}}>
-                            <Cancel data-name={item.name} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"}/>
-                        </div>
+                                    onClick={this.handleLightBox.bind(this)} className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item) + ")" }}>
+                                    <Cancel data-name={item.name} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+                                </div>
+                            </div>
+
+                        )}
+
                     </div>
 
-                )}
-
                 </div>
-
-            </div>
 
 
 
@@ -283,7 +283,7 @@ class UploadFileBootStrap extends Component {
                     />
                 )}
 
-                </>
+            </>
         );
     }
 }

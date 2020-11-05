@@ -494,7 +494,7 @@ function FiltersCat(props) {
             console.log(" found removed")
             // values.pop(event.revmoe.value)
 
-            values = values.filter((item) => item != event.target.value)
+            values = values.filter((item) => item !== event.target.value)
 
 
         }
@@ -655,7 +655,7 @@ function FiltersState(props) {
             console.log(" found removed")
             // values.pop(event.revmoe.value)
 
-            values = values.filter((item) => item != event.target.value)
+            values = values.filter((item) => item !== event.target.value)
 
 
         }

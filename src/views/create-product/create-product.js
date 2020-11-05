@@ -1,36 +1,24 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-
 import Select from '@material-ui/core/Select';
-
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
-
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar,Alert} from 'react-bootstrap';
-
-
-
 import InputLabel from '@material-ui/core/InputLabel';
-
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import { withRouter } from 'react-router-dom'
-
-
-import { ChatController,MuiChat } from 'chat-ui-react'
+import { ChatController, MuiChat } from 'chat-ui-react'
 
 
 
 
 
 import Toolbar from '@material-ui/core/Toolbar';
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 
 
-class  CreateProduct extends Component {
+class CreateProduct extends Component {
 
     slug;
 
@@ -47,13 +35,13 @@ class  CreateProduct extends Component {
             item: null,
             fields: {},
             errors: {},
-            purpose:["defined","prototype","aggregate"],
-            categories : []
+            purpose: ["defined", "prototype", "aggregate"],
+            categories: []
         }
 
 
         this.slug = props.match.params.slug
-        this.getFiltersCategories=this.getFiltersCategories.bind(this)
+        this.getFiltersCategories = this.getFiltersCategories.bind(this)
 
 
 
@@ -70,7 +58,7 @@ class  CreateProduct extends Component {
 
 
 
-    handleValidation(){
+    handleValidation() {
 
         // alert("called")
         let fields = this.state.fields;
@@ -78,11 +66,11 @@ class  CreateProduct extends Component {
         let formIsValid = true;
 
         //Name
-        if(!fields["purpose"]){
+        if (!fields["purpose"]) {
             formIsValid = false;
             errors["purpose"] = "Required";
         }
-        if(!fields["title"]){
+        if (!fields["title"]) {
             formIsValid = false;
             errors["title"] = "Required";
         }
@@ -92,11 +80,11 @@ class  CreateProduct extends Component {
         // }
 
 
-        if(!fields["description"]){
+        if (!fields["description"]) {
             formIsValid = false;
             errors["description"] = "Required";
         }
-        if(!fields["category"]){
+        if (!fields["category"]) {
             formIsValid = false;
             errors["category"] = "Required";
         }
@@ -108,7 +96,7 @@ class  CreateProduct extends Component {
 
 
 
-        if(typeof fields["email"] !== "undefined"){
+        if (typeof fields["email"] !== "undefined") {
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
@@ -119,16 +107,16 @@ class  CreateProduct extends Component {
             }
         }
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
 
 
-    handleChange(field, e){
+    handleChange(field, e) {
         let fields = this.state.fields;
         fields[field] = e.target.value;
-        this.setState({fields});
+        this.setState({ fields });
     }
 
 
@@ -139,7 +127,7 @@ class  CreateProduct extends Component {
 
         const form = event.currentTarget;
 
-        if (this.handleValidation()){
+        if (this.handleValidation()) {
             this.setState({
                 btnLoading: true
             })
@@ -154,18 +142,18 @@ class  CreateProduct extends Component {
 
 
 
-            axios.post(baseUrl+"product",
+            axios.post(baseUrl + "product",
 
                 {
                     "title": title,
                     "purpose": purpose,
-                    "description" : description,
+                    "description": description,
 
 
                 }
-                ,{
+                , {
                     headers: {
-                        "Authorization" : "Bearer "+this.props.userDetail.token
+                        "Authorization": "Bearer " + this.props.userDetail.token
                     }
                 })
                 .then(res => {
@@ -180,7 +168,7 @@ class  CreateProduct extends Component {
                     //
                     // this.getSites()
 
-            this.handleBack()
+                    this.handleBack()
 
 
 
@@ -188,22 +176,22 @@ class  CreateProduct extends Component {
 
                 }).catch(error => {
 
-                // dispatch(stopLoading())
+                    // dispatch(stopLoading())
 
-                // dispatch(signUpFailed(error.response.data.content.message))
+                    // dispatch(signUpFailed(error.response.data.content.message))
 
-                console.log(error)
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
-
-
-            });
+                    console.log(error)
+                    // dispatch({ type: AUTH_FAILED });
+                    // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
+                });
 
 
 
-        }else {
+
+
+        } else {
 
 
             // alert("invalid")
@@ -215,11 +203,11 @@ class  CreateProduct extends Component {
 
 
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.getFiltersCategories()
 
@@ -227,26 +215,26 @@ class  CreateProduct extends Component {
 
 
 
-    getFiltersCategories(){
+    getFiltersCategories() {
 
-        axios.get(baseUrl+"category",
+        axios.get(baseUrl + "category",
             {
                 headers: {
-                    "Authorization" : "Bearer "+this.props.userDetail.token
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
         ).then((response) => {
 
-                var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+            var response = response.data.content;
+            console.log("resource response")
+            console.log(response)
 
-                this.setState({
+            this.setState({
 
-                    categories:response
-                })
+                categories: response
+            })
 
-            },
+        },
             (error) => {
 
                 var status = error.response.status
@@ -261,7 +249,7 @@ class  CreateProduct extends Component {
 
     render() {
 
-        const    classes = withStyles();
+        const classes = withStyles();
         const classesBottom = withStyles();
 
 
@@ -270,7 +258,7 @@ class  CreateProduct extends Component {
         return (
             <div>
 
-                <HeaderWhiteBack history={this.props.history} heading={this.state.item&&this.state.item.name}/>
+                <HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />
 
 
 
@@ -280,10 +268,10 @@ class  CreateProduct extends Component {
 
                     {/*<div className="row ">*/}
 
-                        {/*<div className="col-auto pb-4 pt-4">*/}
-                            {/*<img className={"search-icon-middle"}  src={CubeBlue} />*/}
+                    {/*<div className="col-auto pb-4 pt-4">*/}
+                    {/*<img className={"search-icon-middle"}  src={CubeBlue} />*/}
 
-                        {/*</div>*/}
+                    {/*</div>*/}
                     {/*</div>*/}
                     <div className="row  pb-2 pt-4 ">
 
@@ -297,10 +285,10 @@ class  CreateProduct extends Component {
 
                     {/*<div className="row  pb-4 pt-2 ">*/}
 
-                        {/*<div className="col-10">*/}
-                            {/*<p className={"text-blue text-bold "}>What is the purpose of your new product? </p>*/}
+                    {/*<div className="col-10">*/}
+                    {/*<p className={"text-blue text-bold "}>What is the purpose of your new product? </p>*/}
 
-                        {/*</div>*/}
+                    {/*</div>*/}
                     {/*</div>*/}
 
                 </div>
@@ -310,99 +298,99 @@ class  CreateProduct extends Component {
 
 
 
-                            <div className={"row justify-content-center create-product-row"}>
-                                <div className={"col-11"}>
-                                    <form  onSubmit={this.handleSubmit}>
-                                        <div className="row no-gutters justify-content-center ">
+                <div className={"row justify-content-center create-product-row"}>
+                    <div className={"col-11"}>
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="row no-gutters justify-content-center ">
 
 
-                                            <div className="col-12 mb-3">
-                                                <div className={"custom-label text-bold text-blue mb-3"}>What is the purpose of your new product?</div>
-                                            <FormControl variant="outlined" className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.handleChange.bind(this, "purpose")}
+                                <div className="col-12 mb-3">
+                                    <div className={"custom-label text-bold text-blue mb-3"}>What is the purpose of your new product?</div>
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
+                                            native
+                                            onChange={this.handleChange.bind(this, "purpose")}
 
-                                                    inputProps={{
-                                                        name: 'purpose',
-                                                        id: 'outlined-age-native-simple',
-                                                    }}
-                                                >
+                                            inputProps={{
+                                                name: 'purpose',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
 
-                                                    <option value={null}>Select</option>
+                                            <option value={null}>Select</option>
 
-                                                    {this.state.purpose.map((item)=>
+                                            {this.state.purpose.map((item) =>
 
-                                                        <option value={item}>{item}</option>
+                                                <option value={item}>{item}</option>
 
-                                                    )}
+                                            )}
 
-                                                </Select>
-                                            </FormControl>
-                                                {this.state.errors["purpose"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["purpose"]}</span>}
-
-
-                                            </div>
+                                        </Select>
+                                    </FormControl>
+                                    {this.state.errors["purpose"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["purpose"]}</span>}
 
 
-                                            <div className="col-12 mb-3">
-                                                <div className={"custom-label text-bold text-blue mb-3"}>What resources do you need to make this product?</div>
-                                                <FormControl variant="outlined" className={classes.formControl}>
-                                                    <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                    <Select
-                                                        native
-                                                        onChange={this.handleChange.bind(this, "category")}
-                                                        inputProps={{
-                                                            name: 'category',
-                                                            id: 'outlined-age-native-simple',
-                                                        }}
-                                                    >
-
-                                                        <option value={null}>Select</option>
-
-                                                        {this.state.categories.map((item)=>
-
-                                                            <option value={item}>{item.name}</option>
-
-                                                        )}
-
-                                                    </Select>
-                                                </FormControl>
-                                                {this.state.errors["category"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["category"]}</span>}
-
-
-                                            </div>
-                                            <div className="col-12 mt-4">
-                                                <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>
-
-                                                <TextField id="outlined-basic"  type={"text"} label="Title" variant="outlined" fullWidth={true} name={"title"} onChange={this.handleChange.bind(this, "title")} />
-
-                                                {this.state.errors["title"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["title"]}</span>}
-
-                                            </div>
-
-                                            <div className="col-12 mt-4">
-                                                <div className={"custom-label text-bold text-blue mb-3"}>Give it a description</div>
-
-                                                <TextField multiline
-                                                           rows={4}  type={"text"} id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"}  onChange={this.handleChange.bind(this, "description")} />
-
-                                                {this.state.errors["description"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["description"]}</span>}
-
-                                            </div>
-
-
-                                            <div className="col-12 mt-4 mb-5">
-
-                                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
-                                            </div>
-
-
-                                        </div>
-                                    </form>
                                 </div>
+
+
+                                <div className="col-12 mb-3">
+                                    <div className={"custom-label text-bold text-blue mb-3"}>What resources do you need to make this product?</div>
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
+                                            native
+                                            onChange={this.handleChange.bind(this, "category")}
+                                            inputProps={{
+                                                name: 'category',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
+
+                                            <option value={null}>Select</option>
+
+                                            {this.state.categories.map((item) =>
+
+                                                <option value={item}>{item.name}</option>
+
+                                            )}
+
+                                        </Select>
+                                    </FormControl>
+                                    {this.state.errors["category"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["category"]}</span>}
+
+
+                                </div>
+                                <div className="col-12 mt-4">
+                                    <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>
+
+                                    <TextField id="outlined-basic" type={"text"} label="Title" variant="outlined" fullWidth={true} name={"title"} onChange={this.handleChange.bind(this, "title")} />
+
+                                    {this.state.errors["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["title"]}</span>}
+
+                                </div>
+
+                                <div className="col-12 mt-4">
+                                    <div className={"custom-label text-bold text-blue mb-3"}>Give it a description</div>
+
+                                    <TextField multiline
+                                        rows={4} type={"text"} id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"} onChange={this.handleChange.bind(this, "description")} />
+
+                                    {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
+
+                                </div>
+
+
+                                <div className="col-12 mt-4 mb-5">
+
+                                    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+                                </div>
+
+
                             </div>
+                        </form>
+                    </div>
+                </div>
 
 
 

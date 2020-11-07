@@ -187,25 +187,6 @@ class ResetPassword extends Component {
 
 
 
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
-    interval
-
-
     componentWillMount() {
 
     }

@@ -22,9 +22,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from "@material-ui/core/styles/index";
 
 
-
-
-
 class MySearch extends Component {
 
 

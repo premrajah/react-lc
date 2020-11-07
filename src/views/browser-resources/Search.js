@@ -43,26 +43,6 @@ class Search extends Component {
 
 
 
-
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
-    interval
-
-
     componentWillMount() {
 
     }
@@ -72,10 +52,6 @@ class Search extends Component {
 
 
     }
-
-    intervalJasmineAnim
-
-
 
 
 
@@ -333,20 +309,13 @@ function NavTabs() {
                             <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                         </div>
-                        {/*<div className="text-mute col-auto pl-0">*/}
 
-                        {/*<span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />*/}
-
-                        {/*</div>*/}
 
                     </div>
 
                     <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
 
-                        {/*<div className={"col-4"}>*/}
 
-                        {/*<img className={"img-fluid"} src={Paper}/>*/}
-                        {/*</div>*/}
                         <div className={"col-11 content-box-listing"}>
                             <p style={{ fontSize: "18px" }} className=" mb-1">Tesco   →  Company B</p>
                             <p style={{ fontSize: "16px" }} className="text-mute mb-1">Paper and Cardboard</p>

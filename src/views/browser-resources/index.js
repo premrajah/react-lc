@@ -87,12 +87,6 @@ class BrowseResources extends Component {
         }
 
 
-        // if (filters.category>0&&filters.category.length>0){
-        //
-        //
-        //     url =url +"category.keyword:"+filters.category[0]
-        // }
-
 
         axios.get(url,
             {

@@ -94,10 +94,6 @@ class  ItemDetail extends Component {
 
     }
 
-    intervalJasmineAnim
-
-
-
 
 
     render() {

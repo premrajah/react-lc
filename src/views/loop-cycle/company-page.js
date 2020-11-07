@@ -102,10 +102,6 @@ class CompanyPage extends Component {
 
     }
 
-    intervalJasmineAnim
-
-
-
 
 
     render() {

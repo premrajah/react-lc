@@ -25,14 +25,6 @@ class SignUp extends Component {
 
         super(props)
 
-        // this.state = {
-        //
-        //     timerEnd: false,
-        //     count : 0,
-        //     nextIntervalFlag: false,
-        //     active: 0   //0 logn. 1- sign up , 3 -search
-        // }
-
 
         this.state = {
             fields: {},

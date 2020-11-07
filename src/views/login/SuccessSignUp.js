@@ -199,25 +199,6 @@ class RecoverPassword extends Component {
 
 
 
-    handleSongLoading() {
-
-    }
-
-    handleSongFinishedPlaying() {
-
-
-    }
-
-    handleSongPlaying() {
-
-
-
-    }
-
-
-    interval
-
-
     componentWillMount() {
 
     }
@@ -227,13 +208,6 @@ class RecoverPassword extends Component {
 
     }
 
-
-
-
-
-
-
-    intervalJasmineAnim
 
 
 

@@ -17,9 +17,6 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 
 
-
-
-
 class Home extends Component {
 
 

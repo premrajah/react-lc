@@ -259,12 +259,6 @@ class Login extends Component {
 
 
 
-
-
-    intervalJasmineAnim
-
-
-
     goToSignIn() {
 
 

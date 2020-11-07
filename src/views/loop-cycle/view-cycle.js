@@ -260,15 +260,6 @@ class ViewCycle extends Component {
 
 
 
-
-        //
-        // }else {
-        //
-        //
-        //     // alert("invalid")
-        // }
-
-
     }
 
 

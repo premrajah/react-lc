@@ -134,7 +134,6 @@ class ItemDetail extends Component {
 
     }
 
-    intervalJasmineAnim
 
 
 
@@ -211,9 +210,7 @@ class ItemDetail extends Component {
                     <div className={"container"}>
 
                         <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
@@ -223,9 +220,7 @@ class ItemDetail extends Component {
                         </div>
 
                         <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Manufacturer</p>
@@ -236,9 +231,7 @@ class ItemDetail extends Component {
 
 
                         <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
@@ -250,9 +243,7 @@ class ItemDetail extends Component {
 
 
                         <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Model Number</p>
@@ -261,9 +252,7 @@ class ItemDetail extends Component {
                         </div>
 
                         <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Serial Number</p>
@@ -271,17 +260,6 @@ class ItemDetail extends Component {
                             </div>
                         </div>
 
-
-                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                        {/*<div className={"col-1"}>*/}
-                        {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*<div className={"col-auto"}>*/}
-
-                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
-                        {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
 
 
                         <div className="row  justify-content-start search-container  pb-4">
@@ -295,20 +273,7 @@ class ItemDetail extends Component {
                             </div>
                         </div>
 
-                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                        {/*<div className={"col-1"}>*/}
-                        {/*<img className={"icon-about"} src={CalenderIcon} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*<div className={"col-auto"}>*/}
 
-                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
-                        {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
-                        {/*<Moment   unix  >*/}
-                        {/*{this.state.item.availableFrom}*/}
-                        {/*</Moment>*/}
-                        {/*</p>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
                                 <img className={"icon-about"} src={MarkerIcon} alt="" />

@@ -49,7 +49,7 @@ class ItemDetail extends Component {
 
         this.getResources = this.getResources.bind(this)
         this.acceptMatch = this.acceptMatch.bind(this)
-        this.declineMatch = this.declineMatch.bind(this)
+        // this.declineMatch = this.declineMatch.bind(this)
         this.showPopUp = this.showPopUp.bind(this)
 
     }
@@ -63,11 +63,6 @@ class ItemDetail extends Component {
 
     }
 
-
-    declineMatch() {
-
-
-    }
 
 
     acceptMatch() {
@@ -171,7 +166,6 @@ class ItemDetail extends Component {
 
         this.getResources()
 
-        // alert(this.searchId)
 
     }
 

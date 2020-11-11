@@ -2653,7 +2653,7 @@ class CreateListing extends Component {
                                 <div className=" text-right ">
 
 
-                                    <Link to={"/"} > < Close onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} /> </Link>
+                                     < Close onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} />
 
                                 </div>
 

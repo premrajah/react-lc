@@ -168,40 +168,6 @@ class ComponentsNavbar extends React.Component {
 
                         {this.props.isLoggedIn && <>
 
-
-
-                            {/*<NavItem className={"web-only"}>*/}
-
-                            {/*<UncontrolledDropdown nav>*/}
-                            {/*<DropdownToggle*/}
-                            {/*caret*/}
-                            {/*color="default"*/}
-                            {/*data-toggle="dropdown"*/}
-                            {/*href="#pablo"*/}
-                            {/*nav*/}
-                            {/*onClick={e => e.preventDefault()}*/}
-                            {/*className={"wl-link-white "}*/}
-                            {/*>*/}
-                            {/*<i className="fa fa-cogs d-lg-none d-xl-none" />*/}
-                            {/*Search Resources*/}
-                            {/*</DropdownToggle>*/}
-                            {/*<DropdownMenu className="dropdown-with-icons">*/}
-                            {/*<Link className={"dropdown-item"} to="/resources">*/}
-                            {/*<i className="tim-icons icon-paper" />*/}
-                            {/*Browse All*/}
-                            {/*</Link>*/}
-                            {/*<Link className={"dropdown-item"} tag={Link} to="green-link">*/}
-                            {/*<i className="tim-icons icon-bullet-list-67" />*/}
-                            {/*Create A Search*/}
-                            {/*</Link>*/}
-
-                            {/*</DropdownMenu>*/}
-                            {/*</UncontrolledDropdown>*/}
-                            {/**/}
-                            {/**/}
-                            {/**/}
-                            {/**/}
-                            {/*</NavItem>*/}
                             <NavItem className={"web-only"}>
                                 <Link
                                     className="nav-link d-none d-lg-block wl-link-white "
@@ -209,7 +175,7 @@ class ComponentsNavbar extends React.Component {
                                     to={"/resources"}
                                 >
                                     Find Resources
-                </Link>
+                        </Link>
                             </NavItem>
 
 
@@ -303,15 +269,15 @@ class ComponentsNavbar extends React.Component {
                                     >
                                         <figure className="avatar avatar-60 border-0">
 
-                                            {/*<img src={TescoImg} alt="" />*/}
-                                            <span className={"word-user"}>
-                                                {this.props.userDetail.email === "test.3@parallelai.com" && "M"}
-                                                {this.props.userDetail.email === "crajah@karedo.co.uk" && "L"}
-                                                {this.props.userDetail.email === "scorpion_rain@yahoo.com" && "C"}
+                                            <span className={"word-user"} >
+
+
+                                                {this.props.isLoggedIn&&this.props.userDetail.orgId.substr(0,2)}
 
                                             </span>
 
                                         </figure>
+
                                         <i className="fa fa-cogs d-lg-none d-xl-none" />
 
                                     </DropdownToggle>
@@ -333,10 +299,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                 Products
                             </Link>
-                                        {/*<Link  className={"dropdown-item"} to="/delivery-resource">*/}
-                                        {/*<i className="tim-icons icon-bullet-list-67" />*/}
-                                        {/*Deliveries*/}
-                                        {/*</Link>*/}
+
                                         <Link className={"dropdown-item"} to="/statistics">
                                             <i className="tim-icons icon-bullet-list-67" />
                                 Statistics

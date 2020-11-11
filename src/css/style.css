@@ -2739,6 +2739,7 @@ color: #3C3972;
 	font-size: 18px!important;
 	opacity: 1!important;
 	line-height: 10px!important;
+	text-transform:capitalize;
 }
 
 
@@ -2751,18 +2752,19 @@ color: #3C3972;
 	font-size: 18px!important;
 	opacity: 1!important;
 	line-height: 60px!important;
+	text-transform:capitalize;
 }
 
 .word-user-cycle{
 	line-height: 50px!important;
-
+	text-transform:capitalize;
 }
 
 
 
 .avatar-60{line-height:32px!important;}
 .word-user-sellor{
-
+	text-transform:capitalize;
 	line-height: 60px!important;
 }
 .accountpage{margin-top: 80px;}

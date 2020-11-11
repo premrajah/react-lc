@@ -6,11 +6,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from '../item/ResourceItem'
 
-// import { ThemeProvider, MessageGroup,Message,MessageText,MessageMedia,MessageList,MessageTitle,MessageButton,MessageButtons} from '@livechat/ui-kit'
-// import { ChatFeed, Message } from 'react-chat-ui'
-// import 'react-chat-elements/dist/main.css';
-// // MessageBox component
-// import { MessageBox,Message } from 'react-chat-elements';
+
 
 
 import { ChatController, MuiChat } from 'chat-ui-react'

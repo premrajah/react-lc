@@ -160,18 +160,11 @@ class CreateListing extends Component {
 
     handleChangeFile(event) {
 
-
-
-
         console.log(event.target.files)
 
         var files = []
         var filesUrl = []
 
-
-        // if (event.target.files) {
-        //
-        //     alert("here")
 
         for (var i = 0; i < event.target.files.length; i++) {
 
@@ -187,9 +180,6 @@ class CreateListing extends Component {
             files: files,
             filesUrl: filesUrl
         })
-
-        // }
-
 
 
         this.uploadImage(files)
@@ -2940,15 +2930,11 @@ function ComponentItem({ title, subTitle, serialNo, imageName }) {
 const mapStateToProps = state => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
 
 

@@ -342,16 +342,13 @@ class ComponentsNavbar extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
+
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
+
 
 
 

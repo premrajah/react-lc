@@ -168,6 +168,11 @@ class CreateListing extends Component {
         var files = []
         var filesUrl = []
 
+
+        // if (event.target.files) {
+        //
+        //     alert("here")
+
         for (var i = 0; i < event.target.files.length; i++) {
 
 
@@ -407,6 +412,14 @@ class CreateListing extends Component {
 
     createListing() {
 
+
+        // alert(this.state.price +" "+this.state.unitSelected)
+
+
+        //
+        // alert(this.state.manufacturedDate+"manu -  start"+this.state.startDate)
+        //
+        // return
 
         var data = {}
 
@@ -1533,13 +1546,27 @@ class CreateListing extends Component {
 
             }).catch(error => {
 
+                // dispatch(stopLoading())
 
+                // dispatch(signUpFailed(error.response.data.content.message))
 
                 console.log(error)
-
+                // dispatch({ type: AUTH_FAILED });
+                // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
             });
+
+
+
+        // alert("valid")
+
+        // }else {
+        //
+        //
+        //     // alert("invalid")
+        // }
+
 
 
     }
@@ -1732,7 +1759,28 @@ class CreateListing extends Component {
                                                 </div>
 
                                             </div>
+                                            {/*<div className="col-4 p-1 text-center ">*/}
 
+                                            {/*<div className="card shadow border-0 mb-3 container-gray border-rounded">*/}
+                                            {/*<div className={"card-body"}>*/}
+                                            {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+                                            {/*</div>*/}
+                                            {/*</div>*/}
+
+                                            {/*</div>*/}
+                                            {/*<div className="col-4  p-1 text-center ">*/}
+
+                                            {/*<div className="card shadow border-0 mb-3 container-gray border-rounded ">*/}
+                                            {/*<div className={"card-body"}>*/}
+
+                                            {/*<img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>*/}
+
+                                            {/*/!*<AddIcon style={{color:"#747474",fontSize:"32px"}}/>*!/*/}
+
+                                            {/*</div>*/}
+                                            {/*</div>*/}
+
+                                            {/*</div>*/}
                                         </div>
                                     </div>
 
@@ -1741,6 +1789,24 @@ class CreateListing extends Component {
 
                             </div>
 
+
+
+                            {/*<div className="row no-gutters justify-content-center mt-4">*/}
+
+                            {/*<div className="col-6 pr-2">*/}
+
+                            {/*<UnitSelect units={this.state.units} />*/}
+
+
+                            {/*</div>*/}
+                            {/*<div className="col-6 pl-2">*/}
+
+                            {/*<TextField onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />*/}
+                            {/*{this.state.errors["volume"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["volume"]}</span>}*/}
+
+
+                            {/*</div>*/}
+                            {/*</div>*/}
                         </form>
 
                     </div>
@@ -1971,8 +2037,21 @@ class CreateListing extends Component {
                             </div>
                         </div>
                         <div className="row no-gutters justify-content-center mt-5">
+                            {/*<div onClick={this.linkProduct}  className="col-12 mb-3">*/}
 
+
+                            {/*<div  className={"dummy-text-field"}>*/}
+                            {/*{this.state.productSelected?this.state.productSelected.title:"Link new a product"}*/}
+                            {/*<img  className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }}/>*/}
+                            {/*</div>*/}
+                            {/*{this.state.errors["product"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["linkProduct"]}</span>}*/}
+
+
+                            {/*</div>*/}
                             <div className="col-12 mb-3">
+
+
+                                {/*<SiteSelect   sites={this.state.sites}/>*/}
 
 
                                 <FormControl variant="outlined" className={classes.formControl}>
@@ -2341,6 +2420,9 @@ class CreateListing extends Component {
                                         <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
                                     </div>
                                 </div>
+
+
+                                {/*<BottomAppBar />*/}
 
 
                             </div>

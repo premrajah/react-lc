@@ -5,6 +5,14 @@ import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from '../item/ResourceItem'
+
+// import { ThemeProvider, MessageGroup,Message,MessageText,MessageMedia,MessageList,MessageTitle,MessageButton,MessageButtons} from '@livechat/ui-kit'
+// import { ChatFeed, Message } from 'react-chat-ui'
+// import 'react-chat-elements/dist/main.css';
+// // MessageBox component
+// import { MessageBox,Message } from 'react-chat-elements';
+
+
 import { ChatController, MuiChat } from 'chat-ui-react'
 
 
@@ -27,6 +35,8 @@ class MessageSeller extends Component {
 
         this.slug = props.match.params.slug
         this.getResource = this.getResource.bind(this)
+
+
 
     }
 
@@ -135,12 +145,59 @@ function ChatBox(props) {
     const [chatCtl] = React.useState(new ChatController());
 
     React.useMemo(async () => {
+        // Chat content is displayed using ChatController
 
+
+
+        // await chatCtl.addMessage({
+        //     type: 'text',
+        //     content: `Select a message or write your own below.`,
+        //     self: false,
+        // });
+        // const name1 = await chatCtl.setActionRequest({ type: 'text',always:true });
+        //
         const response = await chatCtl.setActionRequest({
             type: 'text',
             always: true,
         });
 
+        // const response = await chatCtl.setActionRequest({
+        //     // type: 'select',
+        //     type: 'multi-select',
+        //
+        //     always: true,
+        //     options: [
+        //         {
+        //             value: 'a',
+        //             text: 'A',
+        //         },
+        //         {
+        //             value: 'b',
+        //             text: 'B',
+        //         },
+        //     ],
+        // });
+
+        // const response = await chatCtl.setActionRequest({
+        //     type: 'Select a message or write your own below.',
+        //     options: [
+        //         {
+        //             value: 'a',
+        //             text: 'Hi, is this available still?',
+        //         },
+        //         {
+        //             value: 'b',
+        //             text: 'Hi, is this available still?',
+        //         },
+        //     ],
+        // });
+
+        // const name2 = await chatCtl.setActionRequest({ type: 'text' });
+
+
+        // const response = await chatCtl.setActionRequest({
+        //     type: 'audio',
+        // });
 
 
     }, [chatCtl]);

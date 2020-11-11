@@ -168,7 +168,24 @@ class AddDetail extends Component {
 
 
 
+    handleSongLoading() {
+
+    }
+
+    handleSongFinishedPlaying() {
+
+
+    }
+
+    handleSongPlaying() {
+
+
+
+    }
+
+
     interval
+
 
     componentWillMount() {
 
@@ -177,7 +194,14 @@ class AddDetail extends Component {
     componentDidMount() {
 
 
+
+
+
+
     }
+
+    intervalJasmineAnim
+
 
 
     goToSignIn() {
@@ -197,6 +221,8 @@ class AddDetail extends Component {
             active: 1
         })
     }
+
+
 
 
 

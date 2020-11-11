@@ -85,6 +85,11 @@ class ViewSearchPage extends Component {
 
     }
 
+    intervalJasmineAnim
+
+
+
+
 
     render() {
 

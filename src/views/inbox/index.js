@@ -67,6 +67,14 @@ class Inbox extends Component {
 
 
 
+
+
+
+
+
+    interval
+
+
     componentWillMount() {
 
     }
@@ -74,7 +82,14 @@ class Inbox extends Component {
     componentDidMount() {
 
 
+
+
+
+
     }
+
+    intervalJasmineAnim
+
 
 
 

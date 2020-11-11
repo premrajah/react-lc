@@ -74,6 +74,10 @@ class CreateProduct extends Component {
             formIsValid = false;
             errors["title"] = "Required";
         }
+        // if(!fields["agree"]){
+        //     formIsValid = false;
+        //     errors["agree"] = "Required";
+        // }
 
 
         if (!fields["description"]) {
@@ -85,6 +89,10 @@ class CreateProduct extends Component {
             errors["category"] = "Required";
         }
 
+        // if(!fields["email"]){
+        //     formIsValid = false;
+        //     errors["email"] = "Required";
+        // }
 
 
 
@@ -275,6 +283,14 @@ class CreateProduct extends Component {
                     </div>
 
 
+                    {/*<div className="row  pb-4 pt-2 ">*/}
+
+                    {/*<div className="col-10">*/}
+                    {/*<p className={"text-blue text-bold "}>What is the purpose of your new product? </p>*/}
+
+                    {/*</div>*/}
+                    {/*</div>*/}
+
                 </div>
 
 
@@ -379,6 +395,10 @@ class CreateProduct extends Component {
 
 
 
+
+
+
+
             </div>
         );
     }
@@ -397,11 +417,56 @@ function ChatBox(props) {
         // Chat content is displayed using ChatController
 
 
+
+        // await chatCtl.addMessage({
+        //     type: 'text',
+        //     content: `Select a message or write your own below.`,
+        //     self: false,
+        // });
+        // const name1 = await chatCtl.setActionRequest({ type: 'text',always:true });
+        //
         const response = await chatCtl.setActionRequest({
             type: 'text',
             always: true,
         });
 
+        // const response = await chatCtl.setActionRequest({
+        //     // type: 'select',
+        //     type: 'multi-select',
+        //
+        //     always: true,
+        //     options: [
+        //         {
+        //             value: 'a',
+        //             text: 'A',
+        //         },
+        //         {
+        //             value: 'b',
+        //             text: 'B',
+        //         },
+        //     ],
+        // });
+
+        // const response = await chatCtl.setActionRequest({
+        //     type: 'Select a message or write your own below.',
+        //     options: [
+        //         {
+        //             value: 'a',
+        //             text: 'Hi, is this available still?',
+        //         },
+        //         {
+        //             value: 'b',
+        //             text: 'Hi, is this available still?',
+        //         },
+        //     ],
+        // });
+
+        // const name2 = await chatCtl.setActionRequest({ type: 'text' });
+
+
+        // const response = await chatCtl.setActionRequest({
+        //     type: 'audio',
+        // });
 
 
     }, [chatCtl]);

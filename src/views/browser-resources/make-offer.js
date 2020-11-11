@@ -13,6 +13,11 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from '../item/ResourceItem'
 
+
+
+
+
+
 class MakeOffer extends Component {
 
     slug;
@@ -32,6 +37,8 @@ class MakeOffer extends Component {
 
         this.slug = props.match.params.slug
         this.getResource = this.getResource.bind(this)
+
+
 
     }
 

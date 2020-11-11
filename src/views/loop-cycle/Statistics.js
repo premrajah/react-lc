@@ -46,6 +46,8 @@ class Statistics extends Component {
 
     }
 
+    intervalJasmineAnim
+
 
 
 

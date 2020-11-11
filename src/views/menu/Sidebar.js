@@ -24,6 +24,8 @@ class Sidebar extends Component {
     }
 
 
+
+
     toggleMenu = (event) => {
 
 
@@ -32,11 +34,32 @@ class Sidebar extends Component {
     }
 
 
+
     logOut = (event) => {
         document.body.classList.remove('sidemenu-open');
         this.props.logOut()
 
     }
+
+
+    handleSongLoading() {
+
+    }
+
+    handleSongFinishedPlaying() {
+
+
+    }
+
+    handleSongPlaying() {
+
+
+
+    }
+
+
+    interval
+
 
     componentWillMount() {
 
@@ -44,7 +67,13 @@ class Sidebar extends Component {
 
     componentDidMount() {
 
+
+
     }
+
+    intervalJasmineAnim
+
+
 
 
 
@@ -52,7 +81,9 @@ class Sidebar extends Component {
 
         return (
 
+
             <>
+
 
                 <div className="sidebar">
 
@@ -160,6 +191,9 @@ class Sidebar extends Component {
             </>
 
 
+
+
+
         );
     }
 }
@@ -169,12 +203,19 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => {
     return {
+        // age: state.age,
+        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+
+
+
 
     };
 };

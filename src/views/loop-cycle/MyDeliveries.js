@@ -101,6 +101,10 @@ class MyDeliveries extends Component {
 
     }
 
+    intervalJasmineAnim
+
+
+
 
 
     render() {

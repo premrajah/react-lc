@@ -221,6 +221,25 @@ class ForgotPassword extends Component {
 
 
 
+    handleSongLoading() {
+
+    }
+
+    handleSongFinishedPlaying() {
+
+
+    }
+
+    handleSongPlaying() {
+
+
+
+    }
+
+
+    interval
+
+
     componentWillMount() {
 
     }

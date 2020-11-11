@@ -288,6 +288,8 @@ class ItemCycleDetail extends Component {
 
     }
 
+    intervalJasmineAnim
+
 
 
     render() {
@@ -440,11 +442,34 @@ class ItemCycleDetail extends Component {
                             <div className="col-12 mt-3 pb-3 listing-row-border">
                                 <p>{this.state.item.description}</p>
                             </div>
+                            {/*<div className="col-12 mt-3 pb-3 ">*/}
+                            {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{this.state.item.purpose  }</p>*/}
 
+                            {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"Shelving" }</p>*/}
+                            {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"PP" }</p>*/}
+
+                            {/*</div>*/}
 
                         </div>
 
 
+                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
+
+                        {/*<div className="col-12">*/}
+
+                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} alt="" />}*!/*/}
+
+                        {/*/!*{this.state.codeImg && <img src={"base64,"+this.state.codeImg} alt=""/> }*!/*/}
+
+                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} alt=""/> }*!/*/}
+
+
+                        {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} alt=""/>*/}
+
+
+
+                        {/*</div>*/}
+                        {/*</div>*/}
 
                         <div className="container justify-content-start pb-4 pt-3 ">
 
@@ -461,7 +486,10 @@ class ItemCycleDetail extends Component {
                         <div className={"container"}>
 
                             <div className="row  justify-content-start search-container  pb-4">
-                                                          <div className={"col-auto"}>
+                                {/*<div className={"col-1"}>*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
+                                {/*</div>*/}
+                                <div className={"col-auto"}>
 
                                     <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
 
@@ -470,6 +498,7 @@ class ItemCycleDetail extends Component {
                                     {this.state.item.searches && this.state.item.searches.length > 0 &&
                                         <>
                                             <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.searches[0].tags} </p>
+                                            {/*<p style={{fontSize:"18px"}} className="  mb-1"></p>*/}
                                         </>
                                     }
 
@@ -478,7 +507,9 @@ class ItemCycleDetail extends Component {
                             </div>
 
                             <div className="row  justify-content-start search-container  pb-4">
-
+                                {/*<div className={"col-1"}>*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
+                                {/*</div>*/}
                                 <div className={"col-auto"}>
 
                                     <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Manufacturer</p>
@@ -486,11 +517,22 @@ class ItemCycleDetail extends Component {
                                 </div>
                             </div>
 
+                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                            {/*/!*<div className={"col-1"}>*!/*/}
+                            {/*/!*<img className={"icon-about"} src={ListIcon} alt=""/>*!/*/}
+                            {/*/!*</div>*!/*/}
+                            {/*<div className={"col-auto"}>*/}
 
+                            {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Purpose</p>*/}
+                            {/*<p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.purpose} </p>*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
 
 
                             <div className="row  justify-content-start search-container  pb-4">
-
+                                {/*<div className={"col-1"}>*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
+                                {/*</div>*/}
                                 <div className={"col-auto"}>
 
                                     <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
@@ -502,7 +544,9 @@ class ItemCycleDetail extends Component {
 
 
                             <div className="row  justify-content-start search-container  pb-4">
-
+                                {/*<div className={"col-1"}>*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
+                                {/*</div>*/}
                                 <div className={"col-auto"}>
 
                                     <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Model Number</p>
@@ -511,7 +555,9 @@ class ItemCycleDetail extends Component {
                             </div>
 
                             <div className="row  justify-content-start search-container  pb-4">
-
+                                {/*<div className={"col-1"}>*/}
+                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
+                                {/*</div>*/}
                                 <div className={"col-auto"}>
 
                                     <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Serial Number</p>
@@ -520,6 +566,16 @@ class ItemCycleDetail extends Component {
                             </div>
 
 
+                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
+                            {/*</div>*/}
+                            {/*<div className={"col-auto"}>*/}
+
+                            {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
+                            {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
 
 
                             <div className="row  justify-content-start search-container  pb-4">
@@ -533,7 +589,20 @@ class ItemCycleDetail extends Component {
                                 </div>
                             </div>
 
+                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                            {/*<div className={"col-1"}>*/}
+                            {/*<img className={"icon-about"} src={CalenderIcon} alt=""/>*/}
+                            {/*</div>*/}
+                            {/*<div className={"col-auto"}>*/}
 
+                            {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
+                            {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
+                            {/*<Moment   unix  >*/}
+                            {/*{this.state.item.availableFrom}*/}
+                            {/*</Moment>*/}
+                            {/*</p>*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
                             <div className="row  justify-content-start search-container  pb-4">
                                 <div className={"col-1"}>
                                     <img className={"icon-about"} src={MarkerIcon} alt="" />
@@ -559,6 +628,7 @@ class ItemCycleDetail extends Component {
                                     <div className="col-auto ">
                                         <figure className="avatar avatar-60 border-0">
 
+                                            {/*<img src={TescoImg} alt="" />*/}
 
                                             <span className={"word-user word-user-sellor"}>
                                                 M
@@ -581,7 +651,37 @@ class ItemCycleDetail extends Component {
                                 </div>
                             </div>
 
+
+
+
+
                         </div>
+
+
+                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
+
+                        {/*<div className="col-12">*/}
+                        {/*<h5 className={"text-bold blue-text"}>Product Journey</h5>*/}
+                        {/*</div>*/}
+
+                        {/*<div className="col-12">*/}
+                        {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
+                        {/*Click on an icon to see more information.*/}
+                        {/*</p>*/}
+
+                        {/*</div>*/}
+
+                        {/*</div>*/}
+
+
+                        {/*<div className="row justify-content-center pb-3 pt-4 ">*/}
+
+                        {/*<div style={{textAlign:"center"}} className="col-12">*/}
+
+
+                        {/*<img style={{width:"98%"}} src={BottomDetailInfo} alt=""/>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
 
 
 
@@ -610,6 +710,57 @@ class ItemCycleDetail extends Component {
 
                             </div>
                         </div>
+
+
+
+
+
+                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
+
+                        {/*<div className="col-12">*/}
+                        {/*<h5 className={"text-bold blue-text"}>Searches</h5>*/}
+                        {/*</div>*/}
+
+                        {/*<div className="col-12">*/}
+                        {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
+                        {/*All searches assigned to this product.*/}
+                        {/*</p>*/}
+
+                        {/*</div>*/}
+
+                        {/*</div>*/}
+
+
+
+                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
+
+                        {/*<div className="col-12">*/}
+
+
+
+
+                        {/*{this.state.searches.map((item)=>*/}
+                        {/*<div  style={{border:"none"}} data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>*/}
+
+                        {/*<div  className="col-10">*/}
+                        {/*/!*<Link to={"/search"}>*!/*/}
+                        {/*<p className={"blue-text "} style={{fontSize:"16px"}}>{item.name}</p>*/}
+                        {/*/!*</Link>*!/*/}
+                        {/*</div>*/}
+                        {/*<div className="col-2">*/}
+                        {/*<NavigateNextIcon/>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+                        {/*)}*/}
+
+
+
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+
+
 
                     </div>
 

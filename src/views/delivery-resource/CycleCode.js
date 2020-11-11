@@ -42,6 +42,9 @@ class CycleCode extends Component {
 
     }
 
+    intervalJasmineAnim
+
+
 
 
 
@@ -59,6 +62,11 @@ class CycleCode extends Component {
 
 
                         <div className="row no-gutters  justify-content-center listing-row-border">
+
+                            {/*<div className="floating-back-icon" style={{margin:"auto"}}>*/}
+
+                            {/*<NavigateBefore  style={{ fontSize: 32, color:"white" }}/>*/}
+                            {/*</div>*/}
 
 
                             <div className="col-8 ">

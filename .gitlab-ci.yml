@@ -39,6 +39,7 @@ gcr:
   only:
     - develop
     - master
+    - develop_refactor
 
 
 deploy_gke_dev:
@@ -67,4 +68,6 @@ deploy_gke_dev:
   only:
     - develop
     - master
+    - develop_refactor
+
 

@@ -1710,7 +1710,7 @@
                                         <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
 
 
-
+                                        
                                         <Select
                                             name={"deliver"}
                                             native
@@ -1743,37 +1743,6 @@
                                 </div>
                                 <div className="col-12 mb-3">
 
-                                    {/*<MuiPickersUtilsProvider utils={DateFnsUtils}>*/}
-
-                                    {/*<DatePicker*/}
-                                    {/*label="Basic example"*/}
-                                    {/*value={new Date()}*/}
-                                    {/*onChange={this.handleChange}*/}
-                                    {/*animateYearScrolling*/}
-                                    {/*/>*/}
-                                    {/*</MuiPickersUtilsProvider>*/}
-                                    // <TextField
-                                    //     onChange={this.handleChange.bind(this, "startDate")}
-                                    //     name={"startDate"}
-                                    //     id="input-with-icon-textfield"
-                                    //
-                                    //     InputLabelProps={{
-                                    //         shrink: true,
-                                    //     }}
-                                        {/*label="Required by"*/}
-                                        {/*type={"date"}*/}
-                                        {/*variant="outlined"*/}
-                                        {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
-                                        {/*id="input-with-icon-textfield"*/}
-                                        {/*minDate={new Date()}*/}
-                                        {/*InputProps={{*/}
-                                            {/*endAdornment: (*/}
-                                                {/*<InputAdornment position="end">*/}
-                                                    {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
-                                                {/*</InputAdornment>*/}
-                                            {/*),*/}
-                                        {/*}}*/}
-                                    {/*/>*/}
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
@@ -1796,7 +1765,6 @@
 
                             </div>
                         </div>
-                    {/*</div>*/}
 
 
 

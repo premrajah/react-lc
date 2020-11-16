@@ -32,6 +32,16 @@
     import ResourceItem from '../item/ResourceItem'
     import HeaderDark from '../header/HeaderDark'
     import Sidebar from '../menu/Sidebar'
+    // import DateFnsUtils from 'date-fns';
+    // import { compareAsc, format } from 'date-fns'
+    // import  moment from  'moment'
+
+    import MomentUtils from '@date-io/moment';
+
+    import {
+        MuiPickersUtilsProvider,
+        KeyboardDatePicker,
+    } from '@material-ui/pickers';
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -1649,7 +1659,7 @@
 
 
 
-                    <div className={this.state.active === 4 ? "" : "d-none"}>
+                    {/*<div className={this.state.active === 4 ? "" : "d-none"}>*/}
 
                         <div className="container  pt-2 pb-3">
 
@@ -1698,6 +1708,9 @@
 
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
+
+
+
                                         <Select
                                             name={"deliver"}
                                             native
@@ -1709,6 +1722,7 @@
                                                 id: 'outlined-age-native-simple',
                                             }}
                                         >
+
 
                                             <option value={null}>Select</option>
 
@@ -1738,28 +1752,43 @@
                                     {/*animateYearScrolling*/}
                                     {/*/>*/}
                                     {/*</MuiPickersUtilsProvider>*/}
-                                    <TextField
-                                        onChange={this.handleChange.bind(this, "startDate")}
-                                        name={"startDate"}
-                                        id="input-with-icon-textfield"
+                                    // <TextField
+                                    //     onChange={this.handleChange.bind(this, "startDate")}
+                                    //     name={"startDate"}
+                                    //     id="input-with-icon-textfield"
+                                    //
+                                    //     InputLabelProps={{
+                                    //         shrink: true,
+                                    //     }}
+                                        {/*label="Required by"*/}
+                                        {/*type={"date"}*/}
+                                        {/*variant="outlined"*/}
+                                        {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
+                                        {/*id="input-with-icon-textfield"*/}
+                                        {/*minDate={new Date()}*/}
+                                        {/*InputProps={{*/}
+                                            {/*endAdornment: (*/}
+                                                {/*<InputAdornment position="end">*/}
+                                                    {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
+                                                {/*</InputAdornment>*/}
+                                            {/*),*/}
+                                        {/*}}*/}
+                                    {/*/>*/}
 
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        label="Required by"
-                                        type={"date"}
-                                        variant="outlined"
-                                        className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                        id="input-with-icon-textfield"
-                                        minDate={new Date()}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                                </InputAdornment>
-                                            ),
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+
+                                    <KeyboardDatePicker
+                                        margin="normal"
+                                        id="date-picker-dialog"
+                                        label="Date picker dialog"
+                                        format="MM/dd/yyyy"
+                                        onChange={this.handleChange.bind(this, "startDate")}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
                                         }}
                                     />
+
+                                </MuiPickersUtilsProvider>
                                     {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
 
 
@@ -1767,7 +1796,7 @@
 
                             </div>
                         </div>
-                    </div>
+                    {/*</div>*/}
 
 
 

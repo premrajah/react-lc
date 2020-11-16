@@ -272,7 +272,7 @@ class ComponentsNavbar extends React.Component {
                                             <span className={"word-user"} >
 
 
-                                                {this.props.isLoggedIn&&this.props.userDetail.orgId.substr(0,2)}
+                                                {this.props.isLoggedIn&&this.props.userDetail&&this.props.userDetail.orgId&&this.props.userDetail.orgId.substr(0,2)}
 
                                             </span>
 

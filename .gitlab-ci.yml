@@ -48,7 +48,7 @@ deploy_gke_dev:
   # <<: *deploy_precursor
   script:
 #  - apk add --update -t curl
-  - export ENVIRONMENT=${CI_COMMIT_REF_NAME}
+  - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
   - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
   - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
   - gcloud config set project ${GCP_PROJECT_ID}

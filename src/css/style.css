@@ -2766,6 +2766,7 @@ color: #3C3972;
 .word-user-sellor{
 	text-transform:capitalize;
 	line-height: 60px!important;
+	font-size: 24px;
 }
 .accountpage{margin-top: 80px;}
 .resource-item-img{height: 100px;}

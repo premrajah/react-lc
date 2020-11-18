@@ -335,7 +335,19 @@ class ItemDetail extends Component {
                                     <figure className="avatar avatar-60 border-0">
 
 
-                                        <span className={"word-user-sellor"}>M</span>
+                                        {/*<span className={"word-user-sellor"}>M</span>*/}
+
+                                        {/*{this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}*/}
+
+                                        <span className={"word-user-sellor"}>
+
+                                       {this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}
+
+
+
+                                </span>
+
+
 
                                     </figure>
                                 </div>

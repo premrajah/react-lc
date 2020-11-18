@@ -110,7 +110,7 @@ class Account extends Component {
 
                             <div className="col-6  justify-content-center">
 
-                                <h5 className={"text-blue text-bold"}>Company A</h5>
+                                <h5 className={"text-blue text-bold"}>{this.props.userDetail.orgId}</h5>
                                 <p className={" text-mute small"}>Joined in 2010<br />
                                         Surrey, UK</p>
 
@@ -123,51 +123,26 @@ class Account extends Component {
                                     <figure>
                                         <Link to={"/company"}><img src={BuildingIcon} alt="" /></Link>
                                     </figure>
-
                                 </div>
-
                                 <p className={"text-blue text-underline text-upload"}>
-
                                     Upload Photo
-
                                 </p>
 
                             </div>
                         </div>
 
 
-                        {/*<div className="row mb-5 justify-content-center">*/}
-
-                        {/*<div className="text-center">*/}
-                        {/*<div className="figure-profile shadow my-4">*/}
-                        {/*<figure><img src="img/user1.png" alt="" /></figure>*/}
-                        {/*<div className="btn btn-dark text-white floating-btn">*/}
-                        {/*<Camera className="green-text" style={{ fontSize: 24 }} />*/}
-                        {/*<input type="file" className="float-file" />*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-
-                        {/*<div>*/}
-                        {/*<h5 className={"text-white"}>Tesco</h5>*/}
-                        {/*<p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>*/}
-
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*</div>*/}
-
                         <div className="row">
                             <div className="col">
                                 <div className="list-group main-menu accountpage-list">
-                                    <Link to={"/listings"} className="list-group-item list-group-item-action ">
+                                    <Link className="list-group-item list-group-item-action ">
                                         <img src={SettingsWhite} className={"account-icons truck-icon "} alt="" />
-                                Account  <NavigateNextIcon /> </Link>
+                                     Account  <NavigateNextIcon /> </Link>
                                     <Link to={"my-search"} className="list-group-item list-group-item-action ">
                                         <img src={SearchWhite} className={"account-icons truck-icon "} alt="" />
                                     My Searches  <NavigateNextIcon /></Link>
 
-                                    <Link to={"/listings"} className="list-group-item list-group-item-action ">
+                                    <Link to={"/my-listings"} className="list-group-item list-group-item-action ">
                                         <img src={ListingBlue} className={"account-icons truck-icon "} alt="" />
                                     My Listings <NavigateNextIcon /></Link>
 
@@ -225,16 +200,10 @@ class Account extends Component {
 
 const mapStateToProps = state => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
+
+        isLoggedIn: state.isLoggedIn,
+        userDetail: state.userDetail,
+
 
 
 

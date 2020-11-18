@@ -167,23 +167,13 @@ class MyListings extends Component {
                         </div>
 
 
-
-
                         {this.state.items.map((item) =>
-
 
                             <ResourceItem item={item} />
 
-
                         )}
 
-
-
-
-
                     </div>
-
-
 
 
                     <React.Fragment>

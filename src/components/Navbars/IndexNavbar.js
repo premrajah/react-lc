@@ -180,20 +180,20 @@ class ComponentsNavbar extends React.Component {
 
 
 
+                            {/*<NavItem className={"web-only"}>*/}
+                                {/*<Link*/}
+                                    {/*to={"/create-listing"}*/}
+                                    {/*className="nav-link d-none d-lg-block wl-link-white "*/}
+                                    {/*color="default"*/}
+
+                                {/*>*/}
+                                    {/*Sell Resources*/}
+                    {/*</Link>*/}
+                            {/*</NavItem>*/}
+
+
                             <NavItem className={"web-only"}>
-                                <Link
-                                    to={"/create-listing"}
-                                    className="nav-link d-none d-lg-block wl-link-white "
-                                    color="default"
-
-                                >
-                                    Sell Resources
-                    </Link>
-                            </NavItem>
-
-
-                            <NavItem className={"web-only"}>
-                                <Link to={"/create-search"}
+                                <Link to={"/search-form"}
                                     className="nav-link d-none d-lg-block green-link "
                                     color="default"
                                 >

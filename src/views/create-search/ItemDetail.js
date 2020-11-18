@@ -324,7 +324,9 @@ class ItemDetail extends Component {
 
 
                                         <span className={"word-user-sellor"}>
-                                            M
+
+                                       {this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}
+
 
 
                                 </span>

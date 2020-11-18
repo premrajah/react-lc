@@ -107,7 +107,8 @@
                 siteSelected: null,
                 productSelection: false,
                 purpose: ["defined", "prototype", "aggregate"],
-                site: {}
+                site: {},
+                requiredDateOpen: false
 
 
             }
@@ -136,6 +137,8 @@
             this.getSite = this.getSite.bind(this)
             this.toggleSite = this.toggleSite.bind(this)
             this.showProductSelection = this.showProductSelection.bind(this)
+            this.toggleDateOpen = this.toggleDateOpen.bind(this)
+
 
         }
 
@@ -166,10 +169,6 @@
                 formIsValid = false;
                 errors["title"] = "Required";
             }
-            // if(!fields["agree"]){
-            //     formIsValid = false;
-            //     errors["agree"] = "Required";
-            // }
 
 
             if (!fields["description"]) {
@@ -181,10 +180,6 @@
                 errors["category"] = "Required";
             }
 
-            // if(!fields["email"]){
-            //     formIsValid = false;
-            //     errors["email"] = "Required";
-            // }
 
 
 
@@ -208,6 +203,27 @@
             let fields = this.state.fieldsProduct;
             fields[field] = e.target.value;
             this.setState({ fields });
+        }
+
+
+
+
+        toggleDateOpen(){
+
+            this.setState({
+
+                requiredDateOpen: true
+            })
+        }
+
+
+
+        toggleDateClose(){
+
+            this.setState({
+
+                requiredDateOpen: false
+            })
         }
 
 
@@ -412,8 +428,6 @@
                 }
             }
 
-            // console.log("create search data")
-            // console.log(data)
 
             axios.post(baseUrl + "search/" + this.state.productSelected.id,
                 data, {
@@ -797,6 +811,9 @@
 
 
         }
+         isNumeric(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
 
 
         handleValidation() {
@@ -840,6 +857,20 @@
             }
 
 
+            if (!this.isNumeric(fields["volume"])) {
+                formIsValid = false;
+                errors["volume"] = "Invalid Input";
+            } else {
+
+
+                this.setState({
+
+                    volumeSelected: fields["volume"]
+                })
+            }
+
+
+
             if (!fields["volume"]) {
                 formIsValid = false;
                 errors["volume"] = "Required";
@@ -851,6 +882,7 @@
                     volumeSelected: fields["volume"]
                 })
             }
+
 
 
 
@@ -944,7 +976,6 @@
         }
         handleValidationNextColor() {
 
-            // alert("called")
             let fields = this.state.fields;
             let errors = {};
             let formIsValid = true;
@@ -958,10 +989,6 @@
                 formIsValid = false;
                 errors["description"] = "Required";
             }
-            // if(!fields["agree"]){
-            //     formIsValid = false;
-            //     errors["agree"] = "Required";
-            // }
 
 
             if (!fields["volume"]) {
@@ -975,10 +1002,6 @@
                 errors["unit"] = "Required";
             }
 
-            // if(!fields["unit"]){
-            //     formIsValid = false;
-            //     errors["unit"] = "Required";
-            // }
 
 
 
@@ -1091,18 +1114,13 @@
         handleChange(field, e) {
 
 
-
-
             let fields = this.state.fields;
             fields[field] = e.target.value;
-
-            // alert(fields[field])
 
             this.setState({ fields });
             this.handleValidationNextColor()
             this.handleValidationAddDetailNextColor()
 
-            // alert(fields["unit"])
 
 
 
@@ -1173,7 +1191,7 @@
 
 
         componentWillMount() {
-
+            window.scrollTo(0, 0)
         }
 
         componentDidMount() {
@@ -1395,9 +1413,12 @@
                     <Sidebar />
                     <HeaderDark />
 
+                    <div className="container pt-4 p-2 mt-5 ">
+                    </div>
+
                     <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
 
-                        <div className="mt-5  pt-5 pb-3">
+                        <div className="pt-2 pb-3">
 
 
                             {/*<HeaderWhiteBack    />*/}
@@ -1473,16 +1494,12 @@
 
                                     <div className="col-6 pr-2">
 
-                                        {/*<UnitSelect units={this.state.units} />*/}
-
-
 
                                         <FormControl variant="outlined" className={classes.formControl}>
                                             <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
                                             <Select
                                                 name={"unit"}
                                                 native
-
                                                 onChange={this.handleChange.bind(this, "unit")}
 
                                                 label="Age"
@@ -1509,7 +1526,7 @@
                                     </div>
                                     <div className="col-6 pl-2">
 
-                                        <TextField onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                                        <TextField  onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 
 
@@ -1527,7 +1544,7 @@
 
                     <div className={this.state.active === 1 ? "" : "d-none"}>
 
-                        <div className="container mb-5  pt-2 pb-5">
+                        <div className="container mb-2  pt-2 pb-2">
 
                             <div className="row no-gutters">
                                 <div className="col-10">
@@ -1536,7 +1553,7 @@
                                 </div>
 
 
-                                <div className="col-auto">
+                                <div className="col-2" style={{textAlign:"right"}}>
 
 
                                     <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
@@ -1574,7 +1591,7 @@
 
 
                     <div className={this.state.active === 2 ? "" : "d-none"}>
-                        <div className="container  pt-2 mb-5 pb-5">
+                        <div className="container  pt-2 mb-2 pb-2">
 
                             <div className="row no-gutters">
                                 <div className="col-10">
@@ -1582,7 +1599,7 @@
                                     <h6>Select a type </h6>
                                 </div>
 
-                                <div className="col-auto">
+                                <div className="col-2" style={{textAlign:"right"}}>
 
                                     <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
 
@@ -1626,7 +1643,7 @@
                                 </div>
 
 
-                                <div className="col-auto">
+                                <div className="col-2" style={{textAlign:"right"}}>
 
 
                                     <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
@@ -1659,7 +1676,7 @@
 
 
 
-                    {/*<div className={this.state.active === 4 ? "" : "d-none"}>*/}
+                    <div className={this.state.active === 4 ? "" : "d-none"}>
 
                         <div className="container  pt-2 pb-3">
 
@@ -1709,12 +1726,10 @@
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
 
-
-                                        
                                         <Select
                                             name={"deliver"}
                                             native
-                                            label="Age"
+                                            label="Deliver To"
                                             onChange={this.handleChange.bind(this, "deliver")}
 
                                             inputProps={{
@@ -1747,9 +1762,26 @@
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
                                     <KeyboardDatePicker
+                                        KeyboardButtonProps={{
+                                            onFocus: e => {
+                                                this.toggleDateOpen();
+                                            }
+                                        }}
+                                        PopoverProps={{
+                                            disableRestoreFocus: true,
+                                            onClose: () => {
+                                                this.toggleDateOpen();
+                                            }
+                                        }}
+                                        InputProps={{
+                                            onFocus: () => {
+                                                this.toggleDateOpen();
+                                            }
+                                        }}
+                                        open={this.state.requiredDateOpen}
                                         margin="normal"
                                         id="date-picker-dialog"
-                                        label="Date picker dialog"
+                                        label="Required By"
                                         format="MM/dd/yyyy"
                                         onChange={this.handleChange.bind(this, "startDate")}
                                         KeyboardButtonProps={{
@@ -1765,7 +1797,7 @@
 
                             </div>
                         </div>
-
+                    </div>
 
 
 
@@ -2495,7 +2527,6 @@
                         native
                         value={state.age}
                         onChange={handleChange}
-                        label="Age"
                         inputProps={{
                             name: 'unit',
                             id: 'outlined-age-native-simple',

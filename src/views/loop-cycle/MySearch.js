@@ -204,7 +204,7 @@ class MySearch extends Component {
 
                                     <div className="col-auto">
 
-                                        <Link to={"/create-search"}><p className={"green-text bottom-bar-text"}> Create New Search </p></Link>
+                                        <Link to={"/search-form"}><p className={"green-text bottom-bar-text"}> Create New Search </p></Link>
 
 
                                     </div>

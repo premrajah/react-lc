@@ -38,7 +38,8 @@ import DewateringImg from '../../img/components/Dewatering_Unit_1950.png';
 import CameraGray from '../../img/icons/camera-gray.png';
 import PlusGray from '../../img/icons/plus-icon.png';
 import ControlImg from '../../img/components/Control_Panel_1450.png';
-
+import HeaderDark from '../header/HeaderDark'
+import Sidebar from '../menu/Sidebar'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -114,7 +115,9 @@ class CreateListing extends Component {
             model: null,
             serial: null,
             startDate: null,
-            images: []
+            images: [],
+                yearsList:[],
+
 
 
         }
@@ -146,6 +149,7 @@ class CreateListing extends Component {
         this.toggleSale = this.toggleSale.bind(this)
         this.handleChangeFile = this.handleChangeFile.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
+        this.setUpYearList = this.setUpYearList.bind(this)
 
 
 
@@ -153,6 +157,24 @@ class CreateListing extends Component {
 
 
 
+    setUpYearList(){
+
+
+        let years=[]
+
+        let currentYear = (new Date()).getFullYear();
+
+        //Loop and add the Year values to DropDownList.
+        for (let i = currentYear; i >= 1950; i--) {
+
+            years.push(i)
+        }
+
+        this.setState({
+
+            yearsList: years
+        })
+    }
 
 
 
@@ -403,52 +425,80 @@ class CreateListing extends Component {
     createListing() {
 
 
-        // alert(this.state.price +" "+this.state.unitSelected)
-
-
-        //
-        // alert(this.state.manufacturedDate+"manu -  start"+this.state.startDate)
-        //
-        // return
 
         var data = {}
 
 
-        data = {
 
-            "name": this.state.title,
-            "description": this.state.description,
-            "category": this.state.catSelected.name,
-            "type": this.state.subCatSelected.name,
-            "units": "units",
+        if (this.state.price) {
+            data = {
 
-            "serial": this.state.serial,
-            "model": this.state.model,
-            "brand": this.state.brand,
+                "name": this.state.title,
+                "description": this.state.description,
+                "category": this.state.catSelected.name,
+                "type": this.state.subCatSelected.name,
+                "units": "units",
 
-            "volume": this.state.volume,
-            "state": this.state.stateSelected,
-            "site_id": this.state.siteSelected,
-            "age": {
-                "unit": "MILLISECOND",
-                "value": new Date(this.state.manufacturedDate).getTime()
-            },
-            "availableFrom": {
-                "unit": "MILLISECOND",
-                "value": new Date(this.state.startDate).getTime()
-            },
-            "expiry": {
-                "unit": "MILLISECOND",
-                "value": new Date(this.state.startDate).getTime() + 8640000000
-            },
-            "price": {
-                "value": this.state.price,
-                "currency": "gbp"
-            },
-            "images": this.state.images
+                "serial": this.state.serial,
+                "model": this.state.model,
+                "brand": this.state.brand,
+
+                "volume": this.state.volume,
+                "state": this.state.stateSelected,
+                "site_id": this.state.siteSelected,
+                "age": {
+                    "unit": "MILLISECOND",
+                    "value": new Date(this.state.manufacturedDate).getTime()
+                },
+                "availableFrom": {
+                    "unit": "MILLISECOND",
+                    "value": new Date(this.state.startDate).getTime()
+                },
+                "expiry": {
+                    "unit": "MILLISECOND",
+                    "value": new Date(this.state.startDate).getTime() + 8640000000
+                },
+                "price": {
+                    "value": this.state.price,
+                    "currency": "gbp"
+                },
+                "images": this.state.images
+            }
+
+        }else{
+
+
+            data = {
+
+                "name": this.state.title,
+                "description": this.state.description,
+                "category": this.state.catSelected.name,
+                "type": this.state.subCatSelected.name,
+                "units": "units",
+
+                "serial": this.state.serial,
+                "model": this.state.model,
+                "brand": this.state.brand,
+
+                "volume": this.state.volume,
+                "state": this.state.stateSelected,
+                "site_id": this.state.siteSelected,
+                "age": {
+                    "unit": "MILLISECOND",
+                    "value": new Date(this.state.manufacturedDate).getTime()
+                },
+                "availableFrom": {
+                    "unit": "MILLISECOND",
+                    "value": new Date(this.state.startDate).getTime()
+                },
+                "expiry": {
+                    "unit": "MILLISECOND",
+                    "value": new Date(this.state.startDate).getTime() + 8640000000
+                },
+
+                "images": this.state.images
+            }
         }
-
-
 
         axios.post(baseUrl + "resource",
             data, {
@@ -1356,15 +1406,17 @@ class CreateListing extends Component {
 
 
     componentWillMount() {
-
+        window.scrollTo(0, 0)
     }
 
     componentDidMount() {
 
 
 
+
         this.getFiltersCategories()
 
+        this.setUpYearList()
 
 
     }
@@ -1584,8 +1636,10 @@ class CreateListing extends Component {
 
             <>
 
+                <Sidebar />
+                <HeaderDark />
 
-                <div className="container  p-2 ">
+                <div className="container pt-4 p-2 mt-5 ">
                 </div>
 
 
@@ -1604,7 +1658,7 @@ class CreateListing extends Component {
                             <div className="col-2 text-right">
 
 
-                                <Link to={"/create-listing"}><Close className="blue-text" style={{ fontSize: 32 }} /></Link>
+                                <Link to={"/"}><Close className="blue-text" style={{ fontSize: 32 }} /></Link>
 
                             </div>
 
@@ -1681,28 +1735,54 @@ class CreateListing extends Component {
 
                                 <div className="col-12  mt-4">
 
-                                    <TextField
-                                        onChange={this.handleChange.bind(this, "manufacturedDate")}
-                                        name={"manufacturedDate"}
-                                        id="input-with-icon-textfield"
-                                        InputLabelProps={{
-                                            shrink: true,
-                                            name: "manufacturedDate"
-                                        }}
-                                        label="Year Of Manufacture"
-                                        type={"date"}
-                                        variant="outlined"
-                                        className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                        id="input-with-icon-textfield"
-                                        minDate={new Date()}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
+
+
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Year Of Manufacture</InputLabel>
+                                        <Select
+                                            native
+                                            name={"manufacturedDate"}
+                                            onChange={this.handleChange.bind(this, "manufacturedDate")}
+                                            label="Year Of Manufacture"
+                                            inputProps={{
+                                                name: 'Year Of Manufacture',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
+
+                                            <option value={null}>Select</option>
+
+                                            {this.state.yearsList.map((item) =>
+
+                                                <option value={item}>{item}</option>
+
+                                            )}
+
+                                        </Select>
+                                    </FormControl>
+
+                                    {/*<TextField*/}
+                                        {/*onChange={this.handleChange.bind(this, "manufacturedDate")}*/}
+                                        {/*name={"manufacturedDate"}*/}
+                                        {/*id="input-with-icon-textfield"*/}
+                                        {/*InputLabelProps={{*/}
+                                            {/*shrink: true,*/}
+                                            {/*name: "manufacturedDate"*/}
+                                        {/*}}*/}
+                                        {/*label="Year Of Manufacture"*/}
+                                        {/*type={"date"}*/}
+                                        {/*variant="outlined"*/}
+                                        {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
+                                        {/*id="input-with-icon-textfield"*/}
+                                        {/*minDate={new Date()}*/}
+                                        {/*InputProps={{*/}
+                                            {/*endAdornment: (*/}
+                                                {/*<InputAdornment position="end">*/}
+                                                    {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
+                                                {/*</InputAdornment>*/}
+                                            {/*),*/}
+                                        {/*}}*/}
+                                    {/*/>*/}
                                     {this.state.errors["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["manufacturedDate"]}</span>}
 
                                 </div>
@@ -1818,7 +1898,7 @@ class CreateListing extends Component {
                             </div>
 
 
-                            <div className="col-auto">
+                            <div className="col-2" style={{textAlign:"right"}}>
 
                                 <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
 
@@ -1828,7 +1908,7 @@ class CreateListing extends Component {
                         </div>
                     </div>
 
-                    <div className="container  mt-5 mb-5 pb-5  pt-3">
+                    <div className="container  mt-2 mb-5 pb-5  pt-3">
 
                         {this.state.categories.map((item) =>
 
@@ -1863,7 +1943,7 @@ class CreateListing extends Component {
                                 <h6>Select a type </h6>
                             </div>
 
-                            <div className="col-auto">
+                            <div className="col-2" style={{textAlign:"right"}}>
 
                                 <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
 
@@ -1873,7 +1953,7 @@ class CreateListing extends Component {
                         </div>
                     </div>
 
-                    <div className="container mt-5 mb-5 pb-5  ">
+                    <div className="container mt-2 mb-5 pb-5  ">
 
                         {this.state.subCategories && this.state.subCategories.map((item) =>
 
@@ -1907,7 +1987,7 @@ class CreateListing extends Component {
                             </div>
 
 
-                            <div className="col-auto">
+                            <div className="col-2" style={{textAlign:"right"}}>
 
 
                                 <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
@@ -2041,8 +2121,6 @@ class CreateListing extends Component {
                             <div className="col-12 mb-3">
 
 
-                                {/*<SiteSelect   sites={this.state.sites}/>*/}
-
 
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
@@ -2151,7 +2229,7 @@ class CreateListing extends Component {
                                 <TextField
                                     onChange={this.handleChange.bind(this, "price")}
                                     id="input-with-icon-textfield"
-                                    label="Enter Value"
+                                    label="£"
                                     variant="outlined"
                                     className={clsx(classes.margin, classes.textField) + " full-width-field"}
                                     id="input-with-icon-textfield"

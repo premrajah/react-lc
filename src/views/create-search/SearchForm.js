@@ -41,6 +41,7 @@
     import {
         MuiPickersUtilsProvider,
         KeyboardDatePicker,
+        DatePicker
     } from '@material-ui/pickers';
 
     const useStyles = makeStyles((theme) => ({
@@ -108,7 +109,7 @@
                 productSelection: false,
                 purpose: ["defined", "prototype", "aggregate"],
                 site: {},
-                requiredDateOpen: false
+                dateRequiredBy: null
 
 
             }
@@ -129,7 +130,7 @@
             this.handleBack = this.handleBack.bind(this)
             this.getProducts = this.getProducts.bind(this)
             this.selectProduct = this.selectProduct.bind(this)
-            this.handleDateChange = this.handleDateChange.bind(this)
+            // this.handleDateChange = this.handleDateChange.bind(this)
             this.createSearch = this.createSearch.bind(this)
             this.loadMatches = this.loadMatches.bind(this)
             this.showCreateSite = this.showCreateSite.bind(this)
@@ -138,9 +139,12 @@
             this.toggleSite = this.toggleSite.bind(this)
             this.showProductSelection = this.showProductSelection.bind(this)
             this.toggleDateOpen = this.toggleDateOpen.bind(this)
+            this.handleChangeDate = this.handleChangeDate.bind(this)
 
 
         }
+
+
 
 
 
@@ -1040,10 +1044,6 @@
                 errors["deliver"] = "Required";
             }
 
-            // if(!fields["endDate"]){
-            //     formIsValid = false;
-            //     errors["endDate"] = "Required";
-            // }
 
             if (!fields["startDate"]) {
                 formIsValid = false;
@@ -1111,6 +1111,26 @@
 
 
 
+
+        handleChangeDate = date => {
+
+
+            this.setState({
+
+                dateRequiredBy : date
+
+            })
+
+
+            let fields = this.state.fields;
+            fields["startDate"] = date;
+
+            this.setState({ fields });
+
+
+
+        };
+
         handleChange(field, e) {
 
 
@@ -1124,7 +1144,25 @@
 
 
 
+
         }
+
+
+
+
+
+        // handleChangeDate =  date => {
+        //
+        //
+        //         this.setState({
+        //
+        //             dateRequiredBy: date
+        //
+        //         })
+        //
+        //
+        //
+        // }
 
 
 
@@ -1325,21 +1363,9 @@
             const address = data.get("address")
             const phone = data.get("phone")
 
-            // var postData={
-            //     "name": name,
-            //     "email": email,
-            //     "contact" : contact,
-            //     "address": address,
-            //     "phone": phone,
-            //     "others": others
-            //
-            // }
 
 
             console.log("site submit called")
-            // console.log(postData)
-
-
 
             axios.post(baseUrl + "site",
 
@@ -1761,33 +1787,17 @@
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                    <KeyboardDatePicker
-                                        KeyboardButtonProps={{
-                                            onFocus: e => {
-                                                this.toggleDateOpen();
-                                            }
-                                        }}
-                                        PopoverProps={{
-                                            disableRestoreFocus: true,
-                                            onClose: () => {
-                                                this.toggleDateOpen();
-                                            }
-                                        }}
-                                        InputProps={{
-                                            onFocus: () => {
-                                                this.toggleDateOpen();
-                                            }
-                                        }}
-                                        open={this.state.requiredDateOpen}
-                                        margin="normal"
-                                        id="date-picker-dialog"
-                                        label="Required By"
-                                        format="MM/dd/yyyy"
-                                        onChange={this.handleChange.bind(this, "startDate")}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
-                                    />
+                                    <DatePicker minDate={new Date()}
+                                                label="Required By"
+                                                 inputVariant="outlined"
+                                                  variant={"outlined"}
+                                                  margin="normal"
+                                                  id="date-picker-dialog"
+                                                  label="Required By"
+                                                  format="DD/MM/yyyy"
+                                                  value={this.state.dateRequiredBy} onChange={this.handleChangeDate.bind(this)} />
+
+
 
                                 </MuiPickersUtilsProvider>
                                     {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
@@ -2566,6 +2576,8 @@
                 <FormControl variant="outlined" className={classes.formControl}>
                     <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
                     <Select
+                        inputVariant="outlined"
+                        variant={"outlined"}
                         name={"site"}
                         native
                         value={state}

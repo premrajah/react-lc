@@ -40,7 +40,13 @@ import PlusGray from '../../img/icons/plus-icon.png';
 import ControlImg from '../../img/components/Control_Panel_1450.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+import MomentUtils from '@date-io/moment';
 
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+    DatePicker
+} from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -115,8 +121,9 @@ class CreateListing extends Component {
             model: null,
             serial: null,
             startDate: null,
+            endDate: null,
             images: [],
-                yearsList:[],
+            yearsList:[],
 
 
 
@@ -177,7 +184,45 @@ class CreateListing extends Component {
     }
 
 
+    handleChangeDateStartDate = date => {
 
+
+        this.setState({
+
+            startDate : date
+
+        })
+
+
+        let fields = this.state.fields;
+        fields["startDate"] = date;
+
+        this.setState({ fields });
+
+
+
+    };
+
+
+
+    handleChangeDateEndDate = date => {
+
+
+        this.setState({
+
+            endDate : date
+
+        })
+
+
+        let fields = this.state.fields;
+        fields["endDate"] = date;
+
+        this.setState({ fields });
+
+
+
+    };
 
 
     handleChangeFile(event) {
@@ -620,10 +665,6 @@ class CreateListing extends Component {
 
     handleNext() {
 
-
-
-
-        // alert(this.activeScreen)
 
         if (this.activeScreen === 0) {
 
@@ -1234,14 +1275,21 @@ class CreateListing extends Component {
 
 
 
-        // if(!this.state.productSelected){
-        //     formIsValid = false;
-        //     errors["product"] = "Required";
-        // }
+        if (!fields["endDate"]) {
+            formIsValid = false;
+            errors["endDate"] = "Required";
+        } else {
+
+            this.setState({
+
+                endDate: fields["endDate"]
+            })
+        }
 
 
 
-        // alert(fields["startDate"])
+
+
 
 
         console.log(errors)
@@ -2155,28 +2203,46 @@ class CreateListing extends Component {
                             </div>
                             <div className="col-12 mb-3">
 
-                                <TextField
-                                    onChange={this.handleChange.bind(this, "startDate")}
-                                    name={"startDate"}
-                                    id="input-with-icon-textfield"
 
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    label="Available From"
-                                    type={"date"}
-                                    variant="outlined"
-                                    className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                    id="input-with-icon-textfield"
-                                    minDate={new Date()}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+
+                                    <DatePicker
+                                        minDate={new Date()}
+                                                label="Required By"
+                                                inputVariant="outlined"
+                                                variant={"outlined"}
+                                                margin="normal"
+                                                id="date-picker-dialog"
+                                                label="Available From"
+                                                format="DD/MM/yyyy"
+                                                value={this.state.startDate} onChange={this.handleChangeDateStartDate.bind(this)} />
+
+
+
+                                </MuiPickersUtilsProvider>
+
+
+                                {/*<TextField*/}
+                                    {/*onChange={this.handleChange.bind(this, "startDate")}*/}
+                                    {/*name={"startDate"}*/}
+                                    {/*id="input-with-icon-textfield"*/}
+                                    {/*InputLabelProps={{*/}
+                                        {/*shrink: true,*/}
+                                    {/*}}*/}
+                                    {/*label="Available From"*/}
+                                    {/*type={"date"}*/}
+                                    {/*variant="outlined"*/}
+                                    {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
+                                    {/*id="input-with-icon-textfield"*/}
+                                    {/*minDate={new Date()}*/}
+                                    {/*InputProps={{*/}
+                                        {/*endAdornment: (*/}
+                                            {/*<InputAdornment position="end">*/}
+                                                {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
+                                            {/*</InputAdornment>*/}
+                                        {/*),*/}
+                                    {/*}}*/}
+                                {/*/>*/}
                                 {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
 
                             </div>
@@ -2185,28 +2251,44 @@ class CreateListing extends Component {
 
                             <div className="col-12 mb-3">
 
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                <TextField
-                                    onChange={this.handleChange.bind(this, "endDate")}
-                                    name={"endDate"}
-                                    id="input-with-icon-textfield"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    label="Expires"
-                                    type={"date"}
-                                    variant="outlined"
-                                    className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                    id="input-with-icon-textfield"
-                                    minDate={new Date()}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
+                                    <DatePicker minDate={this.state.startDate}
+                                                label="Required By"
+                                                inputVariant="outlined"
+                                                variant={"outlined"}
+                                                margin="normal"
+                                                id="date-picker-dialog"
+                                                label="End Date "
+                                                format="DD/MM/yyyy"
+                                                value={this.state.endDate} onChange={this.handleChangeDateEndDate.bind(this)} />
+
+
+
+                                </MuiPickersUtilsProvider>
+
+
+                                {/*<TextField*/}
+                                    {/*onChange={this.handleChange.bind(this, "endDate")}*/}
+                                    {/*name={"endDate"}*/}
+                                    {/*id="input-with-icon-textfield"*/}
+                                    {/*InputLabelProps={{*/}
+                                        {/*shrink: true,*/}
+                                    {/*}}*/}
+                                    {/*label="Expires"*/}
+                                    {/*type={"date"}*/}
+                                    {/*variant="outlined"*/}
+                                    {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
+                                    {/*id="input-with-icon-textfield"*/}
+                                    {/*minDate={new Date()}*/}
+                                    {/*InputProps={{*/}
+                                        {/*endAdornment: (*/}
+                                            {/*<InputAdornment position="end">*/}
+                                                {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
+                                            {/*</InputAdornment>*/}
+                                        {/*),*/}
+                                    {/*}}*/}
+                                {/*/>*/}
                                 {this.state.errors["endDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["endDate"]}</span>}
 
 

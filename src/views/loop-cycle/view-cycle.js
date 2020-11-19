@@ -23,6 +23,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withStyles } from "@material-ui/core/styles/index";
+import moment from "moment/moment";
 
 
 
@@ -44,7 +45,8 @@ class ViewCycle extends Component {
             fields: {},
             errors: {},
             showPopUpLogistics: false,
-            showPopUpTrackingNumber: false
+            showPopUpTrackingNumber: false,
+            showPrompt:false
         }
 
         this.slug = props.match.params.slug
@@ -60,9 +62,21 @@ class ViewCycle extends Component {
 
         this.showPopUpLogistics = this.showPopUpLogistics.bind(this)
         this.showPopUpTrackingNumber = this.showPopUpTrackingNumber.bind(this)
+        this.proceedCancel = this.proceedCancel.bind(this)
+        // this.togglePrompt = this.togglePrompt.bind(this)
         // this.enterTracking=this.enterTracking.bind(this)
 
     }
+
+
+    // togglePrompt() {
+    //
+    //     this.setState({
+    //         showPrompt: !this.state.showPrompt
+    //     })
+    //
+    // }
+
 
     showPopUpTrackingNumber() {
 
@@ -487,17 +501,19 @@ class ViewCycle extends Component {
     }
 
 
-    declineOffer() {
 
 
 
+
+
+    proceedCancel(){
 
         axios.post(baseUrl + "loop/" + this.slug + "/cancel",
             {}, {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
             }
-        }
         )
             .then(res => {
 
@@ -517,17 +533,32 @@ class ViewCycle extends Component {
 
 
 
-                console.log("loop confirm error found ")
-                console.log(error.response.data)
+            console.log("loop confirm error found ")
+            console.log(error.response.data)
 
 
-                this.setState({
+            this.setState({
 
-                    showPopUp: true,
-                    loopError: error.response.data.content.message
-                })
+                showPopUp: true,
+                loopError: error.response.data.content.message
+            })
 
-            });
+        });
+
+
+
+    }
+
+
+
+    declineOffer() {
+
+
+        this.setState({
+            showPrompt: !this.state.showPrompt
+        })
+
+
 
     }
 
@@ -694,8 +725,8 @@ class ViewCycle extends Component {
                                             <div className={"col-auto"}>
 
                                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.category} ></p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.type}</p>
                                             </div>
                                         </div>
                                         <div className="row  justify-content-start search-container  pb-4">
@@ -705,7 +736,7 @@ class ViewCycle extends Component {
                                             <div className={"col-auto"}>
 
                                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.resource.volume} {this.state.item.resource.units}</p>
                                             </div>
                                         </div>
 
@@ -727,11 +758,28 @@ class ViewCycle extends Component {
                                             </div>
                                             <div className={"col-auto"}>
 
+                                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required From </p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">
+
+
+
+                                                    {moment(this.state.item.resource.availableFrom.value).format("DD MMM YYYY")}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="row  justify-content-start search-container  pb-4">
+                                            <div className={"col-1"}>
+                                                <img className={"icon-about"} src={CalenderIcon} alt="" />
+                                            </div>
+                                            <div className={"col-auto"}>
+
                                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    <Moment unix  >
-                                                        {this.state.item.availableFrom}
-                                                    </Moment>
+
+
+
+                                                    {moment(this.state.item.resource.expiry.value).format("DD MMM YYYY")}
                                                 </p>
                                             </div>
                                         </div>
@@ -742,8 +790,8 @@ class ViewCycle extends Component {
                                             <div className={"col-auto"}>
 
                                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.site && this.state.item.resource.site.name}</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.site && this.state.item.resource.site.address}</p>
                                             </div>
                                         </div>
 
@@ -800,20 +848,20 @@ class ViewCycle extends Component {
 
                                                                 <div className="col-auto">
                                                                     <button onClick={this.confirmOffer} type="button"
-                                                                        className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                                                         Accept Offer
 
-                                            </button>
+                                                          </button>
                                                                 </div>
 
                                                                 <div className="col-auto">
 
                                                                     <button onClick={this.declineOffer} type="button"
-                                                                        className="shadow-sm mr-2 blue-btn-border btn btn-link  mt-2 mb-2 btn-blue">
+                                                                        className="shadow-sm mr-2 green-btn-border btn btn-link  mt-2 mb-2 ">
 
                                                                         Reject Offer
 
-                                            </button>
+                                                               </button>
                                                                 </div>
                                                             </div>
 
@@ -866,7 +914,7 @@ class ViewCycle extends Component {
                                         <div className="col-auto">
 
                                             <button onClick={this.declineOffer} type="button"
-                                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-green">
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
 
                                                 Reject Offer
 
@@ -927,7 +975,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
@@ -975,7 +1023,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
 
@@ -1073,7 +1121,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
@@ -1121,7 +1169,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
 
@@ -1211,7 +1259,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
@@ -1259,7 +1307,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
 
@@ -1330,15 +1378,6 @@ class ViewCycle extends Component {
                                         }
 
 
-                                        {/*<div className="col-auto">*/}
-                                        {/*<button onClick={this.declineOffer} type="button"*/}
-                                        {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
-                                        {/*Cancel Cycle*/}
-
-                                        {/*</button>*/}
-                                        {/*</div>*/}
-
-
                                     </div>
 
 
@@ -1350,7 +1389,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
@@ -1398,7 +1437,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
+                            <Modal className={"loop-popup"} 
                                 aria-labelledby="contained-modal-title-vcenter"
                                 centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
 
@@ -1447,83 +1486,44 @@ class ViewCycle extends Component {
 
 
 
-                    {this.state.item && this.state.item.state === "received" &&
-
-                        <>
-                            <CssBaseline />
-
-                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                                <Toolbar>
-                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
-
-                                        {this.state.item.id && (this.props.userDetail.orgId === this.state.item.producer.org.id) && this.state.item.state === "received" &&
-
-                                            <div className="col-auto">
-                                                <button onClick={this.orderClose} type="button"
-                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
-                                                    Close Cycle
-
-                                        </button>
-                                            </div>
-
-                                        }
 
 
-                                        {/*<div className="col-auto">*/}
-                                        {/*<button onClick={this.declineOffer} type="button"*/}
-                                        {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
-                                        {/*Cancel Cycle*/}
-
-                                        {/*</button>*/}
-                                        {/*</div>*/}
-
-
-                                    </div>
-
-
-
-
-
-                                </Toolbar>
-                            </AppBar>
-
-
-
-                            <Modal className={"loop-popup"} size="lg"
+                     <Modal className={"loop-popup"}
                                 aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+                                centered show={this.state.showPrompt} onHide={this.declineOffer} animation={true}>
 
                                 <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
 
                                     <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-12"} style={{textAlign:"center"}}>
+                                                <p className={"text-bold"}>Are you sure you want to proceed ??</p>
                                                 {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
                                         </div>
                                         <div className={"row justify-content-center"}>
                                             <form onSubmit={this.handleSubmit}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
 
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                <div className={"row"}>
+                                                <div className={"col-6 mt-2"}>
+
+
+                                                    <button onClick={this.declineOffer} type={"submit"} className={"green-btn-border btn btn-default btn-lg btn-rounded shadow btn-block "}>
+
+
+                                                        Cancel
+                                                    </button>
+
                                                 </div>
-                                                <div className={"col-12 mt-2"}>
+                                                <div className={"col-6 mt-2"}>
 
 
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                                    <button onClick={this.proceedCancel} type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block "}>
 
-
-                                                        Submit
+                                                        Yes
                                                 </button>
 
+                                                </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -1537,51 +1537,56 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} size="lg"
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
 
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
+
+
+                    <Modal className={"loop-popup"} 
+                           aria-labelledby="contained-modal-title-vcenter"
+                           centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
+
+                        <ModalBody>
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-4"}>
+                                    <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
+                                </div>
+                            </div>
+
+
+                            <>
+                                <div className={"row"}>
+                                    <div className={"col-12"}>
+                                        <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                        {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                     </div>
+                                </div>
+                                <div className={"row justify-content-center"}>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <div className={"col-12"}>
+                                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
 
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a tracking :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
+                                            {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
                                         </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmitTracking}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
-
-                                                </div>
-                                                <div className={"col-12"}>
+                                        <div className={"col-12 mt-2"}>
 
 
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+                                            <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
 
-                                                        Submit
-                                                </button>
 
-                                                </div>
-                                            </form>
+                                                Submit
+                                            </button>
+
                                         </div>
-                                    </>
+                                    </form>
+                                </div>
+                            </>
 
 
 
-                                </ModalBody>
+                        </ModalBody>
 
-                            </Modal>
+                    </Modal>
 
-                        </>}
+
 
                 </React.Fragment>
 

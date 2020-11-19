@@ -6,6 +6,8 @@
     import FormControl from '@material-ui/core/FormControl';
     import SearchIcon from '../../img/icons/search-icon.png';
     import { Link } from "react-router-dom";
+    import { Alert} from 'react-bootstrap';
+
     import InputLabel from '@material-ui/core/InputLabel';
     import Close from '@material-ui/icons/Close';
     import NavigateBefore from '@material-ui/icons/NavigateBefore';
@@ -37,6 +39,7 @@
     // import  moment from  'moment'
 
     import MomentUtils from '@date-io/moment';
+    import moment from 'moment';
 
     import {
         MuiPickersUtilsProvider,
@@ -109,7 +112,8 @@
                 productSelection: false,
                 purpose: ["defined", "prototype", "aggregate"],
                 site: {},
-                dateRequiredBy: null
+                dateRequiredBy: null,
+                dateRequiredFrom:null
 
 
             }
@@ -412,6 +416,8 @@
 
         createSearch() {
 
+
+
             var data = {
 
                 "name": this.state.title,
@@ -424,11 +430,11 @@
                 "site_id": this.state.siteSelected,
                 "require_after": {
                     "unit": "MILLISECOND",
-                    "value": 1603381408
+                    "value": new Date(this.state.dateRequiredFrom).getTime()
                 },
                 "expiry": {
                     "unit": "MILLISECOND",
-                    "value": 1605830400000
+                    "value": new Date(this.state.dateRequiredBy).getTime()
                 }
             }
 
@@ -1051,6 +1057,13 @@
             }
 
 
+            if (!fields["endDate"]) {
+                formIsValid = false;
+                errors["endDate"] = "Required";
+            }
+
+
+
 
             if (!this.state.productSelected) {
                 formIsValid = false;
@@ -1109,7 +1122,24 @@
 
         }
 
+        handleChangeDateStartDate = date => {
 
+
+            this.setState({
+
+                dateRequiredFrom : date
+
+            })
+
+
+            let fields = this.state.fields;
+            fields["startDate"] = date;
+
+            this.setState({ fields });
+
+
+
+        };
 
 
         handleChangeDate = date => {
@@ -1123,7 +1153,7 @@
 
 
             let fields = this.state.fields;
-            fields["startDate"] = date;
+            fields["endDate"] = date;
 
             this.setState({ fields });
 
@@ -1230,6 +1260,10 @@
 
         componentWillMount() {
             window.scrollTo(0, 0)
+
+            // alert(moment(1605830400000).format("DD MMM YYYY"));
+
+
         }
 
         componentDidMount() {
@@ -1507,7 +1541,7 @@
 
                                             {this.state.catSelected && this.state.catSelected.name && this.state.subCatSelected && this.state.stateSelected ?
 
-                                                this.state.catSelected.name + ">" + this.state.subCatSelected.name + ">" + this.state.stateSelected : "Resource Category"}
+                                                this.state.catSelected.name + " > " + this.state.subCatSelected.name + " > " + this.state.stateSelected : "Resource Category"}
 
 
                                         </div>
@@ -1594,7 +1628,7 @@
 
                             {this.state.categories.map((item) =>
 
-                                <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
+                                <div data-name={item.name} className="row mr-2 ml-2  unselected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
                                     <div className="col-2">
                                         <img className={"icon-left-select"} src={SendIcon} alt="" />
                                     </div>
@@ -1639,7 +1673,7 @@
 
                             {this.state.subCategories && this.state.subCategories.map((item) =>
 
-                                <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3"
+                                <div data-name={item.name} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
                                     onClick={this.selectSubCatType.bind(this)}>
                                     <div className="col-10">
 
@@ -1660,7 +1694,7 @@
 
                     <div className={this.state.active === 3 ? "" : "d-none"}>
 
-                        <div className="container  pt-2 pb-5 mb-5">
+                        <div className="container  pt-2 pb-2 mb-2">
 
                             <div className="row no-gutters">
                                 <div className="col-10">
@@ -1739,14 +1773,12 @@
                                         {this.state.productSelected ? this.state.productSelected.title : "Link new a product"}
                                         <img className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                     </div>
-                                    {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["linkProduct"]}</span>}
+                                    {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
 
 
                                 </div>
                                 <div className="col-12 mb-3">
 
-
-                                    {/*<SiteSelect   sites={this.state.sites}/>*/}
 
 
                                     <FormControl variant="outlined" className={classes.formControl}>
@@ -1782,28 +1814,53 @@
 
                                     <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add new Site</p>
                                 </div>
+
+
                                 <div className="col-12 mb-3">
+
+
+                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+
+                                        <DatePicker minDate={new Date()}
+                                                    inputVariant="outlined"
+                                                    variant={"outlined"}
+                                                    margin="normal"
+                                                    id="date-picker-dialog"
+                                                    label="Required From"
+                                                    format="DD/MM/yyyy"
+                                                    value={this.state.dateRequiredFrom} onChange={this.handleChangeDateStartDate.bind(this)} />
+
+
+
+                                    </MuiPickersUtilsProvider>
+                                    {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
+
+
+                                </div>
+
+                                <div className="col-12 mb-3">
+
+
+
 
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                    <DatePicker minDate={new Date()}
+                                    <DatePicker minDate={this.state.dateRequiredFrom}
                                                 label="Required By"
                                                  inputVariant="outlined"
                                                   variant={"outlined"}
                                                   margin="normal"
                                                   id="date-picker-dialog"
-                                                  label="Required By"
                                                   format="DD/MM/yyyy"
                                                   value={this.state.dateRequiredBy} onChange={this.handleChangeDate.bind(this)} />
 
 
-
                                 </MuiPickersUtilsProvider>
-                                    {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
+                                    {this.state.errors["endDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["endDate"]}</span>}
 
+                                    </div>
 
-                                </div>
 
                             </div>
                         </div>
@@ -1836,8 +1893,11 @@
 
 
                         <div className="container mb-5   pb-5 pt-3">
-                            {this.state.products.map((item) =>
-                                <div data-name={item.title} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
+
+
+
+                            {this.state.products.length>0?this.state.products.map((item) =>
+                                <div data-name={item.title} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  " onClick={this.selectProduct}>
                                     <div className="col-2">
                                         <img className={"icon-left-select"} src={SendIcon} alt="" />
                                     </div>
@@ -1851,7 +1911,18 @@
                                     </div>
                                 </div>
 
-                            )}
+                            ):
+
+                                <div  className="row mr-2 ml-2  p-3 mb-3 ">
+                                    <div className="col-12">
+
+
+                                        <Alert variant={"secondary"}>
+                                            No Products exists. <span onClick={this.showProductSelection} className={"forgot-password-link"}> Create a new product</span>
+                                        </Alert>
+                                    </div>
+                                </div>
+                            }
 
                         </div>
 
@@ -2054,6 +2125,21 @@
                                         </div>
                                     </div>
 
+
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={CalenderIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required From </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.require_after.value).format("DD MMM YYYY")}</p>
+
+
+
+                                        </div>
+                                    </div>
+
                                     <div className="row  justify-content-start search-container  pb-4">
                                         <div className={"col-1"}>
                                             <img className={"icon-about"} src={CalenderIcon} alt="" />
@@ -2061,7 +2147,10 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">Oct 1, 2020 </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.expiry.value).format("DD MMM YYYY")}</p>
+
+
+
                                         </div>
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-4">

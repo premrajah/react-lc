@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
+import moment from "moment";
 
 class ItemDetail extends Component {
 
@@ -32,8 +33,9 @@ class ItemDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: {}
+            item: null,
         }
+
 
         this.slug = props.match.params.slug
 
@@ -147,7 +149,9 @@ class ItemDetail extends Component {
                 <div className="accountpage">
 
                     <HeaderDark />
-                    <div className="container-fluid " style={{ padding: "0" }}>
+
+
+                    {this.state.item &&   <>   <div className="container-fluid " style={{ padding: "0" }}>
 
 
                         <div className="row no-gutters  justify-content-center">
@@ -247,29 +251,56 @@ class ItemDetail extends Component {
                         </div>
 
 
-
-
                         <div className="row  justify-content-start search-container  pb-4">
                             {/*<div className={"col-1"}>*/}
                             {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
                             {/*</div>*/}
+                            <div className={"col-auto"}>
+
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Available From</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.availableFrom.value).format("DD MMM YYYY")} </p>
+                            </div>
+                        </div>
+
+
+                        <div className="row  justify-content-start search-container  pb-4">
+
+                            <div className={"col-auto"}>
+
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Available Until</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>
+                            </div>
+                        </div>
+
+
+
+                        <div className="row  justify-content-start search-container  pb-4">
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Model Number</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">ECF1212 </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.model} </p>
                             </div>
                         </div>
 
                         <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
+
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Serial Number</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">1245780 </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.serial} </p>
                             </div>
                         </div>
+
+
+                        <div className="row  justify-content-start search-container  pb-4">
+
+                            <div className={"col-auto"}>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Brand</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.brand} </p>
+                            </div>
+                        </div>
+
 
 
                         {/*<div className="row  justify-content-start search-container  pb-4">*/}
@@ -373,6 +404,8 @@ class ItemDetail extends Component {
 
 
                     </div>
+                    </>
+                    }
 
                 </div>
 

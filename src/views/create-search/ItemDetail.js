@@ -21,6 +21,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import Moment from 'react-moment';
 import { withStyles } from "@material-ui/core/styles/index";
+import moment from "moment/moment";
 
 
 
@@ -39,9 +40,10 @@ class ItemDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: {},
+            item: null,
             showPopUp: false,
-            loopError: null
+            loopError: null,
+            site : null
         }
 
         this.slug = props.match.params.slug
@@ -51,9 +53,42 @@ class ItemDetail extends Component {
         this.acceptMatch = this.acceptMatch.bind(this)
         this.declineMatch = this.declineMatch.bind(this)
         this.showPopUp = this.showPopUp.bind(this)
+        this.getSite = this.getSite.bind(this)
 
     }
 
+    getSite() {
+
+        axios.get(baseUrl + "site/" + this.state.item.site_id,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data.content;
+                    console.log("resource response")
+                    console.log(response)
+
+                    this.setState({
+
+                        site: response
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("resource error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
     showPopUp() {
 
@@ -146,6 +181,8 @@ class ItemDetail extends Component {
                     item: response.content
                 })
 
+                    this.getSite()
+
             },
                 (error) => {
 
@@ -189,7 +226,7 @@ class ItemDetail extends Component {
 
                 <Sidebar />
                 <HeaderDark />
-                <div className="accountpage">
+                {this.state.item && <div className="accountpage">
 
                     <div className="container-fluid " style={{ padding: "0" }}>
 
@@ -198,13 +235,15 @@ class ItemDetail extends Component {
 
                             <div className="floating-back-icon" style={{ margin: "auto" }}>
 
-                                <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
+                                <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }}/>
                             </div>
 
 
                             <div className="col-auto ">
 
-                                {this.state.item.images && this.state.item.images.length > 0 ? <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]} alt="" /> : <img className={"img-fluid"} src={PaperImg} alt="" />}
+                                {this.state.item.images && this.state.item.images.length > 0 ?
+                                    <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]}
+                                         alt=""/> : <img className={"img-fluid"} src={PaperImg} alt=""/>}
 
 
                                 {/*<img className={"img-fluid"}  src={PaperImg} alt=""/>*/}
@@ -230,7 +269,8 @@ class ItemDetail extends Component {
                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                             <div className="col-auto">
-                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.description}
+                                <p style={{ fontSize: "16px" }}
+                                   className={"text-gray-light "}>{this.state.item.description}
                                 </p>
 
                             </div>
@@ -250,7 +290,7 @@ class ItemDetail extends Component {
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={ListIcon} alt="" />
+                                <img className={"icon-about"} src={ListIcon} alt=""/>
                             </div>
                             <div className={"col-auto"}>
 
@@ -261,19 +301,20 @@ class ItemDetail extends Component {
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={AmountIcon} alt="" />
+                                <img className={"icon-about"} src={AmountIcon} alt=""/>
                             </div>
                             <div className={"col-auto"}>
 
                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
+                                <p style={{ fontSize: "18px" }}
+                                   className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
                             </div>
                         </div>
 
 
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} alt="" />
+                                <img className={"icon-about"} src={StateIcon} alt=""/>
                             </div>
                             <div className={"col-auto"}>
 
@@ -282,29 +323,51 @@ class ItemDetail extends Component {
                             </div>
                         </div>
 
+
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={CalenderIcon} alt="" />
+                                <img className={"icon-about"} src={CalenderIcon} alt=""/>
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required
+                                    From </p>
                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                    <Moment unix  >
-                                        {this.state.item.availableFrom}
-                                    </Moment>
+
+                                    {moment(this.state.item.availableFrom.value).format("DD MMM YYYY")}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="row  justify-content-start search-container  pb-4">
+                            <div className={"col-1"}>
+                                <img className={"icon-about"} src={CalenderIcon} alt=""/>
+                            </div>
+                            <div className={"col-auto"}>
+
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required
+                                    by </p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">
+
+                                    {moment(this.state.item.expiry.value).format("DD MMM YYYY")}
                                 </p>
                             </div>
                         </div>
                         <div className="row  justify-content-start search-container  pb-4">
                             <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} alt="" />
+                                <img className={"icon-about"} src={MarkerIcon} alt=""/>
                             </div>
                             <div className={"col-auto"}>
 
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>
+                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery
+                                    From</p>
+                                {/*<p style={{ fontSize: "18px" }} className="  mb-1">Mapledown, Which Hill Lane,</p>*/}
+                                {/*<p style={{ fontSize: "18px" }} className="  mb-1">Woking, Surrey, GU22 0AH</p>*/}
+
+
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>
+                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>
+
                             </div>
                         </div>
 
@@ -316,7 +379,7 @@ class ItemDetail extends Component {
 
                             <div className="row no-gutters mb-5">
                                 <div className="col-12 mb-4">
-                                    <h5 className="mb-1">About the seller  </h5>
+                                    <h5 className="mb-1">About the seller </h5>
                                 </div>
                                 <div className="col-auto ">
                                     <figure className="avatar avatar-60 border-0">
@@ -325,7 +388,7 @@ class ItemDetail extends Component {
 
                                         <span className={"word-user-sellor"}>
 
-                                       {this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}
+                                       {this.state.item && this.state.item.org_id && this.state.item.org_id.substr(0, 2)}
 
 
 
@@ -350,11 +413,13 @@ class ItemDetail extends Component {
 
                         <React.Fragment>
 
-                            <CssBaseline />
+                            <CssBaseline/>
 
-                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                            <AppBar position="fixed" color="#ffffff"
+                                    className={classesBottom.appBar + "  custom-bottom-appbar"}>
                                 <Toolbar>
-                                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
+                                    <div className="row  justify-content-center search-container "
+                                         style={{ margin: "auto" }}>
 
                                         {/*<div className="col-auto">*/}
                                         {/*<button onClick={this.declineMatch} type="button"*/}
@@ -365,7 +430,7 @@ class ItemDetail extends Component {
                                         {/*</div>*/}
                                         <div className="col-auto">
                                             <button onClick={this.acceptMatch} type="button"
-                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                                 Create Cycle
 
                                             </button>
@@ -378,16 +443,14 @@ class ItemDetail extends Component {
                         }
 
 
-
-
                         <Modal className={"loop-popup"} size="lg"
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
 
                             <ModalBody>
                                 <div className={"row justify-content-start"}>
                                     <div className={"col-4"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
+                                        <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
                                     </div>
                                 </div>
 
@@ -406,12 +469,15 @@ class ItemDetail extends Component {
                                         <div className={"row"}>
                                             <div className={"col-12"}>
                                                 <p className={"text-bold"}>Match Accepted</p>
-                                    A cycle has been created. Send a message to the seller to arrange a delivery time.
-                                    </div>
+                                                A cycle has been created. Send a message to the seller to arrange a
+                                                delivery time.
+                                            </div>
                                         </div>
                                         <div className={"row justify-content-end"}>
                                             <div className={"col-4"}>
-                                                <Link to={"/message-seller/" + this.slug}> <p onClick={this.showPopUp} className={"green-text"}>Chat</p></Link>
+                                                <Link to={"/message-seller/" + this.slug}><p onClick={this.showPopUp}
+                                                                                             className={"green-text"}>Chat</p>
+                                                </Link>
                                             </div>
                                             <div className={"col-4"}>
                                                 <p onClick={this.showPopUp} className={"green-text"}>Ok</p>
@@ -430,7 +496,7 @@ class ItemDetail extends Component {
 
                 </div>
 
-
+                }
 
             </div>
         );

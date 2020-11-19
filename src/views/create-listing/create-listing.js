@@ -47,6 +47,7 @@ import {
     KeyboardDatePicker,
     DatePicker
 } from '@material-ui/pickers';
+import moment from "moment/moment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -501,7 +502,7 @@ class CreateListing extends Component {
                 },
                 "expiry": {
                     "unit": "MILLISECOND",
-                    "value": new Date(this.state.startDate).getTime() + 8640000000
+                    "value": new Date(this.state.endDate).getTime()
                 },
                 "price": {
                     "value": this.state.price,
@@ -1749,7 +1750,7 @@ class CreateListing extends Component {
 
                                         {this.state.catSelected && this.state.catSelected.name && this.state.subCatSelected && this.state.stateSelected ?
 
-                                            this.state.catSelected.name + ">" + this.state.subCatSelected.name + ">" + this.state.stateSelected : "Resource Category"}
+                                            this.state.catSelected.name + " > " + this.state.subCatSelected.name + " > " + this.state.stateSelected : "Resource Category"}
 
 
                                     </div>
@@ -1960,7 +1961,7 @@ class CreateListing extends Component {
 
                         {this.state.categories.map((item) =>
 
-                            <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
+                            <div data-name={item.name} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
                                 </div>
@@ -2005,7 +2006,7 @@ class CreateListing extends Component {
 
                         {this.state.subCategories && this.state.subCategories.map((item) =>
 
-                            <div data-name={item.name} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3"
+                            <div data-name={item.name} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
                                 onClick={this.selectSubCatType.bind(this)}>
                                 <div className="col-10">
 
@@ -2155,18 +2156,7 @@ class CreateListing extends Component {
                             </div>
                         </div>
                         <div className="row no-gutters justify-content-center mt-5">
-                            {/*<div onClick={this.linkProduct}  className="col-12 mb-3">*/}
-
-
-                            {/*<div  className={"dummy-text-field"}>*/}
-                            {/*{this.state.productSelected?this.state.productSelected.title:"Link new a product"}*/}
-                            {/*<img  className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }}/>*/}
-                            {/*</div>*/}
-                            {/*{this.state.errors["product"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["linkProduct"]}</span>}*/}
-
-
-                            {/*</div>*/}
-                            <div className="col-12 mb-3">
+                                                      <div className="col-12 mb-3">
 
 
 
@@ -2222,27 +2212,7 @@ class CreateListing extends Component {
                                 </MuiPickersUtilsProvider>
 
 
-                                {/*<TextField*/}
-                                    {/*onChange={this.handleChange.bind(this, "startDate")}*/}
-                                    {/*name={"startDate"}*/}
-                                    {/*id="input-with-icon-textfield"*/}
-                                    {/*InputLabelProps={{*/}
-                                        {/*shrink: true,*/}
-                                    {/*}}*/}
-                                    {/*label="Available From"*/}
-                                    {/*type={"date"}*/}
-                                    {/*variant="outlined"*/}
-                                    {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
-                                    {/*id="input-with-icon-textfield"*/}
-                                    {/*minDate={new Date()}*/}
-                                    {/*InputProps={{*/}
-                                        {/*endAdornment: (*/}
-                                            {/*<InputAdornment position="end">*/}
-                                                {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
-                                            {/*</InputAdornment>*/}
-                                        {/*),*/}
-                                    {/*}}*/}
-                                {/*/>*/}
+                              
                                 {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
 
                             </div>
@@ -2354,7 +2324,7 @@ class CreateListing extends Component {
                     <div className="container   pb-3 pt-3">
 
                         {this.state.products.map((item) =>
-                            <div data-name={item.title} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
+                            <div data-name={item.title} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  " onClick={this.selectProduct}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
                                 </div>
@@ -2556,7 +2526,7 @@ class CreateListing extends Component {
                                     <div className={"col-auto"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">Oct 1, 2020 </p>
+                                        <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.listResourceData.expiry.value).format("DD MMM YYYY")} </p>
                                     </div>
                                 </div>
                                 <div className="row  justify-content-start search-container  pb-4">

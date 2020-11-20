@@ -1846,7 +1846,7 @@
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                    <DatePicker minDate={this.state.dateRequiredFrom}
+                                    <DatePicker minDate={this.state.dateRequiredFrom?this.state.dateRequiredFrom:new Date()}
                                                 label="Required By"
                                                  inputVariant="outlined"
                                                   variant={"outlined"}

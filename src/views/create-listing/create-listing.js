@@ -67,11 +67,12 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
+var activeScreen=0;
 
 class CreateListing extends Component {
 
 
-    activeScreen = 0
+
     constructor(props) {
 
         super(props)
@@ -95,7 +96,7 @@ class CreateListing extends Component {
             fieldsSite: {},
             errorsSite: {},
             units: [],
-            progressBar: 25,
+            progressBar: 33,
             products: [],
             productSelected: null,
             nextBlue: false,
@@ -158,6 +159,7 @@ class CreateListing extends Component {
         this.handleChangeFile = this.handleChangeFile.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
         this.setUpYearList = this.setUpYearList.bind(this)
+        this.makeFirstActive=this.makeFirstActive.bind(this)
 
 
 
@@ -425,17 +427,17 @@ class CreateListing extends Component {
 
 
 
+        //
+        // activeScreen = 4
+        //
+        // this.setState({
+        //
+        //     activePage: 4,
+        //
+        //
+        // })
 
-        this.activeScreen = 4
-
-        this.setState({
-
-            activePage: 4,
-
-
-        })
-
-        // alert(this.activeScreen)
+        // alert(activeScreen)
 
         axios.get(baseUrl + "site",
             {
@@ -644,11 +646,49 @@ class CreateListing extends Component {
 
 
 
+
+    makeFirstActive(){
+
+// alert("make home active")
+
+
+        activeScreen = 0
+
+
+        this.setState({
+
+            page: 1,
+            activePage: 0,
+            activeScreen: 0,
+            progressBar: 33
+
+        })
+
+
+    }
+
+
     handleBack() {
 
-        if (this.state.page === 2) {
 
-            if (this.handleValidation()) {
+        if (this.state.page === 3) {
+
+
+            activeScreen = 5
+
+
+                this.setState({
+
+                    page: 2,
+                    activePage: 0,
+                    progressBar: 66
+                })
+
+
+        }
+
+
+      else  if (this.state.page === 2) {
 
                 this.setState({
 
@@ -657,26 +697,28 @@ class CreateListing extends Component {
                     progressBar: 33
                 })
 
-            }
+
 
         }
 
     }
 
 
-    handleNext() {
+      handleNext() {
 
 
-        if (this.activeScreen === 0) {
+
+        console.log("next clicked ", this.state.page ,this.state.activePage )
 
 
+        if (this.state.activePage === 0) {
+
+
+            // alert(" to next")
 
             if (this.handleValidation()) {
 
-                this.activeScreen = 4
-
-
-                this.setState({
+                  this.setState({
 
                     activePage: 4,
                     page: 2,
@@ -684,25 +726,16 @@ class CreateListing extends Component {
                 })
 
 
-                this.getSites()
             }
 
 
-
-
-            // alert(this.activeScreen)
         }
 
-        else if (this.activeScreen === 4) {
+        else if (this.state.activePage === 4) {
 
-
-
-
-            this.activeScreen = 5
-
+            activeScreen = 5
 
             this.setState({
-
 
                 activePage: 5,
                 page: 3,
@@ -712,17 +745,15 @@ class CreateListing extends Component {
             // this.createSearch()
 
 
-
-
         }
 
 
-        else if (this.activeScreen === 5) {
+        else if (this.state.activePage === 5) {
 
 
             if (this.handleValidationAddDetail()) {
 
-                this.activeScreen = 7
+                activeScreen = 7
                 // alert("on page 4")
 
                 this.setState({
@@ -732,16 +763,17 @@ class CreateListing extends Component {
                     progressBar: 100
                 })
 
+
                 this.createListing()
             }
 
         }
 
 
-        else if (this.activeScreen === 7) {
+        else if (this.state.activePage === 7) {
 
 
-            this.activeScreen = 8
+            activeScreen = 8
 
             // alert("here ")
 
@@ -803,7 +835,7 @@ class CreateListing extends Component {
     selectCreateSearch() {
 
 
-        this.activeScreen = 0
+        activeScreen = 0
 
         this.setState({
 
@@ -819,7 +851,7 @@ class CreateListing extends Component {
 
 
 
-        this.activeScreen = 1
+        activeScreen = 1
         this.setState({
 
             activePage: 1
@@ -843,7 +875,7 @@ class CreateListing extends Component {
         console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
 
 
-        this.activeScreen = 5
+        activeScreen = 5
         this.setState({
 
             activePage: 5
@@ -867,7 +899,7 @@ class CreateListing extends Component {
         })
 
 
-        this.activeScreen = 2
+        activeScreen = 2
         this.setState({
 
             activePage: 2
@@ -887,7 +919,7 @@ class CreateListing extends Component {
 
         // alert(this.state.subCatSelected.name)
 
-        this.activeScreen = 3
+        activeScreen = 3
         this.setState({
 
             activePage: 3,
@@ -904,7 +936,7 @@ class CreateListing extends Component {
 
 
 
-        this.activeScreen = 0
+        activeScreen = 0
         this.setState({
 
             stateSelected: event.currentTarget.dataset.name
@@ -1337,9 +1369,6 @@ class CreateListing extends Component {
         }
 
 
-
-
-
         if (!this.state.productSelected) {
             formIsValid = false;
             errors["product"] = "Required";
@@ -1391,7 +1420,7 @@ class CreateListing extends Component {
     addDetails() {
 
 
-        this.activeScreen = 4
+        activeScreen = 4
 
 
         this.setState({
@@ -1406,7 +1435,7 @@ class CreateListing extends Component {
     linkProduct() {
 
 
-        this.activeScreen = 6
+        activeScreen = 6
 
         this.getProducts()
 
@@ -1426,7 +1455,7 @@ class CreateListing extends Component {
 
 
 
-        this.activeScreen = 46
+        activeScreen = 46
         this.setState({
 
             activePage: 6
@@ -1437,7 +1466,7 @@ class CreateListing extends Component {
     previewSearch() {
 
 
-        this.activeScreen = 7
+        activeScreen = 7
 
 
 
@@ -1466,29 +1495,13 @@ class CreateListing extends Component {
         this.getFiltersCategories()
 
         this.setUpYearList()
+        this.getSites()
 
 
     }
 
 
 
-    goToSignIn() {
-
-
-        this.setState({
-
-            activePage: 0
-        })
-    }
-
-    goToSignUp() {
-
-
-        this.setState({
-
-            activePage: 1
-        })
-    }
 
     classes = useStylesSelect;
 
@@ -1689,11 +1702,13 @@ class CreateListing extends Component {
                 <HeaderDark />
 
                 <div className="container pt-4 p-2 mt-5 ">
+
+                    {this.state.activePage}
                 </div>
 
 
 
-                <div className={this.activeScreen === 0 ? "" : "d-none"}>
+                <div className={this.state.activePage === 0 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1936,7 +1951,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 1 ? "" : "d-none"}>
+                <div className={this.state.activePage === 1 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -1983,7 +1998,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 2 ? "" : "d-none"}>
+                <div className={this.state.activePage === 2 ? "" : "d-none"}>
                     <div className="container  pt-2 pb-3">
 
                         <div className="row no-gutters">
@@ -2025,7 +2040,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 3 ? "" : "d-none"}>
+                <div className={this.state.activePage === 3 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -2069,10 +2084,8 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 4 ? "" : "d-none"}>
+                <div className={this.state.activePage === 4? "" : "d-none"}>
 
-
-                    {/*{this.activeScreen === 4&&<div className={""}>*/}
 
                     <div className="container  pt-2 pb-3">
 
@@ -2085,7 +2098,7 @@ class CreateListing extends Component {
 
                             <div className="col-2 text-right">
 
-                                <Close className="blue-text" style={{ fontSize: 32 }} />
+                                <Close className="blue-text" style={{ fontSize: 32 }} onClick={this.makeFirstActive} />
 
                             </div>
 
@@ -2126,7 +2139,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 5 ? "" : "d-none"}>
+                <div className={this.state.activePage === 5 ? "" : "d-none"}>
 
                     <div className="container  pt-2 pb-3">
 
@@ -2223,7 +2236,7 @@ class CreateListing extends Component {
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                    <DatePicker minDate={this.state.startDate}
+                                    <DatePicker minDate={this.state.startDate?this.state.startDate:new Date()}
                                                 label="Required By"
                                                 inputVariant="outlined"
                                                 variant={"outlined"}
@@ -2297,7 +2310,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 6 ? "" : "d-none"}>
+                <div className={this.state.activePage === 6 ? "" : "d-none"}>
 
 
                     <div className="container  pt-2 pb-3">
@@ -2312,7 +2325,7 @@ class CreateListing extends Component {
                             <div className="col-auto">
 
 
-                                <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
+                                <Close onClick={""} className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
 
@@ -2349,7 +2362,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 7 ? "" : "d-none"}>
+                <div className={this.state.activePage === 7 ? "" : "d-none"}>
 
                     <div className="container  pt-3 pb-3">
 
@@ -2358,7 +2371,7 @@ class CreateListing extends Component {
                             <div className="col-auto">
 
                                 <button className="btn   btn-link text-dark menu-btn">
-                                    <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
+                                    <Close onClick={""} className="" style={{ fontSize: 32 }} />
 
                                 </button>
                             </div>
@@ -2407,7 +2420,7 @@ class CreateListing extends Component {
                 </div>
 
 
-                <div className={this.activeScreen === 8 ? "" : "d-none"}>
+                <div className={this.state.activePage === 8 ? "" : "d-none"}>
 
 
                     {this.state.listResourceData &&
@@ -2427,7 +2440,7 @@ class CreateListing extends Component {
                                     <div className="col-auto">
 
                                         <button className="btn   btn-link text-dark menu-btn">
-                                            <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
+                                            <Close onClick={""} className="" style={{ fontSize: 32 }} />
 
                                         </button>
                                     </div>
@@ -2555,7 +2568,7 @@ class CreateListing extends Component {
 
 
 
-                <div className={this.activeScreen === 9 ? "" : "d-none"}>
+                <div className={this.state.activePage === 9 ? "" : "d-none"}>
 
 
 
@@ -2576,7 +2589,7 @@ class CreateListing extends Component {
 
                 </div>
 
-                {this.activeScreen < 9 &&
+                {activeScreen < 9 &&
                     <React.Fragment>
 
                         <CssBaseline />
@@ -2587,7 +2600,7 @@ class CreateListing extends Component {
                             <Toolbar>
 
 
-                                {this.activeScreen === 6 &&
+                                {this.state.activePage === 6 &&
 
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
@@ -2601,7 +2614,7 @@ class CreateListing extends Component {
                                 }
 
 
-                                {this.activeScreen < 7 && this.activeScreen !== 6 &&
+                                {activeScreen < 7 && activeScreen !== 6 &&
 
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
@@ -2623,7 +2636,7 @@ class CreateListing extends Component {
                                                     className={this.state.nextBlue ? "btn-next shadow-sm mr-2 btn btn-link blue-btn   mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                                     Next
 
-                                    </button>}
+                                                </button>}
 
 
                                             {this.state.page === 2 &&
@@ -2631,7 +2644,7 @@ class CreateListing extends Component {
                                                     className={this.state.nextBlueAddDetail ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                                     Next
 
-                                    </button>}
+                                                  </button>}
 
 
                                             {this.state.page === 3 &&
@@ -2646,7 +2659,7 @@ class CreateListing extends Component {
                                         </div>
                                     </div>}
 
-                                {this.activeScreen === 7 &&
+                                {this.state.activePage === 7 &&
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
 

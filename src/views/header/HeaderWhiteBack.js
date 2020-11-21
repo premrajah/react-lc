@@ -73,13 +73,13 @@ class HeaderWhiteBack extends Component {
             <>
 
 
-                <div className="container header-white listing-row-border">
+                <div className={this.props.border?"container header-white listing-row-border":"container header-white "}>
 
                     <div className="row no-gutters p-0">
-                        <div className="col-auto" style={{ margin: "auto" }}>
+                        {this.props.back && <div className="col-auto" style={{ margin: "auto" }}>
 
                             <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32 }} />
-                        </div>
+                        </div>}
 
                         <div className="col text-left blue-text text-center text-bold" style={{ margin: "auto" }}>
                             <p>{this.props.heading} </p>

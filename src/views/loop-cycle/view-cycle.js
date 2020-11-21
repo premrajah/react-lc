@@ -71,7 +71,7 @@ class ViewCycle extends Component {
 
     showPopUpTrackingNumber() {
 
-        alert("enter trackng number")
+        // alert("enter trackng number")
 
         this.setState({
             showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
@@ -611,7 +611,7 @@ class ViewCycle extends Component {
         this.getResources()
 
 
-        }, 3000);
+        }, 30000);
 
     }
 
@@ -633,9 +633,10 @@ class ViewCycle extends Component {
             <div className={"pb-5 mb-5"}>
 
                 <Sidebar />
+                <HeaderDark />
 
-                <div className="accountpage ">
-                    <HeaderDark />
+                <div className=" ">
+
 
                     {this.state.item && this.state.item.id &&
                         <>
@@ -732,7 +733,7 @@ class ViewCycle extends Component {
                                             <div className={"col-auto"}>
 
                                                 <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.resource.volume} {this.state.item.resource.units}</p>
+                                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.search.volume} {this.state.item.search.units}</p>
                                             </div>
                                         </div>
 
@@ -1212,12 +1213,13 @@ class ViewCycle extends Component {
                                     <>
                                         <div className={"row justify-content-center"}>
                                             <div className={"col-12"} style={{textAlign:"center"}}>
-                                                <p className={"text-bold"}>Are you sure you want to proceed ??</p>
+                                                <h5 className={"text-bold"}>Are you sure you want to proceed ??</h5>
                                                 {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
                                         </div>
+                                        <form onSubmit={this.handleSubmit}>
                                         <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmit}>
+
 
                                                 <div className={"row"}>
                                                 <div className={"col-6 mt-2"}>
@@ -1240,8 +1242,9 @@ class ViewCycle extends Component {
 
                                                 </div>
                                                 </div>
-                                            </form>
+
                                         </div>
+                                        </form>
                                     </>
 
 
@@ -1252,18 +1255,7 @@ class ViewCycle extends Component {
 
 
 
-
-
-
-
-
-
-
                 </React.Fragment>
-
-
-
-
 
 
                 {this.state.item && this.state.item.state == "received" &&
@@ -1287,14 +1279,6 @@ class ViewCycle extends Component {
 
                             }
 
-
-                            {/*<div className="col-auto">*/}
-                            {/*<button onClick={this.declineOffer} type="button"*/}
-                            {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
-                            {/*Cancel Cycle*/}
-
-                            {/*</button>*/}
-                            {/*</div>*/}
 
 
                         </div>

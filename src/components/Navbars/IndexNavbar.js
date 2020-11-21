@@ -297,7 +297,7 @@ class ComponentsNavbar extends React.Component {
 
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                Products
+                               My Products
                             </Link>
 
                                         <Link className={"dropdown-item"} to="/statistics">

@@ -156,13 +156,13 @@ class Loops extends Component {
                                             <h5 style={{ fontSize: "18px" }} className=" mb-1">{item.resource.name}</h5>
                                             <p style={{ fontSize: "18px" }} className=" mb-1">{item.from.org_id}  →  {item.to.org_id}</p>
                                             <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.resource.category}</p>
-                                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.resource.state} / {item.resource.volume} {item.resource.units}</p>
+                                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.resource.state} / {item.search.volume} {item.search.units}</p>
                                         </>
                                     </Link>
 
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-4"}>
-                                    <p className={"green-text text-mute small"} >
+                                    <p className={"green-text text-mute text-bold small"} >
                                         {item.state}</p>
                                 </div>
                             </div>

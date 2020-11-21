@@ -15,9 +15,37 @@ import LogoNew from '../../img/logo-cropped.png';
 
 import LogoText from '../../img/logo-text.png';
 import styles from './Footer.module.css';
+import { connect } from "react-redux";
+import * as actionCreator from "../../store/actions/actions";
 
 class Footer extends React.Component {
-  render() {
+
+
+
+    constructor(props) {
+
+        super(props)
+
+
+
+
+        this.showLoginPopUp=this.showLoginPopUp.bind(this)
+    }
+
+    showLoginPopUp(){
+
+        if(!this.props.isLoggedIn){
+
+            this.props.showLoginPopUp(true)
+
+        }
+
+    }
+
+
+
+
+    render() {
     return (
       <footer className="footer">
         <Container>
@@ -62,22 +90,22 @@ class Footer extends React.Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/resources" tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/resources"} tag={Link}>
                     Browse All
                         </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/create-search" tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/create-search"} tag={Link}>
                     Search
                         </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/my-listings" tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/my-listings"} tag={Link}>
                     Listings
                         </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/deliver-resources" tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/deliver-resources"} tag={Link}>
                     Deliver
                   </NavLink>
                 </NavItem>
@@ -115,18 +143,7 @@ class Footer extends React.Component {
                 <UncontrolledTooltip delay={0} target="tooltip230450801">
                   Like us
                 </UncontrolledTooltip>
-                {/*<Button*/}
-                {/*className="btn-icon btn-neutral btn-round btn-simple"*/}
-                {/*color="default"*/}
-                {/*href="https://dribbble.com/creativetim"*/}
-                {/*id="tooltip318450378"*/}
-                {/*target="_blank"*/}
-                {/*>*/}
-                {/*<i className="fab fa-dribbble" />*/}
-                {/*</Button>*/}
-                {/*<UncontrolledTooltip delay={0} target="tooltip318450378">*/}
-                {/*Follow us*/}
-                {/*</UncontrolledTooltip>*/}
+
               </div>
             </Col>
           </Row>
@@ -150,4 +167,38 @@ class Footer extends React.Component {
   }
 }
 
-export default Footer;
+
+const mapStateToProps = state => {
+    return {
+        // age: state.age,
+        // cartItems: state.cartItems,
+        // loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        // loginFailed: state.loginFailed,
+        // showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        // userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+
+
+
+
+    };
+};
+
+const mapDispachToProps = dispatch => {
+    return {
+
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+
+
+
+
+    };
+};
+export default connect(
+    mapStateToProps,
+    mapDispachToProps
+)(Footer);
+

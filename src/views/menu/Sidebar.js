@@ -118,19 +118,16 @@ class Sidebar extends Component {
                                         {/*<img src={TescoImg} alt="" />*/}
 
                                         {this.props.isLoggedIn && <span className={"word-user-big"}>
-                                            {this.props.userDetail.email === "test.3@parallelai.com" && "M"}
-                                            {this.props.userDetail.email === "crajah@karedo.co.uk" && "L"}
-                                            {this.props.userDetail.email === "scorpion_rain@yahoo.com" && "C"}
+
+
+                                            {this.props.userDetail.orgId.substr(0,2)}
 
                                         </span>
                                         }
 
                                     </figure>
                                 </div>
-                                {/*<div className="col pl-0 align-self-center">*/}
-                                {/*<h5 className="mb-1">Ammy Jahnson</h5>*/}
-                                {/*<p className="text-mute small">Work, London, UK</p>*/}
-                                {/*</div>*/}
+
                             </div>
                         </div>
                         {this.props.isLoggedIn &&
@@ -141,12 +138,12 @@ class Sidebar extends Component {
                                             className="white-text list-group-item list-group-item-action">Homes </Link>
                                         <Link onClick={this.toggleMenu} to={"/resources"}
                                             className="white-text list-group-item list-group-item-action">Browse All Resouces </Link>
-                                        <Link onClick={this.toggleMenu} to={"/create-search"}
+                                        <Link onClick={this.toggleMenu} to={"/search-form"}
                                             className="white-text list-group-item list-group-item-action">Create A Search </Link>
-                                        <Link onClick={this.toggleMenu} to={"/create-listing"}
+                                        <Link onClick={this.toggleMenu} to={"/list-form"}
                                             className="white-text list-group-item list-group-item-action">Create A Listing </Link>
                                         {/*{this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resources </Link>}*/}
-                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/account"}
+                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={""}
                                             className="white-text list-group-item list-group-item-action">Account</Link>}
                                         {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/loops"}
                                             className="white-text list-group-item list-group-item-action">My

@@ -13,6 +13,7 @@ import Sidebar from '../menu/Sidebar'
 import Footer from '../Footer/Footer'
 import WaveBorder from '../Footer/WaveBorder'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import * as actionCreator from "../../store/actions/actions";
 
 
 
@@ -34,6 +35,10 @@ class Home extends Component {
             nextIntervalFlag: false
         }
 
+       this.goToResources=this.goToResources.bind(this)
+        this.goToList=this.goToList.bind(this)
+        this.goToSearch=this.goToSearch.bind(this)
+        this.showLoginPopUp=this.showLoginPopUp.bind(this)
 
     }
 
@@ -52,8 +57,63 @@ class Home extends Component {
     }
 
 
+goToResources(){
 
 
+
+        if(!this.props.isLoggedIn){
+
+            this.props.showLoginPopUp(true)
+
+        }else{
+
+
+            this.props.history.push("/resources")
+        }
+}
+
+    goToSearch(){
+
+
+
+        if(!this.props.isLoggedIn){
+
+            this.props.showLoginPopUp(true)
+
+        }else{
+
+
+            this.props.history.push("/search-form")
+        }
+    }
+
+
+    goToList(){
+
+
+
+        if(!this.props.isLoggedIn){
+
+            this.props.showLoginPopUp(true)
+
+        }else{
+
+
+            this.props.history.push("/list-form")
+        }
+    }
+
+
+
+    showLoginPopUp(){
+
+        if(!this.props.isLoggedIn){
+
+            this.props.showLoginPopUp(true)
+
+        }
+
+    }
 
     render() {
 
@@ -190,9 +250,6 @@ class Home extends Component {
 
                             </div>
 
-
-
-
                         </div>
 
                     </div>
@@ -212,7 +269,7 @@ class Home extends Component {
                         <div className="row no-gutters justify-content-center mt-4">
                             <div className="col-auto">
 
-                                <button type="button" className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
+                                <button  onClick={this.goToResources} type="button" className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
                                     Browse all resources <NavigateNextIcon />
                                 </button>
 
@@ -233,21 +290,21 @@ class Home extends Component {
                                 <img className={"search-icon"} src={SearchIcon} alt="search" />
                                 <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
                                 </p>
-                                <Link to="/create-search" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a search</Link>
+                                <Link onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/search-form"} className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a search</Link>
                             </div>
 
                             <div className="col-4">
                                 <img className={"home-icon"} src={HandIcon} alt="listing" />
                                 <p className={"blue-text mt-4"}>Do you have used resources to offer? Start listing any used resources.
                                 </p>
-                                <Link to="/listing-form" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a listing</Link>
+                                <Link onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/list-form"} className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a listing</Link>
                             </div>
 
                             <div className="col-4">
                                 <img className={"home-icon"} src={ShippingIcon} alt="resources" />
                                 <p className={"blue-text mt-4"}>Able to collect and deliver resources? Register your company on the platform.
                                 </p>
-                                <Link to="/" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Deliver Resources</Link>
+                                <Link onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Deliver Resources</Link>
                             </div>
                         </div>
 
@@ -274,7 +331,7 @@ class Home extends Component {
                         <div className="row no-gutters mb-5">
                             <div className="col-auto">
 
-                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                <button onClick={this.goToSearch}  type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                     Create a search
                                 </button>
 
@@ -304,7 +361,7 @@ class Home extends Component {
                         <div className="row no-gutters mb-5">
                             <div className="col-auto">
 
-                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                <button  onClick={this.goToList} type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                     Create a listing
                                 </button>
 
@@ -332,7 +389,7 @@ class Home extends Component {
                         <div className="row no-gutters mb-5">
                             <div className="col-auto">
 
-                                <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
+                                <button  type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                     Deliver Resources
                                 </button>
 
@@ -392,10 +449,9 @@ function PlayAudio() {
 
 const mapStateToProps = state => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
-        // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
+
+        isLoggedIn: state.isLoggedIn,
+
         // loginFailed: state.loginFailed,
         // showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
@@ -414,6 +470,7 @@ const mapDispachToProps = dispatch => {
 
 
 
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
 
 
     };

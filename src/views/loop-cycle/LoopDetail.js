@@ -272,14 +272,14 @@ function FromContent(props) {
             </div>
 
 
-            <div className="row justify-content-start pb-4 pt-3 ">
-                <div className="col-auto">
-                    <h6 className={""}>Amount
-                     </h6>
-                    <p>{props.loop.resource.volume} {props.loop.resource.units}</p>
+            {/*<div className="row justify-content-start pb-4 pt-3 ">*/}
+                {/*<div className="col-auto">*/}
+                    {/*<h6 className={""}>Amount*/}
+                     {/*</h6>*/}
+                    {/*<p>{props.loop.resource.volume} {props.loop.resource.units}</p>*/}
 
-                </div>
-            </div>
+                {/*</div>*/}
+            {/*</div>*/}
 
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
@@ -354,7 +354,7 @@ function ToContent(props) {
                 <div className="col-auto">
                     <h6 className={""}>Amount
                     </h6>
-                    <p>{props.loop.resource.volume} {props.loop.resource.units}</p>
+                    <p>{props.loop.search.volume} {props.loop.search.units}</p>
 
                 </div>
             </div>

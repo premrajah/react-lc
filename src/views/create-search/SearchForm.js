@@ -1462,25 +1462,9 @@
 
                             {/*<HeaderWhiteBack    />*/}
 
-                            <HeaderWhiteBack history={this.props.history} heading={"Create Search"} />
+                            <HeaderWhiteBack back={false} history={this.props.history} heading={"Create Search"} />
 
 
-                            {/*<div className="row no-gutters">*/}
-                            {/*<div className="col-10">*/}
-
-                            {/*<h6>Create a Search </h6>*/}
-                            {/*</div>*/}
-
-
-                            {/*<div className="col-auto">*/}
-
-
-                            {/*<Link to={"/create-search"}><Close  className="blue-text" style={{ fontSize: 32 }} /></Link>*/}
-
-                            {/*</div>*/}
-
-
-                            {/*</div>*/}
 
 
                         </div>

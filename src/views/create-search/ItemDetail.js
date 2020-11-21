@@ -297,17 +297,17 @@ class ItemDetail extends Component {
                                 <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
                             </div>
                         </div>
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={AmountIcon} alt=""/>
-                            </div>
-                            <div className={"col-auto"}>
+                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
+                            {/*<div className={"col-1"}>*/}
+                                {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
+                            {/*</div>*/}
+                            {/*<div className={"col-auto"}>*/}
 
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
-                                <p style={{ fontSize: "18px" }}
-                                   className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>
-                            </div>
-                        </div>
+                                {/*<p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>*/}
+                                {/*<p style={{ fontSize: "18px" }}*/}
+                                   {/*className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
                         <div className="row  justify-content-start search-container  pb-4">

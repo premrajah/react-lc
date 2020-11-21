@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
 import history from "../../History/history";
 import FooterNew from "../../components/Footer/Footer";
 import WaveBorder from './WaveBorder'
+import { connect } from "react-redux";
+
+import * as actionCreator from "../../store/actions/actions";
 
 
 
@@ -101,7 +103,7 @@ const mapStateToProps = state => {
         // age: state.age,
         // cartItems: state.cartItems,
         // loading: state.loading,
-        // isLoggedIn: state.isLoggedIn,
+        isLoggedIn: state.isLoggedIn,
         // loginFailed: state.loginFailed,
         // showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
@@ -118,6 +120,7 @@ const mapStateToProps = state => {
 const mapDispachToProps = dispatch => {
     return {
 
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
 
 
 

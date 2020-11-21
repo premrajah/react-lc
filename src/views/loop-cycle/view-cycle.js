@@ -71,6 +71,8 @@ class ViewCycle extends Component {
 
     showPopUpTrackingNumber() {
 
+        alert("enter trackng number")
+
         this.setState({
             showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
         })
@@ -487,9 +489,6 @@ class ViewCycle extends Component {
 
 
 
-
-
-
     proceedCancel(){
 
         axios.post(baseUrl + "loop/" + this.slug + "/cancel",
@@ -631,11 +630,11 @@ class ViewCycle extends Component {
 
 
         return (
-            <div>
+            <div className={"pb-5 mb-5"}>
 
                 <Sidebar />
 
-                <div className="accountpage">
+                <div className="accountpage ">
                     <HeaderDark />
 
                     {this.state.item && this.state.item.id &&
@@ -963,9 +962,6 @@ class ViewCycle extends Component {
                                     </div>
 
 
-
-
-
                                 </Toolbar>
                             </AppBar>
 
@@ -986,7 +982,7 @@ class ViewCycle extends Component {
                                     <>
                                         <div className={"row"}>
                                             <div className={"col-12 text-center"}>
-                                                <p className={"text-bold text-center"}>Please provide a email address of logistics provider :</p>
+                                                <h5 className={"text-bold text-center"}>Please provide a email address of logistics provider :</h5>
                                                 {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
                                         </div>
@@ -1022,49 +1018,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
 
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a tracking :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
-
-                                                </div>
-                                                <div className={"col-12"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
 
                         </>}
 
@@ -1099,7 +1053,6 @@ class ViewCycle extends Component {
 
                                         }
 
-
                                         <div className="col-auto">
                                             <button onClick={this.declineOffer} type="button"
                                                 className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
@@ -1107,18 +1060,57 @@ class ViewCycle extends Component {
 
                                         </button>
                                         </div>
-
-
                                     </div>
-
-
-
-
 
                                 </Toolbar>
                             </AppBar>
 
 
+                            <Modal className={"loop-popup"}
+                                   aria-labelledby="contained-modal-title-vcenter"
+                                   centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
+
+                                <ModalBody>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-4"}>
+                                            <img className={"ring-pop-pup"} src={GrayLoop} />
+                                        </div>
+                                    </div>
+
+
+                                    <>
+                                        <div className={"row"}>
+                                            <div className={"col-12"}>
+                                                <h5 className={"text-bold text-center"}>Please provide a tracking number:</h5>
+                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+                                            </div>
+                                        </div>
+                                    <form onSubmit={this.handleSubmitTracking}>
+                                        <div className={"row justify-content-center"}>
+
+                                                <div className={"col-12 text-center"}>
+                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
+
+                                                </div>
+                                                <div className={"col-12 text-center mt-2"}>
+
+
+                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
+
+                                                        Submit
+                                                    </button>
+
+                                                </div>
+
+                                        </div>
+                                    </form>
+                                    </>
+
+
+
+                                </ModalBody>
+
+                            </Modal>
 
                         </>}
 
@@ -1198,9 +1190,6 @@ class ViewCycle extends Component {
                                     </div>
 
 
-
-
-
                                 </Toolbar>
                             </AppBar>
 
@@ -1273,7 +1262,60 @@ class ViewCycle extends Component {
                 </React.Fragment>
 
 
-            </div>
+
+
+
+
+                {this.state.item && this.state.item.state == "received" &&
+
+                <>
+                <CssBaseline />
+
+                <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                    <Toolbar>
+                        <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
+
+                            {this.state.item.id && (this.props.userDetail.orgId == this.state.item.producer.org.id) && this.state.item.state == "received" &&
+
+                            <div className="col-auto">
+                                <button onClick={this.orderClose} type="button"
+                                        className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                    Close Cycle
+
+                                </button>
+                            </div>
+
+                            }
+
+
+                            {/*<div className="col-auto">*/}
+                            {/*<button onClick={this.declineOffer} type="button"*/}
+                            {/*className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">*/}
+                            {/*Cancel Cycle*/}
+
+                            {/*</button>*/}
+                            {/*</div>*/}
+
+
+                        </div>
+
+
+
+
+
+                    </Toolbar>
+                </AppBar>
+
+
+
+                </>}
+
+
+
+
+
+
+                </div>
         );
     }
 }

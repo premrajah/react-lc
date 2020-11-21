@@ -107,10 +107,9 @@ function LoopAccordion(props) {
 
 
                                     <span className={"word-user  word-user-cycle"}>
-                                        M
+                                        { props.loop.producer.org.name.substr(0, 2)}
 
                                 </span>
-
 
                                 </figure>
                             </div>
@@ -146,7 +145,8 @@ function LoopAccordion(props) {
 
                                 <figure className="avatar avatar-60 border-0">
                                     <span className={"word-user  word-user-cycle"}>
-                                        C
+
+                                        { props.loop.consumer.org.name.substr(0, 2)}
 
                                 </span>
                                 </figure>
@@ -186,12 +186,11 @@ function LoopAccordion(props) {
 
                                     <figure className="avatar avatar-60 border-0">
 
-                                        {/*<img src={LogiImg} alt="" />*/}
-
                                         <span className={"word-user  word-user-cycle"}>
-                                            L
 
-                                </span>
+                                            {props.loop.logistics.org.name.substr(0, 2)}
+
+                                         </span>
 
                                     </figure>
                                 </div>

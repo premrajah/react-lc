@@ -24,8 +24,6 @@ import { withStyles } from "@material-ui/core/styles/index";
 import moment from "moment/moment";
 
 
-
-
 class ItemDetail extends Component {
 
     slug;
@@ -383,7 +381,6 @@ class ItemDetail extends Component {
                                 </div>
                                 <div className="col-auto ">
                                     <figure className="avatar avatar-60 border-0">
-                                        {/*<img src={TescoImg} alt="" />*/}
 
 
                                         <span className={"word-user-sellor"}>

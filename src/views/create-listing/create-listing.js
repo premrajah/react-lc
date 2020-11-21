@@ -67,7 +67,6 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
-var activeScreen=0;
 
 class CreateListing extends Component {
 
@@ -427,18 +426,6 @@ class CreateListing extends Component {
 
 
 
-        //
-        // activeScreen = 4
-        //
-        // this.setState({
-        //
-        //     activePage: 4,
-        //
-        //
-        // })
-
-        // alert(activeScreen)
-
         axios.get(baseUrl + "site",
             {
                 headers: {
@@ -652,14 +639,12 @@ class CreateListing extends Component {
 // alert("make home active")
 
 
-        activeScreen = 0
 
 
         this.setState({
 
             page: 1,
             activePage: 0,
-            activeScreen: 0,
             progressBar: 33
 
         })
@@ -674,13 +659,11 @@ class CreateListing extends Component {
         if (this.state.page === 3) {
 
 
-            activeScreen = 5
-
 
                 this.setState({
 
                     page: 2,
-                    activePage: 0,
+                    activePage: 4,
                     progressBar: 66
                 })
 
@@ -714,8 +697,6 @@ class CreateListing extends Component {
         if (this.state.activePage === 0) {
 
 
-            // alert(" to next")
-
             if (this.handleValidation()) {
 
                   this.setState({
@@ -733,7 +714,6 @@ class CreateListing extends Component {
 
         else if (this.state.activePage === 4) {
 
-            activeScreen = 5
 
             this.setState({
 
@@ -753,7 +733,7 @@ class CreateListing extends Component {
 
             if (this.handleValidationAddDetail()) {
 
-                activeScreen = 7
+
                 // alert("on page 4")
 
                 this.setState({
@@ -772,10 +752,6 @@ class CreateListing extends Component {
 
         else if (this.state.activePage === 7) {
 
-
-            activeScreen = 8
-
-            // alert("here ")
 
             this.setState({
 
@@ -835,8 +811,6 @@ class CreateListing extends Component {
     selectCreateSearch() {
 
 
-        activeScreen = 0
-
         this.setState({
 
             activePage: 0,
@@ -850,8 +824,6 @@ class CreateListing extends Component {
     selectCategory() {
 
 
-
-        activeScreen = 1
         this.setState({
 
             activePage: 1
@@ -875,7 +847,6 @@ class CreateListing extends Component {
         console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
 
 
-        activeScreen = 5
         this.setState({
 
             activePage: 5
@@ -898,8 +869,6 @@ class CreateListing extends Component {
 
         })
 
-
-        activeScreen = 2
         this.setState({
 
             activePage: 2
@@ -917,9 +886,7 @@ class CreateListing extends Component {
 
         })
 
-        // alert(this.state.subCatSelected.name)
 
-        activeScreen = 3
         this.setState({
 
             activePage: 3,
@@ -935,8 +902,6 @@ class CreateListing extends Component {
     selectState(event) {
 
 
-
-        activeScreen = 0
         this.setState({
 
             stateSelected: event.currentTarget.dataset.name
@@ -1420,9 +1385,6 @@ class CreateListing extends Component {
     addDetails() {
 
 
-        activeScreen = 4
-
-
         this.setState({
 
             activePage: 4
@@ -1434,8 +1396,6 @@ class CreateListing extends Component {
 
     linkProduct() {
 
-
-        activeScreen = 6
 
         this.getProducts()
 
@@ -1453,9 +1413,6 @@ class CreateListing extends Component {
 
     searchLocation() {
 
-
-
-        activeScreen = 46
         this.setState({
 
             activePage: 6
@@ -1464,10 +1421,6 @@ class CreateListing extends Component {
 
 
     previewSearch() {
-
-
-        activeScreen = 7
-
 
 
         this.setState({
@@ -1703,9 +1656,7 @@ class CreateListing extends Component {
 
                 <div className="container pt-4 p-2 mt-5 ">
 
-                    {this.state.activePage}
                 </div>
-
 
 
                 <div className={this.state.activePage === 0 ? "" : "d-none"}>
@@ -2152,7 +2103,7 @@ class CreateListing extends Component {
 
                             <div className="col-auto">
 
-                                <Link to={this.handleBack}><Close className="blue-text" style={{ fontSize: 32 }} /></Link>
+                                <Link onClick={this.handleBack}><Close className="blue-text" style={{ fontSize: 32 }} /></Link>
 
                             </div>
 
@@ -2589,7 +2540,7 @@ class CreateListing extends Component {
 
                 </div>
 
-                {activeScreen < 9 &&
+                {this.state.activePage < 9 &&
                     <React.Fragment>
 
                         <CssBaseline />
@@ -2614,12 +2565,12 @@ class CreateListing extends Component {
                                 }
 
 
-                                {activeScreen < 7 && activeScreen !== 6 &&
+                                {this.state.activePage < 7 && this.state.activePage !== 6 &&
 
                                     <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                                         <div className="col-auto">
-                                            {this.state.page > 1 && this.state.page < 3 && <button type="button" onClick={this.handleBack}
+                                            {this.state.page > 1  && <button type="button" onClick={this.handleBack}
                                                 className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                                 Back
 

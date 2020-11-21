@@ -115,7 +115,6 @@
                 dateRequiredBy: null,
                 dateRequiredFrom:null
 
-
             }
 
             this.selectCreateSearch = this.selectCreateSearch.bind(this)
@@ -450,11 +449,9 @@
 
                     console.log(res.data.content)
 
-
                     this.setState({
                         createSearchData: res.data.content
                     })
-
 
                     this.getSite()
 
@@ -593,12 +590,10 @@
 
 
         handleNext() {
-
+            this.getSites()
             if (this.state.page === 1) {
 
 
-
-                this.getSites()
                 if (this.handleValidation()) {
 
                     this.setState({
@@ -1181,22 +1176,6 @@
 
 
 
-        // handleChangeDate =  date => {
-        //
-        //
-        //         this.setState({
-        //
-        //             dateRequiredBy: date
-        //
-        //         })
-        //
-        //
-        //
-        // }
-
-
-
-
 
         addDetails() {
 
@@ -1375,7 +1354,7 @@
 
 
 
-            alert("site submit")
+            // alert("site submit")
             const form = event.currentTarget;
 
 
@@ -2096,7 +2075,7 @@
                                         </div>
                                         <div className={"col-auto"}>
 
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">{this.state.site.name}, {this.state.site.address}</p>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
                                             <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.category} ></p>
                                             <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.type}</p>
 

@@ -443,13 +443,13 @@ class ItemDetail extends Component {
                         }
 
 
-                        <Modal className={"loop-popup"} size="lg"
+                        <Modal className={"loop-popup"}
                                aria-labelledby="contained-modal-title-vcenter"
                                centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
 
                             <ModalBody>
-                                <div className={"row justify-content-start"}>
-                                    <div className={"col-4"}>
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-4 text-center"}>
                                         <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
                                     </div>
                                 </div>
@@ -457,30 +457,30 @@ class ItemDetail extends Component {
 
                                 {this.state.loopError ?
                                     <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Failed</p>
-                                                {this.state.loopError}
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-12 text-center"} >
+                                                <p className={"text-bold "}>Failed</p>
+                                                <p>  {this.state.loopError}</p>
                                             </div>
                                         </div>
                                     </>
                                     :
                                     <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-12 text-center"}>
                                                 <p className={"text-bold"}>Match Accepted</p>
-                                                A cycle has been created. Send a message to the seller to arrange a
-                                                delivery time.
+                                             <p>   A cycle has been created. Send a message to the seller to arrange a
+                                                 delivery time.</p>
                                             </div>
                                         </div>
                                         <div className={"row justify-content-end"}>
-                                            <div className={"col-4"}>
+                                            <div className={"col-6"}>
                                                 <Link to={"/message-seller/" + this.slug}><p onClick={this.showPopUp}
-                                                                                             className={"green-text"}>Chat</p>
+                                                                                             className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Chat</p>
                                                 </Link>
                                             </div>
-                                            <div className={"col-4"}>
-                                                <p onClick={this.showPopUp} className={"green-text"}>Ok</p>
+                                            <div className={"col-6"}>
+                                                <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Ok</p>
                                             </div>
                                         </div>
                                     </>

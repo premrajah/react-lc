@@ -46,7 +46,9 @@ class ViewCycle extends Component {
             errors: {},
             showPopUpLogistics: false,
             showPopUpTrackingNumber: false,
-            showPrompt:false
+            showPrompt:false,
+            logisticsError:false,
+            logisticsErrorMsg:"",
         }
 
         this.slug = props.match.params.slug
@@ -58,24 +60,13 @@ class ViewCycle extends Component {
         this.orderDelivered = this.orderDelivered.bind(this)
         this.orderReceived = this.orderReceived.bind(this)
         this.orderClose = this.orderClose.bind(this)
-
-
         this.showPopUpLogistics = this.showPopUpLogistics.bind(this)
         this.showPopUpTrackingNumber = this.showPopUpTrackingNumber.bind(this)
         this.proceedCancel = this.proceedCancel.bind(this)
-        // this.togglePrompt = this.togglePrompt.bind(this)
-        // this.enterTracking=this.enterTracking.bind(this)
+
 
     }
 
-
-    // togglePrompt() {
-    //
-    //     this.setState({
-    //         showPrompt: !this.state.showPrompt
-    //     })
-    //
-    // }
 
 
     showPopUpTrackingNumber() {
@@ -158,9 +149,6 @@ class ViewCycle extends Component {
 
 
 
-            // alert("username"+ username)
-
-
             axios.post(baseUrl + "loop/" + this.slug + "/assign_logistics/" + username,
                 {}, {
                 headers: {
@@ -180,20 +168,16 @@ class ViewCycle extends Component {
                     this.getResources()
 
 
-
-
                 }).catch(error => {
-
 
 
                     console.log("loop confirm error found ")
                     console.log(error.response.data)
 
-
                     this.setState({
 
-                        showPopUpLogistics: false,
-                        loopError: error.response.data.content.message
+                        logisticsError: true,
+                        logisticsErrorMsg: error.response.data.content.message
                     })
 
                 });
@@ -615,15 +599,28 @@ class ViewCycle extends Component {
 
     componentWillMount() {
 
+
+
     }
+
+    interval
 
     componentDidMount() {
 
+        this.interval = setInterval(() => {
+
         this.getResources()
+
+
+        }, 3000);
 
     }
 
-    intervalJasmineAnim
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
+
 
 
 
@@ -666,12 +663,12 @@ class ViewCycle extends Component {
                                         <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                             <div className="col-12">
-                                                <p className={"green-text text-heading"}>@{this.state.item.tags}
+                                                <p className={"green-text text-heading"}>@{this.state.item.resource.tags}
                                                 </p>
 
                                             </div>
                                             <div className="col-12 mt-2">
-                                                <h5 className={"blue-text text-heading"}>{this.state.item.name}
+                                                <h5 className={"blue-text text-heading"}>{this.state.item.resource.name}
                                                 </h5>
                                             </div>
                                         </div>
@@ -680,7 +677,7 @@ class ViewCycle extends Component {
                                         <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                                             <div className="col-auto">
-                                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.description}
+                                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.resource.description}
                                                 </p>
 
                                             </div>
@@ -807,13 +804,12 @@ class ViewCycle extends Component {
                                                 </div>
                                                 <div className="col-auto ">
                                                     <figure className="avatar avatar-60 border-0">
-                                                        {/*<img src={TescoImg} alt="" />*/}
 
                                                         <span className={"word-user-sellor"}>
-                                                            M
 
+                                                   {this.state.item.producer.org.name.substr(0,2)}
 
-                                </span>
+                                                        </span>
 
                                                     </figure>
                                                 </div>
@@ -989,17 +985,19 @@ class ViewCycle extends Component {
 
                                     <>
                                         <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
+                                            <div className={"col-12 text-center"}>
+                                                <p className={"text-bold text-center"}>Please provide a email address of logistics provider :</p>
                                                 {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                             </div>
                                         </div>
+                                    <form onSubmit={this.handleSubmit}>
                                         <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
 
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                <div className={"col-12"}>
+
+                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+                                                    {this.state.logisticsError && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.logisticsErrorMsg}</span>}
+
                                                 </div>
                                                 <div className={"col-12 mt-2"}>
 
@@ -1011,8 +1009,9 @@ class ViewCycle extends Component {
                                                     </button>
 
                                                 </div>
-                                            </form>
+
                                         </div>
+                                    </form>
                                     </>
 
 
@@ -1121,98 +1120,6 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
-
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
-                                                </div>
-                                                <div className={"col-12 mt-2"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
-
-
-
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a tracking :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmitTracking}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
-
-                                                </div>
-                                                <div className={"col-12"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
-
                         </>}
 
 
@@ -1259,97 +1166,7 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
-                                                </div>
-                                                <div className={"col-12 mt-2"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
-
-
-
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a tracking :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmitTracking}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
-
-                                                </div>
-                                                <div className={"col-12"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
 
                         </>}
 
@@ -1389,97 +1206,6 @@ class ViewCycle extends Component {
 
 
 
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
-
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
-                                                </div>
-                                                <div className={"col-12 mt-2"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
-
-
-
-                            <Modal className={"loop-popup"} 
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered show={this.state.showPopUpTrackingNumber} onHide={this.showPopUpTrackingNumber} animation={false}>
-
-                                <ModalBody>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-4"}>
-                                            <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                        </div>
-                                    </div>
-
-
-                                    <>
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <p className={"text-bold"}>Please provide a tracking :</p>
-                                                {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <form onSubmit={this.handleSubmitTracking}>
-                                                <div className={"col-12"}>
-                                                    <TextField id="outlined-basic" label="Tracking Number" variant="outlined" fullWidth={true} name={"tracking"} type={"tracking"} />
-
-                                                </div>
-                                                <div className={"col-12"}>
-
-
-                                                    <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-                                                        Submit
-                                                </button>
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </>
-
-
-
-                                </ModalBody>
-
-                            </Modal>
 
                         </>}
 
@@ -1540,51 +1266,7 @@ class ViewCycle extends Component {
 
 
 
-                    <Modal className={"loop-popup"} 
-                           aria-labelledby="contained-modal-title-vcenter"
-                           centered show={this.state.showPopUpLogistics} onHide={this.showPopUpLogistics} animation={false}>
 
-                        <ModalBody>
-                            <div className={"row justify-content-center"}>
-                                <div className={"col-4"}>
-                                    <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                                </div>
-                            </div>
-
-
-                            <>
-                                <div className={"row"}>
-                                    <div className={"col-12"}>
-                                        <p className={"text-bold"}>Please provide a email address of logistics provider :</p>
-                                        {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                    </div>
-                                </div>
-                                <div className={"row justify-content-center"}>
-                                    <form onSubmit={this.handleSubmit}>
-                                        <div className={"col-12"}>
-                                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
-
-                                            {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
-                                        </div>
-                                        <div className={"col-12 mt-2"}>
-
-
-                                            <button type={"submit"} className={"btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"}>
-
-
-                                                Submit
-                                            </button>
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </>
-
-
-
-                        </ModalBody>
-
-                    </Modal>
 
 
 

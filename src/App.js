@@ -83,7 +83,6 @@ class App extends Component{
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
-                        {/*<AuthRoute exact path="/login" component={Login} />*/}
                         <LoggedInRoute exact path="/account" component={Account} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
@@ -98,7 +97,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
-                        <LoggedInRoute exact path="/listing-form" component={ListingForm} />
+
                         <LoggedInRoute exact path="/list-form" component={CreateListing} />
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />

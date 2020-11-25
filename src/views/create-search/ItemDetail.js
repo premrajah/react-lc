@@ -464,19 +464,18 @@ class ItemDetail extends Component {
                                     :
                                     <>
                                         <div className={"row justify-content-center"}>
-                                            <div className={"col-12 text-center"}>
+                                            <div className={"col-10 text-center"}>
                                                 <p className={"text-bold"}>Match Accepted</p>
                                              <p>   A cycle has been created. Send a message to the seller to arrange a
                                                  delivery time.</p>
                                             </div>
                                         </div>
-                                        <div className={"row justify-content-end"}>
-                                            <div className={"col-6"}>
-                                                <Link to={"/message-seller/" + this.slug}><p onClick={this.showPopUp}
-                                                                                             className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Chat</p>
-                                                </Link>
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
+                                                <p style={{minWidth:"120px"}} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}> <Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Chat</Link></p>
+
                                             </div>
-                                            <div className={"col-6"}>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
                                                 <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Ok</p>
                                             </div>
                                         </div>

@@ -185,10 +185,6 @@ class ViewCycle extends Component {
             });
 
 
-
-
-
-
         } else {
 
 
@@ -967,7 +963,7 @@ class ViewCycle extends Component {
 
                                             </div>
 
-                                    {this.state.item.show != "received" &&
+                                    {this.state.item.state != "received"  && this.state.item.state != "closed" &&
 
                                     <div className="col-auto">
 

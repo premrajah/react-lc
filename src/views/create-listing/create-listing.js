@@ -570,18 +570,18 @@ class CreateListing extends Component {
 
 
 
-    handleChangeSite = (event) => {
-        //
-        // const name = event.target.name;
-        //
-
-        // setState({
-        //     ...state,
-        //     [name]: event.target.value,
-        // });
-        //
-
-    };
+    // handleChangeSite = (event) => {
+    //     //
+    //     // const name = event.target.name;
+    //     //
+    //
+    //     // setState({
+    //     //     ...state,
+    //     //     [name]: event.target.value,
+    //     // });
+    //     //
+    //
+    // };
 
 
     loadMatches() {
@@ -1504,6 +1504,19 @@ class CreateListing extends Component {
         }
 
 
+        if (!fields["email"]) {
+            formIsValid = false;
+            errors["email"] = "Required";
+        }
+
+
+
+        if (!fields["others"]) {
+            formIsValid = false;
+            errors["others"] = "Required";
+        }
+
+
 
         if (typeof fields["email"] !== "undefined") {
 
@@ -1535,73 +1548,73 @@ class CreateListing extends Component {
 
 
 
-        // alert("site submit")
-        const form = event.currentTarget;
+
+        if(this.handleValidationSite()) {
+
+            // alert("site submit")
+            const form = event.currentTarget;
 
 
-        console.log(new FormData(event.target))
-        // if (this.handleValidationSite()){
+            console.log(new FormData(event.target))
+            // if (this.handleValidationSite()){
 
 
-
-        this.setState({
-            btnLoading: true
-        })
-
-        const data = new FormData(event.target);
-
-        const email = data.get("email")
-        const others = data.get("others")
-        const name = data.get("name")
-        const contact = data.get("contact")
-        const address = data.get("address")
-        const phone = data.get("phone")
-
-        // var postData={
-        //     "name": name,
-        //     "email": email,
-        //     "contact" : contact,
-        //     "address": address,
-        //     "phone": phone,
-        //     "others": others
-        //
-        // }
-
-
-        console.log("site submit called")
-        // console.log(postData)
-
-
-
-        axios.post(baseUrl + "site",
-
-            {
-                "name": name,
-                "email": email,
-                "contact": contact,
-                "address": address,
-                "phone": phone,
-                "others": others
-
-            }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
+            this.setState({
+                btnLoading: true
             })
-            .then(res => {
 
-                console.log("site added succesfull")
+            const data = new FormData(event.target);
 
-                // dispatch({type: "SIGN_UP", value : res.data})
+            const email = data.get("email")
+            const others = data.get("others")
+            const name = data.get("name")
+            const contact = data.get("contact")
+            const address = data.get("address")
+            const phone = data.get("phone")
+
+            // var postData={
+            //     "name": name,
+            //     "email": email,
+            //     "contact" : contact,
+            //     "address": address,
+            //     "phone": phone,
+            //     "others": others
+            //
+            // }
 
 
+            console.log("site submit called")
+            // console.log(postData)
 
-                this.toggleSite()
 
-                this.getSites()
+            axios.post(baseUrl + "site",
 
-            }).catch(error => {
+                {
+                    "name": name,
+                    "email": email,
+                    "contact": contact,
+                    "address": address,
+                    "phone": phone,
+                    "others": others
+
+                }
+                , {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                })
+                .then(res => {
+
+                    console.log("site added succesfull")
+
+                    // dispatch({type: "SIGN_UP", value : res.data})
+
+
+                    this.toggleSite()
+
+                    this.getSites()
+
+                }).catch(error => {
 
                 // dispatch(stopLoading())
 
@@ -1615,15 +1628,16 @@ class CreateListing extends Component {
             });
 
 
+            // alert("valid")
 
-        // alert("valid")
+            // }else {
+            //
+            //
+            //     // alert("invalid")
+            // }
 
-        // }else {
-        //
-        //
-        //     // alert("invalid")
-        // }
 
+        }
 
 
     }
@@ -2751,7 +2765,7 @@ class CreateListing extends Component {
 
                                                     <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
 
-                                                    {this.state.errors["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["name"]}</span>}
+                                                    {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
 
                                                 </div>
 
@@ -2759,7 +2773,7 @@ class CreateListing extends Component {
 
                                                     <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
 
-                                                    {this.state.errors["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["contact"]}</span>}
+                                                    {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
 
                                                 </div>
 
@@ -2767,12 +2781,13 @@ class CreateListing extends Component {
 
                                                     <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
 
-                                                    {this.state.errors["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["address"]}</span>}
+                                                    {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
 
                                                 </div>
                                                 <div className="col-12 mt-4">
 
                                                     <TextField id="outlined-basic" type={"number"} name={"phone"} label="Phone" variant="outlined" fullWidth={true} />
+                                                    {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 
 
                                                 </div>
@@ -2781,14 +2796,14 @@ class CreateListing extends Component {
 
                                                     <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
 
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                    {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
 
                                                 </div>
                                                 <div className="col-12 mt-4">
 
                                                     <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
 
-                                                    {this.state.errors["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["others"]}</span>}
+                                                    {this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}
 
                                                 </div>
 

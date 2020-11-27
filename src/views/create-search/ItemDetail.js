@@ -41,7 +41,8 @@ class ItemDetail extends Component {
             item: null,
             showPopUp: false,
             loopError: null,
-            site : null
+            site : null,
+            showBottom : true,
         }
 
         this.slug = props.match.params.slug
@@ -118,6 +119,7 @@ class ItemDetail extends Component {
         )
             .then(res => {
 
+
                 console.log(res.data.content)
 
                 this.setState({
@@ -126,11 +128,14 @@ class ItemDetail extends Component {
                 })
 
 
+                this.getResources()
+
+
             }).catch(error => {
 
 
 
-                console.log("loop convert error found ")
+                // console.log("loop convert error found ")
                 console.log(error.response.data)
 
 
@@ -408,6 +413,7 @@ class ItemDetail extends Component {
                         </div>
 
 
+                        {this.state.item.stage == "matched" && this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>
 
                             <CssBaseline/>

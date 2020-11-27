@@ -88,6 +88,8 @@
                 page: 1,
                 fields: {},
                 errors: {},
+
+                
                 fieldsProduct: {},
                 errorsProduct: {},
                 fieldsSite: {},
@@ -474,17 +476,17 @@
 
 
 
-        handleChangeSite = (event) => {
-            //
-            // const name = event.target.name;
-            //
-            // setState({
-            //     ...state,
-            //     [name]: event.target.value,
-            // });
-            //
-
-        };
+        // handleChangeSite = (event) => {
+        //     //
+        //     // const name = event.target.name;
+        //     //
+        //     // setState({
+        //     //     ...state,
+        //     //     [name]: event.target.value,
+        //     // });
+        //     //
+        //
+        // };
 
 
         loadMatches() {
@@ -1294,6 +1296,13 @@
                 formIsValid = false;
                 errors["password"] = "Required";
             }
+
+            if (!fields["others"]) {
+                formIsValid = false;
+                errors["others"] = "Required";
+            }
+
+
             if (!fields["address"]) {
                 formIsValid = false;
                 errors["address"] = "Required";
@@ -1324,6 +1333,11 @@
 
 
 
+            if (!fields["email"]) {
+                formIsValid = false;
+                errors["email"] = "Required";
+            }
+
             if (typeof fields["email"] !== "undefined") {
 
                 let lastAtPos = fields["email"].lastIndexOf('@');
@@ -1353,62 +1367,61 @@
             event.preventDefault();
 
 
-
-            // alert("site submit")
-            const form = event.currentTarget;
+            if(this.handleValidationSite()) {
 
 
-            console.log(new FormData(event.target))
-            // if (this.handleValidationSite()){
+                // alert("site submit")
+                const form = event.currentTarget;
 
 
-
-            this.setState({
-                btnLoading: true
-            })
-
-            const data = new FormData(event.target);
-
-            const email = data.get("email")
-            const others = data.get("others")
-            const name = data.get("name")
-            const contact = data.get("contact")
-            const address = data.get("address")
-            const phone = data.get("phone")
+                console.log(new FormData(event.target))
+                // if (this.handleValidationSite()){
 
 
-
-            console.log("site submit called")
-
-            axios.post(baseUrl + "site",
-
-                {
-                    "name": name,
-                    "email": email,
-                    "contact": contact,
-                    "address": address,
-                    "phone": phone,
-                    "others": others
-
-                }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
+                this.setState({
+                    btnLoading: true
                 })
-                .then(res => {
 
-                    console.log("site added succesfull")
+                const data = new FormData(event.target);
 
-                    // dispatch({type: "SIGN_UP", value : res.data})
+                const email = data.get("email")
+                const others = data.get("others")
+                const name = data.get("name")
+                const contact = data.get("contact")
+                const address = data.get("address")
+                const phone = data.get("phone")
 
 
+                console.log("site submit called")
 
-                    this.toggleSite()
+                axios.post(baseUrl + "site",
 
-                    this.getSites()
+                    {
+                        "name": name,
+                        "email": email,
+                        "contact": contact,
+                        "address": address,
+                        "phone": phone,
+                        "others": others
 
-                }).catch(error => {
+                    }
+                    , {
+                        headers: {
+                            "Authorization": "Bearer " + this.props.userDetail.token
+                        }
+                    })
+                    .then(res => {
+
+                        console.log("site added succesfull")
+
+                        // dispatch({type: "SIGN_UP", value : res.data})
+
+
+                        this.toggleSite()
+
+                        this.getSites()
+
+                    }).catch(error => {
 
                     // dispatch(stopLoading())
 
@@ -1422,17 +1435,16 @@
                 });
 
 
+                // alert("valid")
 
-            // alert("valid")
-
-            // }else {
-            //
-            //
-            //     // alert("invalid")
-            // }
-
+                // }else {
+                //
+                //
+                //     // alert("invalid")
+                // }
 
 
+            }
         }
 
 
@@ -2019,7 +2031,7 @@
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                         <div className="col-12">
-                                            <p className={"green-text text-heading"}>@Tesco
+                                            <p className={"green-text text-heading"}>@{this.state.createSearchData.org_id}
                                         </p>
 
                                         </div>
@@ -2408,7 +2420,7 @@
                                     <div className=" text-right ">
 
 
-                                        <Link to={"/"} > < Close onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} /> </Link>
+                                        <Close  onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} />
 
                                     </div>
 
@@ -2422,7 +2434,7 @@
 
                                                         <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
 
-                                                        {this.state.errors["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["name"]}</span>}
+                                                        {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
 
                                                     </div>
 
@@ -2430,7 +2442,7 @@
 
                                                         <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
 
-                                                        {this.state.errors["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["contact"]}</span>}
+                                                        {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
 
                                                     </div>
 
@@ -2438,13 +2450,14 @@
 
                                                         <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
 
-                                                        {this.state.errors["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["address"]}</span>}
+                                                        {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
 
                                                     </div>
                                                     <div className="col-12 mt-4">
 
                                                         <TextField id="outlined-basic" type={"number"} name={"phone"} label="Phone" variant="outlined" fullWidth={true} />
 
+                                                        {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 
                                                     </div>
 
@@ -2452,14 +2465,14 @@
 
                                                         <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
 
-                                                        {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                        {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
 
                                                     </div>
                                                     <div className="col-12 mt-4">
 
                                                         <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
 
-                                                        {this.state.errors["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["others"]}</span>}
+                                                        {this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}
 
                                                     </div>
 

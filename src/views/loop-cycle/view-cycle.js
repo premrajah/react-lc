@@ -882,7 +882,7 @@ class ViewCycle extends Component {
 
 
 
-                <React.Fragment>
+                        <React.Fragment>
 
 
 
@@ -896,6 +896,16 @@ class ViewCycle extends Component {
 
                                     <div className="col-auto">
 
+
+                                        {this.state.item.id && this.state.item.show && this.state.item.state === "created" &&
+
+                                        <button onClick={this.confirmOffer} type="button"
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                            Accept Offer
+
+                                        </button>
+
+                                        }
                                         {this.state.item.id && this.state.item.show && this.state.item.state === "accepted" &&
 
                                         <button onClick={this.consumerConfirmOffer} type="button"
@@ -963,7 +973,8 @@ class ViewCycle extends Component {
 
                                             </div>
 
-                                    {this.state.item.state != "received"  && this.state.item.state != "closed" &&
+                                    {this.state.item.state != "received"  && this.state.item.state != "closed"
+                                    && (this.state.item.producer&&this.state.item.producer.org.id == this.props.userDetail.orgId ||this.state.item.consumer&&this.state.item.consumer.org.id == this.props.userDetail.orgId )&&
 
                                     <div className="col-auto">
 

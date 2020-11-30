@@ -159,6 +159,7 @@ class CreateListing extends Component {
         this.handleCancel = this.handleCancel.bind(this)
         this.setUpYearList = this.setUpYearList.bind(this)
         this.makeFirstActive=this.makeFirstActive.bind(this)
+        this.makeActive=this.makeActive.bind(this)
 
 
 
@@ -253,6 +254,26 @@ class CreateListing extends Component {
 
         this.uploadImage(files)
     }
+
+
+
+    makeActive(event){
+
+
+        var active = event.currentTarget.dataset.active
+
+
+        // alert("cliclec")
+
+        this.setState({
+
+            activePage: parseInt(active)
+
+        })
+
+
+    }
+
 
 
     handleCancel(e) {
@@ -400,13 +421,13 @@ class CreateListing extends Component {
         )
             .then((response) => {
 
-                var response = response.data.content;
+                var responseAll = response.data.content;
                 console.log("resource response")
-                console.log(response)
+                console.log(responseAll)
 
                 this.setState({
 
-                    products: response
+                    products: responseAll
 
                 })
 
@@ -435,13 +456,13 @@ class CreateListing extends Component {
         )
             .then((response) => {
 
-                var response = response.data.content;
+                var responseAll = response.data.content;
                 console.log("sites  response")
-                console.log(response)
+                console.log(responseAll)
 
                 this.setState({
 
-                    sites: response
+                    sites: responseAll
 
                 })
 
@@ -1974,7 +1995,7 @@ class CreateListing extends Component {
 
                             <div className="col-2" style={{textAlign:"right"}}>
 
-                                <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
+                                <Close data-active={1}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
 
@@ -2019,7 +2040,7 @@ class CreateListing extends Component {
                             <div className="col-2" style={{textAlign:"right"}}>
 
 
-                                <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
+                                <Close data-active={2}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
 

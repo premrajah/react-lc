@@ -145,6 +145,7 @@
             this.showProductSelection = this.showProductSelection.bind(this)
             this.toggleDateOpen = this.toggleDateOpen.bind(this)
             this.handleChangeDate = this.handleChangeDate.bind(this)
+            this.makeActive=this.makeActive.bind(this)
 
 
         }
@@ -237,6 +238,25 @@
 
 
 
+        makeActive(event){
+
+
+
+            var active = event.currentTarget.dataset.active
+
+
+
+
+            this.setState({
+
+                active: parseInt(active)
+
+            })
+
+
+        }
+
+
         handleSubmitProduct = event => {
 
             event.preventDefault();
@@ -325,13 +345,13 @@
             )
                 .then((response) => {
 
-                    var response = response.data.content;
+                    var responseAll = response.data.content;
                     console.log("resource response")
-                    console.log(response)
+                    console.log(responseAll)
 
                     this.setState({
 
-                        products: response
+                        products: responseAll
 
                     })
 
@@ -360,13 +380,13 @@
             )
                 .then((response) => {
 
-                    var response = response.data.content;
+                    var responseAll = response.data.content;
                     console.log("resource response")
-                    console.log(response)
+                    console.log(responseAll)
 
                     this.setState({
 
-                        site: response
+                        site: responseAll
 
                     })
 
@@ -407,7 +427,7 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("sites error")
+                        console.log("sites response error")
                         console.log(error)
 
                     }
@@ -1292,9 +1312,9 @@
             let formIsValid = true;
 
             //Name
-            if (!fields["email"]) {
+            if (!fields["name"]) {
                 formIsValid = false;
-                errors["password"] = "Required";
+                errors["name"] = "Required";
             }
 
             if (!fields["others"]) {
@@ -1312,11 +1332,11 @@
             //     errors["agree"] = "Required";
             // }
 
-
-            if (!fields["name"]) {
-                formIsValid = false;
-                errors["name"] = "Required";
-            }
+            //
+            // if (!fields["name"]) {
+            //     formIsValid = false;
+            //     errors["name"] = "Required";
+            // }
             if (!fields["contact"]) {
                 formIsValid = false;
                 errors["contact"] = "Required";
@@ -1356,9 +1376,11 @@
 
 
         handleChangeSite(field, e) {
+
             let fields = this.state.fieldsSite;
             fields[field] = e.target.value;
             this.setState({ fields: fields });
+
         }
 
 
@@ -1369,13 +1391,10 @@
 
             if(this.handleValidationSite()) {
 
-
-                // alert("site submit")
                 const form = event.currentTarget;
 
 
                 console.log(new FormData(event.target))
-                // if (this.handleValidationSite()){
 
 
                 this.setState({
@@ -1393,6 +1412,7 @@
 
 
                 console.log("site submit called")
+
 
                 axios.post(baseUrl + "site",
 
@@ -1412,36 +1432,22 @@
                     })
                     .then(res => {
 
-                        console.log("site added succesfull")
-
-                        // dispatch({type: "SIGN_UP", value : res.data})
-
-
                         this.toggleSite()
-
                         this.getSites()
+
+
+
 
                     }).catch(error => {
 
-                    // dispatch(stopLoading())
-
-                    // dispatch(signUpFailed(error.response.data.content.message))
 
                     console.log(error)
-                    // dispatch({ type: AUTH_FAILED });
-                    // dispatch({ type: ERROR, payload: error.data.error.message });
+
 
 
                 });
 
 
-                // alert("valid")
-
-                // }else {
-                //
-                //
-                //     // alert("invalid")
-                // }
 
 
             }
@@ -1625,7 +1631,7 @@
 
 
 
-                    <div className={this.state.active === 2 ? "" : "d-none"}>
+                    <div  className={this.state.active === 2 ? "" : "d-none"}>
                         <div className="container  pt-2 mb-2 pb-2">
 
                             <div className="row no-gutters">
@@ -1636,7 +1642,7 @@
 
                                 <div className="col-2" style={{textAlign:"right"}}>
 
-                                    <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
+                                    <Close data-active={1}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
 
                                 </div>
 
@@ -1667,7 +1673,7 @@
 
 
 
-                    <div className={this.state.active === 3 ? "" : "d-none"}>
+                    <div  className={this.state.active === 3 ? "" : "d-none"}>
 
                         <div className="container  pt-2 pb-2 mb-2">
 
@@ -1681,7 +1687,7 @@
                                 <div className="col-2" style={{textAlign:"right"}}>
 
 
-                                    <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
+                                    <Close data-active={2}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
 
                                 </div>
 
@@ -1858,7 +1864,7 @@
                                 <div className="col-auto">
 
 
-                                    <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
+                                    <Close data-active={4}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
 
                                 </div>
 
@@ -2455,7 +2461,7 @@
                                                     </div>
                                                     <div className="col-12 mt-4">
 
-                                                        <TextField id="outlined-basic" type={"number"} name={"phone"} label="Phone" variant="outlined" fullWidth={true} />
+                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
 
                                                         {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 

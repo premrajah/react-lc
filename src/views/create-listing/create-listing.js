@@ -1273,6 +1273,14 @@ class CreateListing extends Component {
             errors["deliver"] = "Required";
         }
 
+
+        //Name
+        if (!this.state.free&&!fields["price"]) {
+            formIsValid = false;
+            errors["price"] = "Required";
+        }
+
+
         // if(!fields["endDate"]){
         //     formIsValid = false;
         //     errors["endDate"] = "Required";
@@ -1484,7 +1492,11 @@ class CreateListing extends Component {
 
 
 
+
+
     handleValidationSite() {
+
+
 
         // alert("called")
         let fields = this.state.fieldsSite;
@@ -1492,30 +1504,22 @@ class CreateListing extends Component {
         let formIsValid = true;
 
         //Name
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["password"] = "Required";
-        }
-        if (!fields["address"]) {
-            formIsValid = false;
-            errors["address"] = "Required";
-        }
-        // if(!fields["agree"]){
-        //     formIsValid = false;
-        //     errors["agree"] = "Required";
-        // }
-
-
         if (!fields["name"]) {
             formIsValid = false;
             errors["name"] = "Required";
         }
+
+        if (!fields["address"]) {
+            formIsValid = false;
+            errors["address"] = "Required";
+        }
+
+
+
         if (!fields["contact"]) {
             formIsValid = false;
             errors["contact"] = "Required";
         }
-
-
 
 
 
@@ -1525,19 +1529,11 @@ class CreateListing extends Component {
         }
 
 
+
         if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
-
-
-
-        if (!fields["others"]) {
-            formIsValid = false;
-            errors["others"] = "Required";
-        }
-
-
 
         if (typeof fields["email"] !== "undefined") {
 
@@ -1811,28 +1807,7 @@ class CreateListing extends Component {
                                         </Select>
                                     </FormControl>
 
-                                    {/*<TextField*/}
-                                        {/*onChange={this.handleChange.bind(this, "manufacturedDate")}*/}
-                                        {/*name={"manufacturedDate"}*/}
-                                        {/*id="input-with-icon-textfield"*/}
-                                        {/*InputLabelProps={{*/}
-                                            {/*shrink: true,*/}
-                                            {/*name: "manufacturedDate"*/}
-                                        {/*}}*/}
-                                        {/*label="Year Of Manufacture"*/}
-                                        {/*type={"date"}*/}
-                                        {/*variant="outlined"*/}
-                                        {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
-                                        {/*id="input-with-icon-textfield"*/}
-                                        {/*minDate={new Date()}*/}
-                                        {/*InputProps={{*/}
-                                            {/*endAdornment: (*/}
-                                                {/*<InputAdornment position="end">*/}
-                                                    {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
-                                                {/*</InputAdornment>*/}
-                                            {/*),*/}
-                                        {/*}}*/}
-                                    {/*/>*/}
+
                                     {this.state.errors["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["manufacturedDate"]}</span>}
 
                                 </div>
@@ -1879,28 +1854,7 @@ class CreateListing extends Component {
                                                 </div>
 
                                             </div>
-                                            {/*<div className="col-4 p-1 text-center ">*/}
 
-                                            {/*<div className="card shadow border-0 mb-3 container-gray border-rounded">*/}
-                                            {/*<div className={"card-body"}>*/}
-                                            {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
-                                            {/*</div>*/}
-                                            {/*</div>*/}
-
-                                            {/*</div>*/}
-                                            {/*<div className="col-4  p-1 text-center ">*/}
-
-                                            {/*<div className="card shadow border-0 mb-3 container-gray border-rounded ">*/}
-                                            {/*<div className={"card-body"}>*/}
-
-                                            {/*<img style={{padding: "10px"}} src={PlusGray} className={"camera-icon-preview"}/>*/}
-
-                                            {/*/!*<AddIcon style={{color:"#747474",fontSize:"32px"}}/>*!/*/}
-
-                                            {/*</div>*/}
-                                            {/*</div>*/}
-
-                                            {/*</div>*/}
                                         </div>
                                     </div>
 
@@ -1910,23 +1864,6 @@ class CreateListing extends Component {
                             </div>
 
 
-
-                            {/*<div className="row no-gutters justify-content-center mt-4">*/}
-
-                            {/*<div className="col-6 pr-2">*/}
-
-                            {/*<UnitSelect units={this.state.units} />*/}
-
-
-                            {/*</div>*/}
-                            {/*<div className="col-6 pl-2">*/}
-
-                            {/*<TextField onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />*/}
-                            {/*{this.state.errors["volume"] && <span className={"text-mute small"}><span  style={{color: "red"}}>* </span>{this.state.errors["volume"]}</span>}*/}
-
-
-                            {/*</div>*/}
-                            {/*</div>*/}
                         </form>
 
                     </div>
@@ -2022,8 +1959,6 @@ class CreateListing extends Component {
 
                     </div>
                 </div>
-
-
 
 
                 <div className={this.state.activePage === 3 ? "" : "d-none"}>
@@ -2146,7 +2081,7 @@ class CreateListing extends Component {
                         </div>
                     </div>
 
-                    <div className="container  search-container pb-5 pt-5">
+                    <div className="container  search-container pb-5 pt-5 mb-5">
                         <div className="row no-gutters">
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>The Basics
@@ -2206,16 +2141,11 @@ class CreateListing extends Component {
                                                 format="DD/MM/yyyy"
                                                 value={this.state.startDate} onChange={this.handleChangeDateStartDate.bind(this)} />
 
-
-
                                 </MuiPickersUtilsProvider>
 
-
-                              
                                 {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
 
                             </div>
-
 
 
                             <div className="col-12 mb-3">
@@ -2236,28 +2166,6 @@ class CreateListing extends Component {
 
                                 </MuiPickersUtilsProvider>
 
-
-                                {/*<TextField*/}
-                                    {/*onChange={this.handleChange.bind(this, "endDate")}*/}
-                                    {/*name={"endDate"}*/}
-                                    {/*id="input-with-icon-textfield"*/}
-                                    {/*InputLabelProps={{*/}
-                                        {/*shrink: true,*/}
-                                    {/*}}*/}
-                                    {/*label="Expires"*/}
-                                    {/*type={"date"}*/}
-                                    {/*variant="outlined"*/}
-                                    {/*className={clsx(classes.margin, classes.textField) + " full-width-field"}*/}
-                                    {/*id="input-with-icon-textfield"*/}
-                                    {/*minDate={new Date()}*/}
-                                    {/*InputProps={{*/}
-                                        {/*endAdornment: (*/}
-                                            {/*<InputAdornment position="end">*/}
-                                                {/*<img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />*/}
-                                            {/*</InputAdornment>*/}
-                                        {/*),*/}
-                                    {/*}}*/}
-                                {/*/>*/}
                                 {this.state.errors["endDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["endDate"]}</span>}
 
 
@@ -2278,6 +2186,7 @@ class CreateListing extends Component {
                             {!this.state.free && <div className="col-12 mb-5">
 
                                 <TextField
+                                    type={"number"}
                                     onChange={this.handleChange.bind(this, "price")}
                                     id="input-with-icon-textfield"
                                     label="£"
@@ -2286,6 +2195,9 @@ class CreateListing extends Component {
                                     id="input-with-icon-textfield"
 
                                 />
+
+                                {this.state.errors["price"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["price"]}</span>}
+
 
                             </div>
                             }
@@ -2766,85 +2678,84 @@ class CreateListing extends Component {
 
                 {this.state.showCreateSite &&
 
-                    <>
-                        <div className={"body-overlay"}>
-                            <div className={"modal-popup site-popup"}>
-                                <div className=" text-right ">
+                <>
+                    <div className={"body-overlay"}>
+                        <div className={"modal-popup site-popup"}>
+                            <div className=" text-right ">
 
 
-                                     < Close onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} />
-
-                                </div>
-
-
-                                <div className={"row"}>
-                                    <div className={"col-12"}>
-                                        <form onSubmit={this.handleSubmitSite}>
-                                            <div className="row no-gutters justify-content-center ">
-
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
-
-                                                    {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                    {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                                                    {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                </div>
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField id="outlined-basic" type={"number"} name={"phone"} label="Phone" variant="outlined" fullWidth={true} />
-                                                    {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
-
-                                                    {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                                </div>
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
-
-                                                    {this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}
-
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-
-                                                    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
-                                                </div>
-
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
+                                <Close  onClick={this.toggleSite} className="blue-text" style={{ fontSize: 32 }} />
 
                             </div>
-                        </div>
-                    </>
-                }
 
+
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    <form onSubmit={this.handleSubmitSite}>
+                                        <div className="row no-gutters justify-content-center ">
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+
+                                                {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
+
+                                                {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
+
+                                                {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+
+                                                {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+
+                                                {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+
+                                                {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
+
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+
+                                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                            </div>
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </>
+                }
 
 
             </>

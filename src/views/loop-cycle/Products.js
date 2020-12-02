@@ -55,13 +55,13 @@ class Products extends Component {
         )
             .then((response) => {
 
-                var response = response.data.content;
+                var responseAll = response.data.content;
                 console.log("resource response")
-                console.log(response)
+                console.log(responseAll)
 
                 this.setState({
 
-                    products: response
+                    products: responseAll
 
                 })
 

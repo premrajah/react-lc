@@ -290,7 +290,9 @@ goToResources(){
                                 <img className={"search-icon"} src={SearchIcon} alt="search" />
                                 <p className={"blue-text mt-4"}>Need resources to make your product? Start a search and enter your requirements.
                                 </p>
-                                <Link onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/search-form"} className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a search</Link>
+                                <Link onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/search-form"}
+                                      className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Create a search
+                                </Link>
                             </div>
 
                             <div className="col-4">

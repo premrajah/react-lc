@@ -50,7 +50,7 @@ class ResourceItem extends Component {
 
 
                 </div>
-                <div className={"col-7 pl-3 content-box-listing"}>
+                <div className={"col-5 pl-3 content-box-listing"}>
                     <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state}
                     {/*/ {this.props.item.volume} {this.props.item.units}*/}
@@ -58,10 +58,20 @@ class ResourceItem extends Component {
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>
+
                     <p className={"green-text"}>
-                        {/*{this.props.item.price?this.props.item.price:"Free"}*/}
 
                         {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
+
+
+                    </p>
+                </div>
+
+                <div style={{ textAlign: "right" }} className={"col-2"}>
+
+                    <p className={"green-text"}>
+
+                        {this.props.item.stage}
 
 
                     </p>

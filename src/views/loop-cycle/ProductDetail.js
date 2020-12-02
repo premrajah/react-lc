@@ -405,7 +405,13 @@ class ProductDetail extends Component {
 
 
                     </div>
+
+
+
                     <div className={"container"}>
+
+
+
 
                         {/*<div className="row  justify-content-start search-container  pb-4">*/}
                         {/*<div className={"col-1"}>*/}
@@ -494,9 +500,6 @@ class ProductDetail extends Component {
                         {/*</div>*/}
                         {/*</div>*/}
                         {/*</div>*/}
-
-
-
 
 
                     </div>

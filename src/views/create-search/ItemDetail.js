@@ -404,7 +404,7 @@ class ItemDetail extends Component {
 
 
                                             <p style={{ fontSize: "18px" }} className=" ">Seller Company</p>
-                                            <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
+                                            {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
 
                                         </div>
                                     </div>

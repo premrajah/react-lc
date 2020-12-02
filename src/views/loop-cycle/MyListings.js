@@ -154,11 +154,18 @@ class MyListings extends Component {
 
                         <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
 
-                            <div className="col">
+                            <div className="col-8">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Searches </p>
 
                             </div>
-                            <div className="text-mute col-auto pl-0">
+
+                            <div style={{ textAlign: "right" }} className="text-mute col-2 pl-0">
+
+                                <span style={{ fontSize: "18px" }}>Price</span>
+
+                            </div>
+
+                            <div style={{ textAlign: "right" }} className="text-mute col-2 pl-0">
 
                                 <span style={{ fontSize: "18px" }}>Status</span>
 

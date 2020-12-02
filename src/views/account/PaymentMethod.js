@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ShippingWhite from '../../img/icons/delivery-blue.png';
 import SettingsWhite from '../../img/icons/settings-blue.png';
 import SearchWhite from '../../img/icons/search-blue.png';
+import VisaIcon from '../../img/visa.png';
 import VerticalLines from '../../img/icons/stat-blue-2.png';
 import Rings from '../../img/icons/ring-blue.png';
 import BuildingIcon from '../../img/icons/building-icon.png';
@@ -16,7 +17,7 @@ import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 
-class EditAccount extends Component {
+class PaymentMethod extends Component {
 
 
     constructor(props) {
@@ -102,33 +103,66 @@ class EditAccount extends Component {
                         <div className="row mb-3 justify-content-center ">
 
                             <div className="col-12  justify-content-center">
-                                <h4 className={"text-blue text-bold"}>Personal Info</h4>
+                                <p className={"blue-text"}><Link to={"/my-account"}> Account </Link> > Payment Method </p>
+
+                                <h4 className={"text-blue text-bold"}>Payment Method</h4>
+
                             </div>
                         </div>
 
 
+
+
                         <div className="row">
-                            <div className="col">
+                            <div className="col-12">
                                 <div className="list-group main-menu accountpage-list">
-                                    <Link className="list-group-item list-group-item-action ">
-                                        <img src={SettingsWhite} className={"account-icons truck-icon "} alt="" />
-                                     Account  <NavigateNextIcon /> </Link>
-                                    <Link to={"my-search"} className="list-group-item list-group-item-action ">
-                                        <img src={SearchWhite} className={"account-icons truck-icon "} alt="" />
-                                    My Searches  <NavigateNextIcon /></Link>
-
-                                    <Link to={"/my-listings"} className="list-group-item list-group-item-action ">
-                                        <img src={ListingBlue} className={"account-icons truck-icon "} alt="" />
-                                    My Listings <NavigateNextIcon /></Link>
-
-                                    <Link to={"/loops"} className="list-group-item list-group-item-action ">
-                                        <img src={Rings} className={"account-icons truck-icon "} alt="" />
-                                    My Cycles <NavigateNextIcon /></Link>
 
 
+                                  <p className="list-group-item list-group-item-action ">
+                                        <img src={VisaIcon} className={"account-icons truck-icon "} alt="" />
+                                        VISA 8120
+
+
+                                    <Link style={{float:"right"}} className="">
+
+                                         <span  className={"green-link-url text-right"}>REMOVE</span>
+                                    </Link>
+                                  </p>
 
                                 </div>
                             </div>
+
+
+                            <div className="col-12">
+                                <div className="list-group main-menu accountpage-list">
+
+
+                                    <p className="list-group-item list-group-item-action ">
+                                        <img src={VisaIcon} className={"account-icons truck-icon "} alt="" />
+                                        VISA 8220
+
+
+                                        <Link style={{float:"right"}} className="">
+
+                                            <span  className={"green-link-url text-right"}>REMOVE</span>
+                                        </Link>
+                                    </p>
+
+                                </div>
+                            </div>
+
+                            <div className="col-12">
+                                <div className="list-group main-menu accountpage-list">
+
+
+                                    <p className="">
+                                            <span className={"green-link-url text-right"}>Add Payment Method</span>
+                                    </p>
+
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
 
@@ -137,7 +171,6 @@ class EditAccount extends Component {
                         <div className="row">
                         </div>
                     </div>
-
 
 
 
@@ -177,4 +210,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(EditAccount);
+)(PaymentMethod);

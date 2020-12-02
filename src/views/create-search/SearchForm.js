@@ -346,6 +346,8 @@
                 .then((response) => {
 
                     var responseAll = response.data.content;
+
+
                     console.log("resource response")
                     console.log(responseAll)
 
@@ -413,13 +415,13 @@
             )
                 .then((response) => {
 
-                    var response = response.data.content;
+                    var responseAll = response.data.content;
                     console.log("sites  response")
-                    console.log(response)
+                    console.log(responseAll)
 
                     this.setState({
 
-                        sites: response
+                        sites: responseAll
 
                     })
 
@@ -433,6 +435,16 @@
                     }
                 );
 
+        }
+
+
+
+
+        toggleSite() {
+
+            this.setState({
+                showCreateSite: !this.state.showCreateSite
+            })
         }
 
         createSearch() {
@@ -462,10 +474,10 @@
 
             axios.post(baseUrl + "search/" + this.state.productSelected.id,
                 data, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
                 }
-            }
             )
                 .then(res => {
 
@@ -479,22 +491,12 @@
 
                 }).catch(error => {
 
-                    console.log("login error found ")
-                    console.log(error.response.data)
+                console.log("login error found ")
+                console.log(error.response.data)
 
-                });
+            });
 
         }
-
-
-        toggleSite() {
-
-            this.setState({
-                showCreateSite: !this.state.showCreateSite
-            })
-        }
-
-
 
         // handleChangeSite = (event) => {
         //     //
@@ -1317,32 +1319,21 @@
                 errors["name"] = "Required";
             }
 
-            if (!fields["others"]) {
-                formIsValid = false;
-                errors["others"] = "Required";
-            }
+            // if (!fields["others"]) {
+            //     formIsValid = false;
+            //     errors["others"] = "Required";
+            // }
 
 
             if (!fields["address"]) {
                 formIsValid = false;
                 errors["address"] = "Required";
             }
-            // if(!fields["agree"]){
-            //     formIsValid = false;
-            //     errors["agree"] = "Required";
-            // }
 
-            //
-            // if (!fields["name"]) {
-            //     formIsValid = false;
-            //     errors["name"] = "Required";
-            // }
             if (!fields["contact"]) {
                 formIsValid = false;
                 errors["contact"] = "Required";
             }
-
-
 
 
 
@@ -2478,7 +2469,7 @@
 
                                                         <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
 
-                                                        {this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}
+                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
 
                                                     </div>
 

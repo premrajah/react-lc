@@ -513,7 +513,7 @@ class ItemCycleDetail extends Component {
                                 <div className={"col-auto"}>
 
                                     <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
+                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.consumer&&this.state.item.consumer.org.id} </p>
                                 </div>
                             </div>
 
@@ -628,12 +628,9 @@ class ItemCycleDetail extends Component {
                                     <div className="col-auto ">
                                         <figure className="avatar avatar-60 border-0">
 
-                                            {/*<img src={TescoImg} alt="" />*/}
-
                                             <span className={"word-user word-user-sellor"}>
-                                                M
-
-                                </span>
+                                             M
+                                            </span>
 
                                         </figure>
                                     </div>
@@ -641,9 +638,8 @@ class ItemCycleDetail extends Component {
                                         <div className="row no-gutters">
                                             <div className="col-12">
 
-
-                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                                <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
+                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org && this.state.item.org.id}</p>
+                                                {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
 
                                             </div>
                                         </div>
@@ -651,38 +647,7 @@ class ItemCycleDetail extends Component {
                                 </div>
                             </div>
 
-
-
-
-
                         </div>
-
-
-                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
-
-                        {/*<div className="col-12">*/}
-                        {/*<h5 className={"text-bold blue-text"}>Product Journey</h5>*/}
-                        {/*</div>*/}
-
-                        {/*<div className="col-12">*/}
-                        {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
-                        {/*Click on an icon to see more information.*/}
-                        {/*</p>*/}
-
-                        {/*</div>*/}
-
-                        {/*</div>*/}
-
-
-                        {/*<div className="row justify-content-center pb-3 pt-4 ">*/}
-
-                        {/*<div style={{textAlign:"center"}} className="col-12">*/}
-
-
-                        {/*<img style={{width:"98%"}} src={BottomDetailInfo} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
 
 
                         <div className="row justify-content-start pb-3 pt-3 ">
@@ -701,63 +666,21 @@ class ItemCycleDetail extends Component {
                         </div>
 
 
-                        <div className="row justify-content-center pb-3 pt-4 border-box">
-
-                            <div style={{ textAlign: "center" }} className="col-12">
 
 
-                                <img style={{ width: "90%" }} src={BottomDetail} alt="" />
-
-                            </div>
-                        </div>
+                        <CustomizedTimeline/>
 
 
+                        {/*<div className="row justify-content-center pb-3 pt-4 border-box">*/}
+
+                            {/*<div style={{ textAlign: "center" }} className="col-12">*/}
 
 
+                                {/*<img style={{ width: "90%" }} src={BottomDetail} alt="" />*/}
 
-                        {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
-
-                        {/*<div className="col-12">*/}
-                        {/*<h5 className={"text-bold blue-text"}>Searches</h5>*/}
+                            {/*</div>*/}
                         {/*</div>*/}
 
-                        {/*<div className="col-12">*/}
-                        {/*<p  style={{fontSize:"16px"}} className={"text-gray-light "}>*/}
-                        {/*All searches assigned to this product.*/}
-                        {/*</p>*/}
-
-                        {/*</div>*/}
-
-                        {/*</div>*/}
-
-
-
-                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
-
-                        {/*<div className="col-12">*/}
-
-
-
-
-                        {/*{this.state.searches.map((item)=>*/}
-                        {/*<div  style={{border:"none"}} data-name={item.title}  className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>*/}
-
-                        {/*<div  className="col-10">*/}
-                        {/*/!*<Link to={"/search"}>*!/*/}
-                        {/*<p className={"blue-text "} style={{fontSize:"16px"}}>{item.name}</p>*/}
-                        {/*/!*</Link>*!/*/}
-                        {/*</div>*/}
-                        {/*<div className="col-2">*/}
-                        {/*<NavigateNextIcon/>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*)}*/}
-
-
-
-                        {/*</div>*/}
-                        {/*</div>*/}
 
 
 
@@ -789,27 +712,23 @@ function CustomizedTimeline() {
     const classes = useStyles();
 
     return (
-        <Timeline align="alternate">
+        <Timeline >
             <TimelineItem>
-                {/*<TimelineOppositeContent>*/}
-                {/*<Typography variant="body2" color="textSecondary">*/}
-                {/*9:30 am*/}
-                {/*</Typography>*/}
-                {/*</TimelineOppositeContent>*/}
+
                 <TimelineSeparator>
-                    <TimelineDot>
-                        <BusinessIcon />
+                    <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>
+                        {/*<BusinessIcon />*/}
                     </TimelineDot>
-                    <TimelineConnector />
+                    <TimelineConnector style={{ backgroundColor:"#05AD88", height:"150px"}} />
                 </TimelineSeparator>
                 <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="h6" component="h1">
-                            Company A
+                    <Paper elevation={0} className={classes.paper}>
+                        <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
+                            Manufacturer
                         </Typography>
                         <Typography>
-                            <p className={"text-blue"}>Plastics</p>
-                            <p>4 Kgs</p>
+                            <p className={"text-blue"}>Released Oct 16, 2019</p>
+
                         </Typography>
                     </Paper>
                 </TimelineContent>
@@ -821,19 +740,19 @@ function CustomizedTimeline() {
                 {/*</Typography>*/}
                 {/*</TimelineOppositeContent>*/}
                 <TimelineSeparator>
-                    <TimelineDot color="primary">
-                        <BusinessIcon />
+                    <TimelineDot style={{ backgroundColor:"#05AD88" , width:"25px",height:"25px"}}>
+                        {/*<BusinessIcon />*/}
                     </TimelineDot>
-                    <TimelineConnector />
+                    <TimelineConnector style={{ backgroundColor:"#05AD88",height:"150px"}} />
                 </TimelineSeparator>
                 <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={0} className={classes.paper}>
                         <Typography variant="h6" component="h1">
-                            Company B
+                            Logistics
                         </Typography>
                         <Typography>
-                            <p className={"text-blue"}>Paper and Card </p>
-                            <p>5 Kgs</p>
+                            <p className={"text-blue"}>Purchased Nov 7, 2019</p>
+
 
                         </Typography>
                     </Paper>
@@ -841,19 +760,19 @@ function CustomizedTimeline() {
             </TimelineItem>
             <TimelineItem>
                 <TimelineSeparator>
-                    <TimelineDot color="primary" variant="outlined">
-                        <BusinessIcon />
+                    <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}} >
+                        {/*<BusinessIcon />*/}
                     </TimelineDot>
-                    <TimelineConnector className={classes.secondaryTail} />
+                    {/*<TimelineConnector  />*/}
                 </TimelineSeparator>
                 <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={0} className={classes.paper}>
                         <Typography variant="h6" component="h1">
-                            Company C
+                            Consumer
                         </Typography>
                         <Typography>
-                            <p className={"text-blue"}>Other </p>
-                            <p>9 Kgs</p>
+                            <p className={"text-blue"}>Purchased Nov 7, 2019 </p>
+
 
                         </Typography>
                     </Paper>

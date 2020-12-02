@@ -9,7 +9,7 @@ import { Router, Route, Switch, withRouter,  BrowserRouter } from "react-router-
 import Home from "./views/LoopHome/Home";
 import Inbox from "./views/inbox/index";
 import LoginPopUp from "./views/login/LoginPopUp";
-import Account from "./views/loop-cycle/Account";
+import Account from "./views/account/Account";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
 
@@ -36,6 +36,8 @@ import AddDetail from "./views/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browser-resources/index";
+import FindResources from "./views/browser-resources/FindResources";
+
 import MessageSeller from "./views/browser-resources/message-seller";
 import MakeOffer from "./views/browser-resources/make-offer";
 import ItemDetailMatch from "./views/create-search/ItemDetail";
@@ -48,6 +50,11 @@ import LoggedInRoute from "./Util/LoggedInRoute";
 import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
 
+import EditAccount from "./views/account/EditAccount";
+import CompanyInfo from "./views/account/CompanyInfo";
+import Address from "./views/account/Address";
+import PaymentMethod from "./views/account/PaymentMethod";
+import MyAccount from "./views/account/MyAccount";
 
 
 // import Music from "./views/music";
@@ -102,6 +109,15 @@ class App extends Component{
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
+                        <LoggedInRoute exact path="/find-resources" component={FindResources} />
+
+
+                        <LoggedInRoute exact path="/my-account" component={MyAccount} />
+                        <LoggedInRoute exact path="/payment" component={PaymentMethod} />
+                        <LoggedInRoute exact path="/edit-account" component={EditAccount} />
+                        <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
+                        <LoggedInRoute exact path="/addresses" component={Address} />
+
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
@@ -111,18 +127,11 @@ class App extends Component{
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
+
                         <Route exact path="/product-cycle-detail/:slug" component={ItemCycleDetail} />
+
                         <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
-
-
-
-
-
-                        {/*<Route exact path="/legacy" component={Legacy} />*/}
-                        {/*<Route exact path="/merch" component={Merch} />*/}
-                        {/*<Route exact path="/diary" component={Diary} />*/}
-                        {/*<Route exact path="/team-sandlas" component={TeamSandlas} />*/}
 
 
                     </Switch>

@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
+import PaperImg from '../../img/paper-big.png';
 import StateIcon from '../../img/icons/state.png';
 import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
 import HeaderDark from '../header/HeaderDark'
@@ -151,7 +152,9 @@ class ItemDetail extends Component {
                     <HeaderDark />
 
 
-                    {this.state.item &&   <>   <div className="container-fluid " style={{ padding: "0" }}>
+                    {this.state.item &&
+                    <>
+                     <div className="container-fluid " style={{ padding: "0" }}>
 
 
                         <div className="row no-gutters  justify-content-center">
@@ -163,7 +166,12 @@ class ItemDetail extends Component {
 
 
                             <div className="col-auto ">
-                                <img className={"img-fluid"} src={FabricatingImg} alt="" />
+                                {/*<img className={"img-fluid"} src={FabricatingImg} alt="" />*/}
+
+                                {this.state.item.images.length > 0 ?
+                                    <img className={"resource-item-img  img-fluid"} src={this.state.item.images[0]} alt="" /> : <img className={"img-fluid"} src={PaperImg} alt="" />}
+
+
                             </div>
                         </div>
                     </div>
@@ -388,7 +396,7 @@ class ItemDetail extends Component {
 
 
                                             <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                            <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
+                                            {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
 
                                         </div>
                                     </div>

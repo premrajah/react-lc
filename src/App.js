@@ -13,8 +13,7 @@ import Account from "./views/account/Account";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
 
-import ViewSearch from "./views/loop-cycle/ViewSearch";
-import ViewSearchPage from "./views/loop-cycle/ViewSearchPage";
+
 import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browser-resources/ItemDetail";
 import ItemCycleDetail from "./views/browser-resources/ItemCycleDetail";
@@ -31,6 +30,7 @@ import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
 import CreateListing from "./views/create-listing/create-listing";
 import SearchForm from "./views/create-search/SearchForm";
+import ViewSearchNew from "./views/create-search/ViewSearch";
 import SearchMatches from "./views/create-search/search-matches";
 import AddDetail from "./views/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
@@ -93,8 +93,8 @@ class App extends Component{
                         <LoggedInRoute exact path="/account" component={Account} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
-                        <LoggedInRoute exact path="/view-search" component={ViewSearch} />
-                        <LoggedInRoute exact path="/view-search-page" component={ViewSearchPage} />
+                        {/*<LoggedInRoute exact path="/view-search" component={ViewSearch} />*/}
+                        {/*<LoggedInRoute exact path="/view-search-page" component={ViewSearchPage} />*/}
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
@@ -119,6 +119,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/addresses" component={Address} />
 
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
+                        <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />

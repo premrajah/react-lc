@@ -46,6 +46,7 @@ class ResourceItem extends Component {
 
 
                         {this.props.item.images.length > 0 ?
+
                             <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={Paper} alt="" />}
 
 

@@ -40,6 +40,7 @@ gcr:
     - develop
     - master
     - develop_refactor
+    - develop-api2
 
 
 deploy_gke_dev:
@@ -69,5 +70,6 @@ deploy_gke_dev:
     - develop
     - master
     - develop_refactor
+    - develop-api2
 
 

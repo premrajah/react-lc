@@ -37,9 +37,14 @@ class ResourceItem extends Component {
 
         return (
 
-            <Link to={"/match/" + this.props.item.id + "/" + this.props.searchId}>
+            <>
 
-            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+            {/*<Link to={"/match/" + this.props.item.id + "/" + this.props.searchId}>*/}
+
+         <Link to={"/"+ this.props.item.id }>
+
+
+        <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
                 <div className={"col-2"}>
@@ -82,7 +87,10 @@ class ResourceItem extends Component {
 
             </div>
             </Link>
+
+                </>
         );
+
     }
 }
 

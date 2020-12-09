@@ -5,21 +5,23 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
-import MarkerIcon from '../../img/icons/marker.png';
-import PaperImg from '../../img/paper-big.png';
+// import MarkerIcon from '../../img/icons/marker.png';
+// import CalIcon from '../../img/icons/calender-dgray.png';
+import PlaceholderImg from '../../img/place-holder-lc.png';
 import StateIcon from '../../img/icons/state.png';
 import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
-
-
+import CalIcon from '@material-ui/icons/Today';
+import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
+import ImagesSlider from "../../components/ImagesSlider";
+
+
 
 class ItemDetail extends Component {
 
@@ -137,7 +139,6 @@ class ItemDetail extends Component {
 
     }
 
-    intervalJasmineAnim
 
 
 
@@ -164,201 +165,180 @@ class ItemDetail extends Component {
                                 <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
                             </div>
 
-
-                            <div className="col-auto ">
-                                {/*<img className={"img-fluid"} src={FabricatingImg} alt="" />*/}
-
+                            <div className="col-md-6 col-sm-12 col-xs-12 p-5">
                                 {this.state.item.images.length > 0 ?
-                                    <img className={"resource-item-img  img-fluid"} src={this.state.item.images[0]} alt="" /> : <img className={"img-fluid"} src={PaperImg} alt="" />}
-
+                                    <ImagesSlider images={this.state.item.images} /> :
+                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                             </div>
-                        </div>
-                    </div>
-                    <div className="container ">
-                        <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                            <div className="col-12">
+                            <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
 
-                                <div className="row">
-                                    <div className="col-7">
-                                        <p className={"green-text text-heading"}>@{this.state.item.tags}
-                                        </p>
+                                <div className="row justify-content-start pb-3 pt-4 listing-row-border">
+
+                                    <div className="col-12 mt-2">
+                                        <h4 className={"blue-text text-heading"}>{this.state.item.name}
+                                        </h4>
+
+                                        {/*<p>Posted By <span className={"green-text"}>{this.state.item.org_id}</span></p>*/}
                                     </div>
 
-                                    <div className="col-3 green-text text-heading text-right">
-                                        {this.state.item.price ? <>{this.state.item.price.currency} {this.state.item.price.value}</> : "Free"}
+                                    <div className="col-12">
+
+                                        <div className="row">
+                                            <div className="col-7">
+                                                <p>Sold By <span className={"green-text"}>@{this.state.item.org_id}</span></p>
+                                            </div>
+
+                                            <div className="col-3 green-text text-heading text-right">
+
+                                                {this.state.item.price ?<>{this.state.item.price.currency} {this.state.item.price.value}</> : "Free"}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+
+                                    <div className="col-auto">
+                                        <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.description}
+                                        </p>
 
                                     </div>
 
                                 </div>
 
-                            </div>
-                            <div className="col-12 mt-2">
-                                <h5 className={"blue-text text-heading"}>{this.state.item.name}
-                                </h5>
 
-                                <p>Sold By <span className={"green-text"}>{this.state.item.org_id}</span></p>
                             </div>
                         </div>
+                    </div>
+            <div className={"container "}>
 
 
-                        <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+                <div className="row  justify-content-start search-container  pb-4">
 
-                            <div className="col-auto">
-                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.description}
-                                </p>
+                    <div className={"col-auto"}>
 
-                            </div>
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
+                    </div>
+                </div>
 
-                        </div>
+                <div className="row  justify-content-start search-container  pb-4">
 
-                        <div className="row justify-content-start pb-4 pt-3 ">
-                            <div className="col-auto">
-                                <h6 className={""}>Product Info</h6>
-                            </div>
-                        </div>
+                    <div className={"col-auto"}>
+
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
+                    </div>
+                </div>
+
+
+
+                <div className="row  justify-content-start search-container  pb-4">
+                    <div className={"col-auto"}>
+
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
+                    </div>
+                </div>
+
+
+                <div className="row  justify-content-start search-container  pb-4">
+
+                    <div className={"col-auto"}>
+
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.availableFrom.value).format("DD MMM YYYY")} </p>
+                    </div>
+                </div>
+
+
+                {/*<div className="row  justify-content-start search-container  pb-4">*/}
+
+                    {/*<div className={"col-auto"}>*/}
+
+                        {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>*/}
+                        {/*<p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
+
+
+
+                <div className="row  justify-content-start search-container  pb-4">
+
+                    <div className={"col-auto"}>
+
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.model} </p>
+                    </div>
+                </div>
+
+                <div className="row  justify-content-start search-container  pb-4">
+
+                    <div className={"col-auto"}>
+
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.serial} </p>
+                    </div>
+                </div>
+
+
+                <div className="row  justify-content-start search-container  pb-4 ">
+
+                    <div className={"col-auto"}>
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.brand} </p>
+                    </div>
+                </div>
+
+
+                <div className="row  justify-content-start search-container  pb-4 listing-row-border">
+
+                    <div className={"col-auto"}>
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
+                    </div>
+                </div>
+
+
+
+
+                <div className="row  justify-content-start search-container  mt-4 mb-5 ">
+                    <div className={"col-1"}>
+
+                        <CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />
+                    </div>
+
+                    <div className={"col-auto"}>
+
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>
+                    </div>
+
+
+                </div>
+
+                <div className="row  justify-content-start search-container pt-2  pb-4">
+                    <div className={"col-1"}>
+                        <MarkerIcon  style={{ fontSize: 30, color: "#a8a8a8" }} />
 
                     </div>
-                    <div className={"container"}>
+                    <div className={"col-auto"}>
 
-                        <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
-                            <div className={"col-auto"}>
+                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery From</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>
+                    </div>
+                </div>
 
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
-                            </div>
-                        </div>
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Manufacturer</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
-                            </div>
-                        </div>
-
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
-                            </div>
-                        </div>
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                            {/*</div>*/}
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Available From</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.availableFrom.value).format("DD MMM YYYY")} </p>
-                            </div>
-                        </div>
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Available Until</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>
-                            </div>
-                        </div>
-
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Model Number</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.model} </p>
-                            </div>
-                        </div>
-
-                        <div className="row  justify-content-start search-container  pb-4">
-
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Serial Number</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.serial} </p>
-                            </div>
-                        </div>
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-
-                            <div className={"col-auto"}>
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Brand</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.brand} </p>
-                            </div>
-                        </div>
-
-
-
-                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                        {/*<div className={"col-1"}>*/}
-                        {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*<div className={"col-auto"}>*/}
-
-                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
-                        {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={StateIcon} alt="" />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
-                            </div>
-                        </div>
-
-                        {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                        {/*<div className={"col-1"}>*/}
-                        {/*<img className={"icon-about"} src={CalenderIcon} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*<div className={"col-auto"}>*/}
-
-                        {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
-                        {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
-                        {/*<Moment   unix  >*/}
-                        {/*{this.state.item.availableFrom}*/}
-                        {/*</Moment>*/}
-                        {/*</p>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        <div className="row  justify-content-start search-container  pb-4">
-                            <div className={"col-1"}>
-                                <img className={"icon-about"} src={MarkerIcon} alt="" />
-                            </div>
-                            <div className={"col-auto"}>
-
-                                <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>
-                                <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>
-                            </div>
-                        </div>
 
                         <div className="container container-divider">
                             <div className="row">
@@ -372,11 +352,6 @@ class ItemDetail extends Component {
                                 </div>
                                 <div className="col-auto ">
                                     <figure className="avatar avatar-60 border-0">
-
-
-                                        {/*<span className={"word-user-sellor"}>M</span>*/}
-
-                                        {/*{this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}*/}
 
                                         <span className={"word-user-sellor"}>
 
@@ -493,6 +468,10 @@ function BottomAppBar(props) {
 
 
 }
+
+
+
+
 
 
 const mapStateToProps = state => {

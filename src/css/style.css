@@ -2860,3 +2860,58 @@ a.page-link:hover{
 
 	color: white;
 }
+
+.image-gallery-thumbnail {
+	display: inline-block;
+	border: 1px solid transparent;
+	transition: border .3s ease-out;
+	width: 100px;
+	background: transparent;
+	padding: 0;
+	border-radius: 7px;
+	margin-left:5px!important;
+	margin-right:5px!important;
+}
+
+.image-gallery-thumbnail img {
+
+	border-radius: 7px;
+
+
+
+}
+
+/*.image-gallery-thumbnail.active, .image-gallery-thumbnail:hover, .image-gallery-thumbnail:focus {*/
+	/*outline: none;*/
+	/*border: 1px solid #cccccc;*/
+	/*border-radius: 4px;*/
+/*}*/
+
+.image-gallery-thumbnail.active, .image-gallery-thumbnail:hover, .image-gallery-thumbnail:focus {
+	outline: none;
+	border: 1px solid #cccccc!important;
+
+}
+
+
+.label-file-input{
+
+	background: #eee;
+	border-radius: 5px;
+	display: flex;
+	text-align: center;
+	height: 80px;
+	width: 80px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	margin-top: 15px;
+}
+
+.image-gallery-slide img {
+	height: 400px;
+	width: auto;
+}
+.image-gallery-thumbnail img{
+	height: 80px!important;
+	width: 80px!important;
+}

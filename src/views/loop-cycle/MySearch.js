@@ -119,7 +119,7 @@ class MySearch extends Component {
                     <HeaderDark />
 
 
-                    <div className="container   pb-4 pt-4">
+                    <div className="container  pb-4 pt-4">
 
 
                         <div className="row justify-content-center">

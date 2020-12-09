@@ -3,6 +3,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
+
 import FormControl from '@material-ui/core/FormControl';
 import SearchIcon from '../../img/icons/search-icon.png';
 import { Link } from "react-router-dom";
@@ -23,6 +24,7 @@ import { withStyles } from "@material-ui/core/styles/index";
 import CalGrey from '../../img/icons/calender-dgray.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
+import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
@@ -114,6 +116,8 @@ class CreateListing extends Component {
             siteSelected: null,
             files: [],
             filesUrl: [],
+            uploadFiles: [],
+            uploadFilesUrl: [],
             free: false,
             price: null,
 
@@ -230,11 +234,13 @@ class CreateListing extends Component {
 
     handleChangeFile(event) {
 
+        console.log("change event files")
         console.log(event.target.files)
 
-        var files = []
-        var filesUrl = []
+        var files = this.state.files
+        var filesUrl = this.state.filesUrl
 
+        this.uploadImage(event.target.files)
 
         for (var i = 0; i < event.target.files.length; i++) {
 
@@ -242,9 +248,11 @@ class CreateListing extends Component {
             files.push(event.target.files[i])
             filesUrl.push(URL.createObjectURL(event.target.files[i]))
 
-            console.log(URL.createObjectURL(event.target.files[i]))
-
         }
+
+
+        console.log(files)
+        console.log(filesUrl)
 
         this.setState({
             files: files,
@@ -252,7 +260,7 @@ class CreateListing extends Component {
         })
 
 
-        this.uploadImage(files)
+
     }
 
 
@@ -292,6 +300,17 @@ class CreateListing extends Component {
         var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
+        var images = this.state.images
+
+        images.splice(index,1)
+
+
+        this.setState({
+            images: images
+        })
+
+
+        console.log(images)
 
         this.setState({
 
@@ -304,15 +323,6 @@ class CreateListing extends Component {
     }
 
     getBase64(file) {
-
-        // const reader = new FileReader();
-        // reader.readAsDataURL(file);
-        //
-        //
-        // return reader.result;
-        // reader.onload = () => resolve(reader.result);
-        // reader.onerror = error => reject(error);
-
 
 
         return new Promise((resolve, reject) => {
@@ -328,19 +338,18 @@ class CreateListing extends Component {
     uploadImage(files) {
 
 
-
-
         if (files && files.length > 0) {
-
 
 
             for (var i = 0; i < files.length; i++) {
 
 
-                this.getBase64(files[0]).then(
-                    data => {
-                        console.log(data)
+                this.getBase64(files[i]).then(
 
+                    data => {
+
+                        console.log("uploading "+i)
+                        console.log(files[i])
 
                         axios.post(baseUrl + "resource/image64", btoa(data)
                             , {
@@ -348,10 +357,9 @@ class CreateListing extends Component {
                                     "Authorization": "Bearer " + this.props.userDetail.token
                                 }
                             }
-                        )
-                            .then(res => {
+                        ).then(res => {
 
-                                console.log(res.data.content)
+                                // console.log(res.data.content)
 
 
                                 var images = this.state.images
@@ -362,6 +370,8 @@ class CreateListing extends Component {
                                 this.setState({
                                     images: images
                                 })
+                            console.log("images urls")
+                            console.log(images)
 
                             }).catch(error => {
 
@@ -479,6 +489,10 @@ class CreateListing extends Component {
     }
 
     createListing() {
+
+
+        console.log("images sbmit")
+        console.log(this.state.images)
 
 
 
@@ -656,11 +670,6 @@ class CreateListing extends Component {
 
 
     makeFirstActive(){
-
-// alert("make home active")
-
-
-
 
         this.setState({
 
@@ -856,8 +865,6 @@ class CreateListing extends Component {
 
     selectProduct(event) {
 
-        // console.log(this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name))
-
         this.setState({
 
             productSelected: this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0]
@@ -877,7 +884,6 @@ class CreateListing extends Component {
 
     selectType(event) {
 
-        // console.log(this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name))
 
         this.setState({
 
@@ -1645,14 +1651,6 @@ class CreateListing extends Component {
             });
 
 
-            // alert("valid")
-
-            // }else {
-            //
-            //
-            //     // alert("invalid")
-            // }
-
 
         }
 
@@ -1817,19 +1815,33 @@ class CreateListing extends Component {
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>Add Photos</div>
 
-                                    <div className="container  pb-5 ">
+                                    <div className="container-fluid  pb-5 ">
 
                                         <div className="row camera-grids   no-gutters   ">
 
-                                            <div className="col-4 p-1 text-center ">
+                                            <div className="col-12  text-left ">
 
                                                 <div className="">
-                                                    <div className={"card-body"}>
+                                                    <div className={""}>
                                                         {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
 
                                                         <div className={"file-uploader-box"}>
-                                                            <input className={""} multiple type="file" onChange={this.handleChangeFile} />
-                                                            <div className={"file-uploader-img-container"}>
+
+                                                            <div className={"file-uploader-thumbnail-container"}>
+
+                                                                <div className={"file-uploader-thumbnail-container"}>
+                                                            <label className={"label-file-input"} htmlFor="fileInput">
+                                                                <AddPhotoIcon  style={{ fontSize: 32, color: "#a8a8a8",margin:"auto" }} />
+                                                            </label>
+                                                            <input style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile} />
+
+
+                                                            </div>
+
+
+
+
+                                                                {/*<div className={"file-uploader-img-container"}>*/}
 
                                                                 {this.state.files && this.state.files.map((item, index) =>
 
@@ -1839,7 +1851,7 @@ class CreateListing extends Component {
                                                                         <div data-index={index} data-url={URL.createObjectURL(item)}
 
                                                                             className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item) + ")" }}>
-                                                                            <Cancel data-name={item.name} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+                                                                            <Cancel data-name={item.name} data-index={index} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
                                                                         </div>
                                                                     </div>
 

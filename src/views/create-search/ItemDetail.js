@@ -11,7 +11,7 @@ import CalenderIcon from '../../img/icons/calender.png';
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
-import PaperImg from '../../img/paper-big.png';
+// import PaperImg from '../../img/paper-big.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
@@ -22,6 +22,7 @@ import axios from "axios/index";
 import Moment from 'react-moment';
 import { withStyles } from "@material-ui/core/styles/index";
 import moment from "moment/moment";
+import PlaceholderImg from '../../img/place-holder-lc.png';
 
 
 class ItemDetail extends Component {
@@ -246,7 +247,7 @@ class ItemDetail extends Component {
 
                                 {this.state.item.images && this.state.item.images.length > 0 ?
                                     <img className={"resource-item-big img-fluid"} src={this.state.item.images[0]}
-                                         alt=""/> : <img className={"img-fluid"} src={PaperImg} alt=""/>}
+                                         alt=""/> : <img className={"img-fluid"} src={PlaceholderImg} alt=""/>}
 
 
                                 {/*<img className={"img-fluid"}  src={PaperImg} alt=""/>*/}

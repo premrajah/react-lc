@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Paper from '../../img/paper.png';
+import PlaceholderImg from '../../img/place-holder-lc.png';
 
 
 import { Link } from "react-router-dom";
@@ -42,16 +42,16 @@ class ResourceItem extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                <div className={"col-3"}>
+                <div className={"col-2"}>
 
 
                         {this.props.item.images.length > 0 ?
 
-                            <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={Paper} alt="" />}
+                            <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
 
                 </div>
-                <div className={"col-5 pl-3 content-box-listing"}>
+                <div className={"col-6 pl-3 content-box-listing"}>
                     <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state}
                     {/*/ {this.props.item.volume} {this.props.item.units}*/}

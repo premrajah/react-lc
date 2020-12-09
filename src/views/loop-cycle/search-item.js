@@ -38,7 +38,7 @@ class SearchItem extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                <div className={"col-4 search-column-left"}>
+                <div className={"col-2 search-column-left"}>
 
                     <Link to={"/matches/" + this.props.item.id}>
 
@@ -46,7 +46,7 @@ class SearchItem extends Component {
 
                     </Link>
                 </div>
-                <div className={"col-6 pl-3 content-box-listing"}>
+                <div className={"col-8 pl-3 content-box-listing"}>
                     <Link to={"/matches/" + this.props.item.id}>
                         <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>

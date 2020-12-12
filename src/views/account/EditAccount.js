@@ -16,6 +16,8 @@ import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+import { saveUserData, saveUserToken, saveKey, getKey } from '../../LocalStorage/user'
+import { Spinner} from 'react-bootstrap';
 
 
 
@@ -33,18 +35,25 @@ class EditAccount extends Component {
             nextIntervalFlag: false,
             fields: {},
             errors: {},
+            user: null,
+            firstName:null,
+            lastName:null,
+            email:null,
+            phone:null,
+            loading: false
         }
 
 
-        this.getResources = this.getResources.bind(this)
+
+        this.UserInfo = this.UserInfo.bind(this)
 
     }
 
 
-    getResources() {
+    UserInfo() {
 
 
-        axios.get(baseUrl + "resource",
+        axios.get(baseUrl + "user",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -52,10 +61,22 @@ class EditAccount extends Component {
             }
         )
             .then((response) => {
+
+
                     var response = response.data;
 
-                    console.log("resource response")
+                    console.log("user response")
                     console.log(response)
+
+
+                this.setState({
+
+                    user : response.data,
+                    firstName:response.data.firstName,
+                    lastName:response.data.lastName,
+                    email:response.data.email,
+                    phone:response.data.phone,
+                })
 
                 },
                 (error) => {
@@ -84,35 +105,23 @@ class EditAccount extends Component {
         let formIsValid = true;
 
         //Name
-        if (!fields["name"]) {
+        if (!this.state.firstName&&!fields["firstName"]) {
             formIsValid = false;
-            errors["name"] = "Required";
+            errors["firstName"] = "Required";
+        }
+
+        //Name
+        if (!this.state.lastName&&!fields["lastName"]) {
+            formIsValid = false;
+            errors["lastName"] = "Required";
         }
 
 
-
-        if (!fields["phone"]) {
+        if (!this.state.phone&&!fields["phone"]) {
             formIsValid = false;
             errors["phone"] = "Required";
         }
 
-
-
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -123,7 +132,38 @@ class EditAccount extends Component {
     handleChangeSite(field, e) {
 
         let fields = this.state.fields;
+
         fields[field] = e.target.value;
+
+
+
+        if (field=="firstName"){
+
+            this.setState({
+                firstName: e.target.value
+            })
+        }
+        else if (field=="lastName"){
+
+            this.setState({
+                lastName: e.target.value
+            })
+        }
+
+        else if (field=="email"){
+
+            this.setState({
+                email: e.target.value
+            })
+        }
+
+        else if (field=="phone"){
+
+            this.setState({
+                phone: e.target.value
+            })
+        }
+
         this.setState({ fields: fields });
 
     }
@@ -138,34 +178,30 @@ class EditAccount extends Component {
 
             const form = event.currentTarget;
             console.log(new FormData(event.target))
-
-
             this.setState({
-                btnLoading: true
+                loading: true
             })
+
+
 
             const data = new FormData(event.target);
 
-            const email = data.get("email")
-            const others = data.get("others")
-            const name = data.get("name")
-            const contact = data.get("contact")
-            const address = data.get("address")
+            const firstName = data.get("firstName")
+            const lastName = data.get("lastName")
+            // const email = data.get("email")
             const phone = data.get("phone")
 
 
             console.log("site submit called")
 
 
-            axios.post(baseUrl + "site",
+            axios.post(baseUrl + "user",
 
                 {
-                    "name": name,
-                    "email": email,
-                    "contact": contact,
-                    "address": address,
+                    "firstName": firstName,
+                    // "email": email,
+                    "lastName": lastName,
                     "phone": phone,
-                    "others": others
 
                 }
                 , {
@@ -175,14 +211,19 @@ class EditAccount extends Component {
                 })
                 .then(res => {
 
-                    this.toggleSite()
-                    this.getSites()
 
+                    this.setState({
+                        loading: false
+                    })
 
-
+                    this.UserInfo()
 
                 }).catch(error => {
 
+
+                this.setState({
+                    loading: false
+                })
 
                 console.log(error)
 
@@ -199,12 +240,15 @@ class EditAccount extends Component {
 
     componentWillMount() {
 
+
+
+
     }
 
     componentDidMount() {
 
 
-
+this.UserInfo()
     }
 
 
@@ -226,12 +270,14 @@ class EditAccount extends Component {
 
                             <div className="col-12  justify-content-center">
 
-                                <p className={"blue-text"}><Link to={"/my-account"} >Account </Link> > Personal Info </p>
+                                <p className={"blue-text"}><Link to={"/account"} >Account </Link> > Personal Info </p>
                                 <h4 className={"text-blue text-bold"}>Personal Info</h4>
 
                             </div>
                         </div>
 
+
+                        {this.state.user &&
 
                         <div className={"row"}>
                             <div className={"col-12"}>
@@ -240,33 +286,79 @@ class EditAccount extends Component {
 
                                         <div className="col-12 mt-4">
 
-                                            <TextField id="outlined-basic" label="Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+                                            <TextField id="outlined-basic" required
 
-                                            {this.state.errors["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["name"]}</span>}
+                                                       value={this.state.firstName}
+                                                       label="First Name"
+                                                       variant="outlined" fullWidth={true} name={"firstName"}
+                                                       onChange={this.handleChangeSite.bind(this, "firstName")}/>
+
+                                            {this.state.errors["firstName"] && <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errors["firstName"]}</span>}
 
                                         </div>
 
                                         <div className="col-12 mt-4">
 
-                                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+                                            <TextField id="outlined-basic" required
 
-                                            {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
+                                                       value={this.state.lastName}
+                                                       label="Last Name"
+                                                       variant="outlined" fullWidth={true} name={"lastName"}
+                                                       onChange={this.handleChangeSite.bind(this, "lastName")}/>
+
+                                            {this.state.errors["lastName"] && <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errors["lastName"]}</span>}
+
+                                        </div>
+
+                                        <div className="col-12 mt-4">
+
+                                            <TextField id="outlined-basic2"
+                                                       InputProps={{
+                                                           readOnly: true,
+                                                       }}
+                                                       value={this.state.email}
+                                                       label="Email" variant="outlined" fullWidth={true} name={"email"}
+                                                       onChange={this.handleChangeSite.bind(this, "email")}/>
+
+                                            {this.state.errors["email"] && <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
 
                                         </div>
 
 
                                         <div className="col-12 mt-4">
 
-                                            <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Contact number" variant="outlined" fullWidth={true} />
+                                            <TextField id="outlined-basic3"
+                                                       value={this.state.phone}
+                                                       type={"number"} name={"phone"}
+                                                       onChange={this.handleChangeSite.bind(this, "phone")}
+                                                       label="Contact number" variant="outlined" fullWidth={true}/>
 
-                                            {this.state.errors["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["phone"]}</span>}
+                                            {this.state.errors["phone"] && <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errors["phone"]}</span>}
 
                                         </div>
 
 
                                         <div className="col-12 mt-4">
 
-                                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                            <button type={"submit"}
+                                                    className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>
+
+                                                {this.state.loading && <Spinner
+                                                    as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    aria-hidden="true"
+
+                                                />}
+
+                                                {this.state.loading ? "Wait.." : "Save"}
+
+                                            </button>
                                         </div>
 
 
@@ -274,6 +366,9 @@ class EditAccount extends Component {
                                 </form>
                             </div>
                         </div>
+                        }
+
+
                     </div>
 
 

@@ -6,7 +6,6 @@
     import FormControl from '@material-ui/core/FormControl';
     import SearchIcon from '../../img/icons/search-icon.png';
     import { Link } from "react-router-dom";
-    import { Alert} from 'react-bootstrap';
 
     import InputLabel from '@material-ui/core/InputLabel';
     import Close from '@material-ui/icons/Close';
@@ -21,7 +20,9 @@
     import InputAdornment from '@material-ui/core/InputAdornment';
     import { withStyles } from "@material-ui/core/styles/index";
     import CalGrey from '../../img/icons/calender-dgray.png';
+    import { Alert} from 'react-bootstrap';
     import LinkGray from '../../img/icons/link-icon.png';
+
     import MarkerIcon from '../../img/icons/marker.png';
     import CalenderIcon from '../../img/icons/calender.png';
     import ListIcon from '../../img/icons/list.png';
@@ -108,6 +109,7 @@
                 description: null,
                 volume: null,
                 createSearchData: null,
+                searchObj:null,
                 resourcesMatched: [],
                 showCreateSite: false,
                 siteSelected: null,
@@ -146,6 +148,7 @@
             this.toggleDateOpen = this.toggleDateOpen.bind(this)
             this.handleChangeDate = this.handleChangeDate.bind(this)
             this.makeActive=this.makeActive.bind(this)
+            this.goToSearchPage=this.goToSearchPage.bind(this)
 
 
         }
@@ -279,12 +282,13 @@
 
                 axios.post(baseUrl + "product",
 
-                    {
+                    {product :  {
                         "title": title,
                         "purpose": purpose,
                         "description": description,
 
 
+                    }
                     }
                     , {
                         headers: {
@@ -294,7 +298,7 @@
                     .then(res => {
 
 
-                        console.log(res.data.content)
+                        console.log(res.data)
                         console.log("product added succesfully")
 
 
@@ -310,7 +314,7 @@
 
                         // dispatch(stopLoading())
 
-                        // dispatch(signUpFailed(error.response.data.content.message))
+                        // dispatch(signUpFailed(error.response.data.message))
 
                         console.log(error)
                         // dispatch({ type: AUTH_FAILED });
@@ -345,11 +349,14 @@
             )
                 .then((response) => {
 
-                    var responseAll = response.data.content;
+                    var responseAll = response.data.data;
 
 
                     console.log("resource response")
                     console.log(responseAll)
+
+
+
 
                     this.setState({
 
@@ -382,7 +389,7 @@
             )
                 .then((response) => {
 
-                    var responseAll = response.data.content;
+                    var responseAll = response.data;
                     console.log("resource response")
                     console.log(responseAll)
 
@@ -415,7 +422,7 @@
             )
                 .then((response) => {
 
-                    var responseAll = response.data.content;
+                    var responseAll = response.data.data;
                     console.log("sites  response")
                     console.log(responseAll)
 
@@ -453,26 +460,28 @@
 
             var data = {
 
-                "name": this.state.title,
-                "description": this.state.description,
-                "category": this.state.catSelected.name,
-                "type": this.state.subCatSelected.name,
-                "units": this.state.unitSelected,
-                "volume": this.state.volumeSelected,
-                "state": this.state.stateSelected,
-                "site_id": this.state.siteSelected,
-                "require_after": {
-                    "unit": "MILLISECOND",
-                    "value": new Date(this.state.dateRequiredFrom).getTime()
+
+                search: {
+                    "name": this.state.title,
+                    "description": this.state.description,
+                    "category": this.state.catSelected.name,
+                    "type": this.state.subCatSelected.name,
+                    "units": this.state.unitSelected,
+                    "volume": this.state.volumeSelected,
+                    "state": this.state.stateSelected,
+
+                    "require_after_epoch_ms": new Date(this.state.dateRequiredFrom).getTime(),
+                    "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime(),
+                    
+
                 },
-                "expiry": {
-                    "unit": "MILLISECOND",
-                    "value": new Date(this.state.dateRequiredBy).getTime()
-                }
+                "site_id": this.state.siteSelected,
+
+
             }
 
 
-            axios.post(baseUrl + "search/" + this.state.productSelected.id,
+            axios.put(baseUrl + "search",
                 data, {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -481,18 +490,19 @@
             )
                 .then(res => {
 
-                    console.log(res.data.content)
+                    console.log(res.data)
 
                     this.setState({
-                        createSearchData: res.data.content
+                        // createSearchData: res.data.data,
+                        searchObj:res.data.data,
                     })
 
                     this.getSite()
 
                 }).catch(error => {
 
-                console.log("login error found ")
-                console.log(error.response.data)
+                console.log("search error found ")
+                console.log(error)
 
             });
 
@@ -525,7 +535,7 @@
                 )
                     .then((response) => {
 
-                        var response = response.data.content;
+                        var response = response.data;
                         console.log("resource response")
                         console.log(response)
 
@@ -613,6 +623,13 @@
         }
 
 
+        goToSearchPage(){
+
+
+            this.props.history.push("/search/"+this.state.searchObj._key)
+
+        }
+
         handleNext() {
             this.getSites()
             if (this.state.page === 1) {
@@ -699,7 +716,7 @@
                 }
             ).then((response) => {
 
-                var response = response.data.content;
+                var response = response.data.data;
                 console.log("resource response")
                 console.log(response)
 
@@ -1106,8 +1123,10 @@
 
             //Name
             if (!fields["deliver"]) {
+
                 formIsValid = false;
                 errors["deliver"] = "Required";
+
             } else {
 
                 this.setState({
@@ -1742,7 +1761,7 @@
 
 
                                     <div className={"dummy-text-field"}>
-                                        {this.state.productSelected ? this.state.productSelected.title : "Link new a product"}
+                                        {this.state.productSelected ? this.state.productSelected.product.name : "Link new a product"}
                                         <img className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
                                     </div>
                                     {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
@@ -1773,7 +1792,7 @@
 
                                             {this.state.sites.map((item) =>
 
-                                                <option value={item.id}>{item.name + "(" + item.address + ")"}</option>
+                                                <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
                                             )}
 
@@ -1874,8 +1893,11 @@
                                         <img className={"icon-left-select"} src={SendIcon} alt="" />
                                     </div>
                                     <div className="col-8">
-                                        <p className={"blue-text "} style={{ fontSize: "16px" }}>{item.title}</p>
-                                        <p className={"text-mute small"} style={{ fontSize: "16px" }}>{item.searches.length} Searches</p>
+                                        <p className={"blue-text "} style={{ fontSize: "16px" }}>{item.product.name}</p>
+                                        <p className={"text-mute small"} style={{ fontSize: "16px" }}>0
+                                            {/*{item.searches.length} */}
+                                            Searches
+                                        </p>
 
                                     </div>
                                     <div className="col-2">
@@ -2366,7 +2388,10 @@
 
 
                                                 {this.state.page === 3 &&
-                                                    <button onClick={this.handleNext} type="button"
+
+
+
+                                                    <button onClick={this.goToSearchPage} type="button"
                                                         className={this.state.nextBlueAddDetail ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
                                                         View Search
 

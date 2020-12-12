@@ -362,40 +362,42 @@ export const logInSync = (data) => dispatch => {
         { "email": data.email, "password": data.password })
         .then(res => {
 
-            console.log(res.data)
 
-            saveUserToken(res.data);
+            console.log(res)
+
+            // saveUserToken(res.data.data);
             // dispatch(getUserDetail(data));
 
             document.body.classList.add('search-body');
 
 
-            if (res.data.status.code === 200) {
+            if (res.status === 200) {
+
+                saveUserToken(res.data.data);
+
                 console.log("login success found")
-                saveKey("user", res.data['content'])
-                dispatch({ type: "LOGIN", value: res.data })
+                saveKey("user", res.data.data)
+                dispatch({ type: "LOGIN", value: res.data.data })
 
 
             } else {
-                console.log("login failed " + res.data.content.message)
 
-                dispatch({ type: "LOGIN_ERROR", value: res.data.content.message })
+                // alert("here")
+
+                // console.log("login failed " + res.errors[0].message)
+
+                // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
             }
 
 
         }).catch(error => {
 
             console.log("login error found ")
-            console.log(error.response.data)
 
-            // dispatch({type: "LOGIN_FAILED", value : error})
-            // dispatch(stopLoading())
+            console.log(error.response)
 
+            dispatch({ type: "LOGIN_ERROR", value: error.response.data.errors[0].message })
 
-            dispatch(loginFailed(error.response.data.content.message))
-            // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
-
-            // console.log(error)
 
         });
 
@@ -628,7 +630,7 @@ export const signUpSync = (data) => dispatch => {
 
             // dispatch(stopLoading())
 
-            dispatch(signUpFailed(error.response.data.content.message))
+            dispatch(signUpFailed(error.response.data.message))
 
             console.log(error)
             // dispatch({ type: AUTH_FAILED });

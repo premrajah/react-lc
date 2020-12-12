@@ -197,7 +197,7 @@ function LoopAccordion(props) {
                                 <div className={"col-auto pl-3 content-box-listing"}>
 
                                     <p style={{ fontSize: "18px" }} className=" mb-1">{props.loop.logistics.org.name}</p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{props.loop.producer.email}</p>
+                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{props.loop.logistics.email}</p>
 
                                 </div>
 

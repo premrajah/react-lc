@@ -28,7 +28,8 @@ class MyAccount extends Component {
 
             timerEnd: false,
             count: 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            activePage:1
         }
 
 
@@ -45,6 +46,13 @@ class MyAccount extends Component {
         this.props.logOut()
 
     }
+
+
+
+
+
+
+
 
 
     getResources() {
@@ -119,14 +127,16 @@ class MyAccount extends Component {
 
 
                         <div className="row">
-                            <div className="col">
+                            <div className="col-md-12">
                                 <div className="list-group main-menu accountpage-list">
-                                    <Link to={"/company-info"} className="list-group-item list-group-item-action ">
-                                     Company Info  <NavigateNextIcon />
-                                    </Link>
 
-                                    <Link to={"edit-account"} className="list-group-item list-group-item-action ">
+
+                                    <Link to={"/edit-account"} className="list-group-item list-group-item-action ">
                                     Personal Info  <NavigateNextIcon /></Link>
+
+                                    <Link to={"/company-info"} className="list-group-item list-group-item-action ">
+                                        Company Info  <NavigateNextIcon />
+                                    </Link>
 
                                     <Link to={"/payment"} className="list-group-item list-group-item-action ">
                                     Payment Methods <NavigateNextIcon /></Link>
@@ -135,25 +145,31 @@ class MyAccount extends Component {
                                     Address/Sites <NavigateNextIcon />
                                     </Link>
 
+                                </div>
 
 
+                                <div className="row">
+                                    <div className="col-12">
+                                        <button style={{width:"100%"}} onClick={this.logOut}
+                                                className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Logout
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
 
 
-                    </div>
+                            <div className="col-md-8">
 
 
-                    <div className="container ">
-                        <div className="row">
-                            <div className="col-12">
-                            <button style={{width:"100%"}} onClick={this.logOut}
-                                  className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Logout
-                            </button>
                             </div>
+
+
                         </div>
+
+
+
+
                     </div>
 
 

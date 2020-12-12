@@ -55,7 +55,7 @@ class Products extends Component {
         )
             .then((response) => {
 
-                var responseAll = response.data.content;
+                var responseAll = response.data.data;
                 console.log("resource response")
                 console.log(responseAll)
 

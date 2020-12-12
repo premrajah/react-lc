@@ -29,6 +29,7 @@ import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
 import CreateListing from "./views/create-listing/create-listing";
+import ListForm from "./views/create-listing/ListForm";
 import SearchForm from "./views/create-search/SearchForm";
 import ViewSearchNew from "./views/create-search/ViewSearch";
 import SearchMatches from "./views/create-search/search-matches";
@@ -57,12 +58,6 @@ import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
 
 
-// import Music from "./views/music";
-// import Legacy from "./views/legacy";
-// import Merch from "./views/merch";
-// import Diary from "./views/diary";
-// import TeamSandlas from "./views/team";
-
 
 
 var hist = createBrowserHistory();
@@ -90,11 +85,8 @@ class App extends Component{
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
-                        <LoggedInRoute exact path="/account" component={Account} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
-                        {/*<LoggedInRoute exact path="/view-search" component={ViewSearch} />*/}
-                        {/*<LoggedInRoute exact path="/view-search-page" component={ViewSearchPage} />*/}
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
@@ -104,15 +96,15 @@ class App extends Component{
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
-
                         <LoggedInRoute exact path="/list-form" component={CreateListing} />
+                        <LoggedInRoute exact path="/list-form-new" component={ListForm} />
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <LoggedInRoute exact path="/find-resources" component={FindResources} />
 
 
-                        <LoggedInRoute exact path="/my-account" component={MyAccount} />
+                        <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exact path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />

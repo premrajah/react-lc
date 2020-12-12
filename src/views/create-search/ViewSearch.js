@@ -34,10 +34,6 @@
     import ResourceItem from '../item/ResourceItem'
     import HeaderDark from '../header/HeaderDark'
     import Sidebar from '../menu/Sidebar'
-    // import DateFnsUtils from 'date-fns';
-    // import { compareAsc, format } from 'date-fns'
-    // import  moment from  'moment'
-
     import MomentUtils from '@date-io/moment';
     import moment from 'moment';
 
@@ -139,13 +135,17 @@
             this.showProductSelection = this.showProductSelection.bind(this)
             this.toggleDateOpen = this.toggleDateOpen.bind(this)
             this.makeActive=this.makeActive.bind(this)
+            this.selectCreateSearch=this.selectCreateSearch.bind(this)
 
 
         }
 
 
 
+        selectCreateSearch() {
 
+        this.props.history.push("/search-form")
+        }
 
         showProductSelection() {
 
@@ -265,7 +265,7 @@
             )
                 .then((response) => {
 
-                        var responseData = response.data;
+                        var responseData = response.data.data;
 
 
                         console.log("detail search response")
@@ -273,7 +273,7 @@
 
 
                         this.setState({
-                            createSearchData: responseData.content
+                            createSearchData: responseData
                         })
 
 
@@ -289,7 +289,10 @@
 
         getSite() {
 
-            axios.get(baseUrl + "site/" + this.state.siteSelected,
+         
+         if (this.state.createSearchData)
+         
+            axios.get(baseUrl + "site/" + this.state.createSearchData.site._key,
                 {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -298,7 +301,7 @@
             )
                 .then((response) => {
 
-                    var responseAll = response.data.content;
+                    var responseAll = response.data.data;
                     console.log("site response")
                     console.log(responseAll)
 
@@ -388,44 +391,44 @@
         loadMatches() {
 
 
-            for (var i = 0; i < this.state.createSearchData.resources.length; i++) {
-
-                axios.get(baseUrl + "resource/" + this.state.createSearchData.resources[i],
-                    {
-                        headers: {
-                            "Authorization": "Bearer " + this.props.userDetail.token
-                        }
-                    }
-                )
-                    .then((response) => {
-
-                        var response = response.data.content;
-                        console.log("resource response")
-                        console.log(response)
-
-
-
-                        var resources = this.state.resourcesMatched
-
-                        resources.push(response)
-
-                        this.setState({
-
-                            resourcesMatched: resources
-                        })
-
-                    },
-                        (error) => {
-
-                            var status = error.response.status
-                            console.log("resource error")
-                            console.log(error)
-
-                        }
-                    );
-
-
-            }
+            // for (var i = 0; i < this.state.createSearchData.search.resources.length; i++) {
+            //
+            //     axios.get(baseUrl + "resource/" + this.state.createSearchData.search.resources[i],
+            //         {
+            //             headers: {
+            //                 "Authorization": "Bearer " + this.props.userDetail.token
+            //             }
+            //         }
+            //     )
+            //         .then((response) => {
+            //
+            //             var response = response.data.content;
+            //             console.log("resource response")
+            //             console.log(response)
+            //
+            //
+            //
+            //             var resources = this.state.resourcesMatched
+            //
+            //             resources.push(response)
+            //
+            //             this.setState({
+            //
+            //                 resourcesMatched: resources
+            //             })
+            //
+            //         },
+            //             (error) => {
+            //
+            //                 var status = error.response.status
+            //                 console.log("resource error")
+            //                 console.log(error)
+            //
+            //             }
+            //         );
+            //
+            //
+            // }
 
 
         }
@@ -644,12 +647,12 @@
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                         <div className="col-12">
-                                            <p className={"green-text text-heading"}>@{this.state.createSearchData.org_id}
+                                            <p className={"green-text text-heading"}>@{this.state.createSearchData.org.name}
                                         </p>
 
                                         </div>
                                         <div className="col-12 mt-2">
-                                            <h5 className={"blue-text text-heading"}>{this.state.createSearchData.name}
+                                            <h5 className={"blue-text text-heading"}>{this.state.createSearchData.search.name}
                                             </h5>
 
                                         </div>
@@ -659,7 +662,7 @@
                                     <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                                         <div className="col-auto">
-                                            <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.createSearchData.description}
+                                            <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.createSearchData.search.description}
                                             </p>
 
                                         </div>
@@ -685,8 +688,8 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.category} ></p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.type}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.category} ></p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.type}</p>
 
                                         </div>
                                     </div>
@@ -697,7 +700,7 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.volume} {this.state.createSearchData.units}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.volume} {this.state.createSearchData.search.units}</p>
                                         </div>
                                     </div>
 
@@ -709,7 +712,7 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.state}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.state}</p>
                                         </div>
                                     </div>
 
@@ -721,7 +724,7 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required From </p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.require_after.value).format("DD MMM YYYY")}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.search.require_after_epoch_ms).format("DD MMM YYYY")}</p>
 
 
 
@@ -735,7 +738,7 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.expiry.value).format("DD MMM YYYY")}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.search.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
 
 
 
@@ -748,8 +751,8 @@
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Location  </p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site.name},{this.state.site.contact}</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site.address}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.site.name},{this.state.createSearchData.site.contact}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.site.address}</p>
                                         </div>
                                     </div>
 
@@ -782,15 +785,15 @@
                                             <div className="col-auto">
                                                 <button type="button" onClick={this.selectCreateSearch}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                    Cancel Search
+                                                    Create New
 
                                         </button>
                                             </div>
                                             <div className="col-auto">
-                                                <Link to={"/matches/" + this.state.createSearchData.id} type="button"
+                                                <Link to={"/matches/" + this.state.createSearchData.search.id} type="button"
                                                     // onClick={this.handleNext}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                    View ({this.state.createSearchData.resources.length}) Matches
+                                                    View (Matches Missign From API) Matches
 
                                             </Link>
                                             </div>

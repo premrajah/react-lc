@@ -16,6 +16,7 @@
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "chat-ui-react": "^0.2.10",
+    "cors": "^2.8.5",
     "date-fns": "^2.16.1",
     "history": "^5.0.0",
     "moment": "^2.29.1",

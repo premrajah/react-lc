@@ -38,6 +38,7 @@ class PaymentMethod extends Component {
             fieldsSite: {},
             errorsSite: {},
 
+
         }
 
 
@@ -68,10 +69,10 @@ class PaymentMethod extends Component {
             errors["name"] = "Required";
         }
 
-        if (!fields["others"]) {
-            formIsValid = false;
-            errors["others"] = "Required";
-        }
+        // if (!fields["others"]) {
+        //     formIsValid = false;
+        //     errors["others"] = "Required";
+        // }
 
 
         if (!fields["address"]) {
@@ -165,9 +166,9 @@ class PaymentMethod extends Component {
             console.log("site submit called")
 
 
-            axios.post(baseUrl + "site",
+            axios.put(baseUrl + "site",
 
-                {
+                {site:  {
                     "name": name,
                     "email": email,
                     "contact": contact,
@@ -175,7 +176,7 @@ class PaymentMethod extends Component {
                     "phone": phone,
                     "others": others
 
-                }
+                }}
                 , {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -256,7 +257,7 @@ class PaymentMethod extends Component {
         )
             .then((response) => {
 
-                    var responseAll = response.data.content;
+                    var responseAll = response.data.data;
                     console.log("sites  response")
                     console.log(responseAll)
 
@@ -355,7 +356,7 @@ class PaymentMethod extends Component {
                         <div className="row mb-3 justify-content-center ">
 
                             <div className="col-12  justify-content-center">
-                                <p className={"blue-text"}><Link to={"/my-account"}> Account </Link> > Addresses/Sites </p>
+                                <p className={"blue-text"}><Link to={"/account"}> Account </Link> > Addresses/Sites </p>
 
                                 <h4 className={"text-blue text-bold"}>Addresses/Sites</h4>
 
@@ -475,7 +476,7 @@ class PaymentMethod extends Component {
 
                                                 <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
 
-                                                {this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}
+                                                {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
 
                                             </div>
 

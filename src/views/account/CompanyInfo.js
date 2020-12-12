@@ -16,6 +16,7 @@ import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+import { Spinner} from 'react-bootstrap';
 
 
 
@@ -33,18 +34,26 @@ class CompanyInfo extends Component {
             nextIntervalFlag: false,
             fields: {},
             errors: {},
+            org:null,
+            companyName:null,
+            description:null,
+            loading:false
+
         }
 
 
-        this.getResources = this.getResources.bind(this)
+        this.companyInfo = this.companyInfo.bind(this)
 
     }
 
 
-    getResources() {
+    companyInfo() {
 
 
-        axios.get(baseUrl + "resource",
+
+
+
+        axios.get(baseUrl + "org",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -52,12 +61,23 @@ class CompanyInfo extends Component {
             }
         )
             .then((response) => {
-                var response = response.data;
 
-                console.log("resource response")
-                console.log(response)
 
-            },
+                    var responseOrg = response.data;
+
+                    console.log("org response")
+                    console.log(responseOrg)
+
+
+                    this.setState({
+
+                        org : responseOrg.data,
+                        companyName:responseOrg.data.name,
+                        description:responseOrg.data.description,
+
+                    })
+
+                },
                 (error) => {
                     var status = error.response.status
 
@@ -84,35 +104,21 @@ class CompanyInfo extends Component {
         let formIsValid = true;
 
         //Name
-        if (!fields["name"]) {
+        if (!this.state.companyName&&!fields["companyName"]) {
             formIsValid = false;
             errors["name"] = "Required";
         }
 
 
 
-        if (!fields["phone"]) {
+        if (!this.state.description&&!fields["description"]) {
             formIsValid = false;
-            errors["phone"] = "Required";
+            errors["description"] = "Required";
         }
 
 
 
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
 
-        if (typeof fields["email"] !== "undefined") {
-
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -126,12 +132,33 @@ class CompanyInfo extends Component {
         fields[field] = e.target.value;
         this.setState({ fields: fields });
 
+
+        if (field=="companyName"){
+            this.setState({
+                companyName: e.target.value
+            })
+        }
+        else if (field=="description"){
+
+            this.setState({
+                description: e.target.value
+            })
+        }
+
     }
 
 
     handleSubmitSite = event => {
 
         event.preventDefault();
+
+
+        this.setState({
+
+
+            loading: true
+        })
+
 
 
         if(this.handleValidationSite()) {
@@ -146,27 +173,26 @@ class CompanyInfo extends Component {
 
             const data = new FormData(event.target);
 
-            const email = data.get("email")
-            const others = data.get("others")
-            const name = data.get("name")
-            const contact = data.get("contact")
-            const address = data.get("address")
-            const phone = data.get("phone")
+
+            const name = this.state.companyName
+            const description = this.state.description
+
 
 
             console.log("site submit called")
 
 
-            axios.post(baseUrl + "site",
+            axios.post(baseUrl + "org",
 
                 {
-                    "name": name,
-                    "email": email,
-                    "contact": contact,
-                    "address": address,
-                    "phone": phone,
-                    "others": others
 
+
+                    "id": this.state.org._key,
+                    "update": {
+                        "name": name,
+                        "description": description
+                    }
+                    
                 }
                 , {
                     headers: {
@@ -175,14 +201,27 @@ class CompanyInfo extends Component {
                 })
                 .then(res => {
 
-                    this.toggleSite()
-                    this.getSites()
+
+                    this.setState({
+
+
+                        loading: false
+                    })
+
 
 
                 }).catch(error => {
 
 
                 console.log(error)
+
+
+                this.setState({
+
+
+                    loading: false
+                })
+
 
 
 
@@ -201,7 +240,7 @@ class CompanyInfo extends Component {
 
     componentDidMount() {
 
-
+this.companyInfo()
 
     }
 
@@ -224,13 +263,14 @@ class CompanyInfo extends Component {
 
                             <div className="col-12  justify-content-center">
 
-                                <p className={"blue-text"}><Link to={"/my-account"} >Account </Link> > Company Info </p>
+                                <p className={"blue-text"}><Link to={"/account"} >Account </Link> > Company Info </p>
                                 <h4 className={"text-blue text-bold"}>Company Info</h4>
 
                             </div>
                         </div>
 
 
+                        {this.state.org &&
                         <div className={"row"}>
                             <div className={"col-12"}>
                                 <form onSubmit={this.handleSubmitSite}>
@@ -238,33 +278,48 @@ class CompanyInfo extends Component {
 
                                         <div className="col-12 mt-4">
 
-                                            <TextField id="outlined-basic" label="Company Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+                                            <TextField id="outlined-basic" label="Company Name" variant="outlined"
+                                                       fullWidth={true} name={"companyName"}
+                                                       value={this.state.companyName}
+                                                       onChange={this.handleChangeSite.bind(this, "companyName")}/>
 
-                                            {this.state.errors["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["name"]}</span>}
+                                            {this.state.errors["companyName"] && <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errors["companyName"]}</span>}
 
                                         </div>
 
                                         <div className="col-12 mt-4">
 
-                                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+                                            <TextField id="outlined-basic" label="Description" variant="outlined"
+                                                       value={this.state.description}
+                                                       fullWidth={true} name={"description"}
+                                                       onChange={this.handleChangeSite.bind(this, "description")}/>
 
-                                            {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
-
-                                        </div>
-
-
-                                        <div className="col-12 mt-4">
-
-                                            <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Contact number" variant="outlined" fullWidth={true} />
-
-                                            {this.state.errors["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["phone"]}</span>}
+                                            {this.state.errors["description"] && <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
 
                                         </div>
 
 
+
+
                                         <div className="col-12 mt-4">
 
-                                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                            <button type={"submit"}
+                                                    className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>
+
+                                                {this.state.loading && <Spinner
+                                                    as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    aria-hidden="true"
+
+                                                />}
+
+                                                {this.state.loading ? "Wait.." : "Save"}
+
+                                            </button>
                                         </div>
 
 
@@ -272,6 +327,7 @@ class CompanyInfo extends Component {
                                 </form>
                             </div>
                         </div>
+                        }
                     </div>
 
 

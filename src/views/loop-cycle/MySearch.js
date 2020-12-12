@@ -75,7 +75,7 @@ class MySearch extends Component {
         )
             .then((response) => {
 
-                var response = response.data.content;
+                var response = response.data.data;
                 console.log("my search response")
                 console.log(response)
 

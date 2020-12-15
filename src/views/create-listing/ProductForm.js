@@ -315,7 +315,7 @@ class ProductForm extends Component {
 
                                 var images = this.state.images
 
-                                images.push(res.data.data.blob_url)
+                                images.push(res.data.data._key)
 
 
                                 this.setState({

@@ -29,6 +29,11 @@ import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
 import CreateListing from "./views/create-listing/create-listing";
+import SubProductView from "./views/create-listing/SubProductView";
+
+import ProductView from "./views/create-listing/ProductView";
+
+
 import ListForm from "./views/create-listing/ListForm";
 import ProductForm from "./views/create-listing/ProductForm";
 import SearchForm from "./views/create-search/SearchForm";
@@ -100,6 +105,8 @@ class App extends Component{
                         <LoggedInRoute exact path="/list-form" component={CreateListing} />
                         <LoggedInRoute exact path="/list-form-new" component={ListForm} />
                         <LoggedInRoute exact path="/product-form" component={ProductForm} />
+                        <LoggedInRoute exact path="/product-form/:slug" component={ProductForm} />
+
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
@@ -119,6 +126,11 @@ class App extends Component{
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductDetail} />
+
+                        <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
+
+                        <LoggedInRoute exact path="/product-view/:slug" component={ProductView} />
+
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />

@@ -1025,10 +1025,10 @@
 
 
 
-            if (!this.state.productSelected) {
-                formIsValid = false;
-                errors["product"] = "Required";
-            }
+            // if (!this.state.productSelected) {
+            //     formIsValid = false;
+            //     errors["product"] = "Required";
+            // }
 
 
 

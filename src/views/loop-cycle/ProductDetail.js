@@ -40,7 +40,7 @@ class ProductDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: {},
+            item: null,
             codeImg: null,
             searches: []
         }
@@ -73,47 +73,47 @@ class ProductDetail extends Component {
     loadSearches() {
 
 
-        for (var i = 0; i < this.state.item.searches.length; i++) {
-
-
-            axios.get(baseUrl + "search/" + this.state.item.searches[i],
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                    var response = response.data;
-
-                    console.log("search code")
-
-                    console.log(response)
-
-                    var searches = this.state.searches
-
-                    searches.push(response.content)
-
-                    this.setState({
-
-                        searches: searches
-
-                    })
-                },
-                    (error) => {
-
-                        var status = error.response.status
-
-                        console.log("search error")
-
-                        console.log(error)
-
-                    }
-                );
-
-
-        }
+        // for (var i = 0; i < this.state.item.searches.length; i++) {
+        //
+        //
+        //     axios.get(baseUrl + "search/" + this.state.item.searches[i],
+        //         {
+        //             headers: {
+        //                 "Authorization": "Bearer " + this.props.userDetail.token
+        //             }
+        //         }
+        //     )
+        //         .then((response) => {
+        //
+        //             var response = response.data;
+        //
+        //             console.log("search code")
+        //
+        //             console.log(response)
+        //
+        //             var searches = this.state.searches
+        //
+        //             searches.push(response.content)
+        //
+        //             this.setState({
+        //
+        //                 searches: searches
+        //
+        //             })
+        //         },
+        //             (error) => {
+        //
+        //                 var status = error.response.status
+        //
+        //                 console.log("search error")
+        //
+        //                 console.log(error)
+        //
+        //             }
+        //         );
+        //
+        //
+        // }
 
 
 
@@ -148,19 +148,19 @@ class ProductDetail extends Component {
         )
             .then((response) => {
 
-                var response = response.data;
+                var responseAll = response.data;
                 console.log("detail resource response")
-                console.log(response)
+                console.log(responseAll)
 
 
                 this.setState({
 
-                    item: response.content
+                    item: responseAll.data
                 })
 
 
                 this.loadSearches()
-                this.getQrCode(response.content.id)
+                this.getQrCode(response.data.id)
 
             },
                 (error) => {
@@ -204,25 +204,11 @@ class ProductDetail extends Component {
                 <div className="accountpage">
 
                     <HeaderDark />
-                    {/*<div className="container-fluid " style={{padding:"0"}}>*/}
 
 
-                    {/*<div className="row no-gutters  justify-content-center">*/}
-
-                    {/*<div className="floating-back-icon" style={{margin:"auto"}}>*/}
-
-                    {/*<NavigateBefore onClick={this.handleBack}  style={{ fontSize: 32, color:"white" }}/>*/}
-                    {/*</div>*/}
 
 
-                    {/*/!*<div className="col-auto ">*!/*/}
-                    {/*/!*<img className={"img-fluid"}  src={PaperImg} alt=""/>*!/*/}
-                    {/**/}
-                    {/*/!*</div>*!/*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-
-
+                    {this.state.item &&   <>
                     <div className="container mt-5 pt-5 ">
 
 
@@ -245,18 +231,20 @@ class ProductDetail extends Component {
 
 
                             <div className="col-12">
-                                <h3 className={"blue-text text-bold"}>{this.state.item.title}</h3>
+                                <h3 className={"blue-text text-bold"}>{this.state.item.product.title}</h3>
                             </div>
 
                             <div className="col-12  pb-3 listing-row-border">
-                                <p>Made By <span className={"green-text"}> {this.state.item.org_id}</span></p>
+                                <p>Made By <span className={"green-text"}> Info Missing
+                                    {/*{this.state.item.org_id}*/}
+                                    </span></p>
                             </div>
 
                             <div className="col-12 mt-3 pb-3 listing-row-border">
-                                <p>{this.state.item.description}</p>
+                                <p>{this.state.item.product.description}</p>
                             </div>
                             <div className="col-12 mt-3 pb-3 ">
-                                <p style={{ width: "auto", padding: "2px 10px" }} className={" btn-select-free green-bg"}>{this.state.item.purpose}</p>
+                                <p style={{ width: "auto", padding: "2px 10px" }} className={" btn-select-free green-bg"}>{this.state.item.product.purpose}</p>
 
                                 {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"Shelving" }</p>*/}
                                 {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"PP" }</p>*/}
@@ -324,7 +312,7 @@ class ProductDetail extends Component {
 
                                 <img src={this.productQrCode} alt="" />
 
-                                <Link to={"/product-cycle-detail/" + this.state.item.id}> Go To Preview Page</Link>
+                                <Link to={"/product-cycle-detail/" + this.state.item.product._key}> Go To Preview Page</Link>
 
 
                             </div>
@@ -377,29 +365,29 @@ class ProductDetail extends Component {
 
 
 
-                        <div className="row justify-content-start pb-3 pt-4 border-box">
+                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
 
-                            <div className="col-12">
-
-
-                                {this.state.searches.map((item) =>
-                                    <div style={{ border: "none" }} data-name={item.title} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>
-
-                                        <div className="col-10">
-                                            {/*<Link to={"/search"}>*/}
-                                            <p className={"blue-text "} style={{ fontSize: "16px" }}>{item.name}</p>
-                                            {/*</Link>*/}
-                                        </div>
-                                        <div className="col-2">
-                                            <NavigateNextIcon />
-                                        </div>
-                                    </div>
-
-                                )}
+                            {/*<div className="col-12">*/}
 
 
-                            </div>
-                        </div>
+                                {/*{this.state.searches.map((item) =>*/}
+                                    {/*<div style={{ border: "none" }} data-name={item.title} className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  " onClick={this.selectProduct}>*/}
+
+                                        {/*<div className="col-10">*/}
+                                            {/*/!*<Link to={"/search"}>*!/*/}
+                                            {/*<p className={"blue-text "} style={{ fontSize: "16px" }}>{item.name}</p>*/}
+                                            {/*/!*</Link>*!/*/}
+                                        {/*</div>*/}
+                                        {/*<div className="col-2">*/}
+                                            {/*<NavigateNextIcon />*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+
+                                {/*)}*/}
+
+
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
 
@@ -503,6 +491,9 @@ class ProductDetail extends Component {
 
 
                     </div>
+
+
+                        </>}
 
                 </div>
 

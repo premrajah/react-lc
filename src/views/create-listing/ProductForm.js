@@ -76,6 +76,9 @@ class ProductForm extends Component {
 
 
 
+    slug=null
+
+
     constructor(props) {
 
         super(props)
@@ -137,7 +140,10 @@ class ProductForm extends Component {
             purpose: ["defined", "prototype", "aggregate"],
 
 
+
         }
+
+        this.slug = props.match.params.slug
 
         this.selectCategory = this.selectCategory.bind(this)
         this.selectType = this.selectType.bind(this)
@@ -434,19 +440,59 @@ class ProductForm extends Component {
     loadType(field, event) {
 
 
-        console.log(field,event.currentTarget.value)
+        console.log(field,event.target.value)
+
+
+        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+
+        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
 
         this.setState({
 
-            catSelected: this.state.categories.filter((item) => item.name === event.currentTarget.value)[0]
+            catSelected: catSelected
         })
 
         this.setState({
 
-            subCategories: this.state.categories.filter((item) => item.name === event.currentTarget.value)[0].types
+            subCategories: subCategories
 
         })
 
+
+        console.log(catSelected)
+        console.log(subCategories)
+
+
+    }
+
+
+    loadStates(field, event) {
+
+
+        console.log(field,event.target.value)
+
+
+        var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+
+        var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
+
+        var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+
+        this.setState({
+
+            subCatSelected: subCatSelected
+        })
+
+        this.setState({
+
+            states: states,
+            units: units
+
+        })
+
+
+        console.log(subCatSelected)
+        console.log(states)
 
 
     }
@@ -486,6 +532,10 @@ class ProductForm extends Component {
             const   brand= data.get("brand")
 
             const volume=data.get("volume")
+        const sku=data.get("sku")
+        const upc=data.get("upc")
+        const part_no=data.get("part_no")
+        const state=data.get("state")
 
 
 
@@ -498,10 +548,16 @@ class ProductForm extends Component {
                 "category": category,
                 "type": type,
                 "units": units,
-                "serial": serial,
-                "model": model,
-                "brand": brand,
+                "state": state,
                 "volume": volume,
+                "sku": {
+                    "serial": serial,
+                    "model": model,
+                    "brand": brand,
+                            "sku": sku,
+                            "upc": upc,
+                            "part_no": part_no
+                        },
 
                 "year_of_making": data.get("manufacturedDate")
 
@@ -536,7 +592,7 @@ class ProductForm extends Component {
             console.log("product data")
 
             console.log(productData)
-        console.log(this.state.images)
+            console.log(this.state.images)
 
 
             axios.put(baseUrl + "product",
@@ -544,7 +600,10 @@ class ProductForm extends Component {
                 {
                     product : productData,
                     "child_product_ids": [],
-                    "artifact_ids": [],
+                    "artifact_ids": this.state.images,
+                    "parent_product_id": this.slug,
+
+
                 }
                 , {
                     headers: {
@@ -556,8 +615,19 @@ class ProductForm extends Component {
 
                     console.log(res.data)
 
-
                     console.log("product added succesfully")
+
+
+
+                    if (this.slug) {
+                        this.props.history.push("/sub-product-view/" + this.slug)
+
+
+                    }else{
+                        this.props.history.push("/sub-product-view/" + res.data.data.product._key)
+
+
+                    }
 
 
                     // this.showProductSelection()
@@ -841,7 +911,7 @@ class ProductForm extends Component {
 
                                             {this.state.categories.map((item) =>
 
-                                                <option value={item._key}>{item.name}</option>
+                                                <option value={item.name}>{item.name}</option>
 
                                             )}
 
@@ -852,13 +922,13 @@ class ProductForm extends Component {
 
                                 </div>
 
-                                <div className="col-12 mb-3">
+                                {this.state.subCategories.length>0 && <div className="col-12 mb-3">
                                     <div className={"custom-label text-bold text-blue mb-3"}>Select Type</div>
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                         <Select
                                             native
-                                            onChange={this.handleChangeProduct.bind(this, "type")}
+                                            onChange={this.loadStates.bind(this, "type")}
                                             inputProps={{
                                                 name: 'type',
                                                 id: 'outlined-age-native-simple',
@@ -867,9 +937,9 @@ class ProductForm extends Component {
 
                                             <option value={null}>Select</option>
 
-                                            {this.state.categories.map((item) =>
+                                            {this.state.subCategories.map((item) =>
 
-                                                <option value={item._key}>{item.name}</option>
+                                                <option value={item.name}>{item.name}</option>
 
                                             )}
 
@@ -878,28 +948,29 @@ class ProductForm extends Component {
                                     {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
 
 
-                                </div>
+                                </div>}
 
 
 
+                                {this.state.states.length>0 &&
                                 <div className="col-12 mb-3">
                                     <div className={"custom-label text-bold text-blue mb-3"}>Select State</div>
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                         <Select
                                             native
-                                            onChange={this.handleChangeProduct.bind(this, "type")}
+                                            onChange={this.handleChangeProduct.bind(this, "state")}
                                             inputProps={{
-                                                name: 'type',
+                                                name: 'state',
                                                 id: 'outlined-age-native-simple',
                                             }}
                                         >
 
                                             <option value={null}>Select</option>
 
-                                            {this.state.categories.map((item) =>
+                                            {this.state.states.map((item) =>
 
-                                                <option value={item._key}>{item.name}</option>
+                                                <option value={item}>{item}</option>
 
                                             )}
 
@@ -908,7 +979,7 @@ class ProductForm extends Component {
                                     {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
 
 
-                                </div>
+                                </div>}
 
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>
@@ -932,12 +1003,6 @@ class ProductForm extends Component {
 
 
 
-
-
-
-
-
-
                                 <div className="col-12 mt-4">
 
                                     <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic" label="Brand" variant="outlined" fullWidth={true} />
@@ -953,11 +1018,81 @@ class ProductForm extends Component {
 
                                 </div>
 
+
+
+
                                 <div className="col-12 mt-4">
 
                                     <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic" label="Serial Number" variant="outlined" fullWidth={true} />
                                     {this.state.errors["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["serial"]}</span>}
 
+                                </div>
+
+
+
+                                <div className="col-12 mt-4">
+
+                                    <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic" label="SKU" variant="outlined" fullWidth={true} />
+                                    {this.state.errors["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["sku"]}</span>}
+
+                                </div>
+
+                                <div className="col-12 mt-4">
+
+                                    <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic" label="UPC" variant="outlined" fullWidth={true} />
+                                    {this.state.errors["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["upc"]}</span>}
+
+                                </div>
+                                <div className="col-12 mt-4">
+
+                                    <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic" label="Part No" variant="outlined" fullWidth={true} />
+                                    {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
+
+                                </div>
+
+                                <div className="row no-gutters justify-content-center mt-4">
+
+                                    <div className="col-6 pr-2">
+
+
+                                        <FormControl variant="outlined" className={classes.formControl}>
+                                            <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
+                                            <Select
+                                                name={"units"}
+                                                native
+                                                onChange={this.handleChangeProduct.bind(this, "units")}
+
+                                                label="Age"
+                                                inputProps={{
+                                                    name: 'units',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+
+                                                {this.state.units.map((item) =>
+
+                                                    <option value={item}>{item}</option>
+
+                                                )}
+
+                                            </Select>
+                                        </FormControl>
+                                        {this.state.errors["unit"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["unit"]}</span>}
+
+
+                                    </div>
+                                    <div className="col-6 pl-2">
+
+                                        <TextField type={"number"}  onChange={this.handleChangeProduct.bind(this, "volume")}
+                                                    name={"volume"}
+                                                    id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                                        {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
+
+
+                                    </div>
                                 </div>
 
 
@@ -1161,7 +1296,7 @@ function UnitSelect(props) {
         name: 'hai',
     });
 
-    const handleChange = (event) => {
+    const handleChangeProduct = (event) => {
         const name = event.target.name;
         setState({
             ...state,
@@ -1178,7 +1313,7 @@ function UnitSelect(props) {
                     name={"unit"}
                     native
                     value={state.age}
-                    onChange={handleChange}
+                    onChange={handleChangeProduct}
                     label="Age"
                     inputProps={{
                         name: 'unit',
@@ -1205,7 +1340,7 @@ function SiteSelect(props) {
         name: 'hai',
     });
 
-    const handleChange = (event) => {
+    const handleChangeProduct = (event) => {
         const name = event.target.name;
         setState({
             ...state,
@@ -1222,7 +1357,7 @@ function SiteSelect(props) {
                     name={"site"}
                     native
                     value={state}
-                    onChange={handleChange}
+                    onChange={handleChangeProduct}
                     label="Age"
                     inputProps={{
                         name: 'unit',

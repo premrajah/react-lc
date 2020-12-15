@@ -455,6 +455,34 @@ class ListForm extends Component {
     }
 
 
+    loadType(field, event) {
+
+
+        console.log(field,event.target.value)
+
+
+        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+
+        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+
+        this.setState({
+
+            catSelected: catSelected
+        })
+
+        this.setState({
+
+            subCategories: subCategories
+
+        })
+
+
+        console.log(catSelected)
+        console.log(subCategories)
+
+
+    }
+
     getProducts() {
 
         axios.get(baseUrl + "product",
@@ -480,7 +508,7 @@ class ListForm extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
+                    console.log("products error")
                     console.log(error)
 
                 }
@@ -630,6 +658,90 @@ class ListForm extends Component {
 
     }
 
+
+
+
+        createListingNew = event => {
+
+            event.preventDefault();
+
+
+            const form = event.currentTarget;
+
+
+
+            const formData = new FormData(event.target);
+
+
+            event.preventDefault()
+
+        var data = {}
+
+
+        if (this.state.price) {
+            data = {
+
+                "name": formData.get("title"),
+                "description": formData.get("description"),
+
+                "expire_after_epoch_ms": new Date(this.state.startDate).getTime() + 8640000000,
+                // "price": formData.get("price"),
+
+            }
+
+        }else{
+
+
+            data = {
+
+                "name": this.state.title,
+                "description": this.state.description,
+
+                // "availableFrom": new Date(this.state.startDate).getTime(),
+                "expire_after_epoch_ms": new Date(this.state.startDate).getTime() + 8640000000
+
+
+            }
+        }
+
+
+
+
+        console.log("listing data")
+        console.log(data)
+
+
+
+        axios.put(baseUrl + "listing",
+            {
+                listing:data,
+                "site_id": formData.get("deliver"),
+                "product_id": formData.get("product"),
+
+
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.content)
+
+
+                this.setState({
+                    listResourceData: res.data.content
+                })
+
+            }).catch(error => {
+
+            console.log("login error found ")
+            console.log(error.response.data)
+
+        });
+
+    }
 
     toggleAddComponent() {
 
@@ -1584,7 +1696,7 @@ class ListForm extends Component {
 
         this.setUpYearList()
         this.getSites()
-
+       this.getProducts()
 
     }
 
@@ -1820,7 +1932,7 @@ class ListForm extends Component {
                         </div>
 
 
-                        <form onSubmit={this.handleSubmit} className={"mb-5"}>
+                        <form onSubmit={this.createListingNew} className={"mb-5"}>
                             <div className="row no-gutters justify-content-center mt-5">
                                 <div className="col-12">
 
@@ -1836,22 +1948,34 @@ class ListForm extends Component {
                                         rows={4} variant="outlined" fullWidth={true} />
                                     {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
 
-
-
                                 </div>
 
+                                <div className="col-12 mb-3">
+                                    <div className={"custom-label text-bold text-blue mb-3"}>Product</div>
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
 
+                                            name= "product"
+                                            native
+                                            onChange={this.handleChange.bind(this, "product")}
+                                            inputProps={{
+                                                name: 'product',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
 
+                                            <option value={null}>Select</option>
 
+                                            {this.state.products.map((item) =>
 
-                                <div onClick={this.toggleProductList} className="col-12 mt-4">
+                                                <option value={item.product._key}>{item.product.name}</option>
 
+                                            )}
 
-                                    <div className={"dummy-text-field"}>
-                                        {this.state.productSelected ? this.state.productSelected.product.name : "Link new a product"}
-                                        <img className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                    </div>
-                                    {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
+                                        </Select>
+                                    </FormControl>
+                                    {this.state.errorsProduct["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["product"]}</span>}
 
 
                                 </div>
@@ -1863,13 +1987,130 @@ class ListForm extends Component {
                             </div>
 
 
+
+                            <div className="row no-gutters justify-content-center mt-5">
+                                <div className="col-12 mb-3">
+
+
+
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
+                                        <Select
+                                            name={"deliver"}
+                                            native
+                                            label="Deliver To"
+                                            onChange={this.handleChange.bind(this, "deliver")}
+
+                                            inputProps={{
+                                                name: 'deliver',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
+
+                                            <option value={null}>Select</option>
+
+                                            {this.state.sites.map((item) =>
+
+                                                <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+
+                                            )}
+
+                                        </Select>
+                                    </FormControl>
+
+
+                                    {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
+
+
+                                    <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add new Site</p>
+                                </div>
+                                <div className="col-12 mb-3">
+
+
+                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+
+                                        <DatePicker
+                                            minDate={new Date()}
+                                            label="Required By"
+                                            inputVariant="outlined"
+                                            variant={"outlined"}
+                                            margin="normal"
+                                            id="date-picker-dialog"
+                                            label="Available From"
+                                            format="DD/MM/yyyy"
+                                            value={this.state.startDate} onChange={this.handleChangeDateStartDate.bind(this)} />
+
+                                    </MuiPickersUtilsProvider>
+
+                                    {this.state.errors["startDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["startDate"]}</span>}
+
+                                </div>
+
+
+                                <div className="col-12 mb-3">
+
+                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+
+                                        <DatePicker minDate={this.state.startDate?this.state.startDate:new Date()}
+                                                    label="Required By"
+                                                    inputVariant="outlined"
+                                                    variant={"outlined"}
+                                                    margin="normal"
+                                                    id="date-picker-dialog"
+                                                    label="End Date "
+                                                    format="DD/MM/yyyy"
+                                                    value={this.state.endDate} onChange={this.handleChangeDateEndDate.bind(this)} />
+
+
+
+                                    </MuiPickersUtilsProvider>
+
+                                    {this.state.errors["endDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["endDate"]}</span>}
+
+
+                                </div>
+
+
+                                <div className="col-12 mb-3">
+
+                                    <p>Price</p>
+
+                                    <div onClick={this.toggleSale} className={!this.state.free ? "btn-select-free green-bg" : "btn-select-free"}>For Sale</div>
+
+                                    <div onClick={this.toggleFree} className={this.state.free ? "btn-select-free green-bg" : "btn-select-free"}>Free</div>
+
+
+                                </div>
+
+                                {!this.state.free && <div className="col-12 mb-5">
+
+                                    <TextField
+                                        name={"price"}
+                                        type={"number"}
+                                        onChange={this.handleChange.bind(this, "price")}
+                                        id="input-with-icon-textfield"
+                                        label="£"
+                                        variant="outlined"
+                                        className={clsx(classes.margin, classes.textField) + " full-width-field"}
+                                        id="input-with-icon-textfield"
+
+                                    />
+
+                                    {this.state.errors["price"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["price"]}</span>}
+
+
+                                </div>
+                                }
+
+                            </div>
+
+
+                            <button type={"submit"}>Submit</button>
+
                         </form>
 
                     </div>
                 </div>
-
-
-
 
 
 

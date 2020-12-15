@@ -141,13 +141,13 @@ class CreateProduct extends Component {
 
 
 
-
             axios.post(baseUrl + "product",
 
                 {
                     "title": title,
                     "purpose": purpose,
                     "description": description,
+
 
 
                 }

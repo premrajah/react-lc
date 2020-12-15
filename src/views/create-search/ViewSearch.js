@@ -64,7 +64,6 @@
     class ViewSearch extends Component {
 
 
-
         slug
         constructor(props) {
 
@@ -112,6 +111,7 @@
                 site: {},
                 dateRequiredBy: null,
                 dateRequiredFrom:null,
+                matchesCount:0
 
 
             }
@@ -277,7 +277,8 @@
                         })
 
 
-                        this.getSite()
+
+
 
                     },
                     (error) => {
@@ -324,6 +325,42 @@
         }
 
 
+
+
+        getListingForSearch() {
+
+
+
+                axios.get(baseUrl + "search/" + this.slug+"/listing",
+                    {
+                        headers: {
+                            "Authorization": "Bearer " + this.props.userDetail.token
+                        }
+                    }
+                )
+                    .then((response) => {
+
+                            var responseAll = response.data.data;
+                            console.log("site response")
+                            console.log(responseAll)
+
+                            this.setState({
+
+                                matchesCount: responseAll.length
+
+                            })
+
+                        },
+                        (error) => {
+
+                            var status = error.response.status
+                            console.log("resource error")
+                            console.log(error)
+
+                        }
+                    );
+
+        }
 
 
 
@@ -575,6 +612,7 @@
         componentDidMount() {
 
             this.getSearch()
+            this.getListingForSearch()
 
         }
 
@@ -790,10 +828,10 @@
                                         </button>
                                             </div>
                                             <div className="col-auto">
-                                                <Link to={"/matches/" + this.state.createSearchData.search.id} type="button"
+                                                <Link to={"/matches/" + this.slug} type="button"
                                                     // onClick={this.handleNext}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                    View (Matches Missign From API) Matches
+                                                    View ({this.state.matchesCount}) Matches
 
                                             </Link>
                                             </div>

@@ -66,20 +66,21 @@ class SearchMatches extends Component {
             nextBlue: false,
             nextBlueAddDetail: false,
             nextBlueViewSearch: false,
-            matches: [],
             unitSelected: null,
             volumeSelected: null,
             title: null,
             description: null,
             volume: null,
             createSearchData: null,
-            resourcesMatched: [],
+            matches: [],
+            listingsForSearch: [],
 
 
 
         }
 
         this.slug = props.match.params.slug
+
         this.loadMatches = this.loadMatches.bind(this)
 
     }
@@ -88,9 +89,7 @@ class SearchMatches extends Component {
     loadMatches() {
 
 
-        for (var i = 0; i < this.state.createSearchData.resources.length; i++) {
-
-            axios.get(baseUrl + "resource/" + this.state.createSearchData.resources[i],
+            axios.get(baseUrl + "match/search/" + this.slug,
                 {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -99,19 +98,19 @@ class SearchMatches extends Component {
             )
                 .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
-
-                    var resources = this.state.resourcesMatched
+                    var responseAll = response.data.data;
+                    console.log("matches response")
+                    console.log(responseAll)
 
 
-                    resources.push(response)
 
                     this.setState({
 
-                        resourcesMatched: resources
+                        matches: responseAll
                     })
+
+
+
 
                 },
                     (error) => {
@@ -122,10 +121,43 @@ class SearchMatches extends Component {
 
                     }
                 );
-        }
+
 
     }
+    getListingForSearch() {
 
+
+
+        axios.get(baseUrl + "search/" + this.slug+"/listing",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("listings for search response")
+                    console.log(responseAll)
+
+                    this.setState({
+
+                        listingsForSearch: responseAll
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("listings for search error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
     interval
 
@@ -135,50 +167,13 @@ class SearchMatches extends Component {
 
     componentDidMount() {
 
-        this.getResources()
+        this.loadMatches()
+        this.getListingForSearch()
     }
 
 
 
-    getResources() {
 
-
-        axios.get(baseUrl + "search/" + this.slug,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                var response = response.data;
-                console.log("detail resource response")
-                console.log(response)
-
-
-                this.setState({
-
-                    createSearchData: response.content
-                })
-
-
-                this.loadMatches()
-
-            },
-                (error) => {
-
-                    var status = error.response.status
-
-                    console.log("resource error")
-
-                    console.log(error)
-
-
-                }
-            );
-
-    }
 
 
     goToSignIn() {
@@ -226,24 +221,51 @@ class SearchMatches extends Component {
                 <HeaderWhiteBack history={this.props.history} heading={"View Matches"} />
 
 
-                {this.state.resourcesMatched && <>
-                    {this.state.resourcesMatched.length > 0 ? <div className="container   pb-4 ">
+                {this.state.matches && <>
+
+                        <div className="container   pb-4 ">
 
 
-                        {this.state.resourcesMatched.map((item) =>
+                        {this.state.matches.map((item) =>
 
-                            <ResourceItem item={item} searchId={this.state.createSearchData.id} />
+                            <ResourceItem item={item}  />
 
                         )}
 
 
-                    </div> : <div className={" column-empty-message"}>
-                            <p>This search currently has no matches</p>
-                        </div>
+                    </div>
 
-                    }
                 </>
                 }
+
+
+                {this.state.listingsForSearch && <>
+
+                        <div className="container   pb-4 ">
+
+
+                            {this.state.listingsForSearch.map((item) =>
+
+                                <ResourceItem item={item}  />
+
+                            )}
+
+
+                        </div>
+
+
+                </>
+                }
+
+
+
+                { this.state.matches.length === 0 && this.state.listingsForSearch.length === 0 &&
+                <div className={" column-empty-message"}>
+                    <p>This search currently has no matches</p>
+                </div>}
+
+
+
             </>
 
         );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Paper from '../../img/paper.png';
+import Paper from '../../img/place-holder-lc.png';
 import clsx from 'clsx';
 import FilterImg from '../../img/icons/filter-icon.png';
 import { Link } from "react-router-dom";
@@ -55,33 +55,32 @@ class ResourceItem extends Component {
 
     render() {
 
-        const classes = withStyles();
+
         return (
 
+         <Link to={"/"+ this.props.item._key }>
 
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                <div className={"col-4"}>
+                <div className={"col-2"}>
 
-                    <Link to={"/match/" + this.props.item.id + "/" + this.props.searchId}>
 
-                        {this.props.item.images.length > 0 ? <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={Paper} alt="" />}
+                        {this.props.item.images ? <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={Paper} alt="" />}
 
-                    </Link>
+
                 </div>
-                <div className={"col-6 pl-3 content-box-listing"}>
-                    <Link to={"/match/" + this.props.item.id + "/" + this.props.searchId}>
+                <div className={"col-8 pl-3 content-box-listing"}>
+
                         <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>
-                    </Link>
+
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>
                     <p className={"green-text"}>
-                        {/*{this.props.item.price?this.props.item.price:"Free"}*/}
-                        {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
 
+                        {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
 
                     </p>
 
@@ -91,6 +90,7 @@ class ResourceItem extends Component {
 
 
             </div>
+        </Link>
         );
     }
 }
@@ -98,287 +98,6 @@ class ResourceItem extends Component {
 
 
 
-
-
-
-
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`nav-tabpanel-${index}`}
-            aria-labelledby={`nav-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `nav-tab-${index}`,
-        'aria-controls': `nav-tabpanel-${index}`,
-    };
-}
-
-function LinkTab(props) {
-    return (
-        <Tab
-            component="a"
-            onClick={(event) => {
-                event.preventDefault();
-            }}
-            {...props}
-        />
-    );
-}
-
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-
-    },
-}));
-
-function NavTabs() {
-    const classes = useStylesTabs();
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Tabs
-                    style={{ backgroundColor: "#27245C", color: "#ffffff!important" }}
-                    indicatorColor="secondary"
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="nav tabs example"
-                >
-                    <LinkTab label="Listings" href="/drafts" {...a11yProps(0)} />
-                    <LinkTab label="Cycles" href="/trash" {...a11yProps(1)} />
-                    <LinkTab label="About" href="/spam" {...a11yProps(2)} />
-                </Tabs>
-            </AppBar>
-            <TabPanel value={value} index={0}>
-
-                <div className={"container"}>
-
-                    <div className="row  justify-content-center search-container listing-row-border pb-4">
-                        <div className={"col-12"}>
-
-                            <TextField
-                                label={"Search this seller’s listings"}
-                                variant="outlined"
-                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                id="input-with-icon-textfield"
-
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
-
-                        <div className="col">
-                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">5 out of 5 Listings </p>
-
-                        </div>
-                        <div className="text-mute col-auto pl-0">
-
-                            <span style={{ fontSize: "18px" }}>Filter</span>   <img src={FilterImg} className={"filter-icon"} alt="" />
-
-                        </div>
-
-                    </div>
-
-                    <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-                        <div className={"col-4"}>
-
-                            <img className={"img-fluid"} src={Paper} alt="" />
-                        </div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{ fontSize: "18px" }} className=" mb-1">Paper and Card</p>
-                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
-                        </div>
-                        <div style={{ textAlign: "right" }} className={"col-2"}>
-                            <p className={"green-text"}>£12</p>
-                        </div>
-                    </div>
-
-                    <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-                        <div className={"col-4"}>
-
-                            <img className={"img-fluid"} src={Paper} alt="" />
-                        </div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
-                            <p style={{ fontSize: "18px" }} className=" mb-1">Metal</p>
-                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Loose / 14 kg</p>
-                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">@Tescos</p>
-                        </div>
-                        <div style={{ textAlign: "right" }} className={"col-2"}>
-                            <p className={"green-text"}>Free</p>
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <div className={"container"}>
-
-                    <div className="row  justify-content-center search-container listing-row-border pb-4">
-                        <div className={"col-12"}>
-
-                            <TextField
-                                label={"Search this seller’s Cycles"}
-                                variant="outlined"
-                                className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                id="input-with-icon-textfield"
-
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
-
-                        <div className="col">
-                            <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
-
-                        </div>
-                        {/*<div className="text-mute col-auto pl-0">*/}
-
-                        {/*<span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />*/}
-
-                        {/*</div>*/}
-
-                    </div>
-
-                    <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
-
-                        {/*<div className={"col-4"}>*/}
-
-                        {/*<img className={"img-fluid"} src={Paper}/>*/}
-                        {/*</div>*/}
-                        <div className={"col-11 content-box-listing"}>
-                            <p style={{ fontSize: "18px" }} className=" mb-1">Tesco   →  Company B</p>
-                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Paper and Cardboard</p>
-                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">bailed / 10 kg</p>
-                        </div>
-                        <div style={{ textAlign: "right" }} className={"col-1"}>
-                            <p className={"gray-text"}><NavigateNextIcon /></p>
-                        </div>
-                    </div>
-
-                </div>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <div className={"container"}>
-
-                    <div className="row  justify-content-start search-container  pb-4">
-                        <div className={"col-1"}>
-                            <img className={"icon-about"} src={MarkerIcon} alt="" />
-                        </div>
-                        <div className={"col-auto"}>
-
-                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Surrey, UK</p>
-                        </div>
-                    </div>
-
-                    <div className="row  justify-content-start search-container  pb-4">
-                        <div className={"col-1"}>
-                            <img className={"icon-about"} src={CalenderIcon} alt="" />
-                        </div>
-                        <div className={"col-auto"}>
-
-                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Joined in Jan 10, 2020
-                            </p>
-                        </div>
-                    </div>
-                    <div className="row  justify-content-start search-container listing-row-border pb-4">
-                        <div className={"col-1"}>
-                            <img className={"icon-about"} src={LangIcon} alt="" />
-                        </div>
-                        <div className={"col-auto"}>
-
-                            <p style={{ fontSize: "18px" }} className="forgot-password-link text-mute text-gray-light mb-1">www.tesco.co.uk</p>
-                        </div>
-                    </div>
-                    <div className="row  justify-content-start filter-row listing-row-border  mb-4 pt-5 pb-5">
-
-                        <div className={"col-1"}>
-                            <img className={"icon-about"} src={EditGray} alt="" />
-                        </div>
-                        <div className={"col-auto"}>
-
-                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Description</p>
-                        </div>
-
-                    </div>
-
-                    <div className="row  justify-content-start search-container  pb-4">
-                        <div className={"col-1"}>
-                            <img className={"icon-about"} src={HandGreyIcon} alt="" />
-                        </div>
-                        <div className={"col-auto"}>
-
-                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">5 Listings</p>
-                        </div>
-                    </div>
-                    <div className="row  justify-content-start search-container  pb-4">
-                        <div className={"col-1"}>
-                            <img className={"icon-about"} src={RingGray} alt="" />
-                        </div>
-                        <div className={"col-auto"}>
-
-                            <p style={{ fontSize: "18px" }} className=" text-mute text-gray-light mb-1">Cycles</p>
-                        </div>
-                    </div>
-
-                </div>
-            </TabPanel>
-        </div>
-    );
-}
 
 
 

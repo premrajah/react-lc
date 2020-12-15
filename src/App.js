@@ -30,6 +30,7 @@ import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
 import CreateListing from "./views/create-listing/create-listing";
 import ListForm from "./views/create-listing/ListForm";
+import ProductForm from "./views/create-listing/ProductForm";
 import SearchForm from "./views/create-search/SearchForm";
 import ViewSearchNew from "./views/create-search/ViewSearch";
 import SearchMatches from "./views/create-search/search-matches";
@@ -91,13 +92,14 @@ class App extends Component{
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         <LoggedInRoute exact path="/my-products" component={Products} />
-                        <LoggedInRoute exact path="/create-product" component={CreateProduct} />
+                        {/*<LoggedInRoute exact path="/create-product" component={CreateProduct} />*/}
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={CreateListing} />
                         <LoggedInRoute exact path="/list-form-new" component={ListForm} />
+                        <LoggedInRoute exact path="/product-form" component={ProductForm} />
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />

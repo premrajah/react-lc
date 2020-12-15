@@ -260,82 +260,6 @@
         }
 
 
-        handleSubmitProduct = event => {
-
-            event.preventDefault();
-
-
-            const form = event.currentTarget;
-
-            if (this.handleValidationProduct()) {
-                this.setState({
-                    btnLoading: true
-                })
-
-                const data = new FormData(event.target);
-
-                const title = data.get("title")
-                const purpose = data.get("purpose")
-                const description = data.get("description")
-                const lastName = data.get("category")
-
-
-                axios.post(baseUrl + "product",
-
-                    {product :  {
-                        "title": title,
-                        "purpose": purpose,
-                        "description": description,
-
-
-                    }
-                    }
-                    , {
-                        headers: {
-                            "Authorization": "Bearer " + this.props.userDetail.token
-                        }
-                    })
-                    .then(res => {
-
-
-                        console.log(res.data)
-                        console.log("product added succesfully")
-
-
-                        this.showProductSelection()
-
-                        this.getProducts()
-
-
-
-
-
-                    }).catch(error => {
-
-                        // dispatch(stopLoading())
-
-                        // dispatch(signUpFailed(error.response.data.message))
-
-                        console.log(error)
-                        // dispatch({ type: AUTH_FAILED });
-                        // dispatch({ type: ERROR, payload: error.data.error.message });
-
-
-                    });
-
-
-
-
-
-            } else {
-
-
-                // alert("invalid")
-            }
-
-
-
-        }
 
 
         getProducts() {
@@ -472,7 +396,7 @@
 
                     "require_after_epoch_ms": new Date(this.state.dateRequiredFrom).getTime(),
                     "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime(),
-                    
+
 
                 },
                 "site_id": this.state.siteSelected,

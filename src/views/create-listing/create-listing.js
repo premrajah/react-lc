@@ -605,18 +605,7 @@ class CreateListing extends Component {
 
 
 
-    // handleChangeSite = (event) => {
-    //     //
-    //     // const name = event.target.name;
-    //     //
-    //
-    //     // setState({
-    //     //     ...state,
-    //     //     [name]: event.target.value,
-    //     // });
-    //     //
-    //
-    // };
+
 
 
     loadMatches() {
@@ -663,11 +652,6 @@ class CreateListing extends Component {
 
 
     }
-
-
-
-
-
 
     makeFirstActive(){
 
@@ -882,6 +866,9 @@ class CreateListing extends Component {
 
     }
 
+
+
+
     selectType(event) {
 
 
@@ -944,6 +931,10 @@ class CreateListing extends Component {
         })
 
     }
+
+
+
+
 
     handleDateChange() {
 

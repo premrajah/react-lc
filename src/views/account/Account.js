@@ -20,25 +20,18 @@ class Account extends Component {
 
 
     constructor(props) {
-
         super(props)
-
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false
         }
 
-
         this.getResources = this.getResources.bind(this)
-
     }
 
 
     getResources() {
-
-
         axios.get(baseUrl + "resource",
             {
                 headers: {
@@ -49,41 +42,15 @@ class Account extends Component {
             .then((response) => {
                 var response = response.data;
 
-                console.log("resource response")
-                console.log(response)
-
+                console.log("resource response ", response)
             },
                 (error) => {
                     var status = error.response.status
-
-
-                    console.log("resource error")
-                    console.log(error)
-
-
-
-
+                    console.log("resource error ", error)
                 }
             );
 
     }
-
-
-
-
-    interval
-
-
-    componentWillMount() {
-
-    }
-
-    componentDidMount() {
-
-
-
-    }
-
 
 
     render() {
@@ -95,7 +62,6 @@ class Account extends Component {
                 <div className="wrapper  accountpage">
 
                     <HeaderDark />
-
 
                     <div className="container  pt-3">
 
@@ -149,8 +115,6 @@ class Account extends Component {
                                     <Link to={"/loops"} className="list-group-item list-group-item-action ">
                                         <img src={Rings} className={"account-icons truck-icon "} alt="" />
                                     My Cycles <NavigateNextIcon /></Link>
-
-
 
                                 </div>
                             </div>
@@ -210,10 +174,9 @@ const mapStateToProps = state => {
 const mapDispachToProps = dispatch => {
     return {
 
-
-
     };
 };
+
 export default connect(
     mapStateToProps,
     mapDispachToProps

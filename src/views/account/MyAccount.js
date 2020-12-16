@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import ShippingWhite from '../../img/icons/delivery-blue.png';
 import SettingsWhite from '../../img/icons/settings-blue.png';
-import SearchWhite from '../../img/icons/search-blue.png';
-import VerticalLines from '../../img/icons/stat-blue-2.png';
-import Rings from '../../img/icons/ring-blue.png';
-import BuildingIcon from '../../img/icons/building-icon.png';
-import ProductBlue from '../../img/icons/product-blue.png';
-import ListingBlue from '../../img/icons/listing-blue.png';
 import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
@@ -32,7 +25,6 @@ class MyAccount extends Component {
             activePage:1
         }
 
-
         this.getResources = this.getResources.bind(this)
         this.logOut = this.logOut.bind(this)
 
@@ -41,10 +33,8 @@ class MyAccount extends Component {
 
 
     logOut = (event) => {
-
         document.body.classList.remove('sidemenu-open');
         this.props.logOut()
-
     }
 
 
@@ -67,41 +57,19 @@ class MyAccount extends Component {
         )
             .then((response) => {
                 var response = response.data;
-
-                console.log("resource response")
-                console.log(response)
-
+                console.log("resource response", response)
             },
                 (error) => {
                     var status = error.response.status
-
-
-                    console.log("resource error")
-                    console.log(error)
-
-
-
-
+                    console.log("resource error", error)
                 }
             );
-
     }
 
 
 
 
     interval
-
-
-    componentWillMount() {
-
-    }
-
-    componentDidMount() {
-
-
-
-    }
 
 
 
@@ -115,11 +83,8 @@ class MyAccount extends Component {
 
                     <HeaderDark />
 
-
                     <div className="container  pt-3">
-
                         <div className="row mb-3 justify-content-center ">
-
                             <div className="col-12  justify-content-center">
                                 <h4 className={"text-blue text-bold"}>  <img src={SettingsWhite} className={"account-icons truck-icon "} alt="" /> Account</h4>
                             </div>
@@ -129,7 +94,6 @@ class MyAccount extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="list-group main-menu accountpage-list">
-
 
                                     <Link to={"/edit-account"} className="list-group-item list-group-item-action ">
                                     Personal Info  <NavigateNextIcon /></Link>
@@ -157,23 +121,9 @@ class MyAccount extends Component {
                                 </div>
                             </div>
 
-
-
-                            <div className="col-md-8">
-
-
-                            </div>
-
-
                         </div>
 
-
-
-
                     </div>
-
-
-
 
                 </div>
 
@@ -192,21 +142,13 @@ const mapStateToProps = state => {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
 
-
-
-
-
     };
 };
 
 const mapDispachToProps = dispatch => {
     return {
-
         logOut: (data) => dispatch(actionCreator.logOut(data)),
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(MyAccount);
+
+export default connect(mapStateToProps, mapDispachToProps)(MyAccount);

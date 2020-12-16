@@ -727,17 +727,22 @@ class ListForm extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+                console.log(res.data.data)
 
 
-                this.setState({
-                    listResourceData: res.data.content
-                })
+                // this.setState({
+                //     listResourceData: res.data.data
+                // })
+                //
+                //
+
+                this.props.history.push("/"+res.data.data._key)
+
 
             }).catch(error => {
 
             console.log("login error found ")
-            console.log(error.response.data)
+            console.log(error)
 
         });
 
@@ -1950,13 +1955,15 @@ class ListForm extends Component {
 
                                 </div>
 
-                                <div className="col-12 mb-3">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>Product</div>
+                                <div className="col-12 mt-4">
+                                    {/*<div className={"custom-label text-bold text-blue mb-3"}>Product</div>*/}
                                     <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+
+                                        <InputLabel htmlFor="outlined-age-native-simple">Link a product</InputLabel>
                                         <Select
 
                                             name= "product"
+                                            label={"Link a product"}
                                             native
                                             onChange={this.handleChange.bind(this, "product")}
                                             inputProps={{

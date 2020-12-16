@@ -2915,3 +2915,13 @@ a.page-link:hover{
 	height: 80px!important;
 	width: 80px!important;
 }
+
+
+.list-title{
+
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+
+}

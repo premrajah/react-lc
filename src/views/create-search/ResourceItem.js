@@ -58,7 +58,7 @@ class ResourceItem extends Component {
 
         return (
 
-         <Link to={"/"+ this.props.item._key }>
+         <Link to={"/"+ this.props.item.listing._key }>
 
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
@@ -72,9 +72,9 @@ class ResourceItem extends Component {
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>
 
-                        <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.volume} {this.props.item.units}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>
+                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.name}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.state} / {this.props.item.listing.volume} {this.props.item.listing.units}</p>
+                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>*/}
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>

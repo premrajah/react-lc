@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import ResourceItem from '../item/ResourceItem'
+import ResourceItem from '../create-search/ResourceItem'
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Toolbar from '@material-ui/core/Toolbar';
@@ -54,7 +54,7 @@ class MyListings extends Component {
     getItems() {
 
 
-        var url = baseUrl + "resource"
+        var url = baseUrl + "listing"
 
 
         console.log(url)
@@ -69,20 +69,20 @@ class MyListings extends Component {
         )
             .then((response) => {
 
-                var response = response.data.data;
+                var responseAll = response.data.data;
                 console.log("my search response")
-                console.log(response)
+                console.log(responseAll)
 
                 this.setState({
 
-                    items: response
+                    items: responseAll
                 })
 
             },
                 (error) => {
 
-                    var status = error.response.status
-                    console.log("resource error")
+                    // var status = error.response.status
+                    console.log("listing error")
                     console.log(error)
 
                 }
@@ -155,7 +155,7 @@ class MyListings extends Component {
                         <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
 
                             <div className="col-8">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Searches </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Listings </p>
 
                             </div>
 

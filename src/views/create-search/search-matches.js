@@ -103,10 +103,19 @@ class SearchMatches extends Component {
                     console.log(responseAll)
 
 
+                    var matches = this.state.matches
+
+
+                    for (var i =0 ; i<responseAll.length;i++ ){
+
+
+                        matches.push({listing:responseAll[i]})
+                    }
+
 
                     this.setState({
 
-                        matches: responseAll
+                        matches: matches
                     })
 
 
@@ -141,9 +150,19 @@ class SearchMatches extends Component {
                     console.log("listings for search response")
                     console.log(responseAll)
 
+
+                    var matches = this.state.listingsForSearch
+
+
+                    for (var i =0 ; i<responseAll.length;i++ ){
+
+
+                        matches.push({listing:responseAll[i]})
+                    }
+
                     this.setState({
 
-                        listingsForSearch: responseAll
+                        listingsForSearch: matches
 
                     })
 
@@ -247,6 +266,7 @@ class SearchMatches extends Component {
                             {this.state.listingsForSearch.map((item) =>
 
                                 <ResourceItem item={item}  />
+
 
                             )}
 

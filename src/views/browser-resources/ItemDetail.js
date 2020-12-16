@@ -20,6 +20,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "../../components/ImagesSlider";
+import encodeUrl  from "encodeurl"
 
 
 
@@ -50,7 +51,10 @@ class ItemDetail extends Component {
 
     getSite() {
 
-        axios.get(baseUrl + "site/" + this.state.item.site_id,
+
+        var siteKey = (this.state.item.site_id).replace("Site/","")
+
+        axios.get(baseUrl + "site/" +siteKey ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -59,8 +63,8 @@ class ItemDetail extends Component {
         )
             .then((response) => {
 
-                var response = response.data.content;
-                console.log("resource response")
+                var response = response.data.data;
+                console.log("site response")
                 console.log(response)
 
                 this.setState({
@@ -72,8 +76,8 @@ class ItemDetail extends Component {
             },
                 (error) => {
 
-                    var status = error.response.status
-                    console.log("resource error")
+                    // var status = error.response.status
+                    console.log("site error")
                     console.log(error)
 
                 }
@@ -97,7 +101,7 @@ class ItemDetail extends Component {
     getResources() {
 
 
-        axios.get(baseUrl + "resource/" + this.slug,
+        axios.get(baseUrl + "listing/" + encodeUrl(this.slug),
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -113,7 +117,7 @@ class ItemDetail extends Component {
 
                 this.setState({
 
-                    item: response.content
+                    item: response.data
                 })
 
 
@@ -121,7 +125,7 @@ class ItemDetail extends Component {
 
             },
                 (error) => {
-                    console.log("resource error", error)
+                    console.log("listing error", error)
                 }
             );
 
@@ -166,9 +170,11 @@ class ItemDetail extends Component {
                             </div>
 
                             <div className="col-md-6 col-sm-12 col-xs-12 p-5">
-                                {this.state.item.images.length > 0 ?
-                                    <ImagesSlider images={this.state.item.images} /> :
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+                                {/*{this.state.item.images.length > 0 ?*/}
+                                    {/*<ImagesSlider images={this.state.item.images} /> :*/}
+                                    {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
+
+                                <img className={"img-fluid"} src={PlaceholderImg} alt="" />
 
                             </div>
 
@@ -177,7 +183,7 @@ class ItemDetail extends Component {
                                 <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                     <div className="col-12 mt-2">
-                                        <h4 className={"blue-text text-heading"}>{this.state.item.name}
+                                        <h4 className={"blue-text text-heading"}>{this.state.item.listing.name}
                                         </h4>
 
                                         {/*<p>Posted By <span className={"green-text"}>{this.state.item.org_id}</span></p>*/}
@@ -192,7 +198,7 @@ class ItemDetail extends Component {
 
                                             <div className="col-3 green-text text-heading text-right">
 
-                                                {this.state.item.price ?<>{this.state.item.price.currency} {this.state.item.price.value}</> : "Free"}
+                                                {this.state.item.listing.price ?<>"GBP "+ {this.state.item.listing.price.value}</> : "Free"}
 
                                             </div>
 
@@ -207,7 +213,7 @@ class ItemDetail extends Component {
                                 <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                                     <div className="col-auto">
-                                        <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.description}
+                                        <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.listing.description}
                                         </p>
 
                                     </div>
@@ -226,8 +232,9 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} ></p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>
                     </div>
                 </div>
 
@@ -256,7 +263,7 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.availableFrom.value).format("DD MMM YYYY")} </p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
                     </div>
                 </div>
 
@@ -277,7 +284,7 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.model} </p>
+                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.model} </p>*/}
                     </div>
                 </div>
 
@@ -286,7 +293,7 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.serial} </p>
+                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.serial} </p>*/}
                     </div>
                 </div>
 
@@ -295,7 +302,7 @@ class ItemDetail extends Component {
 
                     <div className={"col-auto"}>
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.brand} </p>
+                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.brand} </p>*/}
                     </div>
                 </div>
 
@@ -304,7 +311,7 @@ class ItemDetail extends Component {
 
                     <div className={"col-auto"}>
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state} </p>
                     </div>
                 </div>
 
@@ -320,7 +327,7 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
                     </div>
 
 

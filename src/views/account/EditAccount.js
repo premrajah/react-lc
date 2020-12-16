@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import ShippingWhite from '../../img/icons/delivery-blue.png';
-import SettingsWhite from '../../img/icons/settings-blue.png';
-import SearchWhite from '../../img/icons/search-blue.png';
-import VerticalLines from '../../img/icons/stat-blue-2.png';
-import Rings from '../../img/icons/ring-blue.png';
-import BuildingIcon from '../../img/icons/building-icon.png';
-import ProductBlue from '../../img/icons/product-blue.png';
-import ListingBlue from '../../img/icons/listing-blue.png';
 import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import { saveUserData, saveUserToken, saveKey, getKey } from '../../LocalStorage/user'
 import { Spinner} from 'react-bootstrap';
+import {Card, Typography, TextField, CardContent} from '@material-ui/core'
 
 
 
@@ -238,19 +227,9 @@ class EditAccount extends Component {
     }
 
 
-    componentWillMount() {
-
-
-
-
-    }
-
     componentDidMount() {
-
-
-this.UserInfo()
+        this.UserInfo()
     }
-
 
 
     render() {
@@ -267,12 +246,20 @@ this.UserInfo()
                     <div className="container  pt-3">
 
                         <div className="row mb-3 justify-content-center ">
-
                             <div className="col-12  justify-content-center">
-
                                 <p className={"blue-text"}><Link to={"/account"} >Account </Link> > Personal Info </p>
                                 <h4 className={"text-blue text-bold"}>Personal Info</h4>
+                            </div>
+                        </div>
 
+                        <div className="row">
+                            <div className="col-12">
+                                <Card>
+                                    <CardContent>
+                                        <Typography>Full Name</Typography>
+                                        <Typography variant="h5" component="h2">{this.state.firstName} {this.state.lastName}</Typography>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </div>
 
@@ -320,7 +307,7 @@ this.UserInfo()
                                                        }}
                                                        value={this.state.email}
                                                        label="Email" variant="outlined" fullWidth={true} name={"email"}
-                                                       onChange={this.handleChangeSite.bind(this, "email")}/>
+                                                       onChange={this.handleChangeSite.bind(this, "email")} disabled/>
 
                                             {this.state.errors["email"] && <span className={"text-mute small"}><span
                                                 style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
@@ -396,8 +383,6 @@ const mapStateToProps = state => {
 
 const mapDispachToProps = dispatch => {
     return {
-
-
 
     };
 };

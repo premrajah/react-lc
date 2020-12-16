@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import ShippingWhite from '../../img/icons/delivery-blue.png';
-import SettingsWhite from '../../img/icons/settings-blue.png';
-import SearchWhite from '../../img/icons/search-blue.png';
-import VisaIcon from '../../img/visa.png';
-import VerticalLines from '../../img/icons/stat-blue-2.png';
-import Rings from '../../img/icons/ring-blue.png';
-import BuildingIcon from '../../img/icons/building-icon.png';
-import ProductBlue from '../../img/icons/product-blue.png';
-import ListingBlue from '../../img/icons/listing-blue.png';
 import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import TextField from '@material-ui/core/TextField';
+import {TextField} from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
+import SiteItem from "../../components/SiteItem";
 
 
 
@@ -363,44 +354,30 @@ class PaymentMethod extends Component {
                             </div>
                         </div>
 
-
-                        <div className="row">
-
-                            {this.state.sites.map((item)=>
-
-                                <div className="col-12">
-                                  <div className="list-group main-menu accountpage-list">
-
-                                      <div className={"list-group-item list-group-item-action "}>
-
-                                      <p className={"blue-text text-bold"}>{item.name}</p>
-                                      {item.address}, {item.email},{item.others}
-
-                                        {/*<Link style={{float:"right"}} className="">*/}
-
-                                            {/*<span  className={"green-link-url text-right"}>Edit</span>*/}
-                                            {/**/}
-                                        {/*</Link>*/}
-
-                                      </div>
-
-
-                                </div>
-
-                            </div>
-                            )}
-
-
-
+                        <div className="row mb-3">
                             <div className="col-12">
                                 <div className="list-group main-menu accountpage-list">
-
-                                        <p onClick={this.toggleSite} className={"green-link-url"}>Add new address</p>
-
+                                    <p onClick={this.toggleSite} className="green-link-url" style={{cursor: 'pointer'}}>Add new address</p>
                                 </div>
                             </div>
+                        </div>
 
 
+                        <div className="row mb-5">
+                            <div className="col-12">
+                                <div className="list-group">
+                                    {this.state.sites.map((site) => <SiteItem key={site._key}
+                                                  name={site.name}
+                                                  address={site.address}
+                                                  email={site.email}
+                                                  contact={site.contact}
+                                                  phone={site.phone}
+                                                  others={site.others}
+                                                  itemKey={site._key}
+                                        />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -436,7 +413,7 @@ class PaymentMethod extends Component {
 
                                             <div className="col-12 mt-4">
 
-                                                <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+                                                <TextField id="outlined-basic" label="Site name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
 
                                                 {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
 
@@ -444,7 +421,7 @@ class PaymentMethod extends Component {
 
                                             <div className="col-12 mt-4">
 
-                                                <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
+                                                <TextField id="outlined-basic" label="Contact person" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
 
                                                 {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
 
@@ -474,7 +451,7 @@ class PaymentMethod extends Component {
                                             </div>
                                             <div className="col-12 mt-4">
 
-                                                <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+                                                <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Other information" variant="outlined" fullWidth={true} type={"others"} />
 
                                                 {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
 

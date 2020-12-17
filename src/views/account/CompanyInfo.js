@@ -40,8 +40,7 @@ class CompanyInfo extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     if(response.data.data.length > 0) {
-                        console.log('==> ', response.data.data[0].blob_url)
-                        this.setState({orgImage: response.data.data[0].blob_url})
+                        this.setState({orgImage: response.data.data[response.data.data.length -1].blob_url})
                     }
 
                 }

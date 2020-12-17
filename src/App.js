@@ -137,8 +137,10 @@ class App extends Component{
 
                         <Route exact path="/product-cycle-detail/:slug" component={ItemCycleDetail} />
 
+
                         <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
+                        <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
 
 
                     </Switch>

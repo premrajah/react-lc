@@ -58,7 +58,7 @@ class ResourceItem extends Component {
 
         return (
 
-         <Link to={"/"+ this.props.item.listing._key }>
+
 
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
@@ -90,7 +90,7 @@ class ResourceItem extends Component {
 
 
             </div>
-        </Link>
+
         );
     }
 }

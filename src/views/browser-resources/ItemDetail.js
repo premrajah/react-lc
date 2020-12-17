@@ -21,12 +21,17 @@ import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "../../components/ImagesSlider";
 import encodeUrl  from "encodeurl"
+import { Modal, ModalBody } from 'react-bootstrap';
+import GrayLoop from '../../img/icons/gray-loop.png';
+import { withStyles } from "@material-ui/core/styles/index";
 
+import MatchItem from '../../components/MatchItem'
 
 
 class ItemDetail extends Component {
 
     slug;
+    search;
 
     constructor(props) {
 
@@ -38,13 +43,80 @@ class ItemDetail extends Component {
             count: 0,
             nextIntervalFlag: false,
             item: null,
+            showPopUp:false,
+            matches:[]
         }
 
 
         this.slug = props.match.params.slug
+        this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
         this.getSite = this.getSite.bind(this)
+        this.acceptMatch=this.acceptMatch.bind(this)
+        this.showPopUp=this.showPopUp.bind(this)
+
+        this.getMatches=this.getMatches.bind(this)
+
+    }
+
+
+
+    acceptMatch() {
+
+
+        console.log("create loop")
+
+
+        axios.post(baseUrl + "match",
+            {
+                "listing_id": this.slug,
+                "search_id": this.search
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+
+                console.log(res.data.data)
+
+                this.setState({
+
+                    showPopUp: true
+                })
+
+
+                // this.getResources()
+
+
+            }).catch(error => {
+
+
+
+            // console.log("loop convert error found ")
+            console.log(error.response.data)
+
+
+            this.setState({
+
+                showPopUp: true,
+                loopError: error.response.data.data.message
+            })
+
+        });
+
+
+    }
+
+
+    showPopUp() {
+
+        this.setState({
+            showPopUp: !this.state.showPopUp
+        })
 
     }
 
@@ -133,6 +205,47 @@ class ItemDetail extends Component {
 
 
 
+    getMatches() {
+
+
+        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug),
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+       .then((response) => {
+
+
+                    var response = response.data;
+
+                    console.log("matches resource response")
+                    console.log(response)
+
+
+                    this.setState({
+
+                        matches: response.data
+
+                    })
+
+
+
+
+                },
+                (error) => {
+                    console.log("matchees error", error)
+                }
+            );
+
+    }
+
+
+
+
+
+
     componentWillMount() {
 
     }
@@ -141,12 +254,17 @@ class ItemDetail extends Component {
 
         this.getResources()
 
+        this.getMatches()
+
     }
 
 
 
 
     render() {
+
+        const classes = withStyles();
+        const classesBottom = withStyles();
 
         return (
             <div>
@@ -224,7 +342,7 @@ class ItemDetail extends Component {
                             </div>
                         </div>
                     </div>
-            <div className={"container "}>
+                     <div className={"container "}>
 
 
                 <div className="row  justify-content-start search-container  pb-4">
@@ -347,6 +465,42 @@ class ItemDetail extends Component {
                 </div>
 
 
+                         {this.state.item.org_id === this.props.userDetail.orgId &&
+                         <>
+
+
+
+                         <div className="row no-gutters mb-5">
+                             <div className="col-12 mb-4">
+                                 <h5 className="mb-1">Matches Received  </h5>
+                             </div>
+
+
+
+
+
+                         </div>
+
+
+                         {this.state.matches.map((item)=>
+                                 <>
+                                     {/*<Link to={"/match/"+item.match._key}>*/}
+                                     <MatchItem item={item}/>
+
+                                     {/*</Link>*/}
+                                 </>
+
+                             ) }
+
+
+
+                         </>
+
+
+                         }
+
+
+
                         <div className="container container-divider">
                             <div className="row">
                             </div>
@@ -387,13 +541,91 @@ class ItemDetail extends Component {
                         </div>
 
 
-                        {this.state.item.id && (this.props.userDetail.orgId !== this.state.item.org_id) &&
-                            <BottomAppBar slug={this.slug} />
-
-                        }
 
 
                     </div>
+
+
+
+
+
+
+                    { this.state.item.org_id != this.props.userDetail.orgId &&
+                        <React.Fragment>
+
+                        <CssBaseline/>
+
+                        <AppBar position="fixed" color="#ffffff"
+                        className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                        <Toolbar>
+                        <div className="row  justify-content-center search-container "
+                        style={{ margin: "auto" }}>
+
+
+                        <div className="col-auto">
+                        <button onClick={this.acceptMatch} type="button"
+                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                        Create Match
+
+                        </button>
+                        </div>
+                        </div>
+                        </Toolbar>
+                        </AppBar>
+                        </React.Fragment>
+
+                    }
+
+
+                        <Modal className={"loop-popup"}
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+
+                        <ModalBody>
+                        <div className={"row justify-content-center"}>
+                        <div className={"col-4 text-center"}>
+                        <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
+                        </div>
+                        </div>
+
+
+                        {this.state.loopError ?
+                            <>
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-12 text-center"} >
+                                        <p className={"text-bold "}>Failed</p>
+                                        <p>  {this.state.loopError}</p>
+                                    </div>
+                                </div>
+                            </>
+                            :
+                            <>
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p className={"text-bold"}>Match Accepted</p>
+                                        <p>   A cycle has been created. Make an offer to sellor by going to cycles page</p>
+                                    </div>
+                                </div>
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-6"} style={{textAlign:"center"}}>
+                                        <p style={{minWidth:"120px"}} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>
+                                            {/*<Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Chat</Link></p>*/}
+
+                                            <Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Check </Link></p>
+
+                                    </div>
+                                    <div className={"col-6"} style={{textAlign:"center"}}>
+                                        <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Ok</p>
+                                    </div>
+                                </div>
+                            </>
+
+
+                        }
+                        </ModalBody>
+
+                        </Modal>
+
                     </>
                     }
 

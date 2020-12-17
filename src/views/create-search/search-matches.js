@@ -15,6 +15,8 @@ import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from './ResourceItem'
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+import { Link } from "react-router-dom";
+import MatchItem from '../../components/MatchItem'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -103,19 +105,19 @@ class SearchMatches extends Component {
                     console.log(responseAll)
 
 
-                    var matches = this.state.matches
-
-
-                    for (var i =0 ; i<responseAll.length;i++ ){
-
-
-                        matches.push({listing:responseAll[i]})
-                    }
+                    // var matches = this.state.matches
+                    //
+                    //
+                    // for (var i =0 ; i<responseAll.length;i++ ){
+                    //
+                    //
+                    //     matches.push({listing:responseAll[i]})
+                    // }
 
 
                     this.setState({
 
-                        matches: matches
+                        matches: responseAll
                     })
 
 
@@ -124,8 +126,7 @@ class SearchMatches extends Component {
                 },
                     (error) => {
 
-                        var status = error.response.status
-                        console.log("resource error")
+                        console.log("match search error")
                         console.log(error)
 
                     }
@@ -169,7 +170,6 @@ class SearchMatches extends Component {
                 },
                 (error) => {
 
-                    var status = error.response.status
                     console.log("listings for search error")
                     console.log(error)
 
@@ -247,7 +247,10 @@ class SearchMatches extends Component {
 
                         {this.state.matches.map((item) =>
 
-                            <ResourceItem item={item}  />
+
+                            <MatchItem item={item}  />
+
+
 
                         )}
 
@@ -265,7 +268,12 @@ class SearchMatches extends Component {
 
                             {this.state.listingsForSearch.map((item) =>
 
-                                <ResourceItem item={item}  />
+
+                                <Link to={"/"+ item.listing._key+"/"+this.slug }>
+
+                                <ResourceItem  searchId={this.slug} item={item}  />
+
+                                </Link>
 
 
                             )}

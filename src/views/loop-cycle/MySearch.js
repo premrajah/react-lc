@@ -87,8 +87,8 @@ class MySearch extends Component {
             },
                 (error) => {
 
-                    var status = error.response.status
-                    console.log("resource error")
+                    // var status = error.response.status
+                    console.log("my searches error")
                     console.log(error)
 
                 }

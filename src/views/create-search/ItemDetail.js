@@ -414,7 +414,7 @@ class ItemDetail extends Component {
                         </div>
 
 
-                        {this.state.item.stage == "matched" && this.state.item.org_id != this.props.userDetail.orgId &&
+                        { this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>
 
                             <CssBaseline/>
@@ -493,6 +493,8 @@ class ItemDetail extends Component {
                             </ModalBody>
 
                         </Modal>
+
+
 
 
                     </div>

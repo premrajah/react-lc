@@ -176,7 +176,11 @@ class MyListings extends Component {
 
                         {this.state.items.map((item) =>
 
+                            <Link to={"/"+ item.listing._key }>
+
                             <ResourceItem item={item} />
+                            </Link>
+
 
                         )}
 

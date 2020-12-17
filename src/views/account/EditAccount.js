@@ -54,9 +54,6 @@ class EditAccount extends Component {
 
                     var response = response.data;
 
-                    console.log("user response")
-                    console.log(response)
-
 
                 this.setState({
 

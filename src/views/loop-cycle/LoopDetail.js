@@ -12,7 +12,12 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import { withStyles } from "@material-ui/core/styles/index";
-
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
 
 class LoopDetail extends Component {
 
@@ -453,6 +458,35 @@ const useStyles = makeStyles((theme) => ({
         margin: '0 auto',
     },
 }));
+
+
+
+function StatusTimeline() {
+    return (
+        <Timeline>
+            <TimelineItem>
+                <TimelineSeparator>
+                    <TimelineDot />
+                    <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>Eat</TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+                <TimelineSeparator>
+                    <TimelineDot />
+                    <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>Code</TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+                <TimelineSeparator>
+                    <TimelineDot />
+                </TimelineSeparator>
+                <TimelineContent>Sleep</TimelineContent>
+            </TimelineItem>
+        </Timeline>
+    );
+}
 
 function BottomAppBar() {
     const classes = useStyles();

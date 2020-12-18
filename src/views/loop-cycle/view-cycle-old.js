@@ -29,7 +29,7 @@ import moment from "moment/moment";
 
 
 
-class ViewCycle extends Component {
+class ViewCycleOld extends Component {
 
     slug;
 
@@ -1355,4 +1355,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(ViewCycle);
+)(ViewCycleOld);

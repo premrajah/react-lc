@@ -114,7 +114,7 @@ const reducer = (state = initialState, action) => {
             // window.location.href=("/")
 
 
-            console.log(action.value)
+            // console.log(action.value)
 
             break;
 

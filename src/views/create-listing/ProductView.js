@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,6 +22,7 @@ import moment from "moment";
 import ImagesSlider from "../../components/ImagesSlider";
 
 import ProImg from '../../img/img-product.png';
+import { Tabs, Tab,  } from 'react-bootstrap';
 
 
 class ProductView extends Component {
@@ -468,6 +469,28 @@ function BottomAppBar(props) {
 }
 
 
+
+function ProductTabs() {
+    const [key, setKey] = useState('home');
+
+    return (
+        <Tabs
+            id="controlled-tab-example"
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
+        >
+            <Tab eventKey="home" title="Home">
+
+            </Tab>
+            <Tab eventKey="profile" title="Profile">
+
+            </Tab>
+            <Tab eventKey="contact" title="Contact" disabled>
+
+            </Tab>
+        </Tabs>
+    );
+}
 
 
 

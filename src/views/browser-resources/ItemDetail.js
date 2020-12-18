@@ -507,6 +507,7 @@ class ItemDetail extends Component {
                         </div>
                         <div className="container mt-4 mb-5 pb-5 ">
 
+
                             <div className="row no-gutters mb-5">
                                 <div className="col-12 mb-4">
                                     <h5 className="mb-1">About the seller  </h5>
@@ -541,14 +542,7 @@ class ItemDetail extends Component {
                         </div>
 
 
-
-
                     </div>
-
-
-
-
-
 
                     { this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>

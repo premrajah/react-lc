@@ -78,9 +78,16 @@ class App extends Component{
 
     componentWillMount(){
 
+        // this.props.logOut()
 
         this.props.loadUserDetail()
     }
+
+
+
+
+
+
     render() {
 
 
@@ -182,6 +189,7 @@ const mapDispachToProps = dispatch => {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+        logOut: (data) => dispatch(actionCreator.logOut(data)),
 
 
     };

@@ -115,12 +115,11 @@ class Sidebar extends Component {
                             <div className="row">
                                 <div className="col-auto">
                                     <figure className="avatar avatar-60 border-0">
-                                        {/*<img src={TescoImg} alt="" />*/}
+
 
                                         {this.props.isLoggedIn && <span className={"word-user-big"}>
 
-
-                                            {this.props.userDetail.orgId.substr(0,2)}
+                                            {this.props.userDetail&&this.props.userDetail.orgId&&this.props.userDetail.orgId.substr(0,2)}
 
                                         </span>
                                         }

@@ -16,8 +16,10 @@ import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
+import CheckIcon from '@material-ui/icons/Check';
 
 class CycleDetail extends Component {
 
@@ -63,6 +65,12 @@ class CycleDetail extends Component {
 
                     <div className="container  pt-3 pb-3">
                         <LoopAccordion loop={this.props.loop} />
+                    </div>
+
+
+                    <div className="container  pt-3 pb-3">
+                    <StatusTimeline  cycle={this.props.loop}/>
+
                     </div>
 
                 </div>
@@ -450,30 +458,55 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function StatusTimeline() {
+function StatusTimeline(props) {
+
+
+
+
+
+
+
     return (
+        <>
+            {props.cycle.steps &&
         <Timeline>
-            <TimelineItem>
+
+            {props.cycle.steps.map((item,index)=>
+                <>
+                <TimelineItem>
+                    <TimelineOppositeContent>
+                        <Typography variant="h6" component="h1">
+                            {item.step.type}
+                        </Typography>
+                        <Typography>
+                            {item.step.stage}
+                        </Typography>
+                    </TimelineOppositeContent>
                 <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
+                    <TimelineDot style={{backgroundColor:"#27245C"}}>
+                        <CheckIcon  />
+                    </TimelineDot>
+                    
                 </TimelineSeparator>
-                <TimelineContent>Eat</TimelineContent>
+                <TimelineContent>
+                    <Typography variant="h6" component="h1">
+                        {item.step.name}
+                    </Typography>
+                    <Typography>
+                        {item.step.description}
+                        </Typography>
+                    </TimelineContent>
             </TimelineItem>
-            <TimelineItem>
-                <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Code</TimelineContent>
-            </TimelineItem>
-            <TimelineItem>
-                <TimelineSeparator>
-                    <TimelineDot />
-                </TimelineSeparator>
-                <TimelineContent>Sleep</TimelineContent>
-            </TimelineItem>
-        </Timeline>
+
+            {index>0&&
+            <TimelineConnector />
+            }
+                </>
+
+            )}
+
+             </Timeline>}
+                </>
     );
 }
 

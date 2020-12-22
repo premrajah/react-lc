@@ -25,6 +25,9 @@ import axios from "axios/index";
 import Moment from 'react-moment';
 import { withStyles } from "@material-ui/core/styles/index";
 import moment from "moment/moment";
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 
 
 
@@ -51,6 +54,9 @@ class ViewCycle extends Component {
             showPrompt:false,
             logisticsError:false,
             logisticsErrorMsg:"",
+            showPopUpStep:false,
+            stepStages: ["created" , "accepted" ,"progress",  "completed", "confirmed"],
+            steps: ["transport" , "processing" ,"cleaning"],
         }
 
         this.slug = props.match.params.slug
@@ -63,8 +69,11 @@ class ViewCycle extends Component {
         this.orderReceived = this.orderReceived.bind(this)
         this.orderClose = this.orderClose.bind(this)
         this.showPopUpLogistics = this.showPopUpLogistics.bind(this)
+        this.showStep = this.showStep.bind(this)
         this.showPopUpTrackingNumber = this.showPopUpTrackingNumber.bind(this)
         this.proceedCancel = this.proceedCancel.bind(this)
+        this.updateStep=this.updateStep.bind(this)
+        this.deliverCycle=this.deliverCycle.bind(this)
 
 
     }
@@ -86,6 +95,15 @@ class ViewCycle extends Component {
 
         this.setState({
             showPopUpLogistics: !this.state.showPopUpLogistics
+        })
+
+    }
+
+
+    showStep() {
+
+        this.setState({
+            showPopUpStep: !this.state.showPopUpStep
         })
 
     }
@@ -198,7 +216,6 @@ class ViewCycle extends Component {
     }
 
 
-
     handleSubmitTracking = event => {
 
         event.preventDefault();
@@ -269,7 +286,262 @@ class ViewCycle extends Component {
 
 
     }
+    
+    
+    getOrgIdOfOtherCompany(){
+        
+        
+        
+        if (this.state.item.sender._id!=this.props.userDetail.orgid){
 
+
+            return this.state.item.sender._id
+        }else{
+
+            return this.state.item.receiver._id
+
+        }
+        
+}
+    
+    handleSubmitStep = event => {
+
+        event.preventDefault();
+
+
+        const form = event.currentTarget;
+       
+        const data = new FormData(event.target);
+
+        const name = data.get("name")
+        const description = data.get("description")
+        const type = data.get("type")
+        const notes = [data.get("note")]
+
+
+
+        // alert("username"+ username)
+
+
+        var dataStep= {
+            "step": {
+                "name": name,
+                "description": description,
+                "type":  type,
+                // "predecessor": null,
+                "notes": notes
+            },
+            "cycle_id": this.slug,
+            "org_id": this.getOrgIdOfOtherCompany()
+
+        }
+
+
+
+        console.log(dataStep)
+        axios.put(baseUrl + "step",dataStep
+
+       , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.data)
+
+                this.setState({
+
+                    showPopUpStep: !this.state.showPopUpStep
+                })
+
+                this.getResources()
+
+
+
+
+            }).catch(error => {
+
+
+            console.log("cycle step error")
+            console.log(error)
+
+
+            // this.setState({
+            //
+            //     showPopUpTrackingNumber: false,
+            //     loopError: error.response.data.content.message
+            // })
+
+        });
+
+
+
+
+        //
+        // }else {
+        //
+        //
+        //     // alert("invalid")
+        // }
+
+
+    }
+
+
+
+
+    updateStep() {
+
+
+
+
+        var action;
+
+        if (this.state.item&&this.state.item.steps[0].step.stage==="created"){
+
+            action="accepted"
+
+        }
+        else if (this.state.item&&this.state.item.steps[0].step.stage==="accepted"){
+
+            action="progress"
+
+        }
+        else if (this.state.item&&this.state.item.steps[0].step.stage==="progress"){
+
+            action="completed"
+
+        }
+
+        else if (this.state.item&&this.state.item.steps[0].step.stage==="completed"){
+
+            action="confirmed"
+
+        }
+
+
+
+        var data={
+            "step_id": this.state.item.steps[0].step._key,
+            "new_stage": action,
+        }
+
+        console.log("update step error")
+        console.log(data)
+
+        axios.post(baseUrl + "step/stage",data
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.data)
+
+                // this.setState({
+                //
+                //     showPopUp: true
+                // })
+
+                this.getResources()
+
+
+            }).catch(error => {
+
+            console.log("step update error found ")
+            console.log(error)
+
+            //
+            // this.setState({
+            //
+            //     showPopUp: true,
+            //     loopError: error.response.data.content.message
+            // })
+
+        });
+
+
+    }
+
+
+    deliverCycle(event) {
+
+
+
+
+        var action=event.currentTarget.dataset.action
+
+        // if (this.state.item&&this.state.item.steps[0].step.stage==="created"){
+        //
+        //     action="accepted"
+        //
+        // }
+        // else if (this.state.item&&this.state.item.steps[0].step.stage==="accepted"){
+        //
+        //     action="progress"
+        //
+        // }
+        // else if (this.state.item&&this.state.item.steps[0].step.stage==="progress"){
+        //
+        //     action="completed"
+        //
+        // }
+        //
+        // else if (this.state.item&&this.state.item.steps[0].step.stage==="completed"){
+        //
+        //     action="confirmed"
+        //
+        // }
+
+
+
+        var data={
+            "cycle_id": this.slug,
+            "new_stage": action,
+        }
+
+        console.log("update cycle ")
+        console.log(data)
+
+        axios.post(baseUrl + "cycle/stage",data
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.data)
+
+                // this.setState({
+                //
+                //     showPopUp: true
+                // })
+
+                this.getResources()
+
+
+            }).catch(error => {
+
+            console.log("cycle update error found ")
+            console.log(error)
+
+            //
+            // this.setState({
+            //
+            //     showPopUp: true,
+            //     loopError: error.response.data.content.message
+            // })
+
+        });
+
+
+    }
 
     confirmOffer() {
 
@@ -694,16 +966,13 @@ class ViewCycle extends Component {
 
                                         {this.state.item.id &&  this.state.item.state === "agreed" && this.state.item.show &&
 
-
-                                            <button onClick={this.showPopUpTrackingNumber} type="button"
+                                        <button onClick={this.showPopUpTrackingNumber} type="button"
                                                     className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
                                                 Enter Tracking Number
 
                                             </button>
 
-
                                         }
-
 
                                         {this.state.item && this.state.item.state === "progress" && this.state.item.show &&
 
@@ -751,6 +1020,65 @@ class ViewCycle extends Component {
                                         </button>
                                     </div>
                                     }
+
+
+                                    {this.state.item.cycle.stage==="progress"&&
+                                    <div className="col-auto">
+
+                                        <button onClick={this.showStep} type="button"
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                            Add Step
+
+                                        </button>
+                                    </div>}
+
+                                        <>
+                                        {this.state.item.steps[0].nextAction.is_mine &&
+
+                                        // {true &&
+
+                                        <div className="col-auto">
+
+                                    <button onClick={this.updateStep} type="button"
+                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                        {this.state.item.steps[0].step.stage==="created"&&"Accept"}
+                                        {this.state.item.steps[0].step.stage==="accepted"&&"Mark as work in progress"}
+                                        {this.state.item.steps[0].step.stage==="progress"&&"Mark As Completed"}
+                                        {this.state.item.steps[0].step.stage==="completed"&&"Confirm as completed"}
+
+                                    </button>
+                                    </div>}
+                                        </>
+
+
+
+                                    {/*{this.state.item.next_action.is_mine && this.state.item.next_action.possible_actions.filter((item) => item === "delivered").length > 0 &&*/}
+                                    {this.state.item.next_action.is_mine &&
+
+
+                                    <div className="col-auto">
+
+
+                                        {this.state.item.next_action.possible_actions.map((item) =>
+<>
+                                            <button data-action={item} onClick={this.deliverCycle.bind(this)}
+                                                    type="button"
+                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                                {item}
+                                            </button>
+
+</>
+                                        )}
+                                    </div>
+
+                                    }
+
+
+
+
                                 </div>
 
 
@@ -907,25 +1235,24 @@ class ViewCycle extends Component {
                     </Modal>
 
 
-                {false &&
+                {this.state.showPopUpStep &&
 
 
                 <div className={"row"}>
 
                     <div className="col-auto">
 
-                        <button  onClick={this.showPopUp} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                        <button  onClick={this.showPopUpStep} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                             Add Step
                         </button>
-
                     </div>
+                </div>
 
-
-
+                }
 
                     <Modal className={"loop-popup"}
                            aria-labelledby="contained-modal-title-vcenter"
-                           centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+                           centered show={this.state.showPopUpStep} onHide={this.showPopUpStep} animation={false}>
 
                         <ModalBody>
                             <div className={"row justify-content-center"}>
@@ -936,34 +1263,64 @@ class ViewCycle extends Component {
 
                             <div className={"row justify-content-center"}>
                                 <div className={"col-10 text-center"}>
-                                    <p className={"text-bold"}>Make an offer</p>
-                                    <p>   Make an offer which he/she cannot refuse</p>
+                                    <p className={"text-bold"}>Create Step</p>
+                                    <p>   Enter Details</p>
                                 </div>
                             </div>
 
 
 
 
-                            <form onSubmit>
+                            <form onSubmit={this.handleSubmitStep}>
                                 <div className={"row justify-content-center"}>
 
-                                    <div className={"col-12 text-center"}>
-                                        <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
+                                    <div className={"col-12 text-center mb-4"}>
+
+                                        <TextField id="outlined-basic" label="Name" variant="outlined" fullWidth={true} name={"name"} type={"text"} />
 
                                     </div>
 
-                                    <div className={"col-12 text-center"}>
-                                        <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
+                                    <div className={"col-12 text-center mb-4"}>
+
+                                        <TextField id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"} type={"text"} />
 
                                     </div>
 
-                                    <div className={"col-12 text-center"}>
-                                        <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
+                                    <div className={"col-12 text-center mb-4"}>
+
+                                        <TextField id="outlined-basic" label="Note" variant="outlined" fullWidth={true} name={"note"} type={"text"} />
+
+                                    </div>
+
+                                    <div className={"col-12 text-center mb-4"}>
+
+                                        <FormControl variant="outlined" className={classes.formControl}>
+                                            <InputLabel htmlFor="outlined-age-native-simple">Type</InputLabel>
+                                            <Select
+                                                native
+                                                label={"Type"}
+                                                inputProps={{
+                                                    name: 'type',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+                                                {this.state.steps.map((item) =>
+
+                                                    <option value={item}>{item}</option>
+
+                                                )}
+
+                                            </Select>
+                                        </FormControl>
+
 
                                     </div>
 
 
-                                    <div className={"col-12 text-center mt-2"}>
+                                    <div className={"col-12 text-center mb-4"}>
 
 
                                         <div className={"row justify-content-center"}>
@@ -971,10 +1328,9 @@ class ViewCycle extends Component {
 
                                                 <button  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
 
-
                                             </div>
                                             <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                <p onClick={this.showStep} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
                                             </div>
                                         </div>
 
@@ -986,19 +1342,6 @@ class ViewCycle extends Component {
                         </ModalBody>
 
                     </Modal>
-
-
-
-
-
-
-                </div>
-
-
-
-                }
-
-
 
                 </>
                 }

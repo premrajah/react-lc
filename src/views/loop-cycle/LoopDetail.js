@@ -65,6 +65,9 @@ class LoopDetail extends Component {
                         <LoopAccordion loop={this.props.loop} />
                     </div>
 
+
+                    <StatusTimeline />
+
                 </div>
 
 

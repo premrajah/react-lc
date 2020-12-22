@@ -230,15 +230,9 @@
         }
 
 
-
         makeActive(event){
 
-
-
             var active = event.currentTarget.dataset.active
-
-
-
 
             this.setState({
 

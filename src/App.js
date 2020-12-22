@@ -23,6 +23,7 @@ import CreateProduct from "./views/create-product/create-product";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
 import Loops from "./views/loop-cycle/Loops";
+import MyCycles from "./views/loop-cycle/MyCycles";
 import LoopDetail from "./views/loop-cycle/LoopDetail";
 import ViewCycle from "./views/loop-cycle/view-cycle";
 import CreateSearchHome from "./views/create-search/Home";
@@ -106,11 +107,12 @@ class App extends Component{
                         <LoggedInRoute exact path="/my-products" component={Products} />
                         {/*<LoggedInRoute exact path="/create-product" component={CreateProduct} />*/}
                         <LoggedInRoute exact path="/loops" component={Loops} />
+                        <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
-                        <LoggedInRoute exact path="/list-form" component={CreateListing} />
-                        <LoggedInRoute exact path="/list-form-new" component={ListForm} />
+                        <LoggedInRoute exact path="/list-form-old" component={CreateListing} />
+                        <LoggedInRoute exact path="/list-form" component={ListForm} />
                         <LoggedInRoute exact path="/product-form" component={ProductForm} />
                         <LoggedInRoute exact path="/product-form/:slug" component={ProductForm} />
 
@@ -131,7 +133,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />
+                        {/*<LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />*/}
                         <LoggedInRoute exact path="/product/:slug" component={ProductDetail} />
 
                         <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
@@ -147,6 +149,8 @@ class App extends Component{
 
                         <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
+                        <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
+
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
 
 
@@ -190,6 +194,8 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         logOut: (data) => dispatch(actionCreator.logOut(data)),
+
+
 
 
     };

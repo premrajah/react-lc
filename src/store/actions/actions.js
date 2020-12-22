@@ -237,6 +237,16 @@ export const loginCheckoutPopUp = val => {
 };
 
 
+
+
+export const showProductPopUp = val => {
+
+    return { type: "PRODUCT_POPUP", value: val };
+
+
+};
+
+
 export const showLoginPopUp = val => {
 
     return { type: "LOGIN_POPUP", value: val };

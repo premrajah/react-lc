@@ -8,13 +8,17 @@ export const initialState = {
     rememberMe : false,
     loginFailed : false,
     loginError : "",
-    loginFailed : false,
     signUpError : "",
     signUpFailed : false,
     isCustomer : false,
     token : {},
     userDetail : null,
     favorites : [],
+    showCreateProduct:false,
+    showCreateSubProduct:false,
+    showProductView:false,
+    showSubProductView:false,
+    productId:null
 
 
 
@@ -120,6 +124,43 @@ const reducer = (state = initialState, action) => {
 
 
 
+
+        case "PRODUCT_POPUP":
+
+            console.log("reducer")
+            newState.loginFailed= false
+
+            newState.showSubProductView= false
+            newState.showCreateProduct= false
+            newState.showCreateSubProduct= false
+            newState.showProductView= false
+
+
+            var type = action.value;
+
+            if (type==="create_product") {
+
+                newState.showCreateProduct= true
+            }
+
+           else if (type==="create_sub_product") {
+
+                newState.showCreateSubProduct= true
+            }
+
+            else  if (type==="product_view") {
+
+                newState.showProductView= true
+            }
+
+            else  if (type==="sub_product_view") {
+
+                newState.showSubProductView= true
+            }
+
+            console.log(action.value+" "+newState.showLoginPopUp)
+
+            break;
 
 
         case "LOGIN_POPUP":

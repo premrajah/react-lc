@@ -241,7 +241,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Listings
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/loops">
+                                        <Link className={"dropdown-item"} to="/my-cycles">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Cycles
                                         </Link>

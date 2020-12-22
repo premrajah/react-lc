@@ -181,7 +181,7 @@ class MatchItem extends Component {
 
             const data = new FormData(event.target);
 
-            const username = data.get("price")
+            const price = data.get("price")
 
         axios.put(baseUrl + "offer",
             {
@@ -189,7 +189,7 @@ class MatchItem extends Component {
 
             "offer": {
             "amount": {
-                "value": 0.0,
+                "value": price,
                     "currency": "gbp"
             }
 
@@ -314,12 +314,13 @@ class MatchItem extends Component {
                 <div className={"col-5 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.match.stage}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-5"}>
 
-                    {this.props.item.match.stage==="created" &&
+                    {this.props.item.match.stage==="created" &&  this.props.item.listing.org._id == this.props.userDetail.orgId &&
                     <div className={"row"}>
 
                         <div className="col-auto">
@@ -343,7 +344,7 @@ class MatchItem extends Component {
 
 
 
-                    {this.props.item.match.stage==="accepted" &&  this.props.item.listing.org._id != this.props.userDetail.orgId &&
+                    {(this.props.item.match.stage==="accepted" ||this.props.item.match.stage==="offered")&&  this.props.item.listing.org._id != this.props.userDetail.orgId &&
 
 
 
@@ -356,9 +357,6 @@ class MatchItem extends Component {
                             </button>
 
                         </div>
-
-
-
 
                         <Modal className={"loop-popup"}
                                aria-labelledby="contained-modal-title-vcenter"
@@ -441,7 +439,7 @@ class MatchItem extends Component {
                 </div>
 
 
-                <div className={"row"}>
+                { this.props.item.match.stage==="offered"  && <div className={"row"}>
 
 
                     {this.state.offers.map((item, index) =>
@@ -451,7 +449,7 @@ class MatchItem extends Component {
 
                             {index + 1}. <span style={{ fontSize: "18px" }}
                                                className=" mb-1 list-title text-bold text-blue">GBP {item.amount.value}</span>,
-                            Offer Stage : {item.stage}
+                            Offer Stage: {item.stage}
 
                             {this.props.item.listing.org._id === this.props.userDetail.orgId &&
                             <button data-id={item._key} onClick={this.acceptOffer.bind(this)} type="button"
@@ -464,8 +462,27 @@ class MatchItem extends Component {
                     )
 
                     }
-                </div>
+                </div>}
 
+
+                { this.props.item.match.stage==="converted"  && <div className={"row"}>
+
+
+                    {this.state.offers.map((item, index) =>
+
+                        <div className="col-12">
+
+
+                            {index + 1}. <span style={{ fontSize: "18px" }}
+                                               className=" mb-1 list-title text-bold text-blue">GBP {item.amount.value}</span>,
+                            Offer Stage: {item.stage}
+
+
+                        </div>
+                    )
+
+                    }
+                </div>}
 
 
 

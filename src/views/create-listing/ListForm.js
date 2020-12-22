@@ -687,6 +687,10 @@ class ListForm extends Component {
                 "expire_after_epoch_ms": new Date(this.state.startDate).getTime() + 8640000000,
                 // "price": formData.get("price"),
 
+                "price": {
+                    "value": formData.get("price"),
+                    "currency": "gbp"
+                },
             }
 
         }else{
@@ -3622,7 +3626,7 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
 
 
 

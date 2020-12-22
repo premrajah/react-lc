@@ -14,7 +14,6 @@ import PaperImg from '../../img/paper-big.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import LoopDetail from './LoopDetail'
-import CycleDetail from './CycleDetail'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
@@ -43,7 +42,7 @@ class ViewCycle extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: null,
+            item: {},
             fields: {},
             errors: {},
             showPopUpLogistics: false,
@@ -632,16 +631,253 @@ class ViewCycle extends Component {
 
                 <Sidebar />
                 <HeaderDark />
-                {this.state.item &&
-                <>
+
                 <div className=" ">
 
 
+                    {this.state.item && this.state.item.id &&
+                    <>
+                        {this.state.item.state === "created" ?
+                            <>
+                                <div className="container-fluid " style={{ padding: "0" }}>
 
 
-                        <CycleDetail loop={this.state.item} />
+                                    <div className="row no-gutters  justify-content-center">
+
+                                        <div className="floating-back-icon" style={{ margin: "auto" }}>
+
+                                            <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
+                                        </div>
 
 
+                                        <div className="col-auto ">
+                                            <img className={"img-fluid"} src={PaperImg} alt="" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="container ">
+                                    <div className="row justify-content-start pb-3 pt-4 listing-row-border">
+
+                                        <div className="col-12">
+                                            <p className={"green-text text-heading"}>@{this.state.item.resource.tags}
+                                            </p>
+
+                                        </div>
+                                        <div className="col-12 mt-2">
+                                            <h5 className={"blue-text text-heading"}>{this.state.item.resource.name}
+                                            </h5>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+
+                                        <div className="col-auto">
+                                            <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.resource.description}
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="row justify-content-start pb-4 pt-3 ">
+                                        <div className="col-auto">
+                                            <h6 className={""}>
+                                                Item Details
+                                            </h6>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
+
+                                        {this.state.item && this.state.item.id && <div className={"col-8 content-box-listing"}>
+                                            <>
+                                                <h5 style={{ fontSize: "18px" }} className=" mb-1">{this.state.item.resource.name}</h5>
+                                                <p style={{ fontSize: "18px" }} className=" mb-1">{this.state.item.from.org_id}  →  {this.state.item.to.org_id}</p>
+                                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.state.item.resource.category}</p>
+                                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.state.item.resource.state} / {this.state.item.resource.volume} {this.state.item.resource.units}</p>
+                                            </>
+
+                                        </div>}
+                                        <div style={{ textAlign: "right" }} className={"col-4"}>
+                                            <p className={"green-text text-mute small"} >
+                                                {this.state.item.state}</p>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div className={"container"}>
+
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={ListIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.category} ></p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.type}</p>
+                                        </div>
+                                    </div>
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={AmountIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.search.volume} {this.state.item.search.units}</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={StateIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={CalenderIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required From </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">
+
+
+
+                                                {moment(this.state.item.resource.availableFrom.value).format("DD MMM YYYY")}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={CalenderIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">
+
+
+
+                                                {moment(this.state.item.resource.expiry.value).format("DD MMM YYYY")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-1"}>
+                                            <img className={"icon-about"} src={MarkerIcon} alt="" />
+                                        </div>
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.site && this.state.item.resource.site.name}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.resource.site && this.state.item.resource.site.address}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="container container-divider">
+                                        <div className="row">
+                                        </div>
+                                    </div>
+                                    <div className="container mt-4 mb-5 pb-5 ">
+
+                                        <div className="row no-gutters mb-5">
+                                            <div className="col-12 mb-4">
+                                                <h5 className="mb-1">About the seller  </h5>
+                                            </div>
+                                            <div className="col-auto ">
+                                                <figure className="avatar avatar-60 border-0">
+
+                                                        <span className={"word-user-sellor"}>
+
+                                                   {this.state.item.producer.org.name.substr(0,2)}
+
+                                                        </span>
+
+                                                </figure>
+                                            </div>
+                                            <div className="col pl-2 align-self-center">
+                                                <div className="row no-gutters">
+                                                    <div className="col-12">
+
+
+                                                        <p style={{ fontSize: "18px" }} className=" ">Seller Company</p>
+                                                        <p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <React.Fragment>
+
+                                        {this.state.item.id && (this.props.userDetail.orgId === this.state.item.producer.org.id) && this.state.item.state === "created" &&
+                                        <>
+
+                                            <CssBaseline />
+
+                                            <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                                <Toolbar>
+
+                                                    <div className="row  justify-content-center search-container "
+                                                         style={{ margin: "auto" }}>
+
+                                                        <div className="col-auto">
+                                                            <button onClick={this.confirmOffer} type="button"
+                                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                                                Accept Offer
+
+                                                            </button>
+                                                        </div>
+
+                                                        <div className="col-auto">
+
+                                                            <button onClick={this.declineOffer} type="button"
+                                                                    className="shadow-sm mr-2 green-btn-border btn btn-link  mt-2 mb-2 ">
+
+                                                                Reject Offer
+
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+
+                                                </Toolbar>
+                                            </AppBar>
+
+                                        </>
+
+                                        }
+
+
+                                    </React.Fragment>
+
+
+
+                                </div></>
+
+                            : <LoopDetail loop={this.state.item} />
+
+                        }
+
+                    </>}
 
                 </div>
 
@@ -907,7 +1143,12 @@ class ViewCycle extends Component {
                     </Modal>
 
 
+
+
+
+
                 {false &&
+
 
 
                 <div className={"row"}>
@@ -1000,8 +1241,6 @@ class ViewCycle extends Component {
 
 
 
-                </>
-                }
 
 
             </div>

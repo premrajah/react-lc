@@ -1034,7 +1034,7 @@ class ViewCycle extends Component {
                                     </div>}
 
                                         <>
-                                        {this.state.item.steps[0].nextAction.is_mine &&
+                                        {this.state.item.steps.length>0&&this.state.item.steps[0].nextAction.is_mine &&
 
                                         // {true &&
 

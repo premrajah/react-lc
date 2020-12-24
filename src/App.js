@@ -33,8 +33,6 @@ import CreateListing from "./views/create-listing/create-listing";
 import SubProductView from "./views/create-listing/SubProductView";
 
 import ProductView from "./views/create-listing/ProductView";
-
-
 import ListForm from "./views/create-listing/ListForm";
 import ProductForm from "./views/create-listing/ProductForm";
 import SearchForm from "./views/create-search/SearchForm";
@@ -49,21 +47,20 @@ import FindResources from "./views/browser-resources/FindResources";
 import MessageSeller from "./views/browser-resources/message-seller";
 import MakeOffer from "./views/browser-resources/make-offer";
 import ItemDetailMatch from "./views/create-search/ItemDetail";
-
 import Search from "./views/browser-resources/Search";
 import Filter from "./views/browser-resources/Filter";
-
 import AuthRoute from "./Util/AuthRoute";
 import LoggedInRoute from "./Util/LoggedInRoute";
 import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
-
 import EditAccount from "./views/account/EditAccount";
 import CompanyInfo from "./views/account/CompanyInfo";
 import Address from "./views/account/Address";
 import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
 
+// import ProductForm from './views/create-listing/ProductForm'
+import ProductPopUp from './views/create-product/create-product-popup'
 
 
 
@@ -95,7 +92,6 @@ class App extends Component{
         return (
             <>
                 <BrowserRouter>
-                {/*<Router history={hist}>*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
@@ -105,7 +101,6 @@ class App extends Component{
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         <LoggedInRoute exact path="/my-products" component={Products} />
-                        {/*<LoggedInRoute exact path="/create-product" component={CreateProduct} />*/}
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
@@ -115,48 +110,37 @@ class App extends Component{
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
                         <LoggedInRoute exact path="/product-form" component={ProductForm} />
                         <LoggedInRoute exact path="/product-form/:slug" component={ProductForm} />
-
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <LoggedInRoute exact path="/find-resources" component={FindResources} />
-
-
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exact path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
                         <LoggedInRoute exact path="/addresses" component={Address} />
-
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        {/*<LoggedInRoute exact path="/loop-detail/:slug" component={ViewCycle} />*/}
                         <LoggedInRoute exact path="/product/:slug" component={ProductDetail} />
-
                         <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
-
                         <LoggedInRoute exact path="/product-view/:slug" component={ProductView} />
-
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
-
                         <Route exact path="/product-cycle-detail/:slug" component={ItemCycleDetail} />
-
-
                         <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
-
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
 
 
                     </Switch>
 
                     {(this.props.showLoginPopUp) && <LoginPopUp/>}
+                    {(this.props.showProductPopUp) && <ProductPopUp />}
 
                 {/*</Router>*/}
                 </BrowserRouter>
@@ -174,11 +158,12 @@ const mapStateToProps = state => {
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
-
+        showSubProductView: state.showSubProductView,
+        showCreateProduct: state.showCreateProduct,
+        showCreateSubProduct: state.showCreateSubProduct,
+        showProductView: state.loginPopUpStatus,
+        showProductPopUp:state.showProductPopUp
 
 
 

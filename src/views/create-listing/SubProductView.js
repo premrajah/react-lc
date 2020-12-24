@@ -42,11 +42,29 @@ class SubProductView extends Component {
         }
 
 
-        this.slug = props.match.params.slug
+        // this.slug = props.match.params.slug
 
         this.getResources = this.getResources.bind(this)
+        this.setProduct = this.setProduct.bind(this)
         this.getSite = this.getSite.bind(this)
+        this.showProductSelection=this.showProductSelection.bind(this)
 
+
+    }
+
+    showProductSelection() {
+
+
+
+
+        this.props.showProductPopUp({type:"create_sub_product",show:true})
+
+
+        // this.setState({
+        //
+        //         productSelection: !this.state.productSelection
+        //     }
+        // )
     }
 
 
@@ -94,10 +112,22 @@ class SubProductView extends Component {
     }
 
 
+    setProduct(){
+
+
+        this.setState({
+
+            item: this.props.product
+        })
+
+
+        this.getResources()
+    }
+
     getResources() {
 
 
-        axios.get(baseUrl + "product/" + this.slug,
+        axios.get(baseUrl + "product/" + this.props.product.product._key,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -184,7 +214,7 @@ class SubProductView extends Component {
 
     componentDidMount() {
 
-        this.getResources()
+        this.setProduct()
 
     }
 
@@ -195,14 +225,7 @@ class SubProductView extends Component {
 
         return (
             <div>
-
-                <Sidebar />
-                <div className="accountpage">
-
-                    <HeaderDark />
-
-
-                    {this.state.item &&
+                {this.state.item &&
                     <>
                         <div className="container-fluid " style={{ padding: "0" }}>
 
@@ -291,7 +314,12 @@ class SubProductView extends Component {
                                 <p style={{ margin: "10px 0" }} className={"green-text forgot-password-link text-mute small"}>
 
 
-                                    <Link to={"/product-form/"+this.state.item.product._key} >Add Sub Product  </Link> </p>
+                                    <span onClick={this.showProductSelection} >Add Sub Product  </span>
+
+
+                                {/*<Link to={"/product-form/"+this.state.item.product._key} >Add Sub Product  </Link> */}
+
+                                </p>
 
 
 
@@ -351,7 +379,6 @@ class SubProductView extends Component {
 
                   </>}
 
-            </div>
             </div>
         );
     }
@@ -445,6 +472,9 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        product:state.product,
+        parentProduct:state.parentProduct,
+        showProductPopUp:state.parentProduct,
 
 
     };
@@ -457,6 +487,7 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
 
     };
 };

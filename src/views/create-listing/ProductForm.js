@@ -138,12 +138,12 @@ class ProductForm extends Component {
             images: [],
             yearsList:[],
             purpose: ["defined", "prototype", "aggregate"],
-
-
+            product:null,
+            parentProduct:null,
 
         }
 
-        this.slug = props.match.params.slug
+        // this.slug = props.match.params.slug
 
         this.selectCategory = this.selectCategory.bind(this)
         this.selectType = this.selectType.bind(this)
@@ -158,10 +158,38 @@ class ProductForm extends Component {
         this.handleDateChange = this.handleDateChange.bind(this)
         this.handleChangeFile=this.handleChangeFile.bind(this)
         this.uploadImage=this.uploadImage.bind(this)
+        this.showProductSelection=this.showProductSelection.bind(this)
 
 
     }
 
+
+
+
+    showProductSelection() {
+
+
+
+        if (!this.props.parentProduct){
+
+
+            alert("parent  product")
+
+
+            this.props.setProduct(this.state.product)
+            this.props.setParentProduct(this.state.parentProduct)
+
+
+        }else{
+
+            alert("child product")
+        }
+
+
+
+        this.props.showProductPopUp({type:"sub_product_view",show:true})
+
+    }
 
 
     setUpYearList(){
@@ -503,22 +531,16 @@ class ProductForm extends Component {
 
         event.preventDefault();
 
-
         const form = event.currentTarget;
 
-        // if (this.handleValidationProduct()) {
-
-
-
-            this.setState({
+        this.setState({
                 btnLoading: true
-            })
+         })
 
             const data = new FormData(event.target);
 
             console.log("form data")
 
-            // console.log(data.getAll())
 
             const title = data.get("title")
             const purpose = data.get("purpose")
@@ -532,15 +554,12 @@ class ProductForm extends Component {
             const   brand= data.get("brand")
 
             const volume=data.get("volume")
-        const sku=data.get("sku")
-        const upc=data.get("upc")
-        const part_no=data.get("part_no")
-        const state=data.get("state")
-
-
-
-
-            var productData=   {
+            const sku=data.get("sku")
+            const upc=data.get("upc")
+            const part_no=data.get("part_no")
+            const state=data.get("state")
+        
+            var productData =   {
 
                 "purpose": purpose,
                 "name": title,
@@ -561,34 +580,42 @@ class ProductForm extends Component {
 
                 "year_of_making": data.get("manufacturedDate")
 
-
-
             }
 
 
+        var completeData ;
+            
+            
+            
+            if (this.props.parentProduct) {
 
-        // var productData= {
-        //     "name": "Product Prem 726",
-        //     "description": "",
-        //     "purpose": "prototype",
-        //     "year_of_making": 2020,
-        //     "stage": "certified",
-        //     "category": "other",
-        //     "type": "Other",
-        //     "state": "Other",
-        //     "units": "other",
-        //     "volume": 0.0,
-        //     "sku": {
-        //         "brand": "",
-        //         "model": "",
-        //         "serial": null,
-        //         "sku": null,
-        //         "upc": null,
-        //         "part_no": null
-        //     }
-        // }
+                completeData = {
+
+                     product: productData,
+                    "child_product_ids": [],
+                    "artifact_ids": this.state.images,
+                    "parent_product_id": this.props.parentProduct.product._key,
 
 
+                }
+
+            }else{
+
+
+                completeData = {
+
+                     product: productData,
+                    "child_product_ids": [],
+                    "artifact_ids": this.state.images,
+                    "parent_product_id": null,
+
+
+                }
+
+
+            }
+            
+            
             console.log("product data")
 
             console.log(productData)
@@ -597,14 +624,7 @@ class ProductForm extends Component {
 
             axios.put(baseUrl + "product",
 
-                {
-                    product : productData,
-                    "child_product_ids": [],
-                    "artifact_ids": this.state.images,
-                    "parent_product_id": this.slug,
-
-
-                }
+               completeData
                 , {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -613,21 +633,35 @@ class ProductForm extends Component {
                 .then(res => {
 
 
-                    console.log(res.data)
+                    console.log(res.data.data)
+
+
+
+                    if (!this.props.parentProduct) {
+
+                        this.setState({
+                            product: res.data.data,
+                            parentProduct: res.data.data
+
+                        })
+
+                    }
+
+                    this.showProductSelection()
 
                     console.log("product added succesfully")
 
 
 
-                    if (this.slug) {
-                        this.props.history.push("/sub-product-view/" + this.slug)
-
-
-                    }else{
-                        this.props.history.push("/sub-product-view/" + res.data.data.product._key)
-
-
-                    }
+                    // if (this.slug) {
+                    //     this.props.history.push("/sub-product-view/" + this.slug)
+                    //
+                    //
+                    // }else{
+                    //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
+                    //
+                    //
+                    // }
 
 
                     // this.showProductSelection()
@@ -839,7 +873,7 @@ class ProductForm extends Component {
 
 
 
-                    <HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />
+                    {/*<HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />*/}
 
                     <div className="container   pb-4 pt-4">
                         
@@ -847,13 +881,13 @@ class ProductForm extends Component {
                         <div className="row  pb-2 pt-4 ">
 
                             <div className="col-10">
-                                <h3 className={"blue-text text-heading"}>Create A Product
+                                <h3 className={"blue-text text-heading"}>{this.props.heading}
                                 </h3>
 
                             </div>
-                            <div className="col-2 text-right">
-                                <Close onClick={this.showProductSelection} className="blue-text" style={{ fontSize: 32 }} />
-                            </div>
+                            {/*<div className="col-2 text-right">*/}
+                                {/*<Close onClick={this.showProductSelection} className="blue-text" style={{ fontSize: 32 }} />*/}
+                            {/*</div>*/}
                         </div>
                         
                     </div>
@@ -1049,8 +1083,8 @@ class ProductForm extends Component {
                                     {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
 
                                 </div>
-
-                                <div className="row no-gutters justify-content-center mt-4">
+                                <div className="col-12 mt-4">
+                                <div className="row no-gutters justify-content-center ">
 
                                     <div className="col-6 pr-2">
 
@@ -1093,6 +1127,7 @@ class ProductForm extends Component {
 
 
                                     </div>
+                                </div>
                                 </div>
 
 
@@ -1412,13 +1447,9 @@ function ComponentItem({ title, subTitle, serialNo, imageName }) {
 
 
 
-
-
-
-
-
 const mapStateToProps = state => {
     return {
+
         loginError: state.loginError,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
@@ -1426,6 +1457,9 @@ const mapStateToProps = state => {
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
+        parentProduct:state.parentProduct,
+        product:state.product,
+        showProductPopUp:state.showProductPopUp
 
 
     };
@@ -1439,8 +1473,9 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
-
+        setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
 
 
 

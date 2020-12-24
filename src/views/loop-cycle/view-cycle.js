@@ -55,6 +55,7 @@ class ViewCycle extends Component {
             logisticsError:false,
             logisticsErrorMsg:"",
             showPopUpStep:false,
+            orgs:[],
             stepStages: ["created" , "accepted" ,"progress",  "completed", "confirmed"],
             steps: ["transport" , "processing" ,"cleaning"],
         }
@@ -332,7 +333,7 @@ class ViewCycle extends Component {
                 "notes": notes
             },
             "cycle_id": this.slug,
-            "org_id": this.getOrgIdOfOtherCompany()
+            "org_id": data.get("org")
 
         }
 
@@ -865,6 +866,43 @@ class ViewCycle extends Component {
     }
 
 
+    getOrgs() {
+
+
+        axios.get(baseUrl + "org/all",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        ).then((response) => {
+
+                var response = response.data;
+                console.log("cycle detail response")
+                console.log(response)
+
+
+                // alert(response.content.producer.org.id+ response.content.state )
+
+                this.setState({
+
+                    orgs: response.data
+                })
+
+            },
+            (error) => {
+
+                console.log("cycle error")
+
+                console.log(error)
+
+
+            }
+        );
+
+    }
+
+
 
     componentWillMount() {
 
@@ -876,6 +914,7 @@ class ViewCycle extends Component {
 
     componentDidMount() {
         this.getResources()
+        this.getOrgs()
         this.interval = setInterval(() => {
 
             this.getResources()
@@ -1155,7 +1194,6 @@ class ViewCycle extends Component {
                             <div className={"row"}>
                                 <div className={"col-12"}>
                                     <h5 className={"text-bold text-center"}>Please provide a tracking number:</h5>
-                                    {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                 </div>
                             </div>
                             <form onSubmit={this.handleSubmitTracking}>
@@ -1310,6 +1348,33 @@ class ViewCycle extends Component {
                                                 {this.state.steps.map((item) =>
 
                                                     <option value={item}>{item}</option>
+
+                                                )}
+
+                                            </Select>
+                                        </FormControl>
+
+
+                                    </div>
+
+                                    <div className={"col-12 text-center mb-4"}>
+
+                                        <FormControl variant="outlined" className={classes.formControl}>
+                                            <InputLabel htmlFor="outlined-age-native-simple">Select Organisation</InputLabel>
+                                            <Select
+                                                native
+                                                label={"Select Organisation"}
+                                                inputProps={{
+                                                    name: 'org',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+                                                {this.state.orgs.map((item) =>
+
+                                                    <option value={item._key}>{item.name}</option>
 
                                                 )}
 

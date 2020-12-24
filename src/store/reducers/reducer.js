@@ -14,11 +14,14 @@ export const initialState = {
     token : {},
     userDetail : null,
     favorites : [],
+    showProductPopUp:false,
     showCreateProduct:false,
     showCreateSubProduct:false,
     showProductView:false,
     showSubProductView:false,
-    productId:null
+    product:null,
+    parentProduct:null,
+    productList:[]
 
 
 
@@ -124,26 +127,42 @@ const reducer = (state = initialState, action) => {
 
 
 
+        case "PARENT_PRODUCT_ID":
+
+            newState.parentProduct = action.value
+            alert("parent set "+action.value.product.name)
+
+
+            break;
+
+
+        case "PRODUCT_ID":
+
+           newState.product = action.value
+
+            break;
+
+
 
         case "PRODUCT_POPUP":
 
             console.log("reducer")
-            newState.loginFailed= false
 
+            newState.loginFailed= false
             newState.showSubProductView= false
             newState.showCreateProduct= false
             newState.showCreateSubProduct= false
-            newState.showProductView= false
+            newState.showProductView = false
+            newState.showProductPopUp= action.value.show
 
-
-            var type = action.value;
+            var type = action.value.type;
 
             if (type==="create_product") {
 
-                newState.showCreateProduct= true
+                newState.showCreateProduct = true
             }
 
-           else if (type==="create_sub_product") {
+            else if (type==="create_sub_product") {
 
                 newState.showCreateSubProduct= true
             }
@@ -158,10 +177,9 @@ const reducer = (state = initialState, action) => {
                 newState.showSubProductView= true
             }
 
-            console.log(action.value+" "+newState.showLoginPopUp)
+            console.log(action.value+" product show value reducer")
 
             break;
-
 
         case "LOGIN_POPUP":
 

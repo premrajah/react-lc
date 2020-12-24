@@ -495,6 +495,12 @@ function StatusTimeline(props) {
                     <Typography>
                         {item.step.description}
                         </Typography>
+                    <Typography>
+                       Creator: {item.creator_org_id}
+                    </Typography>
+                    <Typography>
+                        Owner: {item.owner_org_id}
+                    </Typography>
                     </TimelineContent>
             </TimelineItem>
 

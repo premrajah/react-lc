@@ -44,6 +44,10 @@ import PlusGray from '../../img/icons/plus-icon.png';
 import ControlImg from '../../img/components/Control_Panel_1450.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+import ProductForm from './ProductForm'
+import SubProductView from './SubProductView'
+import ProductView from './ProductView'
+
 import MomentUtils from '@date-io/moment';
 
 import {
@@ -136,9 +140,6 @@ class ListForm extends Component {
             yearsList:[],
             purpose: ["defined", "prototype", "aggregate"],
 
-
-
-
         }
 
         this.selectCreateSearch = this.selectCreateSearch.bind(this)
@@ -147,12 +148,10 @@ class ListForm extends Component {
         this.selectState = this.selectState.bind(this)
         this.addDetails = this.addDetails.bind(this)
         this.linkProduct = this.linkProduct.bind(this)
-        this.searchLocation = this.searchLocation.bind(this)
-        this.previewSearch = this.previewSearch.bind(this)
+
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
         this.getFiltersCategories = this.getFiltersCategories.bind(this)
         this.selectSubCatType = this.selectSubCatType.bind(this)
-        this.handleNext = this.handleNext.bind(this)
         this.handleBack = this.handleBack.bind(this)
         this.getProducts = this.getProducts.bind(this)
         this.selectProduct = this.selectProduct.bind(this)
@@ -169,35 +168,14 @@ class ListForm extends Component {
         this.toggleSale = this.toggleSale.bind(this)
         this.handleChangeFile = this.handleChangeFile.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
-        this.setUpYearList = this.setUpYearList.bind(this)
         this.makeFirstActive=this.makeFirstActive.bind(this)
         this.makeActive=this.makeActive.bind(this)
         this.showProductSelection = this.showProductSelection.bind(this)
 
-
-
     }
 
 
 
-    setUpYearList(){
-
-
-        let years=[]
-
-        let currentYear = (new Date()).getFullYear();
-
-        //Loop and add the Year values to DropDownList.
-        for (let i = currentYear; i >= 1950; i--) {
-
-            years.push(i)
-        }
-
-        this.setState({
-
-            yearsList: years
-        })
-    }
 
 
     handleChangeDateStartDate = date => {
@@ -824,16 +802,20 @@ class ListForm extends Component {
 
 
 
+    showProductSelection(event) {
 
 
+        var action=event.currentTarget.dataset.id
 
-    showProductSelection() {
 
-        this.setState({
+        this.props.showProductPopUp({type:"create_product",show:true})
 
-                productSelection: !this.state.productSelection
-            }
-        )
+
+        // this.setState({
+        //
+        //         productSelection: !this.state.productSelection
+        //     }
+        // )
     }
 
     handleValidationProduct() {
@@ -938,83 +920,6 @@ class ListForm extends Component {
     }
 
 
-      handleNext() {
-
-
-
-        console.log("next clicked ", this.state.page ,this.state.activePage )
-
-
-        if (this.state.activePage === 0) {
-
-
-            if (this.handleValidation()) {
-
-                  this.setState({
-
-                    activePage: 4,
-                    page: 2,
-                    progressBar: 66
-                })
-
-
-            }
-
-
-        }
-
-        else if (this.state.activePage === 4) {
-
-
-            this.setState({
-
-                activePage: 5,
-                page: 3,
-                progressBar: 100
-            })
-
-            // this.createSearch()
-
-
-        }
-
-
-        else if (this.state.activePage === 5) {
-
-
-            if (this.handleValidationAddDetail()) {
-
-
-                // alert("on page 4")
-
-                this.setState({
-
-                    activePage: 7,
-                    page: 4,
-                    progressBar: 100
-                })
-
-
-                this.createListing()
-            }
-
-        }
-
-
-        else if (this.state.activePage === 7) {
-
-
-            this.setState({
-
-                activePage: 8,
-
-            })
-
-        }
-
-
-
-    }
 
 
     getResources() {
@@ -1667,23 +1572,8 @@ class ListForm extends Component {
 
 
 
-    searchLocation() {
-
-        this.setState({
-
-            activePage: 6
-        })
-    }
 
 
-    previewSearch() {
-
-
-        this.setState({
-
-            activePage: 7
-        })
-    }
 
 
 
@@ -1700,10 +1590,9 @@ class ListForm extends Component {
 
 
 
-
         this.getFiltersCategories()
 
-        this.setUpYearList()
+
         this.getSites()
        this.getProducts()
 
@@ -1989,6 +1878,12 @@ class ListForm extends Component {
                                     {this.state.errorsProduct["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["product"]}</span>}
 
 
+                                </div>
+
+
+                                <div>
+                                    <span data-id={"create_product"} onClick={this.showProductSelection.bind(this)}
+                                          className={"forgot-password-link"}> Create a new product</span>
                                 </div>
 
 
@@ -3392,6 +3287,10 @@ class ListForm extends Component {
                 </div>}
 
 
+
+                {/*{this.props.showCreateProduct && <ProductForm/>}*/}
+
+
             </>
 
 
@@ -3614,8 +3513,13 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
 
+        showSubProductView: state.showSubProductView,
+    showCreateProduct: state.showCreateProduct,
+    showCreateSubProduct: state.showCreateSubProduct,
+    showProductView: state.loginPopUpStatus,
 
-    };
+
+};
 };
 
 const mapDispachToProps = dispatch => {
@@ -3627,7 +3531,6 @@ const mapDispachToProps = dispatch => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
 
 
 

@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import axios from "axios/index";
 import { Spinner,Button, Col, Row, Carousel, CarouselItem, Modal, ModalFooter,ModalDialog, Alert, ModalBody, Form, FormControl, FormCheck, FormGroup, FormLabel, FormText, InputGroup} from 'react-bootstrap'
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import  history from '../History/history'
-import {Switch, Link} from 'react-router-dom'
-import {Captcha} from 'primereact/captcha';
-import {baseUrl,baseImgUrl} from  '../Util/Constants'
-import GoogleLogin from 'react-google-login';
-import { FacebookProvider, Login  } from 'react-facebook';import config from "./social/config";
-import queryString from 'query-string'
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
-import {saveGuestData, saveUserData, saveUserToken} from '../LocalStorage/user'
+import ProductForm from "../create-listing/ProductForm";
+import SubProductView from "../create-listing/SubProductView";
+import ProductView from "../create-listing/ProductView";
 
 
-class  LoginPopUp extends Component{
+class  ProductPopUp extends Component{
 
 
     componentDidMount(){
@@ -29,22 +22,18 @@ class  LoginPopUp extends Component{
         this.state = {
 
 
-
         }
 
+
+        this.hidePopUp=this.hidePopUp.bind(this)
 
     }
 
 
 
-
-
-
-
-
     hidePopUp(){
 
-        this.props.showProductPopUp("")
+        this.props.showProductPopUp({action:"hide_all",show:false})
 
 
     }
@@ -63,8 +52,7 @@ class  LoginPopUp extends Component{
 
         return(
 
-
-            <Modal   show={true}
+            <Modal   show={this.props.showProductPopUp}
 
                      onHide={this.hidePopUp}
                      className={"custom-modal-popup popup-form"}
@@ -73,13 +61,18 @@ class  LoginPopUp extends Component{
                 <div className="row py-3 justify-content-center mobile-menu-row">
                     <div className="col mobile-menu">
                         
-                      {!this.props.showSocialLoginPopUp&&this.state.showLogin &&
-                      <div className="form-col-left col-12">
-                            <h3 className="form-heading">Sign In </h3>
 
-                        </div>
-                   
-                            }
+                      <div className="form-col-left col-12">
+
+                          {this.props.showCreateSubProduct && <ProductForm  heading={"Create A Sub Product"}/>}
+
+                          {this.props.showCreateProduct && <ProductForm  heading={"Create A Product"}/>}
+                          {this.props.showSubProductView && <SubProductView  />}
+                          {this.props.showProductView && <ProductView  />}
+
+
+
+                      </div>
 
 
                    </div>
@@ -97,8 +90,12 @@ const mapStateToProps = state => {
 
         abondonCartItem : state.abondonCartItem,
         socialUserInfo: state.socialUserInfo,
-
-
+        showSubProductView: state.showSubProductView,
+        showCreateProduct: state.showCreateProduct,
+        showCreateSubProduct: state.showCreateSubProduct,
+        showProductView: state.loginPopUpStatus,
+        showProductPopUp: state.showProductPopUp,
+        product: state.product
 
     };
 };
@@ -107,7 +104,7 @@ const mapDispachToProps = dispatch => {
     return {
 
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
+        setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
 
 
     };
@@ -115,6 +112,6 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(LoginPopUp);
+)(ProductPopUp);
 
 

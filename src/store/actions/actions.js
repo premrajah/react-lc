@@ -237,9 +237,29 @@ export const loginCheckoutPopUp = val => {
 };
 
 
+export const setProduct = val => {
+
+    console.log("product id",val);
+
+    return { type: "PRODUCT_ID", value: val };
+
+
+};
+
+
+export const setParentProduct = val => {
+
+    console.log("parent product id ",val);
+
+    return { type: "PARENT_PRODUCT_ID", value: val };
+
+
+};
 
 
 export const showProductPopUp = val => {
+
+    console.log("product pop up",val);
 
     return { type: "PRODUCT_POPUP", value: val };
 

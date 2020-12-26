@@ -120,17 +120,29 @@ const reducer = (state = initialState, action) => {
 
             // window.location.href=("/")
 
-
-            // console.log(action.value)
-
             break;
 
+
+
+        case "PRODUCT_LIST":
+
+
+            // alert("product loaded")
+
+            newState.productList = action.value
+
+            console.log("product list loaded ")
+
+            console.log(action.value)
+
+
+            break;
 
 
         case "PARENT_PRODUCT_ID":
 
             newState.parentProduct = action.value
-            alert("parent set "+action.value.product.name)
+            // alert("parent set "+action.value.product.name)
 
 
             break;

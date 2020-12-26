@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import ProductForm from "../create-listing/ProductForm";
 import SubProductView from "../create-listing/SubProductView";
 import ProductView from "../create-listing/ProductView";
+import ProductExpandItem from '../../components/ProductExpandItem'
+
 
 
 class  ProductPopUp extends Component{
@@ -40,24 +42,24 @@ class  ProductPopUp extends Component{
 
     hideDummy(){
 
-
-
     }
-
-
-
 
 
     render (){
 
         return(
 
-            <Modal   show={this.props.showProductPopUp}
-
-                     onHide={this.hidePopUp}
-                     className={"custom-modal-popup popup-form"}
+            <Modal
+                size="lg"
+                show={this.props.showProductPopUp}
+                onHide={this.hidePopUp}
+                className={"custom-modal-popup popup-form"}
             >
-                <button onClick={this.hidePopUp} className="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+
+                    <div className="">
+                <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+
+                </div>
                 <div className="row py-3 justify-content-center mobile-menu-row">
                     <div className="col mobile-menu">
                         
@@ -67,7 +69,7 @@ class  ProductPopUp extends Component{
                           {this.props.showCreateSubProduct && <ProductForm  heading={"Create A Sub Product"}/>}
 
                           {this.props.showCreateProduct && <ProductForm  heading={"Create A Product"}/>}
-                          {this.props.showSubProductView && <SubProductView  />}
+                          {this.props.showSubProductView && <ProductExpandItem productId={this.props.product.product._key}/>}
                           {this.props.showProductView && <ProductView  />}
 
 

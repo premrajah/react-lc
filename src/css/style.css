@@ -2354,10 +2354,11 @@ color: #3C3972;
 .camera-grids .card{box-shadow: none!important;margin: 5px;border:1px solid #CECECE;}
 
 .btn-select-free {
-	width: 30%;
+	width: 150px;
 	margin-right:20px;
 	border-radius: 25px;
 	background:#E0E0E0;
+	border: none;
 	height:40px;
 	text-align:center;
 	float:left;
@@ -2928,4 +2929,23 @@ a.page-link:hover{
 
 .text-dark{
 	color:#444444;
+}
+
+
+.btn-close.close{
+
+	right:20px;
+	margin:20px;
+	position: absolute;
+	cursor: pointer;
+	display: block;
+	z-index: 1000;
+}
+
+.tab-content .tab-pane{padding: 20px;}
+
+
+.nav-tabs .nav-link.active {
+	box-shadow:none;
+	border: 1px solid #eee;
 }

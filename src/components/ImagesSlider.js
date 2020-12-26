@@ -10,8 +10,7 @@ class ImagesSlider extends React.Component {
         super(props);
 
     }
-
-
+    
 
     componentWillMount() {
 
@@ -22,8 +21,8 @@ class ImagesSlider extends React.Component {
             // console.log(props.images[i])
             this.imagesArray.push(
                 {
-                    original:  this.props.images[i],
-                    thumbnail:  this.props.images[i],
+                    original:  this.props.images[i].blob_url,
+                    thumbnail:  this.props.images[i].blob_url,
 
                 }
             )

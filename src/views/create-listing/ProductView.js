@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,14 +20,20 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "../../components/ImagesSlider";
+import encodeUrl  from "encodeurl"
+import { Tabs,Tab } from 'react-bootstrap';
+import GrayLoop from '../../img/icons/gray-loop.png';
+import { withStyles } from "@material-ui/core/styles/index";
+import ProductItemNew from '../../components/ProductItemNew'
 
-import ProImg from '../../img/img-product.png';
-import { Tabs, Tab,  } from 'react-bootstrap';
+
+import MatchItem from '../../components/MatchItem'
 
 
 class ProductView extends Component {
 
     slug;
+    search;
 
     constructor(props) {
 
@@ -39,20 +45,77 @@ class ProductView extends Component {
             count: 0,
             nextIntervalFlag: false,
             item: null,
+            showPopUp:false,
+            subProducts:[]
         }
 
 
         this.slug = props.match.params.slug
+        this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
         this.getSite = this.getSite.bind(this)
+        this.getSubProducts=this.getSubProducts.bind(this)
+
+        this.getMatches=this.getMatches.bind(this)
 
     }
 
 
+
+    getSubProducts() {
+
+
+        var subProductIds = this.state.item.sub_products
+
+        for (var i = 0; i < subProductIds.length; i++) {
+
+
+
+            axios.get(baseUrl + "product/" + subProductIds[i]._key,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseAll = response.data;
+                        console.log("sub product response")
+                        console.log(responseAll)
+
+
+                        var subProducts = this.state.subProducts
+
+                        subProducts.push(responseAll.data)
+
+                        this.setState({
+
+                            subProducts: subProducts
+                        })
+
+
+
+
+                    },
+                    (error) => {
+                        console.log("resource error", error)
+                    }
+                );
+
+        }
+    }
+
+
+
+
     getSite() {
 
-        axios.get(baseUrl + "site/" + this.state.item.site_id,
+
+        var siteKey = (this.state.item.site_id).replace("Site/","")
+
+        axios.get(baseUrl + "site/" +siteKey ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -61,8 +124,8 @@ class ProductView extends Component {
         )
             .then((response) => {
 
-                    var response = response.data.content;
-                    console.log("resource response")
+                    var response = response.data.data;
+                    console.log("site response")
                     console.log(response)
 
                     this.setState({
@@ -74,8 +137,8 @@ class ProductView extends Component {
                 },
                 (error) => {
 
-                    var status = error.response.status
-                    console.log("resource error")
+                    // var status = error.response.status
+                    console.log("site error")
                     console.log(error)
 
                 }
@@ -99,7 +162,7 @@ class ProductView extends Component {
     getResources() {
 
 
-        axios.get(baseUrl + "resource/" + this.slug,
+        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -109,25 +172,67 @@ class ProductView extends Component {
             .then((response) => {
 
                     var response = response.data;
-                    console.log("detail resource response")
+                    console.log("product detail")
+                    console.log(response)
+
+                    this.setState({
+
+                        item: response.data
+                    })
+
+
+                    // this.getSite()
+                this.getSubProducts()
+
+
+                },
+                (error) => {
+                    console.log("listing error", error)
+                }
+            );
+
+    }
+
+
+
+    getMatches() {
+
+
+        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug),
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+
+                    var response = response.data;
+
+                    console.log("matches resource response")
                     console.log(response)
 
 
                     this.setState({
 
-                        item: response.content
+                        matches: response.data
+
                     })
 
 
-                    this.getSite()
+
 
                 },
                 (error) => {
-                    console.log("resource error", error)
+                    console.log("matchees error", error)
                 }
             );
 
     }
+
+
+
 
 
 
@@ -139,12 +244,17 @@ class ProductView extends Component {
 
         this.getResources()
 
+        // this.getMatches()
+
     }
 
 
 
 
     render() {
+
+        const classes = withStyles();
+        const classesBottom = withStyles();
 
         return (
             <div>
@@ -168,7 +278,11 @@ class ProductView extends Component {
                                 </div>
 
                                 <div className="col-md-6 col-sm-12 col-xs-12 p-5">
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    {this.state.item.artifacts.length > 0 ?
+                                    <ImagesSlider images={this.state.item.artifacts} /> :
+                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+
+
                                 </div>
 
                                 <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
@@ -176,7 +290,7 @@ class ProductView extends Component {
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                         <div className="col-12 mt-2">
-                                            <h4 className={"blue-text text-heading"}>{this.state.item.name}
+                                            <h4 className={"blue-text text-heading"}>{this.state.item.product.name}
                                             </h4>
 
                                             {/*<p>Posted By <span className={"green-text"}>{this.state.item.org_id}</span></p>*/}
@@ -191,7 +305,7 @@ class ProductView extends Component {
 
                                                 <div className="col-3 green-text text-heading text-right">
 
-                                                    {this.state.item.price ?<>{this.state.item.price.currency} {this.state.item.price.value}</> : "Free"}
+                                                    {this.state.item.product.price ?<>"GBP "+ {this.state.item.product.price.value}</> : "Free"}
 
                                                 </div>
 
@@ -206,7 +320,7 @@ class ProductView extends Component {
                                     <div className="row justify-content-start pb-3 pt-3 listing-row-border">
 
                                         <div className="col-auto">
-                                            <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.description}
+                                            <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.product.description}
                                             </p>
 
                                         </div>
@@ -220,130 +334,126 @@ class ProductView extends Component {
                         <div className={"container "}>
 
 
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.category} ></p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.type}</p>
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
-                                </div>
-                            </div>
+                            <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
+                                <Tab eventKey="product" title="Product Info">
 
 
 
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-auto"}>
+                                    <div className="row  justify-content-start search-container  pb-4">
 
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
-                                </div>
-                            </div>
+                                        <div className={"col-auto"}>
 
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.category} ></p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.type}></p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state}</p>
+                                        </div>
+                                    </div>
 
-                            <div className="row  justify-content-start search-container  pb-4">
+                                    <div className="row  justify-content-start search-container  pb-4">
 
-                                <div className={"col-auto"}>
+                                        <div className={"col-auto"}>
 
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.availableFrom.value).format("DD MMM YYYY")} </p>*/}
-                                </div>
-                            </div>
-
-
-                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
-
-                            {/*<div className={"col-auto"}>*/}
-
-                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>*/}
-                            {/*<p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
+                                        </div>
+                                    </div>
 
 
 
-                            <div className="row  justify-content-start search-container  pb-4">
+                                    <div className="row  justify-content-start search-container  pb-4">
+                                        <div className={"col-auto"}>
 
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.sku.model} </p>
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.sku.serial} </p>
-                                </div>
-                            </div>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
+                                        </div>
+                                    </div>
 
 
-                            <div className="row  justify-content-start search-container  pb-4 ">
+                                    <div className="row  justify-content-start search-container  pb-4">
 
-                                <div className={"col-auto"}>
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.sku.brand} </p>
-                                </div>
-                            </div>
+                                        <div className={"col-auto"}>
 
-
-                            <div className="row  justify-content-start search-container  pb-4 listing-row-border">
-
-                                <div className={"col-auto"}>
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state} </p>
-                                </div>
-                            </div>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.product.available_from_epoch_ms).format("DD MMM YYYY")} </p>
+                                        </div>
+                                    </div>
 
 
+                                    <div className="row  justify-content-start search-container  pb-4">
+
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.model} </p>
 
 
-                            <div className="row  justify-content-start search-container  mt-4 mb-5 ">
-                                <div className={"col-1"}>
+                                        </div>
+                                    </div>
 
-                                    <CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />
-                                </div>
+                                    <div className="row  justify-content-start search-container  pb-4">
 
-                                <div className={"col-auto"}>
+                                        <div className={"col-auto"}>
 
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>*/}
-                                </div>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.serial} </p>
 
-
-                            </div>
-
-                            <div className="row  justify-content-start search-container pt-2  pb-4">
-                                <div className={"col-1"}>
-                                    <MarkerIcon  style={{ fontSize: 30, color: "#a8a8a8" }} />
-
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery From</p>
-                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>*/}
-                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>*/}
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
 
 
-                            <div className="container container-divider">
+                                    <div className="row  justify-content-start search-container  pb-4 ">
+
+                                        <div className={"col-auto"}>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.brand} </p>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <div className="row  justify-content-start search-container  pb-4 ">
+
+                                        <div className={"col-auto"}>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state} </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="row  justify-content-start search-container  mt-4 mb-5 ">
+                                        <div className={"col-1"}>
+
+                                            <CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />
+                                        </div>
+
+                                        <div className={"col-auto"}>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.product.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
+                                        </div>
+
+
+                                    </div>
+
+                                </Tab>
+                                <Tab eventKey="profile" title="Subproducts">
+                                    {this.state.subProducts.map((item)=>
+                                        <ProductItemNew item={item}/>
+                                    )}
+                                </Tab>
+
+                            </Tabs>
+
+
+
+
+
+                            <div className="container container-divider mt-4">
                                 <div className="row">
                                 </div>
                             </div>
                             <div className="container mt-4 mb-5 pb-5 ">
+
 
                                 <div className="row no-gutters mb-5">
                                     <div className="col-12 mb-4">
@@ -354,7 +464,7 @@ class ProductView extends Component {
 
                                         <span className={"word-user-sellor"}>
 
-                                       {/*{this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}*/}
+                                       {this.state.item&&this.state.item.org.name&&this.state.item.org.name.substr(0,2)}
 
 
 
@@ -369,7 +479,7 @@ class ProductView extends Component {
                                             <div className="col-12">
 
 
-                                                {/*<p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>*/}
+                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
                                                 {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
 
                                             </div>
@@ -379,13 +489,10 @@ class ProductView extends Component {
                             </div>
 
 
-                            {/*{this.state.item.id && (this.props.userDetail.orgId !== this.state.item.org_id) &&*/}
-                            {/*<BottomAppBar slug={this.slug} />*/}
-
-                            {/*}*/}
-
-
                         </div>
+
+
+
                     </>
                     }
 
@@ -469,28 +576,6 @@ function BottomAppBar(props) {
 }
 
 
-
-function ProductTabs() {
-    const [key, setKey] = useState('home');
-
-    return (
-        <Tabs
-            id="controlled-tab-example"
-            activeKey={key}
-            onSelect={(k) => setKey(k)}
-        >
-            <Tab eventKey="home" title="Home">
-
-            </Tab>
-            <Tab eventKey="profile" title="Profile">
-
-            </Tab>
-            <Tab eventKey="contact" title="Contact" disabled>
-
-            </Tab>
-        </Tabs>
-    );
-}
 
 
 

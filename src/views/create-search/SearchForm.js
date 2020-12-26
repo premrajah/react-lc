@@ -35,10 +35,8 @@
     import ResourceItem from '../item/ResourceItem'
     import HeaderDark from '../header/HeaderDark'
     import Sidebar from '../menu/Sidebar'
-    // import DateFnsUtils from 'date-fns';
-    // import { compareAsc, format } from 'date-fns'
-    // import  moment from  'moment'
-
+    import ProductExpandItem from '../../components/ProductExpandItem'
+    import FormHelperText from '@material-ui/core/FormHelperText';
     import MomentUtils from '@date-io/moment';
     import moment from 'moment';
 
@@ -156,14 +154,15 @@
 
 
 
+        showProductSelection(event) {
 
-        showProductSelection() {
 
-            this.setState({
+            var action=event.currentTarget.dataset.id
 
-                productSelection: !this.state.productSelection
-            }
-            )
+
+            this.props.showProductPopUp({type:"create_product",show:true})
+
+
         }
 
         handleValidationProduct() {
@@ -1134,6 +1133,17 @@
             this.handleValidationAddDetailNextColor()
 
 
+            if (fields["product"]){
+
+
+                this.setState({
+
+                    productSelected: e.target.value
+
+                })
+
+            }
+
 
 
 
@@ -1214,6 +1224,9 @@
 
         componentDidMount() {
 
+
+
+            this.props.loadProducts(this.props.userDetail.token)
 
 
             this.getFiltersCategories()
@@ -1348,15 +1361,16 @@
                 console.log("site submit called")
 
 
-                axios.post(baseUrl + "site",
+                axios.put(baseUrl + "site",
 
-                    {
-                        "name": name,
-                        "email": email,
-                        "contact": contact,
-                        "address": address,
-                        "phone": phone,
-                        "others": others
+                    {site: {
+                            "name": name,
+                            "email": email,
+                            "contact": contact,
+                            "address": address,
+                            "phone": phone,
+                            "others": others
+                        }
 
                     }
                     , {
@@ -1408,18 +1422,6 @@
                     </div>
 
                     <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
-
-                        <div className="pt-2 pb-3">
-
-
-                            {/*<HeaderWhiteBack    />*/}
-
-                            <HeaderWhiteBack back={false} history={this.props.history} heading={"Create Search"} />
-
-
-
-
-                        </div>
 
                         <div className="container   pb-5 pt-5">
                             <div className="row no-gutters">
@@ -1653,42 +1655,61 @@
 
                     <div className={this.state.active === 4 ? "" : "d-none"}>
 
-                        <div className="container  pt-2 pb-3">
-
-                            <div className="row no-gutters">
-                                <div className="col-10">
-
-                                    <h6>Add Details </h6>
-                                </div>
-
-
-                                <div className="col-auto">
-
-                                    <Close onClick={this.handleBack} className="blue-text" style={{ fontSize: 32 }} />
-
-                                </div>
-
-
-                            </div>
-                        </div>
 
                         <div className="container  search-container pb-5 pt-5">
                             <div className="row no-gutters">
                                 <div className="col-auto">
-                                    <h3 className={"blue-text text-heading"}>The Basics
+                                    <h3 className={"blue-text text-heading"}>Add Details
                                     </h3>
 
                                 </div>
                             </div>
                             <div className="row no-gutters justify-content-center mt-5">
-                                <div onClick={this.linkProduct} className="col-12 mb-3">
+                                <div  className="col-12 mb-3">
 
 
-                                    <div className={"dummy-text-field"}>
-                                        {this.state.productSelected ? this.state.productSelected.product.name : "Link new a product"}
-                                        <img className={"input-field-icon"} src={LinkGray} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                    </div>
-                                    {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
+                                        <FormControl variant="outlined" className={classes.formControl}>
+
+                                            <InputLabel htmlFor="outlined-age-native-simple">Link a product</InputLabel>
+                                            <Select
+
+                                                name= "product"
+                                                label={"Link a product"}
+                                                native
+                                                onChange={this.handleChange.bind(this, "product")}
+                                                inputProps={{
+                                                    name: 'product',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+                                                {this.props.productList.map((item) =>
+
+                                                    <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
+
+                                                )}
+
+                                            </Select>
+                                            {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
+
+
+                                            <FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?
+
+                                                <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}>Create a new product</span>
+
+                                            </FormHelperText>
+                                        </FormControl>
+
+
+                                        {this.state.productSelected&&
+                                        <>
+
+                                            <ProductExpandItem productId={this.state.productSelected}/>
+
+                                        </>
+                                        }
 
 
                                 </div>
@@ -2643,6 +2664,11 @@
             // abondonCartItem : state.abondonCartItem,
             // showNewsletter: state.showNewsletter
             loginPopUpStatus: state.loginPopUpStatus,
+            showSubProductView: state.showSubProductView,
+            showCreateProduct: state.showCreateProduct,
+            showCreateSubProduct: state.showCreateSubProduct,
+            showProductView: state.loginPopUpStatus,
+            productList: state.productList,
 
 
         };
@@ -2657,7 +2683,8 @@
             showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
             setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
 
-
+            showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+            loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
 
 
 

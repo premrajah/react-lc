@@ -267,6 +267,7 @@ export const showProductPopUp = val => {
 };
 
 
+
 export const showLoginPopUp = val => {
 
     return { type: "LOGIN_POPUP", value: val };
@@ -300,6 +301,129 @@ export const ageUp = val => {
     };
 
 };
+
+
+
+
+// export const loadProducts = val => {
+//
+//     console.log("PRODUCT_LIST ",val);
+//
+//     // return { type: "PRODUCT_ID", value: val };
+//     return  { type: "PRODUCT_LIST", value: [] };
+//
+//
+//
+// };
+
+export const loadProducts = (data) => {
+
+
+    return dispatch  =>  {
+
+
+        dispatch(loading());
+        dispatch(loadProductsSync(data));
+
+      // return  { type: "PRODUCT_LIST", value: [] }
+
+    };
+
+
+};
+
+
+
+export const loadProductsSync = (data) => dispatch => {
+
+
+
+
+    axios.get(baseUrl + "product/no-listing",
+        {
+            headers: {
+                "Authorization": "Bearer " + data
+            }
+        }
+    )
+     .then((response) => {
+
+                var responseAll = response.data.data;
+
+                console.log("product response")
+                console.log(responseAll)
+
+                dispatch({ type: "PRODUCT_LIST", value: responseAll })
+               // dispatch()
+
+
+            },
+            (error) => {
+
+                // var status = error.response.status
+                console.log("products error")
+                console.log(error)
+
+                dispatch({ type: "PRODUCT_LIST", value: [] })
+
+
+            }
+        );
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+
+
+}
+
+
+
+// export const loadProductsSync2 = (data) => dispatch => {
+
+
+export function loadProductsSync2(data){
+
+        return (dispatch) => {
+
+
+
+            dispatch ({ type: "Product_List", value: [] })
+
+
+            axios.get(baseUrl + "product",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + data
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseAll = response.data.data;
+
+                        console.log("product response")
+                        console.log(responseAll)
+
+                        dispatch ({ type: "Product_List", value: responseAll })
+                        // dispatch()
+
+
+                    },
+                    (error) => {
+
+                        // var status = error.response.status
+                        console.log("products error")
+                        console.log(error)
+
+                        dispatch({ type: "Product_List", value: [] })
+
+
+                    }
+                );
+
+            dispatch({ type: "Product_List", value: [] })
+        }
+
+}
 
 
 export const logIn = (data) => {

@@ -173,7 +173,7 @@ class ProductForm extends Component {
         if (!this.props.parentProduct){
 
 
-            alert("parent  product")
+            // alert("parent  product")
 
 
             this.props.setProduct(this.state.product)
@@ -182,9 +182,11 @@ class ProductForm extends Component {
 
         }else{
 
-            alert("child product")
+            // alert("child product")
         }
 
+
+        this.props.loadProducts(this.props.userDetail.token)
 
 
         this.props.showProductPopUp({type:"sub_product_view",show:true})
@@ -1039,50 +1041,71 @@ class ProductForm extends Component {
 
                                 <div className="col-12 mt-4">
 
+                                    <div className="row">
+                                        <div className="col-6">
+
+
                                     <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic" label="Brand" variant="outlined" fullWidth={true} />
                                     {this.state.errors["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["brand"]}</span>}
 
+                                        </div>
+
+                                        <div className="col-6">
+                                            <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic" label="Model Number" variant="outlined" fullWidth={true} />
+                                            {this.state.errors["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["model"]}</span>}
+                                        </div>
+                                    </div>
+
                                 </div>
+
+
+
+
+
 
 
                                 <div className="col-12 mt-4">
 
-                                    <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic" label="Model Number" variant="outlined" fullWidth={true} />
-                                    {this.state.errors["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["model"]}</span>}
-
-                                </div>
-
-
-
-
-                                <div className="col-12 mt-4">
+                                    <div className="row">
+                                        <div className="col-6">
 
                                     <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic" label="Serial Number" variant="outlined" fullWidth={true} />
                                     {this.state.errors["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["serial"]}</span>}
 
+                                        </div>
+
+
+                                        <div className="col-6">
+                                            <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic" label="SKU" variant="outlined" fullWidth={true} />
+                                            {this.state.errors["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["sku"]}</span>}
+
+                                        </div>
+                                    </div>
+
                                 </div>
 
 
 
                                 <div className="col-12 mt-4">
 
-                                    <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic" label="SKU" variant="outlined" fullWidth={true} />
-                                    {this.state.errors["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["sku"]}</span>}
-
-                                </div>
-
-                                <div className="col-12 mt-4">
+                                    <div className="row">
+                                        <div className="col-6">
 
                                     <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic" label="UPC" variant="outlined" fullWidth={true} />
                                     {this.state.errors["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["upc"]}</span>}
 
-                                </div>
-                                <div className="col-12 mt-4">
+                                        </div>
 
-                                    <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic" label="Part No" variant="outlined" fullWidth={true} />
-                                    {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
+                                        <div className="col-6">
+
+                                            <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic" label="Part No" variant="outlined" fullWidth={true} />
+                                            {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
+                                        </div>
+                                    </div>
+
 
                                 </div>
+
                                 <div className="col-12 mt-4">
                                 <div className="row no-gutters justify-content-center ">
 
@@ -1476,6 +1499,7 @@ const mapDispachToProps = dispatch => {
         setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
 
 
 

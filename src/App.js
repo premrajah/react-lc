@@ -124,7 +124,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/product/:slug" component={ProductDetail} />
+                        <LoggedInRoute exact path="/product/:slug" component={ProductView} />
                         <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
                         <LoggedInRoute exact path="/product-view/:slug" component={ProductView} />
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />

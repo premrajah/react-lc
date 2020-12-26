@@ -386,23 +386,12 @@ class ItemDetail extends Component {
                 </div>
 
 
-                {/*<div className="row  justify-content-start search-container  pb-4">*/}
-
-                    {/*<div className={"col-auto"}>*/}
-
-                        {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>*/}
-                        {/*<p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.expiry.value).format("DD MMM YYYY")}</p>*/}
-                    {/*</div>*/}
-                {/*</div>*/}
-
-
-
                 <div className="row  justify-content-start search-container  pb-4">
 
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.model} </p>*/}
+
                     </div>
                 </div>
 
@@ -411,7 +400,7 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.serial} </p>*/}
+
                     </div>
                 </div>
 
@@ -420,7 +409,7 @@ class ItemDetail extends Component {
 
                     <div className={"col-auto"}>
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.brand} </p>*/}
+
                     </div>
                 </div>
 
@@ -433,9 +422,6 @@ class ItemDetail extends Component {
                     </div>
                 </div>
 
-
-
-
                 <div className="row  justify-content-start search-container  mt-4 mb-5 ">
                     <div className={"col-1"}>
 
@@ -443,7 +429,6 @@ class ItemDetail extends Component {
                     </div>
 
                     <div className={"col-auto"}>
-
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
                         <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
                     </div>
@@ -474,10 +459,6 @@ class ItemDetail extends Component {
                              <div className="col-12 mb-4">
                                  <h5 className="mb-1">Matches Received  </h5>
                              </div>
-
-
-
-
 
                          </div>
 

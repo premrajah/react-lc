@@ -16,10 +16,11 @@ import SearchGray from '@material-ui/icons/Search';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import PlaceholderImg from '../../img/place-holder-lc.png';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from "@material-ui/core/styles/index";
-
+import moment from "moment/moment";
+import ProductItem from '../../components/ProductItemNew'
 
 class Products extends Component {
 
@@ -39,11 +40,16 @@ class Products extends Component {
 
         this.getProducts = this.getProducts.bind(this)
 
+        this.showProductSelection=this.showProductSelection.bind(this)
+
     }
 
 
+    showProductSelection() {
 
+        this.props.showProductPopUp({type:"create_product",show:true})
 
+    }
     getProducts() {
 
         axios.get(baseUrl + "product",
@@ -68,8 +74,8 @@ class Products extends Component {
             },
                 (error) => {
 
-                    var status = error.response.status
-                    console.log("resource error")
+                    // var status = error.response.status
+                    console.log("prouduct  error")
                     console.log(error)
 
                 }
@@ -176,20 +182,11 @@ class Products extends Component {
 
                         {this.state.products.map((item) =>
 
-                            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-                                <div className={"col-10  content-box-listing"}>
+                            <Link to={"/product/" + item.product._key}>
 
-                                    <Link to={"/product/" + item.id}>
-                                        <p style={{ fontSize: "18px" }} className=" mb-1">{item.title}</p>
-                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.purpose}</p>
-                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{item.searches.length} Searches</p>
-                                    </Link>
-                                </div>
-                                <div style={{ textAlign: "right" }} className={"col-2"}>
-                                    <p className={"text-gray-light small"}>9/5/2020</p>
+                               <ProductItem  item={item} />
 
-                                </div>
-                            </div>
+                            </Link>
 
                         )}
 
@@ -214,7 +211,7 @@ class Products extends Component {
 
                                     <div className="col-auto">
 
-                                        <Link to={"/create-product"}><p className={"green-text bottom-bar-text"}> Create New Product </p></Link>
+                                        <button onClick={this.showProductSelection}><p className={"green-text bottom-bar-text"}> Create New Product </p></button>
 
 
                                     </div>
@@ -277,15 +274,11 @@ function SearchField() {
 const mapStateToProps = state => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
 
 
@@ -300,6 +293,7 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
 
 
 

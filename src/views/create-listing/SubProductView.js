@@ -60,11 +60,6 @@ class SubProductView extends Component {
         this.props.showProductPopUp({type:"create_sub_product",show:true})
 
 
-        // this.setState({
-        //
-        //         productSelection: !this.state.productSelection
-        //     }
-        // )
     }
 
 
@@ -115,19 +110,19 @@ class SubProductView extends Component {
     setProduct(){
 
 
-        this.setState({
+        // this.setState({
+        //
+        //     item: this.props.product
+        // })
 
-            item: this.props.product
-        })
 
-
-        this.getResources()
+        this.getResources(this.props.product)
     }
 
-    getResources() {
+    getResources(productId) {
 
 
-        axios.get(baseUrl + "product/" + this.props.product.product._key,
+        axios.get(baseUrl + "product/" + productId,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -316,9 +311,6 @@ class SubProductView extends Component {
 
                                     <span onClick={this.showProductSelection} >Add Sub Product  </span>
 
-
-                                {/*<Link to={"/product-form/"+this.state.item.product._key} >Add Sub Product  </Link> */}
-
                                 </p>
 
 
@@ -472,7 +464,7 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-        product:state.product,
+        // product:state.product,
         parentProduct:state.parentProduct,
         showProductPopUp:state.parentProduct,
 

@@ -77,8 +77,6 @@ class SearchMatches extends Component {
             matches: [],
             listingsForSearch: [],
 
-
-
         }
 
         this.slug = props.match.params.slug
@@ -87,9 +85,7 @@ class SearchMatches extends Component {
 
     }
 
-
     loadMatches() {
-
 
             axios.get(baseUrl + "match/search/" + this.slug,
                 {
@@ -103,16 +99,6 @@ class SearchMatches extends Component {
                     var responseAll = response.data.data;
                     console.log("matches response")
                     console.log(responseAll)
-
-
-                    // var matches = this.state.matches
-                    //
-                    //
-                    // for (var i =0 ; i<responseAll.length;i++ ){
-                    //
-                    //
-                    //     matches.push({listing:responseAll[i]})
-                    // }
 
 
                     this.setState({
@@ -247,8 +233,11 @@ class SearchMatches extends Component {
 
                         {this.state.matches.map((item) =>
 
+                            <Link to={"/"+ item.listing.listing._key }>
 
                             <MatchItem item={item}  />
+
+                            </Link>
 
 
 

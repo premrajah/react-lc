@@ -159,42 +159,6 @@ class ProductView extends Component {
 
 
 
-    getResources() {
-
-
-        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data;
-                    console.log("product detail")
-                    console.log(response)
-
-                    this.setState({
-
-                        item: response.data
-                    })
-
-
-                    // this.getSite()
-                this.getSubProducts()
-
-
-                },
-                (error) => {
-                    console.log("listing error", error)
-                }
-            );
-
-    }
-
-
-
     getMatches() {
 
 
@@ -226,6 +190,76 @@ class ProductView extends Component {
                 },
                 (error) => {
                     console.log("matchees error", error)
+                }
+            );
+
+    }
+
+
+
+    getResources() {
+
+
+        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data;
+                    console.log("product detail")
+                    console.log(response)
+
+                    this.setState({
+
+                        item: response.data
+                    })
+
+
+                    // this.getSite()
+                    this.getSubProducts()
+
+
+                },
+                (error) => {
+                    console.log("listing error", error)
+                }
+            );
+
+    }
+
+    getProduct() {
+
+
+        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var response = response.data;
+                    console.log("product detail")
+                    console.log(response)
+
+                    this.setState({
+
+                        item: response.data
+                    })
+
+
+                    // this.getSite()
+                    this.getSubProducts()
+
+
+                },
+                (error) => {
+                    console.log("listing error", error)
                 }
             );
 
@@ -445,40 +479,27 @@ class ProductView extends Component {
                             </Tabs>
 
 
-
-
-
-                            <div className="container container-divider mt-4">
+                            <div className="container  mt-4">
                                 <div className="row">
                                 </div>
                             </div>
                             <div className="container mt-4 mb-5 pb-5 ">
-
-
                                 <div className="row no-gutters mb-5">
                                     <div className="col-12 mb-4">
-                                        <h5 className="mb-1">About the seller  </h5>
+                                        <h5 className="mb-1">About the seller</h5>
                                     </div>
                                     <div className="col-auto ">
                                         <figure className="avatar avatar-60 border-0">
 
                                         <span className={"word-user-sellor"}>
-
-                                       {this.state.item&&this.state.item.org.name&&this.state.item.org.name.substr(0,2)}
-
-
-
-                                </span>
-
-
+                                            {this.state.item&&this.state.item.org.name&&this.state.item.org.name.substr(0,2)}
+                                       </span>
 
                                         </figure>
                                     </div>
                                     <div className="col pl-2 align-self-center">
                                         <div className="row no-gutters">
                                             <div className="col-12">
-
-
                                                 <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
                                                 {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
 

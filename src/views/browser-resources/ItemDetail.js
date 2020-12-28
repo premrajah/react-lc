@@ -24,7 +24,7 @@ import encodeUrl  from "encodeurl"
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
-
+import TextField from '@material-ui/core/TextField';
 import MatchItem from '../../components/MatchItem'
 
 
@@ -254,7 +254,18 @@ class ItemDetail extends Component {
 
         this.getResources()
 
-        this.getMatches()
+
+
+
+        this.interval = setInterval(() => {
+
+            this.getMatches()
+
+
+        }, 5000);
+
+
+
 
     }
 
@@ -450,7 +461,7 @@ class ItemDetail extends Component {
                 </div>
 
 
-                         {this.state.item.org_id === this.props.userDetail.orgId &&
+                         {this.state.matches.length>0 &&
                          <>
 
 
@@ -462,22 +473,15 @@ class ItemDetail extends Component {
 
                          </div>
 
-
-                         {this.state.matches.map((item)=>
+                            {this.state.matches.map((item)=>
                                  <>
-                                     {/*<Link to={"/match/"+item.match._key}>*/}
                                      <MatchItem item={item}/>
 
-                                     {/*</Link>*/}
                                  </>
 
-                             ) }
-
-
+                             )}
 
                          </>
-
-
                          }
 
 
@@ -540,7 +544,7 @@ class ItemDetail extends Component {
                         <div className="col-auto">
                         <button onClick={this.acceptMatch} type="button"
                         className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                        Create Match
+                        Request A Match
 
                         </button>
                         </div>
@@ -577,19 +581,27 @@ class ItemDetail extends Component {
                             <>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>
-                                        <p className={"text-bold"}>Match Accepted</p>
-                                        <p>   A cycle has been created. Make an offer to sellor by going to cycles page</p>
+                                        <p className={"text-bold"}>Start a match</p>
+                                        <p> We’ll let the seller know that your interested in this product. Do you
+                                            want to send a message?</p>
                                     </div>
                                 </div>
                                 <div className={"row justify-content-center"}>
-                                    <div className={"col-6"} style={{textAlign:"center"}}>
-                                        <p style={{minWidth:"120px"}} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>
-                                            {/*<Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Chat</Link></p>*/}
+                                    <div className={"col-12"} style={{textAlign:"center"}}>
 
-                                            <Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Check </Link></p>
+                                        <div className={"col-12"}>
+
+                                            <TextField id="outlined-basic" label="Message" variant="outlined" fullWidth={true} name={"text"} type={"text"}  />
+
+                                        </div>
+
+                                        {/*<p style={{minWidth:"120px"}} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>*/}
+                                            {/*/!*<Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Chat</Link></p>*!/*/}
+
+                                            {/*<Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Check </Link></p>*/}
 
                                     </div>
-                                    <div className={"col-6"} style={{textAlign:"center"}}>
+                                    <div className={"col-12"} style={{textAlign:"center"}}>
                                         <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Ok</p>
                                     </div>
                                 </div>

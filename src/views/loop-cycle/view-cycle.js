@@ -277,15 +277,6 @@ class ViewCycle extends Component {
 
 
 
-
-        //
-        // }else {
-        //
-        //
-        //     // alert("invalid")
-        // }
-
-
     }
     
     
@@ -369,23 +360,8 @@ class ViewCycle extends Component {
             console.log(error)
 
 
-            // this.setState({
-            //
-            //     showPopUpTrackingNumber: false,
-            //     loopError: error.response.data.content.message
-            // })
 
         });
-
-
-
-
-        //
-        // }else {
-        //
-        //
-        //     // alert("invalid")
-        // }
 
 
     }

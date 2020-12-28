@@ -126,12 +126,6 @@ class ProductDetail extends Component {
 
         this.productQrCode = "http://api.makealoop.io/api/1/product/" + id + "/code?u=" + frontEndUrl + "product-cycle-detail";
 
-
-        // this.productQrCode= "http://api.makealoop.io/api/1/product/"+id+"/code/";
-
-
-        // alert(this.productQrCode)
-
     }
 
 

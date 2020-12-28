@@ -150,8 +150,8 @@ class MySearch extends Component {
 
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchField />
 
+                                <SearchField />
 
                             </div>
                         </div>

@@ -256,7 +256,7 @@ class ItemCycleDetail extends Component {
 
                 this.setState({
 
-                    item: response.content
+                    item: response.data
                 })
 
 
@@ -442,34 +442,11 @@ class ItemCycleDetail extends Component {
                             <div className="col-12 mt-3 pb-3 listing-row-border">
                                 <p>{this.state.item.description}</p>
                             </div>
-                            {/*<div className="col-12 mt-3 pb-3 ">*/}
-                            {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{this.state.item.purpose  }</p>*/}
 
-                            {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"Shelving" }</p>*/}
-                            {/*<p style={{width:"auto",padding: "2px 10px"}} className={" btn-select-free green-bg"}>{"PP" }</p>*/}
-
-                            {/*</div>*/}
 
                         </div>
 
 
-                        {/*<div className="row justify-content-start pb-3 pt-4 border-box">*/}
-
-                        {/*<div className="col-12">*/}
-
-                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} alt="" />}*!/*/}
-
-                        {/*/!*{this.state.codeImg && <img src={"base64,"+this.state.codeImg} alt=""/> }*!/*/}
-
-                        {/*/!*{this.state.codeImg && <img src={this.state.codeImg} alt=""/> }*!/*/}
-
-
-                        {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code"} alt=""/>*/}
-
-
-
-                        {/*</div>*/}
-                        {/*</div>*/}
 
                         <div className="container justify-content-start pb-4 pt-3 ">
 

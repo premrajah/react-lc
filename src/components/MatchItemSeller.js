@@ -312,7 +312,7 @@ class MatchItemSeller extends Component {
 
                 this.setState({
 
-                    showPopUp: false
+                    editPopUp: false
                 })
 
 
@@ -466,24 +466,15 @@ class MatchItemSeller extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                <div className={"col-2"}>
-
-
-                        {this.props.item.images ? <img className={"resource-item-img  img-fluid"}
-                                                       src={this.props.item.images[0]} alt="" />
-                            : <img className={"img-fluid"} src={Paper} alt="" />}
-
-
-                </div>
                 <div className={"col-5 pl-3 content-box-listing"}>
 
-                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org._id}</p>
+                        {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
+                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>*/}
+                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>*/}
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">From: {this.props.item.search.org._id}</p>
 
                 </div>
-                <div style={{ textAlign: "right" }} className={"col-5"}>
+                <div style={{ textAlign: "right" }} className={"col-7"}>
 
                     {this.props.item.match.stage==="created" &&  this.props.item.listing.org._id == this.props.userDetail.orgId &&
                     <div className={"row"}>

@@ -25,7 +25,7 @@ import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
-import MatchItem from '../../components/MatchItem'
+import MatchItemSeller from '../../components/MatchItemSeller'
 
 
 class ItemDetail extends Component {
@@ -472,14 +472,14 @@ class ItemDetail extends Component {
 
                          <div className="row no-gutters mb-5">
                              <div className="col-12 mb-4">
-                                 <h5 className="mb-1">Matches Received  </h5>
+                                 <h4 className="mb-1">Matches Received  </h4>
                              </div>
 
                          </div>
 
                             {this.state.matches.map((item)=>
                                  <>
-                                     <MatchItem item={item}/>
+                                     <MatchItemSeller item={item}/>
 
                                  </>
 

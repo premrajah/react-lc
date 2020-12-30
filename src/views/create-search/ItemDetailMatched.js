@@ -25,7 +25,7 @@ import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
-import MatchItem from '../../components/MatchItem'
+import MatchItemBuyer from '../../components/MatchItemBuyer'
 
 
 class ItemDetailMatch extends Component {
@@ -318,7 +318,13 @@ class ItemDetailMatch extends Component {
                         </div>
 
 
-                        
+                    <div className="container " style={{ padding: "0" }}>
+
+
+                            <MatchItemBuyer showImage={false}   showInfo={false} item={this.state.item} />
+
+
+                    </div>
 
 
 
@@ -472,102 +478,6 @@ class ItemDetailMatch extends Component {
                         </div>}
 
 
-
-                    {this.state.item.next_action.is_mine &&     <React.Fragment>
-
-                            <CssBaseline/>
-
-                            <AppBar position="fixed" color="#ffffff"
-                                    className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                                <Toolbar>
-                                    <div className="row  justify-content-center search-container "
-                                         style={{ margin: "auto" }}>
-
-
-
-
-                                       <>
-                                        {this.state.item.next_action.possible_actions.map((item) =>
-
-                                            <div className="col-auto">
-                                                <button onClick={this.showPopUp} type="button"
-                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                                     {item}
-
-                                                </button>
-                                            </div>
-
-                                            )}
-                                        </>
-
-
-                                    </div>
-                                </Toolbar>
-                            </AppBar>
-                        </React.Fragment>}
-
-
-                        <Modal className={"loop-popup"}
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
-
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4 text-center"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
-                                    </div>
-                                </div>
-
-
-                                {this.state.loopError ?
-                                    <>
-                                        <div className={"row justify-content-center"}>
-                                            <div className={"col-12 text-center"} >
-                                                <p className={"text-bold "}>Failed</p>
-                                                <p>  {this.state.loopError}</p>
-                                            </div>
-                                        </div>
-                                    </>
-                                    :
-                                    <>
-                                        <div className={"row justify-content-center"}>
-                                            <div className={"col-10 text-center"}>
-                                                <p className={"text-bold"}>Start a match</p>
-                                                <p> We’ll let the seller know that your interested in this product. Do you
-                                                    want to send a message?</p>
-                                            </div>
-                                        </div>
-                                        <div className={"row justify-content-center"}>
-                                            <div className={"col-12"} style={{textAlign:"center"}}>
-
-                                                <TextField id="outlined-basic" label="Message" variant="outlined" fullWidth={true} name={"text"} type={"text"}  />
-
-                                            </div>
-                                            <div className={"col-12"} style={{textAlign:"center"}}>
-
-                                            <div className={"row justify-content-center"}>
-
-                                            <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.requestMatch} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Request Match</p>
-                                            </div>
-
-
-                                            <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
-                                            </div>
-
-                                            </div>
-                                            </div>
-
-
-                                        </div>
-                                    </>
-
-
-                                }
-                            </ModalBody>
-
-                        </Modal>
 
                     </>
                     }

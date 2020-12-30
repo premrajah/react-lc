@@ -24,7 +24,8 @@ class MatchItemBuyer extends Component {
             nextIntervalFlag: false,
             offers:[],
             editPopUp:false,
-            editOfferKey:null
+            editOfferKey:null,
+            action:null
         }
 
         this.acceptMatch=this.acceptMatch.bind(this)
@@ -44,10 +45,10 @@ class MatchItemBuyer extends Component {
     editPopUp(event) {
 
 
-
         this.setState({
 
-            editOfferKey: event.currentTarget.dataset.id
+            editOfferKey: event.currentTarget.dataset.id,
+            action:event.currentTarget.dataset.action
         })
         this.setState({
             editPopUp: !this.state.editPopUp
@@ -176,13 +177,60 @@ class MatchItemBuyer extends Component {
 
     actionOffer(event){
 
+
+
+
+        alert(this.state.action)
+        event.preventDefault();
+
+
+        const form = event.currentTarget;
+
+        const formData = new FormData(event.target);
+
+        const price = formData.get("price")
+
+
+
+        var data
+
+        if (this.state.action!== "counter") {
+
+             data = {
+
+                "offer_id": this.state.editOfferKey,
+                "new_stage": this.state.action
+
+            }
+
+        }else {
+
+
+            data = {
+
+                "offer_id": this.state.editOfferKey,
+                "new_stage": "counter",
+                "new_price": {
+                    "value": price,
+                    "currency": "gbp"
+                }
+
+
+            }
+
+        }
+
+
+
+        console.log(data)
+
+
+        return;
+
         axios.post(baseUrl + "offer/stage",
-            {
+           data
 
-                "offer_id": event.currentTarget.dataset.id,
-                "new_stage": "accepted"
-
-            }, {
+            , {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
                 }
@@ -194,18 +242,15 @@ class MatchItemBuyer extends Component {
 
                 this.setState({
 
-                    showPopUp: true
+                    editPopUp: true
                 })
-
-
-
 
 
             }).catch(error => {
 
 
 
-            console.log("loop accept error found ")
+            console.log("offer action error ")
 
             console.log(error)
             // this.setState({
@@ -312,7 +357,67 @@ class MatchItemBuyer extends Component {
 
                 this.setState({
 
-                    showPopUp: false
+                    editPopUp: false
+                })
+
+
+
+
+
+            }).catch(error => {
+
+
+
+            console.log("make an offer error found ")
+
+            console.log(error)
+            // this.setState({
+            //
+            //     showPopUp: true,
+            //     loopError: error.response.data.content.message
+            // })
+
+        });
+
+    }
+
+
+
+
+    actionMatch = event => {
+
+        event.preventDefault();
+
+
+        const form = event.currentTarget;
+
+        const data = new FormData(event.target);
+
+        const price = data.get("price")
+
+        axios.post(baseUrl + "offer/stage",
+            {
+
+                "offer_id": this.state.editOfferKey,
+                "new_stage": "counter",
+                "new_price": {
+                    "value": price,
+                    "currency": "gbp"
+                }
+
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.data)
+
+                this.setState({
+
+                    editPopUp: false
                 })
 
 
@@ -466,31 +571,14 @@ class MatchItemBuyer extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
-                <div className={"col-2"}>
-
-
-                        {this.props.item.images ? <img className={"resource-item-img  img-fluid"}
-                                                       src={this.props.item.images[0]} alt="" />
-                            : <img className={"img-fluid"} src={Paper} alt="" />}
-
-
-                </div>
-                <div className={"col-5 pl-3 content-box-listing"}>
-
-                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org._id}</p>
-
-                </div>
-                <div style={{ textAlign: "right" }} className={"col-5"}>
+                <div style={{ textAlign: "right" }} className={"col-12"}>
 
                     {this.props.item.match.stage==="created" &&  this.props.item.listing.org._id == this.props.userDetail.orgId &&
                     <div className={"row"}>
 
-                        <div className="col-auto">
+                        <div className="col-6">
 
-                            <button  onClick={this.acceptMatch} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <button  onClick={this.acceptMatch} type="button" className=" mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Accept
                             </button>
 
@@ -511,35 +599,31 @@ class MatchItemBuyer extends Component {
 
                     {(this.props.item.match.stage==="accepted" ||this.props.item.match.stage==="offered")&&  this.props.item.listing.org._id != this.props.userDetail.orgId &&
 
+                    <div className={"row justify-content-center"}>
 
+                        <div className="col-auto ">
 
-                    <div className={"row"}>
-
-                        <div className="col-auto">
-
-                            <button  onClick={this.showPopUp} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <button  onClick={this.showPopUp} type="button" className=" mr-2 btn btn-link btn-green mt-2 mb-2 ">
                                 Make an Offer
                             </button>
-
                         </div>
-
-
-
-
                     </div>
-
-
-
                     }
 
 
                 </div>
 
 
-                { this.props.item.match.stage==="offered"  && <div className={"row"}>
+                { this.props.item.match.stage==="offered"  &&
 
+
+                <>
 
                     {this.state.offers.map((item, index) =>
+
+                        <>
+
+                        <div className={"row"}>
 
                         <div className="col-12">
 
@@ -558,12 +642,10 @@ class MatchItemBuyer extends Component {
 
 
 
-                            <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
-                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Counter offer
-                            </button>
-
-
+                            {/*<button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"*/}
+                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                {/*Counter offer*/}
+                            {/*</button>*/}
 
                             {item.next_action.is_mine &&
 
@@ -571,7 +653,7 @@ class MatchItemBuyer extends Component {
 
                             {item.next_action.possible_actions.map((actionItem) =>
 
-                            <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
+                            <button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"
                                     className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 {actionItem}
                             </button>
@@ -585,10 +667,14 @@ class MatchItemBuyer extends Component {
 
 
                         </div>
-                    )
 
-                    }
-                </div>}
+                        </div>
+
+                            </>
+                    )}
+
+                    </>
+                }
 
 
                 { this.props.item.match.stage==="converted"  && <div className={"row"}>
@@ -604,10 +690,13 @@ class MatchItemBuyer extends Component {
                             Offer Stage: {item.offer.stage}
 
 
+
                         </div>
+
                     )
 
                     }
+
                 </div>}
 
 
@@ -627,21 +716,22 @@ class MatchItemBuyer extends Component {
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Counter offer</p>
+                                <p className={"text-bold"}>{this.state.action} offer</p>
                                 <p>Make an offer which he/she cannot refuse</p>
                             </div>
                         </div>
 
 
+                        <form onSubmit={this.actionMatch}>
 
-
-                        <form onSubmit={this.counterOfferMatch}>
                             <div className={"row justify-content-center"}>
 
-                                <div className={"col-12 text-center"}>
+                                {this.state.action==="counter" && <div className={"col-12 text-center"}>
+
+
                                     <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
 
-                                </div>
+                                </div>}
                                 <div className={"col-12 text-center mt-2"}>
 
 
@@ -662,12 +752,6 @@ class MatchItemBuyer extends Component {
                             </div>
                         </form>
 
-
-
-                        {/*</>*/}
-
-
-                        {/*}*/}
                     </ModalBody>
 
                 </Modal>

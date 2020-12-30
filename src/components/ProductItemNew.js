@@ -24,10 +24,13 @@ class ProductItemNew extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            offers:[]
+            offers:[],
+            images:[]
         }
 
         this.showPopUp=this.showPopUp.bind(this)
+        this.fetchImage=this.fetchImage.bind(this)
+
     }
 
 
@@ -48,6 +51,47 @@ class ProductItemNew extends Component {
 
     componentDidMount() {
 
+            this.fetchImage()
+
+    }
+
+
+    fetchImage(){
+
+
+        var url = baseUrl + "product/"+this.props.item.product._key+"/artifact"
+
+
+
+        axios.get(url,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("img product response")
+                    console.log(responseAll)
+
+                    this.setState({
+
+                        images: responseAll
+                    })
+
+                },
+                (error) => {
+
+                    // var status = error.response.status
+                    console.log("listing error")
+                    console.log(error)
+
+                }
+            );
+
+
     }
 
 
@@ -65,7 +109,8 @@ class ProductItemNew extends Component {
                 <div className={"col-3 "}>
 
 
-                        <img className={"img-fluid"} src={PlaceholderImg} alt=""/>
+                    {this.state.images.length>0? <img className={"img-fluid"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+
 
 
                 </div>

@@ -66,7 +66,8 @@ const reducer = (state = initialState, action) => {
                 newState.token = action.value.token
 
                 newState.userDetail = action.value
-                // sessionStorage.setItem("token", action.value.token)
+
+                console.log(newState.userDetail)
 
 
             }else {
@@ -85,7 +86,8 @@ const reducer = (state = initialState, action) => {
             newState.token = action.value.token
             newState.showLoginPopUp = false;
             newState.userDetail= getKey("user")
-            sessionStorage.setItem("token",action.value.token)
+            console.log("Session user")
+            console.log(getKey("user"))
 
             break;
 

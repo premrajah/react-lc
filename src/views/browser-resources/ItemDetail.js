@@ -52,11 +52,12 @@ class ItemDetail extends Component {
         this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
-        this.getSite = this.getSite.bind(this)
         this.acceptMatch=this.acceptMatch.bind(this)
         this.showPopUp=this.showPopUp.bind(this)
 
         this.getMatches=this.getMatches.bind(this)
+        this.checkMatch=this.checkMatch.bind(this)
+
 
     }
 
@@ -121,41 +122,7 @@ class ItemDetail extends Component {
     }
 
 
-    getSite() {
 
-
-        var siteKey = (this.state.item.site_id).replace("Site/","")
-
-        axios.get(baseUrl + "site/" +siteKey ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                var response = response.data.data;
-                console.log("site response")
-                console.log(response)
-
-                this.setState({
-
-                    site: response
-
-                })
-
-            },
-                (error) => {
-
-                    // var status = error.response.status
-                    console.log("site error")
-                    console.log(error)
-
-                }
-            );
-
-    }
 
 
 
@@ -193,7 +160,6 @@ class ItemDetail extends Component {
                 })
 
 
-                this.getSite()
 
             },
                 (error) => {
@@ -215,12 +181,48 @@ class ItemDetail extends Component {
                 }
             }
         )
-       .then((response) => {
+            .then((response) => {
 
 
                     var response = response.data;
 
                     console.log("matches resource response")
+                    console.log(response)
+
+
+                    this.setState({
+
+                        matches: response.data
+
+                    })
+
+
+
+
+                },
+                (error) => {
+                    console.log("matchees error", error)
+                }
+            );
+
+    }
+
+    checkMatch() {
+
+
+        axios.get(baseUrl + "match/search-and-listing/"+"search-1609094173795-pzXfwMEzBp/" + encodeUrl(this.slug),
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+       .then((response) => {
+
+
+                    var response = response.data;
+
+                    console.log("match check response")
                     console.log(response)
 
 
@@ -252,6 +254,8 @@ class ItemDetail extends Component {
 
     componentDidMount() {
 
+
+        this.checkMatch()
         this.getResources()
 
 

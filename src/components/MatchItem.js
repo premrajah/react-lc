@@ -173,6 +173,51 @@ class MatchItem extends Component {
 
     }
 
+
+    actionOffer(event){
+
+        axios.post(baseUrl + "offer/stage",
+            {
+
+                "offer_id": event.currentTarget.dataset.id,
+                "new_stage": "accepted"
+
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.data)
+
+                this.setState({
+
+                    showPopUp: true
+                })
+
+
+
+
+
+            }).catch(error => {
+
+
+
+            console.log("loop accept error found ")
+
+            console.log(error)
+            // this.setState({
+            //
+            //     showPopUp: true,
+            //     loopError: error.response.data.content.message
+            // })
+
+        });
+
+    }
+
         makeOfferMatch = event => {
 
             event.preventDefault();
@@ -435,6 +480,7 @@ class MatchItem extends Component {
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org._id}</p>
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-5"}>
@@ -503,12 +549,12 @@ class MatchItem extends Component {
                             Offer Stage: {item.offer.stage}
 
 
-                            {this.props.item.listing.org._id === this.props.userDetail.orgId &&
-                            <button data-id={item.offer._key} onClick={this.acceptOffer.bind(this)} type="button"
-                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Accept
-                            </button>
-                            }
+
+                            {/*<button data-id={item.offer._key} onClick={this.acceptOffer.bind(this)} type="button"*/}
+                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                {/*Accept*/}
+                            {/*</button>*/}
+
 
 
 
@@ -523,11 +569,11 @@ class MatchItem extends Component {
 
                              <>
 
-                            {item.next_action.possible_actions.map((item) =>
+                            {item.next_action.possible_actions.map((actionItem) =>
 
                             <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
                                     className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                {item}
+                                {actionItem}
                             </button>
 
                             )}
@@ -608,6 +654,67 @@ class MatchItem extends Component {
                                         </div>
                                         <div className={"col-6"} style={{textAlign:"center"}}>
                                             <p onClick={this.editPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+
+
+                        {/*</>*/}
+
+
+                        {/*}*/}
+                    </ModalBody>
+
+                </Modal>
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+
+                    <ModalBody>
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-4 text-center"}>
+                                <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
+                            </div>
+                        </div>
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold"}>Make an offer</p>
+                                <p>Make an offer which he/she cannot refuse</p>
+                            </div>
+                        </div>
+
+
+
+
+                        <form onSubmit={this.makeOfferMatch}>
+                            <div className={"row justify-content-center"}>
+
+                                <div className={"col-12 text-center"}>
+                                    <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
+
+                                </div>
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
                                         </div>
                                     </div>
 

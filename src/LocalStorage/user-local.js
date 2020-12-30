@@ -1,8 +1,10 @@
+import store from 'store';
 
 
 export const loadUserData = () => {
 
-    if (sessionStorage.getItem('user')) {
+    if (store.get('user')) {
+
 
 
         // console.log(store.get("user"))
@@ -10,11 +12,16 @@ export const loadUserData = () => {
         //  console.log(" user exists")
 
 
+        if (store.get("user").isGuest) {
 
-        return JSON.parse(sessionStorage.getItem("user"))
+            // console.log(" user is guest")
+
+        }
+        return store.get("user")
 
 
     } else {
+
 
         // console.log("no user exists")
 
@@ -22,51 +29,54 @@ export const loadUserData = () => {
 
     }
 
+
 }
+
+
 
 
 export const getUserToken = () => {
 
-    JSON.parse(sessionStorage.getItem('token'))
+    store.get('token')
 
 }
 
 export const saveUserToken = (token) => {
 
-    sessionStorage.setItem('token', JSON.stringify(token))
+    store.set('token', token)
 
 }
 
 
 export const saveKey = (key, value) => {
 
-    sessionStorage.setItem(key, JSON.stringify(value))
+    store.set(key, value)
 
 }
 
 export const removeKey = (key) => {
 
-    sessionStorage.removeItem(key)
+    store.remove(key)
 
 }
 
 export const getKey = (key) => {
 
-    return JSON.parse(sessionStorage.getItem(key))
+    return store.get(key)
 
 }
 
 
 export const saveUserData = (user) => {
 
-    sessionStorage.setItem('user', JSON.stringify(user))
+    store.set('user', user)
 
 }
 
 
 export const logOutUser = () => {
 
-    sessionStorage.removeItem('user')
+    store.remove('user')
 
 
 }

@@ -163,22 +163,6 @@ class CompanyPage extends Component {
                         </div>
 
 
-                        {/*<div className="row mb-5 justify-content-center">*/}
-                        {/*<div className="text-center">*/}
-                        {/*<div className="figure-profile shadow mt-4">*/}
-                        {/*<figure><img src={TescoImg} alt="" /></figure>*/}
-                        {/*<div className="btn btn-dark text-white floating-btn">*/}
-                        {/*<Camera className="green-text" style={{ fontSize: 24 }} />*/}
-                        {/*<input type="file" className="float-file" />*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div>*/}
-                        {/*<h5 className={"text-white"}>Tesco</h5>*/}
-                        {/*<p className={"text-white text-mute small"}>Joined in 2010 • Surrey, UK</p>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*</div>*/}
 
                     </div>
                     <div className={"tab-content-listing"}>

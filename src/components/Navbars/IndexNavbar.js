@@ -124,7 +124,7 @@ class ComponentsNavbar extends React.Component {
                                     <Link
                                         className="nav-link d-none d-lg-block wl-link-white "
                                         color="default"
-                                        to={"/resources"}>
+                                        to={"/my-listings"}>
                                         Find Resources
                                     </Link>
                                 </NavItem>

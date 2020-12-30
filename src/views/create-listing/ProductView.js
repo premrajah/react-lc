@@ -25,6 +25,7 @@ import { Tabs,Tab } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from '../../components/ProductItemNew'
+import ProductDetail from '../../components/ProductDetail'
 
 
 import MatchItem from '../../components/MatchItem'
@@ -189,7 +190,7 @@ class ProductView extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+                    console.log("matches error", error)
                 }
             );
 
@@ -301,217 +302,7 @@ class ProductView extends Component {
 
                     {this.state.item &&
                     <>
-                        <div className="container-fluid " style={{ padding: "0" }}>
-
-
-                            <div className="row no-gutters  justify-content-center">
-
-                                <div className="floating-back-icon" style={{ margin: "auto" }}>
-
-                                    <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
-                                </div>
-
-                                <div className="col-md-6 col-sm-12 col-xs-12 p-5">
-                                    {this.state.item.artifacts.length > 0 ?
-                                    <ImagesSlider images={this.state.item.artifacts} /> :
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
-
-
-                                </div>
-
-                                <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
-
-                                    <div className="row justify-content-start pb-3 pt-4 listing-row-border">
-
-                                        <div className="col-12 mt-2">
-                                            <h4 className={"blue-text text-heading"}>{this.state.item.product.name}
-                                            </h4>
-
-                                            {/*<p>Posted By <span className={"green-text"}>{this.state.item.org_id}</span></p>*/}
-                                        </div>
-
-                                        <div className="col-12">
-
-                                            <div className="row">
-                                                <div className="col-7">
-                                                    <p>Sold By <span className={"green-text"}>@{this.state.item.org_id}</span></p>
-                                                </div>
-
-                                                <div className="col-3 green-text text-heading text-right">
-
-                                                    {this.state.item.product.price ?<>"GBP "+ {this.state.item.product.price.value}</> : "Free"}
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
-
-                                        <div className="col-auto">
-                                            <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.product.description}
-                                            </p>
-
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div className={"container "}>
-
-
-                            <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
-                                <Tab eventKey="product" title="Product Info">
-
-
-
-                                    <div className="row  justify-content-start search-container  pb-4">
-
-                                        <div className={"col-auto"}>
-
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.category} ></p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.type}></p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="row  justify-content-start search-container  pb-4">
-
-                                        <div className={"col-auto"}>
-
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div className="row  justify-content-start search-container  pb-4">
-                                        <div className={"col-auto"}>
-
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="row  justify-content-start search-container  pb-4">
-
-                                        <div className={"col-auto"}>
-
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.product.available_from_epoch_ms).format("DD MMM YYYY")} </p>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="row  justify-content-start search-container  pb-4">
-
-                                        <div className={"col-auto"}>
-
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.model} </p>
-
-
-                                        </div>
-                                    </div>
-
-                                    <div className="row  justify-content-start search-container  pb-4">
-
-                                        <div className={"col-auto"}>
-
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.serial} </p>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div className="row  justify-content-start search-container  pb-4 ">
-
-                                        <div className={"col-auto"}>
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.brand} </p>
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <div className="row  justify-content-start search-container  pb-4 ">
-
-                                        <div className={"col-auto"}>
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state} </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="row  justify-content-start search-container  mt-4 mb-5 ">
-                                        <div className={"col-1"}>
-
-                                            <CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />
-                                        </div>
-
-                                        <div className={"col-auto"}>
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.product.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
-                                        </div>
-
-
-                                    </div>
-
-                                </Tab>
-                                <Tab eventKey="profile" title="Subproducts">
-                                    {this.state.subProducts.map((item)=>
-                                        <ProductItemNew item={item}/>
-                                    )}
-                                </Tab>
-
-                            </Tabs>
-
-
-                            <div className="container  mt-4">
-                                <div className="row">
-                                </div>
-                            </div>
-                            <div className="container mt-4 mb-5 pb-5 ">
-                                <div className="row no-gutters mb-5">
-                                    <div className="col-12 mb-4">
-                                        <h5 className="mb-1">About the seller</h5>
-                                    </div>
-                                    <div className="col-auto ">
-                                        <figure className="avatar avatar-60 border-0">
-
-                                        <span className={"word-user-sellor"}>
-                                            {this.state.item&&this.state.item.org.name&&this.state.item.org.name.substr(0,2)}
-                                       </span>
-
-                                        </figure>
-                                    </div>
-                                    <div className="col pl-2 align-self-center">
-                                        <div className="row no-gutters">
-                                            <div className="col-12">
-                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                                {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-
+                        <ProductDetail  item={this.state.item} />
 
 
                     </>
@@ -561,40 +352,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar(props) {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
-                        <div className="col-auto">
-
-                            <Link to={"/message-seller/" + props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Message Seller
-                            </Link>
-
-                        </div>
-                        <div className="col-auto">
-
-                            <Link to={"/make-offer/" + props.slug} type="button"
-                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Make Offer
-
-                            </Link>
-                        </div>
-                    </div>
-
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-
-
-}
 
 
 

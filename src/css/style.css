@@ -2713,9 +2713,15 @@ color: #3C3972;
 .account-figure{
 	background: #F4F4F4
 }
-.tab-content-listing a {
+.tab-content-listing a:hover {
 	color: black;
 }
+
+.tab-content-listing a {
+	color: #27245C;
+}
+
+
 
 .company-header .account-figure{
 	float: left;

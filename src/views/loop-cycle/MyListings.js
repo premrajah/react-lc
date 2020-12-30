@@ -179,6 +179,7 @@ class MyListings extends Component {
                             <Link to={"/"+ item.listing._key }>
 
                             <ResourceItem item={item} />
+
                             </Link>
 
 

@@ -1,3 +1,4 @@
+import store from 'store';
 
 
 export const loadUserData = () => {
@@ -11,7 +12,7 @@ export const loadUserData = () => {
 
 
 
-        return JSON.parse(sessionStorage.getItem("user"))
+        return sessionStorage.getItem("user")
 
 
     } else {
@@ -27,20 +28,20 @@ export const loadUserData = () => {
 
 export const getUserToken = () => {
 
-    JSON.parse(sessionStorage.getItem('token'))
+    sessionStorage.getItem('token')
 
 }
 
 export const saveUserToken = (token) => {
 
-    sessionStorage.setItem('token', JSON.stringify(token))
+    sessionStorage.setItem('token', token)
 
 }
 
 
 export const saveKey = (key, value) => {
 
-    sessionStorage.setItem(key, JSON.stringify(value))
+    sessionStorage.setItem(key, value)
 
 }
 
@@ -52,14 +53,14 @@ export const removeKey = (key) => {
 
 export const getKey = (key) => {
 
-    return JSON.parse(sessionStorage.getItem(key))
+    return sessionStorage.getItem(key)
 
 }
 
 
 export const saveUserData = (user) => {
 
-    sessionStorage.setItem('user', JSON.stringify(user))
+    sessionStorage.setItem('user', user)
 
 }
 

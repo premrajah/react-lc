@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Paper from '../../img/place-holder-lc.png';
+import PlaceholderImg from '../../img/place-holder-lc.png';
 import clsx from 'clsx';
 import FilterImg from '../../img/icons/filter-icon.png';
 import { Link } from "react-router-dom";
@@ -22,6 +22,8 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
+import axios from "axios/index";
+import { baseUrl } from "../../Util/Constants";
 
 
 
@@ -36,8 +38,10 @@ class ResourceItem extends Component {
 
             timerEnd: false,
             count: 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            image:null
         }
+
 
     }
 
@@ -47,7 +51,11 @@ class ResourceItem extends Component {
 
     componentDidMount() {
 
+
+
     }
+    
+    
 
 
 
@@ -65,26 +73,20 @@ class ResourceItem extends Component {
 
                 <div className={"col-2"}>
 
-
-                        {this.props.item.images ? <img className={"resource-item-img  img-fluid"} src={this.props.item.images[0]} alt="" /> : <img className={"img-fluid"} src={Paper} alt="" />}
-
+                    {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>
 
-                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.name}</p>
+                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">Title: {this.props.item.listing.name}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.state} / {this.props.item.listing.volume} {this.props.item.listing.units}</p>
                         {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>*/}
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>
                     <p className={"green-text"}>
-
                         {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
-
                     </p>
-
-
                 </div>
 
 

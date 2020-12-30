@@ -418,48 +418,38 @@
 
 
 
-
         loadMatches() {
 
+            axios.get(baseUrl + "match/search/" + this.slug,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
 
-            // for (var i = 0; i < this.state.createSearchData.search.resources.length; i++) {
-            //
-            //     axios.get(baseUrl + "resource/" + this.state.createSearchData.search.resources[i],
-            //         {
-            //             headers: {
-            //                 "Authorization": "Bearer " + this.props.userDetail.token
-            //             }
-            //         }
-            //     )
-            //         .then((response) => {
-            //
-            //             var response = response.data.content;
-            //             console.log("resource response")
-            //             console.log(response)
-            //
-            //
-            //
-            //             var resources = this.state.resourcesMatched
-            //
-            //             resources.push(response)
-            //
-            //             this.setState({
-            //
-            //                 resourcesMatched: resources
-            //             })
-            //
-            //         },
-            //             (error) => {
-            //
-            //                 var status = error.response.status
-            //                 console.log("resource error")
-            //                 console.log(error)
-            //
-            //             }
-            //         );
-            //
-            //
-            // }
+                        var responseAll = response.data.data;
+                        console.log("matches response")
+                        console.log(responseAll)
+
+
+                        this.setState({
+
+                            matches: responseAll
+                        })
+
+
+
+
+                    },
+                    (error) => {
+
+                        console.log("match search error")
+                        console.log(error)
+
+                    }
+                );
 
 
         }
@@ -607,6 +597,7 @@
 
             this.getSearch()
             this.getListingForSearch()
+            this.loadMatches()
 
         }
 
@@ -641,29 +632,29 @@
 
                         {this.state.createSearchData &&
                             <>
-                                <div className="container  pt-3 pb-3">
+                                {/*<div className="container  pt-3 pb-3">*/}
 
-                                    <div className="row no-gutters">
-                                        <div className="col-auto" style={{ margin: "auto" }}>
+                                    {/*<div className="row no-gutters">*/}
+                                        {/*<div className="col-auto" style={{ margin: "auto" }}>*/}
 
-                                            <NavigateBefore style={{ fontSize: 32 }} />
-                                        </div>
+                                            {/*<NavigateBefore style={{ fontSize: 32 }} />*/}
+                                        {/*</div>*/}
 
-                                        <div className="col text-center blue-text" style={{ margin: "auto" }}>
-                                            <p>View Search </p>
-                                        </div>
+                                        {/*<div className="col text-center blue-text" style={{ margin: "auto" }}>*/}
+                                            {/*<p>View Search </p>*/}
+                                        {/*</div>*/}
 
-                                        <div className="col-auto">
+                                        {/*<div className="col-auto">*/}
 
-                                            <button className="btn   btn-link text-dark menu-btn">
-                                                <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
+                                            {/*<button className="btn   btn-link text-dark menu-btn">*/}
+                                                {/*<Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />*/}
 
-                                            </button>
-                                        </div>
+                                            {/*</button>*/}
+                                        {/*</div>*/}
 
 
-                                    </div>
-                                </div>
+                                    {/*</div>*/}
+                                {/*</div>*/}
 
 
                                 <div className="container ">
@@ -825,7 +816,7 @@
                                                 <Link to={"/matches/" + this.slug} type="button"
                                                     // onClick={this.handleNext}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                    View ({this.state.matchesCount}) Matches
+                                                    View ({this.state.matchesCount+this.state.matches.length}) Matches
 
                                             </Link>
                                             </div>

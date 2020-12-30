@@ -17,6 +17,25 @@ import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import { Link } from "react-router-dom";
 import MatchItem from '../../components/MatchItem'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
+import clsx from 'clsx';
+import LangIcon from '../../img/icons/lang.png';
+import MarkerIcon from '../../img/icons/marker.png';
+import CalenderIcon from '../../img/icons/calender.png';
+import HandGreyIcon from '../../img/icons/hand-gray.png';
+import EditGray from '../../img/icons/edit-gray.png';
+import RingGray from '../../img/icons/ring-gray.png';
+import SearchGray from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Paper from '../../img/paper.png';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import FilterImg from '../../img/icons/filter-icon.png';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -221,65 +240,41 @@ class SearchMatches extends Component {
 
 
                 <div className="container  p-2">
-                </div>
 
-                <HeaderWhiteBack history={this.props.history} heading={"View Matches"} />
+                    <div className="row  pb-2 pt-5 ">
 
+                        {/*<div className="col-auto">*/}
+                            {/*<h3 className={"blue-text text-heading"}>Matches*/}
+                            {/*</h3>*/}
 
-                {this.state.matches && <>
-
-                        <div className="container   pb-4 ">
-
-
-                        {this.state.matches.map((item) =>
-
-                            <Link to={"/"+ item.listing.listing._key }>
-
-                            <MatchItem item={item}  />
-
-                            </Link>
-
-
-
-                        )}
-
-
+                        {/*</div>*/}
                     </div>
 
-                </>
-                }
+                </div>
+                <div className="container  p-2">
 
+                    <div className="row  pb-2 pt-2 ">
 
-                {this.state.listingsForSearch && <>
-
-                        <div className="container   pb-4 ">
-
-
-                            {this.state.listingsForSearch.map((item) =>
-
-
-                                <Link to={"/"+ item.listing._key+"/"+this.slug }>
-
-                                <ResourceItem  searchId={this.slug} item={item}  />
-
-                                </Link>
-
-
-                            )}
-
+                        <div className="col-12 text-center">
+                            <h3  className={"blue-text text-heading text-center"}>Matches
+                            </h3>
 
                         </div>
+                    </div>
+
+                </div>
+                <div className="container  p-2">
+
+                    <div className="row  pb-2 pt-2 ">
 
 
-                </>
-                }
+                <div className={"tab-content-listing col-12"}>
 
+                    <NavTabs matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
+                </div>
+                    </div>
+                </div>
 
-
-                { this.state.matches.length === 0 && this.state.listingsForSearch.length === 0 &&
-                <div className={" column-empty-message"}>
-                    <p>This search currently has no matches</p>
-                </div>}
 
 
 
@@ -319,92 +314,6 @@ const useStylesBottomBar = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar() {
-    const classes = useStylesBottomBar();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
-
-                        <div className="col-auto">
-                            <button type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                Back
-
-                            </button>
-                        </div>
-                        <div className="col-auto" style={{ margin: "auto" }}>
-
-                            <p className={"blue-text"}> Page 2/3</p>
-                        </div>
-                        <div className="col-auto">
-
-                            <button type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                Next
-
-                            </button>
-                        </div>
-                    </div>
-
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-
-
-}
-
-
-
-function UnitSelect(props) {
-    const classes = useStylesSelect();
-    const [state, setState] = React.useState({
-        unit: '',
-        name: 'hai',
-    });
-
-    const handleChange = (event) => {
-        const name = event.target.name;
-        setState({
-            ...state,
-            [name]: event.target.value,
-        });
-    };
-
-    return (
-        <div>
-
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
-                <Select
-                    name={"unit"}
-                    native
-                    value={state.age}
-                    onChange={handleChange}
-                    label="Age"
-                    inputProps={{
-                        name: 'unit',
-                        id: 'outlined-age-native-simple',
-                    }}
-                >
-
-                    {props.units.map((item) =>
-
-                        <option value={"Kg"}>{item}</option>
-
-                    )}
-
-                </Select>
-            </FormControl>
-
-        </div>
-    );
-}
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {
@@ -416,6 +325,145 @@ const useStylesSelect = makeStyles((theme) => ({
         marginTop: theme.spacing(0),
     },
 }));
+
+
+
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`nav-tabpanel-${index}`}
+            aria-labelledby={`nav-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `nav-tab-${index}`,
+        'aria-controls': `nav-tabpanel-${index}`,
+    };
+}
+
+function LinkTab(props) {
+    return (
+        <Tab
+            component="a"
+            onClick={(event) => {
+                event.preventDefault();
+            }}
+            {...props}
+        />
+    );
+}
+
+
+
+function NavTabs(props) {
+    const classes = useStylesTabs();
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <div className={classes.root}>
+            <AppBar position="static" style={{boxShadhow:"none"}} elevation={0}>
+                <Tabs
+                    style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadhow:"none"}}
+                    indicatorColor="secondary"
+                    variant="fullWidth"
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="nav tabs example"
+                    e
+                >
+
+                    <LinkTab label={"Suggested("+props.suggesstions.length+")"} href="/drafts" {...a11yProps(0)} />
+
+                    <LinkTab label={"Confirmed("+props.matches.length+")"} href="/drafts" {...a11yProps(1)} />
+
+                </Tabs>
+            </AppBar>
+
+            <TabPanel value={value} index={0}>
+                <div className={"container"}>
+
+                    {props.suggesstions.map((item) =>
+
+                        <Link to={"/"+ item.listing._key+"/"+props.slug }>
+
+                            <ResourceItem  searchId={props.slug} item={item}  />
+
+                        </Link>
+
+
+                    )}
+
+
+                    { props.suggesstions.length === 0 &&
+                    <div className={" column-empty-message"}>
+                        <p>This search currently has no suggesstions</p>
+                    </div>}
+
+
+                </div>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+
+                <div className={"container"}>
+
+                    {props.matches.map((item) =>
+
+                        <>
+                        {/*<Link to={"/"+ item.listing.listing._key }>*/}
+
+                            <MatchItem item={item}  />
+
+                        {/*// </Link>*/}
+
+                        </>
+
+                    )}
+
+
+
+                    { props.matches.length === 0 &&
+                    <div className={" column-empty-message"}>
+                        <p>This search currently has no matches</p>
+                    </div>}
+
+
+
+                </div>
+
+
+
+
+            </TabPanel>
+
+
+        </div>
+    );
+}
 
 
 

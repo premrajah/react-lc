@@ -409,19 +409,17 @@ function NavTabs(props) {
 
                     {props.suggesstions.map((item) =>
 
-                        <Link to={"/"+ item.listing._key+"/"+props.slug }>
+                        <Link to={"/match/"+props.slug+"/"+item.listing._key }>
 
                             <ResourceItem  searchId={props.slug} item={item}  />
 
                         </Link>
 
-
                     )}
-
 
                     { props.suggesstions.length === 0 &&
                     <div className={" column-empty-message"}>
-                        <p>This search currently has no suggesstions</p>
+                        <p>This search currently has no suggestions</p>
                     </div>}
 
 
@@ -434,23 +432,20 @@ function NavTabs(props) {
                     {props.matches.map((item) =>
 
                         <>
-                        {/*<Link to={"/"+ item.listing.listing._key }>*/}
+                        <Link to={"/matched/"+ item.match._key }>
 
                             <MatchItem item={item}  />
 
-                        {/*// </Link>*/}
+                        </Link>
 
                         </>
 
                     )}
 
-
-
                     { props.matches.length === 0 &&
                     <div className={" column-empty-message"}>
                         <p>This search currently has no matches</p>
                     </div>}
-
 
 
                 </div>

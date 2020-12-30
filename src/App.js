@@ -46,7 +46,8 @@ import FindResources from "./views/browser-resources/FindResources";
 
 import MessageSeller from "./views/browser-resources/message-seller";
 import MakeOffer from "./views/browser-resources/make-offer";
-import ItemDetailMatch from "./views/create-search/ItemDetail";
+import ItemDetailMatch from "./views/create-search/ItemDetailMatch";
+import ItemDetailMatched from "./views/create-search/ItemDetailMatched";
 import Search from "./views/browser-resources/Search";
 import Filter from "./views/browser-resources/Filter";
 import AuthRoute from "./Util/AuthRoute";
@@ -131,7 +132,8 @@ class App extends Component{
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
                         <Route exact path="/product-cycle-detail/:slug" component={ItemCycleDetail} />
-                        <LoggedInRoute exact path="/match/:slug/:search" component={ItemDetailMatch} />
+                        <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
+                        <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />

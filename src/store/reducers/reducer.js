@@ -119,6 +119,7 @@ const reducer = (state = initialState, action) => {
             newState.loading = false
             newState.favorites = []
             saveKey("user",null)
+            saveKey("token",null)
 
             // window.location.href=("/")
 
@@ -332,9 +333,9 @@ const reducer = (state = initialState, action) => {
 
             }
 
-
             newState.userDetail = action.value;
             newState.loading = false;
+
             break;
 
 

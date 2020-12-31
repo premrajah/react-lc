@@ -651,7 +651,6 @@
             },
                 (error) => {
 
-                    var status = error.response.status
                     console.log("resource error")
                     console.log(error)
 

@@ -5,11 +5,6 @@ export const loadUserData = () => {
     if (sessionStorage.getItem('user')) {
 
 
-        // console.log(store.get("user"))
-        //  console.log(store.get("token"))
-        //  console.log(" user exists")
-
-
 
         return JSON.parse(sessionStorage.getItem("user"))
 

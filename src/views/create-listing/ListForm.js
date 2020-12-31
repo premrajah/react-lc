@@ -1080,7 +1080,7 @@ class ListForm extends Component {
 
                                             <option value={null}>Select</option>
 
-                                            {this.props.productList.map((item) =>
+                                            {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
 
                                                 <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
 
@@ -1450,7 +1450,7 @@ class ListForm extends Component {
 
 
                                         </div>
-                                    </div>}
+                                    </div>
 
 
 

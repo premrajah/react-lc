@@ -68,6 +68,7 @@ export const saveUserData = (user) => {
 export const logOutUser = () => {
 
     sessionStorage.removeItem('user')
+    sessionStorage.removeItem('token')
 
 
 }

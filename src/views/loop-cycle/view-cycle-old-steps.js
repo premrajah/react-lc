@@ -919,34 +919,151 @@ class ViewCycle extends Component {
                         <CssBaseline />
 
                         <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                            <Toolbar>
 
-                        <Toolbar>
-                                <div className="container ">
+                                <div className="row  justify-content-center search-container "
+                                     style={{ margin: "auto" }}>
+
+                                    <div className="col-auto">
+
+
+                                        {this.state.item.id && this.state.item.show && this.state.item.state === "created" &&
+
+                                        <button onClick={this.confirmOffer} type="button"
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                            Accept Offer
+
+                                        </button>
+
+                                        }
+                                        {this.state.item.id && this.state.item.show && this.state.item.state === "accepted" &&
+
+                                        <button onClick={this.consumerConfirmOffer} type="button"
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                            Confirm Offer
+
+                                        </button>
+
+                                        }
+
+                                        {this.state.item && this.state.item.state === "confirmed" && this.state.item.show &&
+
+
+                                        <button onClick={this.showPopUpLogistics} type="button"
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                            Assign Logistics
+
+                                        </button>
+
+                                        }
+
+                                        {this.state.item.id &&  this.state.item.state === "agreed" && this.state.item.show &&
+
+                                        <button onClick={this.showPopUpTrackingNumber} type="button"
+                                                    className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                                Enter Tracking Number
+
+                                            </button>
+
+                                        }
+
+                                        {this.state.item && this.state.item.state === "progress" && this.state.item.show &&
+
+
+                                        <button onClick={this.orderDelivered} type="button"
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                            Delivered
+
+                                        </button>
+                                        }
+
+
+                                        {this.state.item && this.state.item.state === "delivered" && this.state.item.show &&
+
+                                        <button onClick={this.orderReceived} type="button"
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                            Received
+
+                                        </button>}
+
+
+                                        {this.state.item && this.state.item.state == "received" && this.state.item.show &&
+
+                                        <button onClick={this.orderClose} type="button"
+                                                className="shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                            Close Cycle
+
+                                        </button>
+
+
+                                        }
+
+                                            </div>
+
+                                    {this.state.item.state != "received"  && this.state.item.state != "closed"
+                                    && (this.state.item.producer&&this.state.item.producer.org.id == this.props.userDetail.orgId ||this.state.item.consumer&&this.state.item.consumer.org.id == this.props.userDetail.orgId )&&
+
+                                    <div className="col-auto">
+
+                                        <button onClick={this.declineOffer} type="button"
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                            Reject Offer
+
+                                        </button>
+                                    </div>
+                                    }
+
+
+                                    {this.state.item.cycle.stage==="progress"&&
+                                    <div className="col-auto">
+
+                                        <button onClick={this.showStep} type="button"
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                            Add Step
+
+                                        </button>
+                                    </div>}
+
+                                        <>
+                                        {this.state.item.steps.length>0&&this.state.item.steps[0].nextAction.is_mine &&
+
+                                        // {true &&
+
+                                        <div className="col-auto">
+
+                                    <button onClick={this.updateStep} type="button"
+                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                        {this.state.item.steps[0].step.stage==="created"&&"Accept"}
+                                        {this.state.item.steps[0].step.stage==="accepted"&&"Mark as work in progress"}
+                                        {this.state.item.steps[0].step.stage==="progress"&&"Mark As Completed"}
+                                        {this.state.item.steps[0].step.stage==="completed"&&"Confirm as completed"}
+
+                                    </button>
+                                    </div>}
+                                        </>
+
 
 
                                     {this.state.item.next_action.is_mine &&
 
-                                    <div className="row  justify-content-center search-container "
-                                         style={{ margin: "auto" }}>
 
-
-
-
-                                    <div className="col-12 text-center">
+                                    <div className="col-auto">
 
 
                                         {this.state.item.next_action.possible_actions.map((item) =>
-                        <>
+<>
                                             <button data-action={item} onClick={this.deliverCycle.bind(this)}
                                                     type="button"
                                                     className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
 
-                                                Mark as {item}
+                                                {item}
                                             </button>
 
-                                     </>
+</>
                                         )}
-                                    </div>
                                     </div>
 
                                     }
@@ -954,41 +1071,38 @@ class ViewCycle extends Component {
 
 
 
-
-
                                     {this.state.item.steps.map((item)=>
 
                                         <>
+                                        <div className="row justify-content-center">
+                                        <div className="col-2">
+                                            {item.step.name}
 
-                                            {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
-                                            <div className="row justify-content-center text-center">
-                                                <div className="col-2 text-right">
-                                                    <a className=" mr-2 btn btn-link text-blue text-bold mt-2 mb-2 ">{item.step.name}:</a>
+                                        </div>
+                                            <div className="col-10">
 
-                                                </div>
-                                                <div className="col-10 text-left">
+                                           {item.nextAction.is_mine&&item.nextAction.possible_actions.map((item) =>
+                                            <>
+                                                <button data-id={item._key} data-action={item} onClick={this.updateStep.bind(this)}
+                                                        type="button"
+                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
 
-                                                    {item.nextAction.possible_actions.map((actionName) =>
-                                                        <>
-                                                            <button data-id={item.step._key} data-action={actionName}
-                                                                    onClick={this.updateStep.bind(this)}
-                                                                    type="button"
-                                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+                                                    {item}
+                                                </button>
 
-                                                                Mark step as {actionName}
-                                                            </button>
-
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            }
+                                            </>
+                                            )}
+                                         </div>
+                                        </div>
 
                                         </>
 
                                     )}
 
-                            </div>
+
+
+
+                                </div>
 
 
                             </Toolbar>

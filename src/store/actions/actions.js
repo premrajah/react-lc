@@ -339,7 +339,7 @@ export const loadProductsSync = (data) => dispatch => {
 
 
 
-    axios.get(baseUrl + "product/no-listing",
+    axios.get(baseUrl + "product",
         {
             headers: {
                 "Authorization": "Bearer " + data

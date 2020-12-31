@@ -52,6 +52,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
 import ProductItem from '../../components/ProductItemNew'
 import ProductExpandItem from '../../components/ProductExpandItem'
+import ItemDetailPreview from '../../components/ItemDetailPreview'
+
 
 
 
@@ -189,6 +191,9 @@ class ListForm extends Component {
                 progressBar: 100
             })
 
+
+
+            console.log(this.state.fields)
         }
 
 
@@ -1082,6 +1087,9 @@ class ListForm extends Component {
 
                                             {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
 
+                                            // {this.props.productList.map((item) =>
+
+
                                                 <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
 
                                             )}
@@ -1314,43 +1322,7 @@ class ListForm extends Component {
                 <div className={this.state.page === 3 ? "" : "d-none"}>
 
 
-
-
-                    <div className="container   pb-4 pt-4">
-
-                        <div className="row justify-content-center pb-2 pt-4 ">
-
-                            <div className="col-auto">
-                                <h4 className={"blue-text text-heading text-bold"}>Success!
-                                </h4>
-
-                            </div>
-                        </div>
-
-
-                        <div className="row justify-content-center">
-
-                            <div className="col-auto pb-4 pt-5">
-
-
-                                <img className={"search-icon-middle"} src={ProductBlue} alt="" />
-
-                            </div>
-                        </div>
-
-                        <div className="row justify-content-center pb-4 pt-2 ">
-
-                            <div className="col-auto">
-                                <p className={"text-blue text-center"}>
-                                    Your listing has been created.
-                                    You will be notified when a
-                                    match is found.
-                                </p>
-
-                            </div>
-                        </div>
-
-                    </div>
+                    <ItemDetailPreview userDetail={this.props.userDetail} fields={this.state.fields}/>
 
                 </div>
 
@@ -1436,9 +1408,6 @@ class ListForm extends Component {
                                                     Next
 
                                                 </button>}
-
-
-
 
                                             {this.state.page === 3 &&
                                                 <button onClick={this.handleNext} type="button"

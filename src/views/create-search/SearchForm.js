@@ -385,20 +385,20 @@
 
 
                 search: {
+
                     "name": this.state.title,
                     "description": this.state.description,
                     "category": this.state.catSelected.name,
                     "type": this.state.subCatSelected.name,
                     "units": this.state.unitSelected,
                     "volume": this.state.volumeSelected,
-                    "state": this.state.stateSelected,
 
+                    "state": this.state.stateSelected,
                     "require_after_epoch_ms": new Date(this.state.dateRequiredFrom).getTime(),
                     "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime(),
-
-
                 },
                 "site_id": this.state.siteSelected,
+                "product_id":this.state.productSelected
 
 
             }
@@ -662,8 +662,6 @@
 
 
 
-
-
         selectCreateSearch() {
 
 
@@ -691,8 +689,6 @@
 
         selectProduct(event) {
 
-            // console.log(this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name))
-
             this.setState({
 
                 productSelected: this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0]
@@ -710,8 +706,6 @@
         }
 
         selectType(event) {
-
-            // console.log(this.state.categories.filter((item) => item.name === event.currentTarget.dataset.name))
 
             this.setState({
 
@@ -1141,6 +1135,8 @@
                     productSelected: e.target.value
 
                 })
+
+                alert(e.target.value)
 
             }
 
@@ -1656,7 +1652,7 @@
                     <div className={this.state.active === 4 ? "" : "d-none"}>
 
 
-                        <div className="container  search-container pb-5 pt-5">
+                        <div className="container  search-container pb-5 pt-5 mb-5">
                             <div className="row no-gutters">
                                 <div className="col-auto">
                                     <h3 className={"blue-text text-heading"}>Add Details
@@ -1775,9 +1771,6 @@
                                 </div>
 
                                 <div className="col-12 mb-3">
-
-
-
 
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>

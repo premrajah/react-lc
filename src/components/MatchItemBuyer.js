@@ -35,6 +35,8 @@ class MatchItemBuyer extends Component {
         this.editPopUp=this.editPopUp.bind(this)
 
         this.getOffer=this.getOffer.bind(this)
+        this.actionOffer=this.actionOffer.bind(this)
+
 
 
 
@@ -44,15 +46,17 @@ class MatchItemBuyer extends Component {
 
     editPopUp(event) {
 
+        this.setState({
+            editPopUp: !this.state.editPopUp
+        })
 
         this.setState({
 
             editOfferKey: event.currentTarget.dataset.id,
             action:event.currentTarget.dataset.action
         })
-        this.setState({
-            editPopUp: !this.state.editPopUp
-        })
+
+
 
     }
 
@@ -178,10 +182,10 @@ class MatchItemBuyer extends Component {
     actionOffer(event){
 
 
+        event.preventDefault();
 
 
         alert(this.state.action)
-        event.preventDefault();
 
 
         const form = event.currentTarget;
@@ -194,7 +198,7 @@ class MatchItemBuyer extends Component {
 
         var data
 
-        if (this.state.action!== "counter") {
+        if (this.state.action !== "counter") {
 
              data = {
 
@@ -225,8 +229,6 @@ class MatchItemBuyer extends Component {
         console.log(data)
 
 
-        return;
-
         axios.post(baseUrl + "offer/stage",
            data
 
@@ -242,7 +244,7 @@ class MatchItemBuyer extends Component {
 
                 this.setState({
 
-                    editPopUp: true
+                    editPopUp: false
                 })
 
 
@@ -554,7 +556,16 @@ class MatchItemBuyer extends Component {
     }
 
     componentDidMount() {
+
         this.getOffer()
+
+        this.interval = setInterval(() => {
+
+            this.getOffer()
+
+
+        }, 5000);
+
     }
 
 
@@ -722,7 +733,7 @@ class MatchItemBuyer extends Component {
                         </div>
 
 
-                        <form onSubmit={this.actionMatch}>
+                        <form onSubmit={this.actionOffer}>
 
                             <div className={"row justify-content-center"}>
 

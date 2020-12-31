@@ -465,7 +465,7 @@ class ItemDetail extends Component {
                 </div>
 
 
-                         {this.state.matches.length>0 &&
+                         {this.state.matches&&this.state.matches.length>0 &&
                          <>
 
 

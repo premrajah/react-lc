@@ -10,7 +10,7 @@ import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
 
 
-class MatchItem extends Component {
+class MatchItemOld extends Component {
 
 
     constructor(props) {
@@ -475,7 +475,7 @@ class MatchItem extends Component {
 
 
                 </div>
-                <div className={"col-10 pl-3 content-box-listing"}>
+                <div className={"col-5 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
@@ -483,7 +483,255 @@ class MatchItem extends Component {
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org._id}</p>
 
                 </div>
+                <div style={{ textAlign: "right" }} className={"col-5"}>
 
+                    {this.props.item.match.stage==="created" &&  this.props.item.listing.org._id == this.props.userDetail.orgId &&
+                    <div className={"row"}>
+
+                        <div className="col-auto">
+
+                            <button  onClick={this.acceptMatch} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                Accept
+                            </button>
+
+                        </div>
+                        <div className="col-auto">
+
+                            <button onClick={this.rejectMatch} type="button"
+                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                Reject
+
+                            </button>
+                        </div>
+
+
+                    </div>}
+
+
+
+                    {(this.props.item.match.stage==="accepted" ||this.props.item.match.stage==="offered")&&  this.props.item.listing.org._id != this.props.userDetail.orgId &&
+
+
+
+                    <div className={"row"}>
+
+                        <div className="col-auto">
+
+                            <button  onClick={this.showPopUp} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                Make an Offer
+                            </button>
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                    }
+
+
+                </div>
+
+
+                { this.props.item.match.stage==="offered"  && <div className={"row"}>
+
+
+                    {this.state.offers.map((item, index) =>
+
+                        <div className="col-12">
+
+
+                            {index + 1}. <span style={{ fontSize: "18px" }}
+                                               className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
+                            Offer Stage: {item.offer.stage}
+
+
+
+                            {/*<button data-id={item.offer._key} onClick={this.acceptOffer.bind(this)} type="button"*/}
+                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                {/*Accept*/}
+                            {/*</button>*/}
+
+
+
+
+                            <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
+                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                Counter offer
+                            </button>
+
+
+
+                            {item.next_action.is_mine &&
+
+                             <>
+
+                            {item.next_action.possible_actions.map((actionItem) =>
+
+                            <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
+                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                {actionItem}
+                            </button>
+
+                            )}
+
+                            </>
+                            }
+
+
+
+
+                        </div>
+                    )
+
+                    }
+                </div>}
+
+
+                { this.props.item.match.stage==="converted"  && <div className={"row"}>
+
+
+                    {this.state.offers.map((item, index) =>
+
+                        <div className="col-12">
+
+
+                            {index + 1}. <span style={{ fontSize: "18px" }}
+                                               className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
+                            Offer Stage: {item.offer.stage}
+
+
+                        </div>
+                    )
+
+                    }
+                </div>}
+
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.editPopUp} onHide={this.editPopUp} animation={false}>
+
+                    <ModalBody>
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-4 text-center"}>
+                                <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
+                            </div>
+                        </div>
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold"}>Counter offer</p>
+                                <p>Make an offer which he/she cannot refuse</p>
+                            </div>
+                        </div>
+
+
+
+
+                        <form onSubmit={this.counterOfferMatch}>
+                            <div className={"row justify-content-center"}>
+
+                                <div className={"col-12 text-center"}>
+                                    <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
+
+                                </div>
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <p onClick={this.editPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+
+
+                        {/*</>*/}
+
+
+                        {/*}*/}
+                    </ModalBody>
+
+                </Modal>
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
+
+                    <ModalBody>
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-4 text-center"}>
+                                <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
+                            </div>
+                        </div>
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold"}>Make an offer</p>
+                                <p>Make an offer which he/she cannot refuse</p>
+                            </div>
+                        </div>
+
+
+
+
+                        <form onSubmit={this.makeOfferMatch}>
+                            <div className={"row justify-content-center"}>
+
+                                <div className={"col-12 text-center"}>
+                                    <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
+
+                                </div>
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <p onClick={this.showPopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+
+
+                        {/*</>*/}
+
+
+                        {/*}*/}
+                    </ModalBody>
+
+                </Modal>
 
 
 
@@ -531,5 +779,5 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(MatchItem);
+)(MatchItemOld);
 

@@ -24,7 +24,8 @@ class MatchItemSeller extends Component {
             nextIntervalFlag: false,
             offers:[],
             editPopUp:false,
-            editOfferKey:null
+            editOfferKey:null,
+            action:null
         }
 
         this.acceptMatch=this.acceptMatch.bind(this)
@@ -32,7 +33,7 @@ class MatchItemSeller extends Component {
         this.makeOfferMatch=this.makeOfferMatch.bind(this)
         this.showPopUp=this.showPopUp.bind(this)
         this.editPopUp=this.editPopUp.bind(this)
-
+        this.actionOffer=this.actionOffer.bind(this)
         this.getOffer=this.getOffer.bind(this)
 
 
@@ -44,14 +45,26 @@ class MatchItemSeller extends Component {
     editPopUp(event) {
 
 
-
-        this.setState({
-
-            editOfferKey: event.currentTarget.dataset.id
-        })
         this.setState({
             editPopUp: !this.state.editPopUp
         })
+
+        this.setState({
+
+            editOfferKey: event.currentTarget.dataset.id,
+            action:event.currentTarget.dataset.action
+        })
+
+
+
+        //
+        // this.setState({
+        //
+        //     editOfferKey: event.currentTarget.dataset.id
+        // })
+        // this.setState({
+        //     editPopUp: !this.state.editPopUp
+        // })
 
     }
 
@@ -176,13 +189,58 @@ class MatchItemSeller extends Component {
 
     actionOffer(event){
 
+
+        event.preventDefault();
+
+
+        // alert(this.state.action)
+
+
+        const form = event.currentTarget;
+
+        const formData = new FormData(event.target);
+
+        const price = formData.get("price")
+
+
+
+        var data
+
+        if (this.state.action !== "counter") {
+
+            data = {
+
+                "offer_id": this.state.editOfferKey,
+                "new_stage": this.state.action
+
+            }
+
+        }else {
+
+
+            data = {
+
+                "offer_id": this.state.editOfferKey,
+                "new_stage": "counter",
+                "new_price": {
+                    "value": price,
+                    "currency": "gbp"
+                }
+
+
+            }
+
+        }
+
+
+
+        console.log(data)
+
+
         axios.post(baseUrl + "offer/stage",
-            {
+            data
 
-                "offer_id": event.currentTarget.dataset.id,
-                "new_stage": "accepted"
-
-            }, {
+            , {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
                 }
@@ -194,18 +252,15 @@ class MatchItemSeller extends Component {
 
                 this.setState({
 
-                    showPopUp: true
+                    editPopUp: false
                 })
-
-
-
 
 
             }).catch(error => {
 
 
 
-            console.log("loop accept error found ")
+            console.log("offer action error ")
 
             console.log(error)
             // this.setState({
@@ -449,7 +504,18 @@ class MatchItemSeller extends Component {
     }
 
     componentDidMount() {
+
         this.getOffer()
+
+        this.interval = setInterval(() => {
+
+            this.getOffer()
+
+
+        }, 5000);
+
+
+
     }
 
 
@@ -463,15 +529,17 @@ class MatchItemSeller extends Component {
 
 
 
-            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
                 <div className={"col-5 pl-3 content-box-listing"}>
 
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
-                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>*/}
-                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>*/}
                     <p style={{ fontSize: "18px" }} className="text-bold mb-1">From: {this.props.item.search.org._id}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Search:{this.props.item.search.search.name}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
+
+
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-7"}>
@@ -549,28 +617,29 @@ class MatchItemSeller extends Component {
 
 
 
-                            <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
-                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Counter offer
-                            </button>
+                            {/*<button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"*/}
+                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                {/*Counter offer*/}
+                            {/*</button>*/}
 
 
 
                             {item.next_action.is_mine &&
 
-                             <>
+                            <>
 
-                            {item.next_action.possible_actions.map((actionItem) =>
+                                {item.next_action.possible_actions.map((actionItem) =>
 
-                            <button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"
-                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                {actionItem}
-                            </button>
+                                    <button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"
+                                            className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                        {actionItem}
+                                    </button>
 
-                            )}
+                                )}
 
                             </>
                             }
+
 
 
 
@@ -618,21 +687,22 @@ class MatchItemSeller extends Component {
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Counter offer</p>
+                                <p className={"text-bold"}>{this.state.action} offer</p>
                                 <p>Make an offer which he/she cannot refuse</p>
                             </div>
                         </div>
 
 
+                        <form onSubmit={this.actionOffer}>
 
-
-                        <form onSubmit={this.counterOfferMatch}>
                             <div className={"row justify-content-center"}>
 
-                                <div className={"col-12 text-center"}>
+                                {this.state.action==="counter" && <div className={"col-12 text-center"}>
+
+
                                     <TextField id="outlined-basic" label="Offer Price" variant="outlined" fullWidth={true} name={"price"} type={"number"} />
 
-                                </div>
+                                </div>}
                                 <div className={"col-12 text-center mt-2"}>
 
 
@@ -653,12 +723,6 @@ class MatchItemSeller extends Component {
                             </div>
                         </form>
 
-
-
-                        {/*</>*/}
-
-
-                        {/*}*/}
                     </ModalBody>
 
                 </Modal>

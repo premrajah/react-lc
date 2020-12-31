@@ -68,8 +68,6 @@ class ItemDetailMatch extends Component {
     requestMatch() {
 
 
-        console.log("create loop")
-
 
         axios.post(baseUrl + "match",
             {
@@ -92,6 +90,7 @@ class ItemDetailMatch extends Component {
                     matchExist:true
                 })
 
+                this.checkMatch()
 
 
 
@@ -530,9 +529,10 @@ class ItemDetailMatch extends Component {
                                                 Request A Match
 
                                             </button>
-                                        </div>:
+                                        </div>:<>
 
-                                            <Link to={"/matched/"+this.state.match.match._key} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>View Match</Link>
+                                            {this.state.match&& <Link to={"/matched/"+this.state.match.match._key} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>View Match</Link>}
+                                            </>
 
                                         }
                                     </div>

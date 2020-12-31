@@ -52,6 +52,8 @@ class ResourceItem extends Component {
     componentDidMount() {
 
 
+        console.log(" recieved item")
+        console.log(this.props.item)
 
     }
     
@@ -68,7 +70,37 @@ class ResourceItem extends Component {
 
 
 
-            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+<>
+
+            {this.props.item.listing.listing?
+
+                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+
+
+                    <div className={"col-2"}>
+
+                        {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+
+                    </div>
+                    <div className={"col-8 pl-3 content-box-listing"}>
+
+                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">Title: {this.props.item.listing.listing.name}</p>
+                        <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.listing.product.name} </>}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.listing.state} / {this.props.item.listing.listing.volume} {this.props.item.listing.listing.units}</p>
+
+
+                    </div>
+                    <div style={{ textAlign: "right" }} className={"col-2"}>
+                        <p className={"green-text"}>
+                            {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
+                        </p>
+                    </div>
+
+
+
+                </div>:
+
+                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
                 <div className={"col-2"}>
@@ -78,8 +110,8 @@ class ResourceItem extends Component {
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>
 
-                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">Title: {this.props.item.listing.name}</p>
-                      <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.product.name} </>}</p>
+                    <p style={{ fontSize: "18px" }} className=" mb-1 list-title">Title: {this.props.item.listing.name}</p>
+                    <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.product.name} </>}</p>
 
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.state} / {this.props.item.listing.volume} {this.props.item.listing.units}</p>
 
@@ -94,6 +126,10 @@ class ResourceItem extends Component {
 
 
             </div>
+            }
+
+
+            </>
 
         );
     }

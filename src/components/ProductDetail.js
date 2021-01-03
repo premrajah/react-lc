@@ -41,8 +41,8 @@ class ProductDetail extends Component {
         }
 
 
-        this.slug = props.match.params.slug
-        this.search = props.match.params.search
+        // this.slug = props.match.params.slug
+        // this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
         this.getSite = this.getSite.bind(this)

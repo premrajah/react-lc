@@ -57,7 +57,6 @@ class ProductView extends Component {
         this.getResources = this.getResources.bind(this)
         this.getSite = this.getSite.bind(this)
         this.getSubProducts=this.getSubProducts.bind(this)
-
         this.getMatches=this.getMatches.bind(this)
 
     }
@@ -383,7 +382,6 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
     };
 };
 export default connect(

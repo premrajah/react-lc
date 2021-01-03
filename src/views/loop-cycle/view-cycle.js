@@ -923,13 +923,24 @@ class ViewCycle extends Component {
                         <Toolbar>
                                 <div className="container ">
 
-
-                                    {this.state.item.next_action.is_mine &&
-
                                     <div className="row  justify-content-center search-container "
                                          style={{ margin: "auto" }}>
 
 
+                                    {this.state.item.cycle.stage==="progress"&& (this.state.item.receiver._id === this.props.userDetail.orgId||this.state.item.sender._id === this.props.userDetail.orgId) &&
+                                    <div className="col-auto">
+
+                                        <button onClick={this.showStep} type="button"
+                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                            Add Step
+
+                                        </button>
+                                    </div>}
+
+
+
+                                    {this.state.item.next_action.is_mine &&
 
 
                                     <div className="col-12 text-center">
@@ -947,13 +958,13 @@ class ViewCycle extends Component {
                                      </>
                                         )}
                                     </div>
-                                    </div>
+
 
                                     }
 
 
 
-
+                                    </div>
 
 
                                     {this.state.item.steps.map((item)=>

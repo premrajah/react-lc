@@ -952,46 +952,45 @@ class ViewCycle extends Component {
                                                 <Typography>
                                                     Owner: {item.owner_org_id}
                                                 </Typography>
-                                                <Typography>
-                                                {this.state.item.steps.map((item)=>
 
-                                                    <>
-
-                                                        {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
-                                                        <div className="row justify-content-center text-center">
-                                                            <div className="col-2 text-right">
-                                                                <a className=" mr-2 btn btn-link text-blue text-bold mt-2 mb-2 ">{item.step.name}:</a>
-
-                                                            </div>
-                                                            <div className="col-10 text-left">
-
-                                                                {item.nextAction.possible_actions.map((actionName) =>
-                                                                    <>
-                                                                        <button data-id={item.step._key} data-action={actionName}
-                                                                                onClick={this.updateStep.bind(this)}
-                                                                                type="button"
-                                                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
-
-                                                                            Mark step as {actionName}
-                                                                        </button>
-
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                        }
-
-                                                    </>
-
-                                                )}
-                                                </Typography>
 
                                             </TimelineContent>
                                         </TimelineItem>
 
-                                        {index>0&&
-                                        <TimelineConnector />
-                                        }
+                                        <div className={"listing-row-border"}>
+
+                                            <>
+
+                                                {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
+                                                <div className="row justify-content-center text-center">
+                                                    <div className="col-2 text-right">
+                                                        <a className=" mr-2 btn btn-link text-blue text-bold mt-2 mb-2 ">{item.step.name}:</a>
+
+                                                    </div>
+                                                    <div className="col-10 text-left">
+
+                                                        {item.nextAction.possible_actions.map((actionName) =>
+                                                            <>
+                                                                <button data-id={item.step._key} data-action={actionName}
+                                                                        onClick={this.updateStep.bind(this)}
+                                                                        type="button"
+                                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                                                    Mark step as {actionName}
+                                                                </button>
+
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                }
+
+                                            </>
+
+
+                                        </div>
+
+
                                     </>
 
                                 )}
@@ -1034,7 +1033,7 @@ class ViewCycle extends Component {
                                     {this.state.item.next_action.is_mine &&
 
 
-                                    <div className="col-12 text-center">
+                                    <div className="col-auto text-center">
 
 
                                         {this.state.item.next_action.possible_actions.map((item) =>
@@ -1235,16 +1234,11 @@ class ViewCycle extends Component {
                            centered show={this.state.showPopUpStep} onHide={this.showPopUpStep} animation={false}>
 
                         <ModalBody>
-                            <div className={"row justify-content-center"}>
-                                <div className={"col-4 text-center"}>
-                                    <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
-                                </div>
-                            </div>
+
 
                             <div className={"row justify-content-center"}>
                                 <div className={"col-10 text-center"}>
                                     <p className={"text-bold"}>Create Step</p>
-                                    <p>   Enter Details</p>
                                 </div>
                             </div>
 

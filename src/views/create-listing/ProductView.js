@@ -66,13 +66,16 @@ class ProductView extends Component {
     getSubProducts() {
 
 
+
+
+        alert("sub products exist")
         var subProductIds = this.state.item.sub_products
 
         for (var i = 0; i < subProductIds.length; i++) {
 
 
 
-            axios.get(baseUrl + "product/" + subProductIds[i]._key,
+            axios.get(baseUrl + "product/" + subProductIds[i]._key+"/expand",
                 {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -100,7 +103,7 @@ class ProductView extends Component {
 
                     },
                     (error) => {
-                        console.log("resource error", error)
+                        console.log("product error", error)
                     }
                 );
 
@@ -209,18 +212,18 @@ class ProductView extends Component {
         )
             .then((response) => {
 
-                    var response = response.data;
+                    var responseAll = response.data;
                     console.log("product detail")
-                    console.log(response)
+                    console.log(responseAll)
 
                     this.setState({
 
-                        item: response.data
+                        item: responseAll.data
                     })
 
 
-                    // this.getSite()
-                    this.getSubProducts()
+
+
 
 
                 },
@@ -231,39 +234,7 @@ class ProductView extends Component {
 
     }
 
-    getProduct() {
 
-
-        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data;
-                    console.log("product detail")
-                    console.log(response)
-
-                    this.setState({
-
-                        item: response.data
-                    })
-
-
-                    // this.getSite()
-                    this.getSubProducts()
-
-
-                },
-                (error) => {
-                    console.log("listing error", error)
-                }
-            );
-
-    }
 
 
 

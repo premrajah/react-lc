@@ -26,6 +26,14 @@ export const loading = () => {
 };
 
 
+
+export const showLoading = (val) => {
+    return {
+        type: "SHOW_LOADING", value: val
+    };
+};
+
+
 export const loginFailed = (val) => {
     return {
         type: "LOGIN_FAILED", value: val

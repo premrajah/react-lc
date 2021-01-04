@@ -235,6 +235,13 @@ const reducer = (state = initialState, action) => {
             break;
 
 
+
+        case "SHOW_LOADING":
+
+            newState.loading = action.value;
+
+            break;
+
         case "LOADING":
             newState.loading = true;
             break;

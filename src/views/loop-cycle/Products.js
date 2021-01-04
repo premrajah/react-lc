@@ -52,6 +52,9 @@ class Products extends Component {
     }
     getProducts() {
 
+
+
+        this.props.showLoading(true)
         axios.get(baseUrl + "product",
             {
                 headers: {
@@ -60,6 +63,9 @@ class Products extends Component {
             }
         )
             .then((response) => {
+
+
+                    this.props.showLoading(false)
 
                 var responseAll = response.data.data;
                 console.log("resource response")
@@ -77,6 +83,8 @@ class Products extends Component {
                     // var status = error.response.status
                     console.log("prouduct  error")
                     console.log(error)
+
+                    this.props.showLoading(false)
 
                 }
             );
@@ -123,7 +131,7 @@ class Products extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage">
+                <div className="wrapper ">
 
                     <HeaderDark />
 
@@ -191,9 +199,6 @@ class Products extends Component {
                         )}
 
 
-
-
-
                     </div>
 
 
@@ -211,7 +216,9 @@ class Products extends Component {
 
                                     <div className="col-auto">
 
-                                        <button onClick={this.showProductSelection}><p className={"green-text bottom-bar-text"}> Create New Product </p></button>
+                                        <a onClick={this.showProductSelection}>
+                                            <p className={"green-text bottom-bar-text"}> Create New Product </p>
+                                        </a>
 
 
                                     </div>
@@ -282,22 +289,19 @@ const mapStateToProps = state => {
         loginPopUpStatus: state.loginPopUpStatus,
 
 
+
     };
 };
 
 const mapDispachToProps = dispatch => {
     return {
 
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
-
-
-
+        showLoading: (data) => dispatch(actionCreator.showLoading(data)),
 
     };
 };

@@ -262,11 +262,15 @@ class ProductDetail extends Component {
 
     componentWillMount() {
 
+
+        if (this.props.item.sub_products.length>0)
+            this.getSubProducts()
+
     }
 
     componentDidMount() {
 
-        this.getResources()
+        // this.getResources()
 
         // this.getMatches()
 

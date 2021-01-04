@@ -179,43 +179,35 @@ class ProductExpandItem extends Component {
 
                 <>
                     {this.state.product &&
-                <ProductItemNew item={this.state.product}/>}
-
-
+                   <ProductItemNew item={this.state.product}/>}
 
                     {this.state.subProducts.length> 0 &&
                     <div className="row no-gutters  justify-content-left">
 
                     <div className="col-12">
+
                         <h6 className={"blue-text text-heading"}>Sub Products</h6>
 
                     </div>
                     </div>
-                        }
+                    }
 
-                    <div className="row no-gutters  justify-content-left">
+                    <div className="row no-gutters justify-content-left">
 
                         <p style={{ margin: "10px 0" }} className={"green-text forgot-password-link text-mute small"}>
 
-
-                            <span onClick={this.showProductSelection} >Add Sub Product  </span>
+                            <span onClick={this.showProductSelection} >Add Sub Product</span>
 
                         </p>
-
-
-
                     </div>
 
                     {this.state.subProducts.map((item)=>
+
                     <ProductItemNew item={item}/>
+
                         )}
 
-
-
-
                 </>
-
-
 
         );
     }

@@ -2955,3 +2955,8 @@ a.page-link:hover{
 	box-shadow:none;
 	border: 1px solid #eee;
 }
+
+.fixed-top{
+
+	/*top:4px;*/
+}

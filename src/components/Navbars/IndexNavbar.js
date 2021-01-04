@@ -12,6 +12,9 @@ import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 class ComponentsNavbar extends React.Component {
     constructor(props) {
@@ -96,8 +99,15 @@ class ComponentsNavbar extends React.Component {
 
     render() {
         return (
-            <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
-                <div className={"container"}>
+
+
+            <>
+
+
+
+                    <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
+
+
                     <Nav className={"justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
                             <div className="row no-gutters">
@@ -282,11 +292,43 @@ class ComponentsNavbar extends React.Component {
                             </button>
                         </NavItem>
                     </Nav>
-                </div>
-            </Navbar>
+                        {this.props.loading && <LinearIndeterminate/>}
+
+
+                    </Navbar>
+
+
+                </>
         );
     }
 }
+
+
+
+function LinearIndeterminate() {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+
+            <LinearProgress   style={{backgroundColor:"#00adee"}}  />
+
+        </div>
+    );
+}
+
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        right:0,
+        position: "absolute",
+        top:"100%",
+        width: '100%',
+        '& > * + *': {
+            marginTop: theme.spacing(2),
+        },
+    },
+}));
 
 const mapStateToProps = (state) => {
     return {

@@ -20,6 +20,8 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import CheckIcon from '@material-ui/icons/Check';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CircleProgress from '../../components/Circle'
 
 class CycleDetail extends Component {
 
@@ -60,18 +62,30 @@ class CycleDetail extends Component {
                 <Sidebar />
                 <div className="wrapper accountpage loop-cycle-page">
 
-                    <HeaderWhiteBack history={this.props.history} heading={"View Cycle"} />
 
 
                     <div className="container  pt-3 pb-3">
+
+                        <div className="row">
+                            <div className="col-4">
+                            </div>
+                            <div className="col-4 text-center">
+
+                                <CircleProgress stage={this.props.loop.cycle.stage} />
+
+                            </div>
+                            <div className="col-4">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div className="container  pt-3 pb-3">
+
                         <LoopAccordion loop={this.props.loop} />
-                    </div>
-
-
-                    <div className="container  pt-3 pb-3">
-                    <StatusTimeline  cycle={this.props.loop}/>
 
                     </div>
+
+
 
                 </div>
 
@@ -458,98 +472,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function StatusTimeline(props) {
 
 
-
-
-
-
-
-    return (
-        <>
-            {props.cycle.steps &&
-        <Timeline>
-
-            {props.cycle.steps.map((item,index)=>
-                <>
-                <TimelineItem>
-                    <TimelineOppositeContent>
-                        <Typography variant="h6" component="h1">
-                            {item.step.type}
-                        </Typography>
-                        <Typography>
-                            {item.step.stage}
-                        </Typography>
-                    </TimelineOppositeContent>
-                <TimelineSeparator>
-                    <TimelineDot style={{backgroundColor:"#27245C"}}>
-                        <CheckIcon  />
-                    </TimelineDot>
-                    
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Typography variant="h6" component="h1">
-                        {item.step.name}
-                    </Typography>
-                    <Typography>
-                        {item.step.description}
-                        </Typography>
-                    <Typography>
-                       Creator: {item.creator_org_id}
-                    </Typography>
-                    <Typography>
-                        Owner: {item.owner_org_id}
-                    </Typography>
-                    </TimelineContent>
-            </TimelineItem>
-
-            {index>0&&
-            <TimelineConnector />
-            }
-                </>
-
-            )}
-
-             </Timeline>}
-                </>
-    );
-}
-
-function BottomAppBar() {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
-                        <div className="col-auto">
-
-                            <button type="button" className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                Cancel Loop
-                            </button>
-
-                        </div>
-                        <div className="col-auto">
-
-                            <button type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                Select Provider
-
-                            </button>
-                        </div>
-                    </div>
-
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-
-
-}
 
 
 export default CycleDetail;

@@ -31,7 +31,6 @@ import CreateListingHome from "./views/create-listing/Home";
 import ListingForm from "./views/create-listing/ListingForm";
 import CreateListing from "./views/create-listing/create-listing";
 import SubProductView from "./views/create-listing/SubProductView";
-
 import ProductView from "./views/create-listing/ProductView";
 import ListForm from "./views/create-listing/ListForm";
 import ProductForm from "./views/create-listing/ProductForm";
@@ -43,7 +42,6 @@ import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browser-resources/index";
 import FindResources from "./views/browser-resources/FindResources";
-
 import MessageSeller from "./views/browser-resources/message-seller";
 import MakeOffer from "./views/browser-resources/make-offer";
 import ItemDetailMatch from "./views/create-search/ItemDetailMatch";
@@ -59,8 +57,6 @@ import CompanyInfo from "./views/account/CompanyInfo";
 import Address from "./views/account/Address";
 import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
-
-// import ProductForm from './views/create-listing/ProductForm'
 import ProductPopUp from './views/create-product/create-product-popup'
 
 
@@ -77,8 +73,6 @@ class App extends Component{
 
     componentWillMount(){
 
-        // this.props.logOut()
-
         this.props.loadUserDetail()
     }
 
@@ -94,6 +88,8 @@ class App extends Component{
             <>
                 <BrowserRouter>
                     <Switch>
+
+
                         <Route exact path="/" component={withRouter(Home)} />
                         <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
@@ -144,7 +140,6 @@ class App extends Component{
                     {(this.props.showLoginPopUp) && <LoginPopUp/>}
                     {(this.props.showProductPopUp) && <ProductPopUp />}
 
-                {/*</Router>*/}
                 </BrowserRouter>
             </>
         );

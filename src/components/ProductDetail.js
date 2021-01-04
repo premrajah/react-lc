@@ -37,7 +37,7 @@ class ProductDetail extends Component {
             nextIntervalFlag: false,
             item: null,
             showPopUp:false,
-            subProducts:[]
+            subProducts:[],
         }
 
 
@@ -45,9 +45,7 @@ class ProductDetail extends Component {
         // this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
-        this.getSite = this.getSite.bind(this)
         this.getSubProducts=this.getSubProducts.bind(this)
-
         this.getMatches=this.getMatches.bind(this)
 
     }
@@ -98,46 +96,6 @@ class ProductDetail extends Component {
     }
 
 
-
-
-    getSite() {
-
-
-        var siteKey = (this.props.item.site_id).replace("Site/","")
-
-        axios.get(baseUrl + "site/" +siteKey ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data.data;
-                    console.log("site response")
-                    console.log(response)
-
-                    this.setState({
-
-                        site: response
-
-                    })
-
-                },
-                (error) => {
-
-                    // var status = error.response.status
-                    console.log("site error")
-                    console.log(error)
-
-                }
-            );
-
-    }
-
-
-
     handleBack = () => {
         this.props.history.goBack()
     }
@@ -185,8 +143,6 @@ class ProductDetail extends Component {
 
     }
 
-
-
     getResources() {
 
 
@@ -209,7 +165,7 @@ class ProductDetail extends Component {
                     })
 
 
-                    // this.getSite()
+                    // this.getListing()
                     this.getSubProducts()
 
 
@@ -243,7 +199,7 @@ class ProductDetail extends Component {
                     })
 
 
-                    // this.getSite()
+                    // this.getListing()
                     this.getSubProducts()
 
 
@@ -256,14 +212,10 @@ class ProductDetail extends Component {
     }
 
 
-
-
-
-
     componentWillMount() {
 
 
-        if (this.props.item.sub_products.length>0)
+        if (this.props.item.sub_products&&this.props.item.sub_products.length>0)
             this.getSubProducts()
 
     }
@@ -298,10 +250,10 @@ class ProductDetail extends Component {
                                 </div>
 
                                 <div className="col-md-6 col-sm-12 col-xs-12 p-5">
-                                    {this.props.item.artifacts.length > 0 ?
+
+                                    {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
                                     <ImagesSlider images={this.props.item.artifacts} /> :
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
-
 
                                 </div>
 
@@ -310,10 +262,10 @@ class ProductDetail extends Component {
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                         <div className="col-12 mt-2">
+
                                             <h4 className={"blue-text text-heading"}>{this.props.item.product.name}
                                             </h4>
 
-                                            {/*<p>Posted By <span className={"green-text"}>{this.props.item.org_id}</span></p>*/}
                                         </div>
 
                                         <div className="col-12">
@@ -352,8 +304,6 @@ class ProductDetail extends Component {
                             </div>
                         </div>
                         <div className={"container "}>
-
-
                             <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
                                 <Tab eventKey="product" title="Product Info">
 
@@ -384,8 +334,8 @@ class ProductDetail extends Component {
                                     <div className="row  justify-content-start search-container  pb-4">
                                         <div className={"col-auto"}>
 
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Year Of Manufacturer</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item.product.year_of_making}</p>
                                         </div>
                                     </div>
 
@@ -405,7 +355,7 @@ class ProductDetail extends Component {
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.model} </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.model} </p>
 
 
                                         </div>
@@ -416,7 +366,7 @@ class ProductDetail extends Component {
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.serial} </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.serial} </p>
 
                                         </div>
                                     </div>
@@ -426,7 +376,7 @@ class ProductDetail extends Component {
 
                                         <div className={"col-auto"}>
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.brand} </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.brand} </p>
 
 
                                         </div>
@@ -463,41 +413,12 @@ class ProductDetail extends Component {
                                 </Tab>
 
                             </Tabs>
-
-
                             <div className="container  mt-4">
                                 <div className="row">
                                 </div>
                             </div>
-                            <div className="container mt-4 mb-5 pb-5 ">
-                                <div className="row no-gutters mb-5">
-                                    <div className="col-12 mb-4">
-                                        <h5 className="mb-1">About the seller</h5>
-                                    </div>
-                                    <div className="col-auto ">
-                                        <figure className="avatar avatar-60 border-0">
-
-                                        <span className={"word-user-sellor"}>
-                                            {this.props.item&&this.props.item.org.name&&this.props.item.org.name.substr(0,2)}
-                                       </span>
-
-                                        </figure>
-                                    </div>
-                                    <div className="col pl-2 align-self-center">
-                                        <div className="row no-gutters">
-                                            <div className="col-12">
-                                                <p style={{ fontSize: "18px" }} className=" ">{this.props.item.org_id}</p>
-                                                {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
 
                         </div>
-
 
 
                     </>

@@ -28,7 +28,15 @@ import moment from "moment/moment";
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-
+import Typography from '@material-ui/core/Typography';
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+import CheckIcon from '@material-ui/icons/Check';
 
 
 
@@ -901,14 +909,97 @@ class ViewCycle extends Component {
                 <>
                 <div className=" ">
 
-
-
-
                         <CycleDetail loop={this.state.item} />
 
 
-
                 </div>
+
+                    <div className="container  pt-3 pb-3">
+
+
+
+                        <>
+                            {this.state.item.steps &&
+                            <Timeline>
+
+                                {this.state.item.steps.map((item,index)=>
+                                    <>
+                                        <TimelineItem>
+                                            <TimelineOppositeContent>
+                                                <Typography variant="h6" component="h1">
+                                                    {item.step.type}
+                                                </Typography>
+                                                <Typography>
+                                                    {item.step.stage}
+                                                </Typography>
+                                            </TimelineOppositeContent>
+                                            <TimelineSeparator>
+                                                <TimelineDot style={{backgroundColor:"#27245C"}}>
+                                                    <CheckIcon  />
+                                                </TimelineDot>
+
+                                            </TimelineSeparator>
+                                            <TimelineContent>
+                                                <Typography variant="h6" component="h1">
+                                                    {item.step.name}
+                                                </Typography>
+                                                <Typography>
+                                                    {item.step.description}
+                                                </Typography>
+                                                <Typography>
+                                                    Creator: {item.creator_org_id}
+                                                </Typography>
+                                                <Typography>
+                                                    Owner: {item.owner_org_id}
+                                                </Typography>
+                                                <Typography>
+                                                {this.state.item.steps.map((item)=>
+
+                                                    <>
+
+                                                        {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
+                                                        <div className="row justify-content-center text-center">
+                                                            <div className="col-2 text-right">
+                                                                <a className=" mr-2 btn btn-link text-blue text-bold mt-2 mb-2 ">{item.step.name}:</a>
+
+                                                            </div>
+                                                            <div className="col-10 text-left">
+
+                                                                {item.nextAction.possible_actions.map((actionName) =>
+                                                                    <>
+                                                                        <button data-id={item.step._key} data-action={actionName}
+                                                                                onClick={this.updateStep.bind(this)}
+                                                                                type="button"
+                                                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                                                            Mark step as {actionName}
+                                                                        </button>
+
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        }
+
+                                                    </>
+
+                                                )}
+                                                </Typography>
+
+                                            </TimelineContent>
+                                        </TimelineItem>
+
+                                        {index>0&&
+                                        <TimelineConnector />
+                                        }
+                                    </>
+
+                                )}
+
+                            </Timeline>}
+                        </>
+
+                    </div>
 
 
 
@@ -967,37 +1058,7 @@ class ViewCycle extends Component {
                                     </div>
 
 
-                                    {this.state.item.steps.map((item)=>
 
-                                        <>
-
-                                            {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
-                                            <div className="row justify-content-center text-center">
-                                                <div className="col-2 text-right">
-                                                    <a className=" mr-2 btn btn-link text-blue text-bold mt-2 mb-2 ">{item.step.name}:</a>
-
-                                                </div>
-                                                <div className="col-10 text-left">
-
-                                                    {item.nextAction.possible_actions.map((actionName) =>
-                                                        <>
-                                                            <button data-id={item.step._key} data-action={actionName}
-                                                                    onClick={this.updateStep.bind(this)}
-                                                                    type="button"
-                                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
-
-                                                                Mark step as {actionName}
-                                                            </button>
-
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            }
-
-                                        </>
-
-                                    )}
 
                             </div>
 
@@ -1333,40 +1394,61 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar(props) {
-    const classes = useStyles();
+
+function StatusTimeline(props) {
 
     return (
-        <React.Fragment>
-            <CssBaseline />
+        <>
+            {props.cycle.steps &&
+            <Timeline>
 
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
-                        <div className="col-auto">
+                {props.cycle.steps.map((item,index)=>
+                    <>
+                        <TimelineItem>
+                            <TimelineOppositeContent>
+                                <Typography variant="h6" component="h1">
+                                    {item.step.type}
+                                </Typography>
+                                <Typography>
+                                    {item.step.stage}
+                                </Typography>
+                            </TimelineOppositeContent>
+                            <TimelineSeparator>
+                                <TimelineDot style={{backgroundColor:"#27245C"}}>
+                                    <CheckIcon  />
+                                </TimelineDot>
 
-                            <Link to={"/message-seller/" + props.slug} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Accept
-                            </Link>
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                <Typography variant="h6" component="h1">
+                                    {item.step.name}
+                                </Typography>
+                                <Typography>
+                                    {item.step.description}
+                                </Typography>
+                                <Typography>
+                                    Creator: {item.creator_org_id}
+                                </Typography>
+                                <Typography>
+                                    Owner: {item.owner_org_id}
+                                </Typography>
+                            </TimelineContent>
+                        </TimelineItem>
 
-                        </div>
-                        <div className="col-auto">
+                        {index>0&&
+                        <TimelineConnector />
+                        }
+                    </>
 
-                            <Link to={"/make-offer/" + props.slug} type="button"
-                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Reject
+                )}
 
-                            </Link>
-                        </div>
-                    </div>
-
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
+            </Timeline>}
+        </>
     );
-
-
 }
+
+
+
 
 
 const mapStateToProps = state => {

@@ -311,7 +311,7 @@ function LinearIndeterminate() {
     return (
         <div className={classes.root}>
 
-            <LinearProgress   style={{backgroundColor:"#00adee"}}  />
+            <LinearProgress   style={{backgroundColor:"#212529"}}  />
 
         </div>
     );

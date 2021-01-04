@@ -31,6 +31,8 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 
 import BusinessIcon from '@material-ui/icons/Business';
 import TextField from '@material-ui/core/TextField';
+import ProductDetail from '../../components/ProductDetail'
+import moment from "moment";
 
 
 class ItemCycleDetail extends Component {
@@ -46,7 +48,7 @@ class ItemCycleDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: {},
+            item: null,
             codeImg: null,
             searches: [],
             fields: {},
@@ -184,16 +186,11 @@ class ItemCycleDetail extends Component {
 
         }
 
-
     }
 
 
 
     loadSearches() {
-
-
-
-
 
 
     }
@@ -238,8 +235,6 @@ class ItemCycleDetail extends Component {
 
         console.log(url)
 
-        // baseUrl+"product/"+this.slug
-
 
         axios.get(url
             // {
@@ -250,18 +245,18 @@ class ItemCycleDetail extends Component {
         )
             .then((response) => {
 
-                var response = response.data;
-                console.log("qr code detail resource response ", response)
+                var responseData = response.data.data;
+                console.log("qr code detail resource response ", responseData)
 
 
                 this.setState({
 
-                    item: response.data
+                    item: responseData
                 })
 
-
-                this.loadSearches()
-                this.getQrCode()
+                //
+                // this.loadSearches()
+                // this.getQrCode()
 
             },
                 (error) => {
@@ -270,12 +265,10 @@ class ItemCycleDetail extends Component {
 
                     console.log("product detail  error ", error)
 
-
                 }
             );
 
     }
-
 
 
     componentWillMount() {
@@ -287,8 +280,6 @@ class ItemCycleDetail extends Component {
         this.getResources()
 
     }
-
-    intervalJasmineAnim
 
 
 
@@ -414,223 +405,28 @@ class ItemCycleDetail extends Component {
                         <div>
 
                             <div className="col-12 mt-5 mb-4" >
+
                                 <h3 className={"blue-text text-heading"}>Product Details
                                 </h3>
 
                             </div>
 
-                            <div className="col-12 mt-5 mb-4" >
 
-                                <img src={ProImg} alt="" />
-                            </div>
+                            {this.state.item &&
+                            <>
+                                <ProductDetail  item={this.state.item} />
 
-                        </div>
+                            </>
+                            }
 
-
-                        <div className="row justify-content-start pb-3 pt-4 ">
-
-
-
-                            <div className="col-12">
-                                <h3 className={"blue-text text-bold"}>{this.state.item.title}</h3>
-                            </div>
-
-                            <div className="col-12  pb-3 listing-row-border">
-                                <p>Manufactured by  By <span className={"green-text"}> {this.state.item.org_id}</span></p>
-                            </div>
-
-                            <div className="col-12 mt-3 pb-3 listing-row-border">
-                                <p>{this.state.item.description}</p>
-                            </div>
 
 
                         </div>
-
-
-
-                        <div className="container justify-content-start pb-4 pt-3 ">
-
-
-                            <div className="row justify-content-start pb-4 pt-3 ">
-                                <div className="col-auto">
-                                    <h5 className={"text-bold"}>Product Info
-                                </h5>
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className={"container"}>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                                {/*</div>*/}
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
-
-
-
-                                    {this.state.item.searches && this.state.item.searches.length > 0 &&
-                                        <>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.searches[0].tags} </p>
-                                            {/*<p style={{fontSize:"18px"}} className="  mb-1"></p>*/}
-                                        </>
-                                    }
-
-
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                                {/*</div>*/}
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.consumer&&this.state.item.consumer.org.id} </p>
-                                </div>
-                            </div>
-
-                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                            {/*/!*<div className={"col-1"}>*!/*/}
-                            {/*/!*<img className={"icon-about"} src={ListIcon} alt=""/>*!/*/}
-                            {/*/!*</div>*!/*/}
-                            {/*<div className={"col-auto"}>*/}
-
-                            {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Purpose</p>*/}
-                            {/*<p style={{fontSize:"18px"}} className="  mb-1">{this.state.item.purpose} </p>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                                {/*</div>*/}
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Date Of Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
-                                </div>
-                            </div>
-
-
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                                {/*</div>*/}
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Model Number</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">ECF1212 </p>
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                {/*<div className={"col-1"}>*/}
-                                {/*<img className={"icon-about"} src={ListIcon} alt=""/>*/}
-                                {/*</div>*/}
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Serial Number</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">1245780 </p>
-                                </div>
-                            </div>
-
-
-                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={AmountIcon} alt=""/>*/}
-                            {/*</div>*/}
-                            {/*<div className={"col-auto"}>*/}
-
-                            {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Amount</p>*/}
-                            {/*<p style={{fontSize:"18px"}} className="  mb-1"> {this.state.item.volume} {this.state.item.units}</p>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={StateIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.state} </p>
-                                </div>
-                            </div>
-
-                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
-                            {/*<div className={"col-1"}>*/}
-                            {/*<img className={"icon-about"} src={CalenderIcon} alt=""/>*/}
-                            {/*</div>*/}
-                            {/*<div className={"col-auto"}>*/}
-
-                            {/*<p style={{fontSize:"18px"}} className="text-mute text-gray-light mb-1">Required by </p>*/}
-                            {/*<p style={{fontSize:"18px"}} className="  mb-1">*/}
-                            {/*<Moment   unix  >*/}
-                            {/*{this.state.item.availableFrom}*/}
-                            {/*</Moment>*/}
-                            {/*</p>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={MarkerIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Delivery From</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>
-                                </div>
-                            </div>
-
-                            <div className="container container-divider">
-                                <div className="row">
-                                </div>
-                            </div>
-                            <div className="container mt-4 mb-5 pb-5 ">
-
-                                <div className="row no-gutters mb-5">
-                                    <div className="col-12 mb-4">
-                                        <h5 className="mb-1">About the seller  </h5>
-                                    </div>
-                                    <div className="col-auto ">
-                                        <figure className="avatar avatar-60 border-0">
-
-                                            <span className={"word-user word-user-sellor"}>
-                                             M
-                                            </span>
-
-                                        </figure>
-                                    </div>
-                                    <div className="col pl-2 align-self-center">
-                                        <div className="row no-gutters">
-                                            <div className="col-12">
-
-                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org && this.state.item.org.id}</p>
-                                                {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
 
                         <div className="row justify-content-start pb-3 pt-3 ">
 
                             <div className="col-12">
-                                <h5 className={"text-bold blue-text"}>Product Provenance (Illustration)</h5>
+                                <h5 className={"text-bold blue-text"}>Product Provenance </h5>
                             </div>
 
                             <div className="col-12">
@@ -645,20 +441,7 @@ class ItemCycleDetail extends Component {
 
 
 
-                        <CustomizedTimeline/>
-
-
-                        {/*<div className="row justify-content-center pb-3 pt-4 border-box">*/}
-
-                            {/*<div style={{ textAlign: "center" }} className="col-12">*/}
-
-
-                                {/*<img style={{ width: "90%" }} src={BottomDetail} alt="" />*/}
-
-                            {/*</div>*/}
-                        {/*</div>*/}
-
-
+                        {this.state.item && <CustomizedTimeline   item={this.state.item} />}
 
 
 
@@ -685,11 +468,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function CustomizedTimeline() {
+function CustomizedTimeline(props) {
     const classes = useStyles();
 
     return (
+
         <Timeline >
+
+            {props.item.transitions.map((item)=>
+
             <TimelineItem>
 
                 <TimelineSeparator>
@@ -701,60 +488,18 @@ function CustomizedTimeline() {
                 <TimelineContent>
                     <Paper elevation={0} className={classes.paper}>
                         <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                            Manufacturer
+                            {item._relation}: {item._to}
                         </Typography>
                         <Typography>
-                            <p className={"text-blue"}>Released Oct 16, 2019</p>
-
+                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
                         </Typography>
                     </Paper>
                 </TimelineContent>
             </TimelineItem>
-            <TimelineItem>
-                {/*<TimelineOppositeContent>*/}
-                {/*<Typography variant="body2" color="textSecondary">*/}
-                {/*10:00 am*/}
-                {/*</Typography>*/}
-                {/*</TimelineOppositeContent>*/}
-                <TimelineSeparator>
-                    <TimelineDot style={{ backgroundColor:"#05AD88" , width:"25px",height:"25px"}}>
-                        {/*<BusinessIcon />*/}
-                    </TimelineDot>
-                    <TimelineConnector style={{ backgroundColor:"#05AD88",height:"150px"}} />
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={0} className={classes.paper}>
-                        <Typography variant="h6" component="h1">
-                            Logistics
-                        </Typography>
-                        <Typography>
-                            <p className={"text-blue"}>Purchased Nov 7, 2019</p>
+
+            )}
 
 
-                        </Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
-            <TimelineItem>
-                <TimelineSeparator>
-                    <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}} >
-                        {/*<BusinessIcon />*/}
-                    </TimelineDot>
-                    {/*<TimelineConnector  />*/}
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={0} className={classes.paper}>
-                        <Typography variant="h6" component="h1">
-                            Consumer
-                        </Typography>
-                        <Typography>
-                            <p className={"text-blue"}>Purchased Nov 7, 2019 </p>
-
-
-                        </Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
 
         </Timeline>
     );

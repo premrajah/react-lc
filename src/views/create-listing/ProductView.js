@@ -16,16 +16,18 @@ import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import CalIcon from '@material-ui/icons/Today';
 import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import { baseUrl } from "../../Util/Constants";
+import { baseUrl, frontEndUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "../../components/ImagesSlider";
 import encodeUrl  from "encodeurl"
-import { Tabs,Tab } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from '../../components/ProductItemNew'
 import ProductDetail from '../../components/ProductDetail'
+import ResourceItem from '../create-search/ResourceItem'
+import { Tabs,Tab } from 'react-bootstrap';
+import SearchItem from '../loop-cycle/search-item'
 
 
 import MatchItem from '../../components/MatchItem'
@@ -47,7 +49,10 @@ class ProductView extends Component {
             nextIntervalFlag: false,
             item: null,
             showPopUp:false,
-            subProducts:[]
+            subProducts:[],
+            listingLinked:null,
+            searches:[]
+
         }
 
 
@@ -55,70 +60,27 @@ class ProductView extends Component {
         this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
-        this.getSite = this.getSite.bind(this)
-        this.getSubProducts=this.getSubProducts.bind(this)
+        this.getSearches = this.getSearches.bind(this)
+        this.getListing = this.getListing.bind(this)
         this.getMatches=this.getMatches.bind(this)
+        this.getQrCode=this.getQrCode.bind(this)
 
     }
 
 
+    getQrCode() {
 
-    getSubProducts() {
+        this.productQrCode = baseUrl+"product/"+this.slug+"/code?u=" + frontEndUrl + "product-cycle-detail";
 
-
-
-
-        alert("sub products exist")
-        var subProductIds = this.state.item.sub_products
-
-        for (var i = 0; i < subProductIds.length; i++) {
-
-
-
-            axios.get(baseUrl + "product/" + subProductIds[i]._key+"/expand",
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                        var responseAll = response.data;
-                        console.log("sub product response")
-                        console.log(responseAll)
-
-
-                        var subProducts = this.state.subProducts
-
-                        subProducts.push(responseAll.data)
-
-                        this.setState({
-
-                            subProducts: subProducts
-                        })
-
-
-
-
-                    },
-                    (error) => {
-                        console.log("product error", error)
-                    }
-                );
-
-        }
     }
 
 
+    getListing() {
 
 
-    getSite() {
+        // var siteKey = (this.props.item.site_id).replace("Site/","")
 
-
-        var siteKey = (this.state.item.site_id).replace("Site/","")
-
-        axios.get(baseUrl + "site/" +siteKey ,
+        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","") ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -127,13 +89,13 @@ class ProductView extends Component {
         )
             .then((response) => {
 
-                    var response = response.data.data;
-                    console.log("site response")
-                    console.log(response)
+                    var responseData = response.data.data;
+                    console.log("product listing response")
+                    console.log(responseData)
 
                     this.setState({
 
-                        site: response
+                        listingLinked: responseData
 
                     })
 
@@ -141,11 +103,58 @@ class ProductView extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("site error")
+                    console.log("product listing error")
                     console.log(error)
 
                 }
             );
+
+    }
+
+
+    getSearches() {
+
+
+        var searches = this.state.item.searches
+
+        for (var i = 0; i < searches.length; i++) {
+
+
+            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""),
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseData = response.data.data;
+                        console.log("product search response")
+                        console.log(responseData)
+
+                    var searches = this.state.searches
+
+                    searches.push(responseData)
+
+                        this.setState({
+
+                            searches: searches
+
+                        })
+
+                    },
+                    (error) => {
+
+                        // var status = error.response.status
+                        console.log("product search error")
+                        console.log(error)
+
+                    }
+                );
+
+
+        }
 
     }
 
@@ -222,6 +231,20 @@ class ProductView extends Component {
                     })
 
 
+                    if (responseAll.data.listing){
+
+                        this.getListing()
+
+                    }
+
+
+
+                    if (responseAll.data.searches.length>0){
+
+                        this.getSearches()
+
+                    }
+
 
 
 
@@ -247,6 +270,8 @@ class ProductView extends Component {
 
     componentDidMount() {
 
+
+        this.getQrCode()
         this.getResources()
 
         // this.getMatches()
@@ -272,11 +297,74 @@ class ProductView extends Component {
 
                     {this.state.item &&
                     <>
-                        <ProductDetail  item={this.state.item} />
 
+                        <ProductDetail  item={this.state.item} />
 
                     </>
                     }
+
+
+                    <div className={"container pb-5 mb-5"}>
+
+
+                        <div className="row justify-content-start pb-3 pt-3 ">
+
+                            <div className="col-12">
+                                <h5 className={"text-bold blue-text"}>Cycle Code</h5>
+                            </div>
+
+                            <div className="col-12">
+                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
+                                    Scan the QR code below to view this product
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div className="row justify-content-start pb-3 pt-4 border-box">
+
+                            <div className="col-12">
+
+
+                                <img src={this.productQrCode} alt="" />
+
+                                {this.state.item && <Link to={"/product-cycle-detail/" + this.state.item.product._key}> Go To Preview Page</Link>}
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div className={"container pb-5 mb-5"}>
+
+
+                        <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
+
+                            <Tab eventKey="product" title="Searches">
+
+
+                                {this.state.searches.map((item) =>
+
+                                    <SearchItem item={item} />
+
+                                )}
+
+                            </Tab>
+
+                            <Tab eventKey="profile" title="Listing">
+                                {this.state.listingLinked && <ResourceItem  item={this.state.listingLinked}/> }
+                            </Tab>
+
+                        </Tabs>
+
+
+
+                    </div>
+
+
 
                 </div>
 

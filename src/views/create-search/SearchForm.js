@@ -1680,7 +1680,7 @@
 
                                         <FormControl variant="outlined" className={classes.formControl}>
 
-                                            <InputLabel htmlFor="outlined-age-native-simple">Link a product</InputLabel>
+                                            <InputLabel htmlFor="outlined-age-native-simple">Link a product (Optional)</InputLabel>
                                             <Select
 
                                                 name= "product"
@@ -1707,7 +1707,7 @@
 
                                             <FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?
 
-                                                <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}>Create a new product</span>
+                                                <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>
 
                                             </FormHelperText>
                                         </FormControl>

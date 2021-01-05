@@ -1728,7 +1728,7 @@
 
 
                                     <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple">Deliver To (Site Address)</InputLabel>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
 
                                         <Select
                                             name={"deliver"}

@@ -1728,7 +1728,7 @@
 
 
                                     <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Deliver To (Site Address)</InputLabel>
 
                                         <Select
                                             name={"deliver"}
@@ -1758,7 +1758,7 @@
                                     {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
 
 
-                                    <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add new Site</p>
+                                    <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add New Site</p>
                                 </div>
 
 

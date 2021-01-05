@@ -1436,7 +1436,7 @@
                         <div className="container   pb-5 pt-5">
                             <div className="row no-gutters">
                                 <div className="col-auto">
-                                    <h3 className={"blue-text text-heading"}>The Basics
+                                    <h3 className={"blue-text text-heading"}>Create a Search
                                 </h3>
 
                                 </div>

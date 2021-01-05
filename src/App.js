@@ -170,16 +170,10 @@ const mapStateToProps = state => {
 
 const mapDispachToProps = dispatch => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         logOut: (data) => dispatch(actionCreator.logOut(data)),
-
-
-
-
     };
 };
 export default connect(

@@ -239,7 +239,7 @@ class ProductDetail extends Component {
         return (
             
                     <>
-                        <div className="container-fluid " style={{ padding: "0" }}>
+                        <div className="container" style={{ padding: "0" }}>
 
 
                             <div className="row no-gutters  justify-content-center">
@@ -249,7 +249,7 @@ class ProductDetail extends Component {
                                     <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
                                 </div>
 
-                                <div className="col-md-6 col-sm-12 col-xs-12 p-5">
+                                <div className="col-md-4 col-sm-12 col-xs-12 ">
 
                                     {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
                                     <ImagesSlider images={this.props.item.artifacts} /> :
@@ -257,7 +257,7 @@ class ProductDetail extends Component {
 
                                 </div>
 
-                                <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
+                                <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
 
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
@@ -303,11 +303,9 @@ class ProductDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className={"container "}>
+                        <div className={"container mt-4"}>
                             <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
                                 <Tab eventKey="product" title="Product Info">
-
-
 
                                     <div className="row  justify-content-start search-container  pb-4">
 

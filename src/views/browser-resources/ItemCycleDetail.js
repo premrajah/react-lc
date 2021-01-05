@@ -231,7 +231,7 @@ class ItemCycleDetail extends Component {
 
 
 
-        var url = baseUrl + "code/" + this.slug;
+        var url = baseUrl + "code/" + this.slug+"/expand";
 
         console.log(url)
 

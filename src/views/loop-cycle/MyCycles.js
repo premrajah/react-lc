@@ -36,6 +36,9 @@ class MyCycles extends Component {
 
     getCycles() {
 
+
+        this.props.showLoading(true)
+
         axios.get(baseUrl + "cycle/expand",
             {
                 headers: {
@@ -55,12 +58,18 @@ class MyCycles extends Component {
 
                 })
 
-            },
+                    this.props.showLoading(false)
+
+
+                },
                 (error) => {
 
                     // var status = error.response.status
                     console.log("cycles error")
                     console.log(error)
+
+                    this.props.showLoading(false)
+
 
                 }
             );
@@ -243,6 +252,8 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+
 
     };
 };

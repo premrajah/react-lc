@@ -28,6 +28,8 @@ import ProductDetail from '../../components/ProductDetail'
 import ResourceItem from '../create-search/ResourceItem'
 import { Tabs,Tab } from 'react-bootstrap';
 import SearchItem from '../loop-cycle/search-item'
+import QrCodeBg from '../../img/qr-code-bg.png';
+
 
 
 import MatchItem from '../../components/MatchItem'
@@ -274,8 +276,6 @@ class ProductView extends Component {
         this.getQrCode()
         this.getResources()
 
-        // this.getMatches()
-
     }
 
 
@@ -326,10 +326,15 @@ class ProductView extends Component {
 
                             <div className="col-12">
 
+                                <div className={"qr-code-container"}>
 
-                                <img src={this.productQrCode} alt="" />
+                                    <img className={"qr-code-bg"} src={QrCodeBg} alt="" />
+                                   <img className={"qr-code"} src={this.productQrCode} alt="" />
 
-                                {this.state.item && <Link to={"/product-cycle-detail/" + this.state.item.product._key}> Go To Preview Page</Link>}
+                                </div>
+
+                                <p className={"green-text"}>  {this.state.item && <Link to={"/product-cycle-detail/" + this.state.item.product._key}> View product provenance</Link>}</p>
+
 
 
                             </div>

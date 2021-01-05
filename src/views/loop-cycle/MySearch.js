@@ -65,6 +65,9 @@ class MySearch extends Component {
 
         console.log(url)
 
+        this.props.showLoading(true)
+
+
 
         axios.get(url,
             {
@@ -84,12 +87,18 @@ class MySearch extends Component {
                     items: response
                 })
 
-            },
+                    this.props.showLoading(false)
+
+
+                },
                 (error) => {
 
                     // var status = error.response.status
                     console.log("my searches error")
                     console.log(error)
+
+                    this.props.showLoading(false)
+
 
                 }
             );
@@ -289,6 +298,7 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showLoading: (data) => dispatch(actionCreator.showLoading(data)),
 
 
 

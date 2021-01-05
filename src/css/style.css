@@ -1200,7 +1200,7 @@ h5 {
 .nav-tabs .nav-link {
 	padding: 15px 15px 25px 15px;
 	border: 0;
-	border-radius: 15px 15px 0 0;
+	/*border-radius: 15px 15px 0 0;*/
 }
 
 
@@ -2959,4 +2959,29 @@ a.page-link:hover{
 .fixed-top{
 
 	/*top:4px;*/
+}
+
+.qr-code-container{
+
+	width: 300px;
+	height: 300px;
+
+}
+.qr-code-container>img{
+	position: absolute;
+}
+.qr-code{
+	height: 150px;
+	width:150px;
+	top: 75px;
+	left: 90px;
+	transform: rotate(45deg);
+	z-index: 1;
+
+}
+.qr-code-bg{
+
+	height: 300px;
+	width: auto;
+	z-index: 1000;
 }

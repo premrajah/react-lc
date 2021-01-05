@@ -958,7 +958,6 @@ class ViewCycle extends Component {
                                         </TimelineItem>
 
                                         <div className={"listing-row-border"}>
-
                                             <>
 
                                                 {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&

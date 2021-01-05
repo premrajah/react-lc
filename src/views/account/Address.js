@@ -357,7 +357,7 @@ class PaymentMethod extends Component {
                         <div className="row mb-3">
                             <div className="col-12">
                                 <div className="list-group main-menu accountpage-list">
-                                    <p onClick={this.toggleSite} className="green-link-url" style={{cursor: 'pointer'}}>Add new address</p>
+                                    <p onClick={this.toggleSite} className="green-link-url" style={{cursor: 'pointer'}}>Add New Address</p>
                                 </div>
                             </div>
                         </div>

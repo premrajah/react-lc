@@ -1100,7 +1100,7 @@ class ListForm extends Component {
 
                                         <FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?
 
-                                            <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}>Create a new product</span>
+                                            <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>
 
                                         </FormHelperText>
                                     </FormControl>
@@ -1180,7 +1180,7 @@ class ListForm extends Component {
                                             {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
 
 
-                                            <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add new Site</p>
+                                            <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add New Site</p>
 
                                         </div>
 

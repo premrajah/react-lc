@@ -82,7 +82,7 @@ class ResourceItem extends Component {
                         {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                     </div>
-                    <div className={"col-8 pl-3 content-box-listing"}>
+                    <div className={"col-6 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">Title: {this.props.item.listing.listing.name}</p>
                         <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.listing.product.name} </>}</p>
@@ -90,9 +90,24 @@ class ResourceItem extends Component {
 
 
                     </div>
-                    <div style={{ textAlign: "right" }} className={"col-2"}>
+                    {/*<div style={{ textAlign: "right" }} className={"col-2"}>*/}
+                        {/*<p className={"green-text"}>*/}
+                            {/*{this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}*/}
+                        {/*</p>*/}
+                    {/*</div>*/}
+
+
+                    <div className={"col-2 text-right"}>
                         <p className={"green-text"}>
-                            {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
+                            {/*{this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}*/}
+
+                            {/*{this.props.item.listing.listing.price.value ? <> {this.props.item.listing.listing.price.value}</> : "Free"}*/}
+                        </p>
+                    </div>
+
+                    <div className={"col-2 text-right"}>
+                        <p className={"green-text"}>
+                            {this.props.item.listing.listing.stage}
                         </p>
                     </div>
 
@@ -108,7 +123,7 @@ class ResourceItem extends Component {
                     {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                 </div>
-                <div className={"col-8 pl-3 content-box-listing"}>
+                <div className={"col-6 pl-3 content-box-listing"}>
 
                     <p style={{ fontSize: "18px" }} className=" mb-1 list-title">Title: {this.props.item.listing.name}</p>
                     <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.product.name} </>}</p>
@@ -117,15 +132,15 @@ class ResourceItem extends Component {
 
 
                 </div>
-                <div className={"col-1"}>
+                <div className={"col-2 text-right"}>
                     <p className={"green-text"}>
-                        {this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}
+                        {/*{this.props.item.listing.price.value ? <> {this.props.item.listing.price.value}</> : "Free"}*/}
                     </p>
                 </div>
 
-                    <div className={"col-1"}>
+                    <div className={"col-2 text-right"}>
                         <p className={"green-text"}>
-                            TODO: Status
+                            {this.props.item.listing.stage}
                         </p>
                     </div>
 

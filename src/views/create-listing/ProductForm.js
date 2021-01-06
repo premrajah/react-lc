@@ -45,6 +45,8 @@ import ControlImg from '../../img/components/Control_Panel_1450.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import MomentUtils from '@date-io/moment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+
 
 import {
     MuiPickersUtilsProvider,
@@ -931,7 +933,9 @@ class ProductForm extends Component {
 
 
                                 <div className="col-12 mb-3">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>What resources do you need to make this product?</div>
+                                    <div className={"row"}>
+                                    <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                    <div className={"custom-label text-bold text-blue mb-3"}>Resource Category</div>
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                         <Select
@@ -952,70 +956,76 @@ class ProductForm extends Component {
                                             )}
 
                                         </Select>
+
+                                        <FormHelperText>What resources do you need to make this product? </FormHelperText>
+
                                     </FormControl>
                                     {this.state.errorsProduct["category"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["category"]}</span>}
+                                    </div>
 
+
+                                        <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                            <div className={"custom-label text-bold text-blue mb-3"}>Type</div>
+                                            <FormControl  disabled={this.state.subCategories.length>0?false:true} variant="outlined" className={classes.formControl}>
+                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                <Select
+                                                    native
+                                                    onChange={this.loadStates.bind(this, "type")}
+                                                    inputProps={{
+                                                        name: 'type',
+                                                        id: 'outlined-age-native-simple',
+                                                    }}
+                                                >
+
+                                                    <option value={null}>Select</option>
+
+                                                    {this.state.subCategories.map((item) =>
+
+                                                        <option value={item.name}>{item.name}</option>
+
+                                                    )}
+
+                                                </Select>
+                                            </FormControl>
+                                            {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
+
+
+                                        </div>
+
+
+                                        <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                            <div className={"custom-label text-bold text-blue mb-3"}>State</div>
+                                            <FormControl disabled={this.state.states.length>0?false:true} variant="outlined" className={classes.formControl}>
+                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                <Select
+                                                    native
+                                                    onChange={this.handleChangeProduct.bind(this, "state")}
+                                                    inputProps={{
+                                                        name: 'state',
+                                                        id: 'outlined-age-native-simple',
+                                                    }}
+                                                >
+
+                                                    <option value={null}>Select</option>
+
+                                                    {this.state.states.map((item) =>
+
+                                                        <option value={item}>{item}</option>
+
+                                                    )}
+
+                                                </Select>
+                                            </FormControl>
+                                            {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
+
+                                        </div>
+                                    </div>
 
                                 </div>
 
-                                {this.state.subCategories.length>0 && <div className="col-12 mb-3">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>Select Type</div>
-                                    <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                        <Select
-                                            native
-                                            onChange={this.loadStates.bind(this, "type")}
-                                            inputProps={{
-                                                name: 'type',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
-
-                                            <option value={null}>Select</option>
-
-                                            {this.state.subCategories.map((item) =>
-
-                                                <option value={item.name}>{item.name}</option>
-
-                                            )}
-
-                                        </Select>
-                                    </FormControl>
-                                    {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
-
-
-                                </div>}
 
 
 
-                                {this.state.states.length>0 &&
-                                <div className="col-12 mb-3">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>Select State</div>
-                                    <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                        <Select
-                                            native
-                                            onChange={this.handleChangeProduct.bind(this, "state")}
-                                            inputProps={{
-                                                name: 'state',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
-
-                                            <option value={null}>Select</option>
-
-                                            {this.state.states.map((item) =>
-
-                                                <option value={item}>{item}</option>
-
-                                            )}
-
-                                        </Select>
-                                    </FormControl>
-                                    {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
-
-
-                                </div>}
 
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>

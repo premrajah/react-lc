@@ -440,7 +440,6 @@ class ItemCycleDetail extends Component {
 
 
 
-
                         {this.state.item && <CustomizedTimeline   item={this.state.item} />}
 
 
@@ -488,7 +487,7 @@ function CustomizedTimeline(props) {
                 <TimelineContent>
                     <Paper elevation={0} className={classes.paper}>
                         <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                            {item._relation}: {item._to}
+                            {item.org.name}, {item.org.description}
                         </Typography>
                         <Typography>
                             <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>

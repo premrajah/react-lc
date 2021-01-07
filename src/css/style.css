@@ -2991,3 +2991,13 @@ a.page-link:hover{
 
 	margin-left: 0!important;
 }
+
+
+.stick-left-box{
+
+	position: -webkit-sticky!important;
+	position: sticky!important;
+	top: 100px;
+	/*padding: 50px;*/
+	font-size: 20px;
+}

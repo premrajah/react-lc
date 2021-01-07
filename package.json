@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "date-fns": "^2.16.1",
     "history": "^5.0.0",
+    "jspdf": "^2.2.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
     "react": "^16.14.0",

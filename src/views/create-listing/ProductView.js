@@ -31,7 +31,7 @@ import SearchItem from '../loop-cycle/search-item'
 import QrCodeBg from '../../img/qr-code-bg.png';
 
 import NotFound from "../NotFound/index"
-
+import jspdf from 'jspdf'
 
 import MatchItem from '../../components/MatchItem'
 
@@ -177,6 +177,16 @@ class ProductView extends Component {
         this.props.history.go(+1)
     }
 
+    handlePrintPdf = (productItem, productQRCode) => {
+
+        const { _key, name} = productItem;
+        if(!_key || !productQRCode) { return; }
+
+        const pdf = new jspdf()
+        pdf.text(name, 20, 30);
+        pdf.addImage(productQRCode, 'PNG', 20, 40, 80, 80)
+        pdf.save(`Loopcycle_Code_${name}_${_key}.pdf`)
+    }
 
 
     getMatches() {
@@ -338,16 +348,20 @@ class ProductView extends Component {
 
                                     <div className="col-12">
 
-                                        <div className={"qr-code-container"}>
+                                        {this.state.item ?
+                                            <div className={"qr-code-container"}>
 
-                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                            <img className={"qr-code"} src={this.productQrCode} alt=""/>
+                                                <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
+                                                <img className={"qr-code"} src={this.productQrCode} alt=""/>
 
-                                        </div>
+                                            </div> :
+                                        null}
 
                                         <p className={"green-text"}>  {this.state.item &&
-                                        <Link to={"/product-cycle-detail/" + this.state.item.product._key}> View product
-                                            provenance</Link>}</p>
+                                        <Link className={"mr-3"} to={"/product-cycle-detail/" + this.state.item.product._key}> View product
+                                            provenance</Link>}
+                                            {this.state.item ? <Link onClick={() => this.handlePrintPdf(this.state.item.product, this.productQrCode)}>Print PDF</Link> : null}
+                                        </p>
 
 
                                     </div>

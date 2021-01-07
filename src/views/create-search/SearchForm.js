@@ -1434,16 +1434,9 @@
                     <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
 
                         <div className="container   pb-5 pt-5">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <h5 className={"blue-text text-heading"}>Create Search
-                                    </h5>
-
-                                </div>
-                            </div>
                             <div className="row no-gutters mt-3">
                                 <div className="col-auto">
-                                    <h3 className={"blue-text text-heading"}>The Basics
+                                    <h3 className={"blue-text text-heading"}>Create a Search
                                 </h3>
 
                                 </div>

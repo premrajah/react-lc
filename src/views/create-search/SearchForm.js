@@ -1440,7 +1440,7 @@
                                         <div className={"custom-label text-bold text-blue mb-1"}>Title</div>
 
 
-                                        <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                        <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} placeholder={"Title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                         {this.state.errors["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["title"]}</span>}
 
 
@@ -1450,7 +1450,7 @@
                                         <div className={"custom-label text-bold text-blue mb-1"}>Description</div>
 
 
-                                        <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} id="outlined-basic"  multiline
+                                        <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} placeholder={"Search description"} id="outlined-basic"  multiline
                                             rows={4} variant="outlined" fullWidth={true} />
                                         {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
 

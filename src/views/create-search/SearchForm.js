@@ -1926,7 +1926,7 @@
                             <div className="row justify-content-center pb-2 pt-4 ">
 
                                 <div className="col-auto">
-                                    <h4 className={"blue-text text-heading text-bold"}>Success!
+                                    <h4 className={"green-text text-heading text-bold"}>Success!
                                     </h4>
 
                                 </div>

@@ -30,6 +30,7 @@ import { Tabs,Tab } from 'react-bootstrap';
 import SearchItem from '../loop-cycle/search-item'
 import QrCodeBg from '../../img/qr-code-bg.png';
 
+import NotFound from "../NotFound/index"
 
 
 import MatchItem from '../../components/MatchItem'
@@ -53,7 +54,9 @@ class ProductView extends Component {
             showPopUp:false,
             subProducts:[],
             listingLinked:null,
-            searches:[]
+            searches:[],
+            notFound:false
+
 
         }
 
@@ -107,6 +110,9 @@ class ProductView extends Component {
                     // var status = error.response.status
                     console.log("product listing error")
                     console.log(error)
+
+
+
 
                 }
             );
@@ -248,12 +254,14 @@ class ProductView extends Component {
                     }
 
 
-
-
-
                 },
                 (error) => {
                     console.log("listing error", error)
+
+                    this.setState({
+
+                        notFound: true
+                    })
                 }
             );
 
@@ -295,79 +303,86 @@ class ProductView extends Component {
                     <HeaderDark />
 
 
-                    {this.state.item &&
-                    <>
+                    {this.state.notFound ? <NotFound/> :
 
-                        <ProductDetail  item={this.state.item} />
+                        <>
 
-                    </>
-                    }
+                            {this.state.item &&
+                            <>
+
+                                <ProductDetail item={this.state.item}/>
+
+                            </>
+                            }
 
 
-                    <div className={"container pb-5 mb-5"}>
+                            <div className={"container pb-5 mb-5"}>
 
 
-                        <div className="row justify-content-start pb-3 pt-3 ">
+                                <div className="row justify-content-start pb-3 pt-3 ">
 
-                            <div className="col-12">
-                                <h5 className={"text-bold blue-text"}>Cycle Code</h5>
-                            </div>
+                                    <div className="col-12">
+                                        <h5 className={"text-bold blue-text"}>Cycle Code</h5>
+                                    </div>
 
-                            <div className="col-12">
-                                <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
-                                    Scan the QR code below to view this product
-                                </p>
+                                    <div className="col-12">
+                                        <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
+                                            Scan the QR code below to view this product
+                                        </p>
 
-                            </div>
-
-                        </div>
-
-                        <div className="row justify-content-start pb-3 pt-4 border-box">
-
-                            <div className="col-12">
-
-                                <div className={"qr-code-container"}>
-
-                                    <img className={"qr-code-bg"} src={QrCodeBg} alt="" />
-                                   <img className={"qr-code"} src={this.productQrCode} alt="" />
+                                    </div>
 
                                 </div>
 
-                                <p className={"green-text"}>  {this.state.item && <Link to={"/product-cycle-detail/" + this.state.item.product._key}> View product provenance</Link>}</p>
+                                <div className="row justify-content-start pb-3 pt-4 border-box">
 
+                                    <div className="col-12">
+
+                                        <div className={"qr-code-container"}>
+
+                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
+                                            <img className={"qr-code"} src={this.productQrCode} alt=""/>
+
+                                        </div>
+
+                                        <p className={"green-text"}>  {this.state.item &&
+                                        <Link to={"/product-cycle-detail/" + this.state.item.product._key}> View product
+                                            provenance</Link>}</p>
+
+
+                                    </div>
+                                </div>
 
 
                             </div>
-                        </div>
+
+                            <div className={"container pb-5 mb-5"}>
 
 
-                    </div>
+                                <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
 
-                    <div className={"container pb-5 mb-5"}>
-
-
-                        <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
-
-                            <Tab eventKey="product" title="Searches">
+                                    <Tab eventKey="product" title="Searches">
 
 
-                                {this.state.searches.map((item) =>
+                                        {this.state.searches.map((item) =>
 
-                                    <SearchItem item={item} />
+                                            <SearchItem item={item}/>
+                                        )}
 
-                                )}
+                                    </Tab>
 
-                            </Tab>
+                                    <Tab eventKey="profile" title="Listing">
+                                        {this.state.listingLinked && <ResourceItem item={this.state.listingLinked}/>}
+                                    </Tab>
 
-                            <Tab eventKey="profile" title="Listing">
-                                {this.state.listingLinked && <ResourceItem  item={this.state.listingLinked}/> }
-                            </Tab>
-
-                        </Tabs>
-
+                                </Tabs>
 
 
-                    </div>
+                            </div>
+
+
+                        </>
+                    }
 
 
 

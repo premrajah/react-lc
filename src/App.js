@@ -59,6 +59,7 @@ import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
 import ProductPopUp from './views/create-product/create-product-popup'
 
+import NotFound from "./views/NotFound/index"
 
 
 var hist = createBrowserHistory();
@@ -133,6 +134,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
+                        <Route  component={NotFound} />
 
 
                     </Switch>

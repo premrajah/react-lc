@@ -37,6 +37,7 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import CheckIcon from '@material-ui/icons/Check';
+import NotFound from "../NotFound/index"
 
 
 
@@ -66,6 +67,7 @@ class ViewCycle extends Component {
             orgs:[],
             stepStages: ["created" , "accepted" ,"progress",  "completed", "confirmed"],
             steps: ["transport" , "processing" ,"cleaning"],
+            notFound:false
         }
 
         this.slug = props.match.params.slug
@@ -821,6 +823,11 @@ class ViewCycle extends Component {
 
                 console.log(error)
 
+                this.setState({
+
+                    notFound: true
+                })
+
 
             }
         );
@@ -905,6 +912,12 @@ class ViewCycle extends Component {
 
                 <Sidebar />
                 <HeaderDark />
+
+
+                {this.state.notFound?<NotFound/>:
+
+                    <>
+
                 {this.state.item &&
                 <>
                 <div className=" ">
@@ -1345,6 +1358,9 @@ class ViewCycle extends Component {
 
                 </>
                 }
+
+
+                </>}
 
 
             </div>

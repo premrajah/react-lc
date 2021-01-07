@@ -36,6 +36,8 @@
     import Sidebar from '../menu/Sidebar'
     import MomentUtils from '@date-io/moment';
     import moment from 'moment';
+    import NotFound from "../NotFound/index"
+
 
     import {
         MuiPickersUtilsProvider,
@@ -111,7 +113,9 @@
                 site: {},
                 dateRequiredBy: null,
                 dateRequiredFrom:null,
-                matchesCount:0
+                matchesCount:0,
+                notFound:false
+
 
 
             }
@@ -277,6 +281,11 @@
                     },
                     (error) => {
                         console.log("search resource error", error)
+
+                        this.setState({
+
+                            notFound: true
+                        })
                     }
                 );
 
@@ -627,34 +636,16 @@
                     <Sidebar />
                     <HeaderDark />
 
+
+                    {this.state.notFound?<NotFound/>:
+
+                        <>
+
                     <div className="container pt-4 p-2 mt-5 ">
                     </div>
 
                         {this.state.createSearchData &&
                             <>
-                                {/*<div className="container  pt-3 pb-3">*/}
-
-                                    {/*<div className="row no-gutters">*/}
-                                        {/*<div className="col-auto" style={{ margin: "auto" }}>*/}
-
-                                            {/*<NavigateBefore style={{ fontSize: 32 }} />*/}
-                                        {/*</div>*/}
-
-                                        {/*<div className="col text-center blue-text" style={{ margin: "auto" }}>*/}
-                                            {/*<p>View Search </p>*/}
-                                        {/*</div>*/}
-
-                                        {/*<div className="col-auto">*/}
-
-                                            {/*<button className="btn   btn-link text-dark menu-btn">*/}
-                                                {/*<Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />*/}
-
-                                            {/*</button>*/}
-                                        {/*</div>*/}
-
-
-                                    {/*</div>*/}
-                                {/*</div>*/}
 
 
                                 <div className="container ">
@@ -829,6 +820,7 @@
                         </React.Fragment>}
 
 
+                        </>}
 
                 </>
 

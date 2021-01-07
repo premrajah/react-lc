@@ -166,6 +166,12 @@ class ItemDetail extends Component {
             },
                 (error) => {
                     console.log("listing error", error)
+
+
+                    this.setState({
+
+                        notFound: true
+                    })
                 }
             );
 
@@ -284,14 +290,20 @@ class ItemDetail extends Component {
         const classesBottom = withStyles();
 
         return (
-            // {this.state.notFound?
+
+
 
                 <div>
                 <Sidebar />
+
                 <div className="accountpage">
 
                     <HeaderDark />
 
+
+                    {this.state.notFound?<NotFound/>:
+
+                        <>
 
                     {this.state.item &&
                     <>
@@ -577,10 +589,13 @@ class ItemDetail extends Component {
 
                     </>
                     }
+                    </>}
 
                 </div>
 
-            </div>
+               </div>
+
+
         );
     }
 }

@@ -48,14 +48,10 @@ import ProductForm from './ProductForm'
 import SubProductView from './SubProductView'
 import ProductView from './ProductView'
 import FormHelperText from '@material-ui/core/FormHelperText';
-
 import MomentUtils from '@date-io/moment';
 import ProductItem from '../../components/ProductItemNew'
 import ProductExpandItem from '../../components/ProductExpandItem'
 import ItemDetailPreview from '../../components/ItemDetailPreview'
-
-
-
 
 import {
     MuiPickersUtilsProvider,
@@ -544,10 +540,7 @@ class ListForm extends Component {
     }
 
 
-
         createListing() {
-
-
 
 
             var data = {}
@@ -1047,16 +1040,19 @@ class ListForm extends Component {
                         <div onSubmit={this.createListing} className={"mb-5"}>
                             <div className="row no-gutters justify-content-center mt-5">
                                 <div className="col-12">
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Title</div>
 
-                                    <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} id="outlined-basic" label="Title" variant="outlined" fullWidth={true} />
+                                    <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                     {this.state.errors["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["title"]}</span>}
 
 
                                 </div>
 
                                 <div className="col-12 mt-4">
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Description</div>
 
-                                    <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} id="outlined-basic" label="Description" multiline
+
+                                    <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} id="outlined-basic"  multiline
                                         rows={4} variant="outlined" fullWidth={true} />
                                     {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
 
@@ -1067,14 +1063,16 @@ class ListForm extends Component {
                                     <div className="row ">
 
                                 <div className="col-md-12 col-sm-6 col-xs-12 ">
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Link a product</div>
+
 
                                     <FormControl variant="outlined" className={classes.formControl}>
 
-                                        <InputLabel htmlFor="outlined-age-native-simple">Link a product</InputLabel>
+
                                         <Select
 
                                             name= "product"
-                                            label={"Link a product"}
+                                            // label={"Link a product"}
                                             native
                                             onChange={this.handleChange.bind(this, "product")}
                                             inputProps={{
@@ -1104,8 +1102,6 @@ class ListForm extends Component {
 
                                         </FormHelperText>
                                     </FormControl>
-
-
 
 
                                     {this.state.productSelected&&
@@ -1151,8 +1147,11 @@ class ListForm extends Component {
 
                                         <div className="col-md-12 col-sm-6 col-xs-12 ">
 
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Located At</div>
+
+
                                             <FormControl variant="outlined" className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple">Located At</InputLabel>
+                                                {/*<InputLabel htmlFor="outlined-age-native-simple">Located At</InputLabel>*/}
                                                 <Select
                                                     name={"deliver"}
                                                     native
@@ -1199,13 +1198,15 @@ class ListForm extends Component {
 
                                     <div className="row ">
                                         <div className="col-6 ">
+                                            <div className={"custom-label text-bold text-blue "}>Required From</div>
+
 
 
                                             <MuiPickersUtilsProvider utils={MomentUtils}>
 
                                                 <DatePicker
                                                     minDate={new Date()}
-                                                    label="Required By"
+                                                    // label="Required By"
                                                     inputVariant="outlined"
                                                     variant={"outlined"}
                                                     margin="normal"
@@ -1220,11 +1221,13 @@ class ListForm extends Component {
 
                                         </div>
                                         <div className="col-6 ">
+                                            <div className={"custom-label text-bold text-blue "}>Required By</div>
+
 
                                             <MuiPickersUtilsProvider utils={MomentUtils}>
 
                                                 <DatePicker minDate={this.state.startDate?this.state.startDate:new Date()}
-                                                            label="Required By"
+                                                            // label="Required By"
                                                             inputVariant="outlined"
                                                             variant={"outlined"}
                                                             margin="normal"
@@ -1255,16 +1258,17 @@ class ListForm extends Component {
 
                                                 <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
 
-                                                    <p>Price</p>
+                                                    <div className={"custom-label text-bold text-blue "}>Price</div>
+
                                                 </div>
 
-                                                <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
+                                                <div  className="col-md-12 col-sm-12 col-xs-12 mb-3">
                                                     <button onClick={this.toggleSale} className={!this.state.free ? "col-12 btn-select-free green-bg" : "btn-select-free"}>For Sale</button>
 
                                                     <button onClick={this.toggleFree} className={this.state.free ? "col-12 btn-select-free green-bg" : "btn-select-free"}>Free</button>
                                                 </div>
 
-                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                                <div style={{paddingLeft:"0"}} className="col-md-12 col-sm-12 col-xs-12 ">
 
                                                     {!this.state.free &&
 

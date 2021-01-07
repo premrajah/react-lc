@@ -73,12 +73,12 @@ class ItemDetailPreview extends Component {
 
                             <div className="row no-gutters  justify-content-center">
 
-                                <div className="floating-back-icon" style={{ margin: "auto" }}>
+                                {/*<div className="floating-back-icon" style={{ margin: "auto" }}>*/}
 
-                                    <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
-                                </div>
+                                    {/*<NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />*/}
+                                {/*</div>*/}
 
-                                <div className="col-md-6 col-sm-12 col-xs-12 p-5">
+                                <div className="col-md-4 col-sm-12 col-xs-12 p-5">
                                     {/*{this.state.item.images.length > 0 ?*/}
                                     {/*<ImagesSlider images={this.state.item.images} /> :*/}
                                     {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
@@ -87,7 +87,7 @@ class ItemDetailPreview extends Component {
 
                                 </div>
 
-                                <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
+                                <div className={"col-md-8 col-sm-12 col-xs-12 p-5"}>
 
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
@@ -134,7 +134,11 @@ class ItemDetailPreview extends Component {
                         </div>
 
                         <div className={"container"}>
-                        <ProductExpandItem productId={this.props.fields["product"]}/>
+                            <div className="row  justify-content-start search-container  pb-4">
+
+                            <ProductExpandItem productId={this.props.fields["product"]}/>
+
+                            </div>
 
                         </div>
 

@@ -133,10 +133,13 @@ const reducer = (state = initialState, action) => {
             // alert("product loaded")
 
             newState.productList = action.value
+            newState.loading = false;
 
             console.log("product list loaded ")
 
             console.log(action.value)
+
+
 
 
             break;

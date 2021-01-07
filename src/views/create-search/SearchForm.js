@@ -398,7 +398,7 @@
                     "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime(),
                 },
                 "site_id": this.state.siteSelected,
-                "product_id":this.state.productSelected
+                // "product_id":this.state.productSelected
 
 
             }
@@ -1150,7 +1150,7 @@
 
                 })
 
-                alert(e.target.value)
+                // alert(e.target.value)
 
             }
 
@@ -1428,7 +1428,7 @@
                     <Sidebar />
                     <HeaderDark />
 
-                    <div className="container pt-4 p-2 mt-5 ">
+                    <div className="container pt-4 p-2 mt-3 ">
                     </div>
 
                     <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
@@ -1436,7 +1436,14 @@
                         <div className="container   pb-5 pt-5">
                             <div className="row no-gutters">
                                 <div className="col-auto">
-                                    <h3 className={"blue-text text-heading"}>Create a Search
+                                    <h5 className={"blue-text text-heading"}>Create Search
+                                    </h5>
+
+                                </div>
+                            </div>
+                            <div className="row no-gutters mt-3">
+                                <div className="col-auto">
+                                    <h3 className={"blue-text text-heading"}>The Basics
                                 </h3>
 
                                 </div>
@@ -1447,15 +1454,21 @@
                                 <div className="row no-gutters justify-content-center mt-5">
                                     <div className="col-12">
 
-                                        <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} id="outlined-basic" label="Title" variant="outlined" fullWidth={true} />
+
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Title</div>
+
+
+                                        <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                         {this.state.errors["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["title"]}</span>}
 
 
                                     </div>
 
                                     <div className="col-12 mt-4">
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Description</div>
 
-                                        <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} id="outlined-basic" label="Description" multiline
+
+                                        <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} id="outlined-basic"  multiline
                                             rows={4} variant="outlined" fullWidth={true} />
                                         {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
 
@@ -1463,6 +1476,9 @@
 
                                     </div>
                                     <div className="col-12 mt-4" onClick={this.selectCategory}>
+
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Resource Category</div>
+
 
                                         <div onClick={this.selectCategory} className={"dummy-text-field"}>
 
@@ -1531,7 +1547,7 @@
 
                     <div className={this.state.active === 1 ? "" : "d-none"}>
 
-                        <div className="container mb-2  pt-2 pb-2">
+                        <div className="container mb-2  pt-5 pb-2">
 
                             <div className="row no-gutters">
                                 <div className="col-10">
@@ -1666,8 +1682,17 @@
                     <div className={this.state.active === 4 ? "" : "d-none"}>
 
 
-                        <div className="container  search-container pb-5 pt-5 mb-5">
+                        <div className="container pt-4  pl-2 mt-3 mb-5 pb-5">
+
                             <div className="row no-gutters">
+                                <div className="col-auto">
+                                    <h5 className={"blue-text text-heading"}>Create Search
+                                    </h5>
+
+                                </div>
+                            </div>
+
+                            <div className="row no-gutters mt-3">
                                 <div className="col-auto">
                                     <h3 className={"blue-text text-heading"}>Add Details
                                     </h3>
@@ -1675,16 +1700,17 @@
                                 </div>
                             </div>
                             <div className="row no-gutters justify-content-center mt-5">
-                                <div  className="col-12 mb-3">
+                                <div  className="col-12 mb-2">
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Link a product (Optional)</div>
 
 
                                         <FormControl variant="outlined" className={classes.formControl}>
 
-                                            <InputLabel htmlFor="outlined-age-native-simple">Link a product (Optional)</InputLabel>
+                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Link a product (Optional)</InputLabel>*/}
                                             <Select
 
                                                 name= "product"
-                                                label={"Link a product"}
+                                                // label={"Link a product"}
                                                 native
                                                 onChange={this.handleChange.bind(this, "product")}
                                                 inputProps={{
@@ -1695,7 +1721,9 @@
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productList.map((item) =>
+                                                {/*{this.props.productList.map((item) =>*/}
+                                                {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
+
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
 
@@ -1723,17 +1751,18 @@
 
 
                                 </div>
-                                <div className="col-12 mb-3">
+                                <div className="col-12 mb-2">
 
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Deliver To</div>
 
 
                                     <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
+                                        {/*<InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>*/}
 
                                         <Select
                                             name={"deliver"}
                                             native
-                                            label="Deliver To"
+                                            // label="Deliver To"
                                             onChange={this.handleChange.bind(this, "deliver")}
 
                                             inputProps={{
@@ -1758,11 +1787,15 @@
                                     {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
 
 
-                                    <p style={{ margin: "10px 0" }} onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add New Site</p>
+                                    <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
                                 </div>
 
 
-                                <div className="col-12 mb-3">
+                                <div className="col-12 mb-2">
+
+
+                                    <div className={"custom-label text-bold text-blue "}>Required From</div>
+
 
 
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -1772,7 +1805,7 @@
                                                     variant={"outlined"}
                                                     margin="normal"
                                                     id="date-picker-dialog"
-                                                    label="Required From"
+                                                    // label="Required From"
                                                     format="DD/MM/yyyy"
                                                     value={this.state.dateRequiredFrom} onChange={this.handleChangeDateStartDate.bind(this)} />
 
@@ -1784,13 +1817,14 @@
 
                                 </div>
 
-                                <div className="col-12 mb-3">
+                                <div className="col-12 mb-2">
+                                    <div className={"custom-label text-bold text-blue "}>Required By</div>
 
 
                                 <MuiPickersUtilsProvider utils={MomentUtils}>
 
                                     <DatePicker minDate={this.state.dateRequiredFrom?this.state.dateRequiredFrom:new Date()}
-                                                label="Required By"
+                                                // label="Required By"
                                                  inputVariant="outlined"
                                                   variant={"outlined"}
                                                   margin="normal"
@@ -1904,21 +1938,21 @@
 
                     <div className={this.state.active === 6 ? "" : "d-none"}>
 
-                        <div className="container  pt-3 pb-5 mb-5">
+                        {/*<div className="container  pt-3 pb-5 mb-5">*/}
 
-                            <div className="row no-gutters justify-content-end">
+                            {/*<div className="row no-gutters justify-content-end">*/}
 
-                                <div className="col-auto">
+                                {/*<div className="col-auto">*/}
 
-                                    <button className="btn   btn-link text-dark menu-btn">
-                                        <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
+                                    {/*<button className="btn   btn-link text-dark menu-btn">*/}
+                                        {/*<Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />*/}
 
-                                    </button>
-                                </div>
+                                    {/*</button>*/}
+                                {/*</div>*/}
 
 
-                            </div>
-                        </div>
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
                         <div className="container   pb-4 pt-4">
@@ -2199,8 +2233,8 @@
                                     <div className="row no-gutters justify-content-center ">
 
 
-                                        <div className="col-12 mb-3">
-                                            <div className={"custom-label text-bold text-blue mb-3"}>What is the purpose of your new product?</div>
+                                        <div className="col-12 mb-2">
+                                            <div className={"custom-label text-bold text-blue mb-1"}>What is the purpose of your new product?</div>
                                             <FormControl variant="outlined" className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
@@ -2229,8 +2263,8 @@
                                         </div>
 
 
-                                        <div className="col-12 mb-3">
-                                            <div className={"custom-label text-bold text-blue mb-3"}>What resources do you need to make this product?</div>
+                                        <div className="col-12 mb-2">
+                                            <div className={"custom-label text-bold text-blue mb-1"}>What resources do you need to make this product?</div>
                                             <FormControl variant="outlined" className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
@@ -2257,7 +2291,7 @@
 
                                         </div>
                                         <div className="col-12 mt-4">
-                                            <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Give your product a title </div>
 
                                             <TextField id="outlined-basic" type={"text"} label="Title" variant="outlined" fullWidth={true} name={"title"} onChange={this.handleChangeProduct.bind(this, "title")} />
 
@@ -2266,7 +2300,7 @@
                                         </div>
 
                                         <div className="col-12 mt-4">
-                                            <div className={"custom-label text-bold text-blue mb-3"}>Give it a description</div>
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Give it a description</div>
 
                                             <TextField multiline
                                                 rows={4} type={"text"} id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"} onChange={this.handleChangeProduct.bind(this, "description")} />
@@ -2311,7 +2345,7 @@
                                         <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                                             <div className="col-auto">
-                                                {this.state.page > 1 && this.state.page < 3 && <button type="button" onClick={this.handleBack}
+                                                {this.state.page > 1 && this.state.page < 4 && <button type="button" onClick={this.handleBack}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                                     Back
 
@@ -2344,7 +2378,7 @@
 
 
                                                     <button onClick={this.goToSearchPage} type="button"
-                                                        className={this.state.nextBlueAddDetail ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
+                                                        className={"btn-next shadow-sm mr-2 btn btn-link blue-btn  mt-2 mb-2 "}>
                                                         View Search
 
                                         </button>

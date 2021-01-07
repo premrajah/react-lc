@@ -25,8 +25,8 @@ class  NotFound extends Component{
                         <div className="col-lg-8">
                             <h1>404</h1>
                             <h2>Oops! This Page Could Not Be Found</h2>
-                            <p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
-                            <Link to="/" className="mt-1 btn blue-btn    ">GO TO HOMEPAGE</Link>
+                            <p>Sorry but the page you are looking for does not exist, has been moved, name changed or is temporarily unavailable</p>
+                            <Link to="/" className="mt-1 btn blue-btn">HOME</Link>
                         </div>
 
                     </div>

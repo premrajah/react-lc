@@ -85,17 +85,17 @@ class Footer extends React.Component {
             <Col md="3">
               <Nav>
                 <NavItem>
-                  <NavLink to="/resources" tag={Link}>
+                  <NavLink to="/" tag={Link}>
                     <b>Resources</b>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/resources"} tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} tag={Link}>
                     Browse All
                         </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/create-search"} tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/my-search"} tag={Link}>
                     Search
                         </NavLink>
                 </NavItem>
@@ -105,7 +105,7 @@ class Footer extends React.Component {
                         </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/deliver-resources"} tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} tag={Link}>
                     Deliver
                   </NavLink>
                 </NavItem>
@@ -113,12 +113,20 @@ class Footer extends React.Component {
               </Nav>
             </Col>
             <Col md="3">
-              <NavItem>
-                <NavLink to="/profile-page" tag={Link}>
-                  <b>Connect</b>
-                </NavLink>
-              </NavItem>
               <div className="btn-wrapper profile">
+                <Button
+                    className="btn-icon btn-neutral btn-round btn-simple"
+                    color="default"
+                    href="https://www.linkedin.com/company/loopcycle"
+                    id="tooltip230450801"
+                    target="_blank"
+                >
+                  <i className="fab fa-linkedin"></i>
+                </Button>
+                <UncontrolledTooltip delay={0} target="tooltip230450801">
+                  Connect
+                </UncontrolledTooltip>
+
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
                   color="default"

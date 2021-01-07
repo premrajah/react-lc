@@ -185,6 +185,9 @@ class ProductView extends Component {
         const pdf = new jspdf()
         pdf.text(name, 20, 30);
         pdf.addImage(productQRCode, 'PNG', 20, 40, 80, 80)
+        pdf.addImage(productQRCode, 'PNG', 100, 60, 40, 40)
+        pdf.addImage(productQRCode, 'PNG', 150, 70, 20, 20)
+        pdf.textWithLink("Loopcycle.io", 20, 160, {url: 'https://loopcycle.io/'})
         pdf.save(`Loopcycle_Code_${name}_${_key}.pdf`)
     }
 

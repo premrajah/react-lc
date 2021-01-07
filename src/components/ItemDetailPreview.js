@@ -62,9 +62,6 @@ class ItemDetailPreview extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
-
-                <div className="accountpage">
 
 
                     <>
@@ -136,7 +133,7 @@ class ItemDetailPreview extends Component {
                         <div className={"container"}>
                             <div className="row  justify-content-start search-container  pb-4">
 
-                            <ProductExpandItem productId={this.props.fields["product"]}/>
+                            <ProductExpandItem hideAddAll={true} productId={this.props.fields["product"]}/>
 
                             </div>
 
@@ -194,12 +191,6 @@ class ItemDetailPreview extends Component {
 
                     </>
 
-
-                </div>
-
-
-
-            </div>
         );
     }
 }

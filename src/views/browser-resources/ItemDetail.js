@@ -26,6 +26,7 @@ import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
 import MatchItemSeller from '../../components/MatchItemSeller'
+import NotFound from "../NotFound/index"
 
 
 class ItemDetail extends Component {
@@ -44,7 +45,8 @@ class ItemDetail extends Component {
             nextIntervalFlag: false,
             item: null,
             showPopUp:false,
-            matches:[]
+            matches:[],
+            notFound:false
         }
 
 
@@ -282,8 +284,9 @@ class ItemDetail extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
+            // {this.state.notFound?
 
+                <div>
                 <Sidebar />
                 <div className="accountpage">
 
@@ -302,7 +305,7 @@ class ItemDetail extends Component {
                                 <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
                             </div>
 
-                            <div className="col-md-6 col-sm-12 col-xs-12 p-5">
+                            <div className="col-md-4 col-sm-12 col-xs-12 p-5">
                                 {/*{this.state.item.images.length > 0 ?*/}
                                     {/*<ImagesSlider images={this.state.item.images} /> :*/}
                                     {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
@@ -311,7 +314,7 @@ class ItemDetail extends Component {
 
                             </div>
 
-                            <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12 p-5"}>
 
                                 <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
@@ -365,9 +368,9 @@ class ItemDetail extends Component {
                     <div className={"col-auto"}>
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} ></p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>
+                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} > {this.state.item.listing.type}> {this.state.item.listing.state}</p>
+                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
+                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
                     </div>
                 </div>
 
@@ -377,16 +380,6 @@ class ItemDetail extends Component {
 
                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
                         <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
-                    </div>
-                </div>
-
-
-
-                <div className="row  justify-content-start search-container  pb-4">
-                    <div className={"col-auto"}>
-
-                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
                     </div>
                 </div>
 
@@ -401,41 +394,6 @@ class ItemDetail extends Component {
                 </div>
 
 
-                <div className="row  justify-content-start search-container  pb-4">
-
-                    <div className={"col-auto"}>
-
-                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-
-                    </div>
-                </div>
-
-                <div className="row  justify-content-start search-container  pb-4">
-
-                    <div className={"col-auto"}>
-
-                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-
-                    </div>
-                </div>
-
-
-                <div className="row  justify-content-start search-container  pb-4 ">
-
-                    <div className={"col-auto"}>
-                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-
-                    </div>
-                </div>
-
-
-                <div className="row  justify-content-start search-container  pb-4 listing-row-border">
-
-                    <div className={"col-auto"}>
-                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state} </p>
-                    </div>
-                </div>
 
                 <div className="row  justify-content-start search-container  mt-4 mb-5 ">
                     <div className={"col-1"}>
@@ -533,7 +491,7 @@ class ItemDetail extends Component {
 
                     </div>
 
-                    { this.state.item.org_id != this.props.userDetail.orgId &&
+                    {this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>
 
                         <CssBaseline/>
@@ -621,8 +579,6 @@ class ItemDetail extends Component {
                     }
 
                 </div>
-
-
 
             </div>
         );

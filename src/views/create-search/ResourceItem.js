@@ -99,7 +99,8 @@ class ResourceItem extends Component {
 
                     <div className={"col-2 text-right"}>
                         <p className={"green-text"}>
-                            {/*{this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}*/}
+
+                            {this.props.item.listing.listing.price&&this.props.item.listing.listing.price.value ? <>{this.props.item.listing.listing.price.currency} {this.props.item.listing.listing.price.value}</> : "Free"}
 
                             {/*{this.props.item.listing.listing.price.value ? <> {this.props.item.listing.listing.price.value}</> : "Free"}*/}
                         </p>
@@ -134,7 +135,7 @@ class ResourceItem extends Component {
                 </div>
                 <div className={"col-2 text-right"}>
                     <p className={"green-text"}>
-                        {/*{this.props.item.listing.price.value ? <> {this.props.item.listing.price.value}</> : "Free"}*/}
+                        {this.props.item.listing.price&&this.props.item.listing.price.value ? <> {this.props.item.listing.price.value}</> : "Free"}
                     </p>
                 </div>
 

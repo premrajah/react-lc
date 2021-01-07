@@ -87,8 +87,6 @@
                 page: 1,
                 fields: {},
                 errors: {},
-
-                
                 fieldsProduct: {},
                 errorsProduct: {},
                 fieldsSite: {},
@@ -431,17 +429,7 @@
 
         }
 
-        // handleChangeSite = (event) => {
-        //     //
-        //     // const name = event.target.name;
-        //     //
-        //     // setState({
-        //     //     ...state,
-        //     //     [name]: event.target.value,
-        //     // });
-        //     //
-        //
-        // };
+
 
 
         loadMatches() {
@@ -629,6 +617,7 @@
         }
 
         dynamicSort = (property) => {
+
             let sortOrder = 1;
             if(property[0] === "-") {
                 sortOrder = -1;
@@ -1487,9 +1476,15 @@
                                     </div>
                                 </div>
                                 <div className="row no-gutters justify-content-center mt-4">
+                                    <div className="col-12 mb-1">
+
+
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Quantity</div>
+                                    <p></p>
+                                    </div>
+
 
                                     <div className="col-6 pr-2">
-
 
                                         <FormControl variant="outlined" className={classes.formControl}>
                                             <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
@@ -1523,6 +1518,7 @@
                                     <div className="col-6 pl-2">
 
                                         <TextField  onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 
 
@@ -1532,9 +1528,6 @@
 
                         </div>
                     </div>
-
-
-
 
 
 

@@ -183,12 +183,23 @@ class ProductView extends Component {
         if(!_key || !productQRCode) { return; }
 
         const pdf = new jspdf()
-        pdf.text(name, 20, 30);
+        pdf.setTextColor(39,36,92)
+        pdf.text(name, 10, 30);
+
+        pdf.setDrawColor(7, 173, 136)
+        pdf.line(0, 40, 1000, 40)
+
         pdf.addImage(productQRCode, 'PNG', 20, 40, 80, 80)
         pdf.addImage(productQRCode, 'PNG', 100, 60, 40, 40)
         pdf.addImage(productQRCode, 'PNG', 150, 70, 20, 20)
-        pdf.textWithLink("Loopcycle.io", 20, 160, {url: 'https://loopcycle.io/'})
-        pdf.save(`Loopcycle_Code_${name}_${_key}.pdf`)
+
+        pdf.setDrawColor(7, 173, 136)
+        pdf.line(0, 120, 1000, 120)
+
+        pdf.setTextColor(39,36,92)
+        pdf.textWithLink("Loopcycle.io", 10, 160, {url: 'https://loopcycle.io/'})
+
+        pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`)
     }
 
 

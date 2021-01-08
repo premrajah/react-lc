@@ -129,7 +129,7 @@ class Footer extends React.Component {
 
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
-                  color="default"
+                  colorgit="default"
                   href="https://twitter.com/Loopcycle_"
                   id="tooltip622135962"
                   target="_blank"

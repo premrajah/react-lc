@@ -118,12 +118,12 @@ class Footer extends React.Component {
                     className="btn-icon btn-neutral btn-round btn-simple"
                     color="default"
                     href="https://www.linkedin.com/company/loopcycle"
-                    id="tooltip230450801"
+                    id="tooltip230450809"
                     target="_blank"
                 >
                   <i className="fab fa-linkedin"></i>
                 </Button>
-                <UncontrolledTooltip delay={0} target="tooltip230450801">
+                <UncontrolledTooltip delay={0} target="tooltip230450809">
                   Connect
                 </UncontrolledTooltip>
 

@@ -884,7 +884,7 @@ class ProductForm extends Component {
                         
                         <div className="row  pb-2 pt-4 ">
 
-                            <div className="col-10">
+                            <div className="col-12">
                                 <h3 className={"blue-text text-heading"}>{this.props.heading}
                                 </h3>
 

@@ -296,21 +296,26 @@ class ItemDetailMatch extends Component {
 
                             <div className="row no-gutters  justify-content-center">
 
-                                <div className="floating-back-icon" style={{ margin: "auto" }}>
 
-                                    <NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />
-                                </div>
 
-                                <div className="col-md-6 col-sm-12 col-xs-12 p-5">
+                                <div className="col-md-4 col-sm-12 col-xs-12 p-5">
                                     {/*{this.state.item.images.length > 0 ?*/}
                                     {/*<ImagesSlider images={this.state.item.images} /> :*/}
                                     {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
 
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+
+                                    <div className="row stick-left-box container-gray justify-content-center pb-5 pt-5">
+                                        <div className="col-12 text-center m-5">
+
+
+                                        <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+
+                                        </div>
+                                    </div>
 
                                 </div>
 
-                                <div className={"col-md-6 col-sm-12 col-xs-12 p-5"}>
+                                <div className={"col-md-8 col-sm-12 col-xs-12 p-5"}>
 
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 

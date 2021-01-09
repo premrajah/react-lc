@@ -121,7 +121,7 @@ class Footer extends React.Component {
                     id="tooltip230450809"
                     target="_blank"
                 >
-                  <i className="fab fa-linkedin"></i>
+                  <i className="fab fa-linkedin" />
                 </Button>
                 <UncontrolledTooltip delay={0} target="tooltip230450809">
                   Connect
@@ -130,7 +130,7 @@ class Footer extends React.Component {
                 <Button
                   className="btn-icon btn-neutral btn-round btn-simple"
                   colorgit="default"
-                  href="https://twitter.com/Loopcycle_"
+                  href="https://twitter.com/Loopcycle"
                   id="tooltip622135962"
                   target="_blank"
                 >

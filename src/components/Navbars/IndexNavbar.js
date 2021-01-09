@@ -232,10 +232,10 @@ class ComponentsNavbar extends React.Component {
                                                     ) : this.props.userDetail.firstName ? (
                                                         this.props.userDetail.firstName.substr(0, 2)
                                                     ) : (
-                                                        this.props.userDetail.orgId&&this.props.userDetail.orgId.substr(0, 2)
+                                                        this.props.userDetail.orgId && this.props.userDetail.orgId.substr(0+4, 2)
                                                     )
                                                 ) : (
-                                                    this.props.userDetail.orgId&&this.props.userDetail.orgId.substr(0, 2)
+                                                    this.props.userDetail.orgId && this.props.userDetail.orgId.substr(0+4, 2)
                                                 )}
                                             </span>
                                         </figure>

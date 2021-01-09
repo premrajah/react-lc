@@ -128,11 +128,11 @@ class Footer extends React.Component {
                 </UncontrolledTooltip>
 
                 <Button
-                  className="btn-icon btn-neutral btn-round btn-simple"
-                  colorgit="default"
-                  href="https://twitter.com/Loopcycle"
-                  id="tooltip622135962"
-                  target="_blank"
+                    className="btn-icon btn-neutral btn-round btn-simple"
+                    color="default"
+                    href="https://twitter.com/Loopcycle"
+                    id="tooltip622135962"
+                    target="_blank"
                 >
                   <i className="fab fa-twitter" />
                 </Button>

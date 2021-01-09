@@ -2115,6 +2115,20 @@ background: transparent;
 	border: 2px solid #3C3972;
 color: #3C3972;
 
+}
+
+.red-btn-border{
+
+	border: 2px solid red;
+	color: red;
+
+}
+
+
+.orange-btn-border{
+
+	border: 2px solid orange;
+	color: orange;
 
 }
 
@@ -2736,12 +2750,18 @@ color: #3C3972;
 .search-column-left {
 	background: #eee;
 	text-align: center;
+	display:table;
 }
 .search-column-left a{
 	margin: auto;
 	vertical-align: middle;
 	top: 25%;
 	position: relative;
+
+}
+
+.search-column-left svg{
+	display: table-cell;
 }
 
 .search-stage {
@@ -2941,7 +2961,7 @@ a.page-link:hover{
 .btn-close.close{
 
 	right:20px;
-	margin:20px;
+	margin:10px;
 	position: absolute;
 	cursor: pointer;
 	display: block;
@@ -2973,8 +2993,8 @@ a.page-link:hover{
 .qr-code{
 	height: 150px;
 	width:150px;
-	top: 75px;
-	left: 90px;
+	top: 95px;
+	left: 85px;
 	transform: rotate(45deg);
 	z-index: 1;
 
@@ -3000,4 +3020,16 @@ a.page-link:hover{
 	top: 100px;
 	/*padding: 50px;*/
 	font-size: 20px;
+}
+
+
+.MuiTimelineContent-root {
+	flex: 1;
+	padding: 0px 0px 0px 6px;
+}
+
+.step-box{
+	border: 1px solid #eee;
+	border-bottom: 7px solid #eee;
+
 }

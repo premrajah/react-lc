@@ -35,16 +35,19 @@ class ProductExpandItem extends Component {
 
     }
 
-    
-    
 
 
     componentDidUpdate(prevProps) {
 
-        // alert("change detected")
+
         if(prevProps.productId !== this.props.productId) {
 
-            this.loadProduct(this.props.productId)
+            this.setState({
+
+                product:null
+            })
+
+          this.loadProduct(this.props.productId)
 
         }
     }

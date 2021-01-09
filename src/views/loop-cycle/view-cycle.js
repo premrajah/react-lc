@@ -37,9 +37,10 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import CheckIcon from '@material-ui/icons/Check';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import NotFound from "../NotFound/index"
-
-
 
 
 class ViewCycle extends Component {
@@ -920,99 +921,105 @@ class ViewCycle extends Component {
 
                 {this.state.item &&
                 <>
-                <div className=" ">
+                <div className="container pt-5 mt-5">
 
                         <CycleDetail loop={this.state.item} />
 
 
-                </div>
+                    <div className="row listing-row-border pb-4 mb-4">
 
-                    <div className="container  pt-3 pb-3">
+                        <div className="col-1 ">
+                            <h5 className={"text-bold text-left text-blue"}>Steps</h5>
+                        </div>
+                        <div className="col-8">
+
+                        </div>
+                        <div className="col-3">
+
+                            {this.state.item.cycle.stage==="progress"&& (this.state.item.receiver._id === this.props.userDetail.orgId||this.state.item.sender._id === this.props.userDetail.orgId) &&
+                            <div className="col-auto">
+
+                                <button onClick={this.showStep} type="button"
+                                        className="shadow-sm mr-2 btn blue-btn-border">
+                                    <AddIcon  style={{color:"#27245C"}} /> Add Step
+                                </button>
+                            </div>}
+
+                        </div>
 
 
 
-                        <>
-                            {this.state.item.steps &&
-                            <Timeline>
+                    </div>
+
+                        {this.state.item.steps &&
+                            <>
 
                                 {this.state.item.steps.map((item,index)=>
-                                    <>
-                                        <TimelineItem>
-                                            <TimelineOppositeContent>
-                                                <Typography variant="h6" component="h1">
-                                                    {item.step.type}
-                                                </Typography>
-                                                <Typography>
-                                                    {item.step.stage}
-                                                </Typography>
-                                            </TimelineOppositeContent>
-                                            <TimelineSeparator>
-                                                <TimelineDot style={{backgroundColor:"#27245C"}}>
-                                                    <CheckIcon  />
-                                                </TimelineDot>
+                                    <div className="row  step-box pb-4 pb-4 mb-4">
+                                        {/*<div className="col-1">*/}
+                                            {/*<p className={"text-bold text-left text-blue"}>{index+1}.</p>*/}
 
-                                            </TimelineSeparator>
-                                            <TimelineContent>
-                                                <Typography variant="h6" component="h1">
-                                                    {item.step.name}
-                                                </Typography>
-                                                <Typography>
-                                                    {item.step.description}
-                                                </Typography>
-                                                <Typography>
-                                                    Creator: {item.creator_org_id}
-                                                </Typography>
-                                                <Typography>
-                                                    Owner: {item.owner_org_id}
-                                                </Typography>
+                                        {/*</div>*/}
+                                        <div className="col-6 pb-2 pt-2">
+                                            <span className={"text-mute text-left "}>{item.step.stage}</span><br/>
+                                            <span style={{fontSize:"18px"}} className={"text-bold text-left text-blue"}>{item.step.name}, {item.step.description}</span><br/>
+                                            <span className={" text-left "}>Type: {item.step.type}</span><br/>
+                                            <span className={" text-left "}>Creator: {item.creator_org_id}</span><br/>
+                                            <span className={" text-left "}> Owner: {item.owner_org_id}</span>
+
+                                        </div>
 
 
-                                            </TimelineContent>
-                                        </TimelineItem>
-
-                                        <div className={"listing-row-border"}>
                                             <>
 
                                                 {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
-                                                <div className="row justify-content-center text-center">
-                                                    <div className="col-2 text-right">
-                                                        <a className=" mr-2 btn btn-link text-blue text-bold mt-2 mb-2 ">{item.step.name}:</a>
 
-                                                    </div>
-                                                    <div className="col-10 text-left">
+                                               <div className="col-6 text-right pb-2 pt-2">
 
                                                         {item.nextAction.possible_actions.map((actionName) =>
                                                             <>
+
+
                                                                 <button data-id={item.step._key} data-action={actionName}
                                                                         onClick={this.updateStep.bind(this)}
                                                                         type="button"
-                                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+                                                                        className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+                                                                                   actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                                                       actionName==="rejected"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                                                           actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 red-btn-border":
+                                                                                               "shadow-sm mr-2 btn btn-link  mt-2 mb-2 blue-btn-border"}
 
-                                                                    Mark step as {actionName}
+                                                                        >
+
+                                                                    {actionName==="accepted" && "Accept"}
+                                                                    {actionName==="cancelled" && "Cancel"}
+                                                                    {actionName==="rejected" && "Reject"}
+                                                                    {actionName==="declined" && "Decline"}
+                                                                    {actionName==="confirmed" && "Confirm"}
                                                                 </button>
 
                                                             </>
                                                         )}
                                                     </div>
-                                                </div>
+
                                                 }
 
                                             </>
 
 
-                                        </div>
+                                         </div>
 
 
-                                    </>
 
                                 )}
 
-                            </Timeline>}
-                        </>
-
-                    </div>
+                                </>
+                            }
 
 
+
+
+                </div>
 
                         <React.Fragment>
 
@@ -1029,16 +1036,7 @@ class ViewCycle extends Component {
                                          style={{ margin: "auto" }}>
 
 
-                                    {this.state.item.cycle.stage==="progress"&& (this.state.item.receiver._id === this.props.userDetail.orgId||this.state.item.sender._id === this.props.userDetail.orgId) &&
-                                    <div className="col-auto">
 
-                                        <button onClick={this.showStep} type="button"
-                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
-
-                                            Add Step
-
-                                        </button>
-                                    </div>}
 
 
 
@@ -1054,7 +1052,7 @@ class ViewCycle extends Component {
                                                     type="button"
                                                     className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
 
-                                                Mark as {item}
+                                                 {item}
                                             </button>
 
                                      </>
@@ -1357,10 +1355,10 @@ class ViewCycle extends Component {
                     </Modal>
 
                 </>
+
                 }
-
-
                 </>}
+
 
 
             </div>

@@ -266,6 +266,21 @@ class ListForm extends Component {
 
         }
 
+
+        if (field === "deliver"){
+
+            this.setState({
+
+                siteSelected: this.state.sites.filter((item)=> item._key===e.target.value)[0]
+
+            })
+
+            console.log(this.state.siteSelected)
+
+        }
+
+
+
         if (this.state.page===1) {
 
             this.handleValidateOne()
@@ -1152,7 +1167,7 @@ class ListForm extends Component {
                                                 <Select
                                                     name={"deliver"}
                                                     native
-                                                    label="Located At"
+                                                    // label="Located At"
                                                     onChange={this.handleChange.bind(this, "deliver")}
 
                                                     inputProps={{
@@ -1323,7 +1338,7 @@ class ListForm extends Component {
                 <div className={this.state.page === 3 ? "" : "d-none"}>
 
 
-                    <ItemDetailPreview userDetail={this.props.userDetail} fields={this.state.fields}/>
+                    <ItemDetailPreview  site={this.state.siteSelected} userDetail={this.props.userDetail} fields={this.state.fields}/>
 
                 </div>
 

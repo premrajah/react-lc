@@ -12,16 +12,10 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import { withStyles } from "@material-ui/core/styles/index";
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import CheckIcon from '@material-ui/icons/Check';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import CircleProgress from '../../components/Circle'
+import PlaceholderImg from '../../img/place-holder-lc.png';
+
 
 class CycleDetail extends Component {
 
@@ -34,13 +28,75 @@ class CycleDetail extends Component {
 
             timerEnd: false,
             count: 0,
-            nextIntervalFlag: false
+            nextIntervalFlag: false,
+            percentage:null
         }
 
     }
 
 
     componentWillMount() {
+
+
+
+        if (this.props.loop.cycle.stage==="progress"){
+
+            this.setState({
+
+                percentage:20
+
+            })
+
+
+        }
+
+        if (this.props.loop.cycle.stage==="delivered"){
+
+            this.setState({
+
+                percentage:40
+
+            })
+
+
+        }
+
+
+        if (this.props.loop.cycle.stage==="received"){
+
+            this.setState({
+
+                percentage:60
+
+            })
+
+
+        }
+
+
+        if (this.props.loop.cycle.stage==="confirmed"){
+
+            this.setState({
+
+                percentage:80
+
+            })
+
+
+        }
+
+
+        if (this.props.loop.cycle.stage==="closed"){
+
+            this.setState({
+
+                percentage:100
+
+            })
+
+
+        }
+
 
     }
     componentDidMount() {
@@ -60,34 +116,23 @@ class CycleDetail extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage loop-cycle-page">
 
+                        <div className="row text-center">
 
+                            <div className="col-md-12 col-sm-12 col-xs-12 text-center">
 
-                    <div className="container  pt-3 pb-3">
+                                {this.state.percentage && <CircleProgress percentage={this.state.percentage} stage={this.props.loop.cycle.stage} />}
 
-                        <div className="row">
-                            <div className="col-4">
-                            </div>
-                            <div className="col-4 text-center">
-
-                                <CircleProgress stage={this.props.loop.cycle.stage} />
-
-                            </div>
-                            <div className="col-4">
                             </div>
 
                         </div>
-                    </div>
-                    <div className="container  pt-3 pb-3">
+
+                    <div className="row  pt-3 pb-3">
 
                         <LoopAccordion loop={this.props.loop} />
 
                     </div>
 
-
-
-                </div>
 
 
 
@@ -118,6 +163,45 @@ function LoopAccordion(props) {
 
     return (
         <div className={classes.root}>
+
+
+
+            <Accordion >
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel3a-content"
+                    id="panel3a-header"
+                >
+                    <Typography className={classes.heading}>
+                        <p className={"heading-accordian text-blue text-bold"}>Order</p>
+
+                        <div className="row no-gutters justify-content-center ">
+
+                            <div className={"col-auto"}>
+
+                                  <img style={{height:"70px",width:"100px"}} className={"img-fluid"} src={PlaceholderImg} alt="" />
+
+                            </div>
+                            <div className={"col-auto pl-3 content-box-listing"}>
+
+                                <p style={{ fontSize: "18px" }} className=" mb-1">{ props.loop.listing.name}</p>
+                                <p style={{ fontSize: "16px" }} className=" mb-1">Product Linked: { props.loop.product.name}</p>
+
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">GBP { props.loop.offer.amount.value} </p>
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1"> { props.loop.product.volume} { props.loop.product.units}</p>
+
+                            </div>
+
+                        </div>
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography>
+                        {/*<ViaContent loop={props.loop} />*/}
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
+
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -197,46 +281,7 @@ function LoopAccordion(props) {
             </Accordion>
 
 
-            {props.loop.logistics &&
-                <Accordion >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel3a-content"
-                        id="panel3a-header"
-                    >
-                        <Typography className={classes.heading}>
-                            <p className={"heading-accordian text-blue text-bold"}>Logistics</p>
 
-                            <div className="row no-gutters justify-content-center ">
-
-                                <div className={"col-auto"}>
-
-                                    <figure className="avatar avatar-60 border-0">
-
-                                        <span className={"word-user  word-user-cycle"}>
-
-                                            {props.loop.logistics.org.name.substr(0, 2)}
-
-                                         </span>
-
-                                    </figure>
-                                </div>
-                                <div className={"col-auto pl-3 content-box-listing"}>
-
-                                    <p style={{ fontSize: "18px" }} className=" mb-1">{props.loop.logistics.org.name}</p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{props.loop.logistics.email}</p>
-
-                                </div>
-
-                            </div>
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-                            {/*<ViaContent loop={props.loop} />*/}
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>}
         </div>
     );
 }

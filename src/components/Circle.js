@@ -7,6 +7,7 @@ class CircularProgressBar extends React.Component {
         this.state = {};
     }
 
+
     render() {
         // Size of the enclosing square
         const sqSize = this.props.sqSize;
@@ -57,7 +58,7 @@ class CircularProgressBar extends React.Component {
 
 CircularProgressBar.defaultProps = {
     sqSize: 200,
-    percentage: 25,
+    percentage: 50,
     strokeWidth: 10
 };
 

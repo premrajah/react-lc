@@ -354,7 +354,7 @@ class ItemDetail extends Component {
                      <div className="container " style={{ padding: "0" }}>
 
 
-                        <div className="row no-gutters  justify-content-center">
+                        <div className="row no-gutters  justify-content-center listing-row-border mb-4 pb-4">
 
                             {/*<div className="floating-back-icon" style={{ margin: "auto" }}>*/}
 
@@ -381,11 +381,11 @@ class ItemDetail extends Component {
 
                             <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
 
-                                <div className="row justify-content-start pb-3  ">
+                                <div className="row justify-content-start pb-3 pt-3 ">
 
                                     <div className="col-12 mt-2">
-                                        <h4 className={"blue-text text-heading"}>{this.state.item.listing.name}
-                                        </h4>
+                                        <h5 className={"blue-text text-heading"}>{this.state.item.listing.name}
+                                        </h5>
 
                                     </div>
 
@@ -393,12 +393,12 @@ class ItemDetail extends Component {
 
                                         <div className="row">
                                             <div className="col-7">
-                                                <p>Sold By <span className={"green-text"}>@{this.state.item.org_id}</span></p>
+                                                <p>Sold By <span className={"green-text"}>{this.state.item.org_id}</span></p>
                                             </div>
 
                                             <div className="col-3 green-text text-heading text-right">
 
-                                                {this.state.item.listing.price ?<>GBP + {this.state.item.listing.price.value}</> : "Free"}
+                                                {this.state.item.listing.price ?<>GBP {this.state.item.listing.price.value}</> : "Free"}
 
                                             </div>
 
@@ -454,10 +454,6 @@ class ItemDetail extends Component {
 
 
                                 <div className="row  justify-content-start search-container  mt-2 mb-2 ">
-                                    {/*<div className={"col-1"}>*/}
-
-                                        {/*<CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />*/}
-                                    {/*</div>*/}
 
                                     <div className={"col-auto"}>
                                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
@@ -468,10 +464,7 @@ class ItemDetail extends Component {
                                 </div>
 
                                 <div className="row  justify-content-start search-container pt-2  pb-2">
-                                    {/*<div className={"col-1"}>*/}
-                                        {/*<MarkerIcon  style={{ fontSize: 30, color: "#a8a8a8" }} />*/}
 
-                                    {/*</div>*/}
                                     <div className={"col-auto"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery From</p>
@@ -484,26 +477,21 @@ class ItemDetail extends Component {
 
                             </div>
                         </div>
-                    </div>
-                     <div className={"container "}>
 
 
 
                          {this.state.matches&&this.state.matches.length>0 &&
                          <>
+                             <div className="row no-gutters pb-2 mt-2 ">
+                                 <div className="col-12 mb-4 ">
+                                     <h5 className="mb-1 text-blue text-bold">Matches Received</h5>
+                                 </div>
 
-
-
-                         <div className="row no-gutters mb-5">
-                             <div className="col-12 mb-4">
-                                 <h4 className="mb-1">Matches Received  </h4>
                              </div>
 
-                         </div>
-
-                            {this.state.matches.map((item)=>
+                             {this.state.matches.map((item,index)=>
                                  <>
-                                     <MatchItemSeller item={item}/>
+                                     <MatchItemSeller index={index} item={item}/>
 
                                  </>
 
@@ -512,21 +500,12 @@ class ItemDetail extends Component {
                          </>
                          }
 
-
-
-                        <div className="container ">
-                            <div className="row">
-                            </div>
-                        </div>
-                        <div className="container mt-4 mb-5 pb-5 ">
-
-
-                            <div className="row no-gutters mb-5">
-                                <div className="col-12 mb-4">
-                                    <h5 className="mb-1">About the seller  </h5>
-                                </div>
-                                <div className="col-auto ">
-                                    <figure className="avatar avatar-60 border-0">
+                         <div className="row no-gutters mb-5">
+                             <div className="col-12 mb-4">
+                                 <h5 className="mb-1">About the seller  </h5>
+                             </div>
+                             <div className="col-auto ">
+                                 <figure className="avatar avatar-60 border-0">
 
                                         <span className={"word-user-sellor"}>
 
@@ -538,24 +517,23 @@ class ItemDetail extends Component {
 
 
 
-                                    </figure>
-                                </div>
-                                <div className="col pl-2 align-self-center">
-                                    <div className="row no-gutters">
-                                        <div className="col-12">
+                                 </figure>
+                             </div>
+                             <div className="col pl-2 align-self-center">
+                                 <div className="row no-gutters">
+                                     <div className="col-12">
 
 
-                                            <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                            {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
+                                         <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
+                                         {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
 
+                     </div>
 
-                    </div>
 
                     {this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>
@@ -589,11 +567,11 @@ class ItemDetail extends Component {
                         centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
 
                         <ModalBody>
-                        <div className={"row justify-content-center"}>
-                        <div className={"col-4 text-center"}>
-                        <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
-                        </div>
-                        </div>
+                        {/*<div className={"row justify-content-center"}>*/}
+                        {/*<div className={"col-4 text-center"}>*/}
+                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
 
 
                         {this.state.loopError ?

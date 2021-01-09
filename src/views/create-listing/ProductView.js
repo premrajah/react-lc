@@ -329,9 +329,11 @@ class ProductView extends Component {
 
                     {this.state.notFound ? <NotFound/> :
 
-                        <>
+                        <div className={"container pb-5 mb-5"}>
 
-                            {this.state.item &&
+
+
+                        {this.state.item &&
                             <>
 
                                 <ProductDetail item={this.state.item}/>
@@ -345,7 +347,7 @@ class ProductView extends Component {
 
                                 <div className="row justify-content-start pb-3 pt-3 ">
 
-                                    <div className="col-12">
+                                    <div className="col-12 ">
                                         <h5 className={"text-bold blue-text"}>Cycle Code</h5>
                                     </div>
 
@@ -358,9 +360,9 @@ class ProductView extends Component {
 
                                 </div>
 
-                                <div className="row justify-content-start pb-3 pt-4 border-box">
+                                <div className="row justify-content-start ">
 
-                                    <div className="col-12">
+                                    <div className="col-md-4 col-sm-12 col-xs-12 pb-3 pt-4 border-box">
 
                                         {this.state.item ?
                                             <div className={"qr-code-container"}>
@@ -409,7 +411,7 @@ class ProductView extends Component {
                             </div>
 
 
-                        </>
+                        </div>
                     }
 
 

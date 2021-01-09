@@ -27,8 +27,6 @@ class SearchItem extends Component {
 
     }
 
-
-
     render() {
 
         const classes = withStyles();
@@ -37,13 +35,9 @@ class SearchItem extends Component {
             <Link to={"/search/" + this.props.item.search._key}>
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
-
                 <div className={"col-2 search-column-left"}>
 
-
-
-                        <SearchGray style={{ color: "#C8C8C8" }} />
-
+                        <SearchGray style={{ color: "#C8C8C8",display:"table-cell" }} className={"m-5"} />
 
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>

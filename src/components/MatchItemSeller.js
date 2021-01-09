@@ -529,10 +529,12 @@ class MatchItemSeller extends Component {
 
 
 
-            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+            <div className="row no-gutters  mt-4 mb-4  pb-4">
 
-
-                <div className={"col-5 pl-3 content-box-listing"}>
+                <div className={"col-1  content-box-listing"}>
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1"> {this.props.index+1}.</p>
+                </div>
+                <div className={"col-4  content-box-listing"}>
 
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
                     <p style={{ fontSize: "18px" }} className="text-bold mb-1">From: {this.props.item.search.org._id}</p>
@@ -581,13 +583,7 @@ class MatchItemSeller extends Component {
                             </button>
 
                         </div>
-
-
-
-
                     </div>
-
-
 
                     }
 

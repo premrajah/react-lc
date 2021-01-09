@@ -129,7 +129,10 @@ class App extends Component{
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
                         <Route exact path="/product-cycle-detail/:slug" component={ItemCycleDetail} />
+
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
+
+
                         <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />

@@ -295,7 +295,7 @@ class ItemCycleDetail extends Component {
 
                     <HeaderDark />
 
-                    <div className="container mt-5 pt-5 ">
+                    <div className="container ">
 
 
 
@@ -474,7 +474,7 @@ function CustomizedTimeline(props) {
 
         <Timeline >
 
-            {props.item.transitions.map((item)=>
+            {props.item.transitions.map((item,index)=>
 
             <TimelineItem>
 
@@ -482,7 +482,10 @@ function CustomizedTimeline(props) {
                     <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>
                         {/*<BusinessIcon />*/}
                     </TimelineDot>
-                    <TimelineConnector style={{ backgroundColor:"#05AD88", height:"150px"}} />
+
+                    {props.item.transitions.length > index + 1 &&
+                    <TimelineConnector style={{ backgroundColor: "#05AD88", height: "150px" }}/>
+                    }
                 </TimelineSeparator>
                 <TimelineContent>
                     <Paper elevation={0} className={classes.paper}>

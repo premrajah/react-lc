@@ -46,7 +46,8 @@ class ItemDetailMatch extends Component {
             showPopUp:false,
             matches:[],
             matchExist:false,
-            match:null
+            match:null,
+            site:null
         }
 
 
@@ -59,10 +60,54 @@ class ItemDetailMatch extends Component {
 
         this.getMatches=this.getMatches.bind(this)
         this.checkMatch=this.checkMatch.bind(this)
+        this.getSite=this.getSite.bind(this)
 
 
     }
 
+
+
+    getSite(item) {
+
+
+        alert("site get")
+
+        axios.get(baseUrl + "site/" +item.site_id.replace("Site/",""),
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseData = response.data;
+
+                    console.log("site resource response")
+                    console.log(responseData)
+
+
+                    this.setState({
+
+                        site: responseData.data
+
+                    })
+
+
+
+                },
+                (error) => {
+                    console.log("site error", error)
+
+
+                    // this.setState({
+                    //
+                    //     notFound: true
+                    // })
+                }
+            );
+
+    }
 
 
     requestMatch() {
@@ -145,7 +190,7 @@ class ItemDetailMatch extends Component {
     getResources() {
 
 
-        axios.get(baseUrl + "listing/" + encodeUrl(this.listing),
+        axios.get(baseUrl + "listing/" + encodeUrl(this.listing)+"/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -154,15 +199,19 @@ class ItemDetailMatch extends Component {
         )
             .then((response) => {
 
-                    var response = response.data;
+                    var responseData = response.data;
                     console.log("detail resource response")
-                    console.log(response)
+                    console.log(responseData)
 
 
                     this.setState({
 
-                        item: response.data
+                        item: responseData.data,
+                        site:responseData.data.site
                     })
+
+
+                    // this.getSite(responseData.data)
 
 
 
@@ -261,15 +310,6 @@ class ItemDetailMatch extends Component {
         this.getResources()
 
 
-
-
-        // this.interval = setInterval(() => {
-
-            // this.getMatches()
-
-
-        // }, 5000);
-
     }
 
 
@@ -291,22 +331,16 @@ class ItemDetailMatch extends Component {
 
                     {this.state.item &&
                     <>
-                        <div className="container-fluid " style={{ padding: "0" }}>
-
-
+                        <div className="container " style={{ padding: "0" }}>
                             <div className="row no-gutters  justify-content-center">
 
-
-
-                                <div className="col-md-4 col-sm-12 col-xs-12 p-5">
+                                <div className="col-md-4 col-sm-12 col-xs-12 ">
                                     {/*{this.state.item.images.length > 0 ?*/}
                                     {/*<ImagesSlider images={this.state.item.images} /> :*/}
                                     {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
 
-
-                                    <div className="row stick-left-box container-gray justify-content-center pb-5 pt-5">
-                                        <div className="col-12 text-center m-5">
-
+                                    <div className="row stick-left-box  ">
+                                        <div className="col-12 text-center ">
 
                                         <img className={"img-fluid"} src={PlaceholderImg} alt="" />
 
@@ -315,27 +349,25 @@ class ItemDetailMatch extends Component {
 
                                 </div>
 
-                                <div className={"col-md-8 col-sm-12 col-xs-12 p-5"}>
+                                <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
 
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
                                         <div className="col-12 mt-2">
-                                            <h4 className={"blue-text text-heading"}>{this.state.item.listing.name}
-                                            </h4>
+                                            <h4 className={"blue-text text-heading"}>{this.state.item.listing.name}</h4>
 
-                                            {/*<p>Posted By <span className={"green-text"}>{this.state.item.org_id}</span></p>*/}
                                         </div>
 
                                         <div className="col-12">
 
                                             <div className="row">
                                                 <div className="col-7">
-                                                    <p>Sold By <span className={"green-text"}>@{this.state.item.org_id}</span></p>
+                                                    <p>Sold By <span className={"green-text"}>{this.state.item.org.name}</span></p>
                                                 </div>
 
                                                 <div className="col-3 green-text text-heading text-right">
 
-                                                    {this.state.item.listing.price ?<>"GBP "+ {this.state.item.listing.price.value}</> : "Free"}
+                                                    {this.state.item.listing.price ?<>GBP {this.state.item.listing.price.value}</> : "Free"}
 
                                                 </div>
 
@@ -347,15 +379,108 @@ class ItemDetailMatch extends Component {
                                     </div>
 
 
-                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+                                    <div className="row justify-content-start pb-3 pt-2 listing-row-border">
 
                                         <div className="col-auto">
-                                            <p style={{ fontSize: "16px" }} className={"text-bold text-blue "}>{this.state.item.listing.description}
+                                            <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.item.listing.description}
                                             </p>
 
                                         </div>
 
                                     </div>
+
+                                    <div className="row  justify-content-start search-container  pb-2">
+
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} > {this.state.item.listing.type} > {this.state.item.listing.state}</p>
+                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
+                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
+                                        </div>
+                                    </div>
+
+                                    <div className="row  justify-content-start search-container  pb-2">
+
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org.name} </p>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+                                    <div className="row  justify-content-start search-container  pb-2">
+
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
+                                        </div>
+                                    </div>
+
+
+                                    {/*<div className="row  justify-content-start search-container  pb-2">*/}
+
+                                        {/*<div className={"col-auto"}>*/}
+
+                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>*/}
+
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+
+                                    {/*<div className="row  justify-content-start search-container  pb-2">*/}
+
+                                        {/*<div className={"col-auto"}>*/}
+
+                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>*/}
+
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+
+
+                                    {/*<div className="row  justify-content-start search-container  pb-2 ">*/}
+
+                                        {/*<div className={"col-auto"}>*/}
+                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>*/}
+
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+
+
+
+
+                                    <div className="row  justify-content-start search-container pb-2 ">
+                                        {/*<div className={"col-1"}>*/}
+
+                                            {/*<CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />*/}
+                                        {/*</div>*/}
+
+                                        <div className={"col-auto"}>
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div className="row  justify-content-start search-container pt-2  pb-2">
+                                        {/*<div className={"col-1"}>*/}
+                                            {/*<MarkerIcon  style={{ fontSize: 30, color: "#a8a8a8" }} />*/}
+
+                                        {/*</div>*/}
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery From</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>
+                                        </div>
+                                    </div>
+
 
 
                                 </div>
@@ -364,114 +489,11 @@ class ItemDetailMatch extends Component {
                         <div className={"container "}>
 
 
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} ></p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
-                                </div>
-                            </div>
-
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Date Of Manufacturer</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1"> 01/01/2020</p>
-                                </div>
-                            </div>
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
-                                </div>
-                            </div>
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-
-                                </div>
-                            </div>
-
-
-                            <div className="row  justify-content-start search-container  pb-4 ">
-
-                                <div className={"col-auto"}>
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-
-                                </div>
-                            </div>
-
-
-                            <div className="row  justify-content-start search-container  pb-4 listing-row-border">
-
-                                <div className={"col-auto"}>
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state} </p>
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  mt-4 mb-5 ">
-                                <div className={"col-1"}>
-
-                                    <CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />
-                                </div>
-
-                                <div className={"col-auto"}>
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
-                                </div>
-
-
-                            </div>
-
-                            <div className="row  justify-content-start search-container pt-2  pb-4">
-                                <div className={"col-1"}>
-                                    <MarkerIcon  style={{ fontSize: 30, color: "#a8a8a8" }} />
-
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery From</p>*/}
-                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.name}</p>*/}
-                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site && this.state.site.address}</p>*/}
-                                </div>
-                            </div>
 
 
 
 
-                            <div className="container container-divider">
+                            <div className="container ">
                                 <div className="row">
                                 </div>
                             </div>
@@ -487,7 +509,7 @@ class ItemDetailMatch extends Component {
 
                                         <span className={"word-user-sellor"}>
 
-                                       {this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}
+                                       {this.state.item&&this.state.item.org.name&&this.state.item.org.name.substr(0,2)}
 
 
 
@@ -553,11 +575,11 @@ class ItemDetailMatch extends Component {
                                centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
 
                             <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-4 text-center"}>
-                                        <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
-                                    </div>
-                                </div>
+                                {/*<div className={"row justify-content-center"}>*/}
+                                    {/*<div className={"col-4 text-center"}>*/}
+                                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
 
 
                                 {this.state.loopError ?

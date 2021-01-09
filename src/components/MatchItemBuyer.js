@@ -579,33 +579,12 @@ class MatchItemBuyer extends Component {
 
 
 
-            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
-
+                <div style={{ textAlign: "center" }} className={"col-12"}>
+                    <p>Match Stage: <span className={"text-blue text-bold"}>{this.props.item.match.stage}</span></p>
+                </div>
                 <div style={{ textAlign: "right" }} className={"col-12"}>
-
-                    {this.props.item.match.stage==="created" &&  this.props.item.listing.org._id == this.props.userDetail.orgId &&
-                    <div className={"row"}>
-
-                        <div className="col-6">
-
-                            <button  onClick={this.acceptMatch} type="button" className=" mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Accept
-                            </button>
-
-                        </div>
-                        <div className="col-auto">
-
-                            <button onClick={this.rejectMatch} type="button"
-                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Reject
-
-                            </button>
-                        </div>
-
-
-                    </div>}
-
 
 
                     {(this.props.item.match.stage==="accepted" ||this.props.item.match.stage==="offered")&&  this.props.item.listing.org._id != this.props.userDetail.orgId &&

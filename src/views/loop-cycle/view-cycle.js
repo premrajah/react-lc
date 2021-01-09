@@ -937,7 +937,7 @@ class ViewCycle extends Component {
                         <div className="col-3">
 
                             {this.state.item.cycle.stage==="progress"&& (this.state.item.receiver._id === this.props.userDetail.orgId||this.state.item.sender._id === this.props.userDetail.orgId) &&
-                            <div className="col-auto">
+                            <div className=" col-auto text-right">
 
                                 <button onClick={this.showStep} type="button"
                                         className="shadow-sm mr-2 btn blue-btn-border">

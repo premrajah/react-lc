@@ -123,12 +123,11 @@ class MySearch extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage">
+                <div className="wrapper">
 
                     <HeaderDark />
 
-
-                    <div className="container  pb-4 pt-4">
+                    <div className="container  pb-4 ">
 
 
                         <div className="row justify-content-center">

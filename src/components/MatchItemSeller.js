@@ -25,7 +25,10 @@ class MatchItemSeller extends Component {
             offers:[],
             editPopUp:false,
             editOfferKey:null,
-            action:null
+            showPopUpInitiateAction:false,
+            action:null,
+            initiateAction:null,
+            initiateActionId:null,
         }
 
         this.acceptMatch=this.acceptMatch.bind(this)
@@ -35,6 +38,8 @@ class MatchItemSeller extends Component {
         this.editPopUp=this.editPopUp.bind(this)
         this.actionOffer=this.actionOffer.bind(this)
         this.getOffer=this.getOffer.bind(this)
+        this.showPopUpInitiateAction=this.showPopUpInitiateAction.bind(this)
+
 
 
 
@@ -55,17 +60,6 @@ class MatchItemSeller extends Component {
             action:event.currentTarget.dataset.action
         })
 
-
-
-        //
-        // this.setState({
-        //
-        //     editOfferKey: event.currentTarget.dataset.id
-        // })
-        // this.setState({
-        //     editPopUp: !this.state.editPopUp
-        // })
-
     }
 
 
@@ -77,6 +71,22 @@ class MatchItemSeller extends Component {
 
     }
 
+
+    showPopUpInitiateAction(event) {
+
+        this.setState({
+            showPopUpInitiateAction: !this.state.showPopUpInitiateAction
+        })
+
+
+        this.setState({
+
+            initiateAction:event.currentTarget.dataset.action
+        })
+
+        // alert(event.currentTarget.dataset.action)
+
+    }
 
 
     getOffer() {
@@ -112,6 +122,7 @@ class MatchItemSeller extends Component {
 
     acceptMatch(){
 
+
             axios.post(baseUrl + "match/stage/accept",
                 {
                     match_id:this.props.item.match._key,
@@ -129,8 +140,9 @@ class MatchItemSeller extends Component {
 
                     this.setState({
 
-                        showPopUp: true
+                        showPopUpInitiateAction: false
                     })
+
 
                 }).catch(error => {
 
@@ -273,7 +285,7 @@ class MatchItemSeller extends Component {
 
     }
 
-        makeOfferMatch = event => {
+    makeOfferMatch = event => {
 
             event.preventDefault();
 
@@ -453,12 +465,12 @@ class MatchItemSeller extends Component {
     rejectMatch(){
 
 
-
+        // alert("reject called")
 
         axios.post(baseUrl + "match/stage/decline",
             {
                 match_id:this.props.item.match._key,
-                note:"Accepted"
+                note:"Reject Note"
 
             }, {
                 headers: {
@@ -472,11 +484,8 @@ class MatchItemSeller extends Component {
 
                 this.setState({
 
-                    showPopUp: true
+                    showPopUpInitiateAction: false
                 })
-
-
-
 
 
             }).catch(error => {
@@ -551,14 +560,14 @@ class MatchItemSeller extends Component {
 
                         <div className="col-auto">
 
-                            <button  onClick={this.acceptMatch} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <button  data-action="accept" onClick={this.showPopUpInitiateAction} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 Accept
                             </button>
 
                         </div>
                         <div className="col-auto">
 
-                            <button onClick={this.rejectMatch} type="button"
+                            <button data-action="reject" onClick={this.showPopUpInitiateAction} type="button"
                                   className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Reject
 
@@ -773,6 +782,61 @@ class MatchItemSeller extends Component {
 
                             </div>
                         </form>
+
+
+
+                        {/*</>*/}
+
+
+                        {/*}*/}
+                    </ModalBody>
+
+                </Modal>
+
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.showPopUpInitiateAction} onHide={this.showPopUpInitiateAction} animation={false}>
+
+                    <ModalBody>
+                        {/*<div className={"row justify-content-center"}>*/}
+                            {/*<div className={"col-4 text-center"}>*/}
+                                {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p  style={{textTransform:"uppercase"}} className={"text-bold"}>Match: {this.state.initiateAction}</p>
+                                <p>Are you sure you want to {this.state.initiateAction} ?? </p>
+                            </div>
+                        </div>
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button onClick={this.state.initiateAction==="accept"?this.acceptMatch:this.rejectMatch} style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <p onClick={this.showPopUpInitiateAction} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
 
 
 

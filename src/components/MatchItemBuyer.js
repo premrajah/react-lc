@@ -522,10 +522,10 @@ class MatchItemBuyer extends Component {
 
                 console.log(res.data.data)
 
-                this.setState({
-
-                    showPopUp: true
-                })
+                // this.setState({
+                //
+                //     showPopUp: true
+                // })
 
 
 
@@ -611,9 +611,10 @@ class MatchItemBuyer extends Component {
 
                     {this.state.offers.map((item, index) =>
 
-                        <>
+                        <div  className={"col-12"}>
 
-                        <div className={"row"}>
+
+                        <div className={"row text-left"}>
 
                         <div className="col-12">
 
@@ -621,21 +622,9 @@ class MatchItemBuyer extends Component {
                             {index + 1}. <span style={{ fontSize: "18px" }}
                                                className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
                             Offer Stage: {item.offer.stage}
+                            <br/>
 
 
-
-                            {/*<button data-id={item.offer._key} onClick={this.acceptOffer.bind(this)} type="button"*/}
-                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
-                                {/*Accept*/}
-                            {/*</button>*/}
-
-
-
-
-                            {/*<button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"*/}
-                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
-                                {/*Counter offer*/}
-                            {/*</button>*/}
 
                             {item.next_action.is_mine &&
 
@@ -659,8 +648,9 @@ class MatchItemBuyer extends Component {
                         </div>
 
                         </div>
+                        </div>
 
-                            </>
+
                     )}
 
                     </>

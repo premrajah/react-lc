@@ -311,8 +311,7 @@ class ItemDetailMatch extends Component {
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
                                             <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.listing.category} > {this.state.item.listing.listing.type} > {this.state.item.listing.listing.state}</p>
-                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
-                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
+
                                         </div>
                                     </div>
 
@@ -326,10 +325,6 @@ class ItemDetailMatch extends Component {
                                     </div>
 
 
-
-
-
-
                                     <div className="row  justify-content-start search-container  pb-2">
 
                                         <div className={"col-auto"}>
@@ -338,9 +333,6 @@ class ItemDetailMatch extends Component {
                                             <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
                                         </div>
                                     </div>
-
-
-
 
 
                                     <div className="row  justify-content-start search-container   pb-2 ">
@@ -368,13 +360,6 @@ class ItemDetailMatch extends Component {
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
 
 
                         <div className={"container "}>

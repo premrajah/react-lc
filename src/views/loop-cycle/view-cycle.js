@@ -979,6 +979,9 @@ class ViewCycle extends Component {
                                                         {item.nextAction.possible_actions.map((actionName) =>
                                                             <>
 
+                                                                
+                                                                
+                                                                {((actionName==="cancelled"&& item.creator_org_id === this.props.userDetail.orgId) || (actionName!=="cancelled")) &&
 
                                                                 <button data-id={item.step._key} data-action={actionName}
                                                                         onClick={this.updateStep.bind(this)}
@@ -986,8 +989,11 @@ class ViewCycle extends Component {
                                                                         className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
                                                                                    actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
                                                                                        actionName==="rejected"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
-                                                                                           actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 red-btn-border":
-                                                                                               "shadow-sm mr-2 btn btn-link  mt-2 mb-2 blue-btn-border"}
+                                                                                           actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                                                               actionName==="progress"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+                                                                                                   actionName==="completed"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+
+                                                                                                   "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
 
                                                                         >
 
@@ -996,7 +1002,10 @@ class ViewCycle extends Component {
                                                                     {actionName==="rejected" && "Reject"}
                                                                     {actionName==="declined" && "Decline"}
                                                                     {actionName==="confirmed" && "Confirm"}
+                                                                    {actionName==="progress" && "Progress"}
+                                                                    {actionName==="completed" && "Complete"}
                                                                 </button>
+                                                                }
 
                                                             </>
                                                         )}

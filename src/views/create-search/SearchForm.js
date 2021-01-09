@@ -396,7 +396,7 @@
                     "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime(),
                 },
                 "site_id": this.state.siteSelected,
-                // "product_id":this.state.productSelected
+                "product_id":this.state.productSelected
 
 
             }

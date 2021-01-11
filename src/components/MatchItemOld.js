@@ -628,7 +628,7 @@ class MatchItemOld extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>Counter offer</p>
-                                <p>Make an offer which he/she cannot refuse</p>
+                                <p>Make a counter offer</p>
                             </div>
                         </div>
 
@@ -689,7 +689,7 @@ class MatchItemOld extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>Make an offer</p>
-                                <p>Make an offer which he/she cannot refuse</p>
+                                <p>Make an offer</p>
                             </div>
                         </div>
 

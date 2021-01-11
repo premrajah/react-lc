@@ -162,7 +162,7 @@ goToResources(){
                                     <div className="row no-gutters mt-4 web-only">
                                         <div className="col-auto">
 
-                                            <a href="https://loopcycle.io/" target="_blank" rel="noopener noreferrer" type="button" style={{ textDecoration: 'none' }} className="shadow-sm mr-2 btn btn-link wt_btn_border mt-2 mb-2">
+                                            <a href="https://loopcycle.io/" target="_blank" rel="noopener noreferrer" type="button" style={{ textDecoration: 'none', color: '#3F3C6E' }} className="mr-2 btn btn-link green-btn-border btn-green mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />
                                             </a>
 

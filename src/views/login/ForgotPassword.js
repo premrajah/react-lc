@@ -59,7 +59,6 @@ class ForgotPassword extends Component {
 
 
     handleValidation() {
-        // alert("called")
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -115,7 +114,7 @@ class ForgotPassword extends Component {
             // this.props.logIn({"email": username, "password": password})
 
 
-            // alert(data.get("email"))
+
 
             axios.post(baseUrl + "user/reset",
                 { "email": data.email })

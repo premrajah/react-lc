@@ -72,12 +72,7 @@ class LoginPopUp extends Component {
 
 
 
-    componentWillMount() {
-
-
-        // alert("show")
-
-    }
+    componentWillMount() {}
 
     componentDidMount() {
 

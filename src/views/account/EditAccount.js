@@ -85,7 +85,7 @@ class EditAccount extends Component {
 
     handleValidationSite() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;

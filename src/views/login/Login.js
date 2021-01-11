@@ -68,7 +68,7 @@ class Login extends Component {
 
     handleValidationSubmitGreen() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -115,7 +115,7 @@ class Login extends Component {
 
     handleValidation() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -178,12 +178,12 @@ class Login extends Component {
 
             this.props.logIn({ "email": username, "password": password })
 
-            // alert("valid")
+
 
         } else {
 
 
-            // alert("invalid")
+
         }
 
 

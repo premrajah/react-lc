@@ -72,7 +72,7 @@ class ViewCycleOld extends Component {
 
     showPopUpTrackingNumber() {
 
-        // alert("enter trackng number")
+
 
         this.setState({
             showPopUpTrackingNumber: !this.state.showPopUpTrackingNumber
@@ -91,7 +91,7 @@ class ViewCycleOld extends Component {
 
     handleValidation() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -189,7 +189,7 @@ class ViewCycleOld extends Component {
         } else {
 
 
-            // alert("invalid")
+
         }
 
 
@@ -215,7 +215,7 @@ class ViewCycleOld extends Component {
 
 
 
-        // alert("username"+ username)
+
 
 
         axios.post(baseUrl + "loop/" + this.slug + "/update_tracking/" + username,
@@ -262,7 +262,7 @@ class ViewCycleOld extends Component {
         // }else {
         //
         //
-        //     // alert("invalid")
+        //
         // }
 
 
@@ -569,7 +569,7 @@ class ViewCycleOld extends Component {
                 console.log(response)
 
 
-                // alert(response.content.producer.org.id+ response.content.state )
+
 
                 this.setState({
 

@@ -394,7 +394,7 @@ function FiltersCat(props) {
 
     const handleChange = event => {
 
-        // alert("checked")
+
         console.log(event.target.value)
 
 
@@ -556,7 +556,7 @@ function FiltersState(props) {
 
     const handleChange = event => {
 
-        // alert("checked")
+
         console.log(event.target.value)
 
 

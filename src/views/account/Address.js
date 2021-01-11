@@ -49,7 +49,7 @@ class PaymentMethod extends Component {
 
     handleValidationSite() {
 
-        // alert("called")
+
         let fields = this.state.fieldsSite;
         let errors = {};
         let formIsValid = true;

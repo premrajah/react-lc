@@ -175,7 +175,7 @@ class ProductForm extends Component {
         if (!this.props.parentProduct){
 
 
-            // alert("parent  product")
+
 
 
             this.props.setProduct(this.state.product)
@@ -184,7 +184,7 @@ class ProductForm extends Component {
 
         }else{
 
-            // alert("child product")
+
         }
 
 
@@ -415,7 +415,7 @@ class ProductForm extends Component {
 
     handleValidationProduct() {
 
-        // alert("called")
+
         let fields = this.state.fieldsProduct;
         let errors = {};
         let formIsValid = true;
@@ -695,7 +695,7 @@ class ProductForm extends Component {
         // } else {
         //
         //
-        //     // alert("invalid")
+        //
         // }
 
 

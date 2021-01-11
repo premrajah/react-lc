@@ -109,7 +109,7 @@ class ViewCycle extends Component {
 
     handleValidation() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -206,7 +206,7 @@ class ViewCycle extends Component {
         } else {
 
 
-            // alert("invalid")
+
         }
 
 
@@ -231,7 +231,7 @@ class ViewCycle extends Component {
 
 
 
-        // alert("username"+ username)
+
 
 
         axios.post(baseUrl + "loop/" + this.slug + "/update_tracking/" + username,
@@ -308,7 +308,7 @@ class ViewCycle extends Component {
 
 
 
-        // alert("username"+ username)
+
 
 
         var dataStep= {
@@ -794,7 +794,7 @@ class ViewCycle extends Component {
                 console.log("cycle detail response")
                 console.log(response)
 
-                // alert(response.content.producer.org.id+ response.content.state )
+
 
                 this.setState({
 
@@ -836,7 +836,7 @@ class ViewCycle extends Component {
                 console.log(response)
 
 
-                // alert(response.content.producer.org.id+ response.content.state )
+
 
                 this.setState({
 

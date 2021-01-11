@@ -70,7 +70,7 @@ class ItemDetailMatch extends Component {
     getSite(item) {
 
 
-        alert("site get")
+
 
         axios.get(baseUrl + "site/" +item.site_id.replace("Site/",""),
             {

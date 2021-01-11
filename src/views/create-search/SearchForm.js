@@ -165,7 +165,7 @@
 
         handleValidationProduct() {
 
-            // alert("called")
+
             let fields = this.state.fieldsProduct;
             let errors = {};
             let formIsValid = true;
@@ -580,7 +580,7 @@
             else if (this.state.page === 3) {
 
 
-                // alert("on page 4")
+
 
                 this.setState({
 
@@ -595,7 +595,7 @@
             else if (this.state.active === 7) {
 
 
-                // alert("here ")
+
 
                 this.setState({
 
@@ -738,7 +738,7 @@
 
             })
 
-            // alert(this.state.subCatSelected.name)
+
 
 
             this.setState({
@@ -784,7 +784,7 @@
 
         handleValidation() {
 
-            // alert("called")
+
 
 
             let fields = this.state.fields;
@@ -892,7 +892,7 @@
         }
         handleValidationDetail() {
 
-            // alert("called")
+
             let fields = this.state.fields;
             let errors = {};
             let formIsValid = true;
@@ -995,7 +995,7 @@
 
         handleValidationAddDetail() {
 
-            // alert("called")
+
             let fields = this.state.fields;
             let errors = {};
             let formIsValid = true;
@@ -1036,7 +1036,7 @@
 
         handleValidationAddDetailNextColor() {
 
-            // alert("called")
+
             let fields = this.state.fields;
             let errors = {};
             let formIsValid = true;
@@ -1054,7 +1054,7 @@
                     siteSelected: fields["deliver"]
                 })
 
-                // alert(fields["deliver"])
+
 
             }
 
@@ -1139,7 +1139,7 @@
 
                 })
 
-                // alert(e.target.value)
+
 
             }
 
@@ -1171,7 +1171,7 @@
 
             this.getProducts()
 
-            // alert(5)
+
 
             this.setState({
 
@@ -1216,7 +1216,7 @@
         componentWillMount() {
             window.scrollTo(0, 0)
 
-            // alert(moment(1605830400000).format("DD MMM YYYY"));
+
 
 
         }
@@ -1263,7 +1263,7 @@
 
         handleValidationSite() {
 
-            // alert("called")
+
             let fields = this.state.fieldsSite;
             let errors = {};
             let formIsValid = true;

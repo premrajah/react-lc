@@ -94,7 +94,7 @@ const useStylesAccordian = makeStyles((theme) => ({
 function LoopAccordion(props) {
 
 
-    // alert(props.logistics.email)
+
     const classes = useStylesAccordian();
 
     return (

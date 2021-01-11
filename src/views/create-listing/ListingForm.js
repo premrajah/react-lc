@@ -197,7 +197,7 @@ class ListingForm extends Component {
 
     linkProduct() {
 
-        alert(5)
+
         this.setState({
 
             active: 5

@@ -130,7 +130,7 @@ const reducer = (state = initialState, action) => {
         case "PRODUCT_LIST":
 
 
-            // alert("product loaded")
+
 
             newState.productList = action.value
             newState.loading = false;
@@ -148,7 +148,7 @@ const reducer = (state = initialState, action) => {
         case "PARENT_PRODUCT_ID":
 
             newState.parentProduct = action.value
-            // alert("parent set "+action.value.product.name)
+
 
 
             break;

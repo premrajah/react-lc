@@ -436,7 +436,7 @@ function PlayAudio() {
     const start = () => {
         // audio.play()
 
-        alert("palying")
+
         audioEl.play()
     }
 

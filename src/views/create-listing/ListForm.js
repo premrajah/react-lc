@@ -437,7 +437,7 @@ class ListForm extends Component {
         var active = event.currentTarget.dataset.active
 
 
-        // alert("cliclec")
+
 
         this.setState({
 
@@ -637,7 +637,7 @@ class ListForm extends Component {
 
     handleValidationProduct() {
 
-        // alert("called")
+
         let fields = this.state.fieldsProduct;
         let errors = {};
         let formIsValid = true;
@@ -783,7 +783,7 @@ class ListForm extends Component {
         } else {
 
 
-            // alert(fields["manufacturedDate"])
+
 
             this.setState({
 
@@ -852,7 +852,7 @@ class ListForm extends Component {
 
 
 
-        // alert("called")
+
         let fields = this.state.fieldsSite;
         let errors = {};
         let formIsValid = true;
@@ -923,7 +923,7 @@ class ListForm extends Component {
 
         if(this.handleValidationSite()) {
 
-            // alert("site submit")
+
             const form = event.currentTarget;
 
 

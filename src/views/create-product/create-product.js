@@ -60,7 +60,7 @@ class CreateProduct extends Component {
 
     handleValidation() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -194,7 +194,7 @@ class CreateProduct extends Component {
         } else {
 
 
-            // alert("invalid")
+
         }
 
 

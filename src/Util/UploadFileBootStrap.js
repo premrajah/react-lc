@@ -23,7 +23,7 @@ class UploadFileBootStrap extends Component {
 
     handleClickOutside = event => {
 
-        // alert("click")
+
         console.log(event.target)
 
         // if (event.target.className=="file-upload-img-thumbnail-cancel"&&event.target.className!=="country-dropdown-a-list-item") {
@@ -31,17 +31,17 @@ class UploadFileBootStrap extends Component {
         //     this.setState({cityDropDown: false});
         //
         // }
-        // alert("clciekd")
+
 
 
         if (event.target.className !== "file-upload-img-thumbnail-cancel") {
 
-            // alert("hello")
+
 
             this.setState({ openLightBox: false });
 
         } else {
-            // alert("no")
+
         }
 
     }
@@ -64,9 +64,7 @@ class UploadFileBootStrap extends Component {
         var filesUrl = []
 
 
-        // if (event.target.files) {
-        //
-        //     alert("here")
+
 
         for (var i = 0; i < event.target.files.length; i++) {
 
@@ -164,7 +162,7 @@ class UploadFileBootStrap extends Component {
 
         if (this.state.files && this.state.files.length > 0) {
 
-            alert("file exist")
+
 
 
 

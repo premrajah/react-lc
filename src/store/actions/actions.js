@@ -544,7 +544,7 @@ export const logInSync = (data) => dispatch => {
 
             } else {
 
-                // alert("here")
+
 
                 // console.log("login failed " + res.errors[0].message)
 
@@ -574,7 +574,7 @@ export const signUpWithCartItem = (data) => {
     return dispatch => {
 
 
-        // alert("sign up")
+
         dispatch(loading());
         dispatch(signUpWithCartItemSync(data));
 
@@ -700,7 +700,7 @@ export const signUp = (data) => {
     return dispatch => {
 
 
-        // alert("sign up")
+
         dispatch(loading());
         dispatch(signUpSync(data));
 
@@ -713,7 +713,7 @@ export const signUpHost = (data) => {
     return dispatch => {
 
 
-        // alert("sign up")
+
         dispatch(loading());
         dispatch(signUpHostSync(data));
 

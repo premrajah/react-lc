@@ -271,7 +271,7 @@ class CreateListing extends Component {
         var active = event.currentTarget.dataset.active
 
 
-        // alert("cliclec")
+
 
         this.setState({
 
@@ -748,7 +748,7 @@ class CreateListing extends Component {
             if (this.handleValidationAddDetail()) {
 
 
-                // alert("on page 4")
+
 
                 this.setState({
 
@@ -1023,7 +1023,7 @@ class CreateListing extends Component {
         } else {
 
 
-            // alert(fields["manufacturedDate"])
+
 
             this.setState({
 
@@ -1075,7 +1075,7 @@ class CreateListing extends Component {
     }
     handleValidationDetail() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -1259,7 +1259,7 @@ class CreateListing extends Component {
 
     handleValidationAddDetail() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -1290,7 +1290,7 @@ class CreateListing extends Component {
 
 
 
-            // alert(fields["startDate"])
+
             this.setState({
 
                 startDate: fields["startDate"]
@@ -1326,7 +1326,7 @@ class CreateListing extends Component {
 
     handleValidationAddDetailNextColor() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -1342,7 +1342,7 @@ class CreateListing extends Component {
                 siteSelected: fields["deliver"]
             })
 
-            // alert(fields["deliver"])
+
 
         }
 
@@ -1383,7 +1383,7 @@ class CreateListing extends Component {
         let fields = this.state.fields;
         fields[field] = e.target.value;
 
-        // alert(fields[field])
+
 
         this.setState({ fields });
         this.handleValidationNextColor()
@@ -1399,7 +1399,7 @@ class CreateListing extends Component {
 
 
 
-        // alert(new Date(fields["manufacturedDate"]).getTime())
+
 
 
     }
@@ -1425,7 +1425,7 @@ class CreateListing extends Component {
 
         this.getProducts()
 
-        // alert(5)
+
 
         this.setState({
 
@@ -1495,7 +1495,7 @@ class CreateListing extends Component {
 
 
 
-        // alert("called")
+
         let fields = this.state.fieldsSite;
         let errors = {};
         let formIsValid = true;
@@ -1565,7 +1565,7 @@ class CreateListing extends Component {
 
         if(this.handleValidationSite()) {
 
-            // alert("site submit")
+
             const form = event.currentTarget;
 
 

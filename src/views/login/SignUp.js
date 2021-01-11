@@ -162,7 +162,7 @@ class SignUp extends Component {
 
     handleValidation() {
 
-        // alert("called")
+
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -256,12 +256,12 @@ class SignUp extends Component {
             this.props.signUp({ "email": username, "password": password, "lastName": lastName, "firstName": firstName })
 
 
-            // alert("valid")
+
 
         } else {
 
 
-            // alert("invalid")
+
         }
 
 

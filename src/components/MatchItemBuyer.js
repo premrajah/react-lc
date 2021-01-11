@@ -185,7 +185,7 @@ class MatchItemBuyer extends Component {
         event.preventDefault();
 
 
-        alert(this.state.action)
+
 
 
         const form = event.currentTarget;

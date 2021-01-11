@@ -162,7 +162,7 @@
 
         handleValidationProduct() {
 
-            // alert("called")
+
             let fields = this.state.fieldsProduct;
             let errors = {};
             let formIsValid = true;
@@ -559,7 +559,7 @@
             else if (this.state.page === 3) {
 
 
-                // alert("on page 4")
+
 
                 this.setState({
 
@@ -574,7 +574,7 @@
             else if (this.state.active === 7) {
 
 
-                // alert("here ")
+
 
                 this.setState({
 

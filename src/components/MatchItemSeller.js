@@ -84,7 +84,7 @@ class MatchItemSeller extends Component {
             initiateAction:event.currentTarget.dataset.action
         })
 
-        // alert(event.currentTarget.dataset.action)
+
 
     }
 
@@ -205,7 +205,7 @@ class MatchItemSeller extends Component {
         event.preventDefault();
 
 
-        // alert(this.state.action)
+
 
 
         const form = event.currentTarget;
@@ -465,7 +465,7 @@ class MatchItemSeller extends Component {
     rejectMatch(){
 
 
-        // alert("reject called")
+
 
         axios.post(baseUrl + "match/stage/decline",
             {

@@ -191,9 +191,20 @@ class SignUp extends Component {
             errors["password"] = "Required";
         }
 
+        if(!fields["confirmPassword"]) {
+            formIsValid = false;
+            errors["confirmPassword"] = "Required";
+        }
+
         if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
+        }
+
+        if(fields["password"] !== fields["confirmPassword"]) {
+            formIsValid = false;
+            errors["password"] = "Does-Not-Match"
+            errors["confirmPassword"] = "Does-Not-Match"
         }
 
 
@@ -334,7 +345,15 @@ class SignUp extends Component {
                                 <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} type={"password"} />
 
                                 {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
+                                {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
+                            </div>
 
+                            <div className="col-12 mt-4">
+
+                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="Confirm Password" variant="outlined" fullWidth={true} type={"password"} />
+
+                                {this.state.errors["confirmPassword"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["confirmPassword"]}</span>}
+                                {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
                             </div>
 
                             {this.props.signUpFailed &&

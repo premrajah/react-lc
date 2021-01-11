@@ -4,14 +4,25 @@ import { connect } from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
+import { Link } from "react-router-dom";
+import MarkerIcon from '../../img/icons/marker.png';
+import CalenderIcon from '../../img/icons/calender.png';
+import ListIcon from '../../img/icons/list.png';
+import AmountIcon from '../../img/icons/amount.png';
+import StateIcon from '../../img/icons/state.png';
+import PaperImg from '../../img/paper-big.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+import LoopDetail from './LoopDetail'
+import CycleDetail from './CycleDetail'
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
+import Moment from 'react-moment';
 import { withStyles } from "@material-ui/core/styles/index";
 import moment from "moment/moment";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -27,9 +38,9 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import CheckIcon from '@material-ui/icons/Check';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import NotFound from "../NotFound/index"
-import PlaceholderImg from '../../img/place-holder-lc.png';
-import ProductExpandItem from '../../components/ProductExpandItem'
 
 
 class ViewCycle extends Component {
@@ -781,6 +792,7 @@ class ViewCycle extends Component {
 
     getResources() {
 
+
         axios.get(baseUrl + "cycle/" + this.slug+"/expand",
             {
                 headers: {
@@ -790,9 +802,9 @@ class ViewCycle extends Component {
         ).then((response) => {
 
                 var response = response.data;
-
                 console.log("cycle detail response")
                 console.log(response)
+
 
                 // alert(response.content.producer.org.id+ response.content.state )
 
@@ -905,221 +917,81 @@ class ViewCycle extends Component {
 
                 {this.state.item &&
                 <>
-                    <div className="container pt-5 mt-4" style={{ padding: "0" }}>
+                <div className="container pt-5 mt-5">
+
+                        <CycleDetail loop={this.state.item} />
 
 
-                        <div className="row no-gutters  justify-content-center  mb-4 pb-4">
+                    <div className="row listing-row-border pb-4 mb-4">
 
+                        <div className="col-1 ">
+                            <h5 className={"text-bold text-left text-blue"}>Steps</h5>
+                        </div>
+                        <div className="col-8">
 
-                            <div className="col-md-4 col-sm-12 col-xs-12 ">
+                        </div>
+                        <div className="col-3">
 
+                            {this.state.item.cycle.stage==="progress"&& (this.state.item.receiver._id === this.props.userDetail.orgId||this.state.item.sender._id === this.props.userDetail.orgId) &&
+                            <div className=" col-auto text-right">
 
-                                <div className="row   stick-left-box ">
-                                    <div className="col-12 ">
+                                <button onClick={this.showStep} type="button"
+                                        className="shadow-sm mr-2 btn blue-btn-border">
+                                    <AddIcon  style={{color:"#27245C"}} /> Add Step
+                                </button>
+                            </div>}
 
-
-                                        <img className={"img-fluid"} src={PlaceholderImg} alt="" />
-                                    </div>
-
-                                    <div className="col-12 mt-2">
-                                        <p><span>{this.state.item.product.name}</span></p>
-                                        <p>Stage: <span className={"green-text text-heading"}>{this.state.item.cycle.stage}</span></p>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
-
-                                <div className="row justify-content-start pb-3 pt-3 ">
-
-                                    <div className="col-12 mt-2">
-                                        <h5 className={"blue-text text-heading"}>{this.state.item.listing.name}
-                                        </h5>
-
-                                    </div>
-
-                                    <div className="col-12 listing-row-border">
-
-                                        <div className="row">
-                                            <div className="col-7">
-                                                <p>Sold By <span className={"green-text"}>{this.state.item.sender.name}</span></p>
-                                            </div>
-
-                                            <div className="col-3 green-text text-heading text-right">
-
-                                                {this.state.item.listing.price ?<>GBP {this.state.item.listing.price.value}</> : "Free"}
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className={"col-12"}>
-
-                                        <div className="row justify-content-start pb-3 pt-3 listing-row-border">
-
-                                            <div className="col-auto">
-                                                <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.state.item.listing.description}
-                                                </p>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div className="row  justify-content-start search-container  pb-4">
-
-                                    <div className={"col-auto"}>
-
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} > {this.state.item.listing.type}> {this.state.item.listing.state}</p>
-                                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
-                                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
-                                    </div>
-                                </div>
-
-                                <div className="row  justify-content-start search-container  pb-4">
-
-                                    <div className={"col-auto"}>
-
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
-                                    </div>
-                                </div>
-
-
-                                <div className="row  justify-content-start search-container  pb-4">
-
-                                    <div className={"col-auto"}>
-
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
-                                    </div>
-                                </div>
+                        </div>
 
 
 
-                                <div className="row  justify-content-start search-container  mt-2 mb-2 ">
+                    </div>
 
-                                    <div className={"col-auto"}>
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
-                                    </div>
+                        {this.state.item.steps &&
+                            <>
 
+                                {this.state.item.steps.map((item,index)=>
+                                    <div className="row  step-box pb-4 pb-4 mb-4">
+                                        {/*<div className="col-1">*/}
+                                            {/*<p className={"text-bold text-left text-blue"}>{index+1}.</p>*/}
 
-                                </div>
-
-                                <div className="row  justify-content-start search-container pt-2  pb-2">
-
-                                    <div className={"col-auto"}>
-
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery From</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.from_site && this.state.item.from_site.name}</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.from_site && this.state.item.from_site.address}</p>
-                                    </div>
-                                </div>
-
-                                <div className="row  justify-content-start search-container pt-2  pb-2">
-
-                                    <div className={"col-auto"}>
-
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Delivery To</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.to_site && this.state.item.to_site.name}</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.to_site && this.state.item.to_site.address}</p>
-                                    </div>
-                                </div>
-
-                                {this.state.item.product._key&&
-                                <>
-
-                                <div className="row  justify-content-start search-container pt-2  pb-2">
-
-                                    <div className={"col-auto"}>
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Product Linked</p>
-
-
-                                    </div>
-                                </div>
-
-                                    <ProductExpandItem  hideAddAll={true} productId={this.state.item.product._key}/>
-
-
-                                    <div className="row listing-row-border pb-4 mb-4">
-
-                                        <div className="col-1 ">
-                                            <h5 className={"text-bold text-left text-blue"}>Steps</h5>
-                                        </div>
-                                        <div className="col-8">
-
-                                        </div>
-                                        <div className="col-3">
-
-                                            {this.state.item.cycle.stage==="progress"&& (this.state.item.receiver._id === this.props.userDetail.orgId||this.state.item.sender._id === this.props.userDetail.orgId) &&
-                                            <div className=" col-auto text-right">
-
-                                                <button onClick={this.showStep} type="button"
-                                                        className="shadow-sm mr-2 btn blue-btn-border">
-                                                    <AddIcon  style={{color:"#27245C"}} /> Add Step
-                                                </button>
-                                            </div>}
+                                        {/*</div>*/}
+                                        <div className="col-6 pb-2 pt-2">
+                                            <span className={"text-mute text-left "}>{item.step.stage}</span><br/>
+                                            <span style={{fontSize:"18px"}} className={"text-bold text-left text-blue"}>{item.step.name}, {item.step.description}</span><br/>
+                                            <span className={" text-left "}>Type: {item.step.type}</span><br/>
+                                            <span className={" text-left "}>Creator: {item.creator_org_id}</span><br/>
+                                            <span className={" text-left "}> Owner: {item.owner_org_id}</span>
 
                                         </div>
 
 
+                                            <>
 
-                                    </div>
+                                                {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
 
-                                    {this.state.item.steps &&
-                                    <>
-
-                                        {this.state.item.steps.map((item,index)=>
-                                            <div className="row  step-box pb-4 pb-4 mb-4">
-                                                {/*<div className="col-1">*/}
-                                                {/*<p className={"text-bold text-left text-blue"}>{index+1}.</p>*/}
-
-                                                {/*</div>*/}
-                                                <div className="col-6 pb-2 pt-2">
-                                                    <span className={"text-mute text-left "}>{item.step.stage}</span><br/>
-                                                    <span style={{fontSize:"18px"}} className={"text-bold text-left text-blue"}>{item.step.name}, {item.step.description}</span><br/>
-                                                    <span className={" text-left "}>Type: {item.step.type}</span><br/>
-                                                    <span className={" text-left "}>Creator: {item.creator_org_id}</span><br/>
-                                                    <span className={" text-left "}> Owner: {item.owner_org_id}</span>
-
-                                                </div>
-
-
-                                                <>
-
-                                                    {item.nextAction.is_mine && item.nextAction.possible_actions.length > 0 &&
-
-                                                    <div className="col-6 text-right pb-2 pt-2">
+                                               <div className="col-6 text-right pb-2 pt-2">
 
                                                         {item.nextAction.possible_actions.map((actionName) =>
                                                             <>
 
-
-
+                                                                
+                                                                
                                                                 {((actionName==="cancelled"&& item.creator_org_id === this.props.userDetail.orgId) || (actionName!=="cancelled")) &&
 
                                                                 <button data-id={item.step._key} data-action={actionName}
                                                                         onClick={this.updateStep.bind(this)}
                                                                         type="button"
                                                                         className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
-                                                                            actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
-                                                                                actionName==="rejected"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
-                                                                                    actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
-                                                                                        actionName==="progress"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
-                                                                                            actionName==="completed"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+                                                                                   actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                                                       actionName==="rejected"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                                                           actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                                                               actionName==="progress"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+                                                                                                   actionName==="completed"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
 
-                                                                                                "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
+                                                                                                   "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
 
-                                                                >
+                                                                        >
 
                                                                     {actionName==="accepted" && "Accept"}
                                                                     {actionName==="cancelled" && "Cancel"}
@@ -1135,38 +1007,24 @@ class ViewCycle extends Component {
                                                         )}
                                                     </div>
 
-                                                    }
+                                                }
 
-                                                </>
-
-
-                                            </div>
+                                            </>
 
 
+                                         </div>
 
-                                        )}
 
-                                    </>
-                                    }
 
+                                )}
 
                                 </>
-                                }
-
-
-
-                            </div>
-                        </div>
+                            }
 
 
 
 
-
-
-
-
-
-                       </div>
+                </div>
 
                         <React.Fragment>
 

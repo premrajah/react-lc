@@ -60,6 +60,11 @@ import MyAccount from "./views/account/MyAccount";
 import ProductPopUp from './views/create-product/create-product-popup'
 
 import NotFound from "./views/NotFound/index"
+import TermsAndConditions from "./components/Terms/TermsAndConditions";
+import Cookie from "./components/Terms/Cookie";
+import Privacy from "./components/Terms/Privacy";
+import AcceptableUse from "./components/Terms/AcceptableUse";
+import TermsAndService from "./components/Terms/TermsAndService";
 
 
 var hist = createBrowserHistory();
@@ -92,6 +97,11 @@ class App extends Component{
 
 
                         <Route exact path="/" component={withRouter(Home)} />
+                        <Route exact path="/terms" component={withRouter(TermsAndConditions)} />
+                        <Route exact path="/service" component={withRouter(TermsAndService)} />
+                        <Route exact path="/cookie" component={withRouter(Cookie)} />
+                        <Route exact path="/privacy" component={withRouter(Privacy)} />
+                        <Route exact path="/acceptable" component={withRouter(AcceptableUse)} />
                         <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />

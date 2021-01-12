@@ -160,11 +160,13 @@ class Footer extends React.Component {
 
               <ul>
                 <li>
-                  <p className={" "}> ©  2020  Loopcycle</p>
+                  <p className={" "}>&copy; {new Date().getFullYear()} Loopcycle</p>
                 </li>
-                <li>Terms</li>
-                <li>Privacy</li>
-
+                <li><Link to="/terms">Terms and Conditions</Link></li>
+                <li><Link to="/privacy">Privacy</Link></li>
+                <li><Link to="/cookie">Cookies</Link></li>
+                <li><Link to="/service">Terms and Services</Link></li>
+                <li><Link to="/acceptable">Acceptable Use</Link></li>
 
               </ul>
             </div>

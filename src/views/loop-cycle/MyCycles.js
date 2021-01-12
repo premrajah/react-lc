@@ -139,13 +139,19 @@ class MyCycles extends Component {
 
 
 
-                        <div className="row  justify-content-center filter-row listing-row-border  pt-3 pb-3">
+                        <div className="row   filter-row listing-row-border  pt-3 pb-3">
 
-                            <div className="col">
+                            <div className="col-8">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                             </div>
-                            <div className="text-mute col-auto pl-0">
+                            <div className="text-mute col-2 pl-0 text-right">
+
+                                <span style={{ fontSize: "18px" }}>Price</span>
+
+                            </div>
+
+                            <div className="text-mute col-2 pl-0 text-right">
 
                                 <span style={{ fontSize: "18px" }}>Status</span>
 
@@ -156,13 +162,7 @@ class MyCycles extends Component {
 
                         {this.state.loops.map((item) =>
 
-                            <Link to={"cycle/" + item.cycle._key}>
-
                             <CycleItem item={item} />
-
-                            </Link>
-
-
 
                         )}
 

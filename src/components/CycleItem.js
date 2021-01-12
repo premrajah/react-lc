@@ -8,6 +8,8 @@ import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
+import CompanyInfo from './CompanyInfo'
+import { Link } from "react-router-dom";
 
 
 class CycleItem extends Component {
@@ -297,31 +299,50 @@ class CycleItem extends Component {
 
         return (
 
+
             <div className="row no-gutters justify-content-left mt-4 mb-4 listing-row-border pb-4">
 
 
                 <div className={"col-2 text-left"}>
+                    <Link to={"cycle/" + this.props.item.cycle._key}>
 
-
-                        {this.props.item.product.artifacts.length>0 ? <img className={"resource-item-img  img-fluid"}
+                          <>
+                    {this.props.item.product.artifacts.length>0 ? <img className={"resource-item-img  img-fluid"}
                                                        src={this.props.item.product.artifacts[0].blob_url} alt="" />
                             : <img className={"img-fluid"} src={Paper} alt="" />}
 
+                            </>
+
+                    </Link>
+
                 </div>
-                <div className={"col-8 pl-2 content-box-listing"}>
-                           <h5 style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.product.name}</h5>
-                    <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.product.product.description.substr(0, 80)} ..</p>
+                <div className={"col-6 pl-2 content-box-listing"}>
+                    <Link to={"cycle/" + this.props.item.cycle._key}>
+                        <>
+
+                    <h5 style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.product.name}</h5>
+                    <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.product.product.description.substr(0, 60)} ..</p>
 
 
                     <p style={{ fontSize: "16px" }} className=" mb-1">Listing: {this.props.item.listing.name}</p>
 
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">Sender: <span className={"text-bold"}>{this.props.item.sender.name}</span> → Receiver: <span className={"text-bold"}>{this.props.item.receiver.name}</span></p>
-                               <p style={{ fontSize: "16px" }} className="text-mute mb-1">Offer: <span className={"text-bold"}> {this.props.item.offer.amount.currency} {this.props.item.offer.amount.value} </span></p>
-                              <p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>
+                   </>
+                    </Link>
+
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">  <span className={"text-bold"}>{this.props.item.sender.name}</span> <CompanyInfo item={this.props.item.sender}/> → <span className={"text-bold"} >{this.props.item.receiver.name}  <CompanyInfo item={this.props.item.receiver}/> </span></p>
+
+                              {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}
 
 
 
                     </div>
+
+                <div style={{ textAlign: "right" }} className={"col-2"}>
+
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1"> <span className={"text-bold"}> GBP {this.props.item.offer.amount.value} </span></p>
+
+                </div>
+
 
                 <div style={{ textAlign: "right" }} className={"col-2"}>
                     <p className={"green-text text-mute text-bold small"} >
@@ -330,6 +351,8 @@ class CycleItem extends Component {
 
 
             </div>
+
+
 
         );
     }

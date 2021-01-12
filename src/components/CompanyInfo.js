@@ -8,332 +8,88 @@ import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
-
-
-class CycleItem extends Component {
-
-
-    constructor(props) {
-
-        super(props)
-
-        this.state = {
-
-            timerEnd: false,
-            count: 0,
-            nextIntervalFlag: false,
-            offers:[]
-        }
-
-        this.acceptMatch=this.acceptMatch.bind(this)
-        this.rejectMatch=this.rejectMatch.bind(this)
-        this.makeOfferMatch=this.makeOfferMatch.bind(this)
-        this.showPopUp=this.showPopUp.bind(this)
-        this.getOffer=this.getOffer.bind(this)
-
-
-
-    }
-
-
-
-    showPopUp() {
-
-        this.setState({
-            showPopUp: !this.state.showPopUp
-        })
-
-    }
-
-
-
-    getOffer() {
-
-
-        axios.get(baseUrl + "offer/match/" + this.props.item.match._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var responseAll = response.data;
-
-                    console.log("offers with match response")
-                    console.log(responseAll)
-
-                    this.setState({
-
-                        offers: responseAll.data
-
-                    })
-
-                },
-                (error) => {
-                    console.log("offers error", error)
-                }
-            );
-
-    }
-
-    acceptMatch(){
-
-            axios.post(baseUrl + "match/stage/accept",
-                {
-                    match_id:this.props.item.match._key,
-                    note:"Accepted"
-
-                }, {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then(res => {
-
-                    console.log(res.data.data)
-
-                    this.setState({
-
-                        showPopUp: true
-                    })
-
-
-
-
-
-                }).catch(error => {
-
-
-
-                console.log("loop accept error found ")
-
-                console.log(error)
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-
-            });
-
-    }
-
-    acceptOffer(event){
-
-        axios.post(baseUrl + "offer/stage",
-            {
-                // match_id:this.props.item.match._key,
-                // note:"Accepted"
-
-                "offer_id": event.currentTarget.dataset.id,
-                "new_stage": "accepted"
-
-            }, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then(res => {
-
-                console.log(res.data.data)
-
-                this.setState({
-
-                    showPopUp: true
-                })
-
-
-
-
-
-            }).catch(error => {
-
-
-
-            console.log("loop accept error found ")
-
-            console.log(error)
-            // this.setState({
-            //
-            //     showPopUp: true,
-            //     loopError: error.response.data.content.message
-            // })
-
-        });
-
-    }
-
-        makeOfferMatch = event => {
-
-            event.preventDefault();
-
-
-            const form = event.currentTarget;
-            //
-            // if (this.handleValidation()){
-            //     this.setState({
-            //         btnLoading: true
-            //     })
-
-            const data = new FormData(event.target);
-
-            const username = data.get("price")
-
-        axios.put(baseUrl + "offer",
-            {
-                match_id:this.props.item.match._key,
-
-            "offer": {
-            "amount": {
-                "value": 0.0,
-                    "currency": "gbp"
-            }
-
-        }
-
-            }, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then(res => {
-
-                console.log(res.data.data)
-
-                this.setState({
-
-                    showPopUp: false
-                })
-
-
-
-
-
-            }).catch(error => {
-
-
-
-            console.log("make an offer error found ")
-
-            console.log(error)
-            // this.setState({
-            //
-            //     showPopUp: true,
-            //     loopError: error.response.data.content.message
-            // })
-
-        });
-
-    }
-
-    rejectMatch(){
-
-
-
-
-        axios.post(baseUrl + "match/stage/decline",
-            {
-                match_id:this.props.item.match._key,
-                note:"Accepted"
-
-            }, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then(res => {
-
-                console.log(res.data.data)
-
-                this.setState({
-
-                    showPopUp: true
-                })
-
-
-
-
-
-            }).catch(error => {
-
-
-
-            console.log("loop decline error found ")
-
-            console.log(error)
-
-            // this.setState({
-            //
-            //     showPopUp: true,
-            //     loopError: error.response.data.content.message
-            // })
-
-        });
-
-
-
-    }
-
-    componentWillMount() {
-
-    }
-
-    componentDidMount() {
-        this.getOffer()
-    }
-
-
-
-
-
-    render() {
-
-
-        return (
-
-            <div className="row no-gutters justify-content-left mt-4 mb-4 listing-row-border pb-4">
-
-
-                <div className={"col-2 text-left"}>
-
-
-                        {this.props.item.product.artifacts.length>0 ? <img className={"resource-item-img  img-fluid"}
-                                                       src={this.props.item.product.artifacts[0].blob_url} alt="" />
-                            : <img className={"img-fluid"} src={Paper} alt="" />}
-
-                </div>
-                <div className={"col-8 pl-2 content-box-listing"}>
-                           <h5 style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.product.name}</h5>
-                    <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.product.product.description.substr(0, 80)} ..</p>
-
-
-                    <p style={{ fontSize: "16px" }} className=" mb-1">Listing: {this.props.item.listing.name}</p>
-
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">Sender: <span className={"text-bold"}>{this.props.item.sender.name}</span> → Receiver: <span className={"text-bold"}>{this.props.item.receiver.name}</span></p>
-                               <p style={{ fontSize: "16px" }} className="text-mute mb-1">Offer: <span className={"text-bold"}> {this.props.item.offer.amount.currency} {this.props.item.offer.amount.value} </span></p>
-                              <p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>
-
-
+import InfoIcon from '@material-ui/icons/Info';
+import { makeStyles } from '@material-ui/core/styles';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+const useStyles = makeStyles((theme) => ({
+    typography: {
+        padding: theme.spacing(2),
+    },
+}));
+
+
+ function CompanyInfo(props) {
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+
+    return (
+        <>
+            <span
+                aria-owns={open ? 'mouse-over-popover' : undefined}
+                aria-haspopup="true"
+                // onMouseEnter={handlePopoverOpen}
+                // onMouseLeave={handlePopoverClose}
+
+                onClick={handlePopoverOpen}
+            >
+
+                <InfoIcon
+                    color="primary"
+                    // style={{color:"#27245C", backgroundColor:"white"}}
+
+                />
+
+            </span>
+            <Popover
+                id="mouse-over-popover"
+                className={classes.popover}
+                classes={{
+                    paper: classes.paper,
+                }}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+            >
+                <Typography>
+
+                    <div className="row no-gutters justify-content-center p-2  ">
+                        <div className={"col-12 "}>
+                            <h6>About {props.item.name}</h6>
+                        </div>
+                        <div className={"col-12 "}>
+                             {props.item.description}
+                        </div>
 
                     </div>
 
-                <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className={"green-text text-mute text-bold small"} >
-                        {this.props.item.cycle.stage}</p>
-                </div>
-
-
-            </div>
-
-        );
-    }
+                </Typography>
+            </Popover>
+        </>
+    );
 }
+
 
 
 
@@ -373,5 +129,5 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(CycleItem);
+)(CompanyInfo);
 

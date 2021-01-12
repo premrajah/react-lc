@@ -57,7 +57,8 @@ class ViewCycle extends Component {
             orgs:[],
             stepStages: ["created" , "accepted" ,"progress",  "completed", "confirmed"],
             steps: ["transport" , "processing" ,"cleaning"],
-            notFound:false
+            notFound:false,
+            image:null
         }
 
         this.slug = props.match.params.slug
@@ -789,7 +790,7 @@ class ViewCycle extends Component {
             }
         ).then((response) => {
 
-                var response = response.data;
+                var responseData = response.data;
 
                 console.log("cycle detail response")
                 console.log(response)
@@ -798,8 +799,19 @@ class ViewCycle extends Component {
 
                 this.setState({
 
-                    item: response.data
+                    item: responseData.data,
                 })
+
+              if(responseData.data.product.artifacts.length>0) {
+
+                this.setState({
+
+                    image: responseData.data.product.artifacts[0].blob_url
+                })
+
+              }
+
+
 
             },
             (error) => {
@@ -918,11 +930,11 @@ class ViewCycle extends Component {
                                     <div className="col-12 ">
 
 
-                                        <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                        <img className={"img-fluid"} src={this.state.image?this.state.image:PlaceholderImg} alt="" />
                                     </div>
 
                                     <div className="col-12 mt-2">
-                                        <p><span>{this.state.item.product.name}</span></p>
+                                        <p><span>{this.state.item.product.product.name}</span></p>
                                         <p>Stage: <span className={"green-text text-heading"}>{this.state.item.cycle.stage}</span></p>
 
                                     </div>
@@ -1035,7 +1047,7 @@ class ViewCycle extends Component {
                                     </div>
                                 </div>
 
-                                {this.state.item.product._key&&
+                                {this.state.item.product.product._key&&
                                 <>
 
                                 <div className="row  justify-content-start search-container pt-2  pb-2">
@@ -1047,7 +1059,7 @@ class ViewCycle extends Component {
                                     </div>
                                 </div>
 
-                                    <ProductExpandItem  hideAddAll={true} productId={this.state.item.product._key}/>
+                                    <ProductExpandItem  hideAddAll={true} productId={this.state.item.product.product._key}/>
 
 
                                     <div className="row listing-row-border pb-4 mb-4">
@@ -1168,62 +1180,58 @@ class ViewCycle extends Component {
 
                        </div>
 
-                        <React.Fragment>
+                    {this.state.item && this.state.item.cycle && this.state.item.cycle.stage != "closed" &&
+
+                    <React.Fragment>
 
 
+                        <CssBaseline/>
 
-                        <CssBaseline />
+                        <AppBar position="fixed" color="#ffffff"
+                                className={classesBottom.appBar + "  custom-bottom-appbar"}>
 
-                        <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
-
-                        <Toolbar>
+                            <Toolbar>
                                 <div className="container ">
 
                                     <div className="row  justify-content-center search-container "
                                          style={{ margin: "auto" }}>
 
 
+                                        {this.state.item.next_action.is_mine &&
 
 
+                                        <div className="col-auto text-center">
 
 
-                                    {this.state.item.next_action.is_mine &&
+                                            {this.state.item.next_action.possible_actions.map((item) =>
+                                                <>
+                                                    <button data-action={item} onClick={this.deliverCycle.bind(this)}
+                                                            type="button"
+                                                            className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+
+                                                        {item}
+                                                    </button>
+
+                                                </>
+                                            )}
+                                        </div>
 
 
-                                    <div className="col-auto text-center">
-
-
-                                        {this.state.item.next_action.possible_actions.map((item) =>
-                        <>
-                                            <button data-action={item} onClick={this.deliverCycle.bind(this)}
-                                                    type="button"
-                                                    className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
-
-                                                 {item}
-                                            </button>
-
-                                     </>
-                                        )}
-                                    </div>
-
-
-                                    }
-
+                                        }
 
 
                                     </div>
 
 
-
-
-                            </div>
+                                </div>
 
 
                             </Toolbar>
                         </AppBar>
 
 
-                </React.Fragment>
+                    </React.Fragment>
+                    }
 
 
 

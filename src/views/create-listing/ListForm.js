@@ -1119,7 +1119,7 @@ class ListForm extends Component {
                                     {this.state.productSelected&&
                                     <>
 
-                                        <ProductExpandItem productId={this.state.productSelected}/>
+                                        <ProductExpandItem hideAddAll={true} productId={this.state.productSelected}/>
 
                                     </>
                                     }

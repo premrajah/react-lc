@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
+import CycleItem from '../../components/CycleItem'
 
 class MyCycles extends Component {
 
@@ -36,7 +37,6 @@ class MyCycles extends Component {
 
     getCycles() {
 
-
         this.props.showLoading(true)
 
         axios.get(baseUrl + "cycle/expand",
@@ -45,8 +45,7 @@ class MyCycles extends Component {
                     "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
-        )
-            .then((response) => {
+        ).then((response) => {
 
                 var response = response.data.data;
                 console.log("match response")
@@ -157,24 +156,13 @@ class MyCycles extends Component {
 
                         {this.state.loops.map((item) =>
 
-                            <div className="row no-gutters justify-content-start mt-4 mb-4 listing-row-border pb-4">
+                            <Link to={"cycle/" + item.cycle._key}>
 
-                                <div className={"col-8 content-box-listing"}>
-                                    <Link to={"cycle/" + item.cycle._key}>
-                                        <>
-                                            <h5 style={{ fontSize: "18px" }} className=" mb-1">Listing: {item.listing.name}</h5>
-                                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Sender: <span className={"text-bold"}>{item.sender.name}</span> → Receiver: <span className={"text-bold"}>{item.receiver.name}</span></p>
-                                            <p style={{ fontSize: "16px" }} className="text-mute mb-1">Offer: <span className={"text-bold"}> {item.offer.amount.currency} {item.offer.amount.value} </span></p>
-                                            <p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{item.from_site.name}  →  {item.to_site.name}</span></p>
-                                        </>
-                                    </Link>
+                            <CycleItem item={item} />
 
-                                </div>
-                                <div style={{ textAlign: "right" }} className={"col-4"}>
-                                    <p className={"green-text text-mute text-bold small"} >
-                                        {item.cycle.stage}</p>
-                                </div>
-                            </div>
+                            </Link>
+
+
 
                         )}
 

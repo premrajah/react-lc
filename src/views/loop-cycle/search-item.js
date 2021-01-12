@@ -42,13 +42,15 @@ class SearchItem extends Component {
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>
 
-                        <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.search.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.category}> {this.props.item.search.type}>{this.props.item.search.state}</p>
+                        <p style={{ fontSize: "18px" }} className="text-blue mb-1">{this.props.item.search.name}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.category}> {this.props.item.search.type}>{this.props.item.search.state}</p>
+
+                    <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.search.description.substr(0, 60)}..</p>
+                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className={(this.props.item.stage === "matched" && "orange-text ") + (this.props.item.stage === "active" && " green-text") + "   search-stage"}>{this.props.item.stage}</p>
+                    <p className={(this.props.item.stage === "matched" && "orange-text ") + (this.props.item.search.stage === "active" && " green-text") + "   search-stage"}>{this.props.item.search.stage}</p>
                 </div>
 
 

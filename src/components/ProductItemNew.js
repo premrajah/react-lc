@@ -120,6 +120,7 @@ class ProductItemNew extends Component {
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.purpose}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.category}> {this.props.item.product.type}>{this.props.item.product.state}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search_ids.length} Searches</p>
+                    {this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-3"}>

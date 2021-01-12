@@ -39,6 +39,8 @@ class EditAccount extends Component {
     }
 
 
+
+
     UserInfo() {
 
 
@@ -275,7 +277,7 @@ class EditAccount extends Component {
                                                        value={this.state.firstName}
                                                        label="First Name"
                                                        variant="outlined" fullWidth={true} name={"firstName"}
-                                                       onChange={this.handleChangeSite.bind(this, "firstName")}/>
+                                                       onChange={this.handleChangeSite.bind(this, "firstName")} />
 
                                             {this.state.errors["firstName"] && <span className={"text-mute small"}><span
                                                 style={{ color: "red" }}>* </span>{this.state.errors["firstName"]}</span>}

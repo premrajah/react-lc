@@ -251,9 +251,10 @@ class SignUp extends Component {
             const password = data.get("password")
             const firstName = data.get("firstName")
             const lastName = data.get("lastName")
+            const phone = data.get("phone")
 
 
-            this.props.signUp({ "email": username, "password": password, "lastName": lastName, "firstName": firstName })
+            this.props.signUp({ "email": username, "password": password, "lastName": lastName, "firstName": firstName, "phone": phone })
 
 
 
@@ -311,16 +312,19 @@ class SignUp extends Component {
                                 {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
 
                             </div>
+
                             <div className="col-12 mt-4">
-
-                                <TextField id="outlined-basic" label="Company" variant="outlined" fullWidth={true} />
-
-
+                                <TextField id="phone" label="Phone" variant="outlined" fullWidth={true} name="phone" type="number" onChange={this.handleChange.bind(this, "phone")} />
+                                {this.state.errors["phone"] && <span className={"text-mute small"}><span style={{color: "red"}}>* </span>{this.state.errors["phone"]}</span> }
                             </div>
-                            <div className="col-12 mt-4 justify-content-center">
-                                <p className={"text-mute small"}>Don’t see your company here?</p>
-                                <p className={"forgot-password-link text-mute small"}>Create a new company profile</p>
-                            </div>
+
+                            {/*<div className="col-12 mt-4">*/}
+                            {/*    <TextField id="outlined-basic" label="Company" variant="outlined" fullWidth={true} />*/}
+                            {/*</div>*/}
+                            {/*<div className="col-12 mt-4 justify-content-center">*/}
+                            {/*    <p className={"text-mute small"}>Don’t see your company here?</p>*/}
+                            {/*    <p className={"forgot-password-link text-mute small"}>Create a new company profile</p>*/}
+                            {/*</div>*/}
 
                             <div className="col-12 mt-4 justify-content-center">
 
@@ -334,7 +338,7 @@ class SignUp extends Component {
                                         style={{ color: "#07AD88" }}
                                         inputProps={{ 'aria-label': 'secondary checkbox' }}
                                     />
-                                I agree to the <span className={"forgot-password-link"}>Loopcycle Terms</span></p>
+                                I agree to the <span className={"forgot-password-link"}>Terms and Conditions</span></p>
                                 {this.state.errors["agree"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["agree"]}</span>}
 
                             </div>

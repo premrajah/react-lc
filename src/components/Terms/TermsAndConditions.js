@@ -1,37 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const TermsAndConditions = ({ header, footer, accept }) => {
+const TermsAndConditions = ({ header, footer, acceptBtn }) => {
     return (
         <div>
             {header}
             <div className="container" style={{ marginTop: "100px" }}>
                 <div className="row mt-5 mb-5">
                     <div className="col">
-                        <Link to="/" className="btn btn-green">
-                            Home
-                        </Link>
-                        {accept}
+                        {acceptBtn ? (
+                            acceptBtn
+                        ) : (
+                            <Link to="/" className="btn btn-green">
+                                Home
+                            </Link>
+                        )}
                     </div>
                 </div>
 
                 <div className="row mt-3">
-                    <div className="col">
-                        <h2>
-                            <b>Terms and Conditions</b> &copy; Loop Infinity Ltd
-                        </h2>
-                    </div>
-                </div>
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WHO WE ARE AND HOW TO CONTACT US</h3>
+                    <div className="col-sm-12">
+                        <h3>
+                            <strong>WHO WE ARE AND HOW TO CONTACT US</strong>
+                        </h3>
+
                         <p>
-                            <a href="http://www.loopcycle.io" target="_blank" rel="noopener noreferrer" className="text-underline">
-                                www.loopcycle.io
-                            </a>{" "}
-                            is a site operated by Loop Infinity Ltd ("We" or “Loopcycle”). We are
-                            registered in England and Wales under company number 11456617 and have
-                            our registered office and main trading address.
+                            <strong className="mr-1"><a href="http://www.loopcycle.io" target="_blank" rel="noopener noreferrer">www.loopcycle.io</a></strong>
+                             is a site operated by Loop Infinity Ltd ("<strong>We</strong>" or “{" "}
+                            <strong>Loopcycle</strong>”). We are registered in England and Wales
+                            under company number 11456617 and have our registered office and main
+                            trading address.
                         </p>
                         <p>
                             We operate a business-to-business marketplace which uses artificial
@@ -39,16 +37,10 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             product manufacturers, based on the information submitted by both
                             parties.
                         </p>
-                        <p>
-                            To contact us, please email{" "}
-                            <a href="mailto:hello@loopcycle.io" className="text-underline">hello@loopcycle.io</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>BY USING OUR SITE YOU ACCEPT THESE TERMS</h3>
+                        <p>To contact us, please email <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.</p>
+                        <h4>
+                            <strong>BY USING OUR SITE YOU ACCEPT THESE TERMS</strong>
+                        </h4>
                         <p>
                             By using our site, you confirm that you accept these terms of use and
                             that you agree to comply with them.
@@ -57,60 +49,53 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                         <p>
                             We recommend that you print a copy of these terms for future reference.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>THERE ARE OTHER TERMS THAT MAY APPLY TO YOU</h3>
+                        <h4>
+                            <strong>THERE ARE OTHER TERMS THAT MAY APPLY TO YOU</strong>
+                        </h4>
                         <p>
                             These terms of use refer to the following additional terms, which also
                             apply to your use of our site:
                         </p>
                         <ul>
                             <li>
-                                <Link to="/privacy" className="text-underline">Our Privacy Policy</Link>
+                                <p>Our <Link to="/privacy"><u>Privacy Policy</u></Link>.</p>
                             </li>
                             <li>
-                                Our <Link to="/acceptable" className="text-underline">Acceptable Use Policy</Link>, which sets
-                                out the permitted uses and prohibited uses of our site. When using
-                                our site, you must comply with this Acceptable Use Policy.
+                                <p>
+                                    Our <Link to="/acceptable"><u>Acceptable Use Policy</u></Link>, which sets out the permitted uses and
+                                    prohibited uses of our site. When using our site, you must
+                                    comply with this <Link to="/acceptable"><u>Acceptable Use Policy</u></Link>.
+                                </p>
                             </li>
                             <li>
-                                Our <Link to="/cookie" className="text-underline">Cookie Policy</Link>, which sets out
-                                information about the cookies on our site.
+                                <p>
+                                    Our <Link to="/cookie"><u>Cookie Policy</u></Link>, which sets out information about the cookies
+                                    on our site.
+                                </p>
                             </li>
                         </ul>
                         <p>
-                            If you purchase goods from our site, our Terms and conditions of supply will apply to the sales.
+                            If you purchase goods from our site, our Terms and conditions of supply
+                            will apply to the sales.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WE MAY MAKE CHANGES TO THESE TERMS</h3>
+                        <h4>
+                            <strong>WE MAY MAKE CHANGES TO THESE TERMS</strong>
+                        </h4>
                         <p>
                             We amend these terms from time to time. Every time you wish to use our
                             site, please check these terms to ensure you understand the terms that
                             apply at that time.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WE MAY MAKE CHANGES TO OUR SITE</h3>
+                        <h4>
+                            <strong>WE MAY MAKE CHANGES TO OUR SITE</strong>
+                        </h4>
                         <p>
                             We may update and change our site from time to time to reflect changes
                             to our users' needs and our business priorities.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WE MAY SUSPEND OR WITHDRAW OUR SITE</h3>
+                        <h4>
+                            <strong>WE MAY SUSPEND OR WITHDRAW OUR SITE</strong>
+                        </h4>
                         <p>Our site is made available free of charge.</p>
                         <p>
                             We do not guarantee that our site, or any content on it, will always be
@@ -125,35 +110,26 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             and other applicable terms and conditions, and that they comply with
                             them.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WE MAY TRANSFER THIS AGREEMENT TO SOMEONE ELSE</h3>
+                        <h4>
+                            <strong>WE MAY TRANSFER THIS AGREEMENT TO SOMEONE ELSE</strong>
+                        </h4>
                         <p>
                             We may transfer our rights and obligations under these terms to another
                             organisation. We will always tell you in writing if this happens and we
                             will ensure that the transfer will not affect your rights under the
                             contract.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>OUR SITE IS ONLY FOR USERS IN THE UK</h3>
+                        <p>
+                            <strong>OUR SITE IS ONLY FOR USERS IN THE UK</strong>
+                        </p>
                         <p>
                             Our site is directed to people residing in the United Kingdom. We do not
                             represent that content available on or through our site is appropriate
                             for use or available in other locations.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>YOU MUST KEEP YOUR ACCOUNT DETAILS SAFE</h3>
+                        <h4>
+                            <strong>YOU MUST KEEP YOUR ACCOUNT DETAILS SAFE</strong>
+                        </h4>
                         <p>
                             If you choose, or you are provided with, a user identification code,
                             password or any other piece of information as part of our security
@@ -168,15 +144,12 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                         </p>
                         <p>
                             If you know or suspect that anyone other than you knows your user
-                            identification code or password, you must promptly notify us at{" "}
-                            <a href="mailto:hello@loopcycle.io" className="text-underline">hello@loopcycle.io</a> .
+                            identification code or password, you must promptly notify us at
+                            <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>HOW YOU MAY USE MATERIAL ON OUR SITE</h3>
+                        <p>
+                            <strong>HOW YOU MAY USE MATERIAL ON OUR SITE</strong>
+                        </p>
                         <p>
                             We are the owner or the licensee of all intellectual property rights in
                             our site, and in the material published on it. Those works are protected
@@ -208,12 +181,9 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             and you must, at our option, return or destroy any copies of the
                             materials you have made.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>DO NOT RELY ON INFORMATION ON THIS SITE</h3>
+                        <h4>
+                            <strong>DO NOT RELY ON INFORMATION ON THIS SITE</strong>
+                        </h4>
                         <p>
                             The content on our site is provided for general information only. It is
                             not intended to amount to advice on which you should rely. You must
@@ -226,12 +196,9 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             express or implied, that the content on our site is accurate, complete
                             or up to date.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WE ARE NOT RESPONSIBLE FOR WEBSITES WE LINK TO</h3>
+                        <h4>
+                            <strong>WE ARE NOT RESPONSIBLE FOR WEBSITES WE LINK TO</strong>
+                        </h4>
                         <p>
                             Where our site contains links to other sites and resources provided by
                             third parties, these links are provided for your information only. Such
@@ -239,12 +206,9 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             websites or information you may obtain from them.
                         </p>
                         <p>We have no control over the contents of those sites or resources.</p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>USER-GENERATED CONTENT IS NOT APPROVED BY US</h3>
+                        <h4>
+                            <strong>USER-GENERATED CONTENT IS NOT APPROVED BY US</strong>
+                        </h4>
                         <p>
                             This website may include information and materials uploaded by other
                             users of the site, including to bulletin boards and chat rooms. This
@@ -252,23 +216,16 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             us. The views expressed by other users on our site do not represent our
                             views or values.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>HOW TO COMPLAIN ABOUT CONTENT UPLOADED BY OTHER USERS</h3>
+                        <h4>
+                            <strong>HOW TO COMPLAIN ABOUT CONTENT UPLOADED BY OTHER USERS</strong>
+                        </h4>
                         <p>
                             If you wish to complain about content uploaded by other users, please
-                            contact us on{" "}
-                            <a href="mailto:hello@loopcycle.io" className="text-underline"> hello@loopcycle.io</a>.
+                            contact us on <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>OUR RESPONSIBILITY FOR LOSS OR DAMAGE SUFFERED BY YOU</h3>
+                        <h4>
+                            <strong>OUR RESPONSIBILITY FOR LOSS OR DAMAGE SUFFERED BY YOU</strong>
+                        </h4>
                         <p>
                             We do not exclude or limit in any way our liability to you where it
                             would be unlawful to do so. This includes liability for death or
@@ -279,52 +236,57 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                         <p>
                             Different limitations and exclusions of liability will apply to
                             liability arising as a result of the supply of any products to you,
-                            which will be set out in our Terms and conditions of supply
+                            which will be set out in our Terms and conditions of supply.
                         </p>
                         <p>
                             We exclude all implied conditions, warranties, representations or other
                             terms that may apply to our site or any content on it.
                         </p>
-
                         <p>
                             We will not be liable to you for any loss or damage, whether in
                             contract, tort (including negligence), breach of statutory duty, or
                             otherwise, even if foreseeable, arising under or in connection with:
                         </p>
                         <ul>
-                            <li>use of, or inability to use, our site; or</li>
-                            <li>use of or reliance on any content displayed on our site.</li>
+                            <li>
+                                <p>use of, or inability to use, our site; or</p>
+                            </li>
+                            <li>
+                                <p>use of or reliance on any content displayed on our site.</p>
+                            </li>
                         </ul>
-
                         <p>In particular, we will not be liable for:</p>
                         <ul>
-                            <li>loss of profits, sales, business, or revenue;</li>
-                            <li>business interruption;</li>
-                            <li>loss of anticipated savings;</li>
-                            <li>loss of business opportunity, goodwill or reputation; or</li>
-                            <li>any indirect or consequential loss or damage.</li>
+                            <li>
+                                <p>loss of profits, sales, business, or revenue;</p>
+                            </li>
+                            <li>
+                                <p>business interruption;</p>
+                            </li>
+                            <li>
+                                <p>loss of anticipated savings;</p>
+                            </li>
+                            <li>
+                                <p>loss of business opportunity, goodwill or reputation; or</p>
+                            </li>
+                            <li>
+                                <p>any indirect or consequential loss or damage.</p>
+                            </li>
                         </ul>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>HOW WE MAY USE YOUR PERSONAL INFORMATION</h3>
+                        <h4>
+                            <strong>HOW WE MAY USE YOUR PERSONAL INFORMATION</strong>
+                        </h4>
                         <p>
-                            We will only use your personal information as set out in our{" "}
-                            <Link to="/privacy" className="text-underline">Privacy Policy</Link>
+                            We will only use your personal information as set out in our Privacy
+                            Policy.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>UPLOADING CONTENT TO OUR SITE</h3>
+                        <h4>
+                            <strong>UPLOADING CONTENT TO OUR SITE</strong>
+                        </h4>
                         <p>
                             Whenever you make use of a feature that allows you to upload content to
                             our site, or to make contact with other users of our site, you must
-                            comply with the content standards set out in our{" "}
-                            <Link to="/acceptable" className="text-underline">Acceptable Use Policy</Link>{" "}
+                            comply with the content standards set out in our Acceptable Use Policy .
                         </p>
                         <p>
                             You warrant that any such contribution does comply with those standards,
@@ -338,8 +300,8 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             content, but you are required to grant us and other users of our site a
                             limited licence to use, store and copy that content and to distribute
                             and make it available to third parties. The rights you license to us are
-                            described further down in Rights you are giving us to use material you
-                            upload.
+                            described further down in
+                            <em>Rights you are giving us to use material you upload</em>.
                         </p>
                         <p>
                             We also have the right to disclose your identity to any third party who
@@ -350,45 +312,54 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                         <p>
                             We have the right to remove any posting you make on our site if, in our
                             opinion, your post does not comply with the content standards set out in
-                            our <Link to="/acceptable" className="text-underline">Acceptable Use Policy</Link>
+                            our Acceptable Use Policy .
                         </p>
                         <p>You are solely responsible for securing and backing up your content.</p>
                         <p>We do not store terrorist content.</p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>RIGHTS YOU ARE GIVING US TO USE MATERIAL YOU UPLOAD</h3>
+                        <h4>
+                            <strong>RIGHTS YOU ARE GIVING US TO USE MATERIAL YOU UPLOAD</strong>
+                        </h4>
                         <p>
                             When you upload or post content to our site, you grant us the following
                             rights to use that content:
                         </p>
                         <ul>
                             <li>
-                                To process and publish your content within the marketplace in order
-                                to create a suitable transaction
+                                <p>
+                                    To process and publish your content within the marketplace in
+                                    order to create a suitable transaction
+                                </p>
                             </li>
                             <li>
-                                To process, publish and present relevant data in an anonymised way
-                                for industry- and sector-level insight.
+                                <p>
+                                    To process, publish and present relevant data in an anonymised
+                                    way for industry-and sector-level insight.
+                                </p>
                             </li>
                             <li>
-                                To allow external third parties to publish and present anonymised
-                                data provided by Loopcycle on industry- and sector-level insight.
+                                <p>
+                                    To allow external third parties to publish and present
+                                    anonymised data provided by Loopcycle on industry-and
+                                    sector-level insight.
+                                </p>
                             </li>
                             <li>
-                                To promote the benefits of the Loopcycle platform to our target
-                                industries and sectors.
+                                <p>
+                                    To promote the benefits of the Loopcycle platform to our target
+                                    industries and sectors.
+                                </p>
                             </li>
-                            <li>For general promotion activities within the Loopcycle platform.</li>
+                            <li>
+                                <p>
+                                    For general promotion activities within the Loopcycle platform.
+                                </p>
+                            </li>
                         </ul>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col">
-                        <h3>WE ARE NOT RESPONSIBLE FOR VIRUSES AND YOU MUST NOT INTRODUCE THEM</h3>
+                        <h4>
+                            <strong>
+                                WE ARE NOT RESPONSIBLE FOR VIRUSES AND YOU MUST NOT INTRODUCE THEM
+                            </strong>
+                        </h4>
                         <p>
                             We do not guarantee that our site will be secure or free from bugs or
                             viruses.
@@ -412,12 +383,9 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             In the event of such a breach, your right to use our site will cease
                             immediately.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>RULES ABOUT LINKING TO OUR SITE</h3>
+                        <h4>
+                            <strong>RULES ABOUT LINKING TO OUR SITE</strong>
+                        </h4>
                         <p>
                             You may link to our home page, provided you do so in a way that is fair
                             and legal and does not damage our reputation or take advantage of it.
@@ -437,23 +405,15 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                         <p>We reserve the right to withdraw linking permission without notice.</p>
                         <p>
                             The website in which you are linking must comply in all respects with
-                            the content standards set out in our{" "}
-                            <Link to="/acceptable" className="text-underline">Acceptable Use Policy</Link>.
+                            the content standards set out in our Acceptable Use Policy .
                         </p>
                         <p>
                             If you wish to link to or make any use of content on our site other than
-                            that set out above, please contact{" "}
-                            <a a href="mailto:hello@loopcycle.io" className="text-underline">
-                                hello@loopcycle.io
-                            </a>
-                            .
+                            that set out above, please contact <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>WHICH COUNTRY'S LAWS APPLY TO ANY DISPUTES?</h3>
+                        <h4>
+                            <strong>WHICH COUNTRY'S LAWS APPLY TO ANY DISPUTES?</strong>
+                        </h4>
                         <p>
                             If you are a consumer, please note that these terms of use, their
                             subject matter and their formation, are governed by English law. You and
@@ -468,27 +428,27 @@ const TermsAndConditions = ({ header, footer, accept }) => {
                             governed by English law. We both agree to the exclusive jurisdiction of
                             the courts of England and Wales.
                         </p>
-                    </div>
-                </div>
-
-                <div className="row mt-3">
-                    <div className="col">
-                        <h3>OUR TRADEMARKS ARE REGISTERED</h3>
+                        <p>
+                            <strong>OUR TRADEMARKS ARE REGISTERED</strong>
+                        </p>
                         <p>
                             "Loopcycle" is a UK registered trademark of Loop Infinity Ltd. You are
                             not permitted to use them without our approval, unless they are part of
-                            material you are using as permitted above under How you may use material
-                            on our site.
+                            material you are using as permitted above under
+                            <em>How you may use material on our site</em>.
                         </p>
                     </div>
                 </div>
 
                 <div className="row mt-5 mb-5">
                     <div className="col">
-                        <Link to="/" className="btn btn-green">
-                            Home
-                        </Link>
-                        {accept}
+                        {acceptBtn ? (
+                            acceptBtn
+                        ) : (
+                            <Link to="/" className="btn btn-green">
+                                Home
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>

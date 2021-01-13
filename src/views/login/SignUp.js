@@ -3,9 +3,9 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import history from "../../History/history";
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import { Alert } from 'react-bootstrap';
-import Checkbox from '@material-ui/core/Checkbox';
+import {Checkbox, TextField, InputAdornment, IconButton} from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +40,8 @@ class SignUp extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            active: 0   //0 logn. 1- sign up , 3 -search,
-
+            active: 0,   //0 logn. 1- sign up , 3 -search,
+            showPassword: false
 
         }
 
@@ -232,6 +232,16 @@ class SignUp extends Component {
         this.setState({ fields });
     }
 
+    handleShowPassword = () => {
+        if(this.state.showPassword) {
+            this.setState({showPassword: false})
+        } else {
+            this.setState({showPassword: true})
+        }
+
+        console.log(this.state.showPassword)
+    }
+
 
     handleSubmit = event => {
 
@@ -346,7 +356,16 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="outlined-basic" label="*Password" variant="outlined" fullWidth={true} type={"password"} />
+                                <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="password" label="*Password" variant="outlined" fullWidth={true} type={this.state.showPassword ? "text" : "password"} InputProps={{
+                                    endAdornment: (<InputAdornment position="end">
+                                    <IconButton
+                                    onClick={this.handleShowPassword}
+                                    edge="end"
+                                    >
+                                {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                    </InputAdornment>)
+                                    }} />
 
                                 {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
                                 {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
@@ -354,7 +373,7 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="*Confirm Password" variant="outlined" fullWidth={true} type={"password"} />
+                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="*Confirm Password" variant="outlined" fullWidth={true} type={this.state.showPassword ? "text" : "password"} />
 
                                 {this.state.errors["confirmPassword"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["confirmPassword"]}</span>}
                                 {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }

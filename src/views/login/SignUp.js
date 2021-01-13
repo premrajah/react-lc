@@ -238,8 +238,6 @@ class SignUp extends Component {
         } else {
             this.setState({showPassword: true})
         }
-
-        console.log(this.state.showPassword)
     }
 
 

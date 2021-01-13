@@ -291,7 +291,7 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField id="outlined-basic" label="First Name" variant="outlined" fullWidth={true} name={"firstName"} onChange={this.handleChange.bind(this, "firstName")} />
+                                <TextField id="outlined-basic" label="*First Name" variant="outlined" fullWidth={true} name={"firstName"} onChange={this.handleChange.bind(this, "firstName")} />
 
                                 {this.state.errors["firstName"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["firstName"]}</span>}
 
@@ -299,7 +299,7 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField id="outlined-basic" label="Last Name" variant="outlined" fullWidth={true} name={"lastName"} onChange={this.handleChange.bind(this, "lastName")} />
+                                <TextField id="outlined-basic" label="*Last Name" variant="outlined" fullWidth={true} name={"lastName"} onChange={this.handleChange.bind(this, "lastName")} />
 
                                 {this.state.errors["lastName"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["lastName"]}</span>}
 
@@ -307,7 +307,7 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
+                                <TextField id="outlined-basic" label="*Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChange.bind(this, "email")} />
 
                                 {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
 
@@ -346,7 +346,7 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} type={"password"} />
+                                <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="outlined-basic" label="*Password" variant="outlined" fullWidth={true} type={"password"} />
 
                                 {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
                                 {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
@@ -354,7 +354,7 @@ class SignUp extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="Confirm Password" variant="outlined" fullWidth={true} type={"password"} />
+                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="*Confirm Password" variant="outlined" fullWidth={true} type={"password"} />
 
                                 {this.state.errors["confirmPassword"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["confirmPassword"]}</span>}
                                 {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }

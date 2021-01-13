@@ -811,7 +811,7 @@ class MatchItemSeller extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p  style={{textTransform:"uppercase"}} className={"text-bold"}>Match: {this.state.initiateAction}</p>
-                                <p>Are you sure you want to {this.state.initiateAction} ?? </p>
+                                <p>Are you sure you want to {this.state.initiateAction} ? </p>
                             </div>
                         </div>
 

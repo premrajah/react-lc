@@ -1188,7 +1188,7 @@ class ViewCycle extends Component {
                             <>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-12"} style={{textAlign:"center"}}>
-                                        <h5 className={"text-bold"}>Are you sure you want to proceed ??</h5>
+                                        <h5 className={"text-bold"}>Are you sure you want to proceed?</h5>
                                         {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
                                     </div>
                                 </div>

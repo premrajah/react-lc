@@ -264,7 +264,7 @@ class RecoverPassword extends Component {
                 <div className="container  ">
                     <div className="row no-gutters">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Success!
+                            <h3 className={"green-text text-heading text-center"}>Success!
                             </h3>
 
                         </div>

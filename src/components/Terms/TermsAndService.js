@@ -22,13 +22,13 @@ const TermsAndService = ({ header, footer }) => {
                         <ol>
                             <li>
                                 <p>
-                                    <a name="a120958"></a>
+
                                     These terms
                                 </p>
                                 <ol>
                                     <li>
                                         <p>
-                                            <a name="a235077"></a>
+
                                             <strong>What these terms cover</strong>. These are the
                                             terms and conditions on which we supply our Services and
                                             digital content to you.
@@ -36,7 +36,7 @@ const TermsAndService = ({ header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-                                            <a name="a770717"></a>
+
                                             <strong>Why you should read them</strong>. Please read
                                             these terms carefully before you use our Services. These
                                             terms tell you who we are, how we will provide our
@@ -54,13 +54,13 @@ const TermsAndService = ({ header, footer }) => {
                             </li>
                             <li>
                                 <p>
-                                    <a name="a184653"></a>
+
                                     Information about us and how to contact us
                                 </p>
                                 <ol>
                                     <li>
                                         <p>
-                                            <a name="a364117"></a>
+
                                             <strong>Who we are</strong>. We are Loop Infinity Ltd, a
                                             company registered in England and Wales. Our company
                                             registration number is 11456617 and our registered
@@ -70,7 +70,7 @@ const TermsAndService = ({ header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-                                            <a name="a1010738"></a>
+
                                             <strong>What we do: </strong>
                                             We operate a business-to-business marketplace which uses
                                             artificial intelligence to trace the circulation of
@@ -91,7 +91,7 @@ const TermsAndService = ({ header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-                                            <a name="a789443"></a>
+
                                             <strong>How we may contact you</strong>. If we have to
                                             contact you we will do so by telephone or by writing to
                                             you at the email address or postal address you provided
@@ -100,7 +100,7 @@ const TermsAndService = ({ header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-                                            <a name="a987811"></a>
+
                                             <strong>"Writing" includes emails</strong>. When we use
                                             the words "writing" or "written" in these terms, this
                                             includes emails.
@@ -110,13 +110,13 @@ const TermsAndService = ({ header, footer }) => {
                             </li>
                             <li>
                                 <p>
-                                    <a name="a217090"></a>
+
                                     Our contract with you
                                 </p>
                                 <ol>
                                     <li>
                                         <p>
-                                            <a name="a843243"></a>
+
                                             <strong>How we will accept your business</strong>. By
                                             setting up an account with us and/or using and accessing
                                             the Service, you agree to and accept these terms in
@@ -126,7 +126,7 @@ const TermsAndService = ({ header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-                                            <a name="a984070"></a>
+
                                             <strong>We only promote to the United Kingdom</strong>.
                                             Our website is solely for the promotion of our Services
                                             in the UK.
@@ -136,13 +136,13 @@ const TermsAndService = ({ header, footer }) => {
                             </li>
                             <li>
                                 <p>
-                                    <a name="a855274"></a>
+
                                     Our Services
                                 </p>
                                 <ol>
                                     <li>
                                         <p>
-                                            <a name="a864606"></a>
+
                                             <strong>Setting up an account</strong>. To access our
                                             Service, you must register with us and set up an account
                                             with an email and password (“ <strong>Account</strong>
@@ -159,7 +159,7 @@ const TermsAndService = ({ header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-                                            <a name="a772415"></a>
+
                                             <strong>Loopcycle Marketplace.</strong>
                                             Our Service is an online marketplace that allows you to
                                             connect with other buyers and sellers in an easy and fun
@@ -409,7 +409,7 @@ const TermsAndService = ({ header, footer }) => {
                         <ol start="9">
                             <li>
                                 <p>
-                                    <a name="a403373"></a>
+                                    
                                     ending our relationship
                                 </p>
                                 <ol>

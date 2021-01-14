@@ -41,7 +41,8 @@ class SignUp extends Component {
             count: 0,
             nextIntervalFlag: false,
             active: 0,   //0 logn. 1- sign up , 3 -search,
-            showPassword: false
+            showPassword: false,
+            isChecked: false
 
         }
 
@@ -181,6 +182,10 @@ class SignUp extends Component {
         //     errors["agree"] = "Required";
         // }
 
+        if(!this.state.isChecked) {
+            formIsValid = false
+            errors["agree"] = "Required"
+        }
 
         if (!fields["lastName"]) {
             formIsValid = false;
@@ -230,6 +235,10 @@ class SignUp extends Component {
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({ fields });
+    }
+
+    handleToggleChecked = () => {
+        this.setState(prevState => ({isChecked: !prevState.isChecked}));
     }
 
     handleShowPassword = () => {
@@ -335,19 +344,18 @@ class SignUp extends Component {
                             {/*</div>*/}
 
                             <div className="col-12 mt-4 justify-content-center">
-
-
                                 <p className={"text-mute small"}>
                                     <Checkbox
                                         name={"agree"}
-                                        onChange={this.handleChange.bind(this, "agree")}
-                                        checked={true}
+                                        onChange={this.handleToggleChecked}
+                                        checked={this.state.isChecked}
                                         // color="#07AD88"
-                                        style={{ color: "#07AD88" }}
+                                        style={{ color: this.state.errors["agree"] ? 'red' : "#07AD88" }}
                                         inputProps={{ 'aria-label': 'secondary checkbox' }}
                                     />
-                                I agree to the <span className={"forgot-password-link"}>Terms and Conditions</span></p>
-                                {this.state.errors["agree"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["agree"]}</span>}
+                                I agree to the <span className={"forgot-password-link"}><a href="/terms" target="_blank" rel="noopener noreferrer">Terms and Conditions</a></span>
+                                    <p>{this.state.errors["agree"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["agree"]}</span>}</p>
+                                </p>
 
                             </div>
 

@@ -139,62 +139,62 @@ const Privacy = ({ header, footer }) => {
                         </p>
                         <ul>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Identity Data</strong>
                                     includes first name, maiden name, last name, username or similar
                                     identifier, marital status, title, date of birth and gender.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Contact Data</strong>
                                     includes billing address, delivery address, email address and
                                     telephone numbers.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Financial Data</strong>
                                     includes bank account and payment card details.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Transaction Data</strong>
                                     includes details about payments to and from you and other
                                     details of products and services you have purchased from us.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Technical Data</strong>
                                     includes internet protocol (IP) address, your login data,
                                     browser type and version, time zone setting and location,
                                     browser plug-in types and versions, operating system and
                                     platform, and other technology on the devices you use to access
                                     this website.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Profile Data</strong>
                                     includes your username and password, purchases or orders made by
                                     you, your interests, preferences, feedback and survey responses.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Usage Data</strong>
                                     includes information about how you use our website, products and
                                     services.
-                                </h4>
+                                </p>
                             </li>
                             <li>
-                                <h4>
-                                    <strong>Marketing and Communications Data</strong>
+                                <p>
+                                    <strong className="mr-1">Marketing and Communications Data</strong>
                                     includes your preferences in receiving marketing from us and our
                                     third parties and your communication preferences.
-                                </h4>
+                                </p>
                             </li>
                         </ul>
                         <p>
@@ -240,13 +240,13 @@ const Privacy = ({ header, footer }) => {
                         </p>
                         <ul>
                             <li>
-                                <h4>
+                                <p>
                                     <strong>Direct interactions.</strong>
                                     You may give us your [Identity, Contact and Financial Data] by
                                     filling in forms or by corresponding with us by post, phone,
                                     email or otherwise. This includes personal data you provide when
                                     you:
-                                </h4>
+                                </p>
                             </li>
                         </ul>
                         <ul>

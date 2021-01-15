@@ -39,7 +39,7 @@ class ImagesSlider extends React.Component {
         return (
 
 
-            <ImageGallery ori thumbnailClass={"custom-gallery-thumbnail"}  showNav={false} showPlayButton={false} infinite={true}  autoPlay={false} items={this.imagesArray}  />
+            <ImageGallery showThumbnails={false} thumbnailClass={"custom-gallery-thumbnail"}  showNav={false} showPlayButton={false} infinite={true}  autoPlay={false} items={this.imagesArray}  />
 
         );
     }

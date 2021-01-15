@@ -378,6 +378,7 @@
         createSearch() {
 
 
+            alert("search "+this.state.productSelected)
 
 
             var data = {
@@ -1131,7 +1132,7 @@
             this.handleValidationAddDetailNextColor()
 
 
-            if (field ==="product"){
+            if (fields["product"]){
 
 
                 this.setState({
@@ -1693,9 +1694,11 @@
 
                                         <FormControl variant="outlined" className={classes.formControl}>
 
+                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Link a product (Optional)</InputLabel>*/}
                                             <Select
 
                                                 name= "product"
+                                                // label={"Link a product"}
                                                 native
                                                 onChange={this.handleChange.bind(this, "product")}
                                                 inputProps={{
@@ -1706,7 +1709,7 @@
 
                                                 <option value={null}>Select</option>
 
-
+                                                {/*{this.props.productList.map((item) =>*/}
                                                 {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
 
 
@@ -1827,7 +1830,6 @@
                             </div>
                         </div>
                     </div>
-
 
 
 
@@ -2482,6 +2484,98 @@
     }
 
 
+
+    function UnitSelect(props) {
+        const classes = useStylesSelect();
+        const [state, setState] = React.useState({
+            unit: '',
+            name: 'hai',
+        });
+
+        const handleChange = (event) => {
+            const name = event.target.name;
+            setState({
+                ...state,
+                [name]: event.target.value,
+            });
+        };
+
+        return (
+            <div>
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
+                    <Select
+                        name={"unit"}
+                        native
+                        value={state.age}
+                        onChange={handleChange}
+                        inputProps={{
+                            name: 'unit',
+                            id: 'outlined-age-native-simple',
+                        }}
+                    >
+
+                        {props.units.map((item) =>
+
+                            <option value={"Kg"}>{item}</option>
+
+                        )}
+
+                    </Select>
+                </FormControl>
+
+            </div>
+        );
+    }
+    function SiteSelect(props) {
+        const classes = useStylesSelect();
+        const [state, setState] = React.useState({
+            unit: '',
+            name: 'hai',
+        });
+
+        const handleChange = (event) => {
+            const name = event.target.name;
+            setState({
+                ...state,
+                [name]: event.target.value,
+            });
+        };
+
+        return (
+            <div>
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
+                    <Select
+                        inputVariant="outlined"
+                        variant={"outlined"}
+                        name={"site"}
+                        native
+                        value={state}
+                        onChange={handleChange}
+                        label="Age"
+                        inputProps={{
+                            name: 'unit',
+                            id: 'outlined-age-native-simple',
+                        }}
+                    >
+
+                        <option value={null}>Select</option>
+
+                        {props.sites.map((item) =>
+
+                            <option value={item.id}>{item.name + "(" + item.address + ")"}</option>
+
+                        )}
+
+                    </Select>
+                </FormControl>
+
+            </div>
+        );
+    }
 
     const useStylesSelect = makeStyles((theme) => ({
         formControl: {

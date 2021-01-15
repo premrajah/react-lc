@@ -27,6 +27,8 @@ import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
 import MatchItemSeller from '../../components/MatchItemSeller'
 import NotFound from "../NotFound/index"
+import ProductExpandItem from '../../components/ProductExpandItem'
+
 
 
 class ItemDetail extends Component {
@@ -47,7 +49,8 @@ class ItemDetail extends Component {
             showPopUp:false,
             matches:[],
             notFound:false,
-            site:null
+            site:null,
+            previewImage:null
         }
 
 
@@ -62,9 +65,45 @@ class ItemDetail extends Component {
         this.getMatches=this.getMatches.bind(this)
         this.checkMatch=this.checkMatch.bind(this)
 
+        this.getPreviewImage=this.getPreviewImage.bind(this)
 
     }
 
+
+    getPreviewImage(productSelectedKey){
+
+
+        axios.get(baseUrl + "product/"+productSelectedKey.replace("Product/","")+"/artifact",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("product image  response")
+                    console.log(responseAll)
+
+                    if(responseAll.length>0) {
+                        this.setState({
+
+                            previewImage: responseAll[0].blob_url
+
+                        })
+                    }
+
+                },
+                (error) => {
+
+                    console.log("produt image error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
 
     acceptMatch() {
@@ -166,6 +205,7 @@ class ItemDetail extends Component {
 
                 this.getSite(responseData.data)
 
+                this.getPreviewImage(responseData.data.product_id)
 
 
             },
@@ -369,10 +409,10 @@ class ItemDetail extends Component {
                                     {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
 
                                 <div className="row   stick-left-box ">
-                                    <div className="col-12 ">
+                                    <div className="col-12 text-center ">
 
 
-                                <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                         <img className={"img-fluid"} src={this.state.previewImage?this.state.previewImage:PlaceholderImg} alt="" />
                                     </div>
 
                                 </div>
@@ -474,6 +514,19 @@ class ItemDetail extends Component {
                                 </div>
 
 
+                                <div className="row  justify-content-start search-container pt-2  pb-2">
+
+                                    <div className={"col-auto"}>
+
+                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Product Linked</p>
+
+                                    </div>
+                                </div>
+
+                                {this.state.item && <ProductExpandItem hideAddAll={true} productId={this.state.item.product_id.replace("Product/","")}/>}
+
+
+
 
                             </div>
                         </div>
@@ -500,37 +553,7 @@ class ItemDetail extends Component {
                          </>
                          }
 
-                         <div className="row no-gutters mb-5">
-                             <div className="col-12 mb-4">
-                                 <h5 className="mb-1">About the seller  </h5>
-                             </div>
-                             <div className="col-auto ">
-                                 <figure className="avatar avatar-60 border-0">
 
-                                        <span className={"word-user-sellor"}>
-
-                                       {this.state.item&&this.state.item.org_id&&this.state.item.org_id.substr(0,2)}
-
-
-
-                                </span>
-
-
-
-                                 </figure>
-                             </div>
-                             <div className="col pl-2 align-self-center">
-                                 <div className="row no-gutters">
-                                     <div className="col-12">
-
-
-                                         <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                         {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
-
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
 
                      </div>
 

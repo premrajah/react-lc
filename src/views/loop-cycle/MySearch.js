@@ -60,7 +60,7 @@ class MySearch extends Component {
     getItems() {
 
 
-        var url = baseUrl + "search"
+        var url = baseUrl + "search/expand"
 
 
         console.log(url)

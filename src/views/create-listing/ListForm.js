@@ -141,6 +141,7 @@ class ListForm extends Component {
             images: [],
             yearsList:[],
             purpose: ["defined", "prototype", "aggregate"],
+            previewImage:null
 
 
         }
@@ -158,10 +159,48 @@ class ListForm extends Component {
         this.toggleSale = this.toggleSale.bind(this)
         this.makeFirstActive=this.makeFirstActive.bind(this)
         this.makeActive=this.makeActive.bind(this)
+        this.getPreviewImage=this.getPreviewImage.bind(this)
         this.showProductSelection = this.showProductSelection.bind(this)
+
+
 
     }
 
+
+    getPreviewImage(productSelectedKey){
+
+
+        axios.get(baseUrl + "product/"+productSelectedKey+"/artifact",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("product image  response")
+                    console.log(responseAll)
+
+                    if(responseAll.length>0) {
+                        this.setState({
+
+                            previewImage: responseAll[0].blob_url
+
+                        })
+                    }
+
+                },
+                (error) => {
+
+                    console.log("produt image error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
     handleNext() {
 
@@ -185,12 +224,13 @@ class ListForm extends Component {
             })
 
 
-
             console.log(this.state.fields)
         }
 
 
         else  if (this.state.page === 3) {
+
+
 
 
 
@@ -255,7 +295,7 @@ class ListForm extends Component {
 
 
 
-        if (fields["product"]){
+        if (field === "product"){
 
 
             this.setState({
@@ -264,6 +304,8 @@ class ListForm extends Component {
 
             })
 
+
+            this.getPreviewImage(e.target.value)
         }
 
 
@@ -1338,12 +1380,12 @@ class ListForm extends Component {
                 <div className={this.state.page === 3 ? "" : "d-none"}>
 
 
-                    <ItemDetailPreview  site={this.state.siteSelected} userDetail={this.props.userDetail} fields={this.state.fields}/>
+                    <ItemDetailPreview previewImage={this.state.previewImage} site={this.state.siteSelected} userDetail={this.props.userDetail} fields={this.state.fields}/>
 
                 </div>
 
 
-                <div className={this.state.page === 4 ? "" : "d-none"}>
+                <div className={this.state.page === 4? "" : "d-none"}>
 
 
 

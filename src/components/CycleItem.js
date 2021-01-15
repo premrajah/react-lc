@@ -329,7 +329,7 @@ class CycleItem extends Component {
                    </>
                     </Link>
 
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">  <span className={"text-bold"}>{this.props.item.sender.name}</span> <CompanyInfo item={this.props.item.sender}/> → <span className={"text-bold"} >{this.props.item.receiver.name}  <CompanyInfo item={this.props.item.receiver}/> </span></p>
+                    <p style={{ fontSize: "16px" }} className=" mb-1">  <span className={"text-bold"}>{this.props.item.sender.name}</span> <CompanyInfo item={this.props.item.sender}/> → <span className={"text-bold"} >{this.props.item.receiver.name}  <CompanyInfo item={this.props.item.receiver}/> </span></p>
 
                               {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}
 

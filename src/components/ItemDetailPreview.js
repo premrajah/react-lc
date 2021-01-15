@@ -84,7 +84,7 @@ class ItemDetailPreview extends Component {
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
 
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid"} src={this.props.previewImage?this.props.previewImage:PlaceholderImg} alt="" />
 
                                         </div>
                                     </div>

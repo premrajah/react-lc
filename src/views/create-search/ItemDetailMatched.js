@@ -26,6 +26,7 @@ import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
 import MatchItemBuyer from '../../components/MatchItemBuyer'
+import ProductExpandItem from '../../components/ProductExpandItem'
 
 
 class ItemDetailMatch extends Component {
@@ -46,8 +47,10 @@ class ItemDetailMatch extends Component {
             matches:[],
             matchExist:false,
             match:null,
-
+            previewImage:null
         }
+
+        this.getPreviewImage=this.getPreviewImage.bind(this)
 
 
         this.match = props.match.params.match
@@ -60,6 +63,41 @@ class ItemDetailMatch extends Component {
 
     }
 
+
+    getPreviewImage(productSelectedKey){
+
+
+        axios.get(baseUrl + "product/"+productSelectedKey.replace("Product/","")+"/artifact",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("product image  response")
+                    console.log(responseAll)
+
+                    if(responseAll.length>0) {
+                        this.setState({
+
+                            previewImage: responseAll[0].blob_url
+
+                        })
+                    }
+
+                },
+                (error) => {
+
+                    console.log("produt image error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
 
     requestMatch() {
@@ -164,6 +202,9 @@ class ItemDetailMatch extends Component {
                     })
 
 
+                this.getPreviewImage(responseData.listing.product._id)
+
+
 
                 },
                 (error) => {
@@ -254,7 +295,7 @@ class ItemDetailMatch extends Component {
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
 
-                                            <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                            <img className={"img-fluid"} src={this.state.previewImage?this.state.previewImage:PlaceholderImg} alt="" />
 
                                         </div>
                                         <div className="col-12 text-center ">
@@ -356,53 +397,29 @@ class ItemDetailMatch extends Component {
                                     </div>
 
 
+                                    <div className="row  justify-content-start search-container pt-2  pb-2">
+
+                                        <div className={"col-auto"}>
+
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Product Linked</p>
+
+                                        </div>
+                                    </div>
+
+                                    {this.state.item && <ProductExpandItem hideAddAll={true} productId={this.state.item.listing.product._id.replace("Product/","")}/>}
+
+
+
 
                                 </div>
                             </div>
                         </div>
 
 
-                        <div className={"container "}>
 
 
-                            <div className="container ">
-                                <div className="row">
-                                </div>
-                            </div>
-                            <div className="container mt-4 mb-5 pb-5 ">
 
-
-                                <div className="row no-gutters mb-5">
-                                    <div className="col-12 mb-4">
-                                        <h5 className="mb-1">About the seller  </h5>
-                                    </div>
-                                    <div className="col-auto ">
-                                        <figure className="avatar avatar-60 border-0">
-
-                                        <span className={"word-user-sellor"}>
-
-                                       {this.state.item&&this.state.item.listing.org.name&&this.state.item.listing.org.name.substr(0,2)}
-
-                                </span>
-
-                                        </figure>
-                                    </div>
-                                    <div className="col pl-2 align-self-center">
-                                        <div className="row no-gutters">
-                                            <div className="col-12">
-
-
-                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                                {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>}
+                        }
 
 
 

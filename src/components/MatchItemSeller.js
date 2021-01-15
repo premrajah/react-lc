@@ -9,7 +9,7 @@ import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
 
-
+import CompanyInfo from './CompanyInfo'
 class MatchItemSeller extends Component {
 
 
@@ -546,8 +546,8 @@ class MatchItemSeller extends Component {
                 <div className={"col-4  content-box-listing"}>
 
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
-                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">From: {this.props.item.search.org._id}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Search:{this.props.item.search.search.name}</p>
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org._id} <CompanyInfo item={this.props.item.search.org}/></p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.search.name} </p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
 
 

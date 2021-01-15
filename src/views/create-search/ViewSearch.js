@@ -265,13 +265,15 @@
 
                         var responseData = response.data.data;
 
-
                         console.log("detail search response")
+
                         console.log(response)
 
 
                         this.setState({
+
                             createSearchData: responseData
+
                         })
 
 

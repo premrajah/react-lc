@@ -582,7 +582,7 @@ class MatchItemBuyer extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
                 <div style={{ textAlign: "center" }} className={"col-12"}>
-                    <p>Match Stage: <span className={"text-blue text-bold"}>{this.props.item.match.stage}</span></p>
+                    <p>Match Stage: <span className={"text-blue text-bold text-caps"}>{this.props.item.match.stage}</span></p>
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-12"}>
 
@@ -621,7 +621,7 @@ class MatchItemBuyer extends Component {
 
                             {index + 1}. <span style={{ fontSize: "18px" }}
                                                className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
-                            Offer Stage: {item.offer.stage}
+                            Offer Stage: <span className={"text-caps"}>{item.offer.stage}</span>
                             <br/>
 
 
@@ -633,7 +633,7 @@ class MatchItemBuyer extends Component {
                             {item.next_action.possible_actions.map((actionItem) =>
 
                             <button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"
-                                    className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                    className=" text-caps ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                 {actionItem}
                             </button>
 
@@ -667,7 +667,7 @@ class MatchItemBuyer extends Component {
 
                             {index + 1}. <span style={{ fontSize: "18px" }}
                                                className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
-                            Offer Stage: {item.offer.stage}
+                            Offer Stage: <span className={"text-caps"}>{item.offer.stage}</span>
 
 
 

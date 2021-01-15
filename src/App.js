@@ -95,7 +95,6 @@ class App extends Component{
                 <BrowserRouter>
                     <Switch>
 
-
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/terms" component={withRouter(TermsAndConditions)} />
                         <Route exact path="/service" component={withRouter(TermsAndService)} />

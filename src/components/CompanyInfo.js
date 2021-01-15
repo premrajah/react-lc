@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 
                     <div className="row no-gutters justify-content-center p-2  ">
                         <div className={"col-12 "}>
-                            <h6>About {props.item.name}</h6>
+                            <h6>{props.item.name}</h6>
                         </div>
                         <div className={"col-12 "}>
                              {props.item.description}

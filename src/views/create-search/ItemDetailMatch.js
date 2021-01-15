@@ -26,6 +26,7 @@ import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
 import MatchItem from '../../components/MatchItem'
+import ProductExpandItem from '../../components/ProductExpandItem'
 
 
 class ItemDetailMatch extends Component {
@@ -47,9 +48,11 @@ class ItemDetailMatch extends Component {
             matches:[],
             matchExist:false,
             match:null,
-            site:null
+            site:null,
+            previewImage:null
         }
 
+        this.getPreviewImage=this.getPreviewImage.bind(this)
 
         this.listing = props.match.params.listing
         this.search = props.match.params.search
@@ -62,6 +65,40 @@ class ItemDetailMatch extends Component {
         this.checkMatch=this.checkMatch.bind(this)
         this.getSite=this.getSite.bind(this)
 
+
+    }
+    getPreviewImage(productSelectedKey){
+
+
+        axios.get(baseUrl + "product/"+productSelectedKey.replace("Product/","")+"/artifact",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("product image  response")
+                    console.log(responseAll)
+
+                    if(responseAll.length>0) {
+                        this.setState({
+
+                            previewImage: responseAll[0].blob_url
+
+                        })
+                    }
+
+                },
+                (error) => {
+
+                    console.log("produt image error")
+                    console.log(error)
+
+                }
+            );
 
     }
 
@@ -211,7 +248,7 @@ class ItemDetailMatch extends Component {
                     })
 
 
-                    // this.getSite(responseData.data)
+                    this.getPreviewImage(responseData.data.product._id)
 
 
 
@@ -342,14 +379,14 @@ class ItemDetailMatch extends Component {
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
 
-                                        <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                        <img className={"img-fluid"} src={this.state.previewImage?this.state.previewImage:PlaceholderImg} alt="" />
 
                                         </div>
                                     </div>
 
                                 </div>
 
-                                <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
+                                <div className={"col-md-8 col-sm-12 col-xs-12 pl-4 pb-5"}>
 
                                     <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
@@ -410,10 +447,6 @@ class ItemDetailMatch extends Component {
                                     </div>
 
 
-
-
-
-
                                     <div className="row  justify-content-start search-container  pb-2">
 
                                         <div className={"col-auto"}>
@@ -424,41 +457,8 @@ class ItemDetailMatch extends Component {
                                     </div>
 
 
-                                    {/*<div className="row  justify-content-start search-container  pb-2">*/}
-
-                                        {/*<div className={"col-auto"}>*/}
-
-                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>*/}
-
-                                        {/*</div>*/}
-                                    {/*</div>*/}
-
-                                    {/*<div className="row  justify-content-start search-container  pb-2">*/}
-
-                                        {/*<div className={"col-auto"}>*/}
-
-                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>*/}
-
-                                        {/*</div>*/}
-                                    {/*</div>*/}
-
-
-                                    {/*<div className="row  justify-content-start search-container  pb-2 ">*/}
-
-                                        {/*<div className={"col-auto"}>*/}
-                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>*/}
-
-                                        {/*</div>*/}
-                                    {/*</div>*/}
-
-
-
-
                                     <div className="row  justify-content-start search-container pb-2 ">
-                                        {/*<div className={"col-1"}>*/}
 
-                                            {/*<CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />*/}
-                                        {/*</div>*/}
 
                                         <div className={"col-auto"}>
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
@@ -482,58 +482,21 @@ class ItemDetailMatch extends Component {
                                     </div>
 
 
+                                    <div className="row  justify-content-start search-container pt-2  pb-2">
 
-                                </div>
-                            </div>
-                        </div>
-                        <div className={"container "}>
+                                        <div className={"col-auto"}>
 
+                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Product Linked</p>
 
-
-
-
-
-                            <div className="container ">
-                                <div className="row">
-                                </div>
-                            </div>
-                            <div className="container mt-4 mb-5 pb-5 ">
-
-
-                                <div className="row no-gutters mb-5">
-                                    <div className="col-12 mb-4">
-                                        <h5 className="mb-1">About the seller  </h5>
-                                    </div>
-                                    <div className="col-auto ">
-                                        <figure className="avatar avatar-60 border-0">
-
-                                        <span className={"word-user-sellor"}>
-
-                                       {this.state.item&&this.state.item.org.name&&this.state.item.org.name.substr(0,2)}
-
-
-
-                                </span>
-
-
-
-                                        </figure>
-                                    </div>
-                                    <div className="col pl-2 align-self-center">
-                                        <div className="row no-gutters">
-                                            <div className="col-12">
-
-
-                                                <p style={{ fontSize: "18px" }} className=" ">{this.state.item.org_id}</p>
-                                                {/*<p style={{ fontSize: "18px" }} className="">48 items listed | 4 cycles</p>*/}
-
-                                            </div>
                                         </div>
                                     </div>
+
+                                    {this.state.item && <ProductExpandItem hideAddAll={true} productId={this.state.item.product._id.replace("Product/","")}/>}
+
+
+
                                 </div>
                             </div>
-
-
                         </div>
 
 

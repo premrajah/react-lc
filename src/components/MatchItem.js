@@ -475,10 +475,9 @@ class MatchItem extends Component {
 
 
                 </div>
-                <div className={"col-10 pl-3 content-box-listing"}>
+                <div className={"col-6 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org._id}</p>
 
@@ -486,8 +485,22 @@ class MatchItem extends Component {
 
 
 
+                <div className={"col-2 text-right"}>
 
-            </div>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps"> {this.props.item.listing.listing.price?"GBP "+ this.props.item.listing.listing.price.value:"Free"}</p>
+
+                </div>
+
+                <div className={"col-2 text-right"}>
+
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps"> {this.props.item.match.stage}</p>
+
+                </div>
+
+
+
+
+                </div>
 
         );
     }

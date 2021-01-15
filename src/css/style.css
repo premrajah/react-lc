@@ -2987,8 +2987,21 @@ a.page-link:hover{
 	height: 300px;
 
 }
-.qr-code-container>img{
+
+.qr-code-container>.qr-code-bg{
 	position: absolute;
+	margin: auto;
+	transform: translate(-50%, -50%);
+	left: 50%;
+	top: 50%;
+}
+
+.qr-code-container>.qr-code{
+	position: absolute;
+	margin: auto;
+	transform: translate(-50%, -50%) rotate(45deg);
+	left: 50%;
+	top: 50%;
 }
 .qr-code{
 	height: 150px;
@@ -3032,4 +3045,9 @@ a.page-link:hover{
 	border: 1px solid #eee;
 	border-bottom: 7px solid #eee;
 
+}
+
+.text-caps{
+
+	text-transform: capitalize;
 }

@@ -10,7 +10,7 @@ import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import CalIcon from '@material-ui/icons/Today';
 import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import { baseUrl } from "../Util/Constants";
+import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
@@ -19,7 +19,10 @@ import { Tabs,Tab } from 'react-bootstrap';
 import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from './ProductItemNew'
 import MatchItem from '../components/MatchItem'
-
+import jspdf from 'jspdf'
+import QrCodeBg from '../img/qr-code-bg.png';
+import SearchItem from '../views/loop-cycle/search-item'
+import ResourceItem from '../views/create-search/ResourceItem'
 
 class ProductDetail extends Component {
 
@@ -38,19 +41,147 @@ class ProductDetail extends Component {
             item: null,
             showPopUp:false,
             subProducts:[],
+            listingLinked:null,
+            searches:[],
         }
 
 
         // this.slug = props.match.params.slug
         // this.search = props.match.params.search
 
-        this.getResources = this.getResources.bind(this)
         this.getSubProducts=this.getSubProducts.bind(this)
         this.getMatches=this.getMatches.bind(this)
+        this.getSearches = this.getSearches.bind(this)
+        this.getListing = this.getListing.bind(this)
+        this.getQrCode=this.getQrCode.bind(this)
 
     }
 
 
+    handlePrintPdf = (productItem, productQRCode) => {
+
+        const { _key, name} = productItem;
+        if(!_key || !productQRCode) { return; }
+
+        const pdf = new jspdf()
+        pdf.setTextColor(39,36,92)
+        pdf.text(name, 10, 30);
+
+        pdf.setDrawColor(7, 173, 136)
+        pdf.line(0, 40, 1000, 40)
+
+        pdf.addImage(productQRCode, 'PNG', 20, 40, 80, 80)
+        pdf.addImage(productQRCode, 'PNG', 100, 60, 40, 40)
+        pdf.addImage(productQRCode, 'PNG', 150, 70, 20, 20)
+
+        pdf.setDrawColor(7, 173, 136)
+        pdf.line(0, 120, 1000, 120)
+
+        pdf.setTextColor(39,36,92)
+        pdf.textWithLink("Loopcycle.io", 10, 160, {url: 'https://loopcycle.io/'})
+
+        pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`)
+    }
+
+
+    productQrCode
+    getQrCode() {
+
+        this.productQrCode = baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail";
+
+        console.log("qr code")
+        console.log(this.productQrCode)
+
+    }
+
+
+    
+
+    getListing() {
+
+
+        // var siteKey = (this.props.item.site_id).replace("Site/","")
+
+        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseData = response.data.data;
+                    console.log("product listing response")
+                    console.log(responseData)
+
+                    this.setState({
+
+                        listingLinked: responseData
+
+                    })
+
+                },
+                (error) => {
+
+                    // var status = error.response.status
+                    console.log("product listing error")
+                    console.log(error)
+
+
+
+
+                }
+            );
+
+    }
+
+
+    getSearches() {
+
+
+        var searches = this.props.item.searches
+
+        for (var i = 0; i < searches.length; i++) {
+
+
+            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""),
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseData = response.data.data;
+                        console.log("product search response")
+                        console.log(responseData)
+
+                        var searches = this.state.searches
+
+                        searches.push(responseData)
+
+                        this.setState({
+
+                            searches: searches
+
+                        })
+
+                    },
+                    (error) => {
+
+                        // var status = error.response.status
+                        console.log("product search error")
+                        console.log(error)
+
+                    }
+                );
+
+
+        }
+
+    }
 
     getSubProducts() {
 
@@ -143,73 +274,9 @@ class ProductDetail extends Component {
 
     }
 
-    getResources() {
 
 
-        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
 
-                    var response = response.data;
-                    console.log("product detail")
-                    console.log(response)
-
-                    this.setState({
-
-                        item: response.data
-                    })
-
-
-                    // this.getListing()
-                    this.getSubProducts()
-
-
-                },
-                (error) => {
-                    console.log("listing error", error)
-                }
-            );
-
-    }
-
-    getProduct() {
-
-
-        axios.get(baseUrl + "product/" + encodeUrl(this.slug)+"/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                    var response = response.data;
-                    console.log("product detail")
-                    console.log(response)
-
-                    this.setState({
-
-                        item: response.data
-                    })
-
-
-                    // this.getListing()
-                    this.getSubProducts()
-
-
-                },
-                (error) => {
-                    console.log("listing error", error)
-                }
-            );
-
-    }
 
 
     componentWillMount() {
@@ -225,6 +292,25 @@ class ProductDetail extends Component {
         // this.getResources()
 
         // this.getMatches()
+
+        this.getQrCode()
+
+
+        if (this.props.item.listing){
+
+            this.getListing()
+
+        }
+
+
+
+        if (this.props.item.searches.length>0){
+
+            this.getSearches()
+
+        }
+
+
 
     }
 
@@ -243,9 +329,6 @@ class ProductDetail extends Component {
 
                             <div className="row no-gutters  justify-content-center">
 
-
-
-
                                 <div className="col-md-4 col-sm-12 col-xs-12 ">
 
                                     <div className="row stick-left-box  ">
@@ -254,8 +337,59 @@ class ProductDetail extends Component {
                                     <ImagesSlider images={this.props.item.artifacts} /> :
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
+
                                         </div>
+
+
+
+                                            <div className={"col-12 pb-5 mb-5"}>
+
+
+                                                <div className="row justify-content-start pb-3 pt-3 ">
+
+                                                    <div className="col-12 ">
+                                                        <h5 className={"text-bold blue-text"}>Cycle Code</h5>
+                                                    </div>
+
+                                                    <div className="col-12">
+                                                        <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
+                                                            Scan the QR code below to view this product
+                                                        </p>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="row justify-content-center ">
+
+                                                    <div className="col-12 pt-4 border-box">
+
+
+                                                        <div className={"qr-code-container"}>
+
+                                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
+                                                            <img className={"qr-code"} src={this.productQrCode} alt=""/>
+
+                                                        </div>
+
+                                                        <p className={"green-text"}>
+                                                            <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
+                                                                provenance</Link>
+                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.productQrCode)}>Print PDF</Link>
+                                                        </p>
+
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
+
                                     </div>
+
+
 
                                 </div>
 
@@ -301,8 +435,8 @@ class ProductDetail extends Component {
                                     <div className="col-12 mt-2">
 
 
-                                    <Tabs defaultActiveKey="product" id="uncontrolled-tab-example">
-                                        <Tab eventKey="product" title="Product Info">
+                                    <Tabs defaultActiveKey="productinfo" id="uncontrolled-tab-example">
+                                        <Tab eventKey="productinfo" title="Product Info">
 
                                             <div className="row  justify-content-start search-container  pb-2">
 
@@ -310,8 +444,7 @@ class ProductDetail extends Component {
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
                                                     <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.category} > {this.props.item.product.type}> > {this.props.item.product.state} </p>
-                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.type}></p>*/}
-                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.state}</p>*/}
+
                                                 </div>
                                             </div>
 
@@ -401,11 +534,37 @@ class ProductDetail extends Component {
                                             </div>
 
                                         </Tab>
-                                        <Tab eventKey="profile" title="Subproducts">
+
+
+                                        {this.state.subProducts.length>0 &&
+                                        <Tab eventKey="subproducts" title="Subproducts">
                                             {this.state.subProducts.map((item)=>
                                                 <ProductItemNew item={item}/>
                                             )}
-                                        </Tab>
+                                        </Tab>}
+
+
+                                        {this.state.searches.length > 0 &&
+                                        <Tab eventKey="search" title="Searches">
+                                        }
+
+
+                                            {this.state.searches.map((item) =>
+
+                                                <SearchItem item={item}/>
+                                            )}
+
+                                        </Tab>}
+
+                                        {this.state.listingLinked &&
+                                        <Tab eventKey="listing" title="Listing">
+                                            {this.state.listingLinked && <ResourceItem item={this.state.listingLinked}/>}
+                                        </Tab>}
+
+
+
+
+
 
                                     </Tabs>
 

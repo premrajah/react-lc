@@ -37,6 +37,7 @@
     import MomentUtils from '@date-io/moment';
     import moment from 'moment';
     import NotFound from "../NotFound/index"
+    import ProductExpandItem from '../../components/ProductExpandItem'
 
 
     import {
@@ -114,11 +115,13 @@
                 dateRequiredBy: null,
                 dateRequiredFrom:null,
                 matchesCount:0,
-                notFound:false
+                notFound:false,
 
-
-
+                previewImage:null
             }
+
+            this.getPreviewImage=this.getPreviewImage.bind(this)
+
 
 
             this.slug = props.match.params.slug
@@ -143,6 +146,43 @@
 
 
         }
+
+
+        getPreviewImage(productSelectedKey){
+
+
+            axios.get(baseUrl + "product/"+productSelectedKey.replace("Product/","")+"/artifact",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseAll = response.data.data;
+                        console.log("product image  response")
+                        console.log(responseAll)
+
+                        if(responseAll.length>0) {
+                            this.setState({
+
+                                previewImage: responseAll[0].blob_url
+
+                            })
+                        }
+
+                    },
+                    (error) => {
+
+                        console.log("produt image error")
+                        console.log(error)
+
+                    }
+                );
+
+        }
+
 
 
 
@@ -277,6 +317,9 @@
                         })
 
 
+                    if (responseData.product) {
+                        this.getPreviewImage(responseData.product._id)
+                    }
 
 
 
@@ -658,11 +701,13 @@
                                         <div className="col-md-4 col-sm-12 col-xs-12 pb-5 pt-5 ">
 
                                             <div className="row stick-left-box container-gray justify-content-center pb-5 pt-5">
+
+                                                {this.state.previewImage?
+                                                    <img className={"img-fluid"} src={this.state.previewImage} alt="" />:
+
                                                 <div className="col-12 text-center m-5">
-
-
-                                                <img className={"my-search-icon-middle"} src={SearchIcon} alt="" />
-                                                </div>
+                                                    <img className={"my-search-icon-middle"} src={SearchIcon} alt="" />
+                                                </div>}
 
                                             </div>
 
@@ -785,7 +830,23 @@
                                                 </div>
 
 
-                                                {/*<BottomAppBar />*/}
+
+
+                                                {this.state.createSearchData.product &&
+                                                <>
+                                                <div className="row  justify-content-start search-container pt-2  pb-2">
+
+                                                    <div className={"col-auto"}>
+
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Product Linked</p>
+
+                                                    </div>
+                                                </div>
+
+                                                {this.state.createSearchData && <ProductExpandItem hideAddAll={true} productId={this.state.createSearchData.product._id.replace("Product/","")}/>}
+
+                                                </>}
+
 
 
                                             </div>

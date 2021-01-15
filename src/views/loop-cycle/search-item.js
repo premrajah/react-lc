@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import SearchGray from '@material-ui/icons/Search';
+import { baseUrl } from "../../Util/Constants";
+import axios from "axios/index";
+import PlaceholderImg from '../../img/place-holder-lc.png';
 
 
 class SearchItem extends Component {
@@ -18,13 +21,58 @@ class SearchItem extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            items: []
+            items: [],
+            previewImage:null
         }
+
+        this.getPreviewImage=this.getPreviewImage.bind(this)
+
 
     }
 
+    getPreviewImage(productSelectedKey){
+
+
+        axios.get(baseUrl + "product/"+productSelectedKey.replace("Product/","")+"/artifact",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("product image  response")
+                    console.log(responseAll)
+
+                    if(responseAll.length>0) {
+                        this.setState({
+
+                            previewImage: responseAll[0].blob_url
+
+                        })
+                    }
+
+                },
+                (error) => {
+
+                    console.log("produt image error")
+                    console.log(error)
+
+                }
+            );
+
+    }
+
+
     componentWillMount() {
 
+
+
+        
+        if (this.props.item.product) 
+        this.getPreviewImage(this.props.item.product._id)
     }
 
     render() {
@@ -36,8 +84,8 @@ class SearchItem extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
                 <div className={"col-2 search-column-left"}>
-
-                        <SearchGray style={{ color: "#C8C8C8",display:"table-cell" }} className={"m-5"} />
+                    {this.state.previewImage?<img className={"img-fluid"} src={this.state.previewImage} alt="" />
+                        : <SearchGray style={{ color: "#C8C8C8",display:"table-cell" }} className={"m-5"} />}
 
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>

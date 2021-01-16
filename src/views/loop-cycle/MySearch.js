@@ -23,8 +23,6 @@ import { withStyles } from "@material-ui/core/styles/index";
 
 
 
-
-
 class MySearch extends Component {
 
 
@@ -50,7 +48,6 @@ class MySearch extends Component {
 
     componentDidMount() {
 
-
         this.getItems()
     }
 
@@ -66,8 +63,6 @@ class MySearch extends Component {
         console.log(url)
 
         this.props.showLoading(true)
-
-
 
         axios.get(url,
             {

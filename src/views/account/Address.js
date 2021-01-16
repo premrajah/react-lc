@@ -228,8 +228,7 @@ class PaymentMethod extends Component {
                 },
                 (error) => {
 
-                    var status = error.response.status
-                    console.log("resource error")
+                    console.log("site resource error")
                     console.log(error)
 
                 }
@@ -261,7 +260,6 @@ class PaymentMethod extends Component {
                 },
                 (error) => {
 
-                    var status = error.response.status
                     console.log("sites response error")
                     console.log(error)
 

@@ -43,11 +43,9 @@ class ProductDetail extends Component {
             subProducts:[],
             listingLinked:null,
             searches:[],
+            productQrCode:null
         }
 
-
-        // this.slug = props.match.params.slug
-        // this.search = props.match.params.search
 
         this.getSubProducts=this.getSubProducts.bind(this)
         this.getMatches=this.getMatches.bind(this)
@@ -84,13 +82,20 @@ class ProductDetail extends Component {
     }
 
 
-    productQrCode
+
     getQrCode() {
 
-        this.productQrCode = baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail";
+        // this.productQrCode = baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail";
 
+
+
+        this.setState({
+
+            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail"
+
+        })
         console.log("qr code")
-        console.log(this.productQrCode)
+        console.log(this.state.productQrCode)
 
     }
 
@@ -289,9 +294,6 @@ class ProductDetail extends Component {
 
     componentDidMount() {
 
-        // this.getResources()
-
-        // this.getMatches()
 
         this.getQrCode()
 
@@ -368,14 +370,14 @@ class ProductDetail extends Component {
                                                         <div className={"qr-code-container"}>
 
                                                             <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                                            <img className={"qr-code"} src={this.productQrCode} alt=""/>
+                                                            <img className={"qr-code"} src={this.stage.productQrCode} alt=""/>
 
                                                         </div>
 
                                                         <p className={"green-text"}>
                                                             <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
                                                                 provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.productQrCode)}>Print PDF</Link>
+                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.stage.productQrCode)}>Print PDF</Link>
                                                         </p>
 
 
@@ -468,14 +470,14 @@ class ProductDetail extends Component {
                                             </div>
 
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {/*<div className="row  justify-content-start search-container  pb-2">*/}
 
-                                                <div className={"col-auto"}>
+                                                {/*<div className={"col-auto"}>*/}
 
-                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.props.item&&this.props.item.product.available_from_epoch_ms).format("DD MMM YYYY")} </p>
-                                                </div>
-                                            </div>
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>*/}
+                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.props.item&&this.props.item.product.available_from_epoch_ms).format("DD MMM YYYY")} </p>*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
 
 
                                             <div className="row  justify-content-start search-container  pb-2">
@@ -519,19 +521,19 @@ class ProductDetail extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="row  justify-content-start search-container  mt-4 mb-5 ">
-                                                {/*<div className={"col-1"}>*/}
+                                            {/*<div className="row  justify-content-start search-container  mt-4 mb-5 ">*/}
+                                                {/*/!*<div className={"col-1"}>*!/*/}
 
-                                                    {/*<CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />*/}
+                                                    {/*/!*<CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />*!/*/}
+                                                {/*/!*</div>*!/*/}
+
+                                                {/*<div className={"col-auto"}>*/}
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>*/}
+                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item && moment(this.props.item.product.expire_after_epoch_ms).format("DD MMM YYYY")}</p>*/}
                                                 {/*</div>*/}
 
-                                                <div className={"col-auto"}>
-                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item && moment(this.props.item.product.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
-                                                </div>
 
-
-                                            </div>
+                                            {/*</div>*/}
 
                                         </Tab>
 

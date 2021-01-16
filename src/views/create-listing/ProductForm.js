@@ -3,15 +3,8 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
-import { Alert} from 'react-bootstrap';
-import LinkGray from '../../img/icons/link-icon.png';
-
 import FormControl from '@material-ui/core/FormControl';
-import SearchIcon from '../../img/icons/search-icon.png';
-import { Link } from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
-import Close from '@material-ui/icons/Close';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import '../../Util/upload-file.css'
 import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,41 +12,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import clsx from 'clsx';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from "@material-ui/core/styles/index";
-import CalGrey from '../../img/icons/calender-dgray.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
 import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
-import ListIcon from '../../img/icons/list.png';
-import AmountIcon from '../../img/icons/amount.png';
-import StateIcon from '../../img/icons/state.png';
+
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import ResourceItem from '../item/ResourceItem'
-import PumpImg from '../../img/components/Pump_Assembly_650.png';
-import ProductBlue from '../../img/icons/product-blue.png';
-import MaceratingImg from '../../img/components/Macerating_unit_1400.png';
-import DewateringImg from '../../img/components/Dewatering_Unit_1950.png';
-import CameraGray from '../../img/icons/camera-gray.png';
-import PlusGray from '../../img/icons/plus-icon.png';
-import ControlImg from '../../img/components/Control_Panel_1450.png';
-import HeaderDark from '../header/HeaderDark'
-import Sidebar from '../menu/Sidebar'
-import MomentUtils from '@date-io/moment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-    DatePicker
-} from '@material-ui/pickers';
-import moment from "moment/moment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -161,11 +127,45 @@ class ProductForm extends Component {
         this.handleChangeFile=this.handleChangeFile.bind(this)
         this.uploadImage=this.uploadImage.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
+        this.getSites=this.getSites.bind(this)
 
 
     }
 
 
+
+    getSites() {
+
+        axios.get(baseUrl + "site",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("sites  response")
+                    console.log(responseAll)
+
+                    this.setState({
+
+                        sites: responseAll
+
+                    })
+
+                },
+                (error) => {
+
+                    var status = error.response.status
+                    console.log("sites response error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
 
     showProductSelection() {
@@ -562,6 +562,8 @@ class ProductForm extends Component {
             const upc=data.get("upc")
             const part_no=data.get("part_no")
             const state=data.get("state")
+
+            // const site=data.get("deliver")
         
             var productData =   {
 
@@ -598,6 +600,7 @@ class ProductForm extends Component {
                      product: productData,
                     "child_product_ids": [],
                     "artifact_ids": this.state.images,
+                    "site_id": data.get("deliver"),
                     "parent_product_id": this.props.parentProduct.product._key,
 
 
@@ -612,6 +615,7 @@ class ProductForm extends Component {
                     "child_product_ids": [],
                     "artifact_ids": this.state.images,
                     "parent_product_id": null,
+                    "site_id": data.get("deliver"),
 
 
                 }
@@ -851,6 +855,8 @@ class ProductForm extends Component {
 
         this.setUpYearList()
 
+
+        this.getSites()
 
     }
 
@@ -1215,6 +1221,44 @@ class ProductForm extends Component {
 
                                 </div>
 
+
+
+                                <div className="col-12 mb-2">
+
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Deliver To</div>
+
+
+                                    <FormControl variant="outlined" className={classes.formControl}>
+
+                                        <Select
+                                            name={"deliver"}
+                                            native
+                                            onChange={this.handleChangeProduct.bind(this, "deliver")}
+                                            inputProps={{
+                                                name: 'deliver',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
+
+
+                                            <option value={null}>Select</option>
+
+                                            {this.state.sites.map((item) =>
+
+                                                <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+
+                                            )}
+
+                                        </Select>
+
+                                    </FormControl>
+
+
+                                    {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
+
+
+                                    <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
+                                </div>
 
 
                                 <div className="col-12 mt-4">

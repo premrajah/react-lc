@@ -158,7 +158,6 @@ class ProductForm extends Component {
                 },
                 (error) => {
 
-                    var status = error.response.status
                     console.log("sites response error")
                     console.log(error)
 
@@ -1058,7 +1057,7 @@ class ProductForm extends Component {
                                 <div className="col-12 mt-4">
 
                                     <div className="row">
-                                        <div className="col-6">
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
 
                                             <div className={"custom-label text-bold text-blue mb-1"}>Brand</div>
 
@@ -1068,72 +1067,57 @@ class ProductForm extends Component {
 
                                         </div>
 
-                                        <div className="col-6">
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
 
                                             <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errors["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["model"]}</span>}
                                         </div>
-                                    </div>
-
-                                </div>
 
 
-
-
-
-
-
-                                <div className="col-12 mt-4">
-
-                                    <div className="row">
-                                        <div className="col-6">
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
                                             <div className={"custom-label text-bold text-blue mb-1"}>Serial Number</div>
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                    {this.state.errors["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["serial"]}</span>}
+                                            {this.state.errors["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["serial"]}</span>}
 
                                         </div>
 
 
-                                        <div className="col-6">
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
                                             <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errors["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["sku"]}</span>}
 
                                         </div>
-                                    </div>
-
-                                </div>
 
 
-
-                                <div className="col-12 mt-4">
-
-                                    <div className="row">
-                                        <div className="col-6">
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
                                             <div className={"custom-label text-bold text-blue mb-1"}>UPC</div>
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                    {this.state.errors["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["upc"]}</span>}
+                                            {this.state.errors["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["upc"]}</span>}
 
                                         </div>
 
-                                        <div className="col-6">
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
                                             <div className={"custom-label text-bold text-blue mb-1"}>Part No.</div>
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
                                         </div>
+
                                     </div>
 
-
                                 </div>
+
+
+
 
                                 <div className="col-12 mt-4">
                                 <div className="row no-gutters justify-content-center ">
@@ -1189,6 +1173,10 @@ class ProductForm extends Component {
 
                                 <div className="col-12  mt-4">
 
+                                    <div className="row camera-grids   no-gutters   ">
+
+                                        <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
+
                                     <div className={"custom-label text-bold text-blue mb-1"}>Year Of Manufacture</div>
 
 
@@ -1219,45 +1207,49 @@ class ProductForm extends Component {
 
                                     {this.state.errors["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["manufacturedDate"]}</span>}
 
-                                </div>
+                                    </div>
+
+                                        <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
+
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Deliver To</div>
+
+
+                                            <FormControl variant="outlined" className={classes.formControl}>
+
+                                                <Select
+                                                    name={"deliver"}
+                                                    native
+                                                    onChange={this.handleChangeProduct.bind(this, "deliver")}
+                                                    inputProps={{
+                                                        name: 'deliver',
+                                                        id: 'outlined-age-native-simple',
+                                                    }}
+                                                >
+
+
+                                                    <option value={null}>Select</option>
+
+                                                    {this.state.sites.map((item) =>
+
+                                                        <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+
+                                                    )}
+
+                                                </Select>
+
+                                            </FormControl>
+
+
+                                            {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
+
+
+                                            <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
 
 
 
-                                <div className="col-12 mb-2">
+                                        </div>
 
-                                    <div className={"custom-label text-bold text-blue mb-1"}>Deliver To</div>
-
-
-                                    <FormControl variant="outlined" className={classes.formControl}>
-
-                                        <Select
-                                            name={"deliver"}
-                                            native
-                                            onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                            inputProps={{
-                                                name: 'deliver',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
-
-
-                                            <option value={null}>Select</option>
-
-                                            {this.state.sites.map((item) =>
-
-                                                <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                            )}
-
-                                        </Select>
-
-                                    </FormControl>
-
-
-                                    {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
-
-
-                                    <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
+                                    </div>
                                 </div>
 
 

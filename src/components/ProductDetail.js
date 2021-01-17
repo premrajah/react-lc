@@ -370,7 +370,7 @@ class ProductDetail extends Component {
                                                         <div className={"qr-code-container"}>
 
                                                             <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                                            <img className={"qr-code"} src={this.stage.productQrCode} alt=""/>
+                                                            <img className={"qr-code"} src={this.state.productQrCode} alt=""/>
 
                                                         </div>
 
@@ -548,7 +548,7 @@ class ProductDetail extends Component {
 
                                         {this.state.searches.length > 0 &&
                                         <Tab eventKey="search" title="Searches">
-                                        }
+
 
 
                                             {this.state.searches.map((item) =>

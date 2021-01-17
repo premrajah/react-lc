@@ -184,7 +184,7 @@ class ProductExpandItem extends Component {
                     {this.state.product &&
                    <ProductItemNew item={this.state.product}/>}
 
-                    {this.state.subProducts.length> 0 &&
+                    {(this.state.subProducts.length> 0) &&
                      <div className="row no-gutters  justify-content-left">
 
                          <div className="col-12">
@@ -197,7 +197,7 @@ class ProductExpandItem extends Component {
 
                     {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
 
-                        <p style={{ margin: "10px 0" }} className={"green-text forgot-password-link text-mute small"}>
+                        <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
 
                             <span onClick={this.showProductSelection} >Add Sub Product</span>
 
@@ -208,7 +208,7 @@ class ProductExpandItem extends Component {
 
                     <ProductItemNew item={item}/>
 
-                        )}
+                    )}
 
                 </>
 

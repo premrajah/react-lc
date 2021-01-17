@@ -584,7 +584,6 @@ class ListForm extends Component {
             },
                 (error) => {
 
-                    var status = error.response.status
                     console.log("sites error")
                     console.log(error)
 

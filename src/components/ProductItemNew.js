@@ -10,6 +10,7 @@ import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
 import moment from "moment/moment";
 import PlaceholderImg from '../img/place-holder-lc.png';
+import { Link } from "react-router-dom";
 
 
 class ProductItemNew extends Component {
@@ -102,7 +103,7 @@ class ProductItemNew extends Component {
 
 
         return (
-
+<Link to={"/product/"+this.props.item.product._key}>
         <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
@@ -129,6 +130,8 @@ class ProductItemNew extends Component {
 
                 </div>
             </div>
+
+</Link>
         );
     }
 }

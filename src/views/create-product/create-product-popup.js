@@ -62,7 +62,7 @@ class  ProductPopUp extends Component{
                 </div>
                 <div className="row py-3 justify-content-center mobile-menu-row pt-3">
                     <div className="col mobile-menu">
-                        
+
 
                       <div className="form-col-left col-12">
 
@@ -70,15 +70,32 @@ class  ProductPopUp extends Component{
 
                           {this.props.showCreateProduct && <ProductForm  heading={"Create A Product"}/>}
                           {this.props.showSubProductView && <ProductExpandItem productId={this.props.product.product._key}/>}
-                          {this.props.showProductView && <ProductView  />}
+                          {/*{this.props.showProductView && <ProductView  />}*/}
 
 
 
                       </div>
 
 
-                   </div>
+
+
+                    </div>
+
                 </div>
+
+                <div className="row py-3 justify-content-center mobile-menu-row pt-3">
+
+                    <div className="col-3 mobile-menu">
+
+                        {this.props.showSubProductView &&  <button type={"submit"} onClick={this.hidePopUp} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Done</button>}
+
+
+                    </div>
+                </div>
+
+
+
+
             </Modal>
 
         )

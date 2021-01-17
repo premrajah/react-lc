@@ -335,7 +335,7 @@ class PaymentMethod extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
 
                     <HeaderDark />
 
@@ -364,7 +364,8 @@ class PaymentMethod extends Component {
                         <div className="row mb-5">
                             <div className="col-12">
                                 <div className="list-group">
-                                    {this.state.sites.map((site) => <SiteItem key={site._key}
+                                    {this.state.sites.map((site) =>
+                                        <SiteItem key={site._key}
                                                   name={site.name}
                                                   address={site.address}
                                                   email={site.email}

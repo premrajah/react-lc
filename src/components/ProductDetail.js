@@ -445,7 +445,7 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.category} > {this.props.item.product.type}> > {this.props.item.product.state} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state} {this.props.item.product.volume} {this.props.item.product.units} </p>
 
                                                 </div>
                                             </div>

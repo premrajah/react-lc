@@ -407,9 +407,12 @@ class ListForm extends Component {
             errors["endDate"] = "Required";
         }
 
+
+        if(!this.state.free){
         if (!fields["price"]) {
             formIsValid = false;
             errors["price"] = "Required";
+        }
         }
 
 
@@ -607,18 +610,14 @@ class ListForm extends Component {
                 "expire_after_epoch_ms": new Date(this.state.endDate).getTime() ,
 
                 "price": {
-                    "value": this.state.fields["price"],
+                    "value": this.state.free?0:this.state.fields["price"],
                     "currency": "gbp"
                 },
             }
 
 
-
-
         console.log("listing data")
         console.log(data)
-
-
 
         axios.put(baseUrl + "listing",
             {
@@ -824,8 +823,6 @@ class ListForm extends Component {
         } else {
 
 
-
-
             this.setState({
 
                 manufacturedDate: fields["manufacturedDate"]
@@ -890,8 +887,6 @@ class ListForm extends Component {
 
 
     handleValidationSite() {
-
-
 
 
         let fields = this.state.fieldsSite;

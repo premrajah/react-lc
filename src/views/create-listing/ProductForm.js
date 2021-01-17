@@ -108,6 +108,7 @@ class ProductForm extends Component {
             purpose: ["defined", "prototype", "aggregate"],
             product:null,
             parentProduct:null,
+            imageLoading:false
 
         }
 
@@ -305,13 +306,34 @@ class ProductForm extends Component {
     uploadImage(files) {
 
 
+        let reactThis = this;
+
+
         if (files && files.length > 0) {
 
+
+            console.log("iamge uplaoding start")
 
             for (var i = 0; i < files.length; i++) {
 
 
-                this.getBase64(files[i]).then(
+                this.getBase64(files[i]).then( data => {
+
+                //    disable finish box
+
+                    console.log("image laoding..", data)
+
+
+                    reactThis.setState({
+
+                        imageLoading: true
+                    })
+
+
+                }  ).then(
+
+
+
 
                     data => {
 
@@ -344,6 +366,8 @@ class ProductForm extends Component {
                                 // console.log(res.data.content)
 
 
+                            if (res.status===200) {
+
                                 var images = this.state.images
 
                                 images.push(res.data.data._key)
@@ -352,22 +376,48 @@ class ProductForm extends Component {
                                 this.setState({
                                     images: images
                                 })
-                            console.log("images urls")
-                            console.log(images)
+                                console.log("images urls")
+                                console.log(images)
+
+                            }
 
                             }).catch(error => {
 
                                 console.log("image upload error ")
                                 // console.log(error.response.data)
+                               //upload failed
+
 
                             })
 
+
+
                     }
-                );
+
+
+
+
+                ).then( data => {
+                    //    enable finish button
+
+                    
+                    if (files.length(i)) {
+
+                        console.log("iamge uploading finish ",data)
+
+                        reactThis.setState({
+
+                            imageLoading: false
+                        })
+
+                    }
+
+                }    );
+
 
             }
 
-
+            console.log("iamge uplaoding end")
 
 
 
@@ -1312,7 +1362,9 @@ class ProductForm extends Component {
 
                                 <div className="col-12 mt-4 mb-5">
 
-                                    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+                                    {this.state.imageLoading?"":    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>}
+
+
                                 </div>
 
 

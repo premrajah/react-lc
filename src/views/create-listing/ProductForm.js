@@ -18,7 +18,7 @@ import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import FormHelperText from '@material-ui/core/FormHelperText';
-
+import _ from 'lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -918,7 +918,7 @@ class ProductForm extends Component {
             }
         ).then((response) => {
 
-            var responseAll = response.data.data;
+            var responseAll = _.sortBy(response.data.data, ['name']);
             console.log("category response")
             console.log(responseAll)
 

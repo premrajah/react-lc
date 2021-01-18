@@ -388,7 +388,7 @@ function NavTabs(props) {
         <div className={classes.root}>
             <AppBar position="static" style={{boxShadhow:"none"}} elevation={0}>
                 <Tabs
-                    style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadhow:"none"}}
+                    style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadow:"none"}}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
@@ -397,14 +397,14 @@ function NavTabs(props) {
                     e
                 >
 
-                    <LinkTab label={"Suggested("+props.suggesstions.length+")"} href="/drafts" {...a11yProps(0)} />
 
-                    <LinkTab label={"Confirmed("+props.matches.length+")"} href="/drafts" {...a11yProps(1)} />
+                    <LinkTab label={"Confirmed ("+props.matches.length+")"} href="/drafts" {...a11yProps(0)} />
+                    <LinkTab label={"Suggested ("+props.suggesstions.length+")"} href="/drafts" {...a11yProps(1)} />
 
                 </Tabs>
             </AppBar>
 
-            <TabPanel value={value} index={0}>
+            <TabPanel value={value} index={1}>
                 <div className={"container"}>
 
                     {props.suggesstions.map((item) =>
@@ -429,7 +429,7 @@ function NavTabs(props) {
 
                 </div>
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={0}>
 
                 <div className={"container"}>
 

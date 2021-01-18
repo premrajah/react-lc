@@ -527,6 +527,11 @@ class MatchItemSeller extends Component {
 
     }
 
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
+
 
 
 
@@ -538,11 +543,11 @@ class MatchItemSeller extends Component {
 
 
 
-            <div className="row no-gutters  mt-4 mb-4  pb-4">
+            <div className="row no-gutters  mt-4 mb-4  p-4 border-light">
 
-                <div className={"col-1  content-box-listing"}>
-                    <p style={{ fontSize: "18px" }} className="text-bold mb-1"> {this.props.index+1}.</p>
-                </div>
+                {/*<div className={"col-1  content-box-listing"}>*/}
+                    {/*<p style={{ fontSize: "18px" }} className="text-bold mb-1"> {this.props.index+1}.</p>*/}
+                {/*</div>*/}
                 <div className={"col-4  content-box-listing"}>
 
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
@@ -553,7 +558,7 @@ class MatchItemSeller extends Component {
 
 
                 </div>
-                <div style={{ textAlign: "right" }} className={"col-7"}>
+                <div style={{ textAlign: "right" }} className={"col-8"}>
 
                     {this.props.item.match.stage==="created" &&  this.props.item.listing.org._id == this.props.userDetail.orgId &&
                     <div className={"row"}>
@@ -599,19 +604,24 @@ class MatchItemSeller extends Component {
 
                 </div>
 
+                <div style={{ textAlign: "left" }} className={"col-12"}>
 
-                { this.props.item.match.stage==="offered"  && <div className={"row"}>
+
+
+                { this.props.item.match.stage==="offered"  && <div className={"row container-gray"}>
 
 
                     {this.state.offers.map((item, index) =>
 
-                        <div className="col-12">
+                        <div className="col-12 ">
 
 
-                            {index + 1}. <span style={{ fontSize: "18px" }}
-                                               className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
-                            Offer Stage: {item.offer.stage}
 
+                            <span style={{ fontSize: "18px" }}
+                                  className=" mb-1 list-title text-bold ">Offer Stage: {item.offer.stage}</span>
+                            <br/>
+                            <span style={{ fontSize: "18px" }}
+                                  className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>
 
 
                             {/*<button data-id={item.offer._key} onClick={this.acceptOffer.bind(this)} type="button"*/}
@@ -633,12 +643,50 @@ class MatchItemSeller extends Component {
 
                             <>
 
-                                {item.next_action.possible_actions.map((actionItem) =>
+                                {item.next_action.possible_actions.map((actionName) =>
 
-                                    <button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"
-                                            className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                        {actionItem}
-                                    </button>
+
+                                    <>
+
+
+                                        <button
+                                            data-id={item.offer._key} data-action={actionName} onClick={this.editPopUp.bind(this)}
+                                                type="button"
+                                                className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border":
+                                                    actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  ml-3 mt-2 mb-2 orange-btn-border":
+                                                        actionName==="rejected"?"shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 orange-btn-border":
+                                                            actionName==="declined"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 orange-btn-border":
+                                                                actionName==="progress"?"shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 green-btn-border":
+                                                                    actionName==="completed"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border":
+
+                                                                        "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"}
+
+                                        >
+
+                                            {actionName==="accepted" && "Accept"}
+                                            {actionName==="cancelled" && "Cancel"}
+                                            {actionName==="rejected" && "Reject"}
+                                            {actionName==="declined" && "Decline"}
+                                            {actionName==="confirmed" && "Confirm"}
+                                            {actionName==="progress" && "Progress"}
+                                            {actionName==="completed" && "Complete"}
+                                            {actionName==="withdrawn" && "Withdraw"}
+                                            {actionName==="counter" && "Counter"}
+                                        </button>
+
+
+                                    {/*<button data-id={item.offer._key} data-action={actionName} onClick={this.editPopUp.bind(this)}*/}
+                                            {/*type="button"*/}
+                                            {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+
+                                        {/*{actionName}*/}
+                                        {/**/}
+
+
+                                    {/*</button>*/}
+
+
+                                        </>
 
                                 )}
 
@@ -654,6 +702,8 @@ class MatchItemSeller extends Component {
 
                     }
                 </div>}
+
+                </div>
 
 
                 { this.props.item.match.stage==="converted"  && <div className={"row"}>

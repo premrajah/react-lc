@@ -3074,3 +3074,8 @@ a.page-link:hover{
 
 	padding: 0px 16px!important;
 }
+
+.border-light{
+
+	border: 2px solid #eee;
+}

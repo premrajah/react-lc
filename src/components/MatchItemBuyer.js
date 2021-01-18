@@ -568,7 +568,10 @@ class MatchItemBuyer extends Component {
 
     }
 
-    
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
 
 
 
@@ -580,7 +583,7 @@ class MatchItemBuyer extends Component {
 
 
 
-            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+            <div className="row no-gutters justify-content-center mt-4 mb-4  border-light p-2">
 
                 <div style={{ textAlign: "center" }} className={"col-12"}>
                     <p>Match Stage: <span className={"text-blue img-list text-bold text-caps"}>{this.props.item.match.stage}</span></p>
@@ -612,17 +615,17 @@ class MatchItemBuyer extends Component {
 
                     {this.state.offers.map((item, index) =>
 
-                        <div  className={"col-12"}>
+                        <div  className={"col-12 "}>
 
 
                         <div className={"row text-left"}>
 
-                        <div className="col-12">
+                        <div className="col-12 ">
 
-
-                            {index + 1}. <span style={{ fontSize: "18px" }}
-                                               className=" mb-1 list-title text-bold text-blue">GBP {item.offer.amount.value}</span>,
-                            Offer Stage: <span className={"text-caps"}>{item.offer.stage}</span>
+                            Stage: <span className={"text-caps"}>{item.offer.stage}</span>
+                            <br/>
+                            <span style={{ fontSize: "18px" }}
+                                  className="  mb-1 list-title text-bold text-blue">Offer: GBP {item.offer.amount.value}</span>
                             <br/>
 
 
@@ -631,13 +634,46 @@ class MatchItemBuyer extends Component {
 
                              <>
 
-                            {item.next_action.possible_actions.map((actionItem) =>
+                            {item.next_action.possible_actions.map((actionName) =>
 
-                            <button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"
-                                    className=" text-caps ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                {actionItem}
-                            </button>
 
+                                <>
+
+
+                                    <button
+                                        data-id={item.offer._key} data-action={actionName} onClick={this.editPopUp.bind(this)}
+                                        type="button"
+                                        className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+                                            actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  ml-3 mt-2 mb-2 orange-btn-border":
+                                                actionName==="rejected"?"shadow-sm mr-2 btn btn-link mt-2 mb-2 orange-btn-border":
+                                                    actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
+                                                        actionName==="progress"?"shadow-sm mr-2 btn btn-link mt-2 mb-2 green-btn-border":
+                                                            actionName==="completed"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+
+                                                                "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
+
+                                    >
+
+                                        {actionName==="accepted" && "Accept"}
+                                        {actionName==="cancelled" && "Cancel"}
+                                        {actionName==="rejected" && "Reject"}
+                                        {actionName==="declined" && "Decline"}
+                                        {actionName==="confirmed" && "Confirm"}
+                                        {actionName==="progress" && "Progress"}
+                                        {actionName==="completed" && "Complete"}
+                                        {actionName==="withdrawn" && "Withdraw"}
+                                        {actionName==="counter" && "Counter"}
+                                    </button>
+                                    
+
+                            {/*<button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"*/}
+                                    {/*className=" text-caps ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                {/*{actionItem}*/}
+                            {/*</button>*/}
+
+
+
+                            </>
                             )}
 
                             </>

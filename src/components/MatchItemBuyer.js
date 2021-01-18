@@ -8,6 +8,7 @@ import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
+import { Link } from "react-router-dom";
 
 
 class MatchItemBuyer extends Component {
@@ -587,6 +588,8 @@ class MatchItemBuyer extends Component {
 
                 <div style={{ textAlign: "center" }} className={"col-12"}>
                     <p>Match Stage: <span className={"text-blue img-list text-bold text-caps"}>{this.props.item.match.stage}</span></p>
+                    {this.props.item.match.stage==="converted"?<p>
+                        <Link className="forgot-password-link  small " color="default" to="/my-cycles">Go To My Cycles</Link></p>:""}
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-12"}>
 
@@ -615,19 +618,23 @@ class MatchItemBuyer extends Component {
 
                     {this.state.offers.map((item, index) =>
 
-                        <div  className={"col-12 "}>
+                        <div  className={this.state.offers.length>(index+1)?"col-12 listing-row-border ":"col-12"}>
 
 
-                        <div className={"row text-left"}>
+                        <div className={"row text-left mb-2 mt-2"}>
 
                         <div className="col-12 ">
 
                             Stage: <span className={"text-caps"}>{item.offer.stage}</span>
+
                             <br/>
+
+
+
+
                             <span style={{ fontSize: "18px" }}
                                   className="  mb-1 list-title text-bold text-blue">Offer: GBP {item.offer.amount.value}</span>
                             <br/>
-
 
 
                             {item.next_action.is_mine &&
@@ -649,8 +656,10 @@ class MatchItemBuyer extends Component {
                                                     actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
                                                         actionName==="progress"?"shadow-sm mr-2 btn btn-link mt-2 mb-2 green-btn-border":
                                                             actionName==="completed"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
+                                                                actionName==="counter"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 blue-btn-border":
 
-                                                                "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
+
+                                                                    "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
 
                                     >
 
@@ -723,18 +732,25 @@ class MatchItemBuyer extends Component {
                        centered show={this.state.editPopUp} onHide={this.editPopUp} animation={false}>
 
                     <ModalBody>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-4 text-center"}>
-                                <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
-                            </div>
-                        </div>
+                        {/*<div className={"row justify-content-center"}>*/}
+                            {/*<div className={"col-4 text-center"}>*/}
+                                {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>{this.state.action} offer</p>
-                                <p>Make an offer</p>
+                                <p className={"text-bold"}>
+                                    {this.state.action=="accepted"?"Accept":
+                                        this.state.action=="cancelled"?"Cancel":
+                                            this.state.action=="declined"?"Decline":
+                                                this.state.action=="counter"?"Counter":
+                                        this.state.action=="widthdraw"?"Widthdraw":""
+
+                                    } Offer</p>
+                                <p>Are you sure you want to proceed ?</p>
                             </div>
                         </div>
 
@@ -779,11 +795,11 @@ class MatchItemBuyer extends Component {
                        centered show={this.state.showPopUp} onHide={this.showPopUp} animation={false}>
 
                     <ModalBody>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-4 text-center"}>
-                                <img className={"ring-pop-pup"} src={GrayLoop} alt=""/>
-                            </div>
-                        </div>
+                        {/*<div className={"row justify-content-center"}>*/}
+                            {/*<div className={"col-4 text-center"}>*/}
+                                {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
 
 

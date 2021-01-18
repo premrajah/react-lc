@@ -528,30 +528,32 @@ class ItemDetail extends Component {
 
 
 
+                                {this.state.matches&&this.state.matches.length>0 &&
+                                <>
+                                    <div className="row no-gutters  ">
+                                        <div className="col-12  ">
+                                            <h5 className="mb-1 text-blue text-bold">Matches Received</h5>
+                                        </div>
+
+                                    </div>
+
+                                    {this.state.matches.map((item,index)=>
+                                        <>
+                                            <MatchItemSeller index={index} item={item}/>
+
+                                        </>
+
+                                    )}
+
+                                </>
+                                }
+
+
+
                             </div>
                         </div>
 
 
-
-                         {this.state.matches&&this.state.matches.length>0 &&
-                         <>
-                             <div className="row no-gutters pb-2 mt-2 ">
-                                 <div className="col-12 mb-4 ">
-                                     <h5 className="mb-1 text-blue text-bold">Matches Received</h5>
-                                 </div>
-
-                             </div>
-
-                             {this.state.matches.map((item,index)=>
-                                 <>
-                                     <MatchItemSeller index={index} item={item}/>
-
-                                 </>
-
-                             )}
-
-                         </>
-                         }
 
 
 

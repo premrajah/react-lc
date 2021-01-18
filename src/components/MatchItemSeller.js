@@ -8,6 +8,7 @@ import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
+import { Link } from "react-router-dom";
 
 import CompanyInfo from './CompanyInfo'
 class MatchItemSeller extends Component {
@@ -553,7 +554,8 @@ class MatchItemSeller extends Component {
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
                     <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org._id} <CompanyInfo item={this.props.item.search.org}/></p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.search.name} </p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Stage: {this.props.item.match.stage}</p>
+                    <p style={{ fontSize: "16px" }} className=" mb-1">Stage: {this.props.item.match.stage}  {this.props.item.match.stage==="converted"?
+                        <Link className="forgot-password-link  small " color="default" to="/my-cycles">Go To My Cycles</Link>:""}</p>
 
 
 
@@ -582,10 +584,7 @@ class MatchItemSeller extends Component {
 
                     </div>}
 
-
-
                     {(this.props.item.match.stage==="accepted" ||this.props.item.match.stage==="offered")&&  this.props.item.listing.org._id != this.props.userDetail.orgId &&
-
 
 
                     <div className={"row"}>
@@ -608,12 +607,13 @@ class MatchItemSeller extends Component {
 
 
 
-                { this.props.item.match.stage==="offered"  && <div className={"row container-gray"}>
+                { this.props.item.match.stage==="offered"  &&
+                <div className={"row  "}>
 
 
                     {this.state.offers.map((item, index) =>
 
-                        <div className="col-12 ">
+                        <div className={this.state.offers.length>(index+1)?"col-12 listing-row-border mb-2 ":"col-12  mb-2 "}>
 
 
 
@@ -658,8 +658,10 @@ class MatchItemSeller extends Component {
                                                             actionName==="declined"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 orange-btn-border":
                                                                 actionName==="progress"?"shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 green-btn-border":
                                                                     actionName==="completed"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border":
+                                                                        actionName==="counter"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 blue-btn-border":
 
-                                                                        "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"}
+
+                                                                            "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"}
 
                                         >
 
@@ -711,7 +713,7 @@ class MatchItemSeller extends Component {
 
                     {this.state.offers.map((item, index) =>
 
-                        <div className="col-12">
+                        <div className={this.state.offers.length>(index+1)?"col-12 listing-row-border mb-2 ":"col-12  mb-2 pb-2"}>
 
 
                             {index + 1}. <span style={{ fontSize: "18px" }}
@@ -724,7 +726,6 @@ class MatchItemSeller extends Component {
 
                     }
                 </div>}
-
 
 
                 <Modal className={"loop-popup"}
@@ -742,8 +743,15 @@ class MatchItemSeller extends Component {
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>{this.state.action} offer</p>
-                                <p>Make an offer</p>
+                                <p className={"text-bold"}>
+                                    {this.state.action=="accepted"?"Accept":
+                                        this.state.action=="cancelled"?"Cancel":
+                                            this.state.action=="declined"?"Decline":
+                                                this.state.action=="counter"?"Counter":
+                                                    this.state.action=="widthdraw"?"Widthdraw":""
+
+                                    } Offer</p>
+                                <p>Are you sure you want to proceed ?</p>
                             </div>
                         </div>
 
@@ -781,7 +789,6 @@ class MatchItemSeller extends Component {
                     </ModalBody>
 
                 </Modal>
-
 
                 <Modal className={"loop-popup"}
                        aria-labelledby="contained-modal-title-vcenter"
@@ -842,8 +849,6 @@ class MatchItemSeller extends Component {
                     </ModalBody>
 
                 </Modal>
-
-
 
                 <Modal className={"loop-popup"}
                        aria-labelledby="contained-modal-title-vcenter"

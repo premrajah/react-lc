@@ -3079,3 +3079,9 @@ a.page-link:hover{
 
 	border: 2px solid #eee;
 }
+
+.bottom-tag-p{
+
+	position: absolute;
+	bottom: 0px;
+}

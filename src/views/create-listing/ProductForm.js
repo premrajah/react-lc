@@ -104,6 +104,7 @@ class ProductForm extends Component {
             startDate: null,
             endDate: null,
             images: [],
+            currentUploadingImages: [],
             yearsList:[],
             purpose: ["defined", "prototype", "aggregate"],
             product:null,
@@ -132,11 +133,42 @@ class ProductForm extends Component {
         this.showProductSelection=this.showProductSelection.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
-
+        this.checkImageUpload=this.checkImageUpload.bind(this)
 
 
     }
 
+    
+    
+    checkImageUpload(){
+
+
+        console.log("check iamge called file", this.state.files.length, this.state.currentUploadingImages.length)
+
+
+
+
+        if (this.state.files.length===this.state.currentUploadingImages.length){
+
+
+            console.log("loading done")
+            this.setState({
+
+                imageLoading:false
+            })
+
+
+        }else{
+
+            console.log("still loaidng")
+
+            this.setState({
+
+                imageLoading:true
+            })
+        }
+
+    }
 
     handleValidationSite() {
 
@@ -474,6 +506,10 @@ class ProductForm extends Component {
     uploadImage(files) {
 
 
+        this.setState({
+            currentImages:[]
+        })
+
         let reactThis = this;
 
 
@@ -536,13 +572,19 @@ class ProductForm extends Component {
 
                             if (res.status===200) {
 
-                                var images = this.state.images
+
+                                var currentImages = reactThis.state.currentUploadingImages
+
+                                var images = reactThis.state.images
 
                                 images.push(res.data.data._key)
 
+                                currentImages.push(res.data.data._key)
 
-                                this.setState({
-                                    images: images
+
+                                reactThis.setState({
+                                    images: images,
+                                    currentImages:currentImages
                                 })
                                 console.log("images urls")
                                 console.log(images)
@@ -572,11 +614,13 @@ class ProductForm extends Component {
 
                         console.log("iamge uploading finish ",data)
 
-                        reactThis.setState({
+                        // reactThis.setState({
+                        //
+                        //     imageLoading: false
+                        // })
 
-                            imageLoading: false
-                        })
 
+                    reactThis.checkImageUpload()
 
 
                 }    );
@@ -1612,7 +1656,11 @@ class ProductForm extends Component {
 
                                 <div className="col-12 mt-4 mb-5">
 
-                                    {this.state.imageLoading?"":    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>}
+                                    {/*{this.state.files.length===this.state.currentUploadingImages.length?"": */}
+
+                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+
+                                    {/*}*/}
 
 
                                 </div>

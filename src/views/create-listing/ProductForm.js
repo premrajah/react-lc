@@ -671,27 +671,45 @@ class ProductForm extends Component {
     loadType(field, event) {
 
 
-        console.log(field,event.target.value)
+        if (event.target.value!=="Select") {
+
+            console.log(field, event.target.value)
 
 
-        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+            var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
 
-        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+            var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
 
-        this.setState({
+            this.setState({
 
-            catSelected: catSelected
-        })
+                catSelected: catSelected
+            })
 
-        this.setState({
+            this.setState({
 
-            subCategories: subCategories
+                subCategories: subCategories
 
-        })
+            })
 
 
-        console.log(catSelected)
-        console.log(subCategories)
+            console.log(catSelected)
+            console.log(subCategories)
+
+        }else{
+
+            this.setState({
+
+                catSelected: null
+            })
+
+            this.setState({
+
+                subCategories: []
+
+            })
+
+
+        }
 
 
     }
@@ -699,31 +717,49 @@ class ProductForm extends Component {
 
     loadStates(field, event) {
 
-
-        console.log(field,event.target.value)
-
-
-        var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
-
-        var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
-
-        var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
-
-        this.setState({
-
-            subCatSelected: subCatSelected
-        })
-
-        this.setState({
-
-            states: states,
-            units: units
-
-        })
+        if (event.target.value!=="Select") {
 
 
-        console.log(subCatSelected)
-        console.log(states)
+            console.log(field, event.target.value)
+
+
+            var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+
+            var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
+
+            var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+
+            this.setState({
+
+                subCatSelected: subCatSelected
+            })
+
+            this.setState({
+
+                states: states,
+                units: units
+
+            })
+
+
+            console.log(subCatSelected)
+            console.log(states)
+
+        }else{
+
+            this.setState({
+
+                subCatSelected: null
+            })
+
+            this.setState({
+
+                states: [],
+                units: []
+
+            })
+
+        }
 
 
     }

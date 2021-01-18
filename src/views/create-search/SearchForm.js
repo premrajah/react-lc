@@ -1154,21 +1154,59 @@
             if (field ==="category") {
 
 
-                var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+                if (event.target.value!=="Select") {
 
-                var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+                    console.log(event.target.value)
 
 
-                this.setState({
+                    var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
 
-                    catSelected: catSelected
-                })
+                    var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
 
-                this.setState({
 
-                    subCategories: subCategories
+                    this.setState({
 
-                })
+                        catSelected: catSelected
+                    })
+
+                    this.setState({
+
+                        subCategories: subCategories
+
+                    })
+
+                }else{
+
+                    this.setState({
+
+                        catSelected: null
+                    })
+
+                    this.setState({
+
+                        subCategories: []
+
+                    })
+
+
+                    this.setState({
+
+                        stateSelected: null
+                    })
+
+                    this.setState({
+
+                        subCatSelected: null
+                    })
+
+                    this.setState({
+
+                        states: [],
+                        units: []
+
+                    })
+
+                }
 
             }
 
@@ -1177,34 +1215,64 @@
             if (field ==="type") {
 
 
-                var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+                if (event.target.value!=="Select") {
 
-                var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
 
-                var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+                    var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
 
-                this.setState({
+                    var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
 
-                    subCatSelected: subCatSelected
-                })
+                    var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
 
-                this.setState({
+                    this.setState({
 
-                    states: states,
-                    units: units
+                        subCatSelected: subCatSelected
+                    })
 
-                })
+                    this.setState({
+
+                        states: states,
+                        units: units
+
+                    })
+
+                }else{
+
+                    this.setState({
+
+                        subCatSelected: null
+                    })
+
+                    this.setState({
+
+                        states: [],
+                        units: []
+
+                    })
+
+                }
 
             }
 
 
             if (field ==="state") {
 
+                if (event.target.value!=="Select") {
 
-                this.setState({
+                    this.setState({
 
-                    stateSelected: event.target.value
-                })
+                        stateSelected: event.target.value
+                    })
+
+
+                }else{
+
+                    this.setState({
+
+                        stateSelected: null
+                    })
+
+                }
 
 
             }

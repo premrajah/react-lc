@@ -20,6 +20,7 @@
     "date-fns": "^2.16.1",
     "history": "^5.0.0",
     "jspdf": "^2.2.0",
+    "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
     "react": "^16.14.0",

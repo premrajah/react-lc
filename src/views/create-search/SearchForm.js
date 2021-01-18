@@ -39,6 +39,7 @@
     import FormHelperText from '@material-ui/core/FormHelperText';
     import MomentUtils from '@date-io/moment';
     import moment from 'moment';
+    import _ from 'lodash';
 
     import {
         MuiPickersUtilsProvider,
@@ -614,22 +615,6 @@
 
         }
 
-        dynamicSort = (property) => {
-
-            let sortOrder = 1;
-            if(property[0] === "-") {
-                sortOrder = -1;
-                property = property.substr(1);
-            }
-
-            return function (a,b) {
-                if(sortOrder == -1){
-                    return b[property].localeCompare(a[property]);
-                }else{
-                    return a[property].localeCompare(b[property]);
-                }
-            }
-        }
 
         getFiltersCategories() {
 
@@ -641,9 +626,8 @@
                 }
             ).then((response) => {
 
-                var response = response.data.data.sort(this.dynamicSort("name"));
-                console.log("resource response")
-                console.log(response)
+                    var response = _.sortBy(response.data.data, ['name']);
+                console.log("resource response ", response)
 
                 this.setState({
 

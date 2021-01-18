@@ -2748,7 +2748,7 @@ class CreateListing extends Component {
 
                                             <div className="col-12 mt-4">
 
-                                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
                                             </div>
 
 

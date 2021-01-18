@@ -58,7 +58,9 @@ class ViewCycle extends Component {
             stepStages: ["created" , "accepted" ,"progress",  "completed", "confirmed"],
             steps: ["transport" , "processing" ,"cleaning"],
             notFound:false,
-            image:null
+            image:null,
+            showPopUpAction:false,
+            action:null
         }
 
         this.slug = props.match.params.slug
@@ -76,10 +78,36 @@ class ViewCycle extends Component {
         this.proceedCancel = this.proceedCancel.bind(this)
         this.updateStep=this.updateStep.bind(this)
         this.deliverCycle=this.deliverCycle.bind(this)
+        this.showPopUpAction=this.showPopUpAction.bind(this)
 
 
     }
 
+
+
+
+    showPopUpAction(event){
+
+
+        if (event) {
+            var action = event.currentTarget.dataset.action
+
+            this.setState({
+                action:action,
+
+            })
+
+        }
+
+
+        this.setState({
+
+            showPopUpAction:!this.state.showPopUpAction
+
+        })
+
+
+    }
 
 
     showPopUpTrackingNumber() {
@@ -423,32 +451,7 @@ class ViewCycle extends Component {
     deliverCycle(event) {
 
 
-
-
-        var action=event.currentTarget.dataset.action
-
-        // if (this.state.item&&this.state.item.steps[0].step.stage==="created"){
-        //
-        //     action="accepted"
-        //
-        // }
-        // else if (this.state.item&&this.state.item.steps[0].step.stage==="accepted"){
-        //
-        //     action="progress"
-        //
-        // }
-        // else if (this.state.item&&this.state.item.steps[0].step.stage==="progress"){
-        //
-        //     action="completed"
-        //
-        // }
-        //
-        // else if (this.state.item&&this.state.item.steps[0].step.stage==="completed"){
-        //
-        //     action="confirmed"
-        //
-        // }
-
+        var action=this.state.action
 
 
         var data={
@@ -470,10 +473,7 @@ class ViewCycle extends Component {
 
                 console.log(res.data.data)
 
-                // this.setState({
-                //
-                //     showPopUp: true
-                // })
+               this.showPopUpAction()
 
                 this.getResources()
 
@@ -929,13 +929,12 @@ class ViewCycle extends Component {
                                 <div className="row   stick-left-box ">
                                     <div className="col-12 ">
 
-
                                         <img className={"img-fluid"} src={this.state.image?this.state.image:PlaceholderImg} alt="" />
                                     </div>
 
                                     <div className="col-12 mt-2">
-                                        <p><span>{this.state.item.product.product.name}</span></p>
-                                        <p>Stage: <span className={"green-text text-heading"}>{this.state.item.cycle.stage}</span></p>
+                                        <p><span>Product: {this.state.item.product.product.name}</span></p>
+                                        <p>Stage: <span className={"green-text text-heading text-caps"}>{this.state.item.cycle.stage}</span></p>
 
                                     </div>
 
@@ -1001,7 +1000,7 @@ class ViewCycle extends Component {
                                     <div className={"col-auto"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
+                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.sender.name} </p>
                                     </div>
                                 </div>
 
@@ -1205,9 +1204,9 @@ class ViewCycle extends Component {
 
                                             {this.state.item.next_action.possible_actions.map((item) =>
                                                 <>
-                                                    <button data-action={item} onClick={this.deliverCycle.bind(this)}
+                                                    <button data-action={item} onClick={this.showPopUpAction.bind(this)}
                                                             type="button"
-                                                            className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
+                                                            className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green text-caps">
 
                                                         {item}
                                                     </button>
@@ -1514,6 +1513,64 @@ class ViewCycle extends Component {
                 }
                 </>}
 
+
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.showPopUpAction} onHide={this.showPopUpAction} animation={false}>
+
+                    <ModalBody>
+                        {/*<div className={"row justify-content-center"}>*/}
+                        {/*<div className={"col-4 text-center"}>*/}
+                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold text-caps"}>
+                                    {this.state.action=="delivered"?"Deliver":
+                                        this.state.action=="received"?"Receive":
+                                            this.state.action=="closed"?"Close":
+                                                this.state.action=="counter"?"Counter":
+                                                    this.state.action=="withdraw"?"Widthdraw":""
+
+                                    } Action</p>
+                                <p>Are you sure you want to proceed ?</p>
+                            </div>
+                        </div>
+
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button onClick={this.deliverCycle.bind(this)}   className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <p onClick={this.showPopUpAction} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                    </ModalBody>
+
+                </Modal>
 
 
             </div>

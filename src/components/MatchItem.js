@@ -478,8 +478,8 @@ class MatchItem extends Component {
                 <div className={"col-6 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org._id}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org._id}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.org.name}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">Searched By: {this.props.item.search.org.name}</p>
 
                 </div>
 

@@ -673,7 +673,7 @@ class MatchItemSeller extends Component {
                                             {actionName==="progress" && "Progress"}
                                             {actionName==="completed" && "Complete"}
                                             {actionName==="withdrawn" && "Withdraw"}
-                                            {actionName==="counter" && "Counter"}
+                                            {actionName==="counter" && "Counter Offer"}
                                         </button>
 
 

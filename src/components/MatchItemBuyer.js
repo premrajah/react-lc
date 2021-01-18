@@ -651,12 +651,12 @@ class MatchItemBuyer extends Component {
                                         data-id={item.offer._key} data-action={actionName} onClick={this.editPopUp.bind(this)}
                                         type="button"
                                         className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
-                                            actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  ml-3 mt-2 mb-2 orange-btn-border":
+                                            actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  ml-1 mt-2 mb-2 orange-btn-border":
                                                 actionName==="rejected"?"shadow-sm mr-2 btn btn-link mt-2 mb-2 orange-btn-border":
                                                     actionName==="declined"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
                                                         actionName==="progress"?"shadow-sm mr-2 btn btn-link mt-2 mb-2 green-btn-border":
                                                             actionName==="completed"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
-                                                                actionName==="counter"?"shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 blue-btn-border":
+                                                                actionName==="counter"?"shadow-sm mr-2 btn btn-link ml-1  mt-2 mb-2 blue-btn-border":
 
 
                                                                     "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"}
@@ -671,7 +671,7 @@ class MatchItemBuyer extends Component {
                                         {actionName==="progress" && "Progress"}
                                         {actionName==="completed" && "Complete"}
                                         {actionName==="withdrawn" && "Withdraw"}
-                                        {actionName==="counter" && "Counter"}
+                                        {actionName==="counter" && "Counter Offer"}
                                     </button>
                                     
 

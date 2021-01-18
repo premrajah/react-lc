@@ -958,7 +958,7 @@ class ProductDetail extends Component {
 
                                             </div>}
 
-                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center container-gray"}>
+                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
 
                                                 <div className={"row justify-content-center"}>
 

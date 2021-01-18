@@ -502,42 +502,16 @@ class ProductForm extends Component {
     }
 
 
-
     uploadImage(files) {
-
-
-        this.setState({
-            currentImages:[]
-        })
-
-        let reactThis = this;
 
 
         if (files && files.length > 0) {
 
 
-            console.log("iamge uplaoding start")
-
             for (var i = 0; i < files.length; i++) {
 
 
-                this.getBase64(files[i]).then( data => {
-
-                //    disable finish box
-
-                    console.log("image laoding..", data)
-
-
-                    reactThis.setState({
-
-                        imageLoading: true
-                    })
-
-
-                }  ).then(
-
-
-
+                this.getBase64(files[i]).then(
 
                     data => {
 
@@ -555,80 +529,45 @@ class ProductForm extends Component {
                                 data_as_base64_string: btoa(data)
                             },
 
-                        {
-                            headers: {
-                                "Authorization"
-                            :
-                                "Bearer " + this.props.userDetail.token
+                            {
+                                headers: {
+                                    "Authorization"
+                                        :
+                                    "Bearer " + this.props.userDetail.token
+                                }
                             }
-                        }
 
 
 
                         ).then(res => {
 
-                                // console.log(res.data.content)
+                            // console.log(res.data.content)
 
 
-                            if (res.status===200) {
+                            var images = this.state.images
+
+                            images.push(res.data.data._key)
 
 
-                                var currentImages = reactThis.state.currentUploadingImages
-
-                                var images = reactThis.state.images
-
-                                images.push(res.data.data._key)
-
-                                currentImages.push(res.data.data._key)
-
-
-                                reactThis.setState({
-                                    images: images,
-                                    currentImages:currentImages
-                                })
-                                console.log("images urls")
-                                console.log(images)
-
-                            }
-
-                            }).catch(error => {
-
-                                console.log("image upload error ")
-                                // console.log(error.response.data)
-                               //upload failed
-
-
+                            this.setState({
+                                images: images
                             })
+                            console.log("images urls")
+                            console.log(images)
 
+                        }).catch(error => {
 
+                            console.log("image upload error ")
+                            // console.log(error.response.data)
+
+                        })
 
                     }
-
-
-
-
-                ).then( data => {
-                    //    enable finish button
-
-                    
-
-                        console.log("iamge uploading finish ",data)
-
-                        // reactThis.setState({
-                        //
-                        //     imageLoading: false
-                        // })
-
-
-                    reactThis.checkImageUpload()
-
-
-                }    );
-
+                );
 
             }
 
-            console.log("iamge uplaoding end")
+
 
 
 

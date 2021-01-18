@@ -990,7 +990,7 @@ class ViewCycle extends Component {
                                     <div className={"col-auto"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category} > {this.state.item.listing.type}> {this.state.item.listing.state}</p>
+                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.category}, {this.state.item.listing.type}, {this.state.item.listing.state}</p>
                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
                                     </div>

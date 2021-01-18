@@ -469,7 +469,7 @@ class MatchItem extends Component {
                 <div className={"col-2"}>
 
 
-                        {this.props.item.images ? <img className={"resource-item-img  img-fluid"}
+                        {this.props.item.images ? <img className={"resource-item-img img-list img-fluid"}
                                                        src={this.props.item.images[0]} alt="" />
                             : <img className={"img-fluid"} src={Paper} alt="" />}
 

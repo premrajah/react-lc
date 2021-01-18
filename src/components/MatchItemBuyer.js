@@ -568,6 +568,7 @@ class MatchItemBuyer extends Component {
 
     }
 
+    
 
 
 
@@ -582,7 +583,7 @@ class MatchItemBuyer extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
                 <div style={{ textAlign: "center" }} className={"col-12"}>
-                    <p>Match Stage: <span className={"text-blue text-bold text-caps"}>{this.props.item.match.stage}</span></p>
+                    <p>Match Stage: <span className={"text-blue img-list text-bold text-caps"}>{this.props.item.match.stage}</span></p>
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-12"}>
 

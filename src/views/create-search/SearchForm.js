@@ -79,8 +79,8 @@
                 active: 0,  //0 logn. 1- sign up , 3 -search,
                 categories: [],
                 subCategories: [],
-                catSelected: {},
-                subCatSelected: {},
+                catSelected: null,
+                subCatSelected: null,
                 stateSelected: null,
                 states: [],
                 sites: [],
@@ -543,6 +543,7 @@
         }
 
         handleNext() {
+
             this.getSites()
             if (this.state.page === 1) {
 
@@ -581,8 +582,6 @@
             else if (this.state.page === 3) {
 
 
-
-
                 this.setState({
 
                     active: 7,
@@ -594,8 +593,6 @@
 
 
             else if (this.state.active === 7) {
-
-
 
 
                 this.setState({
@@ -838,17 +835,31 @@
 
 
 
-            if (!fields["volume"]) {
+
+            if (!this.state.catSelected) {
                 formIsValid = false;
-                errors["volume"] = "Required";
-            } else {
-
-
-                this.setState({
-
-                    volumeSelected: fields["volume"]
-                })
+                errors["category"] = "Required";
             }
+
+
+
+
+            if (!this.state.subCatSelected) {
+                formIsValid = false;
+                errors["type"] = "Required";
+            }
+
+
+
+
+
+            if (!this.state.stateSelected) {
+
+                formIsValid = false;
+                errors["state"] = "Required";
+
+            }
+
 
 
 
@@ -868,17 +879,14 @@
 
 
 
-            if (this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected) {
 
-            } else {
-
-                formIsValid = false;
-                errors["category"] = "Required";
-
-            }
 
 
             this.setState({ errors: errors });
+
+
+            console.log("errors")
+            console.log(errors)
             return formIsValid;
 
         }
@@ -925,16 +933,16 @@
 
 
 
-            if (this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected) {
-
-
-            } else {
-
-
-                formIsValid = false;
-                errors["category"] = "Required";
-
-            }
+            // if (this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected) {
+            //
+            //
+            // } else {
+            //
+            //
+            //     formIsValid = false;
+            //     errors["category"] = "Required";
+            //
+            // }
 
 
             this.setState({ errors: errors });
@@ -969,20 +977,34 @@
                 errors["unit"] = "Required";
             }
 
-
-
-
-
-            if (this.state.catSelected.name && this.state.subCatSelected.name && this.state.stateSelected) {
-
-
-            } else {
-
-
+            if (!this.state.catSelected) {
                 formIsValid = false;
                 errors["category"] = "Required";
-
             }
+
+            if (!this.state.subCatSelected) {
+                formIsValid = false;
+                errors["type"] = "Required";
+            }
+
+            if (!this.state.stateSelected) {
+                formIsValid = false;
+                errors["state"] = "Required";
+            }
+
+
+
+            //
+            // if (this.state.catSelected && this.state.subCatSelected && this.state.stateSelected) {
+            //
+            //
+            // } else {
+            //
+            //
+            //     formIsValid = false;
+            //     errors["category"] = "Required";
+            //
+            // }
 
 
 
@@ -1120,11 +1142,11 @@
 
         };
 
-        handleChange(field, e) {
+        handleChange(field, event) {
 
 
             let fields = this.state.fields;
-            fields[field] = e.target.value;
+            fields[field] = event.target.value;
 
             this.setState({ fields });
             this.handleValidationNextColor()
@@ -1136,7 +1158,7 @@
 
                 this.setState({
 
-                    productSelected: e.target.value
+                    productSelected: event.target.value
 
                 })
 
@@ -1145,6 +1167,63 @@
             }
 
 
+            if (field ==="category") {
+
+
+                var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+
+                var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+
+
+                this.setState({
+
+                    catSelected: catSelected
+                })
+
+                this.setState({
+
+                    subCategories: subCategories
+
+                })
+
+            }
+
+
+
+            if (field ==="type") {
+
+
+                var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+
+                var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
+
+                var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+
+                this.setState({
+
+                    subCatSelected: subCatSelected
+                })
+
+                this.setState({
+
+                    states: states,
+                    units: units
+
+                })
+
+            }
+
+
+            if (field ==="state") {
+
+
+                this.setState({
+
+                    stateSelected: event.target.value
+                })
+
+
+            }
 
 
         }
@@ -1216,9 +1295,6 @@
 
         componentWillMount() {
             window.scrollTo(0, 0)
-
-
-
 
         }
 
@@ -1402,6 +1478,71 @@
         }
 
 
+        loadType(field, event) {
+
+
+            console.log(field,event.target.value)
+
+
+            var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+
+            var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+
+
+
+
+
+            this.setState({
+
+                catSelected: catSelected
+            })
+
+            this.setState({
+
+                subCategories: subCategories
+
+            })
+
+
+            // console.log(catSelected)
+            // console.log(subCategories)
+
+
+        }
+
+
+        loadStates(field, event) {
+
+
+            console.log(field,event.target.value)
+
+
+            var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+
+            var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
+
+            var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+
+            this.setState({
+
+                subCatSelected: subCatSelected
+            })
+
+            this.setState({
+
+                states: states,
+                units: units
+
+            })
+
+
+            // console.log(subCatSelected)
+            // console.log(states)
+
+
+        }
+
+
         render() {
 
             const classes = withStyles();
@@ -1458,23 +1599,99 @@
 
 
                                     </div>
-                                    <div className="col-12 mt-4" onClick={this.selectCategory}>
 
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Resource Category</div>
+                                    <div className="col-12 mt-4 mb-3">
+                                        <div className={"row"}>
+                                            <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                                <div className={"custom-label text-bold text-blue mb-3"}>Resource Category</div>
+                                                <FormControl variant="outlined" className={classes.formControl}>
+                                                    <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                    <Select
+                                                        native
+                                                        onChange={this.handleChange.bind(this, "category")}
+                                                        inputProps={{
+                                                            name: 'category',
+                                                            id: 'outlined-age-native-simple',
+                                                        }}
+                                                    >
+
+                                                        <option value={null}>Select</option>
+
+                                                        {this.state.categories.map((item) =>
+
+                                                            <option value={item.name}>{item.name}</option>
+
+                                                        )}
+
+                                                    </Select>
+
+                                                    <FormHelperText>What resources do you need to make this product? </FormHelperText>
+
+                                                </FormControl>
+                                                {this.state.errors["category"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["category"]}</span>}
+                                            </div>
 
 
-                                        <div onClick={this.selectCategory} className={"dummy-text-field"}>
+                                            <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                                <div className={"custom-label text-bold text-blue mb-3"}>Type</div>
+                                                <FormControl  disabled={this.state.subCategories.length>0?false:true} variant="outlined" className={classes.formControl}>
+                                                    <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                    <Select
+                                                        native
+                                                        onChange={this.handleChange.bind(this, "type")}
+                                                        inputProps={{
+                                                            name: 'type',
+                                                            id: 'outlined-age-native-simple',
+                                                        }}
+                                                    >
 
-                                            {this.state.catSelected && this.state.catSelected.name && this.state.subCatSelected && this.state.stateSelected ?
+                                                        <option value={null}>Select</option>
 
-                                                this.state.catSelected.name + " > " + this.state.subCatSelected.name + " > " + this.state.stateSelected : "Resource Category"}
+                                                        {this.state.subCategories.map((item) =>
+
+                                                            <option value={item.name}>{item.name}</option>
+
+                                                        )}
+
+                                                    </Select>
+                                                </FormControl>
+                                                {this.state.errors["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["type"]}</span>}
 
 
+                                            </div>
+
+
+                                            <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                                <div className={"custom-label text-bold text-blue mb-3"}>State</div>
+                                                <FormControl disabled={this.state.states.length>0?false:true} variant="outlined" className={classes.formControl}>
+                                                    <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                    <Select
+                                                        native
+                                                        onChange={this.handleChange.bind(this, "state")}
+                                                        inputProps={{
+                                                            name: 'state',
+                                                            id: 'outlined-age-native-simple',
+                                                        }}
+                                                    >
+
+                                                        <option value={null}>Select</option>
+
+                                                        {this.state.states.map((item) =>
+
+                                                            <option value={item}>{item}</option>
+
+                                                        )}
+
+                                                    </Select>
+                                                </FormControl>
+                                                {this.state.errors["state"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["state"]}</span>}
+
+                                            </div>
                                         </div>
-                                        {this.state.errors["category"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["category"]}</span>}
-
 
                                     </div>
+
+
                                 </div>
                                 <div className="row no-gutters justify-content-center mt-4">
                                     <div className="col-12 mb-1">
@@ -1530,138 +1747,6 @@
                         </div>
                     </div>
 
-
-
-                    <div className={this.state.active === 1 ? "" : "d-none"}>
-
-                        <div className="container mb-2  pt-5 pb-2">
-
-                            <div className="row no-gutters">
-                                <div className="col-10">
-
-                                    <h6>Select a category </h6>
-                                </div>
-
-
-                                <div className="col-2" style={{textAlign:"right"}}>
-
-
-                                    <Close onClick={this.selectCreateSearch} className="blue-text" style={{ fontSize: 32 }} />
-
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div className="container   pb-5 mb-5 pt-3">
-
-                            {this.state.categories.map((item) =>
-
-                                <div data-name={item.name} className="row mr-2 ml-2  unselected-row p-3 mb-3" onClick={this.selectType.bind(this)}>
-                                    <div className="col-2">
-                                        <img className={"icon-left-select"} src={SendIcon} alt="" />
-                                    </div>
-                                    <div className="col-8">
-
-                                        <p className={"blue-text "} style={{ fontSize: "16px", marginBottom: "5px" }}>{item.name}</p>
-                                        <p className={"text-mute small"} style={{ fontSize: "14px" }}>{item.types.length + " Types"}</p>
-
-                                    </div>
-                                    <div className="col-2">
-                                        <NavigateNextIcon />
-                                    </div>
-                                </div>
-
-                            )}
-
-                        </div>
-                    </div>
-
-
-
-                    <div  className={this.state.active === 2 ? "" : "d-none"}>
-                        <div className="container  pt-2 mb-2 pb-2">
-
-                            <div className="row no-gutters">
-                                <div className="col-10">
-
-                                    <h6>Select a type </h6>
-                                </div>
-
-                                <div className="col-2" style={{textAlign:"right"}}>
-
-                                    <Close data-active={1}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
-
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div className="container   pb-5 mb-5 pt-3">
-
-                            {this.state.subCategories && this.state.subCategories.map((item) =>
-
-                                <div data-name={item.name} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
-                                    onClick={this.selectSubCatType.bind(this)}>
-                                    <div className="col-10">
-
-                                        <p className={" "} style={{ fontSize: "16px" }}>{item.name}</p>
-
-                                    </div>
-                                    <div className="col-2">
-                                        <NavigateNextIcon />
-                                    </div>
-                                </div>
-                            )}
-
-                        </div>
-                    </div>
-
-
-
-
-                    <div  className={this.state.active === 3 ? "" : "d-none"}>
-
-                        <div className="container  pt-2 pb-2 mb-2">
-
-                            <div className="row no-gutters">
-                                <div className="col-10">
-
-                                    <h6>Select a State </h6>
-                                </div>
-
-
-                                <div className="col-2" style={{textAlign:"right"}}>
-
-
-                                    <Close data-active={2}  onClick={this.makeActive.bind(this)} className="blue-text" style={{ fontSize: 32 }} />
-
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div className="container   pb-3 pt-3">
-
-                            {this.state.states.map((item) =>
-
-                                <div data-name={item} className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  " onClick={this.selectState.bind(this)}>
-                                    <div className="col-10">
-                                        <p className={" "} style={{ fontSize: "16px" }}>{item}</p>
-
-                                    </div>
-                                    <div className="col-2">
-                                        <NavigateNextIcon />
-                                    </div>
-                                </div>
-
-                            )}
-
-                        </div>
-                    </div>
 
 
 
@@ -2080,148 +2165,7 @@
 
 
 
-                    {this.state.productSelection && <div>
 
-                        <HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />
-
-
-
-
-                        <div className="container   pb-4 pt-4">
-
-
-                            {/*<div className="row ">*/}
-
-                            {/*<div className="col-auto pb-4 pt-4">*/}
-                            {/*<img className={"search-icon-middle"}  src={CubeBlue} alt=""/>*/}
-
-                            {/*</div>*/}
-                            {/*</div>*/}
-                            <div className="row  pb-2 pt-4 ">
-
-                                <div className="col-10">
-                                    <h3 className={"blue-text text-heading"}>Create A Product
-                                    </h3>
-
-                                </div>
-                                <div className="col-2 text-right">
-                                    <Close onClick={this.showProductSelection} className="blue-text" style={{ fontSize: 32 }} />
-                                </div>
-                            </div>
-
-
-                            {/*<div className="row  pb-4 pt-2 ">*/}
-
-                            {/*<div className="col-10">*/}
-                            {/*<p className={"text-blue text-bold "}>What is the purpose of your new product? </p>*/}
-
-                            {/*</div>*/}
-                            {/*</div>*/}
-
-                        </div>
-
-
-
-
-
-
-                        <div className={"row justify-content-center create-product-row"}>
-                            <div className={"col-11"}>
-                                <form onSubmit={this.handleSubmitProduct}>
-                                    <div className="row no-gutters justify-content-center ">
-
-
-                                        <div className="col-12 mb-2">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>What is the purpose of your new product?</div>
-                                            <FormControl variant="outlined" className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.handleChangeProduct.bind(this, "purpose")}
-
-                                                    inputProps={{
-                                                        name: 'purpose',
-                                                        id: 'outlined-age-native-simple',
-                                                    }}
-                                                >
-
-                                                    <option value={null}>Select</option>
-
-                                                    {this.state.purpose.map((item) =>
-
-                                                        <option value={item}>{item}</option>
-
-                                                    )}
-
-                                                </Select>
-                                            </FormControl>
-                                            {this.state.errorsProduct["purpose"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["purpose"]}</span>}
-
-
-                                        </div>
-
-
-                                        <div className="col-12 mb-2">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>What resources do you need to make this product?</div>
-                                            <FormControl variant="outlined" className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.handleChangeProduct.bind(this, "category")}
-                                                    inputProps={{
-                                                        name: 'category',
-                                                        id: 'outlined-age-native-simple',
-                                                    }}
-                                                >
-
-                                                    <option value={null}>Select</option>
-
-                                                    {this.state.categories.map((item) =>
-
-                                                        <option value={item}>{item.name}</option>
-
-                                                    )}
-
-                                                </Select>
-                                            </FormControl>
-                                            {this.state.errorsProduct["category"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["category"]}</span>}
-
-
-                                        </div>
-                                        <div className="col-12 mt-4">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Give your product a title </div>
-
-                                            <TextField id="outlined-basic" type={"text"} label="Title" variant="outlined" fullWidth={true} name={"title"} onChange={this.handleChangeProduct.bind(this, "title")} />
-
-                                            {this.state.errorsProduct["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["title"]}</span>}
-
-                                        </div>
-
-                                        <div className="col-12 mt-4">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Give it a description</div>
-
-                                            <TextField multiline
-                                                rows={4} type={"text"} id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"} onChange={this.handleChangeProduct.bind(this, "description")} />
-
-                                            {this.state.errorsProduct["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["description"]}</span>}
-
-                                        </div>
-
-
-                                        <div className="col-12 mt-4 mb-5">
-
-                                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
-                                        </div>
-
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-
-
-                    </div>}
 
 
 

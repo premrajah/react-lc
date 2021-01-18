@@ -3057,3 +3057,20 @@ a.page-link:hover{
 	vertical-align: middle;
 	line-height: 30px;
 }
+/*.img-list{*/
+
+	/*height: 100px;*/
+	/*width: 150px;*/
+	/*object-fit: cover;*/
+/*}*/
+
+
+.MuiTimelineContent-root{
+
+	padding: 0px 6px!important;
+}
+
+.MuiTimelineContent-root>.MuiPaper-root{
+
+	padding: 0px 16px!important;
+}

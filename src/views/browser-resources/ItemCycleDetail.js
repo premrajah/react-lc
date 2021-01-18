@@ -298,7 +298,6 @@ class ItemCycleDetail extends Component {
                     <div className="container ">
 
 
-
                         {!this.props.isLoggedIn && <>
 
                             <div className="row justify-content-start pb-3 pt-4 listing-row-border ">
@@ -414,7 +413,7 @@ class ItemCycleDetail extends Component {
 
                             {this.state.item &&
                             <>
-                                <ProductDetail  item={this.state.item} />
+                                <ProductDetail showRegister={true} item={this.state.item} />
 
                             </>
                             }

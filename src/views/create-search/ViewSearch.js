@@ -401,8 +401,7 @@
                         },
                         (error) => {
 
-                            var status = error.response.status
-                            console.log("resource error")
+                            console.log("search error")
                             console.log(error)
 
                         }
@@ -761,7 +760,7 @@
                                                     <div className={"col-auto"}>
 
                                                         <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
-                                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.category} > {this.state.createSearchData.search.type} </p>
+                                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.category}, {this.state.createSearchData.search.type} </p>
                                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.type}</p>*/}
 
                                                     </div>

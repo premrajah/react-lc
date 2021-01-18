@@ -23,6 +23,12 @@ import jspdf from 'jspdf'
 import QrCodeBg from '../img/qr-code-bg.png';
 import SearchItem from '../views/loop-cycle/search-item'
 import ResourceItem from '../views/create-search/ResourceItem'
+import { Modal, ModalBody, Alert } from 'react-bootstrap';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+
+
 
 class ProductDetail extends Component {
 
@@ -43,7 +49,14 @@ class ProductDetail extends Component {
             subProducts:[],
             listingLinked:null,
             searches:[],
-            productQrCode:null
+            productQrCode:null,
+            showRegister:false,
+            sites:[],
+            fieldsSite: {},
+            errorsSite: {},
+            showSubmitSite:false,
+            errorRegister:false,
+            siteSelected:null
         }
 
 
@@ -52,8 +65,287 @@ class ProductDetail extends Component {
         this.getSearches = this.getSearches.bind(this)
         this.getListing = this.getListing.bind(this)
         this.getQrCode=this.getQrCode.bind(this)
+        this.showRegister=this.showRegister.bind(this)
+        this.getSites=this.getSites.bind(this)
+        this.showSubmitSite=this.showSubmitSite.bind(this)
 
     }
+
+
+    showSubmitSite(){
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+        this.setState({
+
+            showSubmitSite:!this.state.showSubmitSite
+        })
+    }
+
+
+    handleValidationSite() {
+
+
+        let fields = this.state.fieldsSite;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if (!fields["name"]) {
+            formIsValid = false;
+            errors["name"] = "Required";
+        }
+
+        // if (!fields["others"]) {
+        //     formIsValid = false;
+        //     errors["others"] = "Required";
+        // }
+
+
+        if (!fields["address"]) {
+            formIsValid = false;
+            errors["address"] = "Required";
+        }
+
+        if (!fields["contact"]) {
+            formIsValid = false;
+            errors["contact"] = "Required";
+        }
+
+
+
+        if (!fields["phone"]) {
+            formIsValid = false;
+            errors["phone"] = "Required";
+        }
+
+
+
+        if (!fields["email"]) {
+            formIsValid = false;
+            errors["email"] = "Required";
+        }
+
+        if (typeof fields["email"] !== "undefined") {
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({ errorsSite: errors });
+        return formIsValid;
+    }
+
+
+
+    handleChangeSite(field, e) {
+
+        let fields = this.state.fieldsSite;
+        fields[field] = e.target.value;
+        this.setState({ fields: fields });
+
+    }
+
+
+    handleSubmitSite = event => {
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+
+
+        event.preventDefault();
+
+
+        if(this.handleValidationSite()) {
+
+            const form = event.currentTarget;
+
+
+            console.log(new FormData(event.target))
+
+
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const email = data.get("email")
+            const others = data.get("others")
+            const name = data.get("name")
+            const contact = data.get("contact")
+            const address = data.get("address")
+            const phone = data.get("phone")
+
+
+            console.log("site submit called")
+
+
+            axios.put(baseUrl + "site",
+
+                {site: {
+                        "name": name,
+                        "email": email,
+                        "contact": contact,
+                        "address": address,
+                        "phone": phone,
+                        "others": others
+                    }
+
+                }
+                , {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                })
+                .then(res => {
+
+                    // this.toggleSite()
+                    this.getSites()
+
+
+                    this.showSubmitSite()
+
+
+                    this.setState({
+
+                        siteSelected:res.data.data
+                    })
+
+
+                }).catch(error => {
+
+
+                console.log(error)
+
+
+
+            });
+
+
+
+
+        }
+    }
+
+
+
+    submitRegisterProduct = event => {
+
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+
+        event.preventDefault();
+
+
+
+            const form = event.currentTarget;
+
+
+            console.log(new FormData(event.target))
+
+
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const site = data.get("site")
+
+
+            console.log("register submit called")
+
+
+            axios.post(baseUrl + "product/register",
+
+                {
+                    site_id: site,
+                    product_id: this.props.item.product._key,
+                }
+                , {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                })
+                .then(res => {
+
+                    this.toggleSite()
+                    this.showRegister()
+
+
+
+
+
+
+                }).catch(error => {
+
+                console.log(error)
+
+                this.setState({
+
+                    errorRegister:error.response.data.errors[0].message
+                })
+
+            });
+
+    }
+
+
+
+
+     getSites() {
+
+    axios.get(baseUrl + "site",
+        {
+            headers: {
+                "Authorization": "Bearer " + this.props.userDetail.token
+            }
+        }
+    )
+        .then((response) => {
+
+                var responseAll = response.data.data;
+                console.log("sites  response")
+                console.log(responseAll)
+
+                this.setState({
+
+                    sites: responseAll
+
+                })
+
+            },
+            (error) => {
+
+                console.log("sites response error")
+                console.log(error)
+
+            }
+        );
+
+}
 
 
     handlePrintPdf = (productItem, productQRCode) => {
@@ -81,6 +373,19 @@ class ProductDetail extends Component {
         pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`)
     }
 
+
+
+    showRegister(){
+
+
+        this.setState({
+
+            showRegister:!this.state.showRegister
+        })
+
+
+
+    }
 
 
     getQrCode() {
@@ -313,6 +618,9 @@ class ProductDetail extends Component {
         }
 
 
+        
+        if (this.props.showRegister) 
+        this.getSites()
 
     }
 
@@ -343,6 +651,21 @@ class ProductDetail extends Component {
                                         </div>
 
 
+                                        {this.props.isLoggedIn &&
+                                        <>
+                                        <div className={"col-12 pb-5 mb-5"}>
+
+                                            <div className="row justify-content-start pb-3 pt-3 ">
+
+                                                <div className="col-12 ">
+                                                    <button  onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Register Product </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        </>
+                                        }
 
                                             <div className={"col-12 pb-5 mb-5"}>
 
@@ -470,14 +793,6 @@ class ProductDetail extends Component {
                                             </div>
 
 
-                                            {/*<div className="row  justify-content-start search-container  pb-2">*/}
-
-                                                {/*<div className={"col-auto"}>*/}
-
-                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>*/}
-                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.props.item&&this.props.item.product.available_from_epoch_ms).format("DD MMM YYYY")} </p>*/}
-                                                {/*</div>*/}
-                                            {/*</div>*/}
 
 
                                             <div className="row  justify-content-start search-container  pb-2">
@@ -521,19 +836,7 @@ class ProductDetail extends Component {
                                                 </div>
                                             </div>
 
-                                            {/*<div className="row  justify-content-start search-container  mt-4 mb-5 ">*/}
-                                                {/*/!*<div className={"col-1"}>*!/*/}
 
-                                                    {/*/!*<CalIcon  style={{ fontSize: 24, color: "#a8a8a8" }} />*!/*/}
-                                                {/*/!*</div>*!/*/}
-
-                                                {/*<div className={"col-auto"}>*/}
-                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>*/}
-                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item && moment(this.props.item.product.expire_after_epoch_ms).format("DD MMM YYYY")}</p>*/}
-                                                {/*</div>*/}
-
-
-                                            {/*</div>*/}
 
                                         </Tab>
 
@@ -565,9 +868,6 @@ class ProductDetail extends Component {
 
 
 
-
-
-
                                     </Tabs>
 
                                     </div>
@@ -577,6 +877,200 @@ class ProductDetail extends Component {
                                 </div>
                             </div>
 
+
+
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showRegister} onHide={this.showRegister} animation={false}>
+
+                            <ModalBody>
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Register Product: {this.props.item.product.name}</p>
+
+                                    </div>
+                                </div>
+
+                                <form onSubmit={this.submitRegisterProduct}>
+
+                                <div className={"row justify-content-center p-2"}>
+
+
+                                    <div className={"col-12 text-center mt-2"}>
+
+
+                                        <div className={"row justify-content-center"}>
+
+
+                                            <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                <div className={"custom-label text-bold  mb-1 text-left"}>Select Site To Register Product</div>
+
+
+                                                <FormControl variant="outlined" className={classes.formControl}>
+
+                                                    <Select
+                                                        name={"deliver"}
+                                                        native
+                                                        // onChange={this.handleChangeProduct.bind(this, "deliver")}
+                                                        inputProps={{
+                                                            name: 'site',
+                                                            id: 'outlined-age-native-simple',
+                                                        }}
+                                                    >
+
+
+                                                        <option value={null}>Select</option>
+
+                                                        {this.state.sites.map((item) =>
+
+                                                            <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+
+                                                        )}
+
+                                                    </Select>
+
+                                                </FormControl>
+
+
+                                                {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
+
+
+                                                <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
+
+
+
+                                            </div>
+
+
+                                            {this.state.errorRegister &&    <div className={"row justify-content-center"}>
+
+
+                                                <div className={"col-12"} style={{textAlign:"center"}}>
+
+
+                                                    <Alert key={"alert"} variant={"danger"}>
+                                                    {this.state.errorRegister}
+                                                    </Alert>
+
+                                                </div>
+
+                                            </div>}
+
+                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center container-gray"}>
+
+                                                <div className={"row justify-content-center"}>
+
+
+                                                <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                                <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
+
+
+                                            </div>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
+                                                <p onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                            </div>
+
+                                                </div>
+
+                                            </div>}
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                </form>
+
+
+
+
+                                {this.state.showSubmitSite &&
+
+                                <div className={"row justify-content-center p-2"}>
+                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
+
+                                    </div>
+                                <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                    <div className={"row"}>
+                                        <div className={"col-12"}>
+                                            <form onSubmit={this.handleSubmitSite}>
+                                                <div className="row no-gutters justify-content-center ">
+
+                                                    <div className="col-12 mt-4">
+
+                                                        <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+
+                                                        {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
+
+                                                    </div>
+
+                                                    <div className="col-12 mt-4">
+
+                                                        <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
+
+                                                        {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
+
+                                                    </div>
+
+                                                    <div className="col-12 mt-4">
+
+                                                        <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
+
+                                                        {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
+
+                                                    </div>
+                                                    <div className="col-12 mt-4">
+
+                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+
+                                                        {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
+
+                                                    </div>
+
+                                                    <div className="col-12 mt-4">
+
+                                                        <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+
+                                                        {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
+
+                                                    </div>
+                                                    <div className="col-12 mt-4">
+
+                                                        <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+
+                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
+
+                                                    </div>
+
+                                                    <div className="col-12 mt-4">
+
+                                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                                    </div>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                </div>}
+
+
+
+                            </ModalBody>
+
+                        </Modal>
 
 
 

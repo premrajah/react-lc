@@ -110,7 +110,7 @@ class ProductItemNew extends Component {
                 <div className={"col-3 "}>
 
 
-                    {this.state.images.length>0? <img className={"img-fluid"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+                    {this.state.images.length>0? <img className={"img-fluid img-list"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
 
 
@@ -119,7 +119,7 @@ class ProductItemNew extends Component {
 
                     <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.name}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.purpose}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.category}> {this.props.item.product.type}>{this.props.item.product.state}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search_ids.length} Searches</p>
                     {this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
 

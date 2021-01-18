@@ -307,7 +307,7 @@ class CycleItem extends Component {
                     <Link to={"cycle/" + this.props.item.cycle._key}>
 
                           <>
-                    {this.props.item.product.artifacts.length>0 ? <img className={"resource-item-img  img-fluid"}
+                    {this.props.item.product.artifacts.length>0 ? <img className={"resource-item-img img-list img-fluid"}
                                                        src={this.props.item.product.artifacts[0].blob_url} alt="" />
                             : <img className={"img-fluid"} src={Paper} alt="" />}
 

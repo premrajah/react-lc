@@ -121,7 +121,7 @@ class ResourceItem extends Component {
 
                 <div className={"col-2"}>
 
-                    {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+                    {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid img-list"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                 </div>
                 <div className={"col-6 pl-3 content-box-listing"}>

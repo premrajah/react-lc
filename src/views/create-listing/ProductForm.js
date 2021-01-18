@@ -108,7 +108,9 @@ class ProductForm extends Component {
             purpose: ["defined", "prototype", "aggregate"],
             product:null,
             parentProduct:null,
-            imageLoading:false
+            imageLoading:false,
+            showSubmitSite:false,
+
 
         }
 
@@ -129,10 +131,176 @@ class ProductForm extends Component {
         this.uploadImage=this.uploadImage.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
         this.getSites=this.getSites.bind(this)
+        this.showSubmitSite=this.showSubmitSite.bind(this)
+
 
 
     }
 
+
+    handleValidationSite() {
+
+
+        let fields = this.state.fieldsSite;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if (!fields["name"]) {
+            formIsValid = false;
+            errors["name"] = "Required";
+        }
+
+        // if (!fields["others"]) {
+        //     formIsValid = false;
+        //     errors["others"] = "Required";
+        // }
+
+
+        if (!fields["address"]) {
+            formIsValid = false;
+            errors["address"] = "Required";
+        }
+
+        if (!fields["contact"]) {
+            formIsValid = false;
+            errors["contact"] = "Required";
+        }
+
+
+
+        if (!fields["phone"]) {
+            formIsValid = false;
+            errors["phone"] = "Required";
+        }
+
+
+
+        if (!fields["email"]) {
+            formIsValid = false;
+            errors["email"] = "Required";
+        }
+
+        if (typeof fields["email"] !== "undefined") {
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({ errorsSite: errors });
+        return formIsValid;
+    }
+
+
+
+    handleChangeSite(field, e) {
+
+        let fields = this.state.fieldsSite;
+        fields[field] = e.target.value;
+        this.setState({ fields: fields });
+
+    }
+
+    showSubmitSite(){
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+        this.setState({
+
+            showSubmitSite:!this.state.showSubmitSite
+        })
+    }
+
+
+    handleSubmitSite = event => {
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+
+
+        event.preventDefault();
+
+
+        if(this.handleValidationSite()) {
+
+            const form = event.currentTarget;
+
+
+            console.log(new FormData(event.target))
+
+
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const email = data.get("email")
+            const others = data.get("others")
+            const name = data.get("name")
+            const contact = data.get("contact")
+            const address = data.get("address")
+            const phone = data.get("phone")
+
+
+            console.log("site submit called")
+
+
+            axios.put(baseUrl + "site",
+
+                {site: {
+                        "name": name,
+                        "email": email,
+                        "contact": contact,
+                        "address": address,
+                        "phone": phone,
+                        "others": others
+                    }
+
+                }
+                , {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                })
+                .then(res => {
+
+                    // this.toggleSite()
+                    this.getSites()
+
+
+                    this.showSubmitSite()
+
+
+                }).catch(error => {
+
+
+                console.log(error)
+
+
+
+            });
+
+
+
+
+        }
+    }
 
 
     getSites() {
@@ -401,7 +569,6 @@ class ProductForm extends Component {
                     //    enable finish button
 
                     
-                    if (files.length(i)) {
 
                         console.log("iamge uploading finish ",data)
 
@@ -410,7 +577,7 @@ class ProductForm extends Component {
                             imageLoading: false
                         })
 
-                    }
+
 
                 }    );
 
@@ -707,6 +874,9 @@ class ProductForm extends Component {
                     this.showProductSelection()
 
                     console.log("product added succesfully")
+
+
+                    this.props.loadProducts(this.props.userDetail.token)
 
 
 
@@ -1293,8 +1463,88 @@ class ProductForm extends Component {
                                             {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
 
 
-                                            <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.toggleSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
+                                            <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
 
+
+
+
+                                            {this.state.showSubmitSite &&
+
+                                            <div className={"row justify-content-center p-2 container-gray"}>
+                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                    <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
+
+                                                </div>
+                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                    <div className={"row"}>
+                                                        <div className={"col-12"}>
+                                                            <form onSubmit={this.handleSubmitSite}>
+                                                                <div className="row no-gutters justify-content-center ">
+
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+
+                                                                        {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
+
+                                                                    </div>
+
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
+
+                                                                        {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
+
+                                                                    </div>
+
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
+
+                                                                        {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
+
+                                                                    </div>
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+
+                                                                        {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
+
+                                                                    </div>
+
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+
+                                                                        {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
+
+                                                                    </div>
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+
+                                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
+
+                                                                    </div>
+
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit Site</button>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>}
 
 
                                         </div>

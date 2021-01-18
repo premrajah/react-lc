@@ -81,17 +81,17 @@ class SearchItem extends Component {
         return (
 
             <Link to={"/search/" + this.props.item.search._key}>
-            <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
-                <div className={"col-2 search-column-left"}>
-                    {this.state.previewImage?<img className={"img-fluid"} src={this.state.previewImage} alt="" />
+                <div className={!this.state.previewImage?"col-2 search-column-left":"col-2 "}>
+                    {this.state.previewImage?<img className={"img-fluid img-list"} src={this.state.previewImage} alt="" />
                         : <SearchGray style={{ color: "#C8C8C8",display:"table-cell" }} className={"m-5"} />}
 
                 </div>
                 <div className={"col-8 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className="text-blue mb-1">{this.props.item.search.name}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.category}> {this.props.item.search.type}>{this.props.item.search.state}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.category}, {this.props.item.search.type}, {this.props.item.search.state} {this.props.item.search.volume} {this.props.item.search.units}</p>
 
                     <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.search.description.substr(0, 60)}..</p>
                         {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}

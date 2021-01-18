@@ -658,7 +658,7 @@ class ProductDetail extends Component {
                                             <div className="row justify-content-start pb-3 pt-3 ">
 
                                                 <div className="col-12 ">
-                                                    <button  onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Register Product </button>
+                                                    <button  onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Register this product</button>
                                                 </div>
                                             </div>
 

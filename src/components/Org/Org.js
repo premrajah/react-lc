@@ -22,9 +22,9 @@ const Org = ({ orgId, orgDescription, orgFirstName, orgLastName, orgEmail, place
 
     return (
         <div style={{ display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
-            <div style={{ textTransform: "capitalize", fontWeight: '700', color: textColor ? textColor : '#07AD88' }}>{orgNameSub}</div>
+            <div className="mr-1" style={{ textTransform: "capitalize", fontWeight: '700', color: textColor ? textColor : '#07AD88' }}>{orgNameSub}</div>
             <OverlayTrigger trigger={trigger ? trigger : 'click'} placement={placement ? placement : 'right'} overlay={orgPopover}>
-                <Info style={{cursor: 'pointer', color: infoColor ? infoColor : '#27245C'}}></Info>
+                <Info style={{cursor: 'pointer', color: infoColor ? infoColor : '#27245C'}} />
             </OverlayTrigger>
         </div>
     );

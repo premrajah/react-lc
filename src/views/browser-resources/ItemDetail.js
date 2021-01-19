@@ -25,10 +25,12 @@ import { Modal, ModalBody } from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 import MatchItemSeller from '../../components/MatchItemSeller'
 import NotFound from "../NotFound/index"
 import ProductExpandItem from '../../components/ProductExpandItem'
 import Org from "../../components/Org/Org";
+import {Edit as EditIcon, Delete as DeleteIcon} from "@material-ui/icons";
 
 
 
@@ -350,8 +352,6 @@ class ItemDetail extends Component {
         this.getResources()
 
 
-
-
         this.interval = setInterval(() => {
 
             this.getMatches()
@@ -360,10 +360,13 @@ class ItemDetail extends Component {
         }, 5000);
 
 
-
-
     }
 
+
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
 
 
 
@@ -432,7 +435,7 @@ class ItemDetail extends Component {
 
                                         <div className="row">
                                             <div className="col-7">
-                                                <p>Sold By <Org orgId={this.state.item.org_id} /></p>
+                                                <p><Org orgId={this.state.item.org_id} /></p>
                                             </div>
 
                                             <div className="col-3 green-text text-heading text-right">
@@ -441,6 +444,11 @@ class ItemDetail extends Component {
 
                                             </div>
 
+                                            <div className="col-2  text-right">
+                                                {/*<Tooltip title="Delete">  <EditIcon/> </Tooltip>*/}
+                                                {/*<Tooltip title={"Delete"} > <DeleteIcon/> </Tooltip>*/}
+
+                                            </div>
                                         </div>
 
                                     </div>

@@ -792,7 +792,9 @@ export const signUpSync = (data) => dispatch => {
 
             // dispatch(stopLoading())
 
-            dispatch(signUpFailed(error.response.data.message))
+
+
+        dispatch(signUpFailed(error.response.data.errors[0].message))
 
             console.log(error)
             // dispatch({ type: AUTH_FAILED });

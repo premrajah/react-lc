@@ -639,10 +639,50 @@ class ProductForm extends Component {
             errors["category"] = "Required";
         }
 
+        if (!fields["type"]) {
+            formIsValid = false;
+            errors["type"] = "Required";
+        }
+
+        if (!fields["state"]) {
+            formIsValid = false;
+            errors["state"] = "Required";
+        }
+
+        if (!fields["deliver"]) {
+            formIsValid = false;
+            errors["deliver"] = "Required";
+        }
+
+
+        if (!fields["units"]) {
+            formIsValid = false;
+            errors["units"] = "Required";
+        }
+
+        if (!fields["volume"]) {
+            formIsValid = false;
+            errors["volume"] = "Required";
+        }
+
+
+        if (!fields["manufacturedDate"]) {
+            formIsValid = false;
+            errors["manufacturedDate"] = "Required";
+        }
+
+
 
 
 
         if (typeof fields["email"] !== "undefined") {
+
+
+
+            if (!fields["category"]) {
+                formIsValid = false;
+                errors["category"] = "Required";
+            }
 
             let lastAtPos = fields["email"].lastIndexOf('@');
             let lastDotPos = fields["email"].lastIndexOf('.');
@@ -654,15 +694,121 @@ class ProductForm extends Component {
         }
 
         this.setState({ errorsProduct: errors });
+
+
+        console.log("val errors")
+        console.log(errors)
         return formIsValid;
     }
 
 
-    handleChangeProduct(field, e) {
+    handleChangeProduct(field, event) {
+
+
         let fields = this.state.fieldsProduct;
-        fields[field] = e.target.value;
+        fields[field] = event.target.value;
         this.setState({ fields });
-    }
+
+
+
+        if (field==="category") {
+
+
+            if (event.target.value !== "Select") {
+
+                console.log(field, event.target.value)
+
+
+                var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+
+                var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+
+                this.setState({
+
+                    catSelected: catSelected
+                })
+
+                this.setState({
+
+                    subCategories: subCategories
+
+                })
+
+
+                console.log(catSelected)
+                console.log(subCategories)
+
+            } else {
+
+                this.setState({
+
+                    catSelected: null
+                })
+
+                this.setState({
+
+                    subCategories: []
+
+                })
+
+
+            }
+        }
+
+
+        if (field==="type") {
+
+
+
+            if (event.target.value!=="Select") {
+
+
+                console.log(field, event.target.value)
+
+
+                var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+
+                var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
+
+                var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+
+                this.setState({
+
+                    subCatSelected: subCatSelected
+                })
+
+                this.setState({
+
+                    states: states,
+                    units: units
+
+                })
+
+
+                console.log(subCatSelected)
+                console.log(states)
+
+            }else{
+
+                this.setState({
+
+                    subCatSelected: null
+                })
+
+                this.setState({
+
+                    states: [],
+                    units: []
+
+                })
+
+            }
+
+
+        }
+
+
+        }
 
 
 
@@ -671,45 +817,6 @@ class ProductForm extends Component {
     loadType(field, event) {
 
 
-        if (event.target.value!=="Select") {
-
-            console.log(field, event.target.value)
-
-
-            var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
-
-            var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
-
-            this.setState({
-
-                catSelected: catSelected
-            })
-
-            this.setState({
-
-                subCategories: subCategories
-
-            })
-
-
-            console.log(catSelected)
-            console.log(subCategories)
-
-        }else{
-
-            this.setState({
-
-                catSelected: null
-            })
-
-            this.setState({
-
-                subCategories: []
-
-            })
-
-
-        }
 
 
     }
@@ -717,49 +824,7 @@ class ProductForm extends Component {
 
     loadStates(field, event) {
 
-        if (event.target.value!=="Select") {
 
-
-            console.log(field, event.target.value)
-
-
-            var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
-
-            var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
-
-            var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
-
-            this.setState({
-
-                subCatSelected: subCatSelected
-            })
-
-            this.setState({
-
-                states: states,
-                units: units
-
-            })
-
-
-            console.log(subCatSelected)
-            console.log(states)
-
-        }else{
-
-            this.setState({
-
-                subCatSelected: null
-            })
-
-            this.setState({
-
-                states: [],
-                units: []
-
-            })
-
-        }
 
 
     }
@@ -768,13 +833,19 @@ class ProductForm extends Component {
 
     handleSubmitProduct = event => {
 
+
+
+
         event.preventDefault();
 
-        const form = event.currentTarget;
 
-        this.setState({
+        if (this.handleValidationProduct()) {
+
+            const form = event.currentTarget;
+
+            this.setState({
                 btnLoading: true
-         })
+            })
 
             const data = new FormData(event.target);
 
@@ -783,24 +854,24 @@ class ProductForm extends Component {
 
             const title = data.get("title")
             const purpose = data.get("purpose")
-            const   description = data.get("description")
-            const   category= data.get("category")
-            const    type= data.get("type")
-            const     units=  data.get("units")
+            const description = data.get("description")
+            const category = data.get("category")
+            const type = data.get("type")
+            const units = data.get("units")
 
-            const   serial= data.get("serial")
-            const    model= data.get("model")
-            const   brand= data.get("brand")
+            const serial = data.get("serial")
+            const model = data.get("model")
+            const brand = data.get("brand")
 
-            const volume=data.get("volume")
-            const sku=data.get("sku")
-            const upc=data.get("upc")
-            const part_no=data.get("part_no")
-            const state=data.get("state")
+            const volume = data.get("volume")
+            const sku = data.get("sku")
+            const upc = data.get("upc")
+            const part_no = data.get("part_no")
+            const state = data.get("state")
 
             // const site=data.get("deliver")
-        
-            var productData =   {
+
+            var productData = {
 
                 "purpose": purpose,
                 "name": title,
@@ -814,25 +885,24 @@ class ProductForm extends Component {
                     "serial": serial,
                     "model": model,
                     "brand": brand,
-                            "sku": sku,
-                            "upc": upc,
-                            "part_no": part_no
-                        },
+                    "sku": sku,
+                    "upc": upc,
+                    "part_no": part_no
+                },
 
                 "year_of_making": data.get("manufacturedDate")
 
             }
 
 
-        var completeData ;
-            
-            
-            
+            var completeData;
+
+
             if (this.props.parentProduct) {
 
                 completeData = {
 
-                     product: productData,
+                    product: productData,
                     "child_product_ids": [],
                     "artifact_ids": this.state.images,
                     "site_id": data.get("deliver"),
@@ -841,12 +911,12 @@ class ProductForm extends Component {
 
                 }
 
-            }else{
+            } else {
 
 
                 completeData = {
 
-                     product: productData,
+                    product: productData,
                     "child_product_ids": [],
                     "artifact_ids": this.state.images,
                     "parent_product_id": null,
@@ -857,8 +927,8 @@ class ProductForm extends Component {
 
 
             }
-            
-            
+
+
             console.log("product data")
 
             console.log(productData)
@@ -867,7 +937,7 @@ class ProductForm extends Component {
 
             axios.put(baseUrl + "product",
 
-               completeData
+                completeData
                 , {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -877,7 +947,6 @@ class ProductForm extends Component {
 
 
                     console.log(res.data.data)
-
 
 
                     if (!this.props.parentProduct) {
@@ -898,7 +967,6 @@ class ProductForm extends Component {
                     this.props.loadProducts(this.props.userDetail.token)
 
 
-
                     // if (this.slug) {
                     //     this.props.history.push("/sub-product-view/" + this.slug)
                     //
@@ -915,8 +983,6 @@ class ProductForm extends Component {
                     // this.getProducts()
 
 
-
-
                 }).catch(error => {
 
                 // dispatch(stopLoading())
@@ -931,15 +997,14 @@ class ProductForm extends Component {
             });
 
 
+            // } else {
+            //
+            //
+            //
+            // }
 
 
-
-        // } else {
-        //
-        //
-        //
-        // }
-
+        }
 
 
     }
@@ -1184,7 +1249,7 @@ class ProductForm extends Component {
                                         <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                         <Select
                                             native
-                                            onChange={this.loadType.bind(this, "category")}
+                                            onChange={this.handleChangeProduct.bind(this, "category")}
                                             inputProps={{
                                                 name: 'category',
                                                 id: 'outlined-age-native-simple',
@@ -1214,7 +1279,7 @@ class ProductForm extends Component {
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
-                                                    onChange={this.loadStates.bind(this, "type")}
+                                                    onChange={this.handleChangeProduct.bind(this, "type")}
                                                     inputProps={{
                                                         name: 'type',
                                                         id: 'outlined-age-native-simple',
@@ -1260,7 +1325,7 @@ class ProductForm extends Component {
 
                                                 </Select>
                                             </FormControl>
-                                            {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
+                                            {this.state.errorsProduct["state"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["state"]}</span>}
 
                                         </div>
                                     </div>
@@ -1302,7 +1367,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                    {this.state.errors["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["brand"]}</span>}
+                                    {this.state.errorsProduct["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
 
                                         </div>
 
@@ -1311,7 +1376,7 @@ class ProductForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["model"]}</span>}
+                                            {this.state.errorsProduct["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
                                         </div>
 
 
@@ -1320,7 +1385,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["serial"]}</span>}
+                                            {this.state.errorsProduct["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
 
                                         </div>
 
@@ -1329,7 +1394,7 @@ class ProductForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["sku"]}</span>}
+                                            {this.state.errorsProduct["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
 
                                         </div>
 
@@ -1339,7 +1404,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["upc"]}</span>}
+                                            {this.state.errorsProduct["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
 
                                         </div>
 
@@ -1348,7 +1413,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
+                                            {this.state.errorsProduct["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["part_no"]}</span>}
                                         </div>
 
                                     </div>
@@ -1393,7 +1458,7 @@ class ProductForm extends Component {
 
                                             </Select>
                                         </FormControl>
-                                        {this.state.errors["unit"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["unit"]}</span>}
+                                        {this.state.errorsProduct["units"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["units"]}</span>}
 
 
                                     </div>
@@ -1402,7 +1467,7 @@ class ProductForm extends Component {
                                         <TextField type={"number"}  onChange={this.handleChangeProduct.bind(this, "volume")}
                                                     name={"volume"}
                                                     id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
-                                        {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
+                                        {this.state.errorsProduct["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["volume"]}</span>}
 
 
                                     </div>
@@ -1444,7 +1509,7 @@ class ProductForm extends Component {
                                     </FormControl>
 
 
-                                    {this.state.errors["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["manufacturedDate"]}</span>}
+                                    {this.state.errorsProduct["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
 
                                     </div>
 
@@ -1479,7 +1544,7 @@ class ProductForm extends Component {
                                             </FormControl>
 
 
-                                            {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
+                                            {this.state.errorsProduct["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["deliver"]}</span>}
 
 
                                             <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>

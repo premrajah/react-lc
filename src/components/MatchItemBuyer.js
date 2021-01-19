@@ -26,7 +26,8 @@ class MatchItemBuyer extends Component {
             offers:[],
             editPopUp:false,
             editOfferKey:null,
-            action:null
+            action:null,
+            cycle:null
         }
 
         this.acceptMatch=this.acceptMatch.bind(this)
@@ -37,7 +38,43 @@ class MatchItemBuyer extends Component {
 
         this.getOffer=this.getOffer.bind(this)
         this.actionOffer=this.actionOffer.bind(this)
+        this.getCycleId=this.getCycleId.bind(this)
 
+
+
+
+    }
+
+
+    getCycleId(){
+
+
+
+            axios.get(baseUrl + "cycle/match/" + this.props.item.match._key,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseAll = response.data;
+
+                        console.log("cycle for match response")
+                        console.log(responseAll)
+
+                        this.setState({
+
+                            cycle: responseAll.data
+
+                        })
+
+                    },
+                    (error) => {
+                        console.log("cycle match error", error)
+                    }
+                );
 
 
 
@@ -560,7 +597,13 @@ class MatchItemBuyer extends Component {
 
         this.getOffer()
 
-        this.interval = setInterval(() => {
+
+        if (this.props.item.match.stage) {
+             this.getCycleId()
+
+        }
+
+            this.interval = setInterval(() => {
 
             this.getOffer()
 
@@ -588,8 +631,9 @@ class MatchItemBuyer extends Component {
 
                 <div style={{ textAlign: "center" }} className={"col-12"}>
                     <p>Match Stage: <span className={"text-blue img-list text-bold text-caps"}>{this.props.item.match.stage}</span></p>
-                    {this.props.item.match.stage==="converted"?<p>
-                        <Link className="forgot-password-link  small " color="default" to="/my-cycles">Go To My Cycles</Link></p>:""}
+
+                    {this.state.cycle &&<p> <Link className="btn blue-btn-border mb-2 mt-2 " color="default" to={"/cycle/"+this.state.cycle.cycle._key}>View Cycle</Link></p>}
+
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-12"}>
 

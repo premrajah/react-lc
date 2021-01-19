@@ -64,6 +64,10 @@ class ItemDetailMatch extends Component {
     }
 
 
+
+
+
+
     getPreviewImage(productSelectedKey){
 
 
@@ -201,6 +205,9 @@ class ItemDetailMatch extends Component {
                         site:responseData.listing.site
                     })
 
+
+
+                if (responseData)
 
                 this.getPreviewImage(responseData.listing.product._id)
 

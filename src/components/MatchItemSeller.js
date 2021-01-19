@@ -30,6 +30,7 @@ class MatchItemSeller extends Component {
             action:null,
             initiateAction:null,
             initiateActionId:null,
+            cycle:null
         }
 
         this.acceptMatch=this.acceptMatch.bind(this)
@@ -41,10 +42,47 @@ class MatchItemSeller extends Component {
         this.getOffer=this.getOffer.bind(this)
         this.showPopUpInitiateAction=this.showPopUpInitiateAction.bind(this)
 
+        this.getCycleId=this.getCycleId.bind(this)
+
 
 
 
     }
+
+
+    getCycleId(){
+
+
+        axios.get(baseUrl + "cycle/match/" + this.props.item.match._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data;
+
+                    console.log("cycle for match response")
+                    console.log(responseAll)
+
+                    this.setState({
+
+                        cycle: responseAll.data
+
+                    })
+
+                },
+                (error) => {
+                    console.log("cycle match error", error)
+                }
+            );
+
+
+
+    }
+
 
 
 
@@ -515,6 +553,11 @@ class MatchItemSeller extends Component {
 
     componentDidMount() {
 
+        if (this.props.item.match.stage) {
+            this.getCycleId()
+
+        }
+
         this.getOffer()
 
         this.interval = setInterval(() => {
@@ -554,8 +597,9 @@ class MatchItemSeller extends Component {
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
                     <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org._id} <CompanyInfo item={this.props.item.search.org}/></p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.search.name} </p>
-                    <p style={{ fontSize: "16px" }} className=" mb-1">Stage: {this.props.item.match.stage}  {this.props.item.match.stage==="converted"?
-                        <Link className="forgot-password-link  small " color="default" to="/my-cycles">Go To My Cycles</Link>:""}</p>
+                    <p style={{ fontSize: "16px" }} className=" mb-1">Stage: {this.props.item.match.stage} </p>
+                    {this.state.cycle &&<p> <Link className="btn blue-btn-border mt-2 mb-2 " color="default" to={"/cycle/"+this.state.cycle.cycle._key}>View Cycle</Link></p>}
+
 
 
 

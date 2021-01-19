@@ -28,6 +28,7 @@ import TextField from '@material-ui/core/TextField';
 import MatchItemSeller from '../../components/MatchItemSeller'
 import NotFound from "../NotFound/index"
 import ProductExpandItem from '../../components/ProductExpandItem'
+import Org from "../../components/Org/Org";
 
 
 
@@ -83,8 +84,7 @@ class ItemDetail extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+                    console.log("product image  response", responseAll)
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -97,8 +97,7 @@ class ItemDetail extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+                    console.log("produt image error", error)
 
                 }
             );
@@ -433,7 +432,7 @@ class ItemDetail extends Component {
 
                                         <div className="row">
                                             <div className="col-7">
-                                                <p>Sold By <span className={"green-text"}>{this.state.item.org_id}</span></p>
+                                                <p>Sold By <Org orgId={this.state.item.org_id} /></p>
                                             </div>
 
                                             <div className="col-3 green-text text-heading text-right">
@@ -477,7 +476,7 @@ class ItemDetail extends Component {
                                     <div className={"col-auto"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id} </p>
+                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id.substr(4)} </p>
                                     </div>
                                 </div>
 

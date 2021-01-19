@@ -1756,7 +1756,7 @@
 
                                     <div className="col-6 pr-2">
 
-                                        <FormControl variant="outlined" className={classes.formControl}>
+                                        <FormControl disabled={this.state.units.length>0?false:true} variant="outlined" className={classes.formControl}>
                                             <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
                                             <Select
                                                 name={"unit"}
@@ -1787,7 +1787,7 @@
                                     </div>
                                     <div className="col-6 pl-2">
 
-                                        <TextField  onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                                        <TextField disabled={this.state.units.length>0?false:true} onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
 
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 

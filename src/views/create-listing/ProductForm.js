@@ -612,6 +612,111 @@ class ProductForm extends Component {
     }
 
 
+
+
+    handleValidationProduct2() {
+        let fields = this.state.fieldsProduct;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if (!fields["purpose"]) {
+            formIsValid = false;
+            errors["purpose"] = "Required";
+        }
+        if (!fields["title"]) {
+            formIsValid = false;
+            errors["title"] = "Required";
+        }
+
+        if (!fields["description"]) {
+            formIsValid = false;
+            errors["description"] = "Required";
+        }
+        if (!fields["category"]) {
+            formIsValid = false;
+            errors["category"] = "Required";
+        }
+
+        if (!fields["type"]) {
+            formIsValid = false;
+            errors["type"] = "Required";
+        }
+
+        if (!fields["state"]) {
+            formIsValid = false;
+            errors["state"] = "Required";
+        }
+
+        if (!fields["deliver"]) {
+            formIsValid = false;
+            errors["deliver"] = "Required";
+        }
+
+
+        if (!fields["units"]) {
+            formIsValid = false;
+            errors["units"] = "Required";
+        }
+
+        if (!fields["volume"]) {
+            formIsValid = false;
+            errors["volume"] = "Required";
+        }
+
+
+        if (!fields["manufacturedDate"]) {
+            formIsValid = false;
+            errors["manufacturedDate"] = "Required";
+        }
+
+
+
+
+
+        if (typeof fields["email"] !== "undefined") {
+
+
+
+            if (!fields["category"]) {
+                formIsValid = false;
+                errors["category"] = "Required";
+            }
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+// =======
+//         if (typeof fields["email"] !== "undefined") {
+//             let lastAtPos = fields["email"].lastIndexOf("@");
+//             let lastDotPos = fields["email"].lastIndexOf(".");
+
+//             if (
+//                 !(
+//                     lastAtPos < lastDotPos &&
+//                     lastAtPos > 0 &&
+//                     fields["email"].indexOf("@@") === -1 &&
+//                     lastDotPos > 2 &&
+//                     fields["email"].length - lastDotPos > 2
+//                 )
+//             ) {
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({ errorsProduct: errors });
+
+
+        console.log("val errors")
+        console.log(errors)
+        return formIsValid;
+    }
+
+
+
     handleValidationProduct() {
 
 
@@ -629,7 +734,6 @@ class ProductForm extends Component {
             errors["title"] = "Required";
         }
 
-
         if (!fields["description"]) {
             formIsValid = false;
             errors["description"] = "Required";
@@ -637,6 +741,38 @@ class ProductForm extends Component {
         if (!fields["category"]) {
             formIsValid = false;
             errors["category"] = "Required";
+        }
+
+        if (!fields["type"]) {
+            formIsValid = false;
+            errors["type"] = "Required";
+        }
+
+        if (!fields["state"]) {
+            formIsValid = false;
+            errors["state"] = "Required";
+        }
+
+        if (!fields["deliver"]) {
+            formIsValid = false;
+            errors["deliver"] = "Required";
+        }
+
+
+        if (!fields["units"]) {
+            formIsValid = false;
+            errors["units"] = "Required";
+        }
+
+        if (!fields["volume"]) {
+            formIsValid = false;
+            errors["volume"] = "Required";
+        }
+
+
+        if (!fields["manufacturedDate"]) {
+            formIsValid = false;
+            errors["manufacturedDate"] = "Required";
         }
 
 
@@ -658,11 +794,110 @@ class ProductForm extends Component {
     }
 
 
-    handleChangeProduct(field, e) {
+    handleChangeProduct(field, event) {
         let fields = this.state.fieldsProduct;
-        fields[field] = e.target.value;
+        fields[field] = event.target.value;
         this.setState({ fields });
-    }
+
+
+        if (field === "category") {
+
+            if (event.target.value !== "Select") {
+
+                console.log(field, event.target.value)
+
+
+                var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
+
+                var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
+
+                this.setState({
+
+                    catSelected: catSelected
+                })
+
+                this.setState({
+
+                    subCategories: subCategories
+
+                })
+
+
+                console.log(catSelected)
+                console.log(subCategories)
+
+            } else {
+
+                this.setState({
+
+                    catSelected: null
+                })
+
+                this.setState({
+
+                    subCategories: []
+
+                })
+
+
+            }
+        }
+
+
+        if (field === "type") {
+
+
+            if (event.target.value !== "Select") {
+
+
+                console.log(field, event.target.value)
+
+
+                var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
+
+                var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
+
+                var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
+
+                this.setState({
+
+                    subCatSelected: subCatSelected
+                })
+
+                this.setState({
+
+                    states: states,
+                    units: units
+
+                })
+
+
+                console.log(subCatSelected)
+                console.log(states)
+
+            } else {
+
+                this.setState({
+
+                    subCatSelected: null
+                })
+
+                this.setState({
+
+                    states: [],
+                    units: []
+
+                })
+
+            }
+
+
+        }
+
+
+
+
+}
 
 
 
@@ -734,177 +969,173 @@ class ProductForm extends Component {
 
         event.preventDefault();
 
-        const form = event.currentTarget;
 
-        this.setState({
-            btnLoading: true
-        })
-
-        const data = new FormData(event.target);
-
-        console.log("form data")
+        if (this.handleValidationProduct()) {
 
 
-        const title = data.get("title")
-        const purpose = data.get("purpose")
-        const   description = data.get("description")
-        const   category= data.get("category")
-        const    type= data.get("type")
-        const     units=  data.get("units")
+            const form = event.currentTarget;
 
-        const   serial= data.get("serial")
-        const    model= data.get("model")
-        const   brand= data.get("brand")
-
-        const volume=data.get("volume")
-        const sku=data.get("sku")
-        const upc=data.get("upc")
-        const part_no=data.get("part_no")
-        const state=data.get("state")
-
-        // const site=data.get("deliver")
-
-        var productData =   {
-
-            "purpose": purpose,
-            "name": title,
-            "description": description,
-            "category": category,
-            "type": type,
-            "units": units,
-            "state": state,
-            "volume": volume,
-            "sku": {
-                "serial": serial,
-                "model": model,
-                "brand": brand,
-                "sku": sku,
-                "upc": upc,
-                "part_no": part_no
-            },
-
-            "year_of_making": data.get("manufacturedDate")
-
-        }
-
-
-        var completeData ;
-
-
-
-        if (this.props.parentProduct) {
-
-            completeData = {
-
-                product: productData,
-                "child_product_ids": [],
-                "artifact_ids": this.state.images,
-                "site_id": data.get("deliver"),
-                "parent_product_id": this.props.parentProduct.product._key,
-
-
-            }
-
-        }else{
-
-
-            completeData = {
-
-                product: productData,
-                "child_product_ids": [],
-                "artifact_ids": this.state.images,
-                "parent_product_id": null,
-                "site_id": data.get("deliver"),
-
-
-            }
-
-
-        }
-
-
-        console.log("product data")
-
-        console.log(productData)
-        console.log(this.state.images)
-
-
-        axios.put(baseUrl + "product",
-
-            completeData
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
+            this.setState({
+                btnLoading: true
             })
-            .then(res => {
+
+            const data = new FormData(event.target);
+
+            console.log("form data")
 
 
-                console.log(res.data.data)
+            const title = data.get("title")
+            const purpose = data.get("purpose")
+            const description = data.get("description")
+            const category = data.get("category")
+            const type = data.get("type")
+            const units = data.get("units")
+
+            const serial = data.get("serial")
+            const model = data.get("model")
+            const brand = data.get("brand")
+
+            const volume = data.get("volume")
+            const sku = data.get("sku")
+            const upc = data.get("upc")
+            const part_no = data.get("part_no")
+            const state = data.get("state")
+
+            // const site=data.get("deliver")
+
+            var productData = {
+
+                "purpose": purpose,
+                "name": title,
+                "description": description,
+                "category": category,
+                "type": type,
+                "units": units,
+                "state": state,
+                "volume": volume,
+                "sku": {
+                    "serial": serial,
+                    "model": model,
+                    "brand": brand,
+                    "sku": sku,
+                    "upc": upc,
+                    "part_no": part_no
+                },
+
+                "year_of_making": data.get("manufacturedDate")
+
+            }
 
 
+            var completeData;
 
-                if (!this.props.parentProduct) {
 
-                    this.setState({
-                        product: res.data.data,
-                        parentProduct: res.data.data
+            if (this.props.parentProduct) {
 
-                    })
+                completeData = {
+
+                    product: productData,
+                    "child_product_ids": [],
+                    "artifact_ids": this.state.images,
+                    "site_id": data.get("deliver"),
+                    "parent_product_id": this.props.parentProduct.product._key,
+
 
                 }
 
-                this.showProductSelection()
-
-                console.log("product added succesfully")
+            } else {
 
 
-                this.props.loadProducts(this.props.userDetail.token)
+                completeData = {
+
+                    product: productData,
+                    "child_product_ids": [],
+                    "artifact_ids": this.state.images,
+                    "parent_product_id": null,
+                    "site_id": data.get("deliver"),
 
 
-
-                // if (this.slug) {
-                //     this.props.history.push("/sub-product-view/" + this.slug)
-                //
-                //
-                // }else{
-                //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
-                //
-                //
-                // }
+                }
 
 
-                // this.showProductSelection()
-
-                // this.getProducts()
+            }
 
 
+            console.log("product data")
+
+            console.log(productData)
+            console.log(this.state.images)
 
 
-            }).catch(error => {
+            axios.put(baseUrl + "product",
 
-            // dispatch(stopLoading())
-
-            // dispatch(signUpFailed(error.response.data.message))
-
-            console.log(error.data)
-            // dispatch({ type: AUTH_FAILED });
-            // dispatch({ type: ERROR, payload: error.data.error.message });
-
-
-        });
+                completeData
+                , {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                })
+                .then(res => {
 
 
+                    console.log(res.data.data)
 
 
+                    if (!this.props.parentProduct) {
 
-        // } else {
-        //
-        //
-        //
-        // }
+                        this.setState({
+                            product: res.data.data,
+                            parentProduct: res.data.data
+
+                        })
+
+                    }
+
+                    this.showProductSelection()
+
+                    console.log("product added succesfully")
 
 
+                    this.props.loadProducts(this.props.userDetail.token)
+
+
+                    // if (this.slug) {
+                    //     this.props.history.push("/sub-product-view/" + this.slug)
+                    //
+                    //
+                    // }else{
+                    //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
+                    //
+                    //
+                    // }
+
+
+                    // this.showProductSelection()
+
+                    // this.getProducts()
+
+
+                }).catch(error => {
+
+                // dispatch(stopLoading())
+
+                // dispatch(signUpFailed(error.response.data.message))
+
+                console.log(error.data)
+                // dispatch({ type: AUTH_FAILED });
+                // dispatch({ type: ERROR, payload: error.data.error.message });
+
+
+            });
+
+
+            // } else {
+            //
+            //
+            //
+            // }
+
+        }
 
     }
 
@@ -1148,7 +1379,7 @@ class ProductForm extends Component {
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
-                                                    onChange={this.loadType.bind(this, "category")}
+                                                    onChange={this.handleChangeProduct.bind(this, "category")}
                                                     inputProps={{
                                                         name: 'category',
                                                         id: 'outlined-age-native-simple',
@@ -1178,7 +1409,7 @@ class ProductForm extends Component {
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
-                                                    onChange={this.loadStates.bind(this, "type")}
+                                                    onChange={this.handleChangeProduct.bind(this, "type")}
                                                     inputProps={{
                                                         name: 'type',
                                                         id: 'outlined-age-native-simple',
@@ -1266,7 +1497,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["brand"]}</span>}
+                                            {this.state.errorsProduct["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
 
                                         </div>
 
@@ -1275,7 +1506,7 @@ class ProductForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["model"]}</span>}
+                                            {this.state.errorsProduct["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
                                         </div>
 
 
@@ -1284,7 +1515,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["serial"]}</span>}
+                                            {this.state.errorsProduct["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
 
                                         </div>
 
@@ -1293,7 +1524,7 @@ class ProductForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["sku"]}</span>}
+                                            {this.state.errorsProduct["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
 
                                         </div>
 
@@ -1303,7 +1534,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["upc"]}</span>}
+                                            {this.state.errorsProduct["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
 
                                         </div>
 
@@ -1312,7 +1543,7 @@ class ProductForm extends Component {
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errors["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["part_no"]}</span>}
+                                            {this.state.errorsProduct["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["part_no"]}</span>}
                                         </div>
 
                                     </div>
@@ -1357,7 +1588,7 @@ class ProductForm extends Component {
 
                                                 </Select>
                                             </FormControl>
-                                            {this.state.errors["unit"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["unit"]}</span>}
+                                            {this.state.errorsProduct["unit"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["unit"]}</span>}
 
 
                                         </div>
@@ -1366,7 +1597,7 @@ class ProductForm extends Component {
                                             <TextField type={"number"}  onChange={this.handleChangeProduct.bind(this, "volume")}
                                                        name={"volume"}
                                                        id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
-                                            {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
+                                            {this.state.errorsProduct["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["volume"]}</span>}
 
 
                                         </div>
@@ -1408,7 +1639,7 @@ class ProductForm extends Component {
                                             </FormControl>
 
 
-                                            {this.state.errors["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["manufacturedDate"]}</span>}
+                                            {this.state.errorsProduct["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
 
                                         </div>
 
@@ -1443,7 +1674,7 @@ class ProductForm extends Component {
                                             </FormControl>
 
 
-                                            {this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}
+                                            {this.state.errorsProduct["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["deliver"]}</span>}
 
 
                                             <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>

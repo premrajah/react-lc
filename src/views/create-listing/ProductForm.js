@@ -486,7 +486,7 @@ class ProductForm extends Component {
             errors["category"] = "Required";
         }
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
         if (!fields["type"]) {
             formIsValid = false;
             errors["type"] = "Required";
@@ -536,21 +536,21 @@ class ProductForm extends Component {
             let lastDotPos = fields["email"].lastIndexOf('.');
 
             if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-=======
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
+// =======
+//         if (typeof fields["email"] !== "undefined") {
+//             let lastAtPos = fields["email"].lastIndexOf("@");
+//             let lastDotPos = fields["email"].lastIndexOf(".");
 
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+//             if (
+//                 !(
+//                     lastAtPos < lastDotPos &&
+//                     lastAtPos > 0 &&
+//                     fields["email"].indexOf("@@") === -1 &&
+//                     lastDotPos > 2 &&
+//                     fields["email"].length - lastDotPos > 2
+//                 )
+//             ) {
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
@@ -564,14 +564,14 @@ class ProductForm extends Component {
         return formIsValid;
     }
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
     handleChangeProduct(field, event) {
 
 
-=======
-    handleChangeProduct(field, e) {
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//     handleChangeProduct(field, e) {
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
         let fields = this.state.fieldsProduct;
         fields[field] = event.target.value;
         this.setState({ fields });
@@ -584,19 +584,19 @@ class ProductForm extends Component {
                 (item) => item.name === event.target.value
             )[0];
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
         if (field==="category") {
-=======
-            var subCategories = this.state.categories.filter(
-                (item) => item.name === event.target.value
-            )[0].types;
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//             var subCategories = this.state.categories.filter(
+//                 (item) => item.name === event.target.value
+//             )[0].types;
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
             this.setState({
                 catSelected: catSelected,
             });
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
             if (event.target.value !== "Select") {
 
                 console.log(field, event.target.value)
@@ -790,141 +790,141 @@ class ProductForm extends Component {
                     "artifact_ids": this.state.images,
                     "site_id": data.get("deliver"),
                     "parent_product_id": this.props.parentProduct.product._key,
-=======
-            this.setState({
-                subCategories: subCategories,
-            });
+// =======
+//             this.setState({
+//                 subCategories: subCategories,
+//             });
 
-            console.log(catSelected);
-            console.log(subCategories);
-        } else {
-            this.setState({
-                catSelected: null,
-            });
+//             console.log(catSelected);
+//             console.log(subCategories);
+//         } else {
+//             this.setState({
+//                 catSelected: null,
+//             });
 
-            this.setState({
-                subCategories: [],
-            });
-        }
-    }
+//             this.setState({
+//                 subCategories: [],
+//             });
+//         }
+//     }
 
-    loadStates(field, event) {
-        if (event.target.value !== "Select") {
-            console.log(field, event.target.value);
+//     loadStates(field, event) {
+//         if (event.target.value !== "Select") {
+//             console.log(field, event.target.value);
 
-            var subCatSelected = this.state.subCategories.filter(
-                (item) => item.name === event.target.value
-            )[0];
+//             var subCatSelected = this.state.subCategories.filter(
+//                 (item) => item.name === event.target.value
+//             )[0];
 
-            var states = this.state.subCategories.filter(
-                (item) => item.name === event.target.value
-            )[0].state;
+//             var states = this.state.subCategories.filter(
+//                 (item) => item.name === event.target.value
+//             )[0].state;
 
-            var units = this.state.subCategories.filter(
-                (item) => item.name === event.target.value
-            )[0].units;
+//             var units = this.state.subCategories.filter(
+//                 (item) => item.name === event.target.value
+//             )[0].units;
 
-            this.setState({
-                subCatSelected: subCatSelected,
-            });
+//             this.setState({
+//                 subCatSelected: subCatSelected,
+//             });
 
-            this.setState({
-                states: states,
-                units: units,
-            });
+//             this.setState({
+//                 states: states,
+//                 units: units,
+//             });
 
-            console.log(subCatSelected);
-            console.log(states);
-        } else {
-            this.setState({
-                subCatSelected: null,
-            });
+//             console.log(subCatSelected);
+//             console.log(states);
+//         } else {
+//             this.setState({
+//                 subCatSelected: null,
+//             });
 
-            this.setState({
-                states: [],
-                units: [],
-            });
-        }
-    }
+//             this.setState({
+//                 states: [],
+//                 units: [],
+//             });
+//         }
+//     }
 
-    handleSubmitProduct = (event) => {
-        event.preventDefault();
+//     handleSubmitProduct = (event) => {
+//         event.preventDefault();
 
-        const form = event.currentTarget;
+//         const form = event.currentTarget;
 
-        this.setState({
-            btnLoading: true,
-        });
+//         this.setState({
+//             btnLoading: true,
+//         });
 
-        const data = new FormData(event.target);
+//         const data = new FormData(event.target);
 
-        console.log("form data");
+//         console.log("form data");
 
-        const title = data.get("title");
-        const purpose = data.get("purpose");
-        const description = data.get("description");
-        const category = data.get("category");
-        const type = data.get("type");
-        const units = data.get("units");
+//         const title = data.get("title");
+//         const purpose = data.get("purpose");
+//         const description = data.get("description");
+//         const category = data.get("category");
+//         const type = data.get("type");
+//         const units = data.get("units");
 
-        const serial = data.get("serial");
-        const model = data.get("model");
-        const brand = data.get("brand");
+//         const serial = data.get("serial");
+//         const model = data.get("model");
+//         const brand = data.get("brand");
 
-        const volume = data.get("volume");
-        const sku = data.get("sku");
-        const upc = data.get("upc");
-        const part_no = data.get("part_no");
-        const state = data.get("state");
+//         const volume = data.get("volume");
+//         const sku = data.get("sku");
+//         const upc = data.get("upc");
+//         const part_no = data.get("part_no");
+//         const state = data.get("state");
 
-        // const site=data.get("deliver")
+//         // const site=data.get("deliver")
 
-        var productData = {
-            purpose: purpose,
-            name: title,
-            description: description,
-            category: category,
-            type: type,
-            units: units,
-            state: state,
-            volume: volume,
-            sku: {
-                serial: serial,
-                model: model,
-                brand: brand,
-                sku: sku,
-                upc: upc,
-                part_no: part_no,
-            },
+//         var productData = {
+//             purpose: purpose,
+//             name: title,
+//             description: description,
+//             category: category,
+//             type: type,
+//             units: units,
+//             state: state,
+//             volume: volume,
+//             sku: {
+//                 serial: serial,
+//                 model: model,
+//                 brand: brand,
+//                 sku: sku,
+//                 upc: upc,
+//                 part_no: part_no,
+//             },
 
-            year_of_making: data.get("manufacturedDate"),
-        };
+//             year_of_making: data.get("manufacturedDate"),
+//         };
 
-        var completeData;
+//         var completeData;
 
-        if (this.props.parentProduct) {
-            completeData = {
-                product: productData,
-                child_product_ids: [],
-                artifact_ids: this.state.images,
-                site_id: data.get("deliver"),
-                parent_product_id: this.props.parentProduct.product._key,
-            };
-        } else {
-            completeData = {
-                product: productData,
-                child_product_ids: [],
-                artifact_ids: this.state.images,
-                parent_product_id: null,
-                site_id: data.get("deliver"),
-            };
-        }
+//         if (this.props.parentProduct) {
+//             completeData = {
+//                 product: productData,
+//                 child_product_ids: [],
+//                 artifact_ids: this.state.images,
+//                 site_id: data.get("deliver"),
+//                 parent_product_id: this.props.parentProduct.product._key,
+//             };
+//         } else {
+//             completeData = {
+//                 product: productData,
+//                 child_product_ids: [],
+//                 artifact_ids: this.state.images,
+//                 parent_product_id: null,
+//                 site_id: data.get("deliver"),
+//             };
+//         }
 
-        console.log("product data");
+//         console.log("product data");
 
-        console.log(productData);
-        console.log(this.state.images);
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+//         console.log(productData);
+//         console.log(this.state.images);
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
         axios
             .put(
@@ -940,7 +940,7 @@ class ProductForm extends Component {
             .then((res) => {
                 console.log(res.data.data);
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
             } else {
 
 
@@ -953,18 +953,18 @@ class ProductForm extends Component {
                     "site_id": data.get("deliver"),
 
 
-=======
-                if (!this.props.parentProduct) {
-                    this.setState({
-                        product: res.data.data,
-                        parentProduct: res.data.data,
-                    });
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                 if (!this.props.parentProduct) {
+//                     this.setState({
+//                         product: res.data.data,
+//                         parentProduct: res.data.data,
+//                     });
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                 }
 
                 this.showProductSelection();
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
             }
 
 
@@ -1015,9 +1015,9 @@ class ProductForm extends Component {
                     //
                     //
                     // }
-=======
-                console.log("product added succesfully");
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                 console.log("product added succesfully");
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                 this.props.loadProducts(this.props.userDetail.token);
 
@@ -1031,14 +1031,14 @@ class ProductForm extends Component {
                 //
                 // }
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
                     // this.getProducts()
 
 
                 }).catch(error => {
-=======
-                // this.showProductSelection()
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                 // this.showProductSelection()
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                 // this.getProducts()
             })
@@ -1052,7 +1052,7 @@ class ProductForm extends Component {
                 // dispatch({ type: ERROR, payload: error.data.error.message });
             });
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
             // } else {
             //
@@ -1065,14 +1065,14 @@ class ProductForm extends Component {
 
 
     }
-=======
-        // } else {
-        //
-        //
-        //
-        // }
-    };
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//         // } else {
+//         //
+//         //
+//         //
+//         // }
+//     };
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
     getFiltersCategories() {
         axios
@@ -1237,7 +1237,7 @@ class ProductForm extends Component {
 
                                 <div className="col-12 mb-3">
                                     <div className={"row"}>
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <div className={"custom-label text-bold text-blue mb-3"}>Resource Category</div>
                                     <FormControl variant="outlined" className={classes.formControl}>
@@ -1254,25 +1254,25 @@ class ProductForm extends Component {
                                             <option value={null}>Select</option>
 
                                             {this.state.categories.map((item) =>
-=======
-                                        <div className={"col-md-4 col-sm-12 col-xs-12"}>
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-3"}>
-                                                Resource Category
-                                            </div>
-                                            <FormControl
-                                                variant="outlined"
-                                                className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.loadType.bind(this, "category")}
-                                                    inputProps={{
-                                                        name: "category",
-                                                        id: "outlined-age-native-simple",
-                                                    }}>
-                                                    <option value={null}>Select</option>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                         <div className={"col-md-4 col-sm-12 col-xs-12"}>
+//                                             <div
+//                                                 className={"custom-label text-bold text-blue mb-3"}>
+//                                                 Resource Category
+//                                             </div>
+//                                             <FormControl
+//                                                 variant="outlined"
+//                                                 className={classes.formControl}>
+//                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+//                                                 <Select
+//                                                     native
+//                                                     onChange={this.loadType.bind(this, "category")}
+//                                                     inputProps={{
+//                                                         name: "category",
+//                                                         id: "outlined-age-native-simple",
+//                                                     }}>
+//                                                     <option value={null}>Select</option>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                                     {this.state.categories.map((item) => (
                                                         <option value={item.name}>
@@ -1408,40 +1408,40 @@ class ProductForm extends Component {
                                                     ))}
                                                 </Select>
                                             </FormControl>
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             {this.state.errorsProduct["state"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["state"]}</span>}
 
-=======
-                                            {this.state.errors["unit"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errors["unit"]}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="col-6 pl-2">
-                                            <TextField
-                                                type={"number"}
-                                                disabled={
-                                                    this.state.units.length > 0 ? false : true
-                                                }
-                                                onChange={this.handleChangeProduct.bind(
-                                                    this,
-                                                    "volume"
-                                                )}
-                                                name={"volume"}
-                                                id="outlined-basic"
-                                                label="Volume"
-                                                variant="outlined"
-                                                fullWidth={true}
-                                            />
-                                            {this.state.errors["volume"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errors["volume"]}
-                                                </span>
-                                            )}
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             {this.state.errors["unit"] && (
+//                                                 <span className={"text-mute small"}>
+//                                                     <span style={{ color: "red" }}>* </span>
+//                                                     {this.state.errors["unit"]}
+//                                                 </span>
+//                                             )}
+//                                         </div>
+//                                         <div className="col-6 pl-2">
+//                                             <TextField
+//                                                 type={"number"}
+//                                                 disabled={
+//                                                     this.state.units.length > 0 ? false : true
+//                                                 }
+//                                                 onChange={this.handleChangeProduct.bind(
+//                                                     this,
+//                                                     "volume"
+//                                                 )}
+//                                                 name={"volume"}
+//                                                 id="outlined-basic"
+//                                                 label="Volume"
+//                                                 variant="outlined"
+//                                                 fullWidth={true}
+//                                             />
+//                                             {this.state.errors["volume"] && (
+//                                                 <span className={"text-mute small"}>
+//                                                     <span style={{ color: "red" }}>* </span>
+//                                                     {this.state.errors["volume"]}
+//                                                 </span>
+//                                             )}
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                                         </div>
                                     </div>
                                 </div>
@@ -1505,31 +1505,31 @@ class ProductForm extends Component {
                                                 Brand
                                             </div>
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             <div className={"custom-label text-bold text-blue mb-1"}>Brand</div>
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                     {this.state.errorsProduct["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
 
-=======
-                                            <TextField
-                                                onChange={this.handleChangeProduct.bind(
-                                                    this,
-                                                    "brand"
-                                                )}
-                                                name={"brand"}
-                                                id="outlined-basic"
-                                                variant="outlined"
-                                                fullWidth={true}
-                                            />
-                                            {this.state.errors["brand"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errors["brand"]}
-                                                </span>
-                                            )}
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             <TextField
+//                                                 onChange={this.handleChangeProduct.bind(
+//                                                     this,
+//                                                     "brand"
+//                                                 )}
+//                                                 name={"brand"}
+//                                                 id="outlined-basic"
+//                                                 variant="outlined"
+//                                                 fullWidth={true}
+//                                             />
+//                                             {this.state.errors["brand"] && (
+//                                                 <span className={"text-mute small"}>
+//                                                     <span style={{ color: "red" }}>* </span>
+//                                                     {this.state.errors["brand"]}
+//                                                 </span>
+//                                             )}
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                                         </div>
 
                                         <div className="col-md-4 col-sm-6 col-xs-6">
@@ -1538,44 +1538,44 @@ class ProductForm extends Component {
                                                 Model Number
                                             </div>
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errorsProduct["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
-=======
-                                            <TextField
-                                                onChange={this.handleChangeProduct.bind(
-                                                    this,
-                                                    "model"
-                                                )}
-                                                name={"model"}
-                                                id="outlined-basic"
-                                                variant="outlined"
-                                                fullWidth={true}
-                                            />
-                                            {this.state.errors["model"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errors["model"]}
-                                                </span>
-                                            )}
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             <TextField
+//                                                 onChange={this.handleChangeProduct.bind(
+//                                                     this,
+//                                                     "model"
+//                                                 )}
+//                                                 name={"model"}
+//                                                 id="outlined-basic"
+//                                                 variant="outlined"
+//                                                 fullWidth={true}
+//                                             />
+//                                             {this.state.errors["model"] && (
+//                                                 <span className={"text-mute small"}>
+//                                                     <span style={{ color: "red" }}>* </span>
+//                                                     {this.state.errors["model"]}
+//                                                 </span>
+//                                             )}
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                                         </div>
 
                                         <div className="col-md-4 col-sm-6 col-xs-6">
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             <div className={"custom-label text-bold text-blue mb-1"}>Serial Number</div>
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errorsProduct["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
-=======
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-1"}>
-                                                Serial Number
-                                            </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             <div
+//                                                 className={"custom-label text-bold text-blue mb-1"}>
+//                                                 Serial Number
+//                                             </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                             <TextField
                                                 onChange={this.handleChangeProduct.bind(
@@ -1596,17 +1596,17 @@ class ProductForm extends Component {
                                         </div>
 
                                         <div className="col-md-4 col-sm-6 col-xs-6">
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errorsProduct["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
-=======
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-1"}>
-                                                SKU
-                                            </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             <div
+//                                                 className={"custom-label text-bold text-blue mb-1"}>
+//                                                 SKU
+//                                             </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                             <TextField
                                                 onChange={this.handleChangeProduct.bind(
@@ -1627,18 +1627,18 @@ class ProductForm extends Component {
                                         </div>
 
                                         <div className="col-md-4 col-sm-6 col-xs-6">
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             <div className={"custom-label text-bold text-blue mb-1"}>UPC</div>
 
 
                                             <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                             {this.state.errorsProduct["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
-=======
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-1"}>
-                                                UPC
-                                            </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             <div
+//                                                 className={"custom-label text-bold text-blue mb-1"}>
+//                                                 UPC
+//                                             </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                             <TextField
                                                 onChange={this.handleChangeProduct.bind(
@@ -1659,7 +1659,7 @@ class ProductForm extends Component {
                                         </div>
 
                                         <div className="col-md-4 col-sm-6 col-xs-6">
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             <div className={"custom-label text-bold text-blue mb-1"}>Part No.</div>
 
 
@@ -1704,19 +1704,19 @@ class ProductForm extends Component {
                                                 {this.state.units.map((item) =>
 
                                                     <option value={item}>{item}</option>
-=======
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-1"}>
-                                                Part No.
-                                            </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                             <div
+//                                                 className={"custom-label text-bold text-blue mb-1"}>
+//                                                 Part No.
+//                                             </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                             <TextField
                                                 onChange={this.handleChangeProduct.bind(
                                                     this,
                                                     "part_no"
                                                 )}
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
                                             </Select>
                                         </FormControl>
@@ -1732,20 +1732,20 @@ class ProductForm extends Component {
                                         {this.state.errorsProduct["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["volume"]}</span>}
 
 
-=======
-                                                name={"part_no"}
-                                                id="outlined-basic"
-                                                variant="outlined"
-                                                fullWidth={true}
-                                            />
-                                            {this.state.errors["part_no"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errors["part_no"]}
-                                                </span>
-                                            )}
-                                        </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                                 name={"part_no"}
+//                                                 id="outlined-basic"
+//                                                 variant="outlined"
+//                                                 fullWidth={true}
+//                                             />
+//                                             {this.state.errors["part_no"] && (
+//                                                 <span className={"text-mute small"}>
+//                                                     <span style={{ color: "red" }}>* </span>
+//                                                     {this.state.errors["part_no"]}
+//                                                 </span>
+//                                             )}
+//                                         </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                                     </div>
                                 </div>
 
@@ -1787,7 +1787,7 @@ class ProductForm extends Component {
                                                     {this.state.errors["manufacturedDate"]}
                                                 </span>
                                             )}
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
                                         </Select>
                                     </FormControl>
@@ -1796,9 +1796,9 @@ class ProductForm extends Component {
                                     {this.state.errorsProduct["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
 
                                     </div>
-=======
-                                        </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+// =======
+//                                         </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                         <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
                                             <div
@@ -1837,7 +1837,7 @@ class ProductForm extends Component {
                                                 </span>
                                             )}
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
                                             {this.state.errorsProduct["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["deliver"]}</span>}
 
 
@@ -1902,77 +1902,77 @@ class ProductForm extends Component {
                                                                     <div className="col-12 mt-4">
 
                                                                         <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
-=======
-                                            <p style={{ margin: "10px 0" }}>
-                                                {" "}
-                                                Don’t see it on here?{" "}
-                                                <span
-                                                    onClick={this.showSubmitSite}
-                                                    className={
-                                                        "green-text forgot-password-link text-mute small"
-                                                    }>
-                                                    Add a site
-                                                </span>
-                                            </p>
+// =======
+//                                             <p style={{ margin: "10px 0" }}>
+//                                                 {" "}
+//                                                 Don’t see it on here?{" "}
+//                                                 <span
+//                                                     onClick={this.showSubmitSite}
+//                                                     className={
+//                                                         "green-text forgot-password-link text-mute small"
+//                                                     }>
+//                                                     Add a site
+//                                                 </span>
+//                                             </p>
 
-                                            {this.state.showSubmitSite && (
-                                                <div
-                                                    className={
-                                                        "row justify-content-center p-2 container-gray"
-                                                    }>
-                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue mb-1"
-                                                            }>
-                                                            Add New Site
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                                        <div className={"row"}>
-                                                            <div className={"col-12"}>
-                                                                <form
-                                                                    onSubmit={
-                                                                        this.handleSubmitSite
-                                                                    }>
-                                                                    <div className="row no-gutters justify-content-center ">
-                                                                        <div className="col-12 mt-4">
-                                                                            <TextField
-                                                                                id="outlined-basic"
-                                                                                label=" Name"
-                                                                                variant="outlined"
-                                                                                fullWidth={true}
-                                                                                name={"name"}
-                                                                                onChange={this.handleChangeSite.bind(
-                                                                                    this,
-                                                                                    "name"
-                                                                                )}
-                                                                            />
+//                                             {this.state.showSubmitSite && (
+//                                                 <div
+//                                                     className={
+//                                                         "row justify-content-center p-2 container-gray"
+//                                                     }>
+//                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
+//                                                         <div
+//                                                             className={
+//                                                                 "custom-label text-bold text-blue mb-1"
+//                                                             }>
+//                                                             Add New Site
+//                                                         </div>
+//                                                     </div>
+//                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
+//                                                         <div className={"row"}>
+//                                                             <div className={"col-12"}>
+//                                                                 <form
+//                                                                     onSubmit={
+//                                                                         this.handleSubmitSite
+//                                                                     }>
+//                                                                     <div className="row no-gutters justify-content-center ">
+//                                                                         <div className="col-12 mt-4">
+//                                                                             <TextField
+//                                                                                 id="outlined-basic"
+//                                                                                 label=" Name"
+//                                                                                 variant="outlined"
+//                                                                                 fullWidth={true}
+//                                                                                 name={"name"}
+//                                                                                 onChange={this.handleChangeSite.bind(
+//                                                                                     this,
+//                                                                                     "name"
+//                                                                                 )}
+//                                                                             />
 
-                                                                            {this.state.errorsSite[
-                                                                                "name"
-                                                                            ] && (
-                                                                                <span
-                                                                                    className={
-                                                                                        "text-mute small"
-                                                                                    }>
-                                                                                    <span
-                                                                                        style={{
-                                                                                            color:
-                                                                                                "red",
-                                                                                        }}>
-                                                                                        *{" "}
-                                                                                    </span>
-                                                                                    {
-                                                                                        this.state
-                                                                                            .errorsSite[
-                                                                                            "name"
-                                                                                        ]
-                                                                                    }
-                                                                                </span>
-                                                                            )}
-                                                                        </div>
->>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
+//                                                                             {this.state.errorsSite[
+//                                                                                 "name"
+//                                                                             ] && (
+//                                                                                 <span
+//                                                                                     className={
+//                                                                                         "text-mute small"
+//                                                                                     }>
+//                                                                                     <span
+//                                                                                         style={{
+//                                                                                             color:
+//                                                                                                 "red",
+//                                                                                         }}>
+//                                                                                         *{" "}
+//                                                                                     </span>
+//                                                                                     {
+//                                                                                         this.state
+//                                                                                             .errorsSite[
+//                                                                                             "name"
+//                                                                                         ]
+//                                                                                     }
+//                                                                                 </span>
+//                                                                             )}
+//                                                                         </div>
+// >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
 
                                                                         <div className="col-12 mt-4">
                                                                             <TextField

@@ -61,9 +61,12 @@ class ViewCycle extends Component {
             notFound:false,
             image:null,
             showPopUpAction:false,
+            showPopUpStepAction:false,
             action:null,
+            stepAction:null,
             showOrgForm:false,
-            email:null
+            email:null,
+            stepId:null
         }
 
         this.slug = props.match.params.slug
@@ -82,6 +85,7 @@ class ViewCycle extends Component {
         this.updateStep=this.updateStep.bind(this)
         this.deliverCycle=this.deliverCycle.bind(this)
         this.showPopUpAction=this.showPopUpAction.bind(this)
+        this.showPopUpStepAction=this.showPopUpStepAction.bind(this)
         this.showOrgForm=this.showOrgForm.bind(this)
         this.handleSubmitOrg=this.handleSubmitOrg.bind(this)
 
@@ -116,6 +120,33 @@ class ViewCycle extends Component {
         this.setState({
 
             showPopUpAction:!this.state.showPopUpAction
+
+        })
+
+
+    }
+
+    showPopUpStepAction(event){
+
+
+        if (event) {
+            var action = event.currentTarget.dataset.action
+
+            var stepId=event.currentTarget.dataset.id
+
+
+            this.setState({
+                stepAction:action,
+                stepId:stepId
+
+            })
+
+        }
+
+
+        this.setState({
+
+            showPopUpStepAction:!this.state.showPopUpStepAction
 
         })
 
@@ -467,12 +498,12 @@ class ViewCycle extends Component {
 
 
 
-    updateStep(event) {
+    updateStep() {
 
 
-        var action=event.currentTarget.dataset.action
+        var action=this.state.stepAction
+        var stepId=this.state.stepId
 
-        var stepId=event.currentTarget.dataset.id
 
 
         var data={
@@ -494,13 +525,11 @@ class ViewCycle extends Component {
 
                 console.log(res.data.data)
 
-                // this.setState({
-                //
-                //     showPopUp: true
-                // })
 
                 this.getResources()
 
+
+                this.showPopUpStepAction()
 
             }).catch(error => {
 
@@ -1192,7 +1221,7 @@ class ViewCycle extends Component {
                                                                 {((actionName==="cancelled"&& item.creator_org_id === this.props.userDetail.orgId) || (actionName!=="cancelled")) &&
 
                                                                 <button data-id={item.step._key} data-action={actionName}
-                                                                        onClick={this.updateStep.bind(this)}
+                                                                        onClick={this.showPopUpStepAction.bind(this)}
                                                                         type="button"
                                                                         className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
                                                                             actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
@@ -1690,6 +1719,66 @@ class ViewCycle extends Component {
                                 </div>
 
                             </div>
+
+
+                    </ModalBody>
+
+                </Modal>
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.showPopUpStepAction} onHide={this.showPopUpStepAction} animation={false}>
+
+                    <ModalBody>
+                        {/*<div className={"row justify-content-center"}>*/}
+                        {/*<div className={"col-4 text-center"}>*/}
+                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold text-caps"}>
+
+
+                                    {this.state.stepAction==="accepted" && "Accept "}
+                                    {this.state.stepAction==="cancelled" && "Cancel "}
+                                    {this.state.stepAction==="rejected" && "Reject "}
+                                    {this.state.stepAction==="declined" && "Decline "}
+                                    {this.state.stepAction==="confirmed" && "Confirm "}
+                                    {this.state.stepAction==="progress" && "Progress "}
+                                    {this.state.stepAction==="completed" && "Complete "}
+                                     :Step Action</p>
+                                <p>Are you sure you want to proceed ?</p>
+                            </div>
+                        </div>
+
+
+
+                        <div className={"row justify-content-center"}>
+
+
+                            <div className={"col-12 text-center mt-2"}>
+
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                        <button onClick={this.updateStep.bind(this)}   className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                    </div>
+                                    <div className={"col-6"} style={{textAlign:"center"}}>
+                                        <p onClick={this.showPopUpStepAction} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
                     </ModalBody>

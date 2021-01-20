@@ -593,7 +593,7 @@ class ProductDetail extends Component {
     componentWillMount() {
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0)
+        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn)
             this.getSubProducts()
 
     }
@@ -604,7 +604,7 @@ class ProductDetail extends Component {
         this.getQrCode()
 
 
-        if (this.props.item.listing){
+        if (this.props.item.listing&&this.props.isLoggedIn){
 
             this.getListing()
 
@@ -620,7 +620,7 @@ class ProductDetail extends Component {
 
 
         
-        if (this.props.showRegister&&this.props.isLoggedIn)
+        if (this.props.showRegister&&this.props.isLoggedIn&&this.props.userDetail)
         this.getSites()
 
     }
@@ -698,11 +698,11 @@ class ProductDetail extends Component {
 
                                                         </div>
 
-                                                        <p className={"green-text"}>
+                                                        {this.props.hideRegister &&   <p className={"green-text"}>
                                                             <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
                                                                 provenance</Link>
                                                             <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.stage.productQrCode)}>Print PDF</Link>
-                                                        </p>
+                                                        </p>}
 
 
                                                     </div>

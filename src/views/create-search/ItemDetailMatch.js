@@ -399,7 +399,7 @@ class ItemDetailMatch extends Component {
 
                                             <div className="row">
                                                 <div className="col-7">
-                                                    <p>Sold By <span className={"green-text"}>{this.state.item.org.name}</span></p>
+                                                    <p> <span className={"green-text"}>{this.state.item.org.name}</span></p>
                                                 </div>
 
                                                 <div className="col-3 green-text text-heading text-right">

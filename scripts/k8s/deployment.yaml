@@ -20,6 +20,9 @@ spec:
       containers:
         - name: loop-react-ui-${ENVIRONMENT}
           image: ${API_IMAGE}
+          env:
+          - name: BRANCH_ENV
+            value: ${ENVIRONMENT}
           ports:
             - name: http
               containerPort: 80

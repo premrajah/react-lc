@@ -1,4 +1,6 @@
-export const baseUrl=process.env.NODE_ENV === "development" ? "http://graph.makealoop.io/api/2/" : "http://graph.makealoop.io/api/2/";
+export const baseUrl=process.env.BRANCH_ENV === "master" ? "http://graph.makealoop.io/api/2/" : "http://graph-dev.makealoop.io/api/2/";
+
+// export const baseUrl=process.env.NODE_ENV === "development" ? "http://graph-dev.makealoop.io/api/2/" : "http://graph.makealoop.io/api/2/";
 export const baseImgUrl="http://graph.makealoop.io";
 
 

@@ -620,7 +620,7 @@ class ProductDetail extends Component {
 
 
         
-        if (this.props.showRegister) 
+        if (this.props.showRegister&&this.props.isLoggedIn)
         this.getSites()
 
     }

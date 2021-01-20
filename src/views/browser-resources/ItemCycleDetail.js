@@ -62,11 +62,17 @@ class ItemCycleDetail extends Component {
         this.getResources = this.getResources.bind(this)
         this.getQrCode = this.getQrCode.bind(this)
         this.loadSearches = this.loadSearches.bind(this)
+        this.showSignUpPopUp = this.showSignUpPopUp.bind(this)
 
 
 
     }
 
+
+    showSignUpPopUp = (event) => {
+        this.props.setLoginPopUpStatus(1);
+        this.props.showLoginPopUp(true);
+    };
 
 
     handleBack = () => {
@@ -315,7 +321,7 @@ class ItemCycleDetail extends Component {
                                         <p >Congratulations on your recent purchase!
                                     </p>
 
-                                        <p >To register your product with Loopcycle, please sign in below or <span className={"blue-text forgot-password-link"}>sign up</span>.
+                                        <p >To register your product with Loopcycle, please sign in below or <span onClick={this.showSignUpPopUp} className={"blue-text forgot-password-link"}>sign up</span>.
 
                                     </p>
 
@@ -535,6 +541,7 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
 
     };
 };

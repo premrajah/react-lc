@@ -10,6 +10,7 @@ import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
 import CompanyInfo from './CompanyInfo'
 import { Link } from "react-router-dom";
+import moment from "moment/moment";
 
 
 class CycleItem extends Component {
@@ -316,7 +317,7 @@ class CycleItem extends Component {
                     </Link>
 
                 </div>
-                <div className={"col-6 pl-2 content-box-listing"}>
+                <div className={"col-4 pl-2 content-box-listing"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
 
@@ -339,14 +340,21 @@ class CycleItem extends Component {
 
                 <div style={{ textAlign: "right" }} className={"col-2"}>
 
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1"> <span className={"text-bold"}> GBP {this.props.item.offer.amount.value} </span></p>
+                        <p  className="text-mute mb-1 small"> <span className={"text-bold"}> GBP {this.props.item.offer.amount.value} </span></p>
 
                 </div>
 
 
                 <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className={"green-text text-mute text-bold small"} >
+                    <p className={"green-text text-mute text-bold text-caps small"} >
                         {this.props.item.cycle.stage}</p>
+                </div>
+                <div style={{ textAlign: "right" }} className={"col-2"}>
+                    <p className={" text-mute text-bold small"} >
+
+                        {moment(this.props.item.cycle._ts_epoch_ms).format("DD MMM YYYY")}
+
+                    </p>
                 </div>
 
 

@@ -24,7 +24,7 @@ import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
-
+import moment from "moment";
 
 
 class ResourceItem extends Component {
@@ -65,10 +65,7 @@ class ResourceItem extends Component {
 
     render() {
 
-
         return (
-
-
 
 <>
 
@@ -82,7 +79,7 @@ class ResourceItem extends Component {
                         {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                     </div>
-                    <div className={"col-6 pl-3 content-box-listing"}>
+                    <div className={"col-4 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
                         <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.listing.product.name} </>}</p>
@@ -90,11 +87,6 @@ class ResourceItem extends Component {
 
 
                     </div>
-                    {/*<div style={{ textAlign: "right" }} className={"col-2"}>*/}
-                        {/*<p className={"green-text"}>*/}
-                            {/*{this.props.item.price ? <>{this.props.item.price.currency} {this.props.item.price.value}</> : "Free"}*/}
-                        {/*</p>*/}
-                    {/*</div>*/}
 
 
                     <div className={"col-2 text-right"}>
@@ -112,6 +104,14 @@ class ResourceItem extends Component {
                         </p>
                     </div>
 
+                    <div className={"col-2 text-right"}>
+                        <p className={" text-caps"}>
+
+                            {moment(this.props.item.listing.listing._ts_epoch_ms).format("DD MMM YYYY")}
+
+                        </p>
+                    </div>
+
 
 
                 </div>:
@@ -124,7 +124,7 @@ class ResourceItem extends Component {
                     {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid img-list"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                 </div>
-                <div className={"col-6 pl-3 content-box-listing"}>
+                <div className={"col-4 pl-3 content-box-listing"}>
 
                     <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.name}</p>
                     <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.product.name} </>}</p>
@@ -139,12 +139,17 @@ class ResourceItem extends Component {
                     </p>
                 </div>
 
-                    <div className={"col-2 text-right"}>
+                  <div className={"col-2 text-right"}>
                         <p className={"green-text text-caps"}>
                             {this.props.item.listing.stage}
                         </p>
                     </div>
+                    <div className={"col-2 text-right"}>
+                        <p className={" text-caps"}>
+                            {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
 
+                        </p>
+                    </div>
 
             </div>
             }

@@ -101,6 +101,7 @@ class SearchMatches extends Component {
         this.slug = props.match.params.slug
 
         this.loadMatches = this.loadMatches.bind(this)
+        this.getListingForSearch = this.getListingForSearch.bind(this)
 
     }
 
@@ -183,7 +184,6 @@ class SearchMatches extends Component {
 
     }
 
-    interval
 
     componentWillMount() {
 
@@ -271,6 +271,7 @@ class SearchMatches extends Component {
                 <div className={"tab-content-listing col-12"}>
 
                     <NavTabs matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
+
                 </div>
                     </div>
                 </div>
@@ -394,18 +395,24 @@ function NavTabs(props) {
                     value={value}
                     onChange={handleChange}
                     aria-label="nav tabs example"
-                    e
+
                 >
 
+                    {/*{props.matches.length>0 &&*/}
+                     <LinkTab label={"Confirmed ("+props.matches.length+")"} href="/drafts" {...a11yProps(0)} />
+                    {/*}*/}
 
-                    {props.matches.length>0 && <LinkTab label={"Confirmed ("+props.matches.length+")"} href="/drafts" {...a11yProps(0)} />}
-                    
-                    
-                    <LinkTab label={"Suggested ("+props.suggesstions.length+")"} href="/drafts" {...a11yProps(1)} />
+                    {/*{props.suggesstions.length > 0 &&*/}
+
+                    <LinkTab label={"Suggested (" + props.suggesstions.length + ")"} href="/drafts" {...a11yProps(1)} />
+
+                    {/*}*/}
+
 
                 </Tabs>
             </AppBar>
 
+            {/*{props.suggesstions.length>0 &&*/}
             <TabPanel value={value} index={1}>
                 <div className={"container"}>
 
@@ -414,8 +421,6 @@ function NavTabs(props) {
 
                         <Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>
 
-
-                        {/*<Link to={"/match/"+props.slug+"/"+item.listing._key }>*/}
 
                             <ResourceItem  searchId={props.slug} item={item}  />
 
@@ -431,6 +436,9 @@ function NavTabs(props) {
 
                 </div>
             </TabPanel>
+            {/*}*/}
+            {/*{props.matches.length>0 &&*/}
+
             <TabPanel value={value} index={0}>
 
                 <div className={"container"}>
@@ -460,6 +468,8 @@ function NavTabs(props) {
 
 
             </TabPanel>
+
+            {/*}*/}
 
 
         </div>

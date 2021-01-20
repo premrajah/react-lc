@@ -14,6 +14,8 @@ import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import CycleItem from '../../components/CycleItem'
+import moment from "moment";
+
 
 class MyCycles extends Component {
 
@@ -141,7 +143,7 @@ class MyCycles extends Component {
 
                         <div className="row   filter-row listing-row-border  pt-3 pb-3">
 
-                            <div className="col-8">
+                            <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
 
                             </div>
@@ -154,6 +156,11 @@ class MyCycles extends Component {
                             <div className="text-mute col-2 pl-0 text-right">
 
                                 <span style={{ fontSize: "18px" }}>Status</span>
+
+                            </div>
+                            <div className="text-mute col-2 pl-0 text-right">
+
+                                <span style={{ fontSize: "18px" }}>Created</span>
 
                             </div>
 

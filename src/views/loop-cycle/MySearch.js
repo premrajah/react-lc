@@ -125,24 +125,24 @@ class MySearch extends Component {
                     <div className="container  pb-4 ">
 
 
-                        <div className="row justify-content-center">
+                        <div className="row justify-content-start">
 
                             <div className="col-auto pb-4 pt-4">
-                                <img className={"search-icon-middle"} src={SearchIcon} alt="" />
+                                <img style={{height:"30px", width:"30px"}} className={""} src={SearchIcon} alt="" />
 
                             </div>
                         </div>
-                        <div className="row justify-content-center pb-2 pt-4 ">
+                        <div className="row justify-content-start pb-2  ">
 
                             <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>My Searches
-                                </h3>
+
+                                <h3 className={"blue-text text-heading"}>My Searches</h3>
 
                             </div>
                         </div>
 
 
-                        <div className="row justify-content-center pb-4 pt-2 ">
+                        <div className="row justify-content-start pb-4 pt-2 ">
 
                             <div className="col-auto">
                                 <p className={"text-gray-light small"}>Accept or decline a match to start a loop.
@@ -163,13 +163,18 @@ class MySearch extends Component {
 
                         <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
 
-                            <div className="col">
+                            <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Searches </p>
 
                             </div>
-                            <div className="text-mute col-auto pl-0">
+                            <div className="col-4 text-mute text-right col-auto pl-0">
 
                                 <span style={{ fontSize: "18px" }}>Status</span>
+
+                            </div>
+                            <div className="col-2 text-mute text-right col-auto pl-0">
+
+                                <span style={{ fontSize: "18px" }}>Created</span>
 
                             </div>
 

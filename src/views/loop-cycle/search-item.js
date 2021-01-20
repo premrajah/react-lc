@@ -7,6 +7,7 @@ import SearchGray from '@material-ui/icons/Search';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import PlaceholderImg from '../../img/place-holder-lc.png';
+import moment from "moment";
 
 
 class SearchItem extends Component {
@@ -88,7 +89,7 @@ class SearchItem extends Component {
                         : <SearchGray style={{ color: "#C8C8C8",display:"table-cell" }} className={"m-5"} />}
 
                 </div>
-                <div className={"col-8 pl-3 content-box-listing"}>
+                <div className={"col-6 pl-3 content-box-listing"}>
 
                         <p style={{ fontSize: "18px" }} className="text-blue mb-1">{this.props.item.search.name}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.category}, {this.props.item.search.type}, {this.props.item.search.state} {this.props.item.search.volume} {this.props.item.search.units}</p>
@@ -98,9 +99,16 @@ class SearchItem extends Component {
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className={(this.props.item.stage === "matched" && "orange-text ") + (this.props.item.search.stage === "active" && " green-text") + "   search-stage"}>{this.props.item.search.stage}</p>
+                    <p className={(this.props.item.stage === "matched" && "orange-text ") + (this.props.item.search.stage === "active" && " green-text") + "   text-caps"}>{this.props.item.search.stage}</p>
                 </div>
 
+                <div style={{ textAlign: "right" }} className={"col-2"}>
+
+                    <p className="">
+                        {/*{this.props.item.search.stage}*/}
+                        {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
+                        </p>
+                </div>
 
 
             </div>

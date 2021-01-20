@@ -12,7 +12,6 @@ import HandGreyIcon from '../../img/icons/hand-gray.png';
 import HandBlue from '../../img/icons/hand.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
-
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';

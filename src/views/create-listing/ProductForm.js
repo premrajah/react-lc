@@ -1645,7 +1645,7 @@ class ProductForm extends Component {
 
                                         <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
 
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Deliver To</div>
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Collect At</div>
 
 
                                             <FormControl variant="outlined" className={classes.formControl}>

@@ -119,22 +119,22 @@ class MyListings extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage">
+                <div className="wrapper ">
 
                     <HeaderDark />
 
 
-                    <div className="container   pb-4 pt-4">
+                    <div className="container   pb-4 ">
 
 
-                        <div className="row ">
+                        <div className="row pt-2">
 
-                            <div className="col-auto pb-4 pt-4">
+                            <div className="col-auto pb-2 ">
                                 <img className={"search-icon-middle"} src={ProductBlue} alt="" />
 
                             </div>
                         </div>
-                        <div className="row  pb-2 pt-4 ">
+                        <div className="row  pb-2  ">
 
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>My Listings
@@ -165,7 +165,7 @@ class MyListings extends Component {
 
                         <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
 
-                            <div className="col-8">
+                            <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Listings </p>
 
                             </div>
@@ -179,6 +179,11 @@ class MyListings extends Component {
                             <div style={{ textAlign: "right" }} className="text-mute col-2 pl-0">
 
                                 <span style={{ fontSize: "18px" }}>Status</span>
+
+                            </div>
+                            <div style={{ textAlign: "right" }} className="text-mute col-2 pl-0">
+
+                                <span style={{ fontSize: "18px" }}>Created</span>
 
                             </div>
 

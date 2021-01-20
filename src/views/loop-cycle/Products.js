@@ -110,7 +110,7 @@ class Products extends Component {
 
     componentDidMount() {
 
-        this.getProducts()
+        // this.getProducts()
 
 
         this.props.loadProducts(this.props.userDetail.token)

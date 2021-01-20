@@ -652,7 +652,7 @@ class ProductDetail extends Component {
                                         </div>
 
 
-                                        {this.props.isLoggedIn &&  !this.props.hideRegister &&
+                                        {this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id&&
                                         <>
                                         <div className={"col-12 pb-5 mb-5"}>
 
@@ -885,6 +885,8 @@ class ProductDetail extends Component {
                                centered show={this.state.showRegister} onHide={this.showRegister} animation={false}>
 
                             <ModalBody>
+
+
 
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>

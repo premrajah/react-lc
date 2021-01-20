@@ -252,7 +252,7 @@ class ItemCycleDetail extends Component {
             .then((response) => {
 
                 var responseData = response.data.data;
-                console.log("qr code detail resource response ", responseData)
+                console.log("product providence detail resource response ", responseData)
 
 
                 this.setState({
@@ -267,9 +267,8 @@ class ItemCycleDetail extends Component {
             },
                 (error) => {
 
-                    var status = error.response.status
 
-                    console.log("product detail  error ", error)
+                    console.log("product providence detail  error ", error)
 
                 }
             );

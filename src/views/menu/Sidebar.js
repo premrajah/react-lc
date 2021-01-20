@@ -20,6 +20,9 @@ class Sidebar extends Component {
         }
         this.toggleMenu = this.toggleMenu.bind(this)
         this.logOut = this.logOut.bind(this)
+        this.showLoginPopUp=this.showLoginPopUp.bind(this)
+        this.showSignUpPopUp=this.showSignUpPopUp.bind(this)
+
 
     }
 
@@ -31,8 +34,32 @@ class Sidebar extends Component {
 
         document.body.classList.remove('sidemenu-open');
 
+
     }
 
+
+
+    showSignUpPopUp = (event) => {
+
+
+        document.body.classList.remove('sidemenu-open');
+
+        this.props.setLoginPopUpStatus(1);
+        this.props.showLoginPopUp(true);
+
+
+    }
+
+
+    showLoginPopUp = (event) => {
+
+
+        document.body.classList.remove('sidemenu-open');
+
+        this.props.setLoginPopUpStatus(0);
+        this.props.showLoginPopUp(true);
+
+    }
 
 
     logOut = (event) => {
@@ -111,24 +138,24 @@ class Sidebar extends Component {
                         </div>
                         }
 
-                        <div className="mt-2 mb-3">
+                        {this.props.isLoggedIn &&<div className="mt-2 mb-3">
                             <div className="row">
                                 <div className="col-auto">
                                     <figure className="avatar avatar-60 border-0">
 
 
-                                        {this.props.isLoggedIn && <span className={"word-user-big"}>
+                                         <span className={"word-user-big"}>
 
                                             {this.props.userDetail&&this.props.userDetail.orgId&&this.props.userDetail.orgId.substr(0,2)}
 
                                         </span>
-                                        }
+
 
                                     </figure>
                                 </div>
 
                             </div>
-                        </div>
+                        </div>}
                         {this.props.isLoggedIn &&
                             <div className="row">
                                 <div className="col">
@@ -165,18 +192,20 @@ class Sidebar extends Component {
                                 </div>
                             </div>
                         }
-                        <div className="row mt-3 mb-3">
+                        {this.props.isLoggedIn &&    <div className="row mt-3 mb-3">
                             <div className="col">
                                 <div className={"menu_divider_line"}></div>
                             </div>
-                        </div>
+                        </div>}
 
 
                         <div className="row">
                             <div className="col">
                                 <div className="list-group main-menu">
-                                    {!this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/login"} className="list-group-item list-group-item-action green-text">Log in </Link>}
-                                    {this.props.isLoggedIn && <Link onClick={this.logOut} to={"/login"} className="list-group-item list-group-item-action green-text">Log out </Link>}
+                                    {!this.props.isLoggedIn && <Link onClick={this.showLoginPopUp} to={""} className="list-group-item list-group-item-action green-text">Log in </Link>}
+                                    {!this.props.isLoggedIn && <Link onClick={this.showSignUpPopUp} to={""} className="list-group-item list-group-item-action green-text">Sign Up </Link>}
+
+                                    {this.props.isLoggedIn && <Link onClick={this.logOut} to={""} className="list-group-item list-group-item-action green-text">Log out </Link>}
                                     <Link onClick={this.toggleMenu} to={"/account"} className="list-group-item list-group-item-action green-text">My Loopcycle </Link>
 
                                 </div>
@@ -225,6 +254,9 @@ const mapDispachToProps = dispatch => {
         logOut: (data) => dispatch(actionCreator.logOut(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
 
 
     };

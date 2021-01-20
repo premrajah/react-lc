@@ -61,7 +61,12 @@ class ViewCycle extends Component {
             notFound:false,
             image:null,
             showPopUpAction:false,
-            action:null
+            showPopUpStepAction:false,
+            action:null,
+            stepAction:null,
+            showOrgForm:false,
+            email:null,
+            stepId:null
         }
 
         this.slug = props.match.params.slug
@@ -80,11 +85,22 @@ class ViewCycle extends Component {
         this.updateStep=this.updateStep.bind(this)
         this.deliverCycle=this.deliverCycle.bind(this)
         this.showPopUpAction=this.showPopUpAction.bind(this)
+        this.showPopUpStepAction=this.showPopUpStepAction.bind(this)
+        this.showOrgForm=this.showOrgForm.bind(this)
+        this.handleSubmitOrg=this.handleSubmitOrg.bind(this)
 
 
     }
 
+    showOrgForm(){
 
+
+        this.setState({
+
+            showOrgForm:!this.state.showOrgForm
+        })
+
+    }
 
 
     showPopUpAction(event){
@@ -104,6 +120,33 @@ class ViewCycle extends Component {
         this.setState({
 
             showPopUpAction:!this.state.showPopUpAction
+
+        })
+
+
+    }
+
+    showPopUpStepAction(event){
+
+
+        if (event) {
+            var action = event.currentTarget.dataset.action
+
+            var stepId=event.currentTarget.dataset.id
+
+
+            this.setState({
+                stepAction:action,
+                stepId:stepId
+
+            })
+
+        }
+
+
+        this.setState({
+
+            showPopUpStepAction:!this.state.showPopUpStepAction
 
         })
 
@@ -183,7 +226,14 @@ class ViewCycle extends Component {
     }
 
 
-    handleSubmit = event => {
+
+    handleChangeEmail(field, e) {
+
+        this.setState({ email: e.target.value});
+
+    }
+
+        handleSubmit = event => {
 
         event.preventDefault();
 
@@ -321,6 +371,9 @@ class ViewCycle extends Component {
         }
         
 }
+
+
+
     
     handleSubmitStep = event => {
 
@@ -393,15 +446,64 @@ class ViewCycle extends Component {
     }
 
 
+    handleSubmitOrg () {
 
 
-    updateStep(event) {
+        const email = this.state.email
 
 
 
-        var action=event.currentTarget.dataset.action
+        // var dataStep= {
+        //     "step": {
+        //         "email": name,
+        //         "description": description,
+        //         "type":  type,
+        //         // "predecessor": null,
+        //         "notes": notes
+        //     },
+        //     "cycle_id": this.slug,
+        //     "org_id": data.get("org")
+        //
+        // }
 
-        var stepId=event.currentTarget.dataset.id
+        console.log(email)
+
+
+        axios.get(baseUrl + "org/email/"+email
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                 console.log(res.data.data)
+                 this.showOrgForm()
+                 this.getOrgs()
+                
+
+            }).catch(error => {
+
+
+            console.log("cycle step error")
+            console.log(error)
+
+
+
+        });
+
+
+    }
+
+
+
+    updateStep() {
+
+
+        var action=this.state.stepAction
+        var stepId=this.state.stepId
+
 
 
         var data={
@@ -423,13 +525,11 @@ class ViewCycle extends Component {
 
                 console.log(res.data.data)
 
-                // this.setState({
-                //
-                //     showPopUp: true
-                // })
 
                 this.getResources()
 
+
+                this.showPopUpStepAction()
 
             }).catch(error => {
 
@@ -1121,7 +1221,7 @@ class ViewCycle extends Component {
                                                                 {((actionName==="cancelled"&& item.creator_org_id === this.props.userDetail.orgId) || (actionName!=="cancelled")) &&
 
                                                                 <button data-id={item.step._key} data-action={actionName}
-                                                                        onClick={this.updateStep.bind(this)}
+                                                                        onClick={this.showPopUpStepAction.bind(this)}
                                                                         type="button"
                                                                         className={actionName==="accepted"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border":
                                                                             actionName==="cancelled"?"shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border":
@@ -1483,6 +1583,57 @@ class ViewCycle extends Component {
                                             </Select>
                                         </FormControl>
 
+                                        <p>Is the company you are looking for dosn't exist ?<span className={"green-link-url "} onClick={this.showOrgForm}> Add Company</span></p>
+
+
+                                        {this.state.showOrgForm &&
+
+                                        <>
+
+                                            <div className={"row m-2 container-gray"}>
+                                                <div className={"col-12 text-left mt-2 "}>
+
+                                                    <p className={"text-bold text-blue"}>Add Company's Email</p>
+
+                                                </div>
+                                                <div className={"col-12 text-center "}>
+
+                                                    <>
+                                                        <div className={"row justify-content-center"}>
+
+                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                <TextField id="outlined-basic"
+                                                                           onChange={this.handleChangeEmail.bind(this, "email")}
+                                                                           variant="outlined" fullWidth={true}
+                                                                           name={"email"} type={"text"}
+
+                                                                           value={this.state.email}
+                                                                />
+
+                                                            </div>
+
+                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                <button onClick={this.handleSubmitOrg}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}  >Submit </button>
+
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </>
+                                                </div>
+                                            </div>
+                                        </>
+                                        }
+
+                                    </div>
+
+
+                                    <div className={"col-12 text-center mb-4"}>
+
+                                        <TextField id="outlined-basic" label="Note" variant="outlined" fullWidth={true} name={"note"} type={"text"} />
 
                                     </div>
 
@@ -1568,6 +1719,66 @@ class ViewCycle extends Component {
                                 </div>
 
                             </div>
+
+
+                    </ModalBody>
+
+                </Modal>
+
+
+                <Modal className={"loop-popup"}
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered show={this.state.showPopUpStepAction} onHide={this.showPopUpStepAction} animation={false}>
+
+                    <ModalBody>
+                        {/*<div className={"row justify-content-center"}>*/}
+                        {/*<div className={"col-4 text-center"}>*/}
+                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+
+
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold text-caps"}>
+
+
+                                    {this.state.stepAction==="accepted" && "Accept "}
+                                    {this.state.stepAction==="cancelled" && "Cancel "}
+                                    {this.state.stepAction==="rejected" && "Reject "}
+                                    {this.state.stepAction==="declined" && "Decline "}
+                                    {this.state.stepAction==="confirmed" && "Confirm "}
+                                    {this.state.stepAction==="progress" && "Progress "}
+                                    {this.state.stepAction==="completed" && "Complete "}
+                                     :Step Action</p>
+                                <p>Are you sure you want to proceed ?</p>
+                            </div>
+                        </div>
+
+
+
+                        <div className={"row justify-content-center"}>
+
+
+                            <div className={"col-12 text-center mt-2"}>
+
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                        <button onClick={this.updateStep.bind(this)}   className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                    </div>
+                                    <div className={"col-6"} style={{textAlign:"center"}}>
+                                        <p onClick={this.showPopUpStepAction} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
                     </ModalBody>

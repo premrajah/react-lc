@@ -564,7 +564,6 @@ class MatchItemSeller extends Component {
 
             this.getOffer()
 
-
         }, 5000);
 
 

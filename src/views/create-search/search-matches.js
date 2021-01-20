@@ -398,7 +398,9 @@ function NavTabs(props) {
                 >
 
 
-                    <LinkTab label={"Confirmed ("+props.matches.length+")"} href="/drafts" {...a11yProps(0)} />
+                    {props.matches.length>0 && <LinkTab label={"Confirmed ("+props.matches.length+")"} href="/drafts" {...a11yProps(0)} />}
+                    
+                    
                     <LinkTab label={"Suggested ("+props.suggesstions.length+")"} href="/drafts" {...a11yProps(1)} />
 
                 </Tabs>

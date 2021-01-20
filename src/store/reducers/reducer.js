@@ -178,9 +178,16 @@ const reducer = (state = initialState, action) => {
             if (type==="create_product") {
 
                 newState.showCreateProduct = true
+                newState.showCreateSubProduct = false
+
+                newState.parentProduct = null
+
+
             }
 
             else if (type==="create_sub_product") {
+
+                newState.showCreateProduct = false
 
                 newState.showCreateSubProduct= true
             }

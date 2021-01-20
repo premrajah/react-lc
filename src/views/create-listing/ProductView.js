@@ -158,7 +158,7 @@ class ProductView extends Component {
                         {this.state.item &&
                             <>
 
-                                <ProductDetail item={this.state.item}/>
+                                <ProductDetail hideRegister={true} item={this.state.item}/>
 
                             </>
                             }

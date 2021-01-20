@@ -27,6 +27,7 @@ import { Modal, ModalBody, Alert } from 'react-bootstrap';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import Org from "./Org/Org";
 
 
 
@@ -651,7 +652,7 @@ class ProductDetail extends Component {
                                         </div>
 
 
-                                        {this.props.isLoggedIn &&
+                                        {this.props.isLoggedIn &&  !this.props.hideRegister &&
                                         <>
                                         <div className={"col-12 pb-5 mb-5"}>
 
@@ -733,7 +734,7 @@ class ProductDetail extends Component {
 
                                             <div className="row">
                                                 <div className="col-7">
-                                                    <p>Sold By <span className={"green-text"}>@{this.props.item.org.name}</span></p>
+                                                    <p> <Org orgId={this.props.item.org._id} /></p>
                                                 </div>
 
 
@@ -778,7 +779,7 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.org_id} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.org._id} </p>
                                                 </div>
                                             </div>
 
@@ -795,7 +796,7 @@ class ProductDetail extends Component {
 
 
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {this.props.item&&this.props.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
 
                                                 <div className={"col-auto"}>
 
@@ -804,9 +805,9 @@ class ProductDetail extends Component {
 
 
                                                 </div>
-                                            </div>
+                                            </div>}
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {this.props.item&&this.props.item.product.sku.serial && <div className="row  justify-content-start search-container  pb-2">
 
                                                 <div className={"col-auto"}>
 
@@ -814,10 +815,10 @@ class ProductDetail extends Component {
                                                     <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.serial} </p>
 
                                                 </div>
-                                            </div>
+                                            </div>}
 
 
-                                            <div className="row  justify-content-start search-container  pb-2 ">
+                                            {this.props.item&&this.props.item.product.sku.brand && <div className="row  justify-content-start search-container  pb-2 ">
 
                                                 <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
@@ -825,7 +826,7 @@ class ProductDetail extends Component {
 
 
                                                 </div>
-                                            </div>
+                                            </div>}
 
 
                                             <div className="row  justify-content-start search-container  pb-2 ">

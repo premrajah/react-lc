@@ -30,6 +30,7 @@ import AddIcon from '@material-ui/icons/Add';
 import NotFound from "../NotFound/index"
 import PlaceholderImg from '../../img/place-holder-lc.png';
 import ProductExpandItem from '../../components/ProductExpandItem'
+import Org from "../../components/Org/Org";
 
 
 class ViewCycle extends Component {
@@ -956,7 +957,8 @@ class ViewCycle extends Component {
 
                                         <div className="row">
                                             <div className="col-7">
-                                                <p>Sold By <span className={"green-text"}>{this.state.item.sender.name}</span></p>
+                                                {/*<p> <span className={"green-text"}>{this.state.item.sender.name}</span></p>*/}
+                                                <p><Org orgId={this.state.item.sender._id} /></p>
                                             </div>
 
                                             <div className="col-3 green-text text-heading text-right">

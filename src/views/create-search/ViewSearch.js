@@ -721,14 +721,16 @@
 
                                             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                                                <div className="col-12">
-                                                    <Org orgId={this.state.createSearchData.org._id} orgDescription={this.state.createSearchData.org.description} />
-                                                </div>
                                                 <div className="col-12 mt-2">
                                                     <h5 className={"blue-text text-heading"}>{this.state.createSearchData.search.name}
                                                     </h5>
 
                                                 </div>
+
+                                                <div className="col-12">
+                                                    <Org orgId={this.state.createSearchData.org._id} orgDescription={this.state.createSearchData.org.description} />
+                                                </div>
+
                                             </div>
 
 

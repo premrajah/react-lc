@@ -47,8 +47,7 @@ const useStyles = makeStyles((theme) => ({
             >
 
                 <InfoIcon
-                    color="primary"
-                    // style={{color:"#27245C", backgroundColor:"white"}}
+                    style={{color:"#27245C", backgroundColor:"white"}}
 
                 />
 

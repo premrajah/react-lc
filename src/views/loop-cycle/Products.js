@@ -144,12 +144,12 @@ class Products extends Component {
 
                         <div className="row ">
 
-                            <div className="col-auto pb-4 pt-4">
-                                <img className={"search-icon-middle"} src={CubeBlue} alt="" />
+                            <div className="col-auto pb-4 ">
+                                <img style={{height:"auto", width:"48px"}} className={"search-icon-middle"} src={CubeBlue} alt="" />
 
                             </div>
                         </div>
-                        <div className="row  pb-2 pt-2 ">
+                        <div className="row  pb-2  ">
 
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>Products

@@ -122,13 +122,13 @@ class MySearch extends Component {
 
                     <HeaderDark />
 
-                    <div className="container  pb-4 ">
+                    <div className="container  pb-4 pt-4">
 
 
                         <div className="row justify-content-start">
 
-                            <div className="col-auto pb-4 pt-4">
-                                <img style={{height:"30px", width:"30px"}} className={""} src={SearchIcon} alt="" />
+                            <div className="col-auto pb-4 ">
+                                <img style={{height:"auto", width:"30px"}} className={""} src={SearchIcon} alt="" />
 
                             </div>
                         </div>

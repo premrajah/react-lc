@@ -83,7 +83,8 @@ class ResourceItem extends Component {
 
                         <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
                         <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.listing.product.name} </>}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.listing.state} / {this.props.item.listing.listing.volume} {this.props.item.listing.listing.units}</p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.listing.category}, {this.props.item.listing.listing.type}, {this.props.item.listing.listing.state} </p>
+                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">  {this.props.item.listing.listing.volume} {this.props.item.listing.listing.units}</p>
 
 
                     </div>
@@ -129,7 +130,9 @@ class ResourceItem extends Component {
                     <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.name}</p>
                     <p style={{ fontSize: "16px" }} className=" mb-1 ">{this.props.item.product&& <>Product: {this.props.item.product.name} </>}</p>
 
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.listing.state} / {this.props.item.listing.volume} {this.props.item.listing.units}</p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-cabs">{this.props.item.listing.category}, {this.props.item.listing.type}, {this.props.item.listing.state}  </p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-cabs">{this.props.item.listing.volume} {this.props.item.listing.units}</p>
+
 
 
                 </div>

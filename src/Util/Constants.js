@@ -1,14 +1,10 @@
-export const baseUrl=process.env.BRANCH_ENV === "master" ? "http://graph.makealoop.io/api/2/" : "http://graph-dev.makealoop.io/api/2/";
+export const baseUrl = process.env.BRANCH_ENV === "master" ? "http://graph.makealoop.io/api/2/" : "http://graph-dev.makealoop.io/api/2/";
 
-// export const baseUrl=process.env.NODE_ENV === "development" ? "http://graph-dev.makealoop.io/api/2/" : "http://graph.makealoop.io/api/2/";
-export const baseImgUrl="http://graph.makealoop.io";
+// CHANDAN: WHat is this used for?
+export const baseImgUrl = process.env.BRANCH_ENV === "master" ? "http://graph.makealoop.io" : "http://graph.makealoop.io";
 
-
-// export const baseUrl="http://dev-api.makealoop.io//api/1/";
-// export const baseImgUrl="http://dev-api.makealoop.io/";
-
-// export const frontEndUrl = "http://react.makealoop.io/"
-export const frontEndUrl = "http://dev-react-2.makealoop.io/"
+// CHANDAN: What is this used for?
+export const frontEndUrl = process.env.BRANCH_ENV === "master" ? "http://dev-react-2.makealoop.io/" : "http://dev-react-2.makealoop.io/;
 
 
 

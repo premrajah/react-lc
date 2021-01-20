@@ -139,41 +139,13 @@ class ProductForm extends Component {
     }
 
 
-    handleChangeFile(event) {
-
-        console.log("change event files")
-        console.log(event.target.files)
-
-        // var files = this.state.files
-        // var filesUrl = this.state.filesUrl
-
-        this.uploadImage(event.target.files)
-
-        // for (var i = 0; i < event.target.files.length; i++) {
-        //
-        //
-        //     files.push(event.target.files[i])
-        //     // filesUrl.push(URL.createObjectURL(event.target.files[i]))
-        //
-        // }
-        //
-        //
-        // console.log(files)
-        // console.log(filesUrl)
-        //
-        // this.setState({
-        //     files: files,
-        //     // filesUrl: filesUrl
-        // })
-
-
-
-    }
-
 
     checkImageUpload(){
 
+
         console.log("check iamge called file", this.state.files.length, this.state.currentUploadingImages.length)
+
+
 
 
         if (this.state.files.length===this.state.currentUploadingImages.length){
@@ -447,7 +419,36 @@ class ProductForm extends Component {
 
 
 
+    handleChangeFile(event) {
 
+        console.log("change event files")
+        console.log(event.target.files)
+
+        var files = this.state.files
+        var filesUrl = this.state.filesUrl
+
+        this.uploadImage(event.target.files)
+
+        for (var i = 0; i < event.target.files.length; i++) {
+
+
+            files.push(event.target.files[i])
+            filesUrl.push(URL.createObjectURL(event.target.files[i]))
+
+        }
+
+
+        console.log(files)
+        console.log(filesUrl)
+
+        this.setState({
+            files: files,
+            filesUrl: filesUrl
+        })
+
+
+
+    }
 
 
 
@@ -495,7 +496,6 @@ class ProductForm extends Component {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsBinaryString(file);
-
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
         });
@@ -509,11 +509,6 @@ class ProductForm extends Component {
 
 
             for (var i = 0; i < files.length; i++) {
-
-
-                let imgFile = files[i]
-
-                console.log(imgFile)
 
 
                 this.getBase64(files[i]).then(
@@ -551,14 +546,11 @@ class ProductForm extends Component {
 
                             var images = this.state.images
 
-
-
-
                             images.push(res.data.data._key)
 
 
                             this.setState({
-                                images: images,
+                                images: images
                             })
                             console.log("images urls")
                             console.log(images)
@@ -566,31 +558,12 @@ class ProductForm extends Component {
                         }).catch(error => {
 
                             console.log("image upload error ")
-                            console.log(error)
                             // console.log(error.response.data)
 
                         })
 
                     }
-                ).then(data=>{
-
-
-                    var filesUploaded = this.state.files
-
-                    console.log("file uplaoded "+ i)
-
-                    console.log(imgFile)
-
-
-                    filesUploaded.push(imgFile)
-
-
-                    this.setState({
-                        files: filesUploaded
-                    })
-
-
-                });
+                );
 
             }
 

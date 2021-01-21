@@ -54,10 +54,11 @@ class FindResourcePage extends Component {
                 <HeaderDark />
 
                 <div className="container">
-                    <div className="row mt-3" style={{ marginTop: "80px" }}>
+
+                    <div className="row mt-5" style={{ marginTop: "80px" }}>
                         <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
                             <div className="icon-holder">
-                                <Image src={SearchIcon} rounded height="240px" />
+                                <Image className="p-4" src={SearchIcon} rounded height="240px" />
                             </div>
                             <h1 className="mt-3">Find Products</h1>
                             <p>
@@ -69,7 +70,7 @@ class FindResourcePage extends Component {
                             </Link>
                         </div>
                         <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
-                            <Image src={BottleDollarIcon} rounded height="240px" />
+                            <Image className="p-4" src={BottleDollarIcon} rounded height="240px" />
                             <h1 className="mt-3">Sell Products</h1>
                             <p>
                                 Have a resource to sell? Create a new listing and we’ll notify you
@@ -80,7 +81,9 @@ class FindResourcePage extends Component {
                             </Link>
                         </div>
                     </div>
+
                     <hr />
+
                     <div className="row mt-5">
                         <h1 className="text-md-center">Categories</h1>
                     </div>

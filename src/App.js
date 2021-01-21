@@ -65,6 +65,7 @@ import Cookie from "./components/Terms/Cookie";
 import Privacy from "./components/Terms/Privacy";
 import AcceptableUse from "./components/Terms/AcceptableUse";
 import TermsAndService from "./components/Terms/TermsAndService";
+import FindResourcePage from "./views/browser-resources/FindResourcePage";
 
 
 var hist = createBrowserHistory();
@@ -120,7 +121,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
-                        <LoggedInRoute exact path="/find-resources" component={FindResources} />
+                        <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exact path="/edit-account" component={EditAccount} />

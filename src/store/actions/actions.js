@@ -895,8 +895,8 @@ export const loadUserDetail = (data) => {
 
     var userDetials = getKey("user");
 
-    console.log("user details")
-    console.log(userDetials)
+    // console.log("user details")
+    // console.log(userDetials)
     return { type: "LOAD_USER_DETAIL", value: userDetials };
 
 

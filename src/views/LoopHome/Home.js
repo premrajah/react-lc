@@ -68,7 +68,7 @@ goToResources(){
         }else{
 
 
-            this.props.history.push("/resources")
+            this.props.history.push("/find-resources")
         }
 }
 

@@ -701,7 +701,7 @@ class ProductDetail extends Component {
                                                         {this.props.hideRegister &&   <p className={"green-text"}>
                                                             <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
                                                                 provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.stage.productQrCode)}>Print PDF</Link>
+                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode)}>Print PDF</Link>
                                                         </p>}
 
 

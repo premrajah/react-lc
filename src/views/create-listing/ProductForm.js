@@ -91,8 +91,9 @@ class ProductForm extends Component {
             showAddComponent: false,
             siteSelected: null,
             files: [],
-            filesUrl: [],
             uploadFiles: [],
+            filesUrl: [],
+
             uploadFilesUrl: [],
             free: false,
             price: null,
@@ -161,9 +162,11 @@ class ProductForm extends Component {
         // console.log(files)
         // console.log(filesUrl)
         //
+
+        // var files= this.state.files
+        //
         // this.setState({
         //     files: files,
-        //     // filesUrl: filesUrl
         // })
 
 

@@ -202,7 +202,7 @@ class ListForm extends Component {
 
     }
 
-    handleNext() {
+    handleNextOld() {
 
 
         if (this.state.page === 1&&this.handleValidateOne()) {
@@ -246,7 +246,55 @@ class ListForm extends Component {
 
     }
 
-    handleBack() {
+
+
+    handleNext() {
+
+
+        if (this.state.page === 1&&this.handleValidateOne()) {
+
+            this.setState({
+
+                page: 2,
+                progressBar: 66
+            })
+
+
+            console.log(this.state.fields)
+
+        }
+        else  if (this.state.page === 2&&this.handleValidateTwo()) {
+
+            this.setState({
+
+                page: 3,
+                progressBar: 100
+            })
+
+
+            console.log(this.state.fields)
+        }
+
+
+        else  if (this.state.page === 3) {
+
+
+
+
+
+            // this.createListing()
+            // console.log(this.state.fields)
+        }
+
+        else  if (this.state.page === 4) {
+
+            this.props.history.push("/" + this.state.listResourceData._key)
+
+        }
+
+    }
+
+    handleBackOld() {
 
 
         if (this.state.page === 3) {
@@ -275,6 +323,38 @@ class ListForm extends Component {
 
     }
 
+
+    handleBack() {
+
+        console.log(this.state.fields)
+
+
+
+        if (this.state.page === 3) {
+
+            this.setState({
+
+                page: 2,
+                progressBar: 66
+            })
+
+
+        }
+
+
+        else  if (this.state.page === 2) {
+
+            this.setState({
+
+                page: 1,
+                progressBar: 33
+            })
+
+
+
+        }
+
+    }
 
     handleChange(field, e) {
 
@@ -365,6 +445,9 @@ class ListForm extends Component {
         }
 
 
+
+
+        console.log("validation one error")
         console.log(errors)
 
 
@@ -415,6 +498,8 @@ class ListForm extends Component {
         }
         }
 
+
+        console.log("validation two error")
 
         console.log(errors)
 
@@ -531,33 +616,6 @@ class ListForm extends Component {
     }
 
 
-    loadType(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
-
-        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
-
-        this.setState({
-
-            catSelected: catSelected
-        })
-
-        this.setState({
-
-            subCategories: subCategories
-
-        })
-
-
-        console.log(catSelected)
-        console.log(subCategories)
-
-
-    }
 
 
 
@@ -596,7 +654,7 @@ class ListForm extends Component {
     }
 
 
-        createListing() {
+        createListingOld() {
 
 
             var data = {}
@@ -641,6 +699,67 @@ class ListForm extends Component {
                         listResourceData: res.data.data,
                         page: 4,
                     })
+
+
+
+                // this.props.history.push("/"+res.data.data._key)
+
+
+            }).catch(error => {
+
+            console.log("login error found ")
+            console.log(error)
+
+        });
+
+    }
+
+
+    createListing() {
+
+
+        var data = {}
+
+
+        data = {
+
+            "name": this.state.fields["title"],
+            "description": this.state.fields["description"],
+            "available_from_epoch_ms": new Date(this.state.startDate).getTime() ,
+            "expire_after_epoch_ms": new Date(this.state.endDate).getTime() ,
+
+            "price": {
+                "value": this.state.free?0:this.state.fields["price"],
+                "currency": "gbp"
+            },
+        }
+
+
+        console.log("listing data")
+        console.log(data)
+
+        axios.put(baseUrl + "listing",
+            {
+                listing:data,
+                "site_id": this.state.fields["deliver"],
+                "product_id": this.state.fields["product"],
+
+
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                console.log(res.data.data)
+
+
+                this.setState({
+                    listResourceData: res.data.data,
+                    page: 4,
+                })
 
 
 

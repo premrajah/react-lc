@@ -95,9 +95,9 @@ class ItemDetailPreview extends Component {
 
                                     <div className="row justify-content-start pb-3  listing-row-border">
 
-                                        <div className="col-12 mt-2">
+                                        <div className="col-12 mt-3">
 
-                                            <h4 className={"text-gray-light "}>{this.props.fields["name"]}</h4>
+                                            <h4 className={"text-gray-light "}>{this.props.fields["title"]}</h4>
 
                                         </div>
 

@@ -282,7 +282,7 @@ class ListForm extends Component {
 
 
 
-            // this.createListing()
+            this.createListing()
             // console.log(this.state.fields)
         }
 
@@ -412,6 +412,8 @@ class ListForm extends Component {
 
             this.handleValidateTwo()
         }
+
+
 
 
 
@@ -621,35 +623,8 @@ class ListForm extends Component {
 
     getSites() {
 
+        this.props.loadSites(this.props.userDetail.token)
 
-
-        axios.get(baseUrl + "site",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
-                var responseAll = response.data.data;
-                console.log("sites  response")
-                console.log(responseAll)
-
-                this.setState({
-
-                    sites: responseAll
-
-                })
-
-            },
-                (error) => {
-
-                    console.log("sites error")
-                    console.log(error)
-
-                }
-            );
 
     }
 
@@ -992,7 +967,7 @@ class ListForm extends Component {
     componentDidMount() {
 
 
-        this.getSites()
+       this.props.loadSites(this.props.userDetail.token)
        this.props.loadProducts(this.props.userDetail.token)
 
     }
@@ -1333,7 +1308,7 @@ class ListForm extends Component {
 
                                                     <option value={null}>Select</option>
 
-                                                    {this.state.sites.map((item) =>
+                                                    {this.props.siteList.map((item) =>
 
                                                         <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
@@ -1908,6 +1883,7 @@ const mapStateToProps = state => {
         showCreateSubProduct: state.showCreateSubProduct,
         showProductView: state.loginPopUpStatus,
         productList: state.productList,
+        siteList: state.siteList,
 
 
 };
@@ -1923,6 +1899,7 @@ const mapDispachToProps = dispatch => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
 
     };

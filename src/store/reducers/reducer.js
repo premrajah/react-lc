@@ -21,7 +21,8 @@ export const initialState = {
     showSubProductView:false,
     product:null,
     parentProduct:null,
-    productList:[]
+    productList:[],
+    siteList:[]
 
 
 
@@ -144,6 +145,21 @@ const reducer = (state = initialState, action) => {
 
             break;
 
+
+
+
+        case "SITE_LIST":
+
+            newState.siteList = action.value
+
+            newState.loading = false;
+
+            console.log("site list loaded ")
+
+            console.log(action.value)
+
+
+            break;
 
         case "PARENT_PRODUCT_ID":
 

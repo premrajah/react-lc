@@ -342,6 +342,67 @@ export const loadProducts = (data) => {
 
 
 
+export const loadSites = (data) => {
+
+
+    return dispatch  =>  {
+
+
+        dispatch(loading());
+        dispatch(loadSitesSync(data));
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+
+    };
+
+
+};
+
+
+export const loadSitesSync = (data) => dispatch => {
+
+
+
+
+    axios.get(baseUrl + "site",
+        {
+            headers: {
+                "Authorization": "Bearer " + data
+            }
+        }
+    )
+        .then((response) => {
+
+                var responseAll = response.data.data;
+
+                console.log("site response")
+                console.log(responseAll)
+
+                dispatch({ type: "SITE_LIST", value: responseAll })
+
+                // dispatch()
+
+
+            },
+            (error) => {
+
+                // var status = error.response.status
+                console.log("sites error")
+                console.log(error)
+
+                // dispatch({ type: "PRODUCT_LIST", value: [] })
+
+
+            }
+        );
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+
+
+}
+
+
+
 export const loadProductsSync = (data) => dispatch => {
 
 

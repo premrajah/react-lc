@@ -344,7 +344,10 @@ class ProductForm extends Component {
                 .then(res => {
 
                     // this.toggleSite()
-                    this.getSites()
+                    // this.getSites()
+
+
+                    this.props.loadSites(this.props.userDetail.token)
 
 
                     this.showSubmitSite()
@@ -933,65 +936,6 @@ class ProductForm extends Component {
 
 
 
-    loadType(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
-
-        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
-
-        this.setState({
-
-            catSelected: catSelected
-        })
-
-        this.setState({
-
-            subCategories: subCategories
-
-        })
-
-
-        console.log(catSelected)
-        console.log(subCategories)
-
-
-    }
-
-
-    loadStates(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
-
-        var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
-
-        var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
-
-        this.setState({
-
-            subCatSelected: subCatSelected
-        })
-
-        this.setState({
-
-            states: states,
-            units: units
-
-        })
-
-
-        console.log(subCatSelected)
-        console.log(states)
-
-
-    }
 
 
 
@@ -1319,7 +1263,9 @@ class ProductForm extends Component {
         this.setUpYearList()
 
 
-        this.getSites()
+
+        this.props.loadSites(this.props.userDetail.token)
+
 
     }
 
@@ -1693,7 +1639,7 @@ class ProductForm extends Component {
 
                                                     <option value={null}>Select</option>
 
-                                                    {this.state.sites.map((item) =>
+                                                    {this.props.siteList.map((item) =>
 
                                                         <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
@@ -2092,7 +2038,9 @@ const mapStateToProps = state => {
         loginPopUpStatus: state.loginPopUpStatus,
         parentProduct:state.parentProduct,
         product:state.product,
-        showProductPopUp:state.showProductPopUp
+        showProductPopUp:state.showProductPopUp,
+        siteList: state.siteList,
+
 
 
     };
@@ -2110,6 +2058,7 @@ const mapDispachToProps = dispatch => {
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
 
 

@@ -335,34 +335,7 @@
 
         getSites() {
 
-            axios.get(baseUrl + "site",
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                    var responseAll = response.data.data;
-                    console.log("sites  response")
-                    console.log(responseAll)
-
-                    this.setState({
-
-                        sites: responseAll
-
-                    })
-
-                },
-                    (error) => {
-
-                        var status = error.response.status
-                        console.log("sites response error")
-                        console.log(error)
-
-                    }
-                );
+            this.props.loadSites(this.props.userDetail.token)
 
         }
 
@@ -1896,7 +1869,7 @@
 
                                             <option value={null}>Select</option>
 
-                                            {this.state.sites.map((item) =>
+                                            {this.props.siteList.map((item) =>
 
                                                 <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
@@ -2512,6 +2485,8 @@
             showCreateSubProduct: state.showCreateSubProduct,
             showProductView: state.loginPopUpStatus,
             productList: state.productList,
+            siteList: state.siteList,
+
 
 
         };
@@ -2528,6 +2503,7 @@
 
             showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
             loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+            loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
 
 

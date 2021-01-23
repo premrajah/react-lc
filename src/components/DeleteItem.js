@@ -94,7 +94,7 @@ class DeleteItem extends Component {
 
             <>
 
-               <EditIcon  onClick={this.showDeletePopUp} />
+               <DeleteIcon  onClick={this.showDeletePopUp} />
 
 
                 <Modal className={"loop-popup"}

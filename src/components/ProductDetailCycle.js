@@ -790,7 +790,7 @@ class ProductDetailCycle extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.org._id} </p>
+                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
                                                 </div>
                                             </div>
 
@@ -803,9 +803,7 @@ class ProductDetailCycle extends Component {
                                                     <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item.product.year_of_making}</p>
                                                 </div>
                                             </div>
-
-
-
+                                            
 
                                             {this.props.item&&this.props.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
 

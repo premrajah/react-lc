@@ -188,15 +188,31 @@ class ProductForm extends Component {
         console.log("image selected " + index)
 
 
+        console.log("before delete")
+        console.log(this.state.files)
+
         var files = this.state.files.filter((item) => item.file.name !== name)
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
-        var images = this.state.images.filter((item)=> item !==index )
+        console.log("after delete")
+        console.log(files)
+
+        // var images = this.state.images.filter((item)=> item !==index )
 
         // var images = this.state.images
 
-        images.splice(index,1)
+        // images.splice(index,1)
+
+        var images = []
+        for (let k =0;k<files.length;k++){
+
+            if (files[k].id){
+
+                images.push(files[k].id)
+            }
+
+        }
 
 
         this.setState({
@@ -373,7 +389,7 @@ class ProductForm extends Component {
 
 
                                     currentFiles[k].status = 1  //success
-                                    currentFiles[k].url = res.data.data._key  //success
+                                    currentFiles[k].id = res.data.data._key  //success
 
                                 }
 
@@ -1817,7 +1833,7 @@ class ProductForm extends Component {
                                                                     <label className={"label-file-input"} htmlFor="fileInput">
                                                                         <AddPhotoIcon  style={{ fontSize: 32, color: "#a8a8a8",margin:"auto" }} />
                                                                     </label>
-                                                                    <input style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile.bind(this)} />
+                                                                    <input accept={"image/jpeg,image/jpg,image/png"} style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile.bind(this)} />
 
 
                                                                 </div>

@@ -68,7 +68,7 @@ const reducer = (state = initialState, action) => {
 
                 newState.userDetail = action.value
 
-                console.log(newState.userDetail)
+                // console.log(newState.userDetail)
 
 
             }else {
@@ -87,8 +87,8 @@ const reducer = (state = initialState, action) => {
             newState.token = action.value.token
             newState.showLoginPopUp = false;
             newState.userDetail= getKey("user")
-            console.log("Session user")
-            console.log(getKey("user"))
+            // console.log("Session user")
+            // console.log(getKey("user"))
 
             break;
 

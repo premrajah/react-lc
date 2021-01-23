@@ -19,6 +19,7 @@
     "chat-ui-react": "^0.2.10",
     "cors": "^2.8.5",
     "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
     "history": "^5.0.0",
     "jspdf": "^2.2.0",
     "lodash": "^4.17.20",

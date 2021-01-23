@@ -610,7 +610,7 @@ class MatchItemSeller extends Component {
 
                         <div className="col-auto">
 
-                            <button  data-action="accept" onClick={this.showPopUpInitiateAction} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                            <button  data-action="accept" onClick={this.showPopUpInitiateAction} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue" style={{height: '42px'}}>
                                 Accept
                             </button>
 
@@ -618,7 +618,7 @@ class MatchItemSeller extends Component {
                         <div className="col-auto">
 
                             <button data-action="reject" onClick={this.showPopUpInitiateAction} type="button"
-                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                  className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue" style={{height: '42px'}}>
                                 Reject
 
                             </button>

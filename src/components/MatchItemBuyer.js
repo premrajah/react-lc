@@ -776,11 +776,6 @@ class MatchItemBuyer extends Component {
                        centered show={this.state.editPopUp} onHide={this.editPopUp} animation={false}>
 
                     <ModalBody>
-                        {/*<div className={"row justify-content-center"}>*/}
-                            {/*<div className={"col-4 text-center"}>*/}
-                                {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
 
 
 

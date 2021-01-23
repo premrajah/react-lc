@@ -3086,3 +3086,10 @@ a.page-link:hover{
 	/*position: absolute;*/
 	/*bottom: 0px;*/
 }
+
+
+
+.file-uploader-thumbnail{
+	position: relative
+}
+

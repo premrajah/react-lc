@@ -15,14 +15,7 @@
     import Toolbar from '@material-ui/core/Toolbar';
     import AppBar from '@material-ui/core/AppBar';
     import TextField from '@material-ui/core/TextField';
-    import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-    import clsx from 'clsx';
-    import InputAdornment from '@material-ui/core/InputAdornment';
     import { withStyles } from "@material-ui/core/styles/index";
-    import CalGrey from '../../img/icons/calender-dgray.png';
-    import { Alert} from 'react-bootstrap';
-    import LinkGray from '../../img/icons/link-icon.png';
-
     import MarkerIcon from '../../img/icons/marker.png';
     import CalenderIcon from '../../img/icons/calender.png';
     import ListIcon from '../../img/icons/list.png';

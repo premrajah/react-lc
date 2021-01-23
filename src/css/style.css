@@ -3086,3 +3086,18 @@ a.page-link:hover{
 	/*position: absolute;*/
 	/*bottom: 0px;*/
 }
+
+
+
+.file-uploader-thumbnail{
+	position: relative
+}
+
+.image-gallery-left-nav .image-gallery-svg, .image-gallery-right-nav .image-gallery-svg {
+	height: 40px!important;
+	width: auto!important;
+}
+.image-gallery-icon:hover .image-gallery-svg {
+
+	color: #27245C!important;
+}

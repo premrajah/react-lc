@@ -15,14 +15,7 @@
     import Toolbar from '@material-ui/core/Toolbar';
     import AppBar from '@material-ui/core/AppBar';
     import TextField from '@material-ui/core/TextField';
-    import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-    import clsx from 'clsx';
-    import InputAdornment from '@material-ui/core/InputAdornment';
     import { withStyles } from "@material-ui/core/styles/index";
-    import CalGrey from '../../img/icons/calender-dgray.png';
-    import { Alert} from 'react-bootstrap';
-    import LinkGray from '../../img/icons/link-icon.png';
-
     import MarkerIcon from '../../img/icons/marker.png';
     import CalenderIcon from '../../img/icons/calender.png';
     import ListIcon from '../../img/icons/list.png';
@@ -335,34 +328,7 @@
 
         getSites() {
 
-            axios.get(baseUrl + "site",
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                    var responseAll = response.data.data;
-                    console.log("sites  response")
-                    console.log(responseAll)
-
-                    this.setState({
-
-                        sites: responseAll
-
-                    })
-
-                },
-                    (error) => {
-
-                        var status = error.response.status
-                        console.log("sites response error")
-                        console.log(error)
-
-                    }
-                );
+            this.props.loadSites(this.props.userDetail.token)
 
         }
 
@@ -1896,7 +1862,7 @@
 
                                             <option value={null}>Select</option>
 
-                                            {this.state.sites.map((item) =>
+                                            {this.props.siteList.map((item) =>
 
                                                 <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
@@ -2512,6 +2478,8 @@
             showCreateSubProduct: state.showCreateSubProduct,
             showProductView: state.loginPopUpStatus,
             productList: state.productList,
+            siteList: state.siteList,
+
 
 
         };
@@ -2528,6 +2496,7 @@
 
             showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
             loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+            loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
 
 

@@ -6,7 +6,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import '../../Util/upload-file.css'
-import { Cancel } from '@material-ui/icons';
+import { Cancel,Check,Error } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,11 +14,11 @@ import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles/index";
 import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
-
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import _ from 'lodash';
+import { Spinner} from 'react-bootstrap';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,9 +91,7 @@ class ProductForm extends Component {
             showAddComponent: false,
             siteSelected: null,
             files: [],
-            filesUrl: [],
-            uploadFiles: [],
-            uploadFilesUrl: [],
+            filesStatus:[],
             free: false,
             price: null,
 
@@ -133,7 +131,6 @@ class ProductForm extends Component {
         this.showProductSelection=this.showProductSelection.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
-        this.checkImageUpload=this.checkImageUpload.bind(this)
 
 
     }
@@ -144,59 +141,290 @@ class ProductForm extends Component {
         console.log("change event files")
         console.log(event.target.files)
 
-        // var files = this.state.files
+        let files = []
         // var filesUrl = this.state.filesUrl
 
-        this.uploadImage(event.target.files)
 
-        // for (var i = 0; i < event.target.files.length; i++) {
-        //
-        //
-        //     files.push(event.target.files[i])
-        //     // filesUrl.push(URL.createObjectURL(event.target.files[i]))
-        //
-        // }
-        //
-        //
-        // console.log(files)
-        // console.log(filesUrl)
-        //
-        // this.setState({
-        //     files: files,
-        //     // filesUrl: filesUrl
-        // })
+        for (var i = 0; i < event.target.files.length; i++) {
 
+            files.push({file:event.target.files[i],status:0})
 
-
-    }
-
-
-    checkImageUpload(){
-
-        console.log("check iamge called file", this.state.files.length, this.state.currentUploadingImages.length)
-
-
-        if (this.state.files.length===this.state.currentUploadingImages.length){
-
-
-            console.log("loading done")
-            this.setState({
-
-                imageLoading:false
-            })
-
-
-        }else{
-
-            console.log("still loaidng")
-
-            this.setState({
-
-                imageLoading:true
-            })
         }
 
+
+        //
+        //
+        console.log(files)
+        // console.log(filesUrl)
+        //
+
+
+        this.setState({
+            files: files,
+        })
+
+
+        this.uploadImage(files)
+
+
+
     }
+
+
+
+
+    handleCancel(e) {
+
+
+        e.preventDefault()
+
+        var index = e.currentTarget.dataset.index;
+        var name = e.currentTarget.dataset.name;
+        var url = e.currentTarget.dataset.url;
+
+        console.log("image selected " + index)
+
+
+        var files = this.state.files.filter((item) => item.file.name !== name)
+        // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
+
+
+        var images = this.state.images
+
+        images.splice(index,1)
+
+
+        this.setState({
+            images: images
+        })
+
+
+        console.log(images)
+
+        this.setState({
+
+            files: files,
+        })
+
+
+
+    }
+
+    getBase64(file) {
+
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsBinaryString(file);
+
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+
+    uploadImageOld(files) {
+
+
+        if (files && files.length > 0) {
+
+
+            for (var i = 0; i < files.length; i++) {
+
+
+
+                let imgFile = files[i]
+
+                console.log(imgFile)
+
+
+                this.getBase64(files[i]).then(
+
+                    data => {
+
+                        console.log("uploading "+i)
+                        console.log(files[i])
+
+                        axios.post(baseUrl + "artifact",
+                            {
+                                "metadata": {
+                                    "name": imgFile.name,
+                                    "mime_type": imgFile.type,
+                                    "context": ""
+                                },
+
+                                data_as_base64_string: btoa(data)
+                            },
+
+                            {
+                                headers: {
+                                    "Authorization"
+                                        :
+                                    "Bearer " + this.props.userDetail.token
+                                }
+                            }
+
+
+
+                        ).then(res => {
+
+                            // console.log(res.data.content)
+
+
+                            var images = this.state.images
+
+
+                            images.push(res.data.data._key)
+
+
+                            this.setState({
+
+                                images: images,
+                            })
+                            console.log("images urls")
+                            console.log(images)
+
+                        }).catch(error => {
+
+                            console.log("image upload error ")
+                            console.log(error)
+                            // console.log(error.response.data)
+
+                        })
+
+                    }
+                );
+
+            }
+
+
+
+
+
+        }
+
+
+    }
+
+
+    uploadImage(files) {
+
+
+        if (files.length > 0) {
+
+
+            for (let i = 0; i < files.length; i++) {
+
+
+
+                let imgFile = files[i]
+
+                console.log(imgFile)
+
+
+                this.getBase64(imgFile.file).then(
+
+                    data => {
+
+
+                        axios.post(baseUrl + "artifact",
+                            {
+                                "metadata": {
+                                    "name": imgFile.file.name,
+                                    "mime_type": imgFile.file.type,
+                                    "context": ""
+                            },
+
+                                data_as_base64_string: btoa(data)
+                            },
+                            {
+                                headers: {
+                                    "Authorization"
+                                        :
+                                    "Bearer " + this.props.userDetail.token
+                                }
+                            }
+
+                        ).then(res => {
+
+                            // console.log(res.data.content)
+
+
+                            let images = this.state.images
+
+                            images.push(res.data.data._key)
+
+                            this.setState({
+
+                                images: images,
+                            })
+
+
+                            let currentFiles = this.state.files
+
+                            for (let k=0;k<currentFiles.length;k++){
+
+                                if (currentFiles[k].file.name === imgFile.file.name){
+
+
+                                    currentFiles[k].status = 1  //success
+
+
+                                }
+
+                            }
+
+
+                            this.setState({
+
+                                files: currentFiles,
+                            })
+
+
+                            console.log("images urls")
+                            console.log(images)
+
+                        }).catch(error => {
+
+                            console.log("image upload error")
+                            console.log(error)
+                            // console.log(error.response.data)
+
+
+
+                            let currentFiles = this.state.files
+
+                            for (let k=0;k<currentFiles.length;k++){
+
+                                if (currentFiles[k].file.name === imgFile.file.name){
+
+
+                                    currentFiles[k].status = 2  //failed
+
+
+                                }
+
+                            }
+
+
+                            this.setState({
+
+                                files: currentFiles,
+                            })
+
+                        })
+
+                    }
+                );
+
+            }
+
+
+        }
+
+
+    }
+
 
     handleValidationSite() {
 
@@ -341,7 +569,10 @@ class ProductForm extends Component {
                 .then(res => {
 
                     // this.toggleSite()
-                    this.getSites()
+                    // this.getSites()
+
+
+                    this.props.loadSites(this.props.userDetail.token)
 
 
                     this.showSubmitSite()
@@ -444,167 +675,6 @@ class ProductForm extends Component {
     }
 
 
-
-
-
-
-
-
-
-    handleCancel(e) {
-
-
-        e.preventDefault()
-
-        var index = e.currentTarget.dataset.index;
-        var name = e.currentTarget.dataset.name;
-        var url = e.currentTarget.dataset.url;
-
-        console.log("image selected " + index)
-
-
-        var files = this.state.files.filter((item) => item.name !== name)
-        var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
-
-
-        var images = this.state.images
-
-        images.splice(index,1)
-
-
-        this.setState({
-            images: images
-        })
-
-
-        console.log(images)
-
-        this.setState({
-
-            files: files,
-            filesUrl: filesUrl
-        })
-
-
-
-    }
-
-    getBase64(file) {
-
-
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsBinaryString(file);
-
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-
-    uploadImage(files) {
-
-
-        if (files && files.length > 0) {
-
-
-            for (var i = 0; i < files.length; i++) {
-
-
-                let imgFile = files[i]
-
-                console.log(imgFile)
-
-
-                this.getBase64(files[i]).then(
-
-                    data => {
-
-                        console.log("uploading "+i)
-                        console.log(files[i])
-
-                        axios.post(baseUrl + "artifact",
-                            {
-                                "metadata": {
-                                    "name": "awestem.png",
-                                    "mime_type": "image/png",
-                                    "context": ""
-                                },
-
-                                data_as_base64_string: btoa(data)
-                            },
-
-                            {
-                                headers: {
-                                    "Authorization"
-                                        :
-                                        "Bearer " + this.props.userDetail.token
-                                }
-                            }
-
-
-
-                        ).then(res => {
-
-                            // console.log(res.data.content)
-
-
-                            var images = this.state.images
-
-
-
-
-                            images.push(res.data.data._key)
-
-
-                            this.setState({
-                                images: images,
-                            })
-                            console.log("images urls")
-                            console.log(images)
-
-                        }).catch(error => {
-
-                            console.log("image upload error ")
-                            console.log(error)
-                            // console.log(error.response.data)
-
-                        })
-
-                    }
-                ).then(data=>{
-
-
-                    var filesUploaded = this.state.files
-
-                    console.log("file uplaoded "+ i)
-
-                    console.log(imgFile)
-
-
-                    filesUploaded.push(imgFile)
-
-
-                    this.setState({
-                        files: filesUploaded
-                    })
-
-
-                });
-
-            }
-
-
-
-
-
-        }
-
-
-    }
-
-
-
     getProducts() {
 
         axios.get(baseUrl + "product",
@@ -637,8 +707,6 @@ class ProductForm extends Component {
             );
 
     }
-
-
 
 
     handleValidationProduct2() {
@@ -928,70 +996,6 @@ class ProductForm extends Component {
 
 
 
-
-
-    loadType(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
-
-        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
-
-        this.setState({
-
-            catSelected: catSelected
-        })
-
-        this.setState({
-
-            subCategories: subCategories
-
-        })
-
-
-        console.log(catSelected)
-        console.log(subCategories)
-
-
-    }
-
-
-    loadStates(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
-
-        var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
-
-        var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
-
-        this.setState({
-
-            subCatSelected: subCatSelected
-        })
-
-        this.setState({
-
-            states: states,
-            units: units
-
-        })
-
-
-        console.log(subCatSelected)
-        console.log(states)
-
-
-    }
-
-
-
     handleSubmitProduct = event => {
 
         event.preventDefault();
@@ -1198,10 +1202,6 @@ class ProductForm extends Component {
 
 
 
-
-
-
-
     selectCategory() {
 
 
@@ -1316,7 +1316,9 @@ class ProductForm extends Component {
         this.setUpYearList()
 
 
-        this.getSites()
+
+        this.props.loadSites(this.props.userDetail.token)
+
 
     }
 
@@ -1340,9 +1342,6 @@ class ProductForm extends Component {
 
             <>
 
-
-
-
                 {/*<HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />*/}
 
                 <div className="container   pb-4 pt-4">
@@ -1355,9 +1354,7 @@ class ProductForm extends Component {
                             </h3>
 
                         </div>
-                        {/*<div className="col-2 text-right">*/}
-                        {/*<Close onClick={this.showProductSelection} className="blue-text" style={{ fontSize: 32 }} />*/}
-                        {/*</div>*/}
+
                     </div>
 
                 </div>
@@ -1690,7 +1687,7 @@ class ProductForm extends Component {
 
                                                     <option value={null}>Select</option>
 
-                                                    {this.state.sites.map((item) =>
+                                                    {this.props.siteList.map((item) =>
 
                                                         <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
@@ -1815,7 +1812,7 @@ class ProductForm extends Component {
                                                                     <label className={"label-file-input"} htmlFor="fileInput">
                                                                         <AddPhotoIcon  style={{ fontSize: 32, color: "#a8a8a8",margin:"auto" }} />
                                                                     </label>
-                                                                    <input style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile} />
+                                                                    <input style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile.bind(this)} />
 
 
                                                                 </div>
@@ -1826,10 +1823,27 @@ class ProductForm extends Component {
                                                                     <div className={"file-uploader-thumbnail-container"}>
 
                                                                         {/*<img src={URL.createObjectURL(item)}/>*/}
-                                                                        <div data-index={index} data-url={URL.createObjectURL(item)}
+                                                                        <div data-index={index} data-url={URL.createObjectURL(item.file)}
 
-                                                                             className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item) + ")" }}>
-                                                                            <Cancel data-name={item.name} data-index={index} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+                                                                             className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item.file) + ")" }}>
+
+                                                                            {item.status===0 &&    <Spinner
+                                                                                as="span"
+                                                                                animation="border"
+                                                                                size="sm"
+                                                                                role="status"
+                                                                                aria-hidden="true"
+                                                                                style={{color:"#cccccc"}}
+                                                                                className={"center-spinner"}
+
+                                                                             />}
+
+                                                                            {item.status===1 &&   <Check style={{color:"#cccccc"}} className={" file-upload-img-thumbnail-check"} />}
+                                                                            {item.status===2 &&   <span className={"file-upload-img-thumbnail-error"}><Error style={{color:"red"}} className={" "} />
+                                                                            <p>Error!</p>
+                                                                            </span>}
+                                                                            <Cancel data-name={item.file.name} data-index={index} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+
                                                                         </div>
                                                                     </div>
 
@@ -1853,11 +1867,13 @@ class ProductForm extends Component {
 
                                 <div className="col-12 mt-4 mb-5">
 
-                                    {/*{this.state.files.length===this.state.currentUploadingImages.length?"": */}
+                                    {this.state.files.length>0?
+                                        (this.state.files.filter((item)=> item.status===0).length>0? <button  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Upload in progress ....</button>:
+                                          <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>):
 
-                                    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
 
-                                    {/*}*/}
+                                    }
 
 
                                 </div>
@@ -1867,8 +1883,6 @@ class ProductForm extends Component {
                         </form>
                     </div>
                 </div>
-
-
 
             </>
 
@@ -2089,7 +2103,9 @@ const mapStateToProps = state => {
         loginPopUpStatus: state.loginPopUpStatus,
         parentProduct:state.parentProduct,
         product:state.product,
-        showProductPopUp:state.showProductPopUp
+        showProductPopUp:state.showProductPopUp,
+        siteList: state.siteList,
+
 
 
     };
@@ -2107,6 +2123,7 @@ const mapDispachToProps = dispatch => {
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
 
 

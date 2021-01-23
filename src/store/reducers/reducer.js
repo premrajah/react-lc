@@ -21,7 +21,8 @@ export const initialState = {
     showSubProductView:false,
     product:null,
     parentProduct:null,
-    productList:[]
+    productList:[],
+    siteList:[]
 
 
 
@@ -67,7 +68,7 @@ const reducer = (state = initialState, action) => {
 
                 newState.userDetail = action.value
 
-                console.log(newState.userDetail)
+                // console.log(newState.userDetail)
 
 
             }else {
@@ -86,8 +87,8 @@ const reducer = (state = initialState, action) => {
             newState.token = action.value.token
             newState.showLoginPopUp = false;
             newState.userDetail= getKey("user")
-            console.log("Session user")
-            console.log(getKey("user"))
+            // console.log("Session user")
+            // console.log(getKey("user"))
 
             break;
 
@@ -144,6 +145,21 @@ const reducer = (state = initialState, action) => {
 
             break;
 
+
+
+
+        case "SITE_LIST":
+
+            newState.siteList = action.value
+
+            newState.loading = false;
+
+            console.log("site list loaded ")
+
+            console.log(action.value)
+
+
+            break;
 
         case "PARENT_PRODUCT_ID":
 

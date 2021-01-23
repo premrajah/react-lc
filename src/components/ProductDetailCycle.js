@@ -30,7 +30,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
-import DeleteItem from "./DeleteItem";
+
 
 
 class ProductDetail extends Component {
@@ -60,6 +60,7 @@ class ProductDetail extends Component {
             showSubmitSite:false,
             errorRegister:false,
             siteSelected:null,
+            showDeletePopUp:false
         }
 
 
@@ -75,6 +76,7 @@ class ProductDetail extends Component {
 
 
     }
+
 
 
 
@@ -319,6 +321,7 @@ class ProductDetail extends Component {
 
 
 
+
     getSites() {
 
     axios.get(baseUrl + "site",
@@ -539,6 +542,14 @@ class ProductDetail extends Component {
     }
 
 
+    handleBack = () => {
+        this.props.history.goBack()
+    }
+
+    handleForward = () => {
+        console.log(this.props.history)
+        this.props.history.go(+1)
+    }
 
 
 
@@ -720,16 +731,11 @@ class ProductDetail extends Component {
 
                                             <div className="row">
 
-                                                <div className="col-8">
+                                                <div className="col-12">
 
                                             <h4 className={"blue-text text-heading"}>
                                                 {this.props.item.product.name}
                                             </h4>
-                                                </div>
-
-                                                <div className="col-4 text-right">
-
-                                                    <DeleteItem item={this.props.item} history={this.props.history}  />
                                                 </div>
 
                                                 </div>
@@ -1081,7 +1087,49 @@ class ProductDetail extends Component {
 
 
 
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showDeletePopUp} onHide={this.showDeletePopUp} animation={false}>
 
+                            <ModalBody>
+
+
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p className={"text-bold"}>Delete Product</p>
+                                        <p>Are you sure you want to delete ?</p>
+                                    </div>
+                                </div>
+
+
+
+                                    <div className={"row justify-content-center"}>
+
+
+                                        <div className={"col-12 text-center mt-2"}>
+
+
+                                            <div className={"row justify-content-center"}>
+                                                <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                                    <button onClick={this.deleteItem}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                                </div>
+                                                <div className={"col-6"} style={{textAlign:"center"}}>
+                                                    <p onClick={this.showDeletePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                            </ModalBody>
+
+                        </Modal>
 
 
                     </>
@@ -1180,7 +1228,6 @@ const mapStateToProps = state => {
         loginPopUpStatus: state.loginPopUpStatus,
 
 
-
     };
 };
 
@@ -1191,7 +1238,6 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
 
     };
 };

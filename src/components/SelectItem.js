@@ -35,7 +35,7 @@ class SelectItem extends Component {
 
     }
 
-    intervalJasmineAnim
+
 
 
 

@@ -185,8 +185,8 @@ class ProductForm extends Component {
         console.log("image selected " + index)
 
 
-        var files = this.state.files.filter((item) => item.name !== name)
-        var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
+        var files = this.state.files.filter((item) => item.file.name !== name)
+        // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
         var images = this.state.images

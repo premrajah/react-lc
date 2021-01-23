@@ -68,7 +68,7 @@ class EditAccount extends Component {
 
                 },
                 (error) => {
-                    var status = error.response.status
+                    // var status = error.response.status
 
 
                     console.log("resource error")

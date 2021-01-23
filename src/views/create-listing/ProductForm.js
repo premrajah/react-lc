@@ -141,13 +141,16 @@ class ProductForm extends Component {
         console.log("change event files")
         console.log(event.target.files)
 
-        let files = []
+        let files = this.state.files
         // var filesUrl = this.state.filesUrl
 
 
+        let newFiles = []
+
         for (var i = 0; i < event.target.files.length; i++) {
 
-            files.push({file:event.target.files[i],status:0})
+            files.push({file:event.target.files[i],status:0,id:null})
+            newFiles.push({file:event.target.files[i],status:0,id:null})
 
         }
 
@@ -164,7 +167,7 @@ class ProductForm extends Component {
         })
 
 
-        this.uploadImage(files)
+        this.uploadImage(newFiles)
 
 
 
@@ -189,7 +192,9 @@ class ProductForm extends Component {
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
-        var images = this.state.images
+        var images = this.state.images.filter((item)=> item !==index )
+
+        // var images = this.state.images
 
         images.splice(index,1)
 
@@ -368,7 +373,7 @@ class ProductForm extends Component {
 
 
                                     currentFiles[k].status = 1  //success
-
+                                    currentFiles[k].url = res.data.data._key  //success
 
                                 }
 
@@ -1842,7 +1847,7 @@ class ProductForm extends Component {
                                                                             {item.status===2 &&   <span className={"file-upload-img-thumbnail-error"}><Error style={{color:"red"}} className={" "} />
                                                                             <p>Error!</p>
                                                                             </span>}
-                                                                            <Cancel data-name={item.file.name} data-index={index} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+                                                                            <Cancel data-name={item.file.name} data-index={item.id}  onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
 
                                                                         </div>
                                                                     </div>

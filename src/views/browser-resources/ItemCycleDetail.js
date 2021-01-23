@@ -31,7 +31,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 
 import BusinessIcon from '@material-ui/icons/Business';
 import TextField from '@material-ui/core/TextField';
-import ProductDetail from '../../components/ProductDetail'
+import ProductDetailCycle from '../../components/ProductDetailCycle'
 import moment from "moment";
 
 
@@ -418,7 +418,7 @@ class ItemCycleDetail extends Component {
 
                             {this.state.item &&
                             <>
-                                <ProductDetail showRegister={true} item={this.state.item} />
+                                <ProductDetailCycle showRegister={true} item={this.state.item} />
 
                             </>
                             }

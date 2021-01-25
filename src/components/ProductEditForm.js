@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import * as actionCreator from "../../store/actions/actions";
+import * as actionCreator from "../store/actions/actions";
 import { connect } from "react-redux";
-import SendIcon from '../../img/send-icon.png';
+import SendIcon from '../img/send-icon.png';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import '../../Util/upload-file.css'
+import '../Util/upload-file.css'
 import { Cancel,Check,Error } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,7 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles/index";
 import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import { baseUrl } from "../Util/Constants";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import _ from 'lodash';
 import { Spinner} from 'react-bootstrap';
@@ -52,6 +52,8 @@ class ProductEditForm extends Component {
         super(props)
 
         this.state = {
+
+            item:null,
 
             timerEnd: false,
             count: 0,
@@ -97,13 +99,15 @@ class ProductEditForm extends Component {
             brand: null,
             manufacturedDate: null,
             model: null,
+
             serial: null,
             startDate: null,
             endDate: null,
             images: [],
             currentUploadingImages: [],
             yearsList:[],
-            purpose: ["defined", "prototype", "aggregate"],
+            purposeList: ["defined", "prototype", "aggregate"],
+            purpose:null,
             product:null,
             parentProduct:null,
             imageLoading:false,
@@ -130,7 +134,110 @@ class ProductEditForm extends Component {
         this.showProductSelection=this.showProductSelection.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.getResources=this.getResources.bind(this)
+        this.loadSelection=this.loadSelection.bind(this)
 
+
+    }
+
+
+    loadSelection(){
+
+
+
+
+
+
+
+        let catSelected =  this.state.categories.filter((item) => item.name === this.state.item.product.category)[0]
+
+
+                var subCategories = catSelected.types
+
+                this.setState({
+
+                    catSelected: catSelected
+                })
+
+                this.setState({
+
+                    subCategories: subCategories
+
+                })
+
+
+
+        let subCatSelected = subCategories.filter((item) => item.name === this.state.item.product.type)[0]
+
+
+
+        if (subCatSelected) {
+
+            var states = subCatSelected.state
+
+            var units = subCatSelected.units
+
+            this.setState({
+
+                subCatSelected: subCatSelected
+            })
+
+            this.setState({
+
+                states: states,
+                units: units
+
+            })
+
+            console.log(subCatSelected)
+            console.log(states)
+
+        }
+
+
+    }
+
+
+
+
+    getResources() {
+
+
+        axios.get(baseUrl + "product/" + this.props.productId+"/expand",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data;
+                    console.log("edit/duploacte product detail")
+                    console.log(responseAll)
+
+                    this.setState({
+
+                        item: responseAll.data
+                    })
+
+
+
+                this.loadSelection()
+
+
+
+
+                },
+                (error) => {
+                    console.log("listing error", error)
+
+                    this.setState({
+
+                        notFound: true
+                    })
+                }
+            );
 
     }
 
@@ -168,9 +275,8 @@ class ProductEditForm extends Component {
 
         this.uploadImage(newFiles)
 
-
-
     }
+
 
 
 
@@ -832,7 +938,7 @@ class ProductEditForm extends Component {
 
 
 
-    handleValidationProduct() {
+    handleValidationProduct(data) {
 
 
         let fields = this.state.fieldsProduct;
@@ -840,52 +946,52 @@ class ProductEditForm extends Component {
         let formIsValid = true;
 
         //Name
-        if (!fields["purpose"]) {
+        if (!data.get("purpose")) {
             formIsValid = false;
             errors["purpose"] = "Required";
         }
-        if (!fields["title"]) {
+        if (!data.get("title")) {
             formIsValid = false;
             errors["title"] = "Required";
         }
 
-        if (!fields["description"]) {
+        if (!data.get("description")) {
             formIsValid = false;
             errors["description"] = "Required";
         }
-        if (!fields["category"]) {
+        if (!data.get("category")) {
             formIsValid = false;
             errors["category"] = "Required";
         }
 
-        if (!fields["type"]) {
+        if (!data.get("type")) {
             formIsValid = false;
             errors["type"] = "Required";
         }
 
-        if (!fields["state"]) {
+        if (!data.get("state")) {
             formIsValid = false;
             errors["state"] = "Required";
         }
 
-        if (!fields["deliver"]) {
+        if (!data.get("deliver")) {
             formIsValid = false;
             errors["deliver"] = "Required";
         }
 
 
-        if (!fields["units"]) {
+        if (!data.get("units")) {
             formIsValid = false;
             errors["units"] = "Required";
         }
 
-        if (!fields["volume"]) {
+        if (!data.get("volume")) {
             formIsValid = false;
             errors["volume"] = "Required";
         }
 
 
-        if (!fields["manufacturedDate"]) {
+        if (!data.get("manufacturedDate")) {
             formIsValid = false;
             errors["manufacturedDate"] = "Required";
         }
@@ -893,16 +999,16 @@ class ProductEditForm extends Component {
 
 
 
-        if (typeof fields["email"] !== "undefined") {
-
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
+        // if (typeof data.get("email") !== "undefined") {
+        //
+        //     let lastAtPos = fields["email"].lastIndexOf('@');
+        //     let lastDotPos = fields["email"].lastIndexOf('.');
+        //
+        //     if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+        //         formIsValid = false;
+        //         errors["email"] = "Invalid email address";
+        //     }
+        // }
 
         this.setState({ errorsProduct: errors });
         return formIsValid;
@@ -910,9 +1016,24 @@ class ProductEditForm extends Component {
 
 
     handleChangeProduct(field, event) {
+
+
+        console.log("handle change called "+field)
+
         let fields = this.state.fieldsProduct;
         fields[field] = event.target.value;
         this.setState({ fields });
+
+
+
+        const value = event.target.value;
+
+        this.setState({
+
+
+            [field]: value
+        });
+
 
 
         if (field === "category") {
@@ -1017,6 +1138,182 @@ class ProductEditForm extends Component {
 
 
     handleSubmitProduct = event => {
+
+        event.preventDefault();
+
+        const data = new FormData(event.target);
+
+        if (this.handleValidationProduct(data)) {
+
+
+            const form = event.currentTarget;
+
+            this.setState({
+                btnLoading: true
+            })
+
+
+            console.log("form data")
+
+
+            const title = data.get("title")
+            const purpose = data.get("purpose")
+            const description = data.get("description")
+            const category = data.get("category")
+            const type = data.get("type")
+            const units = data.get("units")
+
+            const serial = data.get("serial")
+            const model = data.get("model")
+            const brand = data.get("brand")
+
+            const volume = data.get("volume")
+            const sku = data.get("sku")
+            const upc = data.get("upc")
+            const part_no = data.get("part_no")
+            const state = data.get("state")
+
+            // const site=data.get("deliver")
+
+            var productData = {
+
+                "purpose": purpose,
+                "name": title,
+                "description": description,
+                "category": category,
+                "type": type,
+                "units": units,
+                "state": state,
+                "volume": volume,
+                "sku": {
+                    "serial": serial,
+                    "model": model,
+                    "brand": brand,
+                    "sku": sku,
+                    "upc": upc,
+                    "part_no": part_no
+                },
+
+                "year_of_making": data.get("manufacturedDate")
+
+            }
+
+
+            var completeData;
+
+
+            if (this.props.parentProduct) {
+
+                completeData = {
+
+                    product: productData,
+                    "child_product_ids": [],
+                    "artifact_ids": this.state.images,
+                    "site_id": data.get("deliver"),
+                    "parent_product_id": this.props.parentProduct.product._key,
+
+
+                }
+
+            } else {
+
+
+                completeData = {
+
+                    product: productData,
+                    "child_product_ids": [],
+                    "artifact_ids": this.state.images,
+                    "parent_product_id": null,
+                    "site_id": data.get("deliver"),
+
+
+                }
+
+
+            }
+
+
+            console.log("product data")
+
+            console.log(productData)
+            console.log(this.state.images)
+
+
+            axios.put(baseUrl + "product",
+
+                completeData
+                , {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                })
+                .then(res => {
+
+
+                    console.log(res.data.data)
+
+
+                    if (!this.props.parentProduct) {
+
+                        this.setState({
+                            product: res.data.data,
+                            parentProduct: res.data.data
+
+                        })
+
+                    }
+
+                    this.showProductSelection()
+
+                    console.log("product added succesfully")
+
+
+                    this.props.loadProducts(this.props.userDetail.token)
+
+
+                    // if (this.slug) {
+                    //     this.props.history.push("/sub-product-view/" + this.slug)
+                    //
+                    //
+                    // }else{
+                    //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
+                    //
+                    //
+                    // }
+
+
+                    // this.showProductSelection()
+
+                    // this.getProducts()
+
+
+                }).catch(error => {
+
+                // dispatch(stopLoading())
+
+                // dispatch(signUpFailed(error.response.data.message))
+
+                console.log(error.data)
+                // dispatch({ type: AUTH_FAILED });
+                // dispatch({ type: ERROR, payload: error.data.error.message });
+
+
+            });
+
+
+            // } else {
+            //
+            //
+            //
+            // }
+
+        }
+
+    }
+
+
+
+    upateSubmitProduct = event => {
 
         event.preventDefault();
 
@@ -1209,6 +1506,10 @@ class ProductEditForm extends Component {
                     categories: responseAll
                 })
 
+
+                this.getResources()
+
+
             },
             (error) => {
 
@@ -1336,8 +1637,9 @@ class ProductEditForm extends Component {
         this.setUpYearList()
 
 
-
         this.props.loadSites(this.props.userDetail.token)
+
+
 
 
     }
@@ -1364,33 +1666,37 @@ class ProductEditForm extends Component {
 
                 {/*<HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />*/}
 
-                <div className="container   pb-4 pt-4">
 
 
-                    <div className="row  pb-2 pt-4 ">
 
-                        <div className="col-12">
-                            <h3 className={"blue-text text-heading"}>{this.props.heading}
+                    <div className="row   justify-content-center create-product-row pb-2 pt-4 ">
+
+                        <div className="col-11">
+                            <h3 className={"blue-text text-heading"}>{this.props.isDuplicate?"Create Duplicate":"Edit Product"}
                             </h3>
 
                         </div>
 
                     </div>
 
-                </div>
+
+                {this.state.item &&
 
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-11"}>
-                        <form onSubmit={this.handleSubmitProduct}>
+                        <form onSubmit={this.props.isDuplicate?this.handleSubmitProduct:this.upateSubmitProduct}>
                             <div className="row no-gutters justify-content-center ">
 
 
                                 <div className="col-12 mb-3">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>What is the purpose of your new product?</div>
+                                    <div className={"custom-label text-bold text-blue mb-3"}>What is the purpose of your
+                                        new product?
+                                    </div>
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                         <Select
                                             native
+
                                             onChange={this.handleChangeProduct.bind(this, "purpose")}
 
                                             inputProps={{
@@ -1401,15 +1707,15 @@ class ProductEditForm extends Component {
 
                                             <option value={null}>Select</option>
 
-                                            {this.state.purpose.map((item) =>
+                                            {this.state.purposeList.map((item) =>
 
-                                                <option value={item}>{item}</option>
-
+                                                <option selected={this.state.item.product.purpose === item?true:false} value={item}>{item}</option>
                                             )}
 
                                         </Select>
                                     </FormControl>
-                                    {this.state.errorsProduct["purpose"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["purpose"]}</span>}
+                                    {this.state.errorsProduct["purpose"] && <span className={"text-mute small"}><span
+                                        style={{ color: "red" }}>* </span>{this.state.errorsProduct["purpose"]}</span>}
 
 
                                 </div>
@@ -1418,11 +1724,13 @@ class ProductEditForm extends Component {
                                 <div className="col-12 mb-3">
                                     <div className={"row"}>
                                         <div className={"col-md-4 col-sm-12 col-xs-12"}>
-                                            <div className={"custom-label text-bold text-blue mb-3"}>Resource Category</div>
+                                            <div className={"custom-label text-bold text-blue mb-3"}>Resource Category
+                                            </div>
                                             <FormControl variant="outlined" className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
+
                                                     onChange={this.handleChangeProduct.bind(this, "category")}
                                                     inputProps={{
                                                         name: 'category',
@@ -1430,29 +1738,33 @@ class ProductEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option value={null}>Select</option>*/}
 
                                                     {this.state.categories.map((item) =>
 
-                                                        <option value={item.name}>{item.name}</option>
-
+                                                        <option selected={this.state.item.product.category === item.name?true:false} value={item.name}>{item.name}</option>
                                                     )}
 
                                                 </Select>
 
-                                                <FormHelperText>What resources do you need to make this product? </FormHelperText>
+                                                <FormHelperText>What resources do you need to make this
+                                                    product? </FormHelperText>
 
                                             </FormControl>
-                                            {this.state.errorsProduct["category"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["category"]}</span>}
+                                            {this.state.errorsProduct["category"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["category"]}</span>}
                                         </div>
 
 
                                         <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                             <div className={"custom-label text-bold text-blue mb-3"}>Type</div>
-                                            <FormControl  disabled={this.state.subCategories.length>0?false:true} variant="outlined" className={classes.formControl}>
+                                            <FormControl
+                                                         variant="outlined" className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
+
                                                     onChange={this.handleChangeProduct.bind(this, "type")}
                                                     inputProps={{
                                                         name: 'type',
@@ -1460,17 +1772,18 @@ class ProductEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option value={null}>Select</option>*/}
 
                                                     {this.state.subCategories.map((item) =>
 
-                                                        <option value={item.name}>{item.name}</option>
-
+                                                        <option selected={this.state.item.product.type === item.name?true:false} value={item.name}>{item.name}</option>
                                                     )}
 
                                                 </Select>
                                             </FormControl>
-                                            {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
+                                            {this.state.errorsProduct["type"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
 
 
                                         </div>
@@ -1478,7 +1791,8 @@ class ProductEditForm extends Component {
 
                                         <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                             <div className={"custom-label text-bold text-blue mb-3"}>State</div>
-                                            <FormControl disabled={this.state.states.length>0?false:true} variant="outlined" className={classes.formControl}>
+                                            <FormControl
+                                                         variant="outlined" className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
@@ -1489,17 +1803,18 @@ class ProductEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option  value={null}>Select</option>*/}
 
                                                     {this.state.states.map((item) =>
 
-                                                        <option value={item}>{item}</option>
-
+                                                        <option selected={this.state.item.product.state === item?true:false} value={item}>{item}</option>
                                                     )}
 
                                                 </Select>
                                             </FormControl>
-                                            {this.state.errorsProduct["type"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
+                                            {this.state.errorsProduct["type"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["type"]}</span>}
 
                                         </div>
                                     </div>
@@ -1507,16 +1822,22 @@ class ProductEditForm extends Component {
                                 </div>
 
 
-
-
-
                                 <div className="col-12 mt-4">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title </div>
+                                    <div className={"custom-label text-bold text-blue mb-3"}>Give your product a title
+                                    </div>
 
-                                    <TextField id="outlined-basic" type={"text"} label="Title" variant="outlined"
-                                               fullWidth={true} name={"title"} onChange={this.handleChangeProduct.bind(this, "title")} />
+                                    <TextField
 
-                                    {this.state.errorsProduct["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["title"]}</span>}
+
+                                        id="outlined-basic" type={"text"} label="Title" variant="outlined"
+                                               fullWidth={true} name={"title"}
+                                               value={this.state.title?this.state.title:this.state.item.product.name}
+                                               onChange={this.handleChangeProduct.bind(this, "title")}/>
+
+                                    {this.state.errorsProduct["title"] && <span className={"text-mute small"}><span
+                                        style={{ color: "red" }}>* </span>{this.state.errorsProduct["title"]}</span>}
+
+
 
                                 </div>
 
@@ -1524,12 +1845,16 @@ class ProductEditForm extends Component {
                                     <div className={"custom-label text-bold text-blue mb-3"}>Give it a description</div>
 
                                     <TextField multiline
-                                               rows={4} type={"text"} id="outlined-basic" label="Description" variant="outlined" fullWidth={true} name={"description"} onChange={this.handleChangeProduct.bind(this, "description")} />
+                                               value={this.state.description?this.state.description:this.state.item.product.description}
+                                               rows={4} type={"text"} id="outlined-basic" label="Description"
+                                               variant="outlined" fullWidth={true} name={"description"}
+                                               onChange={this.handleChangeProduct.bind(this, "description")}/>
 
-                                    {this.state.errorsProduct["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["description"]}</span>}
+                                    {this.state.errorsProduct["description"] &&
+                                    <span className={"text-mute small"}><span
+                                        style={{ color: "red" }}>* </span>{this.state.errorsProduct["description"]}</span>}
 
                                 </div>
-
 
 
                                 <div className="col-12 mt-4">
@@ -1540,8 +1865,16 @@ class ProductEditForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>Brand</div>
 
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
+                                            <TextField
+
+                                                value={this.state.brand?this.state.brand:this.state.item.product.sku.brand}
+
+                                                onChange={this.handleChangeProduct.bind(this, "brand")}
+                                                       name={"brand"} id="outlined-basic" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["brand"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
 
                                         </div>
 
@@ -1549,8 +1882,15 @@ class ProductEditForm extends Component {
 
                                             <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
+                                            <TextField value={this.state.model}
+                                                       value={this.state.model?this.state.model:this.state.item.product.sku.model}
+
+                                                       onChange={this.handleChangeProduct.bind(this, "model")}
+                                                       name={"model"} id="outlined-basic" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["model"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
                                         </div>
 
 
@@ -1558,8 +1898,14 @@ class ProductEditForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>Serial Number</div>
 
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
+                                            <TextField
+                                                value={this.state.serial?this.state.serial:this.state.item.product.sku.serial}
+                                                onChange={this.handleChangeProduct.bind(this, "serial")}
+                                                       name={"serial"} id="outlined-basic" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["serial"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
 
                                         </div>
 
@@ -1567,8 +1913,15 @@ class ProductEditForm extends Component {
                                         <div className="col-md-4 col-sm-6 col-xs-6">
                                             <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
+                                            <TextField
+
+                                                value={this.state.sku?this.state.serial:this.state.item.product.sku.sku}
+                                                onChange={this.handleChangeProduct.bind(this, "sku")}
+                                                       name={"sku"} id="outlined-basic" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["sku"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
 
                                         </div>
 
@@ -1577,8 +1930,15 @@ class ProductEditForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>UPC</div>
 
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
+                                            <TextField
+
+                                                value={this.state.upc?this.state.upc:this.state.item.product.sku.upc}
+                                                onChange={this.handleChangeProduct.bind(this, "upc")}
+                                                       name={"upc"} id="outlined-basic" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["upc"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
 
                                         </div>
 
@@ -1586,15 +1946,20 @@ class ProductEditForm extends Component {
                                             <div className={"custom-label text-bold text-blue mb-1"}>Part No.</div>
 
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["part_no"]}</span>}
+                                            <TextField
+                                                value={this.state.part_no?this.state.part_no:this.state.item.product.sku.part_no}
+
+                                                onChange={this.handleChangeProduct.bind(this, "part_no")}
+                                                       name={"part_no"} id="outlined-basic" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["part_no"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["part_no"]}</span>}
                                         </div>
 
                                     </div>
 
                                 </div>
-
-
 
 
                                 <div className="col-12 mt-4">
@@ -1621,27 +1986,36 @@ class ProductEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option value={null}>Select</option>*/}
 
 
                                                     {this.state.units.map((item) =>
 
-                                                        <option value={item}>{item}</option>
-
+                                                        <option selected={this.state.item.product.units === item?true:false} value={item}>{item}</option>
                                                     )}
 
                                                 </Select>
                                             </FormControl>
-                                            {this.state.errorsProduct["unit"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["unit"]}</span>}
+                                            {this.state.errorsProduct["unit"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["unit"]}</span>}
 
 
                                         </div>
                                         <div className="col-6 pl-2">
 
-                                            <TextField type={"number"}  onChange={this.handleChangeProduct.bind(this, "volume")}
+                                            <TextField
+
+                                                value={this.state.volume?this.state.volume:this.state.item.product.volume}
+
+                                                type={"number"}
+                                                       onChange={this.handleChangeProduct.bind(this, "volume")}
                                                        name={"volume"}
-                                                       id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["volume"]}</span>}
+                                                       id="outlined-basic" label="Volume" variant="outlined"
+                                                       fullWidth={true}/>
+                                            {this.state.errorsProduct["volume"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["volume"]}</span>}
 
 
                                         </div>
@@ -1655,7 +2029,9 @@ class ProductEditForm extends Component {
 
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
 
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Year Of Manufacture</div>
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Year Of
+                                                Manufacture
+                                            </div>
 
 
                                             <FormControl variant="outlined" className={classes.formControl}>
@@ -1671,19 +2047,19 @@ class ProductEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
 
                                                     {this.state.yearsList.map((item) =>
 
-                                                        <option value={item}>{item}</option>
-
+                                                        <option selected={this.state.item.product.year_of_making === item?true:false}    value={item}>{item}</option>
                                                     )}
 
                                                 </Select>
                                             </FormControl>
 
 
-                                            {this.state.errorsProduct["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
+                                            {this.state.errorsProduct["manufacturedDate"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
 
                                         </div>
 
@@ -1705,12 +2081,12 @@ class ProductEditForm extends Component {
                                                 >
 
 
-                                                    <option value={null}>Select</option>
 
                                                     {this.props.siteList.map((item) =>
 
-                                                        <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
+                                                        <option
+                                                            selected={this.state.item.site._key === item._key?true:false}
+                                                            value={item._key}>{item.name + "(" + item.address + ")"}</option>
                                                     )}
 
                                                 </Select>
@@ -1718,12 +2094,15 @@ class ProductEditForm extends Component {
                                             </FormControl>
 
 
-                                            {this.state.errorsProduct["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["deliver"]}</span>}
+                                            {this.state.errorsProduct["deliver"] &&
+                                            <span className={"text-mute small"}><span
+                                                style={{ color: "red" }}>* </span>{this.state.errorsProduct["deliver"]}</span>}
 
 
-                                            <p style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
-
-
+                                            <p style={{ margin: "10px 0" }}> Don’t see it on here? <span
+                                                onClick={this.showSubmitSite}
+                                                className={"green-text forgot-password-link text-mute small"}>Add a site</span>
+                                            </p>
 
 
                                             {this.state.showSubmitSite &&
@@ -1731,7 +2110,9 @@ class ProductEditForm extends Component {
                                             <div className={"row justify-content-center p-2 container-gray"}>
                                                 <div className="col-md-12 col-sm-12 col-xs-12 ">
 
-                                                    <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
+                                                    <div className={"custom-label text-bold text-blue mb-1"}>Add New
+                                                        Site
+                                                    </div>
 
                                                 </div>
                                                 <div className="col-md-12 col-sm-12 col-xs-12 ">
@@ -1743,45 +2124,75 @@ class ProductEditForm extends Component {
 
                                                                     <div className="col-12 mt-4">
 
-                                                                        <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
+                                                                        <TextField id="outlined-basic" label=" Name"
+                                                                                   variant="outlined" fullWidth={true}
+                                                                                   name={"name"}
+                                                                                   onChange={this.handleChangeSite.bind(this, "name")}/>
 
-                                                                        {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                                    </div>
-
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                                        {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
+                                                                        {this.state.errorsSite["name"] &&
+                                                                        <span className={"text-mute small"}><span
+                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
 
                                                                     </div>
 
                                                                     <div className="col-12 mt-4">
 
-                                                                        <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
+                                                                        <TextField id="outlined-basic" label="Contact"
+                                                                                   variant="outlined" fullWidth={true}
+                                                                                   name={"contact"}
+                                                                                   onChange={this.handleChangeSite.bind(this, "contact")}/>
 
-                                                                        {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                                    </div>
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
-
-                                                                        {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
+                                                                        {this.state.errorsSite["contact"] &&
+                                                                        <span className={"text-mute small"}><span
+                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
 
                                                                     </div>
 
                                                                     <div className="col-12 mt-4">
 
-                                                                        <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
+                                                                        <TextField id="outlined-basic" label="Address"
+                                                                                   variant="outlined" fullWidth={true}
+                                                                                   name={"address"} type={"text"}
+                                                                                   onChange={this.handleChangeSite.bind(this, "address")}/>
 
-                                                                        {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
+                                                                        {this.state.errorsSite["address"] &&
+                                                                        <span className={"text-mute small"}><span
+                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
 
                                                                     </div>
                                                                     <div className="col-12 mt-4">
 
-                                                                        <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
+                                                                        <TextField id="outlined-basic" type={"number"}
+                                                                                   name={"phone"}
+                                                                                   onChange={this.handleChangeSite.bind(this, "phone")}
+                                                                                   label="Phone" variant="outlined"
+                                                                                   fullWidth={true}/>
+
+                                                                        {this.state.errorsSite["phone"] &&
+                                                                        <span className={"text-mute small"}><span
+                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
+
+                                                                    </div>
+
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField id="outlined-basic" label="Email"
+                                                                                   variant="outlined" fullWidth={true}
+                                                                                   name={"email"} type={"email"}
+                                                                                   onChange={this.handleChangeSite.bind(this, "email")}/>
+
+                                                                        {this.state.errorsSite["email"] &&
+                                                                        <span className={"text-mute small"}><span
+                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
+
+                                                                    </div>
+                                                                    <div className="col-12 mt-4">
+
+                                                                        <TextField
+                                                                            onChange={this.handleChangeSite.bind(this, "others")}
+                                                                            name={"others"} id="outlined-basic"
+                                                                            label="Others" variant="outlined"
+                                                                            fullWidth={true} type={"others"}/>
 
                                                                         {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
 
@@ -1789,7 +2200,10 @@ class ProductEditForm extends Component {
 
                                                                     <div className="col-12 mt-4">
 
-                                                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
+                                                                        <button type={"submit"}
+                                                                                className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add
+                                                                            Site
+                                                                        </button>
                                                                     </div>
 
 
@@ -1829,10 +2243,18 @@ class ProductEditForm extends Component {
                                                             <div className={"file-uploader-thumbnail-container"}>
 
                                                                 <div className={"file-uploader-thumbnail-container"}>
-                                                                    <label className={"label-file-input"} htmlFor="fileInput">
-                                                                        <AddPhotoIcon  style={{ fontSize: 32, color: "#a8a8a8",margin:"auto" }} />
+                                                                    <label className={"label-file-input"}
+                                                                           htmlFor="fileInput">
+                                                                        <AddPhotoIcon style={{
+                                                                            fontSize: 32,
+                                                                            color: "#a8a8a8",
+                                                                            margin: "auto"
+                                                                        }}/>
                                                                     </label>
-                                                                    <input accept={"image/jpeg,image/jpg,image/png"} style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile.bind(this)} />
+                                                                    <input accept={"image/jpeg,image/jpg,image/png"}
+                                                                           style={{ display: "none" }} id="fileInput"
+                                                                           className={""} multiple type="file"
+                                                                           onChange={this.handleChangeFile.bind(this)}/>
 
 
                                                                 </div>
@@ -1840,33 +2262,43 @@ class ProductEditForm extends Component {
 
                                                                 {this.state.files && this.state.files.map((item, index) =>
 
-                                                                    <div className={"file-uploader-thumbnail-container"}>
+                                                                    <div
+                                                                        className={"file-uploader-thumbnail-container"}>
 
                                                                         {/*<img src={URL.createObjectURL(item)}/>*/}
-                                                                        <div data-index={index} data-url={URL.createObjectURL(item.file)}
+                                                                        <div data-index={index}
+                                                                             data-url={URL.createObjectURL(item.file)}
 
-                                                                             className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item.file) + ")" }}>
+                                                                             className={"file-uploader-thumbnail"}
+                                                                             style={{ backgroundImage: "url(" + URL.createObjectURL(item.file) + ")" }}>
 
-                                                                            {item.status===0 &&    <Spinner
+                                                                            {item.status === 0 && <Spinner
                                                                                 as="span"
                                                                                 animation="border"
                                                                                 size="sm"
                                                                                 role="status"
                                                                                 aria-hidden="true"
-                                                                                style={{color:"#cccccc"}}
+                                                                                style={{ color: "#cccccc" }}
                                                                                 className={"center-spinner"}
 
-                                                                             />}
+                                                                            />}
 
-                                                                            {item.status===1 &&   <Check style={{color:"#cccccc"}} className={" file-upload-img-thumbnail-check"} />}
-                                                                            {item.status===2 &&   <span className={"file-upload-img-thumbnail-error"}><Error style={{color:"red"}} className={" "} />
+                                                                            {item.status === 1 &&
+                                                                            <Check style={{ color: "#cccccc" }}
+                                                                                   className={" file-upload-img-thumbnail-check"}/>}
+                                                                            {item.status === 2 && <span
+                                                                                className={"file-upload-img-thumbnail-error"}><Error
+                                                                                style={{ color: "red" }}
+                                                                                className={" "}/>
                                                                             <p>Error!</p>
                                                                             </span>}
-                                                                            <Cancel data-name={item.file.name} data-index={item.id}  onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+                                                                            <Cancel data-name={item.file.name}
+                                                                                    data-index={item.id}
+                                                                                    onClick={this.handleCancel.bind(this)}
+                                                                                    className={"file-upload-img-thumbnail-cancel"}/>
 
                                                                         </div>
                                                                     </div>
-
                                                                 )}
 
                                                             </div>
@@ -1887,11 +2319,15 @@ class ProductEditForm extends Component {
 
                                 <div className="col-12 mt-4 mb-5">
 
-                                    {this.state.files.length>0?
-                                        (this.state.files.filter((item)=> item.status===0).length>0? <button  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Upload in progress ....</button>:
-                                          <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>):
+                                    {this.state.files.length > 0 ?
+                                        (this.state.files.filter((item) => item.status === 0).length > 0 ? <button
+                                                className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Upload
+                                                in progress ....</button> :
+                                            <button type={"submit"}
+                                                    className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>) :
 
-                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+                                        <button type={"submit"}
+                                                className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
 
                                     }
 
@@ -1903,6 +2339,7 @@ class ProductEditForm extends Component {
                         </form>
                     </div>
                 </div>
+                }
 
             </>
 

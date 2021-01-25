@@ -7,7 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
 import PlaceholderImg from '../img/place-holder-lc.png';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
+import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
 
 import CalIcon from '@material-ui/icons/Today';
 import MarkerIcon from '@material-ui/icons/RoomOutlined';
@@ -31,6 +31,8 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import EditItem from "./EditItem";
+import DuplicateItem from "./DuplicateItem";
+import ProductEditForm from "./ProductEditForm";
 
 
 class ProductDetail extends Component {
@@ -60,6 +62,8 @@ class ProductDetail extends Component {
             showSubmitSite:false,
             errorRegister:false,
             siteSelected:null,
+            showProductEdit:false,
+            productDuplicate:false,
         }
 
 
@@ -71,12 +75,35 @@ class ProductDetail extends Component {
         this.showRegister=this.showRegister.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
-
+        this.showProductEdit=this.showProductEdit.bind(this)
+        this.showProductDuplicate=this.showProductDuplicate.bind(this)
 
 
     }
 
 
+
+    showProductEdit(){
+
+
+        this.setState({
+
+        showProductEdit:!this.state.showProductEdit,
+            productDuplicate:false
+
+        })
+    }
+
+    showProductDuplicate(){
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+            productDuplicate:true
+
+        })
+    }
 
 
 
@@ -728,8 +755,14 @@ class ProductDetail extends Component {
                                                 </div>
 
                                                 <div className="col-4 text-right">
+                                                    {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
 
-                                                    <EditItem item={this.props.item} history={this.props.history}  />
+
+                                                    <EditIcon className={"mr-2"} onClick={this.showProductEdit}  />
+
+                                                    <FileCopyIcon  onClick={this.showProductDuplicate}  />
+
+
                                                 </div>
 
                                                 </div>
@@ -1078,6 +1111,34 @@ class ProductDetail extends Component {
                             </ModalBody>
 
                         </Modal>
+
+
+
+                        {/*<Modal className={"loop-popup"}*/}
+                               {/*aria-labelledby="contained-modal-title-vcenter"*/}
+                               {/*centered show={this.state.showProductEdit} onHide={this.showProductEdit} animation={false}>*/}
+
+                            {/*<ModalBody>*/}
+
+
+                                <Modal
+                                    size="lg"
+                                    show={this.state.showProductEdit}
+                                    onHide={this.showProductEdit}
+                                    className={"custom-modal-popup popup-form"}
+                                >
+
+                                    <div className="">
+                                        <button onClick={this.showProductEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                                    </div>
+
+
+                               <ProductEditForm isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+
+
+                        </Modal>
+
+
 
 
 

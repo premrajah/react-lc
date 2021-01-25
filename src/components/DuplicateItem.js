@@ -8,12 +8,14 @@ import axios from "axios/index";
 import { baseUrl } from "../Util/Constants";
 import { Spinner} from 'react-bootstrap';
 
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
+// import {ContentCopy as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
+import FileCopyIcon  from '@material-ui/icons/FileCopy';
+
 import { Modal, ModalBody, Alert } from 'react-bootstrap';
 
 
 
-class EditItem extends Component {
+class DuplicateItem extends Component {
 
 
 
@@ -95,7 +97,7 @@ class EditItem extends Component {
 
             <>
 
-               <EditIcon className={"mr-2"}  onClick={this.showDeletePopUp} />
+               <FileCopyIcon  onClick={this.showDeletePopUp} />
 
 
                 <Modal className={"loop-popup"}
@@ -108,8 +110,8 @@ class EditItem extends Component {
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Delete Product</p>
-                                <p>Are you sure you want to delete ?</p>
+                                <p className={"text-bold"}>Duplicate Product</p>
+                                <p>Are you sure you want to create duplicate of this product ?</p>
                             </div>
                         </div>
 
@@ -182,4 +184,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(EditItem);
+)(DuplicateItem);

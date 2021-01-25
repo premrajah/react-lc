@@ -30,7 +30,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
-import DeleteItem from "./DeleteItem";
+import EditItem from "./EditItem";
 
 
 class ProductDetail extends Component {
@@ -729,7 +729,7 @@ class ProductDetail extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    {/*<DeleteItem item={this.props.item} history={this.props.history}  />*/}
+                                                    <EditItem item={this.props.item} history={this.props.history}  />
                                                 </div>
 
                                                 </div>

@@ -141,13 +141,16 @@ class ProductForm extends Component {
         console.log("change event files")
         console.log(event.target.files)
 
-        let files = []
+        let files = this.state.files
         // var filesUrl = this.state.filesUrl
 
 
+        let newFiles = []
+
         for (var i = 0; i < event.target.files.length; i++) {
 
-            files.push({file:event.target.files[i],status:0})
+            files.push({file:event.target.files[i],status:0,id:null})
+            newFiles.push({file:event.target.files[i],status:0,id:null})
 
         }
 
@@ -164,7 +167,7 @@ class ProductForm extends Component {
         })
 
 
-        this.uploadImage(files)
+        this.uploadImage(newFiles)
 
 
 
@@ -185,13 +188,31 @@ class ProductForm extends Component {
         console.log("image selected " + index)
 
 
+        console.log("before delete")
+        console.log(this.state.files)
+
         var files = this.state.files.filter((item) => item.file.name !== name)
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
-        var images = this.state.images
+        console.log("after delete")
+        console.log(files)
 
-        images.splice(index,1)
+        // var images = this.state.images.filter((item)=> item !==index )
+
+        // var images = this.state.images
+
+        // images.splice(index,1)
+
+        var images = []
+        for (let k =0;k<files.length;k++){
+
+            if (files[k].id){
+
+                images.push(files[k].id)
+            }
+
+        }
 
 
         this.setState({
@@ -368,7 +389,7 @@ class ProductForm extends Component {
 
 
                                     currentFiles[k].status = 1  //success
-
+                                    currentFiles[k].id = res.data.data._key  //success
 
                                 }
 
@@ -1812,7 +1833,7 @@ class ProductForm extends Component {
                                                                     <label className={"label-file-input"} htmlFor="fileInput">
                                                                         <AddPhotoIcon  style={{ fontSize: 32, color: "#a8a8a8",margin:"auto" }} />
                                                                     </label>
-                                                                    <input style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile.bind(this)} />
+                                                                    <input accept={"image/jpeg,image/jpg,image/png"} style={{display:"none"}} id="fileInput" className={""} multiple type="file" onChange={this.handleChangeFile.bind(this)} />
 
 
                                                                 </div>
@@ -1842,7 +1863,7 @@ class ProductForm extends Component {
                                                                             {item.status===2 &&   <span className={"file-upload-img-thumbnail-error"}><Error style={{color:"red"}} className={" "} />
                                                                             <p>Error!</p>
                                                                             </span>}
-                                                                            <Cancel data-name={item.file.name} data-index={index} data-index={index} onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
+                                                                            <Cancel data-name={item.file.name} data-index={item.id}  onClick={this.handleCancel.bind(this)} className={"file-upload-img-thumbnail-cancel"} />
 
                                                                         </div>
                                                                     </div>

@@ -7,8 +7,6 @@ import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
 import PlaceholderImg from '../img/place-holder-lc.png';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-
 import CalIcon from '@material-ui/icons/Today';
 import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,7 +28,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
-import DeleteItem from "./DeleteItem";
+
 
 
 class ProductDetail extends Component {
@@ -59,7 +57,7 @@ class ProductDetail extends Component {
             errorsSite: {},
             showSubmitSite:false,
             errorRegister:false,
-            siteSelected:null,
+            siteSelected:null
         }
 
 
@@ -72,12 +70,7 @@ class ProductDetail extends Component {
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
 
-
-
     }
-
-
-
 
 
     showSubmitSite(){
@@ -302,6 +295,11 @@ class ProductDetail extends Component {
                     this.toggleSite()
                     this.showRegister()
 
+
+
+
+
+
                 }).catch(error => {
 
                 console.log(error)
@@ -318,8 +316,7 @@ class ProductDetail extends Component {
 
 
 
-
-    getSites() {
+     getSites() {
 
     axios.get(baseUrl + "site",
         {
@@ -408,6 +405,8 @@ class ProductDetail extends Component {
 
     }
 
+
+    
 
     getListing() {
 
@@ -539,6 +538,14 @@ class ProductDetail extends Component {
     }
 
 
+    handleBack = () => {
+        this.props.history.goBack()
+    }
+
+    handleForward = () => {
+        console.log(this.props.history)
+        this.props.history.go(+1)
+    }
 
 
 
@@ -718,21 +725,8 @@ class ProductDetail extends Component {
 
                                         <div className="col-12 mt-2">
 
-                                            <div className="row">
-
-                                                <div className="col-8">
-
-                                            <h4 className={"blue-text text-heading"}>
-                                                {this.props.item.product.name}
+                                            <h4 className={"blue-text text-heading"}>{this.props.item.product.name}
                                             </h4>
-                                                </div>
-
-                                                <div className="col-4 text-right">
-
-                                                    {/*<DeleteItem item={this.props.item} history={this.props.history}  />*/}
-                                                </div>
-
-                                                </div>
 
                                         </div>
 
@@ -785,7 +779,7 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.org._id} </p>
                                                 </div>
                                             </div>
 
@@ -995,6 +989,8 @@ class ProductDetail extends Component {
                                 </form>
 
 
+
+
                                 {this.state.showSubmitSite &&
 
                                 <div className={"row justify-content-center p-2"}>
@@ -1078,9 +1074,6 @@ class ProductDetail extends Component {
                             </ModalBody>
 
                         </Modal>
-
-
-
 
 
 
@@ -1180,7 +1173,6 @@ const mapStateToProps = state => {
         loginPopUpStatus: state.loginPopUpStatus,
 
 
-
     };
 };
 
@@ -1191,7 +1183,6 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
 
     };
 };

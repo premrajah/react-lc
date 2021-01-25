@@ -62,6 +62,9 @@ class ComponentsNavbar extends React.Component {
 
     componentDidMount() {
         window.addEventListener("scroll", this.changeColor);
+        if(this.props.isLoggedIn) {
+            // this.getArtifactForOrg();
+        }
     }
     componentWillUnmount() {
         window.removeEventListener("scroll", this.changeColor);
@@ -95,6 +98,24 @@ class ComponentsNavbar extends React.Component {
     };
     scrollToDownload = () => {
         document.getElementById("download-section").scrollIntoView({ behavior: "smooth" });
+    };
+
+    getArtifactForOrg = () => {
+        let url = `${baseUrl}org/${encodeURIComponent(this.props.userDetail.orgId)}/artifact`;
+        axios
+            .get(url, {
+                headers: { Authorization: "Bearer " + this.props.userDetail.token },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    if(response.data.data.length > 0) {
+                        this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log("get artifact error", error);
+            });
     };
 
     render() {

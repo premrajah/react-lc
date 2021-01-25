@@ -33,7 +33,7 @@ import Org from "./Org/Org";
 
 
 
-class ProductDetail extends Component {
+class ProductDetailCycle extends Component {
 
     slug;
     search;
@@ -455,6 +455,8 @@ class ProductDetail extends Component {
     getSearches() {
 
 
+
+
         var searches = this.props.item.searches
 
         for (var i = 0; i < searches.length; i++) {
@@ -506,13 +508,10 @@ class ProductDetail extends Component {
         for (var i = 0; i < subProductIds.length; i++) {
 
 
+            var url = baseUrl + "code/" + subProductIds[i]._key+"/expand";
 
-            axios.get(baseUrl + "product/" + subProductIds[i]._key,
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
+
+            axios.get(url
             )
                 .then((response) => {
 
@@ -597,7 +596,7 @@ class ProductDetail extends Component {
     componentWillMount() {
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn)
+        if (this.props.item.sub_products&&this.props.item.sub_products.length>0)
             this.getSubProducts()
 
     }
@@ -608,19 +607,19 @@ class ProductDetail extends Component {
         this.getQrCode()
 
 
-        if (this.props.item.listing&&this.props.isLoggedIn){
-
-            this.getListing()
-
-        }
-
-
-
-        if (this.props.item.searches.length>0){
-
-            this.getSearches()
-
-        }
+        // if (this.props.item.listing&&this.props.isLoggedIn){
+        //
+        //     this.getListing()
+        //
+        // }
+        //
+        //
+        //
+        // if (this.props.item.searches.length>0){
+        //
+        //     this.getSearches()
+        //
+        // }
 
 
         
@@ -791,7 +790,7 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.org._id} </p>
+                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
                                                 </div>
                                             </div>
 
@@ -804,8 +803,6 @@ class ProductDetail extends Component {
                                                     <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item.product.year_of_making}</p>
                                                 </div>
                                             </div>
-
-
 
 
                                             {this.props.item&&this.props.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
@@ -1223,8 +1220,6 @@ const mapStateToProps = state => {
         showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
 
 
@@ -1244,4 +1239,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(ProductDetail);
+)(ProductDetailCycle);

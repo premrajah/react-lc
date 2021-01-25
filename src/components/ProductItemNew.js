@@ -60,37 +60,51 @@ class ProductItemNew extends Component {
     fetchImage(){
 
 
-        var url = baseUrl + "product/"+this.props.item.product._key+"/artifact"
+
+        if (this.props.item.artifacts){
+
+            this.setState({
+
+                images: this.props.item.artifacts
+            })
 
 
 
-        axios.get(url,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
+        }else {
+
+
+            var url = baseUrl + "product/" + this.props.item.product._key + "/artifact"
+
+
+            axios.get(url,
+                {
+                    headers: {
+                        "Authorization": "Bearer " +  this.props.userDetail.token
+                    }
                 }
-            }
-        )
-            .then((response) => {
+            )
+                .then((response) => {
 
-                    var responseAll = response.data.data;
-                    console.log("img product response")
-                    console.log(responseAll)
+                        var responseAll = response.data.data;
+                        console.log("img product response")
+                        console.log(responseAll)
 
-                    this.setState({
+                        this.setState({
 
-                        images: responseAll
-                    })
+                            images: responseAll
+                        })
 
-                },
-                (error) => {
+                    },
+                    (error) => {
 
-                    // var status = error.response.status
-                    console.log("listing error")
-                    console.log(error)
+                        // var status = error.response.status
+                        console.log("listing error")
+                        console.log(error)
 
-                }
-            );
+                    }
+                );
+
+        }
 
 
     }
@@ -120,8 +134,8 @@ class ProductItemNew extends Component {
                     <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.name}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.purpose}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state} {this.props.item.product.volume} {this.props.item.product.units}</p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 bottom-tag-p">{this.props.item.search_ids.length} Searches</p>
-                    {this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
+                    {this.props.item.search_ids && <p style={{ fontSize: "16px" }} className="text-mute mb-1 bottom-tag-p">{this.props.item.search_ids.length} Searches</p>}
+                    {this.props.item.sub_product_ids&&this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-3"}>

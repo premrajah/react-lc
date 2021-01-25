@@ -729,7 +729,11 @@ class ProductDetail extends Component {
 
                                                 <div className="col-4 text-right">
 
+<<<<<<< HEAD
+                                                    <DeleteItem item={this.props.item} history={this.props.history}  />
+=======
                                                     {/*<DeleteItem item={this.props.item} history={this.props.history}  />*/}
+>>>>>>> develop-api2
                                                 </div>
 
                                                 </div>

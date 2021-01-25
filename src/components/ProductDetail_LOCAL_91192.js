@@ -729,7 +729,7 @@ class ProductDetail extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    {/*<DeleteItem item={this.props.item} history={this.props.history}  />*/}
+                                                    <DeleteItem item={this.props.item} history={this.props.history}  />
                                                 </div>
 
                                                 </div>
@@ -785,7 +785,7 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.org._id} </p>
                                                 </div>
                                             </div>
 

@@ -204,8 +204,7 @@ class CompanyInfo extends Component {
                                     },
                                 })
                                 .then((resposne) => {
-                                    //TODO
-                                    console.log("added to artifiact", resposne);
+                                    this.companyInfo(); // get company info
                                 })
                                 .catch((error) => {
                                     console.log("added to artifact error", error);

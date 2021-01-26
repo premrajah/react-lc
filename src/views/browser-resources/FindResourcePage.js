@@ -66,7 +66,7 @@ class FindResourcePage extends Component {
                             <div className="icon-holder">
                                 <Image className="p-4" src={SearchIcon} rounded height="240px" />
                             </div>
-                            <h1 className="mt-3">Find Products</h1>
+                            <h1 className="mt-3 blue-text">Find Products</h1>
                             <p>
                                 Have specific requirements? Create a search. We’ll notify you when
                                 you receive a match.
@@ -77,7 +77,7 @@ class FindResourcePage extends Component {
                         </div>
                         <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
                             <Image className="p-4" src={BottleDollarIcon} rounded height="240px" />
-                            <h1 className="mt-3">Sell Products</h1>
+                            <h1 className="mt-3 blue-text">Sell Products</h1>
                             <p>
                                 Have a resource to sell? Create a new listing and we’ll notify you
                                 when you receive a match.
@@ -91,7 +91,7 @@ class FindResourcePage extends Component {
                     <hr />
 
                     <div className="row mt-5">
-                        <h1 className="text-md-center">Categories</h1>
+                        <h1 className="text-md-center blue-text">Categories</h1>
                     </div>
                     <div className="row mt-3">
                         <div className="col-md-12">
@@ -159,7 +159,7 @@ class FindResourcePage extends Component {
 
                     <div className="row mt-5 mb-2">
                         <div className="col">
-                            <h1 className="text-md-center">All Products</h1>
+                            <h1 className="text-md-center blue-text">All Products</h1>
                         </div>
                     </div>
 

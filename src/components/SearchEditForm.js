@@ -23,11 +23,6 @@ import AmountIcon from '../img/icons/amount.png';
 import StateIcon from '../img/icons/state.png';
 import axios from "axios/index";
 import { baseUrl } from "../Util/Constants";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import HeaderWhiteBack from '../views/header/HeaderWhiteBack'
-import ResourceItem from '../views/item/ResourceItem'
-import HeaderDark from '../views/header/HeaderDark'
-import Sidebar from '../views/menu/Sidebar'
 import ProductExpandItem from './ProductExpandItem'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
@@ -68,6 +63,7 @@ class SearchEditForm extends Component {
         this.state = {
 
             timerEnd: false,
+            item:null,
             count: 0,
             nextIntervalFlag: false,
             active: 0,  //0 logn. 1- sign up , 3 -search,
@@ -139,11 +135,124 @@ class SearchEditForm extends Component {
         this.handleChangeDate = this.handleChangeDate.bind(this)
         this.makeActive=this.makeActive.bind(this)
         this.goToSearchPage=this.goToSearchPage.bind(this)
+        this.getSearch=this.getSearch.bind(this)
+        this.triggerCallback=this.triggerCallback.bind(this)
+        this.loadSelection=this.loadSelection.bind(this)
+
+    }
+
+
+
+    loadSelection(){
+
+
+
+
+
+
+
+        let catSelected =  this.state.categories.filter((item) => item.name === this.state.item.search.category)[0]
+
+
+        var subCategories = catSelected.types
+
+        this.setState({
+
+            catSelected: catSelected
+        })
+
+        this.setState({
+
+            subCategories: subCategories
+
+        })
+
+
+
+        let subCatSelected = subCategories.filter((item) => item.name === this.state.item.search.type)[0]
+
+
+
+        if (subCatSelected) {
+
+            var states = subCatSelected.state
+
+            var units = subCatSelected.units
+
+            this.setState({
+
+                subCatSelected: subCatSelected
+            })
+
+            this.setState({
+
+                states: states,
+                units: units
+
+            })
+
+            console.log(subCatSelected)
+            console.log(states)
+
+        }
 
 
     }
 
 
+    getSearch() {
+
+
+        axios.get(baseUrl + "search/" + this.props.searchId+"/expand",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseData = response.data.data;
+
+                    console.log("search edit response")
+
+                    console.log(response)
+
+
+                    this.setState({
+
+                        item: responseData
+
+                    })
+
+
+
+
+                    this.loadSelection()
+
+
+                },
+                (error) => {
+                    console.log("search resource error", error)
+
+                    this.setState({
+
+                        notFound: true
+                    })
+                }
+            );
+
+    }
+
+
+
+
+    triggerCallback(event) {
+
+
+        this.props.triggerCallback()
+
+    }
 
 
     showProductSelection(event) {
@@ -342,35 +451,42 @@ class SearchEditForm extends Component {
         })
     }
 
-    createSearch() {
+    createSearch(event) {
 
 
+        event.preventDefault();
 
+
+        const dataFORM = new FormData(event.target);
+
+        // this.triggerCallback()
 
         var data = {
 
+            id:this.state.item.search._key,
+            update: {
 
-            search: {
+                "name": dataFORM.get("title"),
+                "description": dataFORM.get("description"),
+                "category": dataFORM.get("category"), //this.state.catSelected.name,
+                "type": dataFORM.get("type"),
+                "units": dataFORM.get("unit"),
+                "volume": dataFORM.get("volume"),
+                "state": dataFORM.get("state"),
+                "require_after_epoch_ms":  new Date(this.state.dateRequiredFrom).getTime(),
+                "expire_after_epoch_ms":  new Date(this.state.dateRequiredBy).getTime(),
 
-                "name": this.state.title,
-                "description": this.state.description,
-                "category": this.state.catSelected.name,
-                "type": this.state.subCatSelected.name,
-                "units": this.state.unitSelected,
-                "volume": this.state.volumeSelected,
-
-                "state": this.state.stateSelected,
-                "require_after_epoch_ms": new Date(this.state.dateRequiredFrom).getTime(),
-                "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime(),
+                // "require_after_epoch_ms":  new Date(dataFORM.get("dateRequiredFrom")).getTime(),
+                // "expire_after_epoch_ms":  new Date(dataFORM.get("dateRequiredBy")).getTime(),
             },
-            "site_id": this.state.siteSelected,
-            "product_id":this.state.productSelected
+            // "site_id": this.state.siteSelected,
+            // "product_id":this.state.productSelected
 
 
         }
 
 
-        axios.put(baseUrl + "search",
+        axios.post(baseUrl + "search",
             data, {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -379,12 +495,18 @@ class SearchEditForm extends Component {
         )
             .then(res => {
 
+                console.log("search update sucess")
+
                 console.log(res.data)
 
-                this.setState({
-                    // createSearchData: res.data.data,
-                    searchObj:res.data.data,
-                })
+
+
+                this.triggerCallback()
+
+                // this.setState({
+                //     // createSearchData: res.data.data,
+                //     item:res.data.data,
+                // })
 
                 this.getSite()
 
@@ -599,6 +721,10 @@ class SearchEditForm extends Component {
 
                     categories: response
                 })
+
+
+                this.getSearch(this.props.searchId)
+
 
             },
             (error) => {
@@ -1098,6 +1224,18 @@ class SearchEditForm extends Component {
         let fields = this.state.fields;
         fields[field] = event.target.value;
 
+
+        const value = event.target.value;
+
+        this.setState({
+
+
+            [field]: value
+        });
+
+
+
+
         this.setState({ fields });
         this.handleValidationNextColor()
         this.handleValidationAddDetailNextColor()
@@ -1319,9 +1457,13 @@ class SearchEditForm extends Component {
         this.props.loadProducts(this.props.userDetail.token)
 
 
-        this.getFiltersCategories()
 
         this.getSites()
+        this.getFiltersCategories()
+
+
+
+
 
     }
 
@@ -1407,6 +1549,7 @@ class SearchEditForm extends Component {
         }
 
         this.setState({ errorsSite: errors });
+
         return formIsValid;
     }
 
@@ -1492,70 +1635,6 @@ class SearchEditForm extends Component {
     }
 
 
-    loadType(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
-
-        var subCategories = this.state.categories.filter((item) => item.name === event.target.value)[0].types
-
-
-
-
-
-        this.setState({
-
-            catSelected: catSelected
-        })
-
-        this.setState({
-
-            subCategories: subCategories
-
-        })
-
-
-        // console.log(catSelected)
-        // console.log(subCategories)
-
-
-    }
-
-
-    loadStates(field, event) {
-
-
-        console.log(field,event.target.value)
-
-
-        var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
-
-        var states = this.state.subCategories.filter((item) => item.name === event.target.value)[0].state
-
-        var units = this.state.subCategories.filter((item) => item.name === event.target.value)[0].units
-
-        this.setState({
-
-            subCatSelected: subCatSelected
-        })
-
-        this.setState({
-
-            states: states,
-            units: units
-
-        })
-
-
-        // console.log(subCatSelected)
-        // console.log(states)
-
-
-    }
-
 
     render() {
 
@@ -1567,9 +1646,10 @@ class SearchEditForm extends Component {
 
             <>
 
-                <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
 
-                    <div className="container  ">
+                {this.state.item &&
+
+                <div className="container  ">
                         <div className="row no-gutters mt-3">
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>Edit Search
@@ -1579,15 +1659,17 @@ class SearchEditForm extends Component {
                         </div>
 
 
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="row no-gutters justify-content-center mt-2">
+                        <form onSubmit={this.createSearch}>
+                            <div className="row no-gutters justify-content-center mt-2 pb-4">
                                 <div className="col-12">
 
 
                                     <div className={"custom-label text-bold text-blue mb-1"}>Title</div>
 
 
-                                    <TextField onChange={this.handleChange.bind(this, "title")} name={"title"} placeholder={"Title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                    <TextField
+                                        value={this.state.title?this.state.title:this.state.item.search.name}
+                                        onChange={this.handleChange.bind(this, "title")} name={"title"} placeholder={"Title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                     {this.state.errors["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["title"]}</span>}
 
 
@@ -1597,7 +1679,9 @@ class SearchEditForm extends Component {
                                     <div className={"custom-label text-bold text-blue mb-1"}>Description</div>
 
 
-                                    <TextField onChange={this.handleChange.bind(this, "description")} name={"description"} placeholder={"Search description"} id="outlined-basic"  multiline
+                                    <TextField
+                                        value={this.state.description?this.state.description:this.state.item.search.description}
+                                        onChange={this.handleChange.bind(this, "description")} name={"description"} placeholder={"Search description"} id="outlined-basic"  multiline
                                                rows={4} variant="outlined" fullWidth={true} />
                                     {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
 
@@ -1620,11 +1704,11 @@ class SearchEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option value={null}>Select</option>*/}
 
                                                     {this.state.categories.map((item) =>
 
-                                                        <option value={item.name}>{item.name}</option>
+                                                        <option selected={this.state.item.search.category === item.name?true:false} value={item.name}>{item.name}</option>
 
                                                     )}
 
@@ -1650,11 +1734,11 @@ class SearchEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option value={null}>Select</option>*/}
 
                                                     {this.state.subCategories.map((item) =>
 
-                                                        <option value={item.name}>{item.name}</option>
+                                                        <option selected={this.state.item.search.type === item.name?true:false} value={item.name}>{item.name}</option>
 
                                                     )}
 
@@ -1679,11 +1763,11 @@ class SearchEditForm extends Component {
                                                     }}
                                                 >
 
-                                                    <option value={null}>Select</option>
+                                                    {/*<option value={null}>Select</option>*/}
 
                                                     {this.state.states.map((item) =>
 
-                                                        <option value={item}>{item}</option>
+                                                        <option selected={this.state.item.search.state === item?true:false} value={item}>{item}</option>
 
                                                     )}
 
@@ -1711,6 +1795,9 @@ class SearchEditForm extends Component {
                                         <FormControl disabled={this.state.units.length>0?false:true} variant="outlined" className={classes.formControl}>
                                             <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
                                             <Select
+
+
+
                                                 name={"unit"}
                                                 native
                                                 onChange={this.handleChange.bind(this, "unit")}
@@ -1722,12 +1809,12 @@ class SearchEditForm extends Component {
                                                 }}
                                             >
 
-                                                <option value={null}>Select</option>
+                                                {/*<option value={null}>Select</option>*/}
 
 
                                                 {this.state.units.map((item) =>
 
-                                                    <option value={item}>{item}</option>
+                                                    <option selected={this.state.item.search.units === item?true:false} value={item}>{item}</option>
 
                                                 )}
 
@@ -1739,7 +1826,10 @@ class SearchEditForm extends Component {
                                     </div>
                                     <div className="col-6 pl-2">
 
-                                        <TextField disabled={this.state.units.length>0?false:true} onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                                        <TextField
+
+                                            value={this.state.volume?this.state.volume:this.state.item.search.volume}
+                                             onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
 
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 
@@ -1764,13 +1854,16 @@ class SearchEditForm extends Component {
                                             }}
                                         >
 
-                                            <option value={null}>Select</option>
+                                            {/*<option value={null}>Select</option>*/}
 
 
                                             {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
 
 
-                                                <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
+                                                <option
+
+                                                    selected={this.state.item.product&&this.state.item.product._key === item?true:false}
+                                                    value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
 
                                             )}
 
@@ -1805,6 +1898,7 @@ class SearchEditForm extends Component {
                                         {/*<InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>*/}
 
                                         <Select
+
                                             name={"deliver"}
                                             native
                                             // label="Deliver To"
@@ -1817,11 +1911,13 @@ class SearchEditForm extends Component {
                                         >
 
 
-                                            <option value={null}>Select</option>
+                                            {/*<option value={null}>Select</option>*/}
 
                                             {this.props.siteList.map((item) =>
 
-                                                <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+                                                <option
+                                                    selected={this.state.item.site&&this.state.item.site._key === item._key?true:false}
+                                                    value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
                                             )}
 
@@ -1845,14 +1941,17 @@ class SearchEditForm extends Component {
 
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                        <DatePicker minDate={new Date()}
+                                        <DatePicker
+
+                                            name={"dateRequiredFrom"}
+
                                                     inputVariant="outlined"
                                                     variant={"outlined"}
                                                     margin="normal"
                                                     id="date-picker-dialog"
-                                            // label="Required From"
-                                                    format="DD/MM/yyyy"
-                                                    value={this.state.dateRequiredFrom} onChange={this.handleChangeDateStartDate.bind(this)} />
+                                                   format="DD/MM/yyyy"
+                                                   value={this.state.dateRequiredFrom?this.state.dateRequiredFrom:this.state.item.search.require_after_epoch_ms}
+                                                    onChange={this.handleChangeDateStartDate.bind(this)} />
 
 
 
@@ -1868,14 +1967,18 @@ class SearchEditForm extends Component {
 
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                                        <DatePicker minDate={this.state.dateRequiredFrom?this.state.dateRequiredFrom:new Date()}
+                                        <DatePicker
+
+                                            name={"dateRequiredBy"}
+                                            minDate={this.state.dateRequiredFrom?this.state.dateRequiredFrom:new Date()}
                                             // label="Required By"
                                                     inputVariant="outlined"
                                                     variant={"outlined"}
                                                     margin="normal"
                                                     id="date-picker-dialog"
                                                     format="DD/MM/yyyy"
-                                                    value={this.state.dateRequiredBy} onChange={this.handleChangeDate.bind(this)} />
+                                            value={this.state.dateRequiredBy?this.state.dateRequiredBy:this.state.item.search.expire_after_epoch_ms}
+                                            onChange={this.handleChangeDate.bind(this)} />
 
 
                                     </MuiPickersUtilsProvider>
@@ -1883,253 +1986,17 @@ class SearchEditForm extends Component {
 
                                 </div>
 
+                                <div className="col-12 mt-4 mb-5 pb-5">
+
+                                    <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit</button>
+                                </div>
+
+
                             </div>
 
                         </form>
 
-                    </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-                <div className={this.state.active === 6 ? "" : "d-none"}>
-
-
-                    <div className="container   pb-4 pt-4">
-
-                        <div className="row justify-content-center pb-2 pt-4 ">
-
-                            <div className="col-auto">
-                                <h4 className={"green-text text-heading text-bold"}>Success!
-                                </h4>
-
-                            </div>
-                        </div>
-
-
-                        <div className="row justify-content-center">
-
-                            <div className="col-auto pb-4 pt-5">
-
-
-                                <img className={"search-icon-middle"} src={SearchIcon} alt="" />
-
-                            </div>
-                        </div>
-
-                        <div className="row justify-content-center pb-4 pt-2 ">
-
-                            <div className="col-auto">
-                                <p className={"text-blue text-center"}>Your search has been created.
-                                    You will be notified when a
-                                    match is found.
-                                </p>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div className={this.state.active === 7 ? "" : "d-none"}>
-
-
-                    {this.state.createSearchData &&
-                    <>
-                        <div className="container  pt-3 pb-3">
-
-                            <div className="row no-gutters">
-                                <div className="col-auto" style={{ margin: "auto" }}>
-
-                                    <NavigateBefore style={{ fontSize: 32 }} />
-                                </div>
-
-                                <div className="col text-center blue-text" style={{ margin: "auto" }}>
-                                    <p>View Search </p>
-                                </div>
-
-                                <div className="col-auto">
-
-                                    <button className="btn   btn-link text-dark menu-btn">
-                                        <Close onClick={this.selectCreateSearch} className="" style={{ fontSize: 32 }} />
-
-                                    </button>
-                                </div>
-
-
-                            </div>
-                        </div>
-
-
-                        <div className="container ">
-
-
-                            <div className="row container-gray justify-content-center pb-5 pt-5">
-
-                                <div className="col-auto pb-5 pt-5">
-                                    <img className={"my-search-icon-middle"} src={SearchIcon} alt="" />
-
-                                </div>
-                            </div>
-                            <div className="row justify-content-start pb-3 pt-4 listing-row-border">
-
-                                <div className="col-12">
-                                    <p className={"green-text text-heading"}>@{this.state.createSearchData.org_id}
-                                    </p>
-
-                                </div>
-                                <div className="col-12 mt-2">
-                                    <h5 className={"blue-text text-heading"}>{this.state.createSearchData.name}
-                                    </h5>
-
-                                </div>
-                            </div>
-
-
-                            <div className="row justify-content-start pb-3 pt-3 listing-row-border">
-
-                                <div className="col-auto">
-                                    <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.createSearchData.description}
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                            <div className="row justify-content-start pb-4 pt-3 ">
-                                <div className="col-auto">
-                                    <h6 className={""}>Item Details
-                                    </h6>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div className={"container pb-5"}>
-
-                            <div className="row  justify-content-start search-container  pb-3 ">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={ListIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.category} ></p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.type}</p>
-
-                                </div>
-                            </div>
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={AmountIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.volume} {this.state.createSearchData.units}</p>
-                                </div>
-                            </div>
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={StateIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.state}</p>
-                                </div>
-                            </div>
-
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={CalenderIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required From </p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.require_after.value).format("DD MMM YYYY")}</p>
-
-
-
-                                </div>
-                            </div>
-
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={CalenderIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.expiry.value).format("DD MMM YYYY")}</p>
-
-
-
-                                </div>
-                            </div>
-                            <div className="row  justify-content-start search-container  pb-4">
-                                <div className={"col-1"}>
-                                    <img className={"icon-about"} src={MarkerIcon} alt="" />
-                                </div>
-                                <div className={"col-auto"}>
-
-                                    <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Location  </p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site.name},{this.state.site.contact}</p>
-                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.site.address}</p>
-                                </div>
-                            </div>
-
-
-                            {/*<BottomAppBar />*/}
-
-
-                        </div>
-
-
-
-                    </>
-                    }
-                </div>
-
-
-
-                <div className={this.state.active === 8 ? "" : "d-none"}>
-
-
-
-                    <HeaderWhiteBack history={this.props.history} heading={"Preview Matches"} />
-
-
-                    <div className="container   pb-4 ">
-
-
-                        {this.state.resourcesMatched.map((item) =>
-
-                            <ResourceItem item={item} />
-
-                        )}
-
-
-                    </div>
-
-                </div>
-
-
-
-
+                    </div>}
 
 
                 {this.state.showCreateSite &&

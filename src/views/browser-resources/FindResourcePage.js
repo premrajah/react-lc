@@ -165,7 +165,8 @@ class FindResourcePage extends Component {
 
                     <div className="row mt-3 mb-5">
                         <div className="col">
-                            <SearchBar title="Search Products" onSearch={(e) => this.handleSearch(e)} />
+                            <SearchBar title="Search Listings" onSearch={(e) => this.handleSearch(e)} />
+                            <p className="mt-2">Available listings ({this.state.allListings.length > 0 ? this.state.allListings.length : '...' })</p>
                         </div>
                     </div>
 

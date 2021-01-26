@@ -21,10 +21,12 @@ import RubberIcon from "../../img/resource_icons/Icon_Rubber.png";
 import TextileIcon from "../../img/resource_icons/Icon_Textiles2.png";
 import FindResourceIconHolder from "../../components/FindResourceIconHolder";
 import FindResourceListingItem from "../../components/FindResourceListingItem";
+import SearchBar from "../../components/SearchBar";
 
 class FindResourcePage extends Component {
     state = {
         allListings: [],
+        search: ''
     };
 
     componentDidMount() {
@@ -47,6 +49,10 @@ class FindResourcePage extends Component {
                 console.log("find all listing error ", error);
             });
     };
+
+    handleSearch = (searchValue) => {
+        this.setState({search: searchValue})
+    }
 
     render() {
         return (
@@ -157,13 +163,27 @@ class FindResourcePage extends Component {
                         </div>
                     </div>
 
+                    <div className="row mt-3 mb-5">
+                        <div className="col">
+                            <SearchBar title="Search Products" onSearch={(e) => this.handleSearch(e)} />
+                        </div>
+                    </div>
+
                     <div className="row mb-5">
                         <div className="col-12">
                                 {this.state.allListings.length > 0
-                                    ? this.state.allListings.map((item) => (
+                                    ? this.state.allListings.filter(item => {
+                                        if(this.state.search.length === 0) {
+                                            return item;
+                                        } else if (item.listing.name.toLowerCase().includes(this.state.search.toLowerCase()) || item.org._key.toLowerCase().includes(this.state.search.toLowerCase())) {
+                                            return item
+                                        }
+                                    }).map((item) => (
                                         <FindResourceListingItem key={item.listing._id} item={item} />
                                       ))
                                     : "Loading..."}
+
+
                         </div>
                     </div>
                 </div>

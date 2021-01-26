@@ -1764,7 +1764,6 @@ class ProductEditForm extends Component {
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                                                 <Select
                                                     native
-
                                                     onChange={this.handleChangeProduct.bind(this, "type")}
                                                     inputProps={{
                                                         name: 'type',

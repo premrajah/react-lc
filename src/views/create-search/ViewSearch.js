@@ -135,8 +135,19 @@
             this.toggleDateOpen = this.toggleDateOpen.bind(this)
             this.makeActive=this.makeActive.bind(this)
             this.selectCreateSearch=this.selectCreateSearch.bind(this)
+            this.callBackResult=this.callBackResult.bind(this)
 
 
+
+        }
+
+
+
+        callBackResult(){
+
+
+            // alert("celldffdfd")
+            this.showEdit()
         }
 
         showEdit(){
@@ -732,7 +743,7 @@
 
                                                             <EditIcon className={"mr-2"} onClick={this.showEdit}  />
 
-                                                            <FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />
+                                                            {/*<FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />*/}
 
                                                             <DeleteIcon className={""} onClick={this.showProductEdit}  />
                                                         </div>
@@ -891,7 +902,7 @@
                                     </div>
 
 
-                                    <SearchEditForm  searchId={this.state.createSearchData.search._key}/>
+                                    <SearchEditForm  triggerCallback={this.callBackResult} searchId={this.state.createSearchData.search._key}/>
 
 
                                 </Modal>

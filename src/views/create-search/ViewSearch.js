@@ -6,22 +6,12 @@
     import FormControl from '@material-ui/core/FormControl';
     import SearchIcon from '../../img/icons/search-icon.png';
     import { Link } from "react-router-dom";
-    import { Alert} from 'react-bootstrap';
-
     import InputLabel from '@material-ui/core/InputLabel';
-    import Close from '@material-ui/icons/Close';
-    import NavigateBefore from '@material-ui/icons/NavigateBefore';
     import { makeStyles } from '@material-ui/core/styles';
     import CssBaseline from '@material-ui/core/CssBaseline';
     import Toolbar from '@material-ui/core/Toolbar';
     import AppBar from '@material-ui/core/AppBar';
-    import TextField from '@material-ui/core/TextField';
-    import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-    import clsx from 'clsx';
-    import InputAdornment from '@material-ui/core/InputAdornment';
     import { withStyles } from "@material-ui/core/styles/index";
-    import CalGrey from '../../img/icons/calender-dgray.png';
-    import LinkGray from '../../img/icons/link-icon.png';
     import MarkerIcon from '../../img/icons/marker.png';
     import CalenderIcon from '../../img/icons/calender.png';
     import ListIcon from '../../img/icons/list.png';
@@ -29,15 +19,14 @@
     import StateIcon from '../../img/icons/state.png';
     import axios from "axios/index";
     import { baseUrl } from "../../Util/Constants";
-    import LinearProgress from '@material-ui/core/LinearProgress';
-    import HeaderWhiteBack from '../header/HeaderWhiteBack'
-    import ResourceItem from '../item/ResourceItem'
     import HeaderDark from '../header/HeaderDark'
     import Sidebar from '../menu/Sidebar'
-    import MomentUtils from '@date-io/moment';
     import moment from 'moment';
     import NotFound from "../NotFound/index"
     import ProductExpandItem from '../../components/ProductExpandItem'
+    import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
+    import SearchEditForm from '../../components/SearchEditForm'
+    import { Modal, ModalBody, Alert } from 'react-bootstrap';
 
 
     import {
@@ -117,12 +106,14 @@
                 dateRequiredFrom:null,
                 matchesCount:0,
                 notFound:false,
+                previewImage:null,
+                showEdit:false,
 
-                previewImage:null
             }
 
             this.getPreviewImage=this.getPreviewImage.bind(this)
 
+            this.showEdit=this.showEdit.bind(this)
 
 
             this.slug = props.match.params.slug
@@ -146,6 +137,15 @@
             this.selectCreateSearch=this.selectCreateSearch.bind(this)
 
 
+        }
+
+        showEdit(){
+
+            this.setState({
+
+                showEdit:!this.state.showEdit,
+
+            })
         }
 
 
@@ -686,8 +686,6 @@
 
                         <>
 
-                    {/*<div className="container pt-4 p-2 mt-5 ">*/}
-                    {/*</div>*/}
 
                         {this.state.createSearchData &&
                             <>
@@ -721,9 +719,26 @@
 
                                             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                                                <div className="col-12 mt-2">
+                                                <div className="col-12 ">
+                                                    <div className="row">
+                                                    <div className="col-8 text-left">
+
                                                     <h5 className={"blue-text text-heading"}>{this.state.createSearchData.search.name}
                                                     </h5>
+                                                    </div>
+                                                        <div className="col-4 text-right">
+                                                            {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
+
+
+                                                            <EditIcon className={"mr-2"} onClick={this.showEdit}  />
+
+                                                            <FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />
+
+                                                            <DeleteIcon className={""} onClick={this.showProductEdit}  />
+                                                        </div>
+
+                                                    </div>
+
 
                                                 </div>
 
@@ -864,7 +879,31 @@
 
 
 
+                                <Modal
+                                    size="lg"
+                                    show={this.state.showEdit}
+                                    onHide={this.showEdit}
+                                    className={"custom-modal-popup popup-form"}
+                                >
+
+                                    <div className="">
+                                        <button onClick={this.showEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                                    </div>
+
+
+                                    <SearchEditForm  searchId={this.state.createSearchData.search._key}/>
+
+
+                                </Modal>
+
+
                             </>
+
+
+
+
+
+
                         }
 
 

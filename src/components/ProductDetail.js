@@ -1114,14 +1114,8 @@ class ProductDetail extends Component {
 
 
 
-                        {/*<Modal className={"loop-popup"}*/}
-                               {/*aria-labelledby="contained-modal-title-vcenter"*/}
-                               {/*centered show={this.state.showProductEdit} onHide={this.showProductEdit} animation={false}>*/}
 
-                            {/*<ModalBody>*/}
-
-
-                                <Modal
+                      <Modal
                                     size="lg"
                                     show={this.state.showProductEdit}
                                     onHide={this.showProductEdit}

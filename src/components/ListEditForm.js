@@ -28,6 +28,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import _ from 'lodash';
+import clsx from 'clsx';
 
 import {
     MuiPickersUtilsProvider,
@@ -53,7 +54,7 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
-class SearchEditForm extends Component {
+class ListEditForm extends Component {
 
 
     constructor(props) {
@@ -103,9 +104,7 @@ class SearchEditForm extends Component {
             purpose: ["defined", "prototype", "aggregate"],
             site: {},
             dateRequiredBy: null,
-            dateRequiredFrom:null,
-            free: false,
-            price: null,
+            dateRequiredFrom:null
 
         }
 
@@ -116,7 +115,6 @@ class SearchEditForm extends Component {
         this.addDetails = this.addDetails.bind(this)
         this.nextClick = this.nextClick.bind(this)
         this.linkProduct = this.linkProduct.bind(this)
-        this.searchLocation = this.searchLocation.bind(this)
         this.previewSearch = this.previewSearch.bind(this)
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
         this.getFiltersCategories = this.getFiltersCategories.bind(this)
@@ -140,7 +138,28 @@ class SearchEditForm extends Component {
         this.getSearch=this.getSearch.bind(this)
         this.triggerCallback=this.triggerCallback.bind(this)
         this.loadSelection=this.loadSelection.bind(this)
+        this.toggleFree = this.toggleFree.bind(this)
+        this.toggleSale = this.toggleSale.bind(this)
 
+    }
+
+
+
+
+    toggleSale() {
+
+
+        this.setState({
+            free: false
+        })
+    }
+
+    toggleFree() {
+
+
+        this.setState({
+            free: true
+        })
     }
 
 
@@ -153,7 +172,7 @@ class SearchEditForm extends Component {
 
 
 
-        let catSelected =  this.state.categories.filter((item) => item.name === this.state.item.search.category)[0]
+        let catSelected =  this.state.categories.filter((item) => item.name === this.state.item.listing.category)[0]
 
 
         var subCategories = catSelected.types
@@ -171,7 +190,7 @@ class SearchEditForm extends Component {
 
 
 
-        let subCatSelected = subCategories.filter((item) => item.name === this.state.item.search.type)[0]
+        let subCatSelected = subCategories.filter((item) => item.name === this.state.item.listing.type)[0]
 
 
 
@@ -205,7 +224,7 @@ class SearchEditForm extends Component {
     getSearch() {
 
 
-        axios.get(baseUrl + "search/" + this.props.searchId+"/expand",
+        axios.get(baseUrl + "listing/" + this.props.listingId+"/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -465,7 +484,7 @@ class SearchEditForm extends Component {
 
         var data = {
 
-            id:this.state.item.search._key,
+            id:this.state.item.listing._key,
             update: {
 
                 "name": dataFORM.get("title"),
@@ -629,7 +648,7 @@ class SearchEditForm extends Component {
     goToSearchPage(){
 
 
-        this.props.history.push("/search/"+this.state.searchObj._key)
+        this.props.history.push("/search/"+this.state.listingObj._key)
 
     }
 
@@ -725,7 +744,7 @@ class SearchEditForm extends Component {
                 })
 
 
-                this.getSearch(this.props.searchId)
+                this.getSearch(this.props.listingId)
 
 
             },
@@ -1239,8 +1258,12 @@ class SearchEditForm extends Component {
 
 
         this.setState({ fields });
-        this.handleValidationNextColor()
-        this.handleValidationAddDetailNextColor()
+
+
+        this.setState({
+
+            price: fields["price"]
+        })
 
 
         if (field ==="product"){
@@ -1454,18 +1477,9 @@ class SearchEditForm extends Component {
 
     componentDidMount() {
 
-
-
         this.props.loadProducts(this.props.userDetail.token)
-
-
-
         this.getSites()
         this.getFiltersCategories()
-
-
-
-
 
     }
 
@@ -1654,7 +1668,7 @@ class SearchEditForm extends Component {
                 <div className="container  ">
                         <div className="row no-gutters mt-3">
                             <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Edit Search
+                                <h3 className={"blue-text text-heading"}>Edit Listing
                                 </h3>
 
                             </div>
@@ -1670,7 +1684,7 @@ class SearchEditForm extends Component {
 
 
                                     <TextField
-                                        value={this.state.title?this.state.title:this.state.item.search.name}
+                                        value={this.state.title?this.state.title:this.state.item.listing.name}
                                         onChange={this.handleChange.bind(this, "title")} name={"title"} placeholder={"Title"} id="outlined-basic"  variant="outlined" fullWidth={true} />
                                     {this.state.errors["title"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["title"]}</span>}
 
@@ -1682,7 +1696,7 @@ class SearchEditForm extends Component {
 
 
                                     <TextField
-                                        value={this.state.description?this.state.description:this.state.item.search.description}
+                                        value={this.state.description?this.state.description:this.state.item.listing.description}
                                         onChange={this.handleChange.bind(this, "description")} name={"description"} placeholder={"Search description"} id="outlined-basic"  multiline
                                                rows={4} variant="outlined" fullWidth={true} />
                                     {this.state.errors["description"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["description"]}</span>}
@@ -1710,7 +1724,7 @@ class SearchEditForm extends Component {
 
                                                     {this.state.categories.map((item) =>
 
-                                                        <option selected={this.state.item.search.category === item.name?true:false} value={item.name}>{item.name}</option>
+                                                        <option selected={this.state.item.listing.category === item.name?true:false} value={item.name}>{item.name}</option>
 
                                                     )}
 
@@ -1740,7 +1754,7 @@ class SearchEditForm extends Component {
 
                                                     {this.state.subCategories.map((item) =>
 
-                                                        <option selected={this.state.item.search.type === item.name?true:false} value={item.name}>{item.name}</option>
+                                                        <option selected={this.state.item.listing.type === item.name?true:false} value={item.name}>{item.name}</option>
 
                                                     )}
 
@@ -1769,7 +1783,7 @@ class SearchEditForm extends Component {
 
                                                     {this.state.states.map((item) =>
 
-                                                        <option selected={this.state.item.search.state === item?true:false} value={item}>{item}</option>
+                                                        <option selected={this.state.item.listing.state === item?true:false} value={item}>{item}</option>
 
                                                     )}
 
@@ -1782,17 +1796,14 @@ class SearchEditForm extends Component {
 
                                 </div>
 
-
-
-                                    <div className="col-12 mb-1">
+                                <div className="col-12 mb-1">
 
 
                                         <div className={"custom-label text-bold text-blue mb-1"}>Quantity</div>
                                         <p></p>
                                     </div>
 
-
-                                    <div className="col-6 pr-2">
+                               <div className="col-6 pr-2">
 
                                         <FormControl disabled={this.state.units.length>0?false:true} variant="outlined" className={classes.formControl}>
                                             <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
@@ -1816,7 +1827,7 @@ class SearchEditForm extends Component {
 
                                                 {this.state.units.map((item) =>
 
-                                                    <option selected={this.state.item.search.units === item?true:false} value={item}>{item}</option>
+                                                    <option selected={this.state.item.listing.units === item?true:false} value={item}>{item}</option>
 
                                                 )}
 
@@ -1830,7 +1841,7 @@ class SearchEditForm extends Component {
 
                                         <TextField
 
-                                            value={this.state.volume?this.state.volume:this.state.item.search.volume}
+                                            value={this.state.volume?this.state.volume:this.state.item.listing.volume}
                                              onChange={this.handleChange.bind(this, "volume")} name={"volume"} id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
 
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
@@ -1952,7 +1963,7 @@ class SearchEditForm extends Component {
                                                     margin="normal"
                                                     id="date-picker-dialog"
                                                    format="DD/MM/yyyy"
-                                                   value={this.state.dateRequiredFrom?this.state.dateRequiredFrom:this.state.item.search.require_after_epoch_ms}
+                                                   value={this.state.dateRequiredFrom?this.state.dateRequiredFrom:this.state.item.listing.require_after_epoch_ms}
                                                     onChange={this.handleChangeDateStartDate.bind(this)} />
 
 
@@ -1979,12 +1990,68 @@ class SearchEditForm extends Component {
                                                     margin="normal"
                                                     id="date-picker-dialog"
                                                     format="DD/MM/yyyy"
-                                            value={this.state.dateRequiredBy?this.state.dateRequiredBy:this.state.item.search.expire_after_epoch_ms}
+                                            value={this.state.dateRequiredBy?this.state.dateRequiredBy:this.state.item.listing.expire_after_epoch_ms}
                                             onChange={this.handleChangeDate.bind(this)} />
 
 
                                     </MuiPickersUtilsProvider>
                                     {this.state.errors["endDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["endDate"]}</span>}
+
+                                </div>
+
+
+                                <div className="col-12 mb-3">
+
+
+                                    <div className="row">
+
+                                        <div className="col-md-6 col-sm-12 col-xs-12">
+                                            <div className="row">
+
+                                                <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
+
+                                                    <div className={"custom-label text-bold text-blue "}>Price</div>
+
+                                                </div>
+
+                                                <div  className="col-md-12 col-sm-12 col-xs-12 mb-3">
+                                                    <button onClick={this.toggleSale} className={!this.state.free ? "col-12 btn-select-free green-bg" : "btn-select-free"}>For Sale</button>
+
+                                                    <button onClick={this.toggleFree} className={this.state.free ? "col-12 btn-select-free green-bg" : "btn-select-free"}>Free</button>
+                                                </div>
+
+                                                <div style={{paddingLeft:"0"}} className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                    {!this.state.free &&
+
+                                                    <div className="col-12 mb-5">
+
+                                                        <TextField
+                                                            value={this.state.price?this.state.price:this.state.item.listing.price?this.state.item.listing.price.value:0}
+                                                            name={"price"}
+                                                            type={"number"}
+                                                            onChange={this.handleChange.bind(this, "price")}
+                                                            id="input-with-icon-textfield"
+                                                            label="£"
+                                                            variant="outlined"
+                                                            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+                                                            id="input-with-icon-textfield"
+
+                                                        />
+
+                                                        {this.state.errors["price"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["price"]}</span>}
+
+
+                                                    </div>
+
+                                                    }
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
@@ -2226,4 +2293,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(SearchEditForm);
+)(ListEditForm);

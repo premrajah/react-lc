@@ -5,24 +5,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
-// import MarkerIcon from '../../img/icons/marker.png';
-// import CalIcon from '../../img/icons/calender-dgray.png';
 import PlaceholderImg from '../../img/place-holder-lc.png';
-import StateIcon from '../../img/icons/state.png';
-import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
-import ImagesSlider from "../../components/ImagesSlider";
 import encodeUrl  from "encodeurl"
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../../img/icons/gray-loop.png';
+import { Modal, ModalBody ,Alert} from 'react-bootstrap';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -30,8 +21,8 @@ import MatchItemSeller from '../../components/MatchItemSeller'
 import NotFound from "../NotFound/index"
 import ProductExpandItem from '../../components/ProductExpandItem'
 import Org from "../../components/Org/Org";
-import {Edit as EditIcon, Delete as DeleteIcon} from "@material-ui/icons";
-
+import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
+import ListEditForm from '../../components/ListEditForm'
 
 
 class ItemDetail extends Component {
@@ -53,7 +44,8 @@ class ItemDetail extends Component {
             matches:[],
             notFound:false,
             site:null,
-            previewImage:null
+            previewImage:null,
+            showEdit:false,
         }
 
 
@@ -70,6 +62,24 @@ class ItemDetail extends Component {
 
         this.getPreviewImage=this.getPreviewImage.bind(this)
 
+        this.callBackResult=this.callBackResult.bind(this)
+        this.showEdit=this.showEdit.bind(this)
+
+    }
+
+
+    callBackResult(){
+
+        this.showEdit()
+    }
+
+    showEdit(){
+
+        this.setState({
+
+            showEdit:!this.state.showEdit,
+
+        })
     }
 
 
@@ -426,8 +436,23 @@ class ItemDetail extends Component {
                                 <div className="row justify-content-start pb-3 pt-3 ">
 
                                     <div className="col-12 mt-2">
+                                        <div className="row">
+                                            <div className="col-8">
                                         <h5 className={"blue-text text-heading"}>{this.state.item.listing.name}
                                         </h5>
+                                            </div>
+
+                                            <div className="col-4 text-right">
+
+
+                                                <EditIcon className={"mr-2"} onClick={this.showEdit}  />
+
+                                                <DeleteIcon className={""}   />
+                                            </div>
+
+
+
+                                        </div>
 
                                     </div>
 
@@ -567,7 +592,28 @@ class ItemDetail extends Component {
                      </div>
 
 
-                    {this.state.item.org_id != this.props.userDetail.orgId &&
+
+
+                        <Modal
+                            size="lg"
+                            show={this.state.showEdit}
+                            onHide={this.showEdit}
+                            className={"custom-modal-popup popup-form"}
+                        >
+
+                            <div className="">
+                                <button onClick={this.showEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                            </div>
+
+
+                            <ListEditForm  triggerCallback={this.callBackResult} listingId={this.state.item.listing._key}/>
+
+
+                        </Modal>
+
+
+
+                        {this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>
 
                         <CssBaseline/>

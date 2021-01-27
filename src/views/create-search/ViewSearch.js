@@ -113,7 +113,6 @@
 
             this.getPreviewImage=this.getPreviewImage.bind(this)
 
-            this.showEdit=this.showEdit.bind(this)
 
 
             this.slug = props.match.params.slug
@@ -136,6 +135,7 @@
             this.makeActive=this.makeActive.bind(this)
             this.selectCreateSearch=this.selectCreateSearch.bind(this)
             this.callBackResult=this.callBackResult.bind(this)
+            this.showEdit=this.showEdit.bind(this)
 
 
 
@@ -145,8 +145,6 @@
 
         callBackResult(){
 
-
-            // alert("celldffdfd")
             this.showEdit()
         }
 

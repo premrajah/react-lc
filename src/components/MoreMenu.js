@@ -1,36 +1,112 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import MoreIcon from "@material-ui/icons/MoreHoriz";
+import { connect } from "react-redux";
 
-export default function MoreMenu() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+class MoreMenu extends Component {
+
+
+    constructor(props) {
+
+        super(props)
+
+        this.state = {
+
+            timerEnd: false,
+            count: 0,
+            nextIntervalFlag: false,
+            items: [],
+            previewImage:null,
+            open:false,
+            anchorEl:null
+        }
+
+        this.triggerCallback=this.triggerCallback.bind(this)
+        this.setOpen=this.setOpen.bind(this)
+
+
+    }
+
+
+
+
+     setOpen(){
+
+
+        this.setState({
+            open: !this.state.open
+        })
+     }
+
+
+    triggerCallback(action) {
+
+
+        this.props.triggerCallback(action)
+
+    }
+
+     handleClick = (event) => {
+        
+        
+        
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        this.setState({
+            anchorEl:event.currentTarget
+        });
+
+         this.setOpen()
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+     handleClose = (event) => {
+
+         
+         if (event.currentTarget.dataset.action) {
+
+             var action = event.currentTarget.dataset.action
+
+             this.triggerCallback(action)
+         }
+        event.stopPropagation();
+        event.preventDefault();
+
+         this.setState({
+             anchorEl:null
+         });
+
+         this.setOpen()
     };
 
-    return (
-        <div>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                Open Menu
-            </Button>
-            <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-            >
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
-                <MenuItem onClick={handleClose}>Duplicate</MenuItem>
-            </Menu>
-        </div>
-    );
+        render() {
+            return (
+                <div className={"more-menu-container"}>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
+                        <MoreIcon/>
+                        <Menu
+                            className={"more-menu-box"}
+                            id={this.props.id}
+                            anchorEl={this.state.anchorEl}
+                            keepMounted
+                            open={this.state.open}
+                            onClose={this.setOpen}
+                        >
+                            <MenuItem  data-action={"edit"} onClick={this.handleClose}>Edit</MenuItem>
+                            <MenuItem data-action={"delete"} onClick={this.handleClose}>Delete</MenuItem>
+                            <MenuItem data-action={"duplicate"} onClick={this.handleClose}>Duplicate</MenuItem>
+                        </Menu>
+                    </Button>
+
+                </div>
+            );
+        }
 }
 
+
+
+export default MoreMenu;

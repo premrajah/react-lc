@@ -56,8 +56,6 @@
 
     class ViewSearch extends Component {
 
-
-        slug
         constructor(props) {
 
             super(props)
@@ -885,9 +883,6 @@
                                     </div>
 
                                 </div>
-
-
-
 
 
                                 <Modal

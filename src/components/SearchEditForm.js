@@ -141,6 +141,7 @@ class SearchEditForm extends Component {
         this.triggerCallback=this.triggerCallback.bind(this)
         this.loadSelection=this.loadSelection.bind(this)
 
+
     }
 
 

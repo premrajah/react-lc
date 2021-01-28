@@ -158,7 +158,7 @@ class ComponentsNavbar extends React.Component {
                                         className="nav-link d-none d-lg-block wl-link-white "
                                         color="default"
                                         to={"/find-resources"}>
-                                        Find Resources
+                                        Browse Listings
                                     </Link>
                                 </NavItem>
 

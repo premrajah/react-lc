@@ -22,6 +22,7 @@ import TextileIcon from "../../img/resource_icons/Icon_Textiles2.png";
 import FindResourceIconHolder from "../../components/FindResourceIconHolder";
 import FindResourceListingItem from "../../components/FindResourceListingItem";
 import SearchBar from "../../components/SearchBar";
+import * as actionCreator from "../../store/actions/actions";
 
 class FindResourcePage extends Component {
     state = {
@@ -53,6 +54,8 @@ class FindResourcePage extends Component {
     handleSearch = (searchValue) => {
         this.setState({search: searchValue})
     }
+
+
 
     render() {
         return (
@@ -90,76 +93,10 @@ class FindResourcePage extends Component {
 
                     <hr />
 
-                    <div className="row mt-5">
-                        <h1 className="text-md-center blue-text">Categories</h1>
-                    </div>
-                    <div className="row mt-3">
-                        <div className="col-md-12">
-                            <div className="row mt-2 mb-2">
-                                <div className="col d-flex justify-content-around" align="center">
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={PaperIcon}
-                                        text="Paper"
-                                    />
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={GlassIcon}
-                                        text="Glass"
-                                    />
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={MetalIcon}
-                                        text="Metal"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="row mt-2 mb-2">
-                                <div className="col d-flex justify-content-around" align="center">
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={PlasticIcon}
-                                        text="Plastic"
-                                    />
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={CardBoardIcon}
-                                        text="Cardboard"
-                                    />
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={OtherIcon}
-                                        text="Other"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="row mt-2 mb-2">
-                                <div className="col d-flex justify-content-around" align="center">
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={WoodIcon}
-                                        text="Wood"
-                                    />
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={RubberIcon}
-                                        text="Rubber"
-                                    />
-                                    <FindResourceIconHolder
-                                        iconClass={styles.resourceIcon}
-                                        icon={TextileIcon}
-                                        text="Textiles"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div className="row mt-5 mb-2">
                         <div className="col">
-                            <h1 className="text-md-center blue-text">All Products</h1>
+                            <h2 className="text-md-center blue-text">View all Listings</h2>
                         </div>
                     </div>
 
@@ -202,4 +139,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(FindResourcePage);
+const mapDispatchToProps = dispatch => {
+    return {
+
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindResourcePage);

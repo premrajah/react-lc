@@ -146,6 +146,8 @@
         callBackResult(){
 
             this.showEdit()
+
+            this.getSearch()
         }
 
         showEdit(){

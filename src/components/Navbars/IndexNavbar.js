@@ -63,7 +63,7 @@ class ComponentsNavbar extends React.Component {
     componentDidMount() {
         window.addEventListener("scroll", this.changeColor);
         if(this.props.isLoggedIn) {
-            // this.getArtifactForOrg();
+            this.getArtifactForOrg();
         }
     }
     componentWillUnmount() {
@@ -110,6 +110,8 @@ class ComponentsNavbar extends React.Component {
                 if (response.status === 200) {
                     if(response.data.data.length > 0) {
                         this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
+
+                        this.props.setOrgImage(response.data.data[response.data.data.length -1].blob_url)
                     }
                 }
             })
@@ -238,10 +240,10 @@ class ComponentsNavbar extends React.Component {
                                             className="avatar avatar-60 border-0">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
-                                                    this.state.orgImage.length > 0 ? (
+                                                    this.props.orgImage  ? (
                                                         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                                             <img
-                                                                src={this.state.orgImage}
+                                                                src={this.props.orgImage}
                                                                 alt=""
                                                                 style={{
                                                                     maxHeight: "30px",
@@ -358,6 +360,7 @@ const mapStateToProps = (state) => {
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
+        orgImage: state.orgImage,
     };
 };
 
@@ -369,6 +372,8 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         logOut: (data) => dispatch(actionCreator.logOut(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);

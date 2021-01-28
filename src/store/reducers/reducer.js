@@ -22,7 +22,8 @@ export const initialState = {
     product:null,
     parentProduct:null,
     productList:[],
-    siteList:[]
+    siteList:[],
+    orgImage:null
 
 
 
@@ -45,6 +46,12 @@ const reducer = (state = initialState, action) => {
             break;
 
 
+
+        case "SET_ORG_IMG":
+
+            newState.orgImage = action.value;
+
+            break;
 
 
         case "LOADING_SPINNER":

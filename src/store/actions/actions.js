@@ -27,6 +27,14 @@ export const loading = () => {
 
 
 
+
+export const setOrgImage = (val) => {
+    return {
+        type: "SET_ORG_IMG", value: val
+    };
+};
+
+
 export const showLoading = (val) => {
     return {
         type: "SHOW_LOADING", value: val

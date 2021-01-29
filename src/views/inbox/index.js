@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { baseUrl } from "../../Util/Constants";
-import axios from "axios/index";
 import Notifications from "../../components/Inbox/Notifications";
 import Messages from "../../components/Inbox/Messages";
-import { Tabs, Tab, Typography, Box, AppBar } from "@material-ui/core";
+import { Tabs, Tab, Typography, Box } from "@material-ui/core";
 import PropTypes from "prop-types";
 
 class Inbox extends Component {

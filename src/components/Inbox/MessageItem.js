@@ -8,12 +8,14 @@ const MessageItem = ({item}) => {
     }
 
     return (
-        <Alert variant="secondary" dismissible onClose={() => handleCloseMessage()}>
-            <Alert.Heading>Message title</Alert.Heading>
-            <p>
-                Message (sample)
-            </p>
-        </Alert>
+        <div>
+            <Alert variant="secondary" dismissible onClose={() => handleCloseMessage()}>
+                <Alert.Heading>Message title</Alert.Heading>
+                <div>
+                    Message (sample)
+                </div>
+            </Alert>
+        </div>
     )
 }
 

@@ -25,7 +25,7 @@ class Inbox extends Component {
                     {...other}>
                     {value === index && (
                         <Box p={3}>
-                            <Typography>{children}</Typography>
+                            <div>{children}</div>
                         </Box>
                     )}
                 </div>
@@ -93,4 +93,5 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {};
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Inbox);
+
+export default connect(mapStateToProps)(Inbox);

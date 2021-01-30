@@ -12,9 +12,11 @@ const NotificationItem = ({item}) => {
     }
 
     return(
-        <Alert variant={type === 'notification' ? 'success' : 'primary'} onClose={() => handleOnClose(_key)} dismissible>
-            {moment(_ts_epoch_ms).format('DD MMM YYYY')} : {text}
-        </Alert>
+        <div>
+            <Alert variant={type === 'notification' ? 'success' : 'primary'} onClose={() => handleOnClose(_key)} dismissible>
+                {moment(_ts_epoch_ms).format('DD MMM YYYY')} : {text}
+            </Alert>
+        </div>
     )
 }
 

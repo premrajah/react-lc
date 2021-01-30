@@ -27,6 +27,7 @@
     import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
     import SearchEditForm from '../../components/SearchEditForm'
     import { Modal, ModalBody, Alert } from 'react-bootstrap';
+    import MoreMenu from '../../components/MoreMenu'
 
 
     import {
@@ -134,22 +135,61 @@
             this.selectCreateSearch=this.selectCreateSearch.bind(this)
             this.callBackResult=this.callBackResult.bind(this)
             this.showEdit=this.showEdit.bind(this)
-
+            this.deleteItem=this.deleteItem.bind(this)
 
 
         }
 
 
 
-        callBackResult(){
+        callBackResult(action){
 
-            this.showEdit()
 
-            this.getSearch()
+
+
+            if (action==="edit"){
+
+                this.showEdit()
+            }
+            else if (action==="delete"){
+
+                this.deleteItem()
+            }
+
+        }
+
+        deleteItem() {
+
+            axios.delete(baseUrl + "search/"+this.state.createSearchData.search._key,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        // var responseAll = response.data.data;
+
+
+                        this.props.history.push("/my-search")
+                        // this.props.loadProducts()
+
+
+                    },
+                    (error) => {
+
+                        console.log("delete response error")
+                        console.log(error)
+
+                    }
+                );
+
         }
 
         showEdit(){
 
+            this.getSearch()
             this.setState({
 
                 showEdit:!this.state.showEdit,
@@ -304,6 +344,8 @@
         getSearch() {
 
 
+
+
             axios.get(baseUrl + "search/" + this.slug+"/expand",
                 {
                     headers: {
@@ -348,9 +390,9 @@
 
         getSite() {
 
-         
+
          if (this.state.createSearchData)
-         
+
             axios.get(baseUrl + "site/" + this.state.createSearchData.site._key,
                 {
                     headers: {
@@ -739,11 +781,17 @@
                                                             {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
 
 
-                                                            <EditIcon className={"mr-2"} onClick={this.showEdit}  />
+                                                            {/*<EditIcon className={"mr-2"} onClick={this.showEdit}  />*/}
 
-                                                            {/*<FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />*/}
+                                                            {/*/!*<FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />*!/*/}
 
-                                                            <DeleteIcon className={""} onClick={this.showProductEdit}  />
+                                                            {/*<DeleteIcon className={""} onClick={this.showProductEdit}  />*/}
+
+                                                            {/*<MoreMenu/>*/}
+
+
+                                                            <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={true}  />
+
                                                         </div>
 
                                                     </div>
@@ -897,7 +945,7 @@
                                     </div>
 
 
-                                    <SearchEditForm  triggerCallback={this.callBackResult} searchId={this.state.createSearchData.search._key}/>
+                                    <SearchEditForm  triggerCallback={this.showEdit} searchId={this.state.createSearchData.search._key}/>
 
 
                                 </Modal>

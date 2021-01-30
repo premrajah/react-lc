@@ -4,6 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from "@material-ui/icons/MoreHoriz";
 import { connect } from "react-redux";
+import { Modal, ModalBody, Alert } from 'react-bootstrap';
 
 
 class MoreMenu extends Component {
@@ -21,15 +22,44 @@ class MoreMenu extends Component {
             items: [],
             previewImage:null,
             open:false,
-            anchorEl:null
+            anchorEl:null,
+            showDeletePopUp:false
         }
 
         this.triggerCallback=this.triggerCallback.bind(this)
         this.setOpen=this.setOpen.bind(this)
+        this.deleteAction=this.deleteAction.bind(this)
+        this.showDeletePopUp=this.showDeletePopUp.bind(this)
 
 
     }
 
+    showDeletePopUp(event){
+
+
+        // event.stopPropagation();
+        // event.preventDefault();
+
+        this.setState({
+
+            showDeletePopUp: !this.state.showDeletePopUp
+        })
+
+    }
+
+    deleteAction(event){
+
+
+        // event.stopPropagation();
+        // event.preventDefault();
+
+        this.setState({
+
+            showDeletePopUp: !this.state.showDeletePopUp
+        })
+            this.props.triggerCallback("delete")
+
+    }
 
 
 
@@ -45,13 +75,16 @@ class MoreMenu extends Component {
     triggerCallback(action) {
 
 
-        this.props.triggerCallback(action)
 
+        if (action!=="delete") {
+            this.props.triggerCallback(action)
+        }else{
+
+            this.showDeletePopUp()
+        }
     }
 
      handleClick = (event) => {
-        
-        
         
 
         event.stopPropagation();
@@ -85,6 +118,9 @@ class MoreMenu extends Component {
 
         render() {
             return (
+
+                <>
+
                 <div className={"more-menu-container"}>
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
                         <MoreIcon/>
@@ -96,13 +132,63 @@ class MoreMenu extends Component {
                             open={this.state.open}
                             onClose={this.setOpen}
                         >
-                            <MenuItem  data-action={"edit"} onClick={this.handleClose}>Edit</MenuItem>
-                            <MenuItem data-action={"delete"} onClick={this.handleClose}>Delete</MenuItem>
-                            <MenuItem data-action={"duplicate"} onClick={this.handleClose}>Duplicate</MenuItem>
+                            {this.props.edit &&<MenuItem  data-action={"edit"} onClick={this.handleClose}>Edit</MenuItem>}
+                            {this.props.delete && <MenuItem data-action={"delete"} onClick={this.handleClose}>Delete</MenuItem>}
+                            {this.props.duplicate &&     <MenuItem data-action={"duplicate"} onClick={this.handleClose}>Duplicate</MenuItem>}
                         </Menu>
                     </Button>
 
                 </div>
+
+
+                    <Modal className={"loop-popup"}
+                           aria-labelledby="contained-modal-title-vcenter"
+                           centered show={this.state.showDeletePopUp} onHide={this.showDeletePopUp} animation={false}>
+
+                        <ModalBody>
+
+
+
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-10 text-center"}>
+                                    <p className={"text-bold"}>Delete</p>
+                                    <p>Are you sure you want to delete ?</p>
+                                </div>
+                            </div>
+
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button onClick={this.deleteAction}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <button onClick={this.showDeletePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </ModalBody>
+
+                    </Modal>
+
+
+                </>
+
+
             );
         }
 }

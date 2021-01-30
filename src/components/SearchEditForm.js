@@ -144,14 +144,7 @@ class SearchEditForm extends Component {
 
     }
 
-
-
     loadSelection(){
-
-
-
-
-
 
 
         let catSelected =  this.state.categories.filter((item) => item.name === this.state.item.search.category)[0]

@@ -22,6 +22,7 @@ export const initialState = {
     product:null,
     parentProduct:null,
     productList:[],
+    productWithoutParentList:[],
     siteList:[],
     orgImage:null
 
@@ -144,6 +145,21 @@ const reducer = (state = initialState, action) => {
             newState.loading = false;
 
             console.log("product list loaded ")
+
+            console.log(action.value)
+
+
+
+
+            break;
+        case "PRODUCT_NPARENT_LIST":
+
+
+            newState.productWithoutParentList = action.value
+
+            newState.loading = false;
+
+            console.log("product no parent list loaded ")
 
             console.log(action.value)
 

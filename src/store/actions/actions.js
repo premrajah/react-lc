@@ -353,6 +353,24 @@ export const loadProducts = (data) => {
 };
 
 
+export const loadProductsWithoutParent = (data) => {
+
+
+    return dispatch  =>  {
+
+
+        dispatch(loading());
+        dispatch(loadProductsWithoutParentSync(data));
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+
+    };
+
+
+};
+
+
+
 
 export const loadSites = (data) => {
 
@@ -446,6 +464,48 @@ export const loadProductsSync = (data) => dispatch => {
                 console.log(error)
 
                 dispatch({ type: "PRODUCT_LIST", value: [] })
+
+
+            }
+        );
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+
+
+}
+
+
+export const loadProductsWithoutParentSync = (data) => dispatch => {
+
+
+
+
+    axios.get(baseUrl + "product/no-parent",
+        {
+            headers: {
+                "Authorization": "Bearer " + data
+            }
+        }
+    )
+        .then((response) => {
+
+                var responseAll = response.data.data;
+
+                console.log("product response")
+                console.log(responseAll)
+
+                dispatch({ type: "PRODUCT_NPARENT_LIST", value: responseAll })
+                // dispatch()
+
+
+            },
+            (error) => {
+
+                // var status = error.response.status
+                console.log("products error")
+                console.log(error)
+
+                dispatch({ type: "PRODUCT_NPARENT_LIST", value: [] })
 
 
             }

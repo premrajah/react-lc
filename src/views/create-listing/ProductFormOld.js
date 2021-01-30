@@ -669,10 +669,9 @@ class ProductForm extends Component {
 
 
         this.props.loadProducts(this.props.userDetail.token)
-        this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
 
-            this.props.showProductPopUp({type:"sub_product_view",show:true})
+        this.props.showProductPopUp({type:"sub_product_view",show:true})
 
     }
 
@@ -2146,7 +2145,6 @@ const mapDispachToProps = dispatch => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
 
 
 

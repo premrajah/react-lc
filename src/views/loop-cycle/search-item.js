@@ -31,20 +31,59 @@ class SearchItem extends Component {
 
         this.getPreviewImage=this.getPreviewImage.bind(this)
         this.callBackResult=this.callBackResult.bind(this)
-
         this.showEdit=this.showEdit.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
 
     }
     callBackResult(action){
 
-        // this.showEdit()
 
-        // alert(action)
+        if (action==="edit"){
+
+            this.showEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
 
     }
 
+    triggerCallback() {
+
+            this.props.triggerCallback()
 
 
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "search/"+this.props.item.search._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+                    console.log("delete response error")
+                    console.log(error)
+
+                }
+            );
+
+    }
 
 
     showEdit(){
@@ -139,7 +178,7 @@ class SearchItem extends Component {
                         {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
                         </p>
 
-                    <MoreMenu id={this.props.item.search._key} triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={true} edit={true}  />
+                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={true}  />
 
 
                 </div>

@@ -40,7 +40,14 @@ class MySearch extends Component {
 
 
         this.getItems = this.getItems.bind(this)
+        this.callBackResult=this.callBackResult.bind(this)
 
+    }
+
+
+    callBackResult(action){
+
+      this.getItems()
     }
 
 
@@ -186,7 +193,7 @@ class MySearch extends Component {
                         {this.state.items.map((item) =>
 
 
-                            <SearchItem item={item} />
+                            <SearchItem triggerCallback={()=>this.callBackResult()}  item={item} />
 
 
                         )}

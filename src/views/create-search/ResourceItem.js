@@ -25,6 +25,7 @@ import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import moment from "moment";
+import MoreMenu from '../../components/MoreMenu'
 
 
 class ResourceItem extends Component {
@@ -43,6 +44,10 @@ class ResourceItem extends Component {
         }
 
 
+        this.callBackResult=this.callBackResult.bind(this)
+        this.showEdit=this.showEdit.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+
     }
 
     componentWillMount() {
@@ -56,10 +61,68 @@ class ResourceItem extends Component {
         console.log(this.props.item)
 
     }
-    
-    
 
 
+
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+
+    }
+
+    triggerCallback() {
+
+        this.props.triggerCallback()
+
+
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+                    console.log("delete response error")
+                    console.log(error)
+
+                }
+            );
+
+    }
+
+
+    showEdit(){
+
+        this.setState({
+
+            showEdit:!this.state.showEdit,
+
+        })
+    }
 
 
 
@@ -152,6 +215,8 @@ class ResourceItem extends Component {
                             {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
 
                         </p>
+                        <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={true}  />
+
                     </div>
 
             </div>

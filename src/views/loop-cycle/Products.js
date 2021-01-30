@@ -113,7 +113,7 @@ class Products extends Component {
         // this.getProducts()
 
 
-        this.props.loadProducts(this.props.userDetail.token)
+        this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
     }
 
@@ -179,7 +179,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row listing-row-border   pt-3 pb-3">
 
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.props.productList.length} Products </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.props.productWithoutParentList.length} Products </p>
 
                             </div>
                             <div className="text-mute col-auto pl-0">
@@ -191,7 +191,7 @@ class Products extends Component {
                         </div>
 
 
-                        {this.props.productList.map((item) =>
+                        {this.props.productWithoutParentList.map((item) =>
 
                             <Link to={"/product/" + item.product._key}>
 
@@ -291,7 +291,8 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
 
-        productList: state.productList,
+        productWithoutParentList: state.productWithoutParentList,
+        
 
 
     };
@@ -307,6 +308,8 @@ const mapDispachToProps = dispatch => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
+
 
 
     };

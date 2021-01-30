@@ -594,7 +594,7 @@ class MatchItemSeller extends Component {
                 <div className={"col-4  content-box-listing"}>
 
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
-                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org._id} <CompanyInfo item={this.props.item.search.org}/></p>
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org.name} <CompanyInfo item={this.props.item.search.org}/></p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.search.name} </p>
                     <p style={{ fontSize: "16px" }} className=" mb-1">Stage: {this.props.item.match.stage} </p>
                     {this.state.cycle &&<p> <Link className="btn blue-btn-border mt-2 mb-2 " color="default" to={"/cycle/"+this.state.cycle.cycle._key}>View Cycle</Link></p>}

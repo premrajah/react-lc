@@ -33,6 +33,7 @@ import Org from "./Org/Org";
 import EditItem from "./EditItem";
 import DuplicateItem from "./DuplicateItem";
 import ProductEditForm from "./ProductEditForm";
+import MoreMenu from './MoreMenu'
 
 
 class ProductDetail extends Component {
@@ -78,6 +79,65 @@ class ProductDetail extends Component {
         this.showProductEdit=this.showProductEdit.bind(this)
         this.showProductDuplicate=this.showProductDuplicate.bind(this)
 
+        this.callBackResult=this.callBackResult.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+
+
+    }
+
+
+
+
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showProductEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+        else if (action==="duplicate"){
+
+            this.showProductDuplicate()
+        }
+    }
+
+    triggerCallback() {
+
+        this.props.triggerCallback()
+
+
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+                    console.log("delete response error")
+                    console.log(error)
+
+                }
+            );
 
     }
 
@@ -758,9 +818,13 @@ class ProductDetail extends Component {
                                                     {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
 
 
-                                                    <EditIcon className={"mr-2"} onClick={this.showProductEdit}  />
+                                                    {/*<EditIcon className={"mr-2"} onClick={this.showProductEdit}  />*/}
 
-                                                    <FileCopyIcon  onClick={this.showProductDuplicate}  />
+                                                    {/*<FileCopyIcon  onClick={this.showProductDuplicate}  />*/}
+
+
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={false} duplicate={true} edit={true}  />
+
 
 
                                                 </div>

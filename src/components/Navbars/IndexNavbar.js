@@ -32,7 +32,17 @@ class ComponentsNavbar extends React.Component {
         this.showLoginPopUp = this.showLoginPopUp.bind(this);
         this.logOut = this.logOut.bind(this);
         this.showSignUpPopUp = this.showSignUpPopUp.bind(this);
+        this.showProductSelection=this.showProductSelection.bind(this)
+
     }
+
+
+    showProductSelection() {
+
+        this.props.showProductPopUp({type:"create_product",show:true})
+
+    }
+
 
     toggleMenu = (event) => {
         document.body.classList.add("sidemenu-open");
@@ -172,6 +182,16 @@ class ComponentsNavbar extends React.Component {
                                 {/*Sell Resources*/}
                                 {/*</Link>*/}
                                 {/*</NavItem>*/}
+                                <NavItem className={"web-only"}>
+                                    <button
+                                        onClick={this.showProductSelection}
+                                        style={{border:"none"}}
+                                        to={"/search-form"}
+                                        className="nav-link d-none d-lg-block green-link "
+                                        color="default">
+                                        Add Product
+                                    </button>
+                                </NavItem>
 
                                 <NavItem className={"web-only"}>
                                     <Link
@@ -375,6 +395,8 @@ const mapDispachToProps = (dispatch) => {
         logOut: (data) => dispatch(actionCreator.logOut(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+
 
     };
 };

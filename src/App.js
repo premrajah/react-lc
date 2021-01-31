@@ -97,12 +97,12 @@ class App extends Component{
                     <Switch>
 
                         <Route exact path="/" component={withRouter(Home)} />
-                        <Route exact path="/terms" component={withRouter(TermsAndConditions)} />
-                        <Route exact path="/service" component={withRouter(TermsAndService)} />
-                        <Route exact path="/cookie" component={withRouter(Cookie)} />
-                        <Route exact path="/privacy" component={withRouter(Privacy)} />
-                        <Route exact path="/acceptable" component={withRouter(AcceptableUse)} />
-                        <LoggedInRoute exact path="/inbox" component={withRouter(Inbox)} />
+                        <Route exact path="/terms" component={TermsAndConditions} />
+                        <Route exact path="/service" component={TermsAndService} />
+                        <Route exact path="/cookie" component={Cookie} />
+                        <Route exact path="/privacy" component={Privacy} />
+                        <Route exact path="/acceptable" component={AcceptableUse} />
+                        <LoggedInRoute exact path="/inbox" component={Inbox} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />

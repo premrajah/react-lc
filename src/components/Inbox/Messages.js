@@ -33,9 +33,12 @@ class Messages extends Component {
 
     render() {
         return <div>
-            {this.state.allMessages.length > 0 ? this.state.allMessages.map(item => {
-                return <Messages item={item} key={Date.now()} />
-            }) : 'No messages ... '}
+            <h5 className="blue-text mb-4">Messages ({this.state.allMessages.length})</h5>
+            <div className="messages-content">
+                {this.state.allMessages.length > 0 ? this.state.allMessages.map(item => {
+                    return <Messages item={item} key={Date.now()} />
+                }) : 'No messages ... '}
+            </div>
         </div>;
     }
 }

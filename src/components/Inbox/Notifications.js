@@ -32,9 +32,12 @@ class Notifications extends Component {
 
     render() {
         return <div>
-            {this.state.allNotifications.length > 0 ? this.state.allNotifications.map(item => {
-                return <NotificationItem item={item} key={item._key} />
-            }) : 'No notifications... '}
+            <h5 className="blue-text mb-4">Notifications ({this.state.allNotifications.length})</h5>
+            <div className="notification-content">
+                {this.state.allNotifications.length > 0 ? this.state.allNotifications.map(item => {
+                    return <NotificationItem item={item} key={item._key} />
+                }) : 'No notifications... '}
+            </div>
 
         </div>;
     }

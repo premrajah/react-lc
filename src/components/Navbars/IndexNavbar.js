@@ -183,14 +183,14 @@ class ComponentsNavbar extends React.Component {
                                 {/*</Link>*/}
                                 {/*</NavItem>*/}
                                 <NavItem className={"web-only"}>
-                                    <button
+                                    <Link
                                         onClick={this.showProductSelection}
-                                        style={{border:"none"}}
                                         to={"/search-form"}
-                                        className="nav-link d-none d-lg-block green-link "
-                                        color="default">
+                                        className="nav-link d-none d-lg-block wl-link-white"
+                                        color="default"
+                                        >
                                         Add Product
-                                    </button>
+                                    </Link>
                                 </NavItem>
 
                                 <NavItem className={"web-only"}>

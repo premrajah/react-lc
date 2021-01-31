@@ -219,7 +219,9 @@ const reducer = (state = initialState, action) => {
                 newState.showCreateProduct = true
                 newState.showCreateSubProduct = false
 
-                newState.parentProduct = null
+                // newState.parentProduct = null
+                // newState.parentProduct = "product-1612062286992-ad2bHnLWqF"
+
 
 
             }
@@ -229,6 +231,9 @@ const reducer = (state = initialState, action) => {
                 newState.showCreateProduct = false
 
                 newState.showCreateSubProduct= true
+                newState.parentProduct= action.value.parentId
+                // newState.parentProduct = "product-1612062286992-ad2bHnLWqF"
+
             }
 
             else  if (type==="product_view") {

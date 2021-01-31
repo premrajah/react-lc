@@ -20,6 +20,10 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import _ from 'lodash';
 import { Spinner} from 'react-bootstrap';
 
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -109,6 +113,7 @@ class ProductForm extends Component {
             parentProduct:null,
             imageLoading:false,
             showSubmitSite:false,
+            is_listable:false
 
 
         }
@@ -131,6 +136,7 @@ class ProductForm extends Component {
         this.showProductSelection=this.showProductSelection.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.checkListable=this.checkListable.bind(this)
 
 
     }
@@ -513,6 +519,16 @@ class ProductForm extends Component {
         fields[field] = e.target.value;
         this.setState({ fields: fields });
 
+    }
+
+
+    checkListable(){
+
+
+        this.setState({
+
+            is_listable:!this.state.is_listable
+        })
     }
 
     showSubmitSite(){
@@ -1066,6 +1082,8 @@ class ProductForm extends Component {
                 "units": units,
                 "state": state,
                 "volume": volume,
+                "is_listable":this.state.is_listable,
+                "stage" : "certified",
                 "sku": {
                     "serial": serial,
                     "model": model,
@@ -1074,6 +1092,7 @@ class ProductForm extends Component {
                     "upc": upc,
                     "part_no": part_no
                 },
+
 
                 "year_of_making": data.get("manufacturedDate")
 
@@ -1086,13 +1105,11 @@ class ProductForm extends Component {
             if (this.props.parentProduct) {
 
                 completeData = {
-
                     product: productData,
-                    "child_product_ids": [],
+                    "child_products": [],
                     "artifact_ids": this.state.images,
                     "site_id": data.get("deliver"),
-                    "parent_product_id": this.props.parentProduct.product._key,
-
+                    "parent_product_id": this.props.parentProduct,
 
                 }
 
@@ -1102,7 +1119,7 @@ class ProductForm extends Component {
                 completeData = {
 
                     product: productData,
-                    "child_product_ids": [],
+                    "child_products": [],
                     "artifact_ids": this.state.images,
                     "parent_product_id": null,
                     "site_id": data.get("deliver"),
@@ -1522,6 +1539,22 @@ class ProductForm extends Component {
 
                                 </div>
 
+                                <div className="col-12 mt-4">
+
+
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={this.state.is_listable}
+                                                onChange={this.checkListable}
+                                                name="is_listable"
+                                                color="primary"
+                                            />
+                                        }
+                                        label="Is Listable ?"
+                                    />
+
+                                </div>
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>Give it a description</div>
 

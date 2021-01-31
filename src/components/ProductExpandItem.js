@@ -10,9 +10,22 @@ import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
 import moment from "moment/moment";
 import PlaceholderImg from '../img/place-holder-lc.png';
-
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 import ProductItemNew from './ProductItemNew'
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { makeStyles, withStyles } from "@material-ui/core/styles/index";
 
+const useStylesSelect = makeStyles((theme) => ({
+    formControl: {
+        margin: theme.spacing(0),
+        width: "100%"
+        // minWidth: auto,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(0),
+    },
+}));
 
 class ProductExpandItem extends Component {
 
@@ -27,15 +40,20 @@ class ProductExpandItem extends Component {
             count: 0,
             nextIntervalFlag: false,
             subProducts:[],
-            product:null
+            product:null,
+            fields: {},
+            errors: {},
+            subProductSelected:null
         }
 
         this.showPopUp=this.showPopUp.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
+        this.linkSubProduct=this.linkSubProduct.bind(this)
 
     }
 
 
+    classes = useStylesSelect;
 
     componentDidUpdate(prevProps) {
 
@@ -53,13 +71,42 @@ class ProductExpandItem extends Component {
     }
 
 
-    showProductSelection() {
+
+    handleChange(field, e) {
 
 
-        this.props.setProduct(this.state.product)
-        this.props.setParentProduct(this.state.product)
+
+        let fields = this.state.fields;
+
+        fields[field] = e.target.value;
+
+
+        this.setState({ fields });
+
+        if (field === "product"){
+
+
+            this.setState({
+
+                subProductSelected: this.props.productList.filter((item) => item.product._key==e.target.value)[0]
+
+            })
+
+
+        }
+
+
+
+    }
+
+
+    showProductSelection(event) {
+
+
+        // this.props.setProduct(this.state.product)
+        // this.props.setParentProduct(this.state.product)
         
-        this.props.showProductPopUp({type:"create_sub_product",show:true})
+        this.props.showProductPopUp({type:"create_sub_product",show:true, parentId:event.currentTarget.dataset.parent})
 
     }
 
@@ -76,7 +123,7 @@ class ProductExpandItem extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("detail resource response")
+                    console.log("product expand resource response")
                     console.log(responseAll)
 
 
@@ -84,6 +131,8 @@ class ProductExpandItem extends Component {
 
                         product: responseAll.data
                     })
+
+                // alert("loading priduct")
 
 
                     this.setState({
@@ -98,7 +147,7 @@ class ProductExpandItem extends Component {
 
                 },
                 (error) => {
-                    console.log("resource error", error)
+                    console.log("product expand error", error)
                 }
             );
 
@@ -116,6 +165,75 @@ class ProductExpandItem extends Component {
     }
 
 
+    linkSubProduct(event){
+
+
+            event.preventDefault();
+
+            const form = event.currentTarget;
+
+            console.log(new FormData(event.target))
+            // if (this.handleValidationSite()){
+
+            this.setState({
+                btnLoading: true
+            })
+
+            const data = new FormData(event.target);
+
+            const volume = data.get("volume")
+            const subProduct = data.get("product")
+
+
+
+        var dataForm =  {
+            "product_id": this.state.product.product._key,
+            "sub_products": [
+                {
+                    id:subProduct,
+                    volume:parseInt(volume)
+
+                }
+            ],
+
+        }
+
+
+        axios.post(baseUrl + "product/sub-product",dataForm
+
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+                console.log("sub product added succesfull")
+
+                // dispatch({type: "SIGN_UP", value : res.data})
+
+
+                this.loadProduct()
+
+
+
+            }).catch(error => {
+
+            // dispatch(stopLoading())
+
+            // dispatch(signUpFailed(error.response.data.content.message))
+
+            console.log(error)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
+
+
+        });
+
+
+
+
+    }
 
     componentWillMount() {
 
@@ -123,7 +241,12 @@ class ProductExpandItem extends Component {
 
     componentDidMount() {
 
+        // alert("expand item")
+
+
         this.loadProduct(this.props.productId)
+
+        this.props.loadProducts(this.props.userDetail.token)
 
     }
 
@@ -177,6 +300,8 @@ class ProductExpandItem extends Component {
 
     render() {
 
+        const classes = withStyles();
+        const classesBottom = withStyles();
 
         return (
 
@@ -194,15 +319,111 @@ class ProductExpandItem extends Component {
                     </div>
                     </div>}
 
+                    {this.state.product &&
+                    <>
+                        {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
 
-                    {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
+                            <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
 
-                        <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
+                                <span data-parent={this.state.product.product._key} onClick={this.showProductSelection} >Add New Sub Product</span>
 
-                            <span onClick={this.showProductSelection} >Add Sub Product</span>
+                            </p>
+                        </div>}
+                    </>
+                    }
 
-                        </p>
-                    </div>}
+                    {this.state.product &&
+                    <>
+                        <form onSubmit={this.linkSubProduct}>
+
+                            <div className="col-12 mt-4">
+
+                                <div className="row ">
+
+                                    <div className="col-9">
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Link Sub product</div>
+
+
+                                        <FormControl variant="outlined" className={classes.formControl}>
+
+
+                                            <Select
+
+                                                name= "product"
+                                                // label={"Link a product"}
+                                                native
+                                                onChange={this.handleChange.bind(this, "product")}
+                                                inputProps={{
+                                                    name: 'product',
+                                                    id: 'outlined-age-native-simple',
+                                                }}
+                                            >
+
+                                                <option value={null}>Select</option>
+
+                                                {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
+
+
+                                                    <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
+
+                                                )}
+
+                                            </Select>
+                                            {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
+
+
+                                            {/*<FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?*/}
+
+                                                {/*<span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>*/}
+
+                                            {/*</FormHelperText>*/}
+                                        </FormControl>
+
+
+                                        {this.state.subProductSelected&&
+                                        <>
+
+                                            <ProductItemNew item={this.state.subProductSelected}/>
+
+
+                                        </>
+                                        }
+
+                                    </div>
+
+                                    <div className="col-3">
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Volume</div>
+
+                                        <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={"volume"} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                        {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                                <div className="col-12 mt-4 mobile-menu">
+                                    <div className="row text-center ">
+
+                                        <div className="col-4">
+
+                                      <button type={"submit"}  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit</button>
+
+                                        </div>
+                                    </div>
+
+
+                            </div>
+
+
+                        </form>
+
+
+                        </>}
+
 
                     {this.state.subProducts.map((item)=>
 
@@ -231,6 +452,7 @@ const mapStateToProps = state => {
         loginPopUpStatus: state.loginPopUpStatus,
         parentProduct:state.parentProduct,
         product:state.product,
+        productList: state.productList,
 
 
     };
@@ -247,6 +469,7 @@ const mapDispachToProps = dispatch => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
 
 
 

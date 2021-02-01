@@ -8,7 +8,7 @@ export const baseUrl = REACT_APP_BRANCH_ENV === "master" ? "http://graph.makealo
 export const baseImgUrl = REACT_APP_BRANCH_ENV === "master" ? "http://graph.makealoop.io" : "http://graph-dev.makealoop.io";
 
 // CHANDAN: What is this used for?
-export const frontEndUrl = REACT_APP_BRANCH_ENV === "master" ? "http://ui.makealoop.io/" : "http://dev-react-2.makealoop.io/";
+export const frontEndUrl = REACT_APP_BRANCH_ENV === "master" ? "http://u.lpcy.uk/" : "http://dev-react-2.makealoop.io/";
 
 console.log("baseUrl : " + baseUrl);
 console.log("baseImgUrl : " + baseImgUrl);

@@ -124,7 +124,7 @@ class ProductDetail extends Component {
 
 
 
-        this.productQrCode = "http://api.makealoop.io/api/1/product/" + id + "/code?u=" + frontEndUrl + "product-cycle-detail";
+        this.productQrCode = "http://api.makealoop.io/api/2/product/" + id + "/code?u=" + frontEndUrl + "p";
 
     }
 
@@ -306,7 +306,7 @@ class ProductDetail extends Component {
 
                                 <img src={this.productQrCode} alt="" />
 
-                                <Link to={"/product-cycle-detail/" + this.state.item.product._key}> Go To Preview Page</Link>
+                                <Link to={"/p/" + this.state.item.product._key}> Go To Preview Page</Link>
 
 
                             </div>

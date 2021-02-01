@@ -479,13 +479,9 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
-        // this.productQrCode = baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail";
-
-
-
         this.setState({
 
-            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail"
+            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "p"
 
         })
         console.log("qr code")
@@ -777,7 +773,7 @@ class ProductDetail extends Component {
                                                         </div>
 
                                                         {this.props.hideRegister &&   <p className={"green-text"}>
-                                                            <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
+                                                            <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}> View product
                                                                 provenance</Link>
                                                             <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>Print PDF</Link>
                                                         </p>}

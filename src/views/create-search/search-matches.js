@@ -446,7 +446,7 @@ function NavTabs(props) {
                     {props.matches.map((item) =>
 
                         <>
-                        <Link to={"/matched/"+ item.match._key }>
+                        <Link to={"/match/"+ item.match._key }>
 
                             <MatchItem item={item}  />
 

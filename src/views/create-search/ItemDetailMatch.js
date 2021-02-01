@@ -521,7 +521,7 @@ class ItemDetailMatch extends Component {
                                             </button>
                                         </div>:<>
 
-                                            {this.state.match&& <Link to={"/matched/"+this.state.match.match._key} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>View Match</Link>}
+                                            {this.state.match&& <Link to={"/match/"+this.state.match.match._key} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>View Match</Link>}
                                             </>
 
                                         }

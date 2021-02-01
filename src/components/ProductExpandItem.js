@@ -394,7 +394,7 @@ class ProductExpandItem extends Component {
                                     <div className="col-3">
                                         <div className={"custom-label text-bold text-blue mb-1"}>Volume</div>
 
-                                        <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={"volume"} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                        <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={"volume"} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 
 

@@ -1675,7 +1675,7 @@ class ProductForm extends Component {
 
                                             <TextField type={"number"}  onChange={this.handleChangeProduct.bind(this, "volume")}
                                                        name={"volume"}
-                                                       id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} />
+                                                       id="outlined-basic" label="Volume" variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
                                             {this.state.errorsProduct["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["volume"]}</span>}
 
 

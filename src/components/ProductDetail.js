@@ -6,23 +6,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
 import PlaceholderImg from '../img/place-holder-lc.png';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
-
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
-import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl  from "encodeurl"
 import { Tabs,Tab } from 'react-bootstrap';
 import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from './ProductItemNew'
-import MatchItem from '../components/MatchItem'
 import jspdf from 'jspdf'
 import QrCodeBg from '../img/qr-code-bg.png';
+import LoopcycleLogo from '../img/logo-text.png';
 import SearchItem from '../views/loop-cycle/search-item'
 import ResourceItem from '../views/create-search/ResourceItem'
 import { Modal, ModalBody, Alert } from 'react-bootstrap';
@@ -30,8 +24,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
-import EditItem from "./EditItem";
-import DuplicateItem from "./DuplicateItem";
 import ProductEditForm from "./ProductEditForm";
 import MoreMenu from './MoreMenu'
 
@@ -439,27 +431,33 @@ class ProductDetail extends Component {
 }
 
 
-    handlePrintPdf = (productItem, productQRCode) => {
+    handlePrintPdf = (productItem, productQRCode, QRCodeOuterImage, LoopcycleLogo) => {
 
         const { _key, name} = productItem;
         if(!_key || !productQRCode) { return; }
 
         const pdf = new jspdf()
         pdf.setTextColor(39,36,92)
-        pdf.text(name, 10, 30);
+        pdf.text(name, 10, 20);
 
-        pdf.setDrawColor(7, 173, 136)
-        pdf.line(0, 40, 1000, 40)
+        // pdf.setDrawColor(7, 173, 136)
+        // pdf.line(0, 40, 1000, 40)
 
-        pdf.addImage(productQRCode, 'PNG', 20, 40, 80, 80)
-        pdf.addImage(productQRCode, 'PNG', 100, 60, 40, 40)
-        pdf.addImage(productQRCode, 'PNG', 150, 70, 20, 20)
+        pdf.addImage(productQRCode, 'PNG', 100, 60, 80, 80, 'largeQR', null,45)
+        pdf.addImage(productQRCode, 'PNG', 100, 170, 40, 40, 'mediumQR', null, 45)
+        pdf.addImage(productQRCode, 'PNG', 100, 230, 20, 20, 'smallQR', null, 45)
 
-        pdf.setDrawColor(7, 173, 136)
-        pdf.line(0, 120, 1000, 120)
+        pdf.addImage(QRCodeOuterImage, 'PNG',42, 25.5, 116, 116, 'largeLogo')
+        pdf.addImage(QRCodeOuterImage, 'PNG',70, 151.8, 60.1, 60.1, 'mediumLogo')
+        pdf.addImage(QRCodeOuterImage, 'PNG',85, 220.9, 30, 30, 'smallLogo')
+
+        pdf.addImage(LoopcycleLogo, 9.2, 266, 50, 8, 'Loopcycle')
+
+        // pdf.setDrawColor(7, 173, 136)
+        // pdf.line(0, 120, 1000, 120)
 
         pdf.setTextColor(39,36,92)
-        pdf.textWithLink("Loopcycle.io", 10, 160, {url: 'https://loopcycle.io/'})
+        pdf.textWithLink("Loopcycle.io", 10, 280, {url: 'https://loopcycle.io/'})
 
         pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`)
     }
@@ -781,7 +779,7 @@ class ProductDetail extends Component {
                                                         {this.props.hideRegister &&   <p className={"green-text"}>
                                                             <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
                                                                 provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode)}>Print PDF</Link>
+                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>Print PDF</Link>
                                                         </p>}
 
 

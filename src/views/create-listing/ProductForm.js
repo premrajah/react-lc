@@ -1119,7 +1119,8 @@ class ProductForm extends Component {
                 completeData = {
 
                     product: productData,
-                    "child_products": [],
+                    "sub_products": [],
+                    // "sub_product_ids": [],
                     "artifact_ids": this.state.images,
                     "parent_product_id": null,
                     "site_id": data.get("deliver"),

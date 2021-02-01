@@ -63,7 +63,9 @@ class MoreMenu extends Component {
 
 
 
-     setOpen(){
+     setOpen(event){
+         event.stopPropagation();
+         event.preventDefault();
 
 
         this.setState({
@@ -94,11 +96,12 @@ class MoreMenu extends Component {
             anchorEl:event.currentTarget
         });
 
-         this.setOpen()
+         this.setOpen(event)
     };
 
      handleClose = (event) => {
-
+         event.stopPropagation();
+         event.preventDefault();
          
          if (event.currentTarget.dataset.action) {
 
@@ -106,14 +109,13 @@ class MoreMenu extends Component {
 
              this.triggerCallback(action)
          }
-        event.stopPropagation();
-        event.preventDefault();
+
 
          this.setState({
              anchorEl:null
          });
 
-         this.setOpen()
+         this.setOpen(event)
     };
 
         render() {

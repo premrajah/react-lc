@@ -15,8 +15,8 @@ import MySearch from "./views/loop-cycle/MySearch";
 
 
 import MyListingsOld from "./views/loop-cycle/MyListings";
-import ItemDetail from "./views/browser-resources/ItemDetail";
-import ItemCycleDetail from "./views/browser-resources/ItemCycleDetail";
+import ItemDetail from "./views/browse-resources/ItemDetail";
+import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
 import ProductDetail from "./views/loop-cycle/ProductDetail";
 import CreateProduct from "./views/create-product/create-product";
@@ -40,14 +40,14 @@ import SearchMatches from "./views/create-search/search-matches";
 import AddDetail from "./views/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
-import BrowseResources from "./views/browser-resources/index";
-import FindResources from "./views/browser-resources/FindResources";
-import MessageSeller from "./views/browser-resources/message-seller";
-import MakeOffer from "./views/browser-resources/make-offer";
+import BrowseResources from "./views/browse-resources/index";
+import FindResources from "./views/browse-resources/FindResources";
+import MessageSeller from "./views/browse-resources/message-seller";
+import MakeOffer from "./views/browse-resources/make-offer";
 import ItemDetailMatch from "./views/create-search/ItemDetailMatch";
 import ItemDetailMatched from "./views/create-search/ItemDetailMatched";
-import Search from "./views/browser-resources/Search";
-import Filter from "./views/browser-resources/Filter";
+import Search from "./views/browse-resources/Search";
+import Filter from "./views/browse-resources/Filter";
 import AuthRoute from "./Util/AuthRoute";
 import LoggedInRoute from "./Util/LoggedInRoute";
 import {connect} from "react-redux";
@@ -65,7 +65,8 @@ import Cookie from "./components/Terms/Cookie";
 import Privacy from "./components/Terms/Privacy";
 import AcceptableUse from "./components/Terms/AcceptableUse";
 import TermsAndService from "./components/Terms/TermsAndService";
-import FindResourcePage from "./views/browser-resources/FindResourcePage";
+import FindResourcePage from "./views/browse-resources/FindResourcePage";
+import ProductArchive from "./views/product-archive/ProductArchive";
 
 
 var hist = createBrowserHistory();
@@ -109,6 +110,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         <LoggedInRoute exact path="/my-products" component={Products} />
+                        <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />

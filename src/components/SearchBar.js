@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { InputAdornment, TextField } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
+import SearchGray from "@material-ui/icons/Search";
 
 class SearchBar extends Component {
     handleSearch = (value) => {
@@ -19,9 +20,9 @@ class SearchBar extends Component {
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <Search />
+                            <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                         </InputAdornment>
-                    ),
+                    )
                 }}
             />
         );

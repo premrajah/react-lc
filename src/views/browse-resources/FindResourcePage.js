@@ -60,7 +60,7 @@ class FindResourcePage extends Component {
                       }
                   })
                   .map((item) => <FindResourceListingItem key={item.listing._id} item={item} />)
-            : "Loading...";
+            : "Loading, no resources yet...";
     };
 
     render() {

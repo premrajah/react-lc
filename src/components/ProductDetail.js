@@ -481,7 +481,7 @@ class ProductDetail extends Component {
 
         this.setState({
 
-            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "p"
+            productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
 
         })
         console.log("qr code")

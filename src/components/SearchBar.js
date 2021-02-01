@@ -1,22 +1,30 @@
 import React, { Component } from "react";
-import { TextField } from "@material-ui/core";
+import { InputAdornment, TextField } from "@material-ui/core";
+import { Search } from "@material-ui/icons";
 
 class SearchBar extends Component {
-
     handleSearch = (value) => {
-        return this.props.onSearch(value)
-    }
-
+        return this.props.onSearch(value);
+    };
 
     render() {
         const { title, onSearch } = this.props;
-        return <TextField
-            id="searchBar"
-            label={title ? title : ''}
-            variant="outlined"
-            className=""
-            onChange={(e) => this.handleSearch(e.target.value)}
-        />;
+        return (
+            <TextField
+                id="searchBar"
+                label={title ? title : ""}
+                variant="outlined"
+                className=""
+                onChange={(e) => this.handleSearch(e.target.value)}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <Search />
+                        </InputAdornment>
+                    ),
+                }}
+            />
+        );
     }
 }
 

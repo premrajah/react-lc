@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
+import PageHeader from "../../components/PageHeader";
+import {Pages} from "@material-ui/icons";
 
 class ProductArchive extends Component {
     render() {
@@ -10,7 +12,7 @@ class ProductArchive extends Component {
                 <div className="wrapper ">
                     <HeaderDark />
                     <div className="container   pb-4 pt-4">
-                        test
+                        <PageHeader pageTitle="Product Archive" pageSubHeading="" />
                     </div>
                 </div>
             </div>

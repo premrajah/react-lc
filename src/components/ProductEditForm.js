@@ -19,6 +19,10 @@ import { baseUrl } from "../Util/Constants";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import _ from 'lodash';
 import { Spinner} from 'react-bootstrap';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -112,7 +116,7 @@ class ProductEditForm extends Component {
             parentProduct:null,
             imageLoading:false,
             showSubmitSite:false,
-
+            is_listable:false
 
         }
 
@@ -136,15 +140,90 @@ class ProductEditForm extends Component {
         this.showSubmitSite=this.showSubmitSite.bind(this)
         this.getResources=this.getResources.bind(this)
         this.loadSelection=this.loadSelection.bind(this)
+        this.handleChangeSite=this.handleChangeSite.bind(this)
+        this.loadImages=this.loadImages.bind(this)
+        this.triggerCallback=this.triggerCallback.bind(this)
+        this.checkListable=this.checkListable.bind(this)
+
 
 
     }
 
 
-    loadSelection(){
+    checkListable(){
+
+
+        this.setState({
+
+            is_listable:!this.state.is_listable
+        })
+    }
+
+
+    triggerCallback() {
+
+        this.props.triggerCallback(this.props.isDuplicate?"duplicate":"edit")
+
+    }
+
+
+    loadImages() {
 
 
 
+
+        let images = []
+
+
+
+
+        let currentFiles = []
+
+        for (let k=0;k<this.state.item.artifacts.length;k++){
+
+
+               var fileItem={
+                   status:1,
+                   id:this.state.item.artifacts[k]._key,
+                   url :this.state.item.artifacts[k].blob_url,
+                  file:{
+                       "mime_type": this.state.item.artifacts[k].mime_type,
+                       "​​​​name": this.state.item.artifacts[k].name
+                   }
+               }
+            // fileItem.status = 1  //success
+            // fileItem.id = this.state.item.artifacts[k]._key
+            // fileItem.url = this.state.item.artifacts[k].blob_url
+
+                images.push(this.state.item.artifacts[k]._key)
+
+            currentFiles.push(fileItem)
+
+
+
+        }
+
+
+        console.log("pre selection")
+        console.log(currentFiles)
+
+        this.setState({
+
+            files: currentFiles,
+        })
+
+        this.setState({
+
+            images: images,
+        })
+
+
+
+
+
+    }
+
+        loadSelection(){
 
 
 
@@ -225,7 +304,7 @@ class ProductEditForm extends Component {
 
                 this.loadSelection()
 
-
+                    this.loadImages()
 
 
                 },
@@ -524,9 +603,7 @@ class ProductEditForm extends Component {
 
                                 if (currentFiles[k].file.name === imgFile.file.name){
 
-
                                     currentFiles[k].status = 2  //failed
-
 
                                 }
 
@@ -758,8 +835,6 @@ class ProductEditForm extends Component {
 
 
         if (!this.props.parentProduct){
-
-
 
 
 
@@ -1185,6 +1260,8 @@ class ProductEditForm extends Component {
                 "units": units,
                 "state": state,
                 "volume": volume,
+                "stage" : "certified",
+                "is_listable":this.state.is_listable,
                 "sku": {
                     "serial": serial,
                     "model": model,
@@ -1202,40 +1279,23 @@ class ProductEditForm extends Component {
             var completeData;
 
 
-            if (this.props.parentProduct) {
+            // if (this.props.parentProduct) {
 
                 completeData = {
 
                     product: productData,
-                    "child_product_ids": [],
+                    "sub_products": [],
                     "artifact_ids": this.state.images,
                     "site_id": data.get("deliver"),
-                    "parent_product_id": this.props.parentProduct.product._key,
-
-
-                }
-
-            } else {
-
-
-                completeData = {
-
-                    product: productData,
-                    "child_product_ids": [],
-                    "artifact_ids": this.state.images,
                     "parent_product_id": null,
-                    "site_id": data.get("deliver"),
 
 
                 }
 
 
-            }
 
-
-            console.log("product data")
-
-            console.log(productData)
+            console.log("complete data")
+            console.log(completeData)
             console.log(this.state.images)
 
 
@@ -1252,23 +1312,13 @@ class ProductEditForm extends Component {
 
                     console.log(res.data.data)
 
-
-                    if (!this.props.parentProduct) {
-
-                        this.setState({
-                            product: res.data.data,
-                            parentProduct: res.data.data
-
-                        })
-
-                    }
-
-                    this.showProductSelection()
-
                     console.log("product added succesfully")
 
 
                     this.props.loadProducts(this.props.userDetail.token)
+
+
+                    this.triggerCallback()
 
 
                     // if (this.slug) {
@@ -1313,12 +1363,13 @@ class ProductEditForm extends Component {
 
 
 
-    upateSubmitProduct = event => {
+    updateSubmitProduct = event => {
 
         event.preventDefault();
 
+        const data = new FormData(event.target);
 
-        if (this.handleValidationProduct()) {
+        if (this.handleValidationProduct(data)) {
 
 
             const form = event.currentTarget;
@@ -1353,6 +1404,8 @@ class ProductEditForm extends Component {
 
             var productData = {
 
+                "id": this.state.item.product._key,
+                "update":{
                 "purpose": purpose,
                 "name": title,
                 "description": description,
@@ -1361,6 +1414,8 @@ class ProductEditForm extends Component {
                 "units": units,
                 "state": state,
                 "volume": volume,
+                 "stage" : "certified",
+                 "is_listable":this.state.is_listable,
                 "sku": {
                     "serial": serial,
                     "model": model,
@@ -1373,40 +1428,8 @@ class ProductEditForm extends Component {
                 "year_of_making": data.get("manufacturedDate")
 
             }
-
-
-            var completeData;
-
-
-            if (this.props.parentProduct) {
-
-                completeData = {
-
-                    product: productData,
-                    "child_product_ids": [],
-                    "artifact_ids": this.state.images,
-                    "site_id": data.get("deliver"),
-                    "parent_product_id": this.props.parentProduct.product._key,
-
-
-                }
-
-            } else {
-
-
-                completeData = {
-
-                    product: productData,
-                    "child_product_ids": [],
-                    "artifact_ids": this.state.images,
-                    "parent_product_id": null,
-                    "site_id": data.get("deliver"),
-
-
-                }
-
-
             }
+
 
 
             console.log("product data")
@@ -1415,9 +1438,9 @@ class ProductEditForm extends Component {
             console.log(this.state.images)
 
 
-            axios.put(baseUrl + "product",
+            axios.post(baseUrl + "product",
 
-                completeData
+                productData
                 , {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -1439,12 +1462,15 @@ class ProductEditForm extends Component {
 
                     }
 
-                    this.showProductSelection()
 
-                    console.log("product added succesfully")
+                    this.triggerCallback()
+
+                    // this.showProductSelection()
+
+                    console.log("product updated succesfully")
 
 
-                    this.props.loadProducts(this.props.userDetail.token)
+                    // this.props.loadProducts(this.props.userDetail.token)
 
 
                     // if (this.slug) {
@@ -1684,7 +1710,7 @@ class ProductEditForm extends Component {
 
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-11"}>
-                        <form onSubmit={this.props.isDuplicate?this.handleSubmitProduct:this.upateSubmitProduct}>
+                        <form onSubmit={this.props.isDuplicate?this.handleSubmitProduct:this.updateSubmitProduct}>
                             <div className="row no-gutters justify-content-center ">
 
 
@@ -1837,6 +1863,23 @@ class ProductEditForm extends Component {
                                         style={{ color: "red" }}>* </span>{this.state.errorsProduct["title"]}</span>}
 
 
+
+                                </div>
+                                <div className="col-12 mt-4">
+
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                // checked={this.state.is_listable}
+                                                checked={this.state.is_listable?this.state.is_listable:this.state.item.product.is_listable}
+                                                onChange={this.checkListable}
+                                                // onChange={this.handleChangeProduct.bind(this, "description")}/>
+                                                name="is_listable"
+                                                color="primary"
+                                            />
+                                        }
+                                        label="Is Listable ?"
+                                    />
 
                                 </div>
 
@@ -2266,10 +2309,10 @@ class ProductEditForm extends Component {
 
                                                                         {/*<img src={URL.createObjectURL(item)}/>*/}
                                                                         <div data-index={index}
-                                                                             data-url={URL.createObjectURL(item.file)}
+                                                                             // data-url={URL.createObjectURL(item.file)}
 
                                                                              className={"file-uploader-thumbnail"}
-                                                                             style={{ backgroundImage: "url(" + URL.createObjectURL(item.file) + ")" }}>
+                                                                             style={{ backgroundImage: "url(" + item.url?item.url:URL.createObjectURL(item.file) + ")" }}>
 
                                                                             {item.status === 0 && <Spinner
                                                                                 as="span"
@@ -2291,7 +2334,7 @@ class ProductEditForm extends Component {
                                                                                 className={" "}/>
                                                                             <p>Error!</p>
                                                                             </span>}
-                                                                            <Cancel data-name={item.file.name}
+                                                                            <Cancel data-name={item.file&&item.file.name?item.file.name:""}
                                                                                     data-index={item.id}
                                                                                     onClick={this.handleCancel.bind(this)}
                                                                                     className={"file-upload-img-thumbnail-cancel"}/>

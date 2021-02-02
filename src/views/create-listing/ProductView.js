@@ -45,10 +45,18 @@ class ProductView extends Component {
         this.search = props.match.params.search
 
         this.getResources = this.getResources.bind(this)
+        this.callBackReload=this.callBackReload.bind(this)
 
 
     }
 
+
+    callBackReload(){
+
+        this.getResources()
+
+
+    }
 
 
     handleBack = () => {
@@ -59,10 +67,6 @@ class ProductView extends Component {
         console.log(this.props.history)
         this.props.history.go(+1)
     }
-
-
-
-
 
 
     getResources() {
@@ -143,7 +147,7 @@ class ProductView extends Component {
                         {this.state.item &&
                             <>
 
-                                <ProductDetail history={this.props.history} hideRegister={true} item={this.state.item}/>
+                                <ProductDetail  triggerCallback={()=>this.callBackReload()} history={this.props.history} hideRegister={true} item={this.state.item}/>
 
                             </>
                             }

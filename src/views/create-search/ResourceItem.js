@@ -132,9 +132,11 @@ class ResourceItem extends Component {
 
 <>
 
-            {this.props.item.listing.listing?
 
-                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+    {this.props.item.listing.listing?
+
+        <Link to={"/"+ this.props.item.listing.listing._key }>
+        <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
                     <div className={"col-2"}>
@@ -178,7 +180,9 @@ class ResourceItem extends Component {
 
 
 
-                </div>:
+                </div>
+        </Link>:
+        <Link to={"/"+ this.props.item.listing._key }>
 
                 <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
@@ -220,7 +224,9 @@ class ResourceItem extends Component {
                     </div>
 
             </div>
+        </Link>
             }
+
 
 
             </>

@@ -69,9 +69,9 @@ class  ProductPopUp extends Component{
                           {this.props.showCreateSubProduct && <ProductForm  heading={"Create A Sub Product"}/>}
 
                           {this.props.showCreateProduct && <ProductForm  heading={"Create A Product"}/>}
-                          {/*{this.props.showSubProductView && <ProductExpandItem productId={this.props.product.product._key}/>}*/}
+                          {this.props.showSubProductView && <ProductExpandItem  showLinkProducts={true} productId={this.props.product.product._key?this.props.product.product._key:this.props.product}/>}
 
-                            <ProductExpandItem productId={"product-1612196249585-OoEd1eCa56"}/>
+                            {/*<ProductExpandItem productId={"product-1612196249585-OoEd1eCa56"}/>*/}
 
 
                           {/*{this.props.showProductView && <ProductView  />}*/}

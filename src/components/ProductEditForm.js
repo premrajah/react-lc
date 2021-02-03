@@ -1955,7 +1955,7 @@ class ProductEditForm extends Component {
                                                 color="primary"
                                             />
                                         }
-                                        label="Is Listable ?"
+                                        label="Tick box to allow product to be listed for sale"
                                     />
 
                                 </div>

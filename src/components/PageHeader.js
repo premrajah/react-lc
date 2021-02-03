@@ -23,6 +23,8 @@ const PageHeader = ({ pageIcon, pageTitle, subTitle }) => {
                     <p className="text-gray-light">{subTitle ? subTitle : ''}</p></div>
             </div>
 
+            <hr/>
+
         </>
     );
 }

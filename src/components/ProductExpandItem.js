@@ -407,10 +407,17 @@ class ProductExpandItem extends Component {
                     </>
                     }
 
+                    <div className="row no-gutters  justify-content-left">
+                        <div className="col-12">
+                            <div className={"custom-label text-bold text-blue mb-1"}>Link Sub product</div>
+                        </div>
+                    </div>
+
                     {this.state.product && this.props.showLinkProducts &&
                     <>
+
+
                         <div className="row no-gutters  justify-content-left">
-                            <div className={"custom-label text-bold text-blue mb-1"}>Link Sub product</div>
 
 
                             <form onSubmit={this.linkSubProduct}>

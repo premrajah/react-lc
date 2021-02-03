@@ -24,7 +24,8 @@ class MoreMenu extends Component {
             open:false,
             anchorEl:null,
             showDeletePopUp:false,
-            showDuplicatePopUp:false
+            showDuplicatePopUp:false,
+            removePopUp:false
         }
 
         this.triggerCallback=this.triggerCallback.bind(this)
@@ -34,8 +35,20 @@ class MoreMenu extends Component {
 
         this.showDeletePopUp=this.showDeletePopUp.bind(this)
         this.showDuplicatePopUp=this.showDuplicatePopUp.bind(this)
+        this.removePopUp=this.removePopUp.bind(this)
+        this.removeAction=this.removeAction.bind(this)
 
 
+
+    }
+
+
+    removePopUp(event){
+
+        this.setState({
+
+            removePopUp: !this.state.removePopUp
+        })
 
     }
 
@@ -58,6 +71,21 @@ class MoreMenu extends Component {
 
             showDeletePopUp: !this.state.showDeletePopUp
         })
+
+    }
+
+
+    removeAction(event){
+
+
+        // event.stopPropagation();
+        // event.preventDefault();
+
+        this.setState({
+
+            removePopUp: !this.state.removePopUp
+        })
+        this.props.triggerCallback("remove")
 
     }
 
@@ -109,6 +137,13 @@ class MoreMenu extends Component {
         if (action==="delete") {
             // this.props.triggerCallback(action)
             this.showDeletePopUp()
+
+        }
+
+
+       else if (action==="remove") {
+            // this.props.triggerCallback(action)
+            this.removePopUp()
 
         }
 
@@ -262,6 +297,51 @@ class MoreMenu extends Component {
                                         </div>
                                         <div className={"col-6"} style={{textAlign:"center"}}>
                                             <button onClick={this.showDuplicatePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </ModalBody>
+
+                    </Modal>
+
+
+                    <Modal className={"loop-popup"}
+                           aria-labelledby="contained-modal-title-vcenter"
+                           centered show={this.state.removePopUp} onHide={this.removePopUp} animation={false}>
+
+                        <ModalBody>
+
+
+
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-10 text-center"}>
+                                    <p className={"text-bold text-caps"}>Remove</p>
+                                    <p>Are you sure you want to remove this as sub-product?</p>
+                                </div>
+                            </div>
+
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button onClick={this.removeAction}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <button onClick={this.removePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</button>
                                         </div>
                                     </div>
 

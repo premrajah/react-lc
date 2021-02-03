@@ -76,6 +76,7 @@ class ResourceItem extends Component {
             this.deleteItem()
         }
 
+
     }
 
     triggerCallback() {
@@ -219,7 +220,7 @@ class ResourceItem extends Component {
                             {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
 
                         </p>
-                        <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate} edit={true}  />
+                        <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} edit={false} remove={false} duplicate={false}   />
 
                     </div>
 

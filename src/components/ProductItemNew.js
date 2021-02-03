@@ -45,6 +45,7 @@ class ProductItemNew extends Component {
 
         this.callBackResult=this.callBackResult.bind(this)
         this.deleteItem=this.deleteItem.bind(this)
+        this.removeItem=this.removeItem.bind(this)
 
         this.callBackSubmit=this.callBackSubmit.bind(this)
 
@@ -118,7 +119,16 @@ class ProductItemNew extends Component {
 
             this.submitDuplicateProduct()
         }
+
+
+        else if (action==="remove"){
+
+            this.removeItem()
+        }
     }
+
+
+
 
     submitDuplicateProduct = event => {
 
@@ -158,6 +168,48 @@ class ProductItemNew extends Component {
 
         this.props.triggerCallback()
 
+
+    }
+
+    removeItem() {
+
+        
+
+        var data={
+
+            product_id:this.props.parentId,
+            sub_product_ids:[this.props.item.product._key]
+        }
+
+        console.log("remove data",data)
+
+        axios.post(baseUrl + "product/sub-product/remove", data,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                console.log("sub product removed succcessfully")
+
+
+                },
+                (error) => {
+
+                    console.log("remove response error")
+                    console.log(error)
+
+                }
+            );
 
     }
 
@@ -338,7 +390,7 @@ class ProductItemNew extends Component {
                 <div style={{ textAlign: "right" }} className={"col-3"}>
 
                     <p className={"text-gray-light small"}>  {moment(this.props.item.product._ts_epoch_ms).format("DD MMM YYYY")} </p>
-                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={false} duplicate={true} edit={true}  />
+                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}   />
 
 
                 </div>

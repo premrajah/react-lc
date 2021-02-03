@@ -51,6 +51,26 @@ class ProductView extends Component {
     }
 
 
+
+
+    componentWillReceiveProps(newProps){
+
+
+        if (newProps.match.params.slug !== this.props.match.params.slug) {
+
+
+            this.slug= newProps.match.params.slug
+            // alert("changed")
+
+            this.getResources()
+
+
+
+        }
+
+    }
+
+
     callBackReload(){
 
         this.getResources()

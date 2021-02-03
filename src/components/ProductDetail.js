@@ -747,7 +747,7 @@ class ProductDetail extends Component {
 
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
-                                    {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
+                                    {this.props.item&&this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
                                     <ImagesSlider images={this.props.item.artifacts} /> :
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 

@@ -144,6 +144,8 @@ class ProductEditForm extends Component {
         this.loadImages=this.loadImages.bind(this)
         this.triggerCallback=this.triggerCallback.bind(this)
         this.checkListable=this.checkListable.bind(this)
+        this.updateImages=this.updateImages.bind(this)
+
 
 
 
@@ -185,10 +187,10 @@ class ProductEditForm extends Component {
                var fileItem={
                    status:1,
                    id:this.state.item.artifacts[k]._key,
-                   url :this.state.item.artifacts[k].blob_url,
-                  file:{
-                       "mime_type": this.state.item.artifacts[k].mime_type,
-                       "​​​​name": this.state.item.artifacts[k].name
+                   imgUrl :this.state.item.artifacts[k].blob_url,
+                    file:{
+                       mime_type: this.state.item.artifacts[k].mime_type,
+                       name: this.state.item.artifacts[k].name
                    }
                }
             // fileItem.status = 1  //success
@@ -1363,6 +1365,81 @@ class ProductEditForm extends Component {
 
 
 
+    updateImages(){
+
+        axios.post(baseUrl + "product/artifact/replace",
+
+            {
+                "product_id": this.state.item.product._key,
+                "artifact_ids":
+                    this.state.images
+
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+
+                console.log(res.data.data)
+
+
+                if (!this.props.parentProduct) {
+
+                    this.setState({
+                        product: res.data.data,
+                        parentProduct: res.data.data
+
+                    })
+
+                }
+
+
+                this.triggerCallback()
+
+                // this.showProductSelection()
+
+                console.log("images updated succesfully")
+
+
+                // this.props.loadProducts(this.props.userDetail.token)
+
+
+                // if (this.slug) {
+                //     this.props.history.push("/sub-product-view/" + this.slug)
+                //
+                //
+                // }else{
+                //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
+                //
+                //
+                // }
+
+
+                // this.showProductSelection()
+
+                // this.getProducts()
+
+
+            }).catch(error => {
+
+            // dispatch(stopLoading())
+
+            // dispatch(signUpFailed(error.response.data.message))
+
+            console.log(error.data)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
+
+
+        });
+
+
+    }
+
+
     updateSubmitProduct = event => {
 
         event.preventDefault();
@@ -1406,7 +1483,9 @@ class ProductEditForm extends Component {
 
                 "id": this.state.item.product._key,
                 "update":{
-                "purpose": purpose,
+                    "artifacts":this.state.images,
+
+                    "purpose": purpose,
                 "name": title,
                 "description": description,
                 "category": category,
@@ -1452,22 +1531,27 @@ class ProductEditForm extends Component {
                     console.log(res.data.data)
 
 
-                    if (!this.props.parentProduct) {
+                    
 
-                        this.setState({
-                            product: res.data.data,
-                            parentProduct: res.data.data
-
-                        })
-
-                    }
-
-
-                    this.triggerCallback()
+                    // if (!this.props.parentProduct) {
+                    //
+                    //     this.setState({
+                    //         product: res.data.data,
+                    //         parentProduct: res.data.data
+                    //
+                    //     })
+                    //
+                    // }
+                    //
+                    //
+                    // this.triggerCallback()
 
                     // this.showProductSelection()
 
                     console.log("product updated succesfully")
+
+
+                    this.updateImages()
 
 
                     // this.props.loadProducts(this.props.userDetail.token)
@@ -1657,16 +1741,9 @@ class ProductEditForm extends Component {
 
     componentDidMount() {
 
-
         this.getFiltersCategories()
-
         this.setUpYearList()
-
-
         this.props.loadSites(this.props.userDetail.token)
-
-
-
 
     }
 
@@ -2307,12 +2384,15 @@ class ProductEditForm extends Component {
                                                                     <div
                                                                         className={"file-uploader-thumbnail-container"}>
 
-                                                                        {/*<img src={URL.createObjectURL(item)}/>*/}
                                                                         <div data-index={index}
-                                                                             // data-url={URL.createObjectURL(item.file)}
+                                                                             data-url={item.imgUrl?item.imgUrl:URL.createObjectURL(item.file)}
 
                                                                              className={"file-uploader-thumbnail"}
-                                                                             style={{ backgroundImage: "url(" + item.url?item.url:URL.createObjectURL(item.file) + ")" }}>
+                                                                             style={{ backgroundImage: "url(" + (item.imgUrl?item.imgUrl:URL.createObjectURL(item.file)) + ")" }}
+
+                                                                             // style={{ backgroundImage: "url(" + item.imgUrl?item.imgUrl:""+")"}}
+
+                                                                        >
 
                                                                             {item.status === 0 && <Spinner
                                                                                 as="span"
@@ -2334,7 +2414,7 @@ class ProductEditForm extends Component {
                                                                                 className={" "}/>
                                                                             <p>Error!</p>
                                                                             </span>}
-                                                                            <Cancel data-name={item.file&&item.file.name?item.file.name:""}
+                                                                            <Cancel data-name={item.file&&item.file["name"]?item.file["name"]:""}
                                                                                     data-index={item.id}
                                                                                     onClick={this.handleCancel.bind(this)}
                                                                                     className={"file-upload-img-thumbnail-cancel"}/>

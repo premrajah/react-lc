@@ -23,14 +23,26 @@ class MoreMenu extends Component {
             previewImage:null,
             open:false,
             anchorEl:null,
-            showDeletePopUp:false
+            showDeletePopUp:false,
+            showDuplicatePopUp:false
         }
 
         this.triggerCallback=this.triggerCallback.bind(this)
         this.setOpen=this.setOpen.bind(this)
         this.deleteAction=this.deleteAction.bind(this)
         this.showDeletePopUp=this.showDeletePopUp.bind(this)
+        this.showDuplicatePopUp=this.showDuplicatePopUp.bind(this)
 
+
+
+    }
+
+    showDuplicatePopUp(event){
+
+        this.setState({
+
+            showDuplicatePopUp: !this.state.showDuplicatePopUp
+        })
 
     }
 
@@ -61,6 +73,20 @@ class MoreMenu extends Component {
 
     }
 
+    duplicateAction(event){
+
+
+        // event.stopPropagation();
+        // event.preventDefault();
+
+        this.setState({
+
+            showDeletePopUp: !this.state.showDeletePopUp
+        })
+        this.props.triggerCallback("duplicate")
+
+    }
+
 
 
      setOpen(event){
@@ -80,7 +106,13 @@ class MoreMenu extends Component {
 
         if (action!=="delete") {
             this.props.triggerCallback(action)
-        }else{
+        }
+
+       else if (action!=="delete") {
+            this.props.triggerCallback(action)
+        }
+
+        else{
 
             this.showDeletePopUp()
         }
@@ -153,7 +185,7 @@ class MoreMenu extends Component {
 
                             <div className={"row justify-content-center"}>
                                 <div className={"col-10 text-center"}>
-                                    <p className={"text-bold"}>Delete</p>
+                                    <p className={"text-bold text-caps"}>Delete</p>
                                     <p>Are you sure you want to delete ?</p>
                                 </div>
                             </div>
@@ -175,6 +207,51 @@ class MoreMenu extends Component {
                                         </div>
                                         <div className={"col-6"} style={{textAlign:"center"}}>
                                             <button onClick={this.showDeletePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </ModalBody>
+
+                    </Modal>
+
+
+                    <Modal className={"loop-popup"}
+                           aria-labelledby="contained-modal-title-vcenter"
+                           centered show={this.state.showDuplicatePopUp} onHide={this.showDuplicatePopUp} animation={false}>
+
+                        <ModalBody>
+
+
+
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-10 text-center"}>
+                                    <p className={"text-bold text-caps"}>Duplicate</p>
+                                    <p>Are you sure you want to create duplicate of this item ?</p>
+                                </div>
+                            </div>
+
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mt-2"}>
+
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                            <button onClick={this.deleteAction}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                            <button onClick={this.showDuplicatePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</button>
                                         </div>
                                     </div>
 

@@ -29,7 +29,6 @@ const NotificationItem = ({ item }) => {
                                           <Org
                                               orgId={orgItem.org._id}
                                               orgDescription={orgItem.org.description}
-                                              textColor="black"
                                           />
                                       </span>
                                   </span>

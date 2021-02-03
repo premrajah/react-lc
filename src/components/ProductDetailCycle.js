@@ -693,13 +693,12 @@ class ProductDetailCycle extends Component {
 
 
                                                         <div className="d-flex flex-column justify-content-center align-items-center" >
-                                                            <img className="" src={this.state.productQrCode} alt=""/>
+                                                            <img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name}/>
 
                                                             <div className="d-flex justify-content-center w-100">
                                                                 {this.props.hideRegister &&   <p className={"green-text"}>
-                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}> View product
-                                                                        provenance</Link>
-                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>Print PDF</Link>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}>[Product Provenance]</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
                                                                 </p>}
                                                             </div>
                                                         </div>

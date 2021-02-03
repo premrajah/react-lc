@@ -304,7 +304,7 @@ class ProductDetail extends Component {
 
                                 {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id} />*/}
 
-                                <img src={this.productQrCode} alt="" />
+                                <img src={this.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} />
 
                                 <Link to={"/p/" + this.state.item.product._key}> Go To Preview Page</Link>
 

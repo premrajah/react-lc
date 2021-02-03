@@ -185,7 +185,7 @@ class ComponentsNavbar extends React.Component {
                                 <NavItem className={"web-only"}>
                                     <Link
                                         onClick={this.showProductSelection}
-                                        to={"/search-form"}
+                                        to={"/my-products"}
                                         className="nav-link d-none d-lg-block wl-link-white"
                                         color="default"
                                         >

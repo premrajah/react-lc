@@ -193,11 +193,17 @@ class Products extends Component {
 
                         {this.props.productWithoutParentList.map((item) =>
 
-                            <Link to={"/product/" + item.product._key}>
+                            <>
+
+
+                            {/*<Link to={"/product/" + item.product._key}>*/}
 
                                <ProductItem  item={item} />
 
-                            </Link>
+
+                            </>
+
+                            // </Link>
 
                         )}
 

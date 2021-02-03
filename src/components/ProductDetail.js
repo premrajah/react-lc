@@ -73,10 +73,41 @@ class ProductDetail extends Component {
 
         this.callBackResult=this.callBackResult.bind(this)
         this.deleteItem=this.deleteItem.bind(this)
+        this.showProductSelection=this.showProductSelection.bind(this)
 
 
     }
 
+
+    showProductSelection(event) {
+
+
+
+        this.props.setProduct(this.state.product)
+        // this.props.setParentProduct(this.state.parentProduct)
+
+        this.props.showProductPopUp({type:"sub_product_view",show:true})
+
+
+    }
+
+
+    callBackSubmit(action){
+
+
+        if (action==="edit"){
+
+            this.triggerCallback()
+
+        }
+        else if (action==="duplicate"){
+
+
+            this.props.history.push("/my-products")
+
+
+        }
+    }
 
 
 
@@ -99,6 +130,7 @@ class ProductDetail extends Component {
 
     triggerCallback() {
 
+        this.showProductEdit()
         this.props.triggerCallback()
 
 
@@ -579,6 +611,7 @@ class ProductDetail extends Component {
     getSubProducts() {
 
 
+
         var subProductIds = this.props.item.sub_products
 
         for (var i = 0; i < subProductIds.length; i++) {
@@ -809,6 +842,7 @@ class ProductDetail extends Component {
                                                 </div>
 
                                                 <div className="col-4 text-right">
+
                                                     {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
 
 
@@ -939,12 +973,26 @@ class ProductDetail extends Component {
                                         </Tab>
 
 
-                                        {this.state.subProducts.length>0 &&
+
                                         <Tab eventKey="subproducts" title="Subproducts">
-                                            {this.state.subProducts.map((item)=>
+
+                                            <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
+
+                                                <span data-parent={this.props.item.product._key} onClick={this.showProductSelection} >Link Sub Product</span>
+
+                                            </p>
+
+                                            {this.state.subProducts.length > 0 &&
+
+                                                <>
+
+                                            { this.state.subProducts.map((item) =>
                                                 <ProductItemNew item={item}/>
                                             )}
-                                        </Tab>}
+
+                                            </>
+                                            }
+                                        </Tab>
 
 
                                         {this.state.searches.length > 0 &&
@@ -1185,7 +1233,7 @@ class ProductDetail extends Component {
                                     </div>
 
 
-                               <ProductEditForm isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+                               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
 
 
                         </Modal>
@@ -1291,6 +1339,7 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        showSubProductView: state.showSubProductView,
 
 
 
@@ -1305,6 +1354,9 @@ const mapDispachToProps = dispatch => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
 
     };
 };

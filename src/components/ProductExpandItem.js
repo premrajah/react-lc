@@ -512,7 +512,7 @@ class ProductExpandItem extends Component {
 
                                 <div className="col-12 mt-4">
 
-                                    <button onClick={this.addCount}  className={"btn btn-default btn-lg btn-rounded shadow  blue-btn-border"}>
+                                    <button onClick={this.addCount}  className={"btn btn-default  btn-rounded shadow  blue-btn-border"}>
 
                                     <AddIcon />Add
                                     </button>

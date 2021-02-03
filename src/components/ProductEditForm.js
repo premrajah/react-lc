@@ -966,10 +966,10 @@ class ProductEditForm extends Component {
         }
 
 
-        if (!fields["manufacturedDate"]) {
-            formIsValid = false;
-            errors["manufacturedDate"] = "Required";
-        }
+        // if (!fields["manufacturedDate"]) {
+        //     formIsValid = false;
+        //     errors["manufacturedDate"] = "Required";
+        // }
 
 
 

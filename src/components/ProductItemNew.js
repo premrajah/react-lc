@@ -173,7 +173,7 @@ class ProductItemNew extends Component {
 
     removeItem() {
 
-        
+
 
         var data={
 

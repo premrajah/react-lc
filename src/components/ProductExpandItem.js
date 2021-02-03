@@ -15,6 +15,9 @@ import FormControl from '@material-ui/core/FormControl';
 import ProductItemNew from './ProductItemNew'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles, withStyles } from "@material-ui/core/styles/index";
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {
@@ -43,14 +46,58 @@ class ProductExpandItem extends Component {
             product:null,
             fields: {},
             errors: {},
-            subProductSelected:null
+            subProductSelected:null,
+            addCount:[],
+            count:1,
         }
 
         this.showPopUp=this.showPopUp.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
         this.linkSubProduct=this.linkSubProduct.bind(this)
+        this.addCount=this.addCount.bind(this)
+        this.subtractCount=this.subtractCount.bind(this)
 
     }
+
+    
+    
+    addCount(){
+        
+
+        var array = this.state.addCount
+
+        array.push(this.state.count+1)
+        
+        this.setState({
+
+            addCount:array,
+            count:this.state.count +1
+            
+        })
+    }
+
+    subtractCount() {
+
+        if (this.state.count > 1){
+
+
+            var array = this.state.addCount
+
+        array.pop()
+
+        if (this.state.count > 1)
+            this.setState({
+
+                addCount:array,
+                count:this.state.count -1
+
+            })
+
+
+    }
+    }
+
+
 
 
     classes = useStylesSelect;
@@ -72,13 +119,19 @@ class ProductExpandItem extends Component {
 
 
 
-    handleChange(field, e) {
-
+    handleChange(field, e,i) {
 
 
         let fields = this.state.fields;
 
         fields[field] = e.target.value;
+
+
+
+        // const { name, value } = e.target;
+
+
+
 
 
         this.setState({ fields });
@@ -181,20 +234,31 @@ class ProductExpandItem extends Component {
 
             const data = new FormData(event.target);
 
-            const volume = data.get("volume")
-            const subProduct = data.get("product")
+            console.log(data.get("volume[]"))
+           console.log(data.get("volume"))
+        console.log(data.get("volume[1]"))
+
+            // const volume = data.get("volume[]")
+            // const subProduct = data.get("product[]")
+
+
+        var array=[]
+
+
+        for (let i=0;i<this.state.addCount.length;i++){
+
+            console.log(data.get(`volume[${i}]`))
+
+            array.push({id:data.get(`product[${i}]`),volume:data.get(`volume[${i}]`)})
+
+        }
+
 
 
 
         var dataForm =  {
             "product_id": this.state.product.product._key,
-            "sub_products": [
-                {
-                    id:subProduct,
-                    volume:parseInt(volume)
-
-                }
-            ],
+            "sub_products": array,
 
         }
 
@@ -213,7 +277,14 @@ class ProductExpandItem extends Component {
                 // dispatch({type: "SIGN_UP", value : res.data})
 
 
+                this.setState({
+
+                    addCount:[],
+                    count:0
+                })
                 this.loadProduct()
+
+
 
 
 
@@ -245,6 +316,10 @@ class ProductExpandItem extends Component {
 
 
         this.loadProduct(this.props.productId)
+        this.setState({
+
+            addCount:[1]
+        })
 
         this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
@@ -256,7 +331,7 @@ class ProductExpandItem extends Component {
     getSubProducts() {
 
 
-        var subProductIds = this.state.product.sub_products
+        var subProductIds = this.state.product.sub_products?this.state.product.sub_products:[]
 
         for (var i = 0; i < subProductIds.length; i++) {
 
@@ -342,9 +417,13 @@ class ProductExpandItem extends Component {
 
                             <div className="col-12 mt-4">
 
+
+                                {this.state.addCount.map((item,index)=>
+
                                 <div className="row ">
 
-                                    <div className="col-9">
+                                    <div className="col-7">
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>
 
 
                                         <FormControl variant="outlined" className={classes.formControl}>
@@ -352,12 +431,13 @@ class ProductExpandItem extends Component {
 
                                             <Select
 
-                                                name= "product"
+                                                name= {`product[${index}]`}
+
                                                 // label={"Link a product"}
                                                 native
                                                 onChange={this.handleChange.bind(this, "product")}
                                                 inputProps={{
-                                                    name: 'product',
+                                                    // name: {`product[${index}]`},
                                                     id: 'outlined-age-native-simple',
                                                 }}
                                             >
@@ -383,29 +463,52 @@ class ProductExpandItem extends Component {
                                         </FormControl>
 
 
-                                        {this.state.subProductSelected&&
-                                        <>
+                                        {/*{this.state.subProductSelected&&*/}
+                                        {/*<>*/}
 
-                                            <ProductItemNew item={this.state.subProductSelected}/>
+                                            {/*<ProductItemNew item={this.state.subProductSelected}/>*/}
 
 
-                                        </>
-                                        }
+                                        {/*</>*/}
+                                        {/*}*/}
 
                                     </div>
 
                                     <div className="col-3">
                                         <div className={"custom-label text-bold text-blue mb-1"}>Volume</div>
 
-                                        <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={"volume"} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
+                                        <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={`volume[${index}]`} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 
 
                                     </div>
 
+                                    <div className="col-2 text-center">
+
+
+                                        {item > 1 &&
+                                        <>
+                                            <div className={"custom-label text-bold text-blue mb-1"}>Delete</div>
+
+                                            <DeleteIcon  onClick={() => this.subtractCount()}  />
+                                        </>
+                                        }
+                                    </div>
+
 
                                 </div>
+
+                                )}
+
+
                             </div>
+
+                                <div className="col-12 mt-4">
+
+                                    <AddIcon onClick={this.addCount}/>
+
+
+                                </div>
 
 
                                 <div className="col-12 mt-4 mobile-menu">

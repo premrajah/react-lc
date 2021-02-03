@@ -83,8 +83,10 @@ class ProductDetail extends Component {
     showProductSelection(event) {
 
 
+        console.log()
 
-        this.props.setProduct(this.state.product)
+
+        this.props.setProduct(this.props.item)
         // this.props.setParentProduct(this.state.parentProduct)
 
         this.props.showProductPopUp({type:"sub_product_view",show:true})

@@ -219,7 +219,7 @@ const reducer = (state = initialState, action) => {
                 newState.showCreateProduct = true
                 newState.showCreateSubProduct = false
 
-                // newState.parentProduct = null
+                newState.parentProduct = null
                 // newState.parentProduct = "product-1612062286992-ad2bHnLWqF"
 
 

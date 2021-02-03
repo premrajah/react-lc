@@ -93,6 +93,14 @@ class ProductDetail extends Component {
     }
 
 
+
+    componentWillReceiveProps(newProps){
+
+        // alert("changed details")
+
+    }
+
+
     callBackSubmit(action){
 
 
@@ -1014,7 +1022,7 @@ class ProductDetail extends Component {
                                                 <>
 
                                             { this.state.subProducts.map((item) =>
-                                                <ProductItemNew item={item}/>
+                                                <ProductItemNew parentId={this.props.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
                                             )}
 
                                             </>
@@ -1036,7 +1044,7 @@ class ProductDetail extends Component {
 
                                         {this.state.listingLinked &&
                                         <Tab eventKey="listing" title="Listing">
-                                            {this.state.listingLinked && <ResourceItem   delete={false} duplicate={false} remove={true} edit={false} item={this.state.listingLinked}/>}
+                                            {this.state.listingLinked && <ResourceItem    item={this.state.listingLinked}/>}
                                         </Tab>}
 
 

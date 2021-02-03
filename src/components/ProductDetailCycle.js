@@ -30,6 +30,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
+import LoopcycleLogo from "../img/logo-text.png";
 
 
 
@@ -688,21 +689,20 @@ class ProductDetailCycle extends Component {
 
                                                 <div className="row justify-content-center ">
 
-                                                    <div className="col-12 pt-4 border-box">
+                                                    <div className="col-12 border-box">
 
 
-                                                        <div className={"qr-code-container"}>
+                                                        <div className="d-flex flex-column justify-content-center align-items-center" >
+                                                            <img className="" src={this.state.productQrCode} alt=""/>
 
-                                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                                            <img className={"qr-code"} src={this.state.productQrCode} alt=""/>
-
+                                                            <div className="d-flex justify-content-center w-100">
+                                                                {this.props.hideRegister &&   <p className={"green-text"}>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}> View product
+                                                                        provenance</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>Print PDF</Link>
+                                                                </p>}
+                                                            </div>
                                                         </div>
-
-                                                        {this.props.hideRegister &&   <p className={"green-text"}>
-                                                            <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}> View product
-                                                                provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode)}>Print PDF</Link>
-                                                        </p>}
 
 
                                                     </div>

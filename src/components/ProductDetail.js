@@ -472,24 +472,20 @@ class ProductDetail extends Component {
         pdf.setTextColor(39,36,92)
         pdf.text(name, 10, 20);
 
-        // pdf.setDrawColor(7, 173, 136)
-        // pdf.line(0, 40, 1000, 40)
+        pdf.setDrawColor(7, 173, 136)
+        pdf.line(0, 38, 1000, 38)
 
-        pdf.addImage(productQRCode, 'PNG', 100, 60, 80, 80, 'largeQR', null,45)
-        pdf.addImage(productQRCode, 'PNG', 100, 170, 40, 40, 'mediumQR', null, 45)
-        pdf.addImage(productQRCode, 'PNG', 100, 230, 20, 20, 'smallQR', null, 45)
+        pdf.addImage(productQRCode, 'PNG', 10, 40, 80, 80, 'largeQR')
+        pdf.addImage(productQRCode, 'PNG', 100, 57.5, 45, 45, 'mediumQR')
+        pdf.addImage(productQRCode, 'PNG', 160, 64.5, 30, 30, 'smallQR')
 
-        pdf.addImage(QRCodeOuterImage, 'PNG',42, 25.5, 116, 116, 'largeLogo')
-        pdf.addImage(QRCodeOuterImage, 'PNG',70, 151.8, 60.1, 60.1, 'mediumLogo')
-        pdf.addImage(QRCodeOuterImage, 'PNG',85, 220.9, 30, 30, 'smallLogo')
+        pdf.setDrawColor(7, 173, 136)
+        pdf.line(0, 122, 1000, 122)
 
-        pdf.addImage(LoopcycleLogo, 9.2, 266, 50, 8, 'Loopcycle')
-
-        // pdf.setDrawColor(7, 173, 136)
-        // pdf.line(0, 120, 1000, 120)
+        pdf.addImage(LoopcycleLogo, 9.2, 130, 50, 8, 'Loopcycle')
 
         pdf.setTextColor(39,36,92)
-        pdf.textWithLink("Loopcycle.io", 10, 280, {url: 'https://loopcycle.io/'})
+        pdf.textWithLink("Loopcycle.io", 10, 146, {url: 'https://loopcycle.io/'})
 
         pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`)
     }
@@ -795,22 +791,19 @@ class ProductDetail extends Component {
 
                                                 <div className="row justify-content-center ">
 
-                                                    <div className="col-12 pt-4 border-box">
+                                                    <div className="col-12 border-box">
 
+                                                        <div className="d-flex flex-column justify-content-center align-items-center" >
+                                                            <img className="" src={this.state.productQrCode} alt="" />
 
-                                                        <div className={"qr-code-container"}>
-
-                                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                                            <img className={"qr-code"} src={this.state.productQrCode} alt=""/>
-
+                                                            <div className="d-flex justify-content-center w-100">
+                                                                {this.props.hideRegister &&   <p className={"green-text"}>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}> View product
+                                                                        provenance</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>Print PDF</Link>
+                                                                </p>}
+                                                            </div>
                                                         </div>
-
-                                                        {this.props.hideRegister &&   <p className={"green-text"}>
-                                                            <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}> View product
-                                                                provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>Print PDF</Link>
-                                                        </p>}
-
 
                                                     </div>
                                                 </div>

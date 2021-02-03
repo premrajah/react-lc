@@ -27,7 +27,7 @@ class ProductArchive extends Component {
 
                         <div className="row">
                             <div className="col-12">
-                                COntent
+                                WIP
                             </div>
                         </div>
                     </div>

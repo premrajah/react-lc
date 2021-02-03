@@ -30,6 +30,8 @@ class MoreMenu extends Component {
         this.triggerCallback=this.triggerCallback.bind(this)
         this.setOpen=this.setOpen.bind(this)
         this.deleteAction=this.deleteAction.bind(this)
+        this.duplicateAction=this.duplicateAction.bind(this)
+
         this.showDeletePopUp=this.showDeletePopUp.bind(this)
         this.showDuplicatePopUp=this.showDuplicatePopUp.bind(this)
 
@@ -81,7 +83,7 @@ class MoreMenu extends Component {
 
         this.setState({
 
-            showDeletePopUp: !this.state.showDeletePopUp
+            showDuplicatePopUp: !this.state.showDuplicatePopUp
         })
         this.props.triggerCallback("duplicate")
 
@@ -104,17 +106,23 @@ class MoreMenu extends Component {
 
 
 
-        if (action!=="delete") {
-            this.props.triggerCallback(action)
+        if (action==="delete") {
+            // this.props.triggerCallback(action)
+            this.showDeletePopUp()
+
         }
 
-       else if (action!=="delete") {
-            this.props.triggerCallback(action)
+       else if (action==="duplicate") {
+            // this.props.triggerCallback(action)
+
+            this.showDuplicatePopUp()
+
         }
 
         else{
 
-            this.showDeletePopUp()
+            this.props.triggerCallback(action)
+
         }
     }
 
@@ -169,6 +177,8 @@ class MoreMenu extends Component {
                             {this.props.edit &&<MenuItem  data-action={"edit"} onClick={this.handleClose}>Edit</MenuItem>}
                             {this.props.delete && <MenuItem data-action={"delete"} onClick={this.handleClose}>Delete</MenuItem>}
                             {this.props.duplicate &&     <MenuItem data-action={"duplicate"} onClick={this.handleClose}>Duplicate</MenuItem>}
+                            {this.props.remove &&     <MenuItem data-action={"remove"} onClick={this.handleClose}>Remove</MenuItem>}
+
                         </Menu>
                     </Button>
 
@@ -246,7 +256,7 @@ class MoreMenu extends Component {
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-6"} style={{textAlign:"center"}}>
 
-                                            <button onClick={this.deleteAction}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
+                                            <button onClick={this.duplicateAction}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Submit </button>
 
 
                                         </div>

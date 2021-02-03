@@ -74,6 +74,7 @@ class ProductDetail extends Component {
         this.callBackResult=this.callBackResult.bind(this)
         this.deleteItem=this.deleteItem.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
+        this.submitDuplicateProduct=this.submitDuplicateProduct.bind(this)
 
 
     }
@@ -124,9 +125,43 @@ class ProductDetail extends Component {
         }
         else if (action==="duplicate"){
 
-            this.showProductDuplicate()
+            this.submitDuplicateProduct()
         }
     }
+
+
+
+
+    submitDuplicateProduct = event => {
+
+
+        axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
+            {
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+                this.props.history.push("/my-products")
+
+
+            }).catch(error => {
+
+            console.log(error)
+
+            // this.setState({
+            //
+            //     errorRegister:error.response.data.errors[0].message
+            // })
+
+        });
+
+    }
+
+
 
     triggerCallback() {
 
@@ -1001,7 +1036,7 @@ class ProductDetail extends Component {
 
                                         {this.state.listingLinked &&
                                         <Tab eventKey="listing" title="Listing">
-                                            {this.state.listingLinked && <ResourceItem item={this.state.listingLinked}/>}
+                                            {this.state.listingLinked && <ResourceItem   delete={false} duplicate={false} remove={true} edit={false} item={this.state.listingLinked}/>}
                                         </Tab>}
 
 

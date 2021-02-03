@@ -145,6 +145,9 @@ class ProductEditForm extends Component {
         this.triggerCallback=this.triggerCallback.bind(this)
         this.checkListable=this.checkListable.bind(this)
         this.updateImages=this.updateImages.bind(this)
+        this.updateSite=this.updateSite.bind(this)
+
+
 
 
 
@@ -1440,6 +1443,53 @@ class ProductEditForm extends Component {
     }
 
 
+
+
+
+    updateSite(){
+
+        axios.post(baseUrl + "product/site",
+
+            {
+                "product_id": this.state.item.product._key,
+                "site_id":this.state.fields["deliver"]
+
+
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+
+                console.log(res.data.data)
+
+
+
+                console.log("site updated succesfully")
+
+
+
+
+            }).catch(error => {
+
+            // dispatch(stopLoading())
+
+            // dispatch(signUpFailed(error.response.data.message))
+
+            console.log(error.data)
+            // dispatch({ type: AUTH_FAILED });
+            // dispatch({ type: ERROR, payload: error.data.error.message });
+
+
+        });
+
+
+    }
+
+
     updateSubmitProduct = event => {
 
         event.preventDefault();
@@ -1531,46 +1581,18 @@ class ProductEditForm extends Component {
                     console.log(res.data.data)
 
 
-                    
-
-                    // if (!this.props.parentProduct) {
-                    //
-                    //     this.setState({
-                    //         product: res.data.data,
-                    //         parentProduct: res.data.data
-                    //
-                    //     })
-                    //
-                    // }
-                    //
-                    //
-                    // this.triggerCallback()
-
-                    // this.showProductSelection()
-
                     console.log("product updated succesfully")
+
+
+                    if (this.state.fields["deliver"]){
+
+                        this.updateSite()
+                    }
 
 
                     this.updateImages()
 
 
-                    // this.props.loadProducts(this.props.userDetail.token)
-
-
-                    // if (this.slug) {
-                    //     this.props.history.push("/sub-product-view/" + this.slug)
-                    //
-                    //
-                    // }else{
-                    //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
-                    //
-                    //
-                    // }
-
-
-                    // this.showProductSelection()
-
-                    // this.getProducts()
 
 
                 }).catch(error => {

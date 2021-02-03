@@ -114,9 +114,43 @@ class ProductItemNew extends Component {
         }
         else if (action==="duplicate"){
 
-            this.showProductDuplicate()
+            // this.showProductDuplicate()
+
+            this.submitDuplicateProduct()
         }
     }
+
+    submitDuplicateProduct = event => {
+
+
+        axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
+            {
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+
+                this.props.loadProductsWithoutParent(this.props.userDetail.token)
+
+
+
+            }).catch(error => {
+
+            console.log(error)
+
+            // this.setState({
+            //
+            //     errorRegister:error.response.data.errors[0].message
+            // })
+
+        });
+
+    }
+
 
     triggerCallback() {
 

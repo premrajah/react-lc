@@ -2,12 +2,14 @@ import React from "react";
 import { Alert } from "react-bootstrap";
 import moment from "moment/moment";
 import Org from "../Org/Org";
+import {Link} from "react-router-dom";
+import {Link as NotifLinkIcon} from '@material-ui/icons'
 
-const NotificationItem = ({ item }) => {
+const NotificationItem = ({ item, editText, link, linkText, onClose, dismiss }) => {
     const { message, orgs } = item;
 
     const handleOnClose = (key) => {
-        console.log("[NotifItem] ", key);
+        onClose(key);
     };
 
     return (
@@ -17,7 +19,7 @@ const NotificationItem = ({ item }) => {
                 onClose={() => handleOnClose(message._key)}
                 dismissible>
                 <div>
-                    {moment(message._ts_epoch_ms).format("DD MMM YYYY")} : {message.text}
+                    {moment(message._ts_epoch_ms).format("DD MMM YYYY")} : {editText} {link ? <Link style={{color: '#27245C'}} to={link}><NotifLinkIcon/></Link> : null}
                 </div>
                 <div>
                     {orgs.length > 0

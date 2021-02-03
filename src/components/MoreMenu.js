@@ -200,7 +200,7 @@ class MoreMenu extends Component {
 
                 <div className={"more-menu-container"}>
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
-                        <MoreIcon style={{color:"#7a8896",opacity: "0.5!important"}}/>
+                        <MoreIcon style={{color:"#7a8896"}}/>
                         <Menu
                             className={"more-menu-box"}
                             id={this.props.id}

@@ -420,7 +420,7 @@ class ProductExpandItem extends Component {
                         <div className="row no-gutters  justify-content-left">
 
 
-                            <form onSubmit={this.linkSubProduct}>
+                            <form style={{width:"100%"}} onSubmit={this.linkSubProduct}>
 
                             <div className="col-12 mt-4">
 
@@ -497,7 +497,7 @@ class ProductExpandItem extends Component {
                                         <>
                                             <div className={"custom-label text-bold text-blue mb-1"}>Delete</div>
 
-                                            <DeleteIcon  onClick={() => this.subtractCount()}  />
+                                            <DeleteIcon style={{color:"#ccc"}} onClick={() => this.subtractCount()}  />
                                         </>
                                         }
                                     </div>
@@ -512,7 +512,10 @@ class ProductExpandItem extends Component {
 
                                 <div className="col-12 mt-4">
 
-                                    <AddIcon onClick={this.addCount}/>
+                                    <button onClick={this.addCount}  className={"btn btn-default btn-lg btn-rounded shadow btn-block blue-btn-border"}>
+
+                                    <AddIcon />Add
+                                    </button>
 
 
                                 </div>

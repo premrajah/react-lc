@@ -40,7 +40,7 @@ class ProductExpandItem extends Component {
         this.state = {
 
             timerEnd: false,
-            count: 0,
+            // count: 0,
             nextIntervalFlag: false,
             subProducts:[],
             product:null,
@@ -451,7 +451,7 @@ class ProductExpandItem extends Component {
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productWithoutParentList.filter((item)=> item.listing_id === null ).map((item) =>
+                                                {this.props.productWithoutParentList.filter((item)=> (item.listing_id === null)&&item.product._key!==this.state.product.product._key ).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>

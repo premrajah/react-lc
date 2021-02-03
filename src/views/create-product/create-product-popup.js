@@ -87,15 +87,15 @@ class  ProductPopUp extends Component{
 
                 </div>
 
-                <div className="row py-3 justify-content-center mobile-menu-row pt-3">
+                {/*<div className="row py-3 justify-content-center mobile-menu-row pt-3">*/}
 
-                    <div className="col-3 mobile-menu">
+                    {/*<div className="col-3 mobile-menu">*/}
 
-                        {this.props.showSubProductView &&  <button type={"submit"} onClick={this.hidePopUp} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Done</button>}
+                        {/*{this.props.showSubProductView &&  <button type={"submit"} onClick={this.hidePopUp} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Done</button>}*/}
 
 
-                    </div>
-                </div>
+                    {/*</div>*/}
+                {/*</div>*/}
 
 
 

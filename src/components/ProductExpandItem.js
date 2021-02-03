@@ -424,13 +424,26 @@ class ProductExpandItem extends Component {
 
                             <div className="col-12 mt-4">
 
+                                <div className="row ">
+                                    <div className="col-7">
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>
+
+                                    </div>
+                                    <div className="col-3">
+                                        <div className={"custom-label text-bold text-blue mb-1"}>Volume</div>
+                                    </div>
+                                    <div className="col-2">
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Delete</div>
+                                    </div>
+
+                                </div>
 
                                 {this.state.addCount.map((item,index)=>
 
-                                <div className="row ">
+                                <div className="row mt-2">
 
                                     <div className="col-7">
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>
+                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
 
                                         <FormControl variant="outlined" className={classes.formControl}>
@@ -482,7 +495,7 @@ class ProductExpandItem extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Volume</div>
+                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
 
                                         <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={`volume[${index}]`} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
@@ -495,7 +508,7 @@ class ProductExpandItem extends Component {
 
                                         {item > 1 &&
                                         <>
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Delete</div>
+                                            {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
                                             <DeleteIcon style={{color:"#ccc"}} onClick={() => this.subtractCount()}  />
                                         </>

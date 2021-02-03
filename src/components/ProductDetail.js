@@ -794,7 +794,7 @@ class ProductDetail extends Component {
                                                     <div className="col-12 border-box">
 
                                                         <div className="d-flex flex-column justify-content-center align-items-center" >
-                                                            <img className="" src={this.state.productQrCode} alt="" />
+                                                            <img className="" src={this.state.productQrCode} alt="" style={{width: '90%'}} />
 
                                                             <div className="d-flex justify-content-center w-100">
                                                                 {this.props.hideRegister &&   <p className={"green-text"}>

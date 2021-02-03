@@ -1260,7 +1260,7 @@ class ProductEditForm extends Component {
                 "units": units,
                 "state": state,
                 "volume": volume,
-                "stage" : "certified",
+                // "stage" : "certified",
                 "is_listable":this.state.is_listable,
                 "sku": {
                     "serial": serial,
@@ -1400,7 +1400,7 @@ class ProductEditForm extends Component {
             const part_no = data.get("part_no")
             const state = data.get("state")
 
-            // const site=data.get("deliver")
+            const site=data.get("deliver")
 
             var productData = {
 

@@ -1080,7 +1080,7 @@ class ProductForm extends Component {
                 "state": state,
                 "volume": volume,
                 "is_listable":this.state.is_listable,
-                "stage" : "certified",
+                // "stage" : "certified",
                 "sku": {
                     "serial": serial,
                     "model": model,

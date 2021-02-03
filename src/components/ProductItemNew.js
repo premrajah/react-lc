@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import moment from "moment/moment";
 import PlaceholderImg from '../img/place-holder-lc.png';
 import { Link } from "react-router-dom";
+import MoreMenu from './MoreMenu'
+import ProductEditForm from "./ProductEditForm";
 
 
 class ProductItemNew extends Component {
@@ -26,15 +28,174 @@ class ProductItemNew extends Component {
             count: 0,
             nextIntervalFlag: false,
             offers:[],
-            images:[]
+            images:[],
+            showSubmitSite:false,
+            errorRegister:false,
+            siteSelected:null,
+            showProductEdit:false,
+            productDuplicate:false,
         }
 
         this.showPopUp=this.showPopUp.bind(this)
         this.fetchImage=this.fetchImage.bind(this)
+        this.getSites=this.getSites.bind(this)
+        this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.showProductEdit=this.showProductEdit.bind(this)
+        this.showProductDuplicate=this.showProductDuplicate.bind(this)
+
+        this.callBackResult=this.callBackResult.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+
+        this.callBackSubmit=this.callBackSubmit.bind(this)
+
+
 
     }
 
 
+    callBackSubmit(){
+
+        // alert("submit ")
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+
+        })
+
+        this.props.loadProductsWithoutParent(this.props.userDetail.token)
+
+
+    }
+
+
+    getSites() {
+
+        axios.get(baseUrl + "site",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+                    console.log("sites  response")
+                    console.log(responseAll)
+
+                    this.setState({
+
+                        sites: responseAll
+
+                    })
+
+                },
+                (error) => {
+
+                    console.log("sites response error")
+                    console.log(error)
+
+                }
+            );
+
+    }
+
+    callBackResult(action){
+
+        if (action==="edit"){
+
+            this.showProductEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+        else if (action==="duplicate"){
+
+            this.showProductDuplicate()
+        }
+    }
+
+    triggerCallback() {
+
+
+
+        this.props.triggerCallback()
+
+
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+                    console.log("delete response error")
+                    console.log(error)
+
+                }
+            );
+
+    }
+
+
+
+    showProductEdit(){
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+            productDuplicate:false
+
+        })
+    }
+
+    showProductDuplicate(){
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+            productDuplicate:true
+
+        })
+    }
+
+
+
+    showSubmitSite(){
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+        this.setState({
+
+            showSubmitSite:!this.state.showSubmitSite
+        })
+    }
 
     showPopUp() {
 
@@ -117,7 +278,9 @@ class ProductItemNew extends Component {
 
 
         return (
-<Link to={"/product/"+this.props.item.product._key}>
+       <>
+
+            <Link to={"/product/"+this.props.item.product._key}>
         <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
@@ -141,11 +304,35 @@ class ProductItemNew extends Component {
                 <div style={{ textAlign: "right" }} className={"col-3"}>
 
                     <p className={"text-gray-light small"}>  {moment(this.props.item.product._ts_epoch_ms).format("DD MMM YYYY")} </p>
+                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={false} duplicate={true} edit={true}  />
+
 
                 </div>
             </div>
 
-</Link>
+        </Link>
+
+
+
+           <Modal
+               size="lg"
+               show={this.state.showProductEdit}
+               onHide={this.showProductEdit}
+               className={"custom-modal-popup popup-form"}
+           >
+
+               <div className="">
+                   <button onClick={this.showProductEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+               </div>
+
+
+               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+
+
+           </Modal>
+
+            </>
+
         );
     }
 }
@@ -178,6 +365,8 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
+
 
 
 

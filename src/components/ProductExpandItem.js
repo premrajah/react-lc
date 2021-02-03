@@ -88,7 +88,7 @@ class ProductExpandItem extends Component {
 
             this.setState({
 
-                subProductSelected: this.props.productList.filter((item) => item.product._key==e.target.value)[0]
+                subProductSelected: this.props.productWithoutParentList.filter((item) => item.product._key==e.target.value)[0]
 
             })
 
@@ -246,7 +246,7 @@ class ProductExpandItem extends Component {
 
         this.loadProduct(this.props.productId)
 
-        this.props.loadProducts(this.props.userDetail.token)
+        this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
     }
 
@@ -256,7 +256,7 @@ class ProductExpandItem extends Component {
     getSubProducts() {
 
 
-        var subProductIds = this.state.product.sub_product_ids
+        var subProductIds = this.state.product.sub_products
 
         for (var i = 0; i < subProductIds.length; i++) {
 
@@ -325,23 +325,26 @@ class ProductExpandItem extends Component {
 
                             <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
 
-                                <span data-parent={this.state.product.product._key} onClick={this.showProductSelection} >Add New Sub Product</span>
+                                <span data-parent={this.state.product.product._key} onClick={this.showProductSelection} >Create Sub Product</span>
 
                             </p>
                         </div>}
                     </>
                     }
 
-                    {this.state.product &&
+                    {this.state.product && this.props.showLinkProducts &&
                     <>
-                        <form onSubmit={this.linkSubProduct}>
+                        <div className="row no-gutters  justify-content-left">
+                            <div className={"custom-label text-bold text-blue mb-1"}>Link Sub product</div>
+
+
+                            <form onSubmit={this.linkSubProduct}>
 
                             <div className="col-12 mt-4">
 
                                 <div className="row ">
 
                                     <div className="col-9">
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Link Sub product</div>
 
 
                                         <FormControl variant="outlined" className={classes.formControl}>
@@ -361,7 +364,7 @@ class ProductExpandItem extends Component {
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
+                                                {this.props.productWithoutParentList.filter((item)=> item.listing_id === null ).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
@@ -421,6 +424,8 @@ class ProductExpandItem extends Component {
 
                         </form>
 
+                        </div>
+
 
                         </>}
 
@@ -453,6 +458,7 @@ const mapStateToProps = state => {
         parentProduct:state.parentProduct,
         product:state.product,
         productList: state.productList,
+        productWithoutParentList: state.productWithoutParentList,
 
 
     };
@@ -470,6 +476,7 @@ const mapDispachToProps = dispatch => {
         setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
 
 
 

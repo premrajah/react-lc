@@ -671,9 +671,6 @@ class ProductForm extends Component {
         if (!this.props.parentProduct){
 
 
-
-
-
             this.props.setProduct(this.state.product)
             this.props.setParentProduct(this.state.parentProduct)
 
@@ -1083,7 +1080,7 @@ class ProductForm extends Component {
                 "state": state,
                 "volume": volume,
                 "is_listable":this.state.is_listable,
-                "stage" : "certified",
+                // "stage" : "certified",
                 "sku": {
                     "serial": serial,
                     "model": model,
@@ -1106,7 +1103,7 @@ class ProductForm extends Component {
 
                 completeData = {
                     product: productData,
-                    "child_products": [],
+                    "sub_products": [],
                     "artifact_ids": this.state.images,
                     "site_id": data.get("deliver"),
                     "parent_product_id": this.props.parentProduct,
@@ -1879,7 +1876,8 @@ class ProductForm extends Component {
                                                                     <div className={"file-uploader-thumbnail-container"}>
 
                                                                         {/*<img src={URL.createObjectURL(item)}/>*/}
-                                                                        <div data-index={index} data-url={URL.createObjectURL(item.file)}
+                                                                        <div data-index={index}
+                                                                             // data-url={URL.createObjectURL(item.file)}
 
                                                                              className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item.file) + ")" }}>
 
@@ -2162,6 +2160,7 @@ const mapStateToProps = state => {
         showProductPopUp:state.showProductPopUp,
         siteList: state.siteList,
 
+        productWithoutParentList: state.productWithoutParentList,
 
 
     };

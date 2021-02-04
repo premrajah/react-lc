@@ -8,7 +8,7 @@ import Org from "../Org/Org";
 import * as url from "url";
 import { Link } from "react-router-dom";
 import NotIcon from '@material-ui/icons/Notifications';
-
+import moment from "moment";
 import { Alert ,Card} from 'react-bootstrap';
 
 
@@ -100,14 +100,19 @@ class Notifications extends Component {
 
                <div key={message._key}>
 
-                   <div className={"row list-group-item list-group-item-action mt-2 "}>
-                       <div className={"col-1  "}  style={{float:"left"}}>
+                   <div className={"row list-group-item list-group-item-action mt-2 "} style={{display:"flex"}}>
 
-                  <NotIcon className={"text-left"} style={{color:"#eee"}}/>
+                       <div className={"col-9  "}>
+                           <NotIcon className={"text-left mr-2"} style={{color:"#eee",float:"left"}}/>
+
+                           <SearchLinks text={message.text} />
 
                        </div>
-                       <div className={"col-11  "}>
-                           <SearchLinks text={message.text} />
+
+                       <div className={"col-3  text-right"}>
+                           {/*{moment(message._ts_epoch_ms).format("h:mm:ss a DD MMM YYYY")}*/}
+
+                           {moment(message._ts_epoch_ms).fromNow()}
 
                        </div>
 

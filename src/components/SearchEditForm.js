@@ -142,6 +142,21 @@ class SearchEditForm extends Component {
         this.loadSelection=this.loadSelection.bind(this)
 
 
+        this.phonenumber = this.phonenumber.bind(this)
+
+
+
+    }
+
+    phonenumber(inputtxt) {
+
+        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
+        if(inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     loadSelection(){
@@ -1526,7 +1541,11 @@ class SearchEditForm extends Component {
             errors["phone"] = "Required";
         }
 
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
 
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
 
         if (!fields["email"]) {
             formIsValid = false;
@@ -2038,7 +2057,7 @@ class SearchEditForm extends Component {
                                             </div>
                                             <div className="col-12 mt-4">
 
-                                                <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+                                                <TextField id="outlined-basic" type={"text"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
 
                                                 {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 

@@ -146,12 +146,21 @@ class ProductEditForm extends Component {
         this.checkListable=this.checkListable.bind(this)
         this.updateImages=this.updateImages.bind(this)
         this.updateSite=this.updateSite.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
 
 
 
+    }
 
+    phonenumber(inputtxt) {
 
-
+        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
+        if(inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -668,6 +677,11 @@ class ProductEditForm extends Component {
         if (!fields["phone"]) {
             formIsValid = false;
             errors["phone"] = "Required";
+        }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
         }
 
 
@@ -2303,7 +2317,7 @@ class ProductEditForm extends Component {
                                                                     </div>
                                                                     <div className="col-12 mt-4">
 
-                                                                        <TextField id="outlined-basic" type={"number"}
+                                                                        <TextField id="outlined-basic" type={"text"}
                                                                                    name={"phone"}
                                                                                    onChange={this.handleChangeSite.bind(this, "phone")}
                                                                                    label="Phone" variant="outlined"

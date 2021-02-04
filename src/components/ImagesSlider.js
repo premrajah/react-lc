@@ -13,12 +13,8 @@ class ImagesSlider extends React.Component {
 
 
 
-    componentWillReceiveProps(newProps){
 
-
-    }
-
-    componentWillMount() {
+    setImages(){
 
 
         for (let i = 0; i < this.props.images.length; i++) {
@@ -34,6 +30,21 @@ class ImagesSlider extends React.Component {
             )
 
         }
+
+    }
+
+    componentWillReceiveProps(newProps){
+        this.imagesArray = []
+
+
+        this.setImages()
+    }
+
+    componentWillMount() {
+        this.imagesArray = []
+
+
+        this.setImages()
 
     }
     componentWillUnmount() {

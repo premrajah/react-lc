@@ -98,10 +98,9 @@ class ProductDetail extends Component {
 
     componentWillReceiveProps(newProps){
 
-        // alert("changed details")
 
-        // if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn)
-        //     this.getSubProducts()
+        this.getQrCode()
+            this.getSubProducts()
 
 
     }
@@ -556,6 +555,15 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
+
+
+        this.setState({
+
+            productQrCode: null
+
+        })
+
+
         this.setState({
 
             productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
@@ -657,6 +665,11 @@ class ProductDetail extends Component {
 
 
 
+
+        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
+
+
+
         // alert("sub product called")
 
         this.setState({
@@ -699,6 +712,16 @@ class ProductDetail extends Component {
                         console.log("resource error", error)
                     }
                 );
+
+        }
+
+
+        }else{
+
+            // alert("mno sub")
+            this.setState({
+                subProducts:[]
+            })
 
         }
     }
@@ -751,17 +774,7 @@ class ProductDetail extends Component {
     componentWillMount() {
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
-            this.getSubProducts()
-
-        }else{
-
-            alert("mno sub")
-            this.setState({
-                subProducts:[]
-            })
-
-        }
+        this.getSubProducts()
 
     }
 

@@ -10,7 +10,13 @@ class ImagesSlider extends React.Component {
         super(props);
 
     }
-    
+
+
+
+    componentWillReceiveProps(newProps){
+
+
+    }
 
     componentWillMount() {
 

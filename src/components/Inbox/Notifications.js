@@ -4,9 +4,13 @@ import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
 import NotificationItem from "./NotificationItem";
 import _ from "lodash";
-import { Link } from "@material-ui/core";
 import Org from "../Org/Org";
 import * as url from "url";
+import { Link } from "react-router-dom";
+import NotIcon from '@material-ui/icons/Notifications';
+
+import { Alert ,Card} from 'react-bootstrap';
+
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 
@@ -96,7 +100,18 @@ class Notifications extends Component {
 
                <div key={message._key}>
 
-                   <SearchLinks text={message.text} />
+                   <div className={"row list-group-item list-group-item-action mt-2 "}>
+                       <div className={"col-1  "}  style={{float:"left"}}>
+
+                  <NotIcon className={"text-left"} style={{color:"#eee"}}/>
+
+                       </div>
+                       <div className={"col-11  "}>
+                           <SearchLinks text={message.text} />
+
+                       </div>
+
+                       </div>
 
                </div>
 
@@ -138,24 +153,61 @@ function SearchLinks(props) {
 
     let text = props.text
 
+    let startText;
+    let endText;
+    let id
+    let changed=false
+
     if (text.indexOf("Cycle/")>=0){
 
         let  start= text.indexOf("Cycle/")
         let end = text.indexOf(" ",start)>=0?text.indexOf(" ",start):text.length
 
+        let replacementText = text.substr(start-6,end)
+         id = text.substr(start+6,end)
+
+
+         // startText = text.substr(0,start-7)
+         // endText = text.substr(end,text.length)
+
+        text = text.replace(replacementText,"<a  class='green-link-url' href='/cycle/"+id+"'>Cycle</Link>")
+
+        // console.log(start,end)
+
+        changed=true
+
+    }
+
+
+    if (text.indexOf("Product/")>=0){
+
+        let  start= text.indexOf("Product/")
+        let end = text.indexOf(" ",start)
+
         let replacementText = text.substr(start,end)
-        let id = text.substr(start+6,end)
+        id = text.substr(start,end)
 
 
-        text = text.replace(replacementText,"<a href='/cycle/"+id+"'>Visit</a>")
+        // startText = text.substr(0,start-8)
+        // endText = text.substr(end,text.length)
+
+        text = text.replace(replacementText,"<a class='green-link-url' href='/product/"+id+"'>Product</Link>")
 
         console.log(start,end)
 
+        changed=true
 
     }
 
 
     return (<div dangerouslySetInnerHTML={createMarkup(text)}/>);
+
+    // return (<>
+    //
+    //
+    //     </>
+    //     );
+
 
 
 }

@@ -100,6 +100,10 @@ class ProductDetail extends Component {
 
         // alert("changed details")
 
+        // if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn)
+        //     this.getSubProducts()
+
+
     }
 
 
@@ -653,6 +657,12 @@ class ProductDetail extends Component {
 
 
 
+        // alert("sub product called")
+
+        this.setState({
+            subProducts:[]
+        })
+
         var subProductIds = this.props.item.sub_products
 
         for (var i = 0; i < subProductIds.length; i++) {
@@ -741,8 +751,17 @@ class ProductDetail extends Component {
     componentWillMount() {
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn)
+        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
             this.getSubProducts()
+
+        }else{
+
+            alert("mno sub")
+            this.setState({
+                subProducts:[]
+            })
+
+        }
 
     }
 

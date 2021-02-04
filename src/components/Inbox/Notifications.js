@@ -125,7 +125,32 @@ class Notifications extends Component {
 
     componentDidMount() {
         this.getNotifications(this.props.userDetail);
+        this.updateNotifications()
     }
+
+
+
+    interval
+    updateNotifications(){
+
+    this.interval = setInterval(() => {
+
+        console.log("check notifications")
+
+        this.getNotifications(this.props.userDetail)
+
+    }, 10000);
+
+
+
+}
+
+
+
+componentWillUnmount() {
+
+    clearInterval(this.interval)
+}
 
     render() {
         return (

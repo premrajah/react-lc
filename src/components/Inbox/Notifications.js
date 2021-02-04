@@ -24,6 +24,8 @@ class Notifications extends Component {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((response) => {
+
+                console.log(response.data.data)
                 this.setState({
                     allNotifications: _.orderBy(
                         response.data.data,
@@ -93,7 +95,9 @@ class Notifications extends Component {
             // />
 
                <div key={message._key}>
-                   {message.text}
+
+                   <SearchLinks text={message.text} />
+
                </div>
 
         );
@@ -123,6 +127,37 @@ class Notifications extends Component {
             </div>
         );
     }
+}
+
+
+function createMarkup(text) {
+    return {__html: text};
+}
+
+function SearchLinks(props) {
+
+    let text = props.text
+
+    if (text.indexOf("Cycle/")>=0){
+
+        let  start= text.indexOf("Cycle/")
+        let end = text.indexOf(" ",start)>=0?text.indexOf(" ",start):text.length
+
+        let replacementText = text.substr(start,end)
+        let id = text.substr(start+6,end)
+
+
+        text = text.replace(replacementText,"<a href='/cycle/"+id+"'>Visit</a>")
+
+        console.log(start,end)
+
+
+    }
+
+
+    return (<div dangerouslySetInnerHTML={createMarkup(text)}/>);
+
+
 }
 
 const mapStateToProps = (state) => {

@@ -16,7 +16,7 @@ import ProductItemNew from './ProductItemNew'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles, withStyles } from "@material-ui/core/styles/index";
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/Close';
 
 
 const useStylesSelect = makeStyles((theme) => ({
@@ -49,6 +49,7 @@ class ProductExpandItem extends Component {
             subProductSelected:null,
             addCount:[],
             count:1,
+            showExisting:false
         }
 
         this.showPopUp=this.showPopUp.bind(this)
@@ -56,9 +57,18 @@ class ProductExpandItem extends Component {
         this.linkSubProduct=this.linkSubProduct.bind(this)
         this.addCount=this.addCount.bind(this)
         this.subtractCount=this.subtractCount.bind(this)
+        this.showExisting=this.showExisting.bind(this)
 
     }
 
+
+    showExisting() {
+
+        this.setState({
+            showExisting: !this.state.showExisting
+        })
+
+    }
     
     
     addCount(){
@@ -394,55 +404,59 @@ class ProductExpandItem extends Component {
                     </div>
                     </div>}
 
-                    {this.state.product &&
-                    <>
-                        {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
 
-                            <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
-
-                                <span data-parent={this.state.product.product._key} onClick={this.showProductSelection} >Create Sub Product</span>
-
-                            </p>
-                        </div>}
-                    </>
-                    }
 
                     <div className="row no-gutters  justify-content-left">
                         <div className="col-12">
-                            <div className={"custom-label text-bold text-blue mb-1"}>Link Sub product</div>
+                            <div className={"custom-label text-bold text-blue mb-1"}>Sub Products</div>
+
+                            {this.state.product &&
+                            <>
+                                {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
+
+                                    <p style={{ margin: "10px 0px" }} className={" text-mute small"}>
+
+                                        <span className={"forgot-password-link green-text mr-2 "} data-parent={this.state.product.product._key} onClick={this.showProductSelection} >Create New</span>:
+                                        <span  className={"forgot-password-link green-text ml-2"} data-parent={this.state.product.product._key} onClick={this.showExisting} >Add Existing</span>
+
+                                    </p>
+                                </div>}
+                            </>
+                            }
+
                         </div>
                     </div>
 
-                    {this.state.product && this.props.showLinkProducts &&
+                    {this.state.product && this.props.showLinkProducts && this.state.showExisting &&
                     <>
 
 
-                        <div className="row no-gutters  justify-content-left">
+                        <div className="row   justify-content-left">
 
 
                             <form style={{width:"100%"}} onSubmit={this.linkSubProduct}>
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 mt-4" style={{padding:"0!important"}}>
 
-                                <div className="row ">
-                                    <div className="col-7">
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>
+                                {/*<div className="row ">*/}
+                                    {/*<div className="col-7">*/}
+                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
-                                    </div>
-                                    <div className="col-3">
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Volume</div>
-                                    </div>
-                                    <div className="col-2">
-                                    <div className={"custom-label text-bold text-blue mb-1"}>Delete</div>
-                                    </div>
+                                    {/*</div>*/}
+                                    {/*<div className="col-3">*/}
+                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-2">*/}
+                                    {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+                                    {/*</div>*/}
 
-                                </div>
+                                {/*</div>*/}
 
                                 {this.state.addCount.map((item,index)=>
 
                                 <div className="row mt-2">
 
-                                    <div className="col-7">
+                                    <div className="col-8">
                                         {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
 
@@ -464,7 +478,7 @@ class ProductExpandItem extends Component {
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productWithoutParentList.filter((item)=> (item.listing_id === null)&&item.product._key!==this.state.product.product._key ).map((item) =>
+                                                {this.props.productWithoutParentList.filter((item)=> (item.listing_id === null)&&item.product._key!==this.state.product.product._key  && item.parent_product_id===null).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
@@ -503,14 +517,15 @@ class ProductExpandItem extends Component {
 
                                     </div>
 
-                                    <div className="col-2 text-center">
+                                    <div className="col-1 text-center">
 
 
                                         {item > 1 &&
                                         <>
                                             {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                            <DeleteIcon style={{color:"#ccc"}} onClick={() => this.subtractCount()}  />
+                                            <DeleteIcon style={{color:"red",margin:"auto"}} onClick={() => this.subtractCount()}  />
+                                            <DeleteIcon style={{color:"red",margin:"auto"}} onClick={() => this.subtractCount()}  />
                                         </>
                                         }
                                     </div>
@@ -523,9 +538,9 @@ class ProductExpandItem extends Component {
 
                             </div>
 
-                                <div className="col-12 mt-4">
+                                <div className="col-12 mt-4 ">
 
-                                    <button onClick={this.addCount}  className={"btn btn-default  btn-rounded shadow  blue-btn-border"}>
+                                    <button  onClick={this.addCount}  className={"btn btn-default  btn-rounded shadow  blue-btn-border"}>
 
                                     <AddIcon />Add
                                     </button>
@@ -537,9 +552,9 @@ class ProductExpandItem extends Component {
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
 
-                                        <div className="col-4">
+                                        <div className="col-12 text-center">
 
-                                      <button type={"submit"}  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit</button>
+                                      <button style={{margin:"auto", width:"200px"}} type={"submit"}  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Submit</button>
 
                                         </div>
                                     </div>

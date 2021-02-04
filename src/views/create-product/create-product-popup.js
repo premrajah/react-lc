@@ -60,7 +60,7 @@ class  ProductPopUp extends Component{
                 <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
 
                 </div>
-                <div className="row py-3 justify-content-center mobile-menu-row pt-3">
+                <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
                     <div className="col mobile-menu">
 
 

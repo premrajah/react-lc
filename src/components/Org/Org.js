@@ -14,6 +14,7 @@ const Org = ({
     trigger,
     textColor,
     infoColor,
+    infoSize,
 }) => {
     const orgNameSub = orgId ? orgId.substr(4) : "";
 
@@ -59,7 +60,7 @@ const Org = ({
                     trigger={trigger ? trigger : ['hover', 'focus']}
                     placement={placement ? placement : "right"}
                     overlay={orgPopover}>
-                    <Info style={{ cursor: "pointer", color: infoColor ? infoColor : "#27245C" }} />
+                    <Info style={{ cursor: "pointer", color: infoColor ? infoColor : "#27245C" }} fontSize={infoSize? infoSize : null} />
                 </OverlayTrigger>
             </div>
         </>

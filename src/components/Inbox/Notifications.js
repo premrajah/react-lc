@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
-import { baseUrl, frontEndUrl } from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import NotificationItem from "./NotificationItem";
 import _ from "lodash";
 import { Link } from "@material-ui/core";
+import Org from "../Org/Org";
+import * as url from "url";
 
-const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/;
+const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 
 class Notifications extends Component {
     state = {
@@ -44,7 +46,7 @@ class Notifications extends Component {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    console.log('deleted?')
+                    console.log("deleted?");
                     this.getNotifications(this.props.userDetail);
                 }
             })
@@ -64,35 +66,37 @@ class Notifications extends Component {
         const returnedRegexArray =
             message.text !== null ? message.text.match(REGEX_ID_ARRAY) : message.text;
 
-        let editedText = message.text;
-        let link = null;
-        let linkText = null;
 
-        if (returnedRegexArray !== null) {
-            switch (returnedRegexArray[1]) {
-                case "Cycle":
-                    link = `/cycle/${returnedRegexArray[0]}`;
-                    linkText = "Cycle";
-                    break;
-                case "Product":
-                    link = `/product/${returnedRegexArray[0]}`;
-                    linkText = "Product";
-                    break;
-                default:
-                    return;
-            }
 
-            return (
-                <NotificationItem
-                    editText={editedText}
-                    link={link}
-                    linkText={linkText}
-                    item={item}
-                    key={message._key}
-                    onClose={this.handleDeleteNotification}
-                />
-            );
-        }
+
+        // text.replaceAll(REGEX_ID_ARRAY, (m, p1, p2, i, x) => {
+        //     // NOTE: <Kind>/<_key> is the full <_id>. E.g. Cycle/cycle-12344
+        //     // PI = <Kind>, P2 = <_key>, M = <_id>
+        //     // If P1 == Org => Created Org Component.
+        //     // If P1 is in selection list (Product, Cycle, Match) => create Link Component
+        //     // Else => just return {m}
+        //
+        //     // return `${'/' + p1 + '/' + p2} -> ${m}`
+        //
+        // })
+
+
+
+
+
+        return (
+            // <NotificationItem
+            //     editText={editedText}
+            //     item={item}
+            //     key={message._key}
+            //     onClose={this.handleDeleteNotification}
+            // />
+
+               <div key={message._key}>
+                   {message.text}
+               </div>
+
+        );
     };
 
     componentDidMount() {

@@ -15,7 +15,7 @@ class Messages extends Component {
         const { token, orgId } = userDetails;
 
         axios
-            .get(`${baseUrl}message/org/${encodeURIComponent(orgId)}`, {
+            .get(`${baseUrl}message`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((response) => {
@@ -27,6 +27,10 @@ class Messages extends Component {
             });
     }
 
+    handleDeleteMessage = (key) => {
+        console.log('[Messages] ', key)
+    }
+
     componentDidMount() {
         this.getMessages(this.props.userDetail)
     }
@@ -36,7 +40,7 @@ class Messages extends Component {
             <h5 className="blue-text mb-4">Messages ({this.state.allMessages.length <= 0 ? '...' : this.state.allMessages.length})</h5>
             <div className="messages-content">
                 {this.state.allMessages.length > 0 ? this.state.allMessages.map(item => {
-                    return <Messages item={item} key={Date.now()} />
+                    return <MessageItem item={item} key={Date.now()} onDelete={this.handleDeleteMessage} />
                 }) : 'No messages ... '}
             </div>
         </div>;

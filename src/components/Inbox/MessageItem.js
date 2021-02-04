@@ -1,10 +1,11 @@
 import React from 'react'
 import {Alert} from "react-bootstrap";
 
-const MessageItem = ({item}) => {
+const MessageItem = ({item, onDelete}) => {
 
     const handleCloseMessage = () => {
         console.log('Message closed')
+        onDelete('//TODO key')
     }
 
     return (

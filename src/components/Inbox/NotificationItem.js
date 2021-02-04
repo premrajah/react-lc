@@ -5,7 +5,7 @@ import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import {Link as NotifLinkIcon} from '@material-ui/icons'
 
-const NotificationItem = ({ item, editText, link, linkText, onClose, dismiss }) => {
+const NotificationItem = ({ item, editText, onClose }) => {
     const { message, orgs } = item;
 
     const handleOnClose = (key) => {
@@ -19,7 +19,7 @@ const NotificationItem = ({ item, editText, link, linkText, onClose, dismiss }) 
                 onClose={() => handleOnClose(message._key)}
                 dismissible>
                 <div>
-                    {moment(message._ts_epoch_ms).format("DD MMM YYYY")} : {editText} {link ? <Link style={{color: '#27245C'}} to={link}><NotifLinkIcon/></Link> : null}
+                    {moment(message._ts_epoch_ms).format("DD MMM YYYY")} : {editText}
                 </div>
                 <div>
                     {orgs.length > 0

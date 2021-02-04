@@ -114,6 +114,7 @@ class Notifications extends Component {
 
                            {moment(message._ts_epoch_ms).fromNow()}
 
+
                        </div>
 
                        </div>

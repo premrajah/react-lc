@@ -12,6 +12,7 @@ import BottleDollarIcon from "../../img/resource_icons/icon_bottle_dollar.png";
 import FindResourceListingItem from "../../components/FindResourceListingItem";
 import SearchBar from "../../components/SearchBar";
 import * as actionCreator from "../../store/actions/actions";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 class FindResourcePage extends Component {
     state = {
@@ -31,9 +32,7 @@ class FindResourcePage extends Component {
                 },
             })
             .then((response) => {
-                if (response.status === 200) {
-                    this.setState({ allListings: response.data.data });
-                }
+                this.setState({ allListings: response.data.data });
             })
             .catch((error) => {
                 console.log("find all listing error ", error);
@@ -59,7 +58,11 @@ class FindResourcePage extends Component {
                           return item;
                       }
                   })
-                  .map((item) => <FindResourceListingItem key={item.listing._id} item={item} />)
+                  .map((item) => (
+                      <ErrorBoundary>
+                          <FindResourceListingItem key={item.listing._id} item={item} />
+                      </ErrorBoundary>
+                  ))
             : "Loading, no resources yet...";
     };
 
@@ -138,9 +141,8 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
     };

@@ -20,6 +20,7 @@ import SearchItem from './search-item'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from "@material-ui/core/styles/index";
+import PageHeader from "../../components/PageHeader";
 
 
 
@@ -132,31 +133,9 @@ class MySearch extends Component {
                     <div className="container  pb-4 pt-4">
 
 
-                        <div className="row justify-content-start">
-
-                            <div className="col-auto pb-4 ">
-                                <img style={{height:"auto", width:"30px"}} className={""} src={SearchIcon} alt="" />
-
-                            </div>
-                        </div>
-                        <div className="row justify-content-start pb-2  ">
-
-                            <div className="col-auto">
-
-                                <h3 className={"blue-text text-heading"}>My Searches</h3>
-
-                            </div>
-                        </div>
+                        <PageHeader subTitle={"Accept or decline a match to start a loop."} pageTitle={"My Searches"}  pageIcon={SearchIcon}/>
 
 
-                        <div className="row justify-content-start pb-4 pt-2 ">
-
-                            <div className="col-auto">
-                                <p className={"text-gray-light small"}>Accept or decline a match to start a loop.
-                                </p>
-
-                            </div>
-                        </div>
 
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>

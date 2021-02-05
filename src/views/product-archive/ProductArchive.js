@@ -6,6 +6,9 @@ import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
+import ProductRecordItem from "../../components/ProductRecordItem";
+import FindResourceListingItem from "../../components/FindResourceListingItem";
+import {Link} from "react-router-dom";
 
 class ProductArchive extends Component {
     state = {
@@ -29,9 +32,13 @@ class ProductArchive extends Component {
     displayArchivedProducts = () => {
         if(this.state.allArchivedProducts.length > 0) {
             return (
-                <div>
-                    Products
-                </div>
+                this.state.allArchivedProducts.map(item => {
+                    return (
+                        <Link to={`/p/${item.product._key}`} key={item.product._id}>
+                            <ProductRecordItem   item={item} />
+                        </Link>
+                    )
+                })
             )
         } else {
             return (
@@ -56,10 +63,16 @@ class ProductArchive extends Component {
 
                         <PageHeader
                             pageIcon={ArchiveIcon}
-                            pageTitle="Product Archive"
+                            pageTitle="Product Record"
                             subTitle="Your previously owned products"
                             bottomLine={<hr/>}
                         />
+
+                        <div className="row mt-3 mb-5">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/my-products" className="btn btn-sm blue-btn">My Products</Link>
+                            </div>
+                        </div>
 
                         <div className="row">
                             <div className="col-12">

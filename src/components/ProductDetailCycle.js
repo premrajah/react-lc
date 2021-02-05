@@ -850,7 +850,7 @@ class ProductDetailCycle extends Component {
                                         {this.state.subProducts.length>0 &&
                                         <Tab eventKey="subproducts" title="Subproducts">
                                             {this.state.subProducts.map((item)=>
-                                                <ProductItemNew item={item}/>
+                                                <ProductItemNew key={Math.random() * 100} item={item}/>
                                             )}
                                         </Tab>}
 
@@ -862,7 +862,7 @@ class ProductDetailCycle extends Component {
 
                                             {this.state.searches.map((item) =>
 
-                                                <SearchItem item={item}/>
+                                                <SearchItem key={Math.random() * 100} item={item}/>
                                             )}
 
                                         </Tab>}
@@ -933,7 +933,7 @@ class ProductDetailCycle extends Component {
 
                                                         {this.state.sites.map((item) =>
 
-                                                            <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+                                                            <option key={Math.random() * 100} value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
                                                         )}
 

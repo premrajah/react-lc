@@ -158,11 +158,15 @@ class Products extends Component {
 
                         <PageHeader pageIcon={CubeBlue} pageTitle="My Products" subTitle="Products created can be assigned to resource searches" />
 
+                        <div className="row">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/product-archive" className="btn btn-sm blue-btn">Product Record</Link>
+                            </div>
+                        </div>
+
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchField />
-
-
                             </div>
                         </div>
 

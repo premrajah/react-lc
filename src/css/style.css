@@ -2105,6 +2105,9 @@ background: transparent;
 
 
 }
+.blue-btn:hover {
+	color: rgba(255,255,255,0.5);
+}
 .btn{
 
 	border-radius: 7px;

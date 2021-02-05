@@ -21,6 +21,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from "@material-ui/core/styles/index";
 import moment from "moment/moment";
 import ProductItem from '../../components/ProductItemNew'
+import PageHeader from "../../components/PageHeader";
 
 
 class Products extends Component {
@@ -134,38 +135,13 @@ class Products extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper ">
+                <div className="wrapper">
 
                     <HeaderDark />
 
+                    <div className="container  pb-4 pt-4">
 
-                    <div className="container   pb-4 pt-4">
-
-
-                        <div className="row ">
-
-                            <div className="col-auto pb-4 ">
-                                <img style={{height:"auto", width:"48px"}} className={"search-icon-middle"} src={CubeBlue} alt="" />
-
-                            </div>
-                        </div>
-                        <div className="row  pb-2  ">
-
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Products
-                                </h3>
-
-                            </div>
-                        </div>
-
-
-                        <div className="row  pb-4 pt-2 ">
-
-                            <div className="col-auto">
-                                <p className={"text-gray-light "}>Products created can be assigned to resource searches</p>
-
-                            </div>
-                        </div>
+                        <PageHeader pageIcon={CubeBlue} pageTitle="My Products" subTitle="Products created can be assigned to resource searches" />
 
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>

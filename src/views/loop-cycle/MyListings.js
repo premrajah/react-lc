@@ -19,7 +19,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductBlue from '../../img/icons/product-blue.png';
+import ProductBlue from '../../img/icons/product-128.svg';
+import PageHeader from "../../components/PageHeader";
 
 class MyListings extends Component {
 
@@ -119,39 +120,13 @@ class MyListings extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper ">
+                <div className="wrapper">
 
                     <HeaderDark />
 
+                    <div className="container  pb-4 pt-4">
 
-                    <div className="container   pb-4 ">
-
-
-                        <div className="row pt-2">
-
-                            <div className="col-auto pb-2 ">
-                                <img className={"search-icon-middle"} src={ProductBlue} alt="" />
-
-                            </div>
-                        </div>
-                        <div className="row  pb-2  ">
-
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>My Listings
-                                </h3>
-
-                            </div>
-                        </div>
-
-
-                        <div className="row  pb-4 pt-2 ">
-
-                            <div className="col-auto">
-                                <p className={"text-gray-light small"}>Accept or decline a match to start a loop.
-                                </p>
-
-                            </div>
-                        </div>
+                        <PageHeader pageIcon={ProductBlue} pageTitle="My Listings" subTitle="Accept or decline a match to start a loop." />
 
                         <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>

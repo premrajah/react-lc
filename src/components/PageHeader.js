@@ -1,16 +1,16 @@
 import React from "react";
 import {Pages} from "@material-ui/icons";
 import {Image} from "react-bootstrap";
-import SearchBar from "./SearchBar";
 
-const PageHeader = ({ pageIcon, pageTitle, subTitle }) => {
+
+const PageHeader = ({ pageIcon, pageTitle, subTitle, bottomLine }) => {
     return (
         <>
-            <div className="row mt-3">
-                <div className="col-12">
-                    <div className="mb-3">{pageIcon ? <Image style={{width: '48px', height: '48px'}} src={pageIcon} alt="" /> : <Pages style={{fontSize: '48px'}} className="blue-text" />}</div>
-                </div>
-            </div>
+            {/*<div className="row mt-3">*/}
+            {/*    <div className="col-12">*/}
+            {/*        <div className="mb-3">{pageIcon ? <Image style={{width: '48px', height: '48px'}} src={pageIcon} alt="" /> : <Pages style={{fontSize: '48px'}} className="blue-text" />}</div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
             <div className="row">
                 <div className="col-12">
@@ -23,7 +23,7 @@ const PageHeader = ({ pageIcon, pageTitle, subTitle }) => {
                     <p className="text-gray-light">{subTitle ? subTitle : ''}</p></div>
             </div>
 
-
+            {bottomLine ? bottomLine : ''}
 
         </>
     );

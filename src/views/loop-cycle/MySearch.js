@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import clsx from 'clsx';
-import SearchIcon from '../../img/icons/search-icon.png';
+import SearchIcon from '../../img/icons/search-128px.svg';
 import { Link } from "react-router-dom";
 
 import HeaderDark from '../header/HeaderDark'

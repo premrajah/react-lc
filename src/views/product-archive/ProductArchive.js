@@ -48,13 +48,17 @@ class ProductArchive extends Component {
         return (
             <div>
                 <Sidebar />
-                <div className="wrapper ">
+                <div className="wrapper">
+
                     <HeaderDark />
-                    <div className="container   pb-4 pt-4">
+
+                    <div className="container  pb-4 pt-4">
+
                         <PageHeader
                             pageIcon={ArchiveIcon}
                             pageTitle="Product Archive"
                             subTitle="Your previously owned products"
+                            bottomLine={<hr/>}
                         />
 
                         <div className="row">

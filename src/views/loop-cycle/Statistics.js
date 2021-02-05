@@ -33,14 +33,17 @@ class Statistics extends Component {
         return (
             <div>
                 <Sidebar />
-                <div className="wrapper accountpage">
+                <div className="wrapper">
+
                     <HeaderDark />
 
-                    <div className="container   pb-4 pt-4">
+                    <div className="container  pb-4 pt-4">
+
                         <PageHeader
                             pageIcon={StatBLue}
                             pageTitle="Statistics"
                             subTitle="View statistics"
+                            bottomLine={<hr/>}
                         />
 
                         <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">

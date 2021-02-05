@@ -270,7 +270,7 @@ class SearchMatches extends Component {
 
                 <div className={"tab-content-listing col-12"}>
 
-                    <NavTabs matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
+                    <NavTabs history={this.props.history} matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
 
                 </div>
                     </div>
@@ -422,7 +422,7 @@ function NavTabs(props) {
                         {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
 
 
-                            <ResourceItem history={this.props.history} link={"/match/"+props.slug+"/"+item.listing.listing._key }  searchId={props.slug} item={item}  />
+                            <ResourceItem history={props.history} link={"/match/"+props.slug+"/"+item.listing.listing._key }  searchId={props.slug} item={item}  />
 
                         {/* </Link>*/}
 

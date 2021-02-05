@@ -553,16 +553,17 @@ class MatchItemSeller extends Component {
 
     componentDidMount() {
 
-        if (this.props.item.match.stage) {
-            this.getCycleId()
-
-        }
 
         this.getOffer()
 
         this.interval = setInterval(() => {
+            if (this.props.item.match.stage) {
+                this.getCycleId()
+
+            }
 
             this.getOffer()
+
 
         }, 5000);
 

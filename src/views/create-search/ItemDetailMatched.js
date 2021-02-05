@@ -258,20 +258,25 @@ class ItemDetailMatch extends Component {
 
 
 
-
-
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
-
-
 
         this.getResources()
 
+        this.interval = setInterval(() => {
+
+
+            this.getResources()
+
+
+        }, 5000);
 
     }
+
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
+
 
 
 

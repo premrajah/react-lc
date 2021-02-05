@@ -598,12 +598,14 @@ class MatchItemBuyer extends Component {
         this.getOffer()
 
 
-        if (this.props.item.match.stage) {
-             this.getCycleId()
 
-        }
 
             this.interval = setInterval(() => {
+
+                if (this.props.item.match.stage) {
+                    this.getCycleId()
+
+                }
 
             this.getOffer()
 

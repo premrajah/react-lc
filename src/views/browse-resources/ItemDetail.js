@@ -405,6 +405,8 @@ class ItemDetail extends Component {
         this.getResources()
 
 
+        this.getMatches()
+
         this.interval = setInterval(() => {
 
             this.getMatches()

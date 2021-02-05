@@ -412,9 +412,17 @@ class ProductExpandItem extends Component {
 
                             {this.state.product &&
                             <>
-                                {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
+                                {!this.props.hideAddAll &&
+                                <div className="row no-gutters justify-content-left">
 
-                                    <div className={"custom-label text-bold text-blue mb-1"}>Sub Products</div>
+                                    <div className="col-12" >
+
+
+                                    <p className={"custom-label text-bold text-blue mb-1"}>Sub Products</p>
+
+                                    </div>
+                                    <div className="col-12" >
+
 
                                     <p style={{ margin: "10px 0px" }} className={" text-mute small"}>
 
@@ -422,7 +430,9 @@ class ProductExpandItem extends Component {
                                         <span  className={"forgot-password-link green-text ml-2"} data-parent={this.state.product.product._key} onClick={this.showExisting} >Add Existing</span>
 
                                     </p>
-                                </div>}
+                                    </div>
+                                </div>
+                                }
                             </>
                             }
 

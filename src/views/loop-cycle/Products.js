@@ -155,7 +155,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row listing-row-border   pt-3 pb-3">
 
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.props.productWithoutParentList.length} Products </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.props.productWithoutParentList.filter((item)=> item.product.is_listable=== true).length} Products </p>
 
                             </div>
                             <div className="text-mute col-auto pl-0">
@@ -167,7 +167,7 @@ class Products extends Component {
                         </div>
 
 
-                        {this.props.productWithoutParentList.map((item) =>
+                        {this.props.productWithoutParentList.filter((item)=> item.product.is_listable=== true).map((item) =>
 
                             <>
 

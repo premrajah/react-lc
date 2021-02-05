@@ -20,9 +20,28 @@ class FindResourcePage extends Component {
         search: "",
     };
 
+    interval
+
     componentDidMount() {
         this.getAllListings();
+        this.updateNotifications()
     }
+
+    componentWillUnmount() {
+        clearInterval(this.interval)
+    }
+
+
+    updateNotifications(){
+        this.interval = setInterval(() => {
+            this.getAllListings()
+        }, 10000);
+
+    }
+
+
+
+
 
     getAllListings = () => {
         axios

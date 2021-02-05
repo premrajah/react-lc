@@ -383,7 +383,7 @@ class ItemDetailMatch extends Component {
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
                                         </div>
                                     </div>
 
@@ -393,7 +393,7 @@ class ItemDetailMatch extends Component {
 
                                         <div className={"col-auto"}>
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
                                         </div>
 
 

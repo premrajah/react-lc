@@ -39,10 +39,18 @@ class MyListings extends Component {
 
 
         this.getItems = this.getItems.bind(this)
+        this.callBackResult=this.callBackResult.bind(this)
 
 
 
 
+    }
+
+
+
+    callBackResult(action){
+
+        this.getItems()
     }
 
 
@@ -172,7 +180,7 @@ class MyListings extends Component {
 
 <>
 
-                            <ResourceItem history={this.props.history}  link={"/"+ item.listing._key }  item={item} />
+                            <ResourceItem triggerCallback={()=>this.callBackResult()}  history={this.props.history}  link={"/"+ item.listing._key }  item={item} />
 
                             </>
 

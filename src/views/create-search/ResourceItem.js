@@ -51,12 +51,7 @@ class ResourceItem extends Component {
 
         event.stopPropagation();
         event.preventDefault();
-
         this.props.history.push(this.props.link)
-        
-
-
-
 
     }
 
@@ -98,6 +93,8 @@ class ResourceItem extends Component {
 
                     // this.props.history.push("/my-listings")
                     // this.props.loadProducts()
+                    this.triggerCallback()
+
 
 
                 },

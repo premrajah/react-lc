@@ -74,6 +74,8 @@ class SearchItem extends Component {
                     // this.props.loadProducts()
 
 
+                this.triggerCallback()
+
                 },
                 (error) => {
 

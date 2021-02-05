@@ -1829,7 +1829,7 @@
                                                 <option value={null}>Select</option>
 
 
-                                                {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
+                                                {this.props.productList.filter((item)=> item.listing_id === null &&item.product.is_listable=== true ).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>

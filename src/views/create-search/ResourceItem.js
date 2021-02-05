@@ -96,7 +96,7 @@ class ResourceItem extends Component {
                     // var responseAll = response.data.data;
 
 
-                    // this.props.history.push("/my-products")
+                    // this.props.history.push("/my-listings")
                     // this.props.loadProducts()
 
 

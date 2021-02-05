@@ -272,6 +272,7 @@ class MoreMenu extends Component {
 
                     </div>
 
+                    <div onClick={e => e.stopPropagation() }>
 
                     <Modal className={"loop-popup"}
                            aria-labelledby="contained-modal-title-vcenter"
@@ -316,6 +317,7 @@ class MoreMenu extends Component {
                         </ModalBody>
 
                     </Modal>
+                    </div>
 
                     <div onClick={e => e.stopPropagation() }>
 

@@ -178,7 +178,7 @@ class ProductItemNew extends Component {
         var data={
 
             product_id:this.props.parentId,
-            sub_product_ids:[this.props.item.product._key]
+            sub_products_ids:[this.props.item&&this.props.item.product?this.props.item.product._key:this.props.item._key]
         }
 
         console.log("remove data",data)

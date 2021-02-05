@@ -56,8 +56,11 @@ class  ProductPopUp extends Component{
                 className={"custom-modal-popup popup-form"}
             >
 
-                    <div className="">
-                <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                    <div className="m-1">
+                <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close">
+
+                    Close
+                </button>
 
                 </div>
                 <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">

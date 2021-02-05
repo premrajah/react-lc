@@ -1040,10 +1040,10 @@ class ProductEditForm extends Component {
         let formIsValid = true;
 
         //Name
-        if (!data.get("purpose")) {
-            formIsValid = false;
-            errors["purpose"] = "Required";
-        }
+        // if (!data.get("purpose")) {
+        //     formIsValid = false;
+        //     errors["purpose"] = "Required";
+        // }
         if (!data.get("title")) {
             formIsValid = false;
             errors["title"] = "Required";
@@ -1844,7 +1844,7 @@ class ProductEditForm extends Component {
                                             }}
                                         >
 
-                                            <option value={null}>Select</option>
+                                            {/*<option value={null}>Select</option>*/}
 
                                             {this.state.purposeList.map((item) =>
 

@@ -749,7 +749,7 @@
 
                                         <div className="col-md-4 col-sm-12 col-xs-12 pb-5 pt-5 ">
 
-                                            <div className="row stick-left-box container-gray justify-content-center pb-5 pt-5">
+                                            <div className="row stick-left-box container-gray justify-content-center ">
 
                                                 {this.state.previewImage?
                                                     <img className={"img-fluid"} src={this.state.previewImage} alt="" />:

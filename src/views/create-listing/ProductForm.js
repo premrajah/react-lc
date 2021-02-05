@@ -870,10 +870,10 @@ class ProductForm extends Component {
         let formIsValid = true;
 
         //Name
-        if (!fields["purpose"]) {
-            formIsValid = false;
-            errors["purpose"] = "Required";
-        }
+        // if (!fields["purpose"]) {
+        //     formIsValid = false;
+        //     errors["purpose"] = "Required";
+        // }
         if (!fields["title"]) {
             formIsValid = false;
             errors["title"] = "Required";

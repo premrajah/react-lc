@@ -394,25 +394,27 @@ class ProductExpandItem extends Component {
                     {this.state.product &&
                    <ProductItemNew item={this.state.product}/>}
 
-                    {(this.state.subProducts.length> 0) &&
-                     <div className="row no-gutters  justify-content-left">
+                    {/*{(this.state.subProducts.length> 0) &&*/}
+                     {/*<div className="row no-gutters  justify-content-left">*/}
 
-                         <div className="col-12">
+                         {/*<div className="col-12">*/}
 
-                        <h6 className={"blue-text text-heading"}>Sub Products</h6>
+                        {/*<h6 className={"blue-text text-heading"}>Sub Products</h6>*/}
 
-                    </div>
-                    </div>}
+                    {/*</div>*/}
+                    {/*</div>}*/}
 
 
 
                     <div className="row no-gutters  justify-content-left">
                         <div className="col-12">
-                            <div className={"custom-label text-bold text-blue mb-1"}>Sub Products</div>
+
 
                             {this.state.product &&
                             <>
                                 {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
+
+                                    <div className={"custom-label text-bold text-blue mb-1"}>Sub Products</div>
 
                                     <p style={{ margin: "10px 0px" }} className={" text-mute small"}>
 

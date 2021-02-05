@@ -167,12 +167,11 @@ class MyListings extends Component {
 
                         {this.state.items.map((item) =>
 
+<>
 
-                        <Link to={"/"+ item.listing._key }>
+                            <ResourceItem history={this.props.history}  link={"/"+ item.listing._key }  item={item} />
 
-                            <ResourceItem item={item} />
-
-                        </Link>
+                            </>
 
 
 

@@ -178,7 +178,7 @@ class SearchItem extends Component {
                         {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
                         </p>
 
-                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={true}  />
+                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={false}  />
 
 
                 </div>

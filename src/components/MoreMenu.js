@@ -172,12 +172,17 @@ class MoreMenu extends Component {
         });
 
          this.setOpen(event)
+
+
     };
+
 
      handleClose = (event) => {
          event.stopPropagation();
          event.preventDefault();
-         
+         event.nativeEvent.stopImmediatePropagation();
+
+
          if (event.currentTarget.dataset.action) {
 
              var action = event.currentTarget.dataset.action
@@ -217,7 +222,7 @@ class MoreMenu extends Component {
                         </Menu>
                     </Button>
 
-                </div>
+
 
 
                     <Modal className={"loop-popup"}
@@ -353,6 +358,10 @@ class MoreMenu extends Component {
                         </ModalBody>
 
                     </Modal>
+                </div>
+
+
+
 
 
                 </>

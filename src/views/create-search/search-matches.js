@@ -417,14 +417,16 @@ function NavTabs(props) {
                 <div className={"container"}>
 
                     {props.suggesstions.map((item) =>
+<>
+
+                        {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
 
 
-                        <Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>
+                            <ResourceItem history={this.props.history} link={"/match/"+props.slug+"/"+item.listing.listing._key }  searchId={props.slug} item={item}  />
 
+                        {/* </Link>*/}
 
-                            <ResourceItem  searchId={props.slug} item={item}  />
-
-                        </Link>
+                        </>
 
                     )}
 

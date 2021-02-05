@@ -80,6 +80,16 @@ class ProductDetail extends Component {
     }
 
 
+
+    interval
+
+
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
+
+
     showProductSelection(event) {
 
 
@@ -99,7 +109,13 @@ class ProductDetail extends Component {
     componentWillReceiveProps(newProps){
 
 
+
+
+
         this.getQrCode()
+
+
+
             this.getSubProducts()
 
 
@@ -555,22 +571,25 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
+        this.interval = setInterval(() => {
 
 
-        this.setState({
+            this.setState({
 
-            productQrCode: null
+                productQrCode: null
 
-        })
+            })
+
+            this.setState({
+
+                productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
+
+            })
 
 
-        this.setState({
 
-            productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
+        }, 2000);
 
-        })
-        console.log("qr code")
-        console.log(this.state.productQrCode)
 
     }
 
@@ -664,17 +683,10 @@ class ProductDetail extends Component {
     getSubProducts() {
 
 
-
+        console.log("sub products")
 
         if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
 
-
-
-        // alert("sub product called")
-
-        this.setState({
-            subProducts:[]
-        })
 
         var subProductIds = this.props.item.sub_products
 
@@ -774,7 +786,7 @@ class ProductDetail extends Component {
     componentWillMount() {
 
 
-        this.getSubProducts()
+        // this.getSubProducts()
 
     }
 
@@ -871,7 +883,7 @@ class ProductDetail extends Component {
                                                     <div className="col-12 border-box">
 
                                                         <div className="d-flex flex-column justify-content-center align-items-center" >
-                                                            <img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} style={{width: '90%'}}/>
+                                                            {this.state.productQrCode&&<img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} style={{width: '90%'}}/>}
 
                                                             <div className="d-flex justify-content-center w-100">
                                                                 {this.props.hideRegister &&   <p className={"green-text"}>
@@ -1051,12 +1063,12 @@ class ProductDetail extends Component {
 
                                             </p>
 
-                                            {this.state.subProducts.length > 0 &&
+                                            {this.props.item.sub_products.length > 0 &&
 
                                                 <>
 
-                                            { this.state.subProducts.map((item) =>
-                                                <ProductItemNew parentId={this.props.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
+                                            { this.props.item.sub_products.map((item) =>
+                                                <ProductItemNew  parentId={this.props.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
                                             )}
 
                                             </>

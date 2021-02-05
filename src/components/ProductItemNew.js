@@ -320,7 +320,7 @@ class ProductItemNew extends Component {
         }else {
 
 
-            var url = baseUrl + "product/" + this.props.item.product._key + "/artifact"
+            var url =  this.props.item&&this.props.item.product?baseUrl + "product/" +this.props.item.product._key + "/artifact":baseUrl + "product/" +this.props.item._key + "/artifact"
 
 
             axios.get(url,
@@ -366,7 +366,11 @@ class ProductItemNew extends Component {
         return (
        <>
 
-            <Link to={"/product/"+this.props.item.product._key}>
+
+
+
+{this.props.item&&this.props.item.product?
+    <Link to={"/product/"+this.props.item.product._key}>
         <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
@@ -398,6 +402,39 @@ class ProductItemNew extends Component {
 
         </Link>
 
+:
+           <Link to={"/product/"+this.props.item._key}>
+               <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+
+
+                   <div className={"col-2 "}>
+
+
+                       {this.state.images.length>0? <img className={"img-fluid img-list"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+
+
+
+                   </div>
+                   <div className={"col-7 pl-2  content-box-listing"}>
+
+                       <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
+                       <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.purpose}</p>
+                       <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.category}, {this.props.item.type}, {this.props.item.state} {this.props.item.volume} {this.props.item.units}</p>
+                       {this.props.item.search_ids && <p style={{ fontSize: "16px" }} className="text-mute mb-1 bottom-tag-p">{this.props.item.search_ids.length} Searches</p>}
+                       {this.props.item.sub_product_ids&&this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
+
+                   </div>
+                   <div style={{ textAlign: "right" }} className={"col-3"}>
+
+                       <p className={"text-gray-light small"}>  {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")} </p>
+                       <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}   />
+
+
+                   </div>
+               </div>
+
+           </Link>}
+
 
 
            <Modal
@@ -412,7 +449,7 @@ class ProductItemNew extends Component {
                </div>
 
 
-               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item&&this.props.item.product?this.props.item.product._key:this.props.item._key}/>
 
 
            </Modal>

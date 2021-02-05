@@ -2,26 +2,6 @@ import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import PlaceholderImg from '../../img/place-holder-lc.png';
-import clsx from 'clsx';
-import FilterImg from '../../img/icons/filter-icon.png';
-import { Link } from "react-router-dom";
-import LangIcon from '../../img/icons/lang.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import moment from "moment";
@@ -47,6 +27,8 @@ class ResourceItem extends Component {
         this.callBackResult=this.callBackResult.bind(this)
         this.showEdit=this.showEdit.bind(this)
         this.deleteItem=this.deleteItem.bind(this)
+        this.goToPage=this.goToPage.bind(this)
+
 
     }
 
@@ -63,6 +45,20 @@ class ResourceItem extends Component {
     }
 
 
+
+
+    goToPage(event){
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        this.props.history.push(this.props.link)
+        
+
+
+
+
+    }
 
     callBackResult(action){
 
@@ -138,7 +134,7 @@ class ResourceItem extends Component {
 
         <>
         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
-        <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+        <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
                     <div className={"col-2"}>
@@ -191,7 +187,7 @@ class ResourceItem extends Component {
         <>
         {/*<Link to={"/"+ this.props.item.listing._key }>*/}
 
-                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+                <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
 
 
                 <div className={"col-2"}>
@@ -231,7 +227,7 @@ class ResourceItem extends Component {
                     </div>
 
             </div>
-        {/*// </Link>*/}
+         {/*</Link>*/}
 
         </>
             }

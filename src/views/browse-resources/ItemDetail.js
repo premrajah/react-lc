@@ -21,7 +21,7 @@ import MatchItemSeller from '../../components/MatchItemSeller'
 import NotFound from "../NotFound/index"
 import ProductExpandItem from '../../components/ProductExpandItem'
 import Org from "../../components/Org/Org";
-import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
+import MoreMenu from '../../components/MoreMenu'
 import ListEditForm from '../../components/ListEditForm'
 
 
@@ -64,14 +64,56 @@ class ItemDetail extends Component {
 
         this.callBackResult=this.callBackResult.bind(this)
         this.showEdit=this.showEdit.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
 
     }
 
 
-    callBackResult(){
+    deleteItem() {
 
-        this.showEdit()
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    this.props.history.push("/my-listings")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+                    console.log("delete response error")
+                    console.log(error)
+
+                }
+            );
+
     }
+
+
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+
+
+    }
+
 
     showEdit(){
 
@@ -357,6 +399,7 @@ class ItemDetail extends Component {
 
     componentDidMount() {
 
+        window.scrollTo(0, 0)
 
         this.checkMatch()
         this.getResources()
@@ -445,9 +488,13 @@ class ItemDetail extends Component {
                                             <div className="col-4 text-right">
 
 
-                                                <EditIcon className={"mr-2"} onClick={this.showEdit}  />
+                                                <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} edit={true} remove={false} duplicate={false}   />
 
-                                                <DeleteIcon className={""}   />
+
+
+                                                {/*<EditIcon className={"mr-2"} onClick={this.showEdit}  />*/}
+
+                                                {/*<DeleteIcon className={""}   />*/}
                                             </div>
 
 

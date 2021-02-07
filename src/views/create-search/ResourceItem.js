@@ -131,7 +131,7 @@ class ResourceItem extends Component {
 
         <>
         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
-        <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+        <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
 
 
                     <div className={"col-2"}>
@@ -184,7 +184,7 @@ class ResourceItem extends Component {
         <>
         {/*<Link to={"/"+ this.props.item.listing._key }>*/}
 
-                <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+                <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
 
 
                 <div className={"col-2"}>

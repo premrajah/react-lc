@@ -386,6 +386,7 @@ class ProductDetailCycle extends Component {
     showRegister(){
 
 
+        this.getSites()
         this.setState({
 
             showRegister:!this.state.showRegister
@@ -585,6 +586,8 @@ class ProductDetailCycle extends Component {
             );
 
     }
+
+
 
 
 

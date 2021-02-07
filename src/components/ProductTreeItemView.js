@@ -195,7 +195,7 @@ class ProductTreeItemView extends Component {
                         <span onClick={this.setSelected} className={this.state.selected?"tree-view-item-selected tree-view-item":"tree-view-item"}>{this.props.item.name}({this.props.item.sub_products.length+" Sub Products"})</span></p>
                     {this.state.open &&this.state.tree.map((item) =>
                         <>
-                            <ProductTreeItemView on  item={item}  token={this.props.token}  />
+                            <ProductTreeItemView   item={item}  token={this.props.token}  />
 
                         </>
                     )}

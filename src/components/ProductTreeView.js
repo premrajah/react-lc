@@ -40,6 +40,15 @@ class ProductTreeView extends Component {
 
     }
 
+    
+    
+    productSelected(productId){
+
+
+        console.log(productId)
+
+
+    }
 
     handleChange(field, e) {
 
@@ -350,15 +359,17 @@ class ProductTreeView extends Component {
 
                         </TreeView>
 
-                    <TreeView>
+                    <div  className={"row tree-view-menu"}>
 
                         {this.state.tree.map((item) =>
                             <>
-                            <ProductTreeItemView item={item}  token={this.props.userDetail.token} />
+                            <div  className={"col-12"}>
+                            <ProductTreeItemView triggerCallback={(productId)=>this.productSelected(productId)} item={item}  token={this.props.userDetail.token}  />
+                            </div>
 
                             </>
                         )}
-                    </TreeView>
+                    </div>
 
 
 

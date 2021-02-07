@@ -67,6 +67,8 @@ import AcceptableUse from "./components/Terms/AcceptableUse";
 import TermsAndService from "./components/Terms/TermsAndService";
 import FindResourcePage from "./views/browse-resources/FindResourcePage";
 import ProductArchive from "./views/product-archive/ProductArchive";
+import ProductTreeView from "./components/ProductTreeView";
+
 
 
 var hist = createBrowserHistory();
@@ -143,6 +145,8 @@ class App extends Component{
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
                         <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />
+                        <LoggedInRoute exact path="/testing" component={ProductTreeView} />
+
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />

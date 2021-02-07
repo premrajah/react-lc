@@ -490,7 +490,7 @@ class ProductExpandItem extends Component {
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productWithoutParentList.filter((item)=> (item.listing_id === null)&&item.product._key!==this.state.product.product._key  && item.parent_product_id===null).map((item) =>
+                                                {this.props.productWithoutParentList.filter((item)=> item.product._key!==this.state.product.product._key).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
@@ -536,7 +536,6 @@ class ProductExpandItem extends Component {
                                         <>
                                             {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                            <DeleteIcon style={{color:"red",margin:"auto"}} onClick={() => this.subtractCount()}  />
                                             <DeleteIcon style={{color:"red",margin:"auto"}} onClick={() => this.subtractCount()}  />
                                         </>
                                         }

@@ -1944,9 +1944,9 @@ class ProductForm extends Component {
 
                                     {this.state.files.length>0?
                                         (this.state.files.filter((item)=> item.status===0).length>0? <button  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Upload in progress ....</button>:
-                                          <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>):
+                                          <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create A Product</button>):
 
-                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Finish</button>
+                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create A Product</button>
 
                                     }
 

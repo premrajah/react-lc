@@ -1,61 +1,32 @@
 import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
-import { Alert} from 'react-bootstrap';
-import LinkGray from '../../img/icons/link-icon.png';
-
 import FormControl from '@material-ui/core/FormControl';
-import SearchIcon from '../../img/icons/search-icon.png';
-import { Link } from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
 import Close from '@material-ui/icons/Close';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import '../../Util/upload-file.css'
-import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import clsx from 'clsx';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from "@material-ui/core/styles/index";
-import CalGrey from '../../img/icons/calender-dgray.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
-import ListIcon from '../../img/icons/list.png';
-import AmountIcon from '../../img/icons/amount.png';
-import StateIcon from '../../img/icons/state.png';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import ResourceItem from '../item/ResourceItem'
-import PumpImg from '../../img/components/Pump_Assembly_650.png';
 import ProductBlue from '../../img/icons/product-blue.png';
-import MaceratingImg from '../../img/components/Macerating_unit_1400.png';
-import DewateringImg from '../../img/components/Dewatering_Unit_1950.png';
-import CameraGray from '../../img/icons/camera-gray.png';
-import PlusGray from '../../img/icons/plus-icon.png';
-import ControlImg from '../../img/components/Control_Panel_1450.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import ProductForm from './ProductForm'
-import SubProductView from './SubProductView'
-import ProductView from './ProductView'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
-import ProductItem from '../../components/ProductItemNew'
 import ProductExpandItem from '../../components/ProductExpandItem'
 import ItemDetailPreview from '../../components/ItemDetailPreview'
 
 import {
     MuiPickersUtilsProvider,
-    KeyboardDatePicker,
+
     DatePicker
 } from '@material-ui/pickers';
 import moment from "moment/moment";

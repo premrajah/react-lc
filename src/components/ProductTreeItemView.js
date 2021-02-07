@@ -117,49 +117,53 @@ class ProductTreeItemView extends Component {
     getSubProducts(event){
 
 
-        event.stopPropagation()
+     event.stopPropagation()
 
       this.setOpen()
 
-        var currentProductId= event.currentTarget.dataset.id
 
-        console.log("clicked product",currentProductId)
 
-        axios.get(baseUrl + "product/"+currentProductId+"/sub-product/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.token
+        if (!this.state.open) {
+
+            var currentProductId = event.currentTarget.dataset.id
+
+            console.log("clicked product", currentProductId)
+
+            axios.get(baseUrl + "product/" + currentProductId + "/sub-product/expand",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.token
+                    }
                 }
-            }
-        )
-            .then((response) => {
+            )
+                .then((response) => {
 
-                    var responseAll = response.data.data;
+                        var responseAll = response.data.data;
 
-                    console.log("sub product tree response")
-                    console.log(responseAll)
+                        console.log("sub product tree response")
+                        console.log(responseAll)
 
-                    this.setState({
+                        this.setState({
 
-                        products:responseAll
-                    })
-
-
-                this.setTree()
+                            products: responseAll
+                        })
 
 
-
-                },
-                (error) => {
-
-                    // var status = error.response.status
-                    console.log("products error")
-                    console.log(error)
+                        this.setTree()
 
 
+                    },
+                    (error) => {
 
-                }
-            );
+                        // var status = error.response.status
+                        console.log("products error")
+                        console.log(error)
+
+
+                    }
+                );
+
+        }
 
     }
 
@@ -176,7 +180,7 @@ class ProductTreeItemView extends Component {
                 <div style={{"marginLeft": "25px", "marginTop": "10px"}} data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)}>
 
                     <p> {this.props.item.sub_products.length>0 &&(this.state.open?<MinusSquare className={"mr-2"}/>:<PlusSquare className={"mr-2"} />)}{this.props.item.name}({this.props.item.sub_products.length+" Sub Products"})</p>
-                    {this.state.tree.map((item) =>
+                    {this.state.open &&this.state.tree.map((item) =>
                         <>
                             <ProductTreeItemView item={item}  token={this.props.token}  />
 

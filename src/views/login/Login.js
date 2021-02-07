@@ -5,6 +5,8 @@ import history from "../../History/history";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Spinner, Alert } from 'react-bootstrap';
+import {IconButton, InputAdornment} from "@material-ui/core";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +33,8 @@ class Login extends Component {
             count: 0,
             nextIntervalFlag: false,
             active: 0, //0 logn. 1- sign up , 3 -search,
-            formValid: false
+            formValid: false,
+            showPassword: false
 
         }
 
@@ -189,6 +192,10 @@ class Login extends Component {
 
     }
 
+    handleShowPassword = () => {
+        this.setState({showPassword: !this.state.showPassword})
+    }
+
     resetPasswordSuccessLogin() {
 
 
@@ -314,7 +321,16 @@ class Login extends Component {
 
                             <div className="col-12 mt-4">
 
-                                <TextField type={"password"} onChange={this.handleChange.bind(this, "password")} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
+                                <TextField type={this.state.showPassword ? "text" : "password"} onChange={this.handleChange.bind(this, "password")} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} InputProps={{
+                                    endAdornment: (<InputAdornment position="end">
+                                        <IconButton
+                                            onClick={this.handleShowPassword}
+                                            edge="end"
+                                        >
+                                            {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>)
+                                }} />
 
                                 {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
 

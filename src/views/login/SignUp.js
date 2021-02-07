@@ -242,11 +242,7 @@ class SignUp extends Component {
     }
 
     handleShowPassword = () => {
-        if(this.state.showPassword) {
-            this.setState({showPassword: false})
-        } else {
-            this.setState({showPassword: true})
-        }
+        this.setState({showPassword: !this.state.showPassword})
     }
 
 

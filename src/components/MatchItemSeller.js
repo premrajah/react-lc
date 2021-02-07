@@ -64,8 +64,8 @@ class MatchItemSeller extends Component {
 
                     var responseAll = response.data;
 
-                    console.log("cycle for match response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -75,7 +75,7 @@ class MatchItemSeller extends Component {
 
                 },
                 (error) => {
-                    console.log("cycle match error", error)
+
                 }
             );
 
@@ -142,8 +142,8 @@ class MatchItemSeller extends Component {
 
                     var responseAll = response.data;
 
-                    console.log("offers with match response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -153,7 +153,7 @@ class MatchItemSeller extends Component {
 
                 },
                 (error) => {
-                    console.log("offers error", error)
+
                 }
             );
 
@@ -175,7 +175,7 @@ class MatchItemSeller extends Component {
             )
                 .then(res => {
 
-                    console.log(res.data.data)
+
 
                     this.setState({
 
@@ -185,8 +185,8 @@ class MatchItemSeller extends Component {
 
                 }).catch(error => {
 
-                console.log("loop accept error found ")
-                console.log(error)
+
+
 
 
             });
@@ -209,7 +209,7 @@ class MatchItemSeller extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -224,9 +224,9 @@ class MatchItemSeller extends Component {
 
 
 
-            console.log("loop accept error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -285,7 +285,7 @@ class MatchItemSeller extends Component {
 
 
 
-        console.log(data)
+
 
 
         axios.post(baseUrl + "offer/stage",
@@ -299,7 +299,7 @@ class MatchItemSeller extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -311,9 +311,9 @@ class MatchItemSeller extends Component {
 
 
 
-            console.log("offer action error ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -355,7 +355,7 @@ class MatchItemSeller extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -370,9 +370,9 @@ class MatchItemSeller extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -414,7 +414,7 @@ class MatchItemSeller extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -429,9 +429,9 @@ class MatchItemSeller extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -472,7 +472,7 @@ class MatchItemSeller extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -487,9 +487,9 @@ class MatchItemSeller extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -519,7 +519,7 @@ class MatchItemSeller extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -531,9 +531,9 @@ class MatchItemSeller extends Component {
 
 
 
-            console.log("loop decline error found ")
 
-            console.log(error)
+
+
 
             // this.setState({
             //
@@ -553,16 +553,17 @@ class MatchItemSeller extends Component {
 
     componentDidMount() {
 
-        if (this.props.item.match.stage) {
-            this.getCycleId()
-
-        }
 
         this.getOffer()
 
         this.interval = setInterval(() => {
+            if (this.props.item.match.stage) {
+                this.getCycleId()
+
+            }
 
             this.getOffer()
+
 
         }, 5000);
 
@@ -594,7 +595,7 @@ class MatchItemSeller extends Component {
                 <div className={"col-4  content-box-listing"}>
 
                         {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
-                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org._id} <CompanyInfo item={this.props.item.search.org}/></p>
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">{this.props.item.search.org.name} <CompanyInfo item={this.props.item.search.org}/></p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.search.search.name} </p>
                     <p style={{ fontSize: "16px" }} className=" mb-1">Stage: {this.props.item.match.stage} </p>
                     {this.state.cycle &&<p> <Link className="btn blue-btn-border mt-2 mb-2 " color="default" to={"/cycle/"+this.state.cycle.cycle._key}>View Cycle</Link></p>}

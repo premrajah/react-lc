@@ -2,29 +2,10 @@ import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import PlaceholderImg from '../../img/place-holder-lc.png';
-import clsx from 'clsx';
-import FilterImg from '../../img/icons/filter-icon.png';
-import { Link } from "react-router-dom";
-import LangIcon from '../../img/icons/lang.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import SearchGray from '@material-ui/icons/Search';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import moment from "moment";
+import MoreMenu from '../../components/MoreMenu'
 
 
 class ResourceItem extends Component {
@@ -43,6 +24,12 @@ class ResourceItem extends Component {
         }
 
 
+        this.callBackResult=this.callBackResult.bind(this)
+        this.showEdit=this.showEdit.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+        this.goToPage=this.goToPage.bind(this)
+
+
     }
 
     componentWillMount() {
@@ -52,14 +39,84 @@ class ResourceItem extends Component {
     componentDidMount() {
 
 
-        console.log(" recieved item")
-        console.log(this.props.item)
+
+
 
     }
-    
-    
 
 
+
+
+    goToPage(event){
+
+        event.stopPropagation();
+        event.preventDefault();
+        this.props.history.push(this.props.link)
+
+    }
+
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+
+
+    }
+
+    triggerCallback() {
+
+        this.props.triggerCallback()
+
+
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-listings")
+                    // this.props.loadProducts()
+                    this.triggerCallback()
+
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+
+    showEdit(){
+
+        this.setState({
+
+            showEdit:!this.state.showEdit,
+
+        })
+    }
 
 
 
@@ -69,9 +126,12 @@ class ResourceItem extends Component {
 
 <>
 
-            {this.props.item.listing.listing?
 
-                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+    {this.props.item.listing.listing?
+
+        <>
+        {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
+        <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
 
 
                     <div className={"col-2"}>
@@ -115,9 +175,16 @@ class ResourceItem extends Component {
 
 
 
-                </div>:
+                </div>
 
-                <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
+        {/*</Link>*/}
+        </>
+
+        :
+        <>
+        {/*<Link to={"/"+ this.props.item.listing._key }>*/}
+
+                <div onClick={this.goToPage} className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
 
 
                 <div className={"col-2"}>
@@ -152,10 +219,16 @@ class ResourceItem extends Component {
                             {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
 
                         </p>
+                        <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} edit={false} remove={false} duplicate={false}   />
+
                     </div>
 
             </div>
+         {/*</Link>*/}
+
+        </>
             }
+
 
 
             </>

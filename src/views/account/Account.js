@@ -42,11 +42,11 @@ class Account extends Component {
             .then((response) => {
                 var response = response.data;
 
-                console.log("resource response ", response)
+
             },
                 (error) => {
                     var status = error.response.status
-                    console.log("resource error ", error)
+
                 }
             );
 

@@ -1,61 +1,34 @@
 import React, { Component } from 'react';
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
-import { Alert} from 'react-bootstrap';
-import LinkGray from '../../img/icons/link-icon.png';
-
 import FormControl from '@material-ui/core/FormControl';
-import SearchIcon from '../../img/icons/search-icon.png';
-import { Link } from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
 import Close from '@material-ui/icons/Close';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import '../../Util/upload-file.css'
-import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import clsx from 'clsx';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from "@material-ui/core/styles/index";
-import CalGrey from '../../img/icons/calender-dgray.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
-import ListIcon from '../../img/icons/list.png';
-import AmountIcon from '../../img/icons/amount.png';
-import StateIcon from '../../img/icons/state.png';
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import ResourceItem from '../item/ResourceItem'
-import PumpImg from '../../img/components/Pump_Assembly_650.png';
 import ProductBlue from '../../img/icons/product-blue.png';
-import MaceratingImg from '../../img/components/Macerating_unit_1400.png';
-import DewateringImg from '../../img/components/Dewatering_Unit_1950.png';
-import CameraGray from '../../img/icons/camera-gray.png';
-import PlusGray from '../../img/icons/plus-icon.png';
-import ControlImg from '../../img/components/Control_Panel_1450.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import ProductForm from './ProductForm'
-import SubProductView from './SubProductView'
-import ProductView from './ProductView'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
-import ProductItem from '../../components/ProductItemNew'
 import ProductExpandItem from '../../components/ProductExpandItem'
 import ItemDetailPreview from '../../components/ItemDetailPreview'
+import ProductTreeView from '../../components/ProductTreeView'
+
 
 import {
     MuiPickersUtilsProvider,
-    KeyboardDatePicker,
+
     DatePicker
 } from '@material-ui/pickers';
 import moment from "moment/moment";
@@ -141,7 +114,8 @@ class ListForm extends Component {
             images: [],
             yearsList:[],
             purpose: ["defined", "prototype", "aggregate"],
-            previewImage:null
+            previewImage:null,
+            selectedProductId:null
 
 
         }
@@ -161,13 +135,54 @@ class ListForm extends Component {
         this.makeActive=this.makeActive.bind(this)
         this.getPreviewImage=this.getPreviewImage.bind(this)
         this.showProductSelection = this.showProductSelection.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
+        this.productSelected=this.productSelected.bind(this)
 
 
 
     }
 
 
+    productSelected(productId){
+
+        this.setState({
+            selectedProductId:productId
+
+        })
+
+
+        this.getPreviewImage(productId)
+
+
+        let fields = this.state.fields;
+
+
+
+        fields["product"] = productId;
+
+
+        this.setState({ fields });
+
+
+
+
+
+    }
+
+    phonenumber(inputtxt) {
+
+        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
+        if(inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
     getPreviewImage(productSelectedKey){
+
 
 
         axios.get(baseUrl + "product/"+productSelectedKey+"/artifact",
@@ -180,8 +195,8 @@ class ListForm extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -194,57 +209,14 @@ class ListForm extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+
+
 
                 }
             );
 
     }
 
-    handleNextOld() {
-
-
-        if (this.state.page === 1&&this.handleValidateOne()) {
-
-            this.setState({
-
-                page: 2,
-                progressBar: 66
-            })
-
-
-        }
-        else  if (this.state.page === 2&&this.handleValidateTwo()) {
-
-            this.setState({
-
-                page: 3,
-                progressBar: 100
-            })
-
-
-            console.log(this.state.fields)
-        }
-
-
-        else  if (this.state.page === 3) {
-
-
-
-
-
-            this.createListing()
-
-        }
-
-        else  if (this.state.page === 4) {
-
-            this.props.history.push("/" + this.state.listResourceData._key)
-
-        }
-
-    }
 
 
 
@@ -260,7 +232,7 @@ class ListForm extends Component {
             })
 
 
-            console.log(this.state.fields)
+
 
         }
         else  if (this.state.page === 2&&this.handleValidateTwo()) {
@@ -272,7 +244,7 @@ class ListForm extends Component {
             })
 
 
-            console.log(this.state.fields)
+
         }
 
 
@@ -283,7 +255,7 @@ class ListForm extends Component {
 
 
             this.createListing()
-            // console.log(this.state.fields)
+            //
         }
 
         else  if (this.state.page === 4) {
@@ -326,7 +298,7 @@ class ListForm extends Component {
 
     handleBack() {
 
-        console.log(this.state.fields)
+
 
 
 
@@ -375,7 +347,7 @@ class ListForm extends Component {
 
 
 
-        if (field === "product"){
+        if (this.state.selectedProductId === "product"){
 
 
             this.setState({
@@ -397,7 +369,7 @@ class ListForm extends Component {
 
             })
 
-            console.log(this.state.siteSelected)
+
 
         }
 
@@ -441,6 +413,11 @@ class ListForm extends Component {
         }
 
 
+        // if (!this.state.selectedProductId) {
+        //     formIsValid = false;
+        //     errors["product"] = "Required";
+        // }
+
         if (!fields["product"]) {
             formIsValid = false;
             errors["product"] = "Required";
@@ -449,8 +426,10 @@ class ListForm extends Component {
 
 
 
-        console.log("validation one error")
+
         console.log(errors)
+
+
 
 
         this.setState({
@@ -501,9 +480,9 @@ class ListForm extends Component {
         }
 
 
-        console.log("validation two error")
 
-        console.log(errors)
+
+
 
 
 
@@ -649,8 +628,8 @@ class ListForm extends Component {
             }
 
 
-        console.log("listing data")
-        console.log(data)
+
+
 
         axios.put(baseUrl + "listing",
             {
@@ -667,7 +646,7 @@ class ListForm extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
 
                 this.setState({
@@ -682,8 +661,8 @@ class ListForm extends Component {
 
             }).catch(error => {
 
-            console.log("login error found ")
-            console.log(error)
+
+
 
         });
 
@@ -710,8 +689,8 @@ class ListForm extends Component {
         }
 
 
-        console.log("listing data")
-        console.log(data)
+
+
 
         axios.put(baseUrl + "listing",
             {
@@ -728,7 +707,7 @@ class ListForm extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
 
                 this.setState({
@@ -743,8 +722,8 @@ class ListForm extends Component {
 
             }).catch(error => {
 
-            console.log("login error found ")
-            console.log(error)
+
+
 
         });
 
@@ -952,7 +931,7 @@ class ListForm extends Component {
         this.setState({ errors: errors });
 
 
-        console.log(errors)
+
         return formIsValid;
 
     }
@@ -968,7 +947,7 @@ class ListForm extends Component {
 
 
        this.props.loadSites(this.props.userDetail.token)
-       this.props.loadProducts(this.props.userDetail.token)
+       // this.props.loadProducts(this.props.userDetail.token)
 
     }
 
@@ -1011,6 +990,19 @@ class ListForm extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
+
+        // if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+        //
+        //     formIsValid = false;
+        //     errors["phone"] = "Invalid Phone Number!";
+        // }
+
+        if ((fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
+
 
 
 
@@ -1057,7 +1049,7 @@ class ListForm extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
             // if (this.handleValidationSite()){
 
 
@@ -1085,8 +1077,8 @@ class ListForm extends Component {
             // }
 
 
-            console.log("site submit called")
-            // console.log(postData)
+
+            //
 
 
             axios.put(baseUrl + "site",
@@ -1107,7 +1099,7 @@ class ListForm extends Component {
                 })
                 .then(res => {
 
-                    console.log("site added succesfull")
+
 
                     // dispatch({type: "SIGN_UP", value : res.data})
 
@@ -1122,7 +1114,7 @@ class ListForm extends Component {
 
                 // dispatch(signUpFailed(error.response.data.content.message))
 
-                console.log(error)
+
                 // dispatch({ type: AUTH_FAILED });
                 // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -1191,6 +1183,7 @@ class ListForm extends Component {
                                 </div>
 
                                 <div className="col-12 mt-4">
+
                                     <div className={"custom-label text-bold text-blue mb-1"}>Description</div>
 
 
@@ -1200,64 +1193,19 @@ class ListForm extends Component {
 
                                 </div>
 
-                                <div className="col-12 mt-4">
+                                <div className="col-12 mt-4 mb-4">
 
-                                    <div className="row ">
-
-                                <div className="col-md-12 col-sm-6 col-xs-12 ">
                                     <div className={"custom-label text-bold text-blue mb-1"}>Link a product</div>
 
 
-                                    <FormControl variant="outlined" className={classes.formControl}>
+                                    <ProductTreeView triggerCallback={(productId)=>this.productSelected(productId)} className={"mb-4"}/>
 
 
-                                        <Select
+                                    <TextField value={this.state.selectedProductId} className={"d-none"} onChange={this.handleChange.bind(this, "product")} name={"product"} placeholder={"product"} id="outlined-basic"  variant="outlined" fullWidth={true} />
 
-                                            name= "product"
-                                            // label={"Link a product"}
-                                            native
-                                            onChange={this.handleChange.bind(this, "product")}
-                                            inputProps={{
-                                                name: 'product',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
-
-                                            <option value={null}>Select</option>
-
-                                            {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
-
-                                            // {this.props.productList.map((item) =>
+                                    {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
 
 
-                                                <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
-
-                                            )}
-
-                                        </Select>
-                                        {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
-
-
-                                        <FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?
-
-                                            <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>
-
-                                        </FormHelperText>
-                                    </FormControl>
-
-
-                                    {this.state.productSelected&&
-                                    <>
-
-                                        <ProductExpandItem hideAddAll={true} productId={this.state.productSelected}/>
-
-                                    </>
-                                    }
-
-                                </div>
-
-
-                                    </div>
                                 </div>
 
                             </div>
@@ -1617,7 +1565,7 @@ class ListForm extends Component {
                                             </div>
                                             <div className="col-12 mt-4">
 
-                                                <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+                                                <TextField id="outlined-basic" type={"text"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
 
                                                 {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 

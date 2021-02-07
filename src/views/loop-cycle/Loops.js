@@ -46,8 +46,8 @@ class Loops extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -59,8 +59,8 @@ class Loops extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );

@@ -120,7 +120,7 @@ class ForgotPassword extends Component {
                 { "email": data.email })
                 .then(res => {
 
-                    console.log(res.data)
+
 
                     document.body.classList.add('search-body');
 
@@ -128,27 +128,27 @@ class ForgotPassword extends Component {
                     if (res.data.status.code === 200) {
 
 
-                        console.log("login success found")
+
 
 
                     } else {
 
-                        console.log("login failed " + res.data.content.message)
+
 
                     }
 
 
                 }).catch(error => {
 
-                    console.log("login error found ")
-                    console.log(error.response.data)
+
+
 
                     // dispatch({type: "LOGIN_FAILED", value : error})
                     // dispatch(stopLoading())
                     // dispatch(loginFailed(error.response.data.content.message))
                     // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
 
-                    // console.log(error)
+                    //
 
                 });
 

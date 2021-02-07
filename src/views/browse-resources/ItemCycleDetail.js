@@ -80,7 +80,7 @@ class ItemCycleDetail extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -209,7 +209,7 @@ class ItemCycleDetail extends Component {
             .then((response) => {
 
                 var response = response.data;
-                console.log("qr code", response);
+
 
 
                 this.setState({
@@ -222,7 +222,7 @@ class ItemCycleDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("resource error ", error)
+
 
 
                 }
@@ -239,7 +239,7 @@ class ItemCycleDetail extends Component {
 
         var url = baseUrl + "code/" + this.slug+"/expand";
 
-        console.log(url)
+
 
 
         axios.get(url
@@ -252,7 +252,7 @@ class ItemCycleDetail extends Component {
             .then((response) => {
 
                 var responseData = response.data.data;
-                console.log("product providence detail resource response ", responseData)
+
 
 
                 this.setState({
@@ -268,7 +268,7 @@ class ItemCycleDetail extends Component {
                 (error) => {
 
 
-                    console.log("product providence detail  error ", error)
+
 
                 }
             );

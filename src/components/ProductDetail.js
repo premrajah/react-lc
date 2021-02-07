@@ -6,23 +6,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
 import PlaceholderImg from '../img/place-holder-lc.png';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
-import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl  from "encodeurl"
 import { Tabs,Tab } from 'react-bootstrap';
 import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from './ProductItemNew'
-import MatchItem from '../components/MatchItem'
 import jspdf from 'jspdf'
 import QrCodeBg from '../img/qr-code-bg.png';
+import LoopcycleLogo from '../img/logo-text.png';
 import SearchItem from '../views/loop-cycle/search-item'
 import ResourceItem from '../views/create-search/ResourceItem'
 import { Modal, ModalBody, Alert } from 'react-bootstrap';
@@ -30,7 +24,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
-import DeleteItem from "./DeleteItem";
+import ProductEditForm from "./ProductEditForm";
+import MoreMenu from './MoreMenu'
 
 
 class ProductDetail extends Component {
@@ -60,6 +55,8 @@ class ProductDetail extends Component {
             showSubmitSite:false,
             errorRegister:false,
             siteSelected:null,
+            showProductEdit:false,
+            productDuplicate:false,
         }
 
 
@@ -71,12 +68,190 @@ class ProductDetail extends Component {
         this.showRegister=this.showRegister.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.showProductEdit=this.showProductEdit.bind(this)
+        this.showProductDuplicate=this.showProductDuplicate.bind(this)
 
+        this.callBackResult=this.callBackResult.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+        this.showProductSelection=this.showProductSelection.bind(this)
+        this.submitDuplicateProduct=this.submitDuplicateProduct.bind(this)
 
 
     }
 
 
+
+    interval
+
+
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
+
+
+    showProductSelection(event) {
+
+
+
+
+
+        this.props.setProduct(this.props.item)
+        // this.props.setParentProduct(this.state.parentProduct)
+
+        this.props.showProductPopUp({type:"sub_product_view",show:true})
+
+
+    }
+
+
+
+    componentWillReceiveProps(newProps){
+
+
+
+
+
+        this.getQrCode()
+
+
+
+            this.getSubProducts()
+
+
+    }
+
+
+    callBackSubmit(action){
+
+
+        if (action==="edit"){
+
+            this.triggerCallback()
+
+        }
+        else if (action==="duplicate"){
+
+
+            this.props.history.push("/my-products")
+
+
+        }
+    }
+
+
+
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showProductEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+        else if (action==="duplicate"){
+
+            this.submitDuplicateProduct()
+        }
+    }
+
+
+
+
+    submitDuplicateProduct = event => {
+
+
+        axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
+            {
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+                this.props.history.push("/my-products")
+
+
+            }).catch(error => {
+
+
+
+            // this.setState({
+            //
+            //     errorRegister:error.response.data.errors[0].message
+            // })
+
+        });
+
+    }
+
+
+
+    triggerCallback() {
+
+        this.showProductEdit()
+        this.props.triggerCallback()
+
+
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+
+
+    showProductEdit(){
+
+
+        this.setState({
+
+        showProductEdit:!this.state.showProductEdit,
+            productDuplicate:false
+
+        })
+    }
+
+    showProductDuplicate(){
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+            productDuplicate:true
+
+        })
+    }
 
 
 
@@ -184,7 +359,7 @@ class ProductDetail extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -201,7 +376,7 @@ class ProductDetail extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -239,7 +414,7 @@ class ProductDetail extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 
@@ -271,7 +446,7 @@ class ProductDetail extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -283,7 +458,7 @@ class ProductDetail extends Component {
             const site = data.get("site")
 
 
-            console.log("register submit called")
+
 
 
             axios.post(baseUrl + "product/register",
@@ -304,7 +479,7 @@ class ProductDetail extends Component {
 
                 }).catch(error => {
 
-                console.log(error)
+
 
                 this.setState({
 
@@ -331,8 +506,8 @@ class ProductDetail extends Component {
         .then((response) => {
 
                 var responseAll = response.data.data;
-                console.log("sites  response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -343,8 +518,8 @@ class ProductDetail extends Component {
             },
             (error) => {
 
-                console.log("sites response error")
-                console.log(error)
+
+
 
             }
         );
@@ -352,27 +527,29 @@ class ProductDetail extends Component {
 }
 
 
-    handlePrintPdf = (productItem, productQRCode) => {
+    handlePrintPdf = (productItem, productQRCode, QRCodeOuterImage, LoopcycleLogo) => {
 
         const { _key, name} = productItem;
         if(!_key || !productQRCode) { return; }
 
         const pdf = new jspdf()
         pdf.setTextColor(39,36,92)
-        pdf.text(name, 10, 30);
+        pdf.text(name, 10, 20);
 
         pdf.setDrawColor(7, 173, 136)
-        pdf.line(0, 40, 1000, 40)
+        pdf.line(0, 38, 1000, 38)
 
-        pdf.addImage(productQRCode, 'PNG', 20, 40, 80, 80)
-        pdf.addImage(productQRCode, 'PNG', 100, 60, 40, 40)
-        pdf.addImage(productQRCode, 'PNG', 150, 70, 20, 20)
+        pdf.addImage(productQRCode, 'PNG', 10, 40, 80, 80, 'largeQR')
+        pdf.addImage(productQRCode, 'PNG', 100, 57.5, 45, 45, 'mediumQR')
+        pdf.addImage(productQRCode, 'PNG', 160, 64.5, 30, 30, 'smallQR')
 
         pdf.setDrawColor(7, 173, 136)
-        pdf.line(0, 120, 1000, 120)
+        pdf.line(0, 122, 1000, 122)
+
+        pdf.addImage(LoopcycleLogo, 9.2, 130, 50, 8, 'Loopcycle')
 
         pdf.setTextColor(39,36,92)
-        pdf.textWithLink("Loopcycle.io", 10, 160, {url: 'https://loopcycle.io/'})
+        pdf.textWithLink("Loopcycle.io", 10, 146, {url: 'https://loopcycle.io/'})
 
         pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`)
     }
@@ -394,17 +571,25 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
-        // this.productQrCode = baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail";
+        this.interval = setInterval(() => {
+
+
+            this.setState({
+
+                productQrCode: null
+
+            })
+
+            this.setState({
+
+                productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
+
+            })
 
 
 
-        this.setState({
+        }, 2000);
 
-            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail"
-
-        })
-        console.log("qr code")
-        console.log(this.state.productQrCode)
 
     }
 
@@ -424,8 +609,8 @@ class ProductDetail extends Component {
             .then((response) => {
 
                     var responseData = response.data.data;
-                    console.log("product listing response")
-                    console.log(responseData)
+
+
 
                     this.setState({
 
@@ -437,8 +622,8 @@ class ProductDetail extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("product listing error")
-                    console.log(error)
+
+
 
 
 
@@ -467,8 +652,8 @@ class ProductDetail extends Component {
                 .then((response) => {
 
                         var responseData = response.data.data;
-                        console.log("product search response")
-                        console.log(responseData)
+
+
 
                         var searches = this.state.searches
 
@@ -484,8 +669,8 @@ class ProductDetail extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("product search error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -496,6 +681,11 @@ class ProductDetail extends Component {
     }
 
     getSubProducts() {
+
+
+
+
+        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
 
 
         var subProductIds = this.props.item.sub_products
@@ -514,8 +704,8 @@ class ProductDetail extends Component {
                 .then((response) => {
 
                         var responseAll = response.data;
-                        console.log("sub product response")
-                        console.log(responseAll)
+
+
 
 
                         var subProducts = this.state.subProducts
@@ -531,9 +721,19 @@ class ProductDetail extends Component {
 
                     },
                     (error) => {
-                        console.log("resource error", error)
+
                     }
                 );
+
+        }
+
+
+        }else{
+
+            // alert("mno sub")
+            this.setState({
+                subProducts:[]
+            })
 
         }
     }
@@ -557,8 +757,8 @@ class ProductDetail extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -572,7 +772,7 @@ class ProductDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 
@@ -586,8 +786,7 @@ class ProductDetail extends Component {
     componentWillMount() {
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn)
-            this.getSubProducts()
+        // this.getSubProducts()
 
     }
 
@@ -637,7 +836,7 @@ class ProductDetail extends Component {
 
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
-                                    {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
+                                    {this.props.item&&this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
                                     <ImagesSlider images={this.props.item.artifacts} /> :
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
@@ -681,22 +880,18 @@ class ProductDetail extends Component {
 
                                                 <div className="row justify-content-center ">
 
-                                                    <div className="col-12 pt-4 border-box">
+                                                    <div className="col-12 border-box">
 
+                                                        <div className="d-flex flex-column justify-content-center align-items-center" >
+                                                            {this.state.productQrCode&&<img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} style={{width: '90%'}}/>}
 
-                                                        <div className={"qr-code-container"}>
-
-                                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                                            <img className={"qr-code"} src={this.state.productQrCode} alt=""/>
-
+                                                            <div className="d-flex justify-content-center w-100">
+                                                                {this.props.hideRegister &&   <p className={"green-text"}>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}>[Product Provenance]</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
+                                                                </p>}
+                                                            </div>
                                                         </div>
-
-                                                        {this.props.hideRegister &&   <p className={"green-text"}>
-                                                            <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
-                                                                provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode)}>Print PDF</Link>
-                                                        </p>}
-
 
                                                     </div>
                                                 </div>
@@ -729,7 +924,18 @@ class ProductDetail extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    {/*<DeleteItem item={this.props.item} history={this.props.history}  />*/}
+                                                    {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
+
+
+                                                    {/*<EditIcon className={"mr-2"} onClick={this.showProductEdit}  />*/}
+
+                                                    {/*<FileCopyIcon  onClick={this.showProductDuplicate}  />*/}
+
+
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={false} duplicate={true} edit={true}  />
+
+
+
                                                 </div>
 
                                                 </div>
@@ -848,12 +1054,26 @@ class ProductDetail extends Component {
                                         </Tab>
 
 
-                                        {this.state.subProducts.length>0 &&
+
                                         <Tab eventKey="subproducts" title="Subproducts">
-                                            {this.state.subProducts.map((item)=>
-                                                <ProductItemNew item={item}/>
+
+                                            <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
+
+                                                <span data-parent={this.props.item.product._key} onClick={this.showProductSelection} >Link Sub Product</span>
+
+                                            </p>
+
+                                            {this.props.item.sub_products.length > 0 &&
+
+                                                <>
+
+                                            { this.props.item.sub_products.map((item) =>
+                                                <ProductItemNew  parentId={this.props.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
                                             )}
-                                        </Tab>}
+
+                                            </>
+                                            }
+                                        </Tab>
 
 
                                         {this.state.searches.length > 0 &&
@@ -870,7 +1090,7 @@ class ProductDetail extends Component {
 
                                         {this.state.listingLinked &&
                                         <Tab eventKey="listing" title="Listing">
-                                            {this.state.listingLinked && <ResourceItem item={this.state.listingLinked}/>}
+                                            {this.state.listingLinked && <ResourceItem    item={this.state.listingLinked}/>}
                                         </Tab>}
 
 
@@ -1082,6 +1302,28 @@ class ProductDetail extends Component {
 
 
 
+                      <Modal
+                                    size="lg"
+                                    show={this.state.showProductEdit}
+                                    onHide={this.showProductEdit}
+                                    className={"custom-modal-popup popup-form"}
+                                >
+
+                                    <div className="">
+                                        <button onClick={this.showProductEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                                    </div>
+
+
+                               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+
+
+                        </Modal>
+
+
+
+
+
+
 
 
                     </>
@@ -1178,6 +1420,7 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        showSubProductView: state.showSubProductView,
 
 
 
@@ -1192,6 +1435,9 @@ const mapDispachToProps = dispatch => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
 
     };
 };

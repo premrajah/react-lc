@@ -30,6 +30,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
+import LoopcycleLogo from "../img/logo-text.png";
 
 
 
@@ -186,7 +187,7 @@ class ProductDetailCycle extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -203,7 +204,7 @@ class ProductDetailCycle extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -241,7 +242,7 @@ class ProductDetailCycle extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 
@@ -273,7 +274,7 @@ class ProductDetailCycle extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -285,7 +286,7 @@ class ProductDetailCycle extends Component {
             const site = data.get("site")
 
 
-            console.log("register submit called")
+
 
 
             axios.post(baseUrl + "product/register",
@@ -306,7 +307,7 @@ class ProductDetailCycle extends Component {
 
                 }).catch(error => {
 
-                console.log(error)
+
 
                 this.setState({
 
@@ -334,8 +335,8 @@ class ProductDetailCycle extends Component {
         .then((response) => {
 
                 var responseAll = response.data.data;
-                console.log("sites  response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -346,8 +347,8 @@ class ProductDetailCycle extends Component {
             },
             (error) => {
 
-                console.log("sites response error")
-                console.log(error)
+
+
 
             }
         );
@@ -385,6 +386,7 @@ class ProductDetailCycle extends Component {
     showRegister(){
 
 
+        this.getSites()
         this.setState({
 
             showRegister:!this.state.showRegister
@@ -397,17 +399,14 @@ class ProductDetailCycle extends Component {
 
     getQrCode() {
 
-        // this.productQrCode = baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail";
-
-
 
         this.setState({
 
-            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "product-cycle-detail"
+            productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "p"
 
         })
-        console.log("qr code")
-        console.log(this.state.productQrCode)
+
+
 
     }
 
@@ -427,8 +426,8 @@ class ProductDetailCycle extends Component {
             .then((response) => {
 
                     var responseData = response.data.data;
-                    console.log("product listing response")
-                    console.log(responseData)
+
+
 
                     this.setState({
 
@@ -440,8 +439,8 @@ class ProductDetailCycle extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("product listing error")
-                    console.log(error)
+
+
 
 
 
@@ -472,8 +471,8 @@ class ProductDetailCycle extends Component {
                 .then((response) => {
 
                         var responseData = response.data.data;
-                        console.log("product search response")
-                        console.log(responseData)
+
+
 
                         var searches = this.state.searches
 
@@ -489,8 +488,8 @@ class ProductDetailCycle extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("product search error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -516,8 +515,8 @@ class ProductDetailCycle extends Component {
                 .then((response) => {
 
                         var responseAll = response.data;
-                        console.log("sub product response")
-                        console.log(responseAll)
+
+
 
 
                         var subProducts = this.state.subProducts
@@ -533,7 +532,7 @@ class ProductDetailCycle extends Component {
 
                     },
                     (error) => {
-                        console.log("resource error", error)
+
                     }
                 );
 
@@ -546,7 +545,7 @@ class ProductDetailCycle extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -567,8 +566,8 @@ class ProductDetailCycle extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -582,11 +581,13 @@ class ProductDetailCycle extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 
     }
+
+
 
 
 
@@ -657,7 +658,7 @@ class ProductDetailCycle extends Component {
 
                                         {this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id&&
                                         <>
-                                        <div className={"col-12 pb-5 mb-5"}>
+                                        <div className={"col-12 pb-5 mb-5 d-none"}>
 
                                             <div className="row justify-content-start pb-3 pt-3 ">
 
@@ -691,21 +692,19 @@ class ProductDetailCycle extends Component {
 
                                                 <div className="row justify-content-center ">
 
-                                                    <div className="col-12 pt-4 border-box">
+                                                    <div className="col-12 border-box">
 
 
-                                                        <div className={"qr-code-container"}>
+                                                        <div className="d-flex flex-column justify-content-center align-items-center" >
+                                                            <img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} style={{width: '90%'}}/>
 
-                                                            <img className={"qr-code-bg"} src={QrCodeBg} alt=""/>
-                                                            <img className={"qr-code"} src={this.state.productQrCode} alt=""/>
-
+                                                            <div className="d-flex justify-content-center w-100">
+                                                                {this.props.hideRegister &&   <p className={"green-text"}>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}>[Product Provenance]</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
+                                                                </p>}
+                                                            </div>
                                                         </div>
-
-                                                        {this.props.hideRegister &&   <p className={"green-text"}>
-                                                            <Link className={"mr-3"} to={"/product-cycle-detail/" + this.props.item.product._key}> View product
-                                                                provenance</Link>
-                                                            <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode)}>Print PDF</Link>
-                                                        </p>}
 
 
                                                     </div>
@@ -854,7 +853,7 @@ class ProductDetailCycle extends Component {
                                         {this.state.subProducts.length>0 &&
                                         <Tab eventKey="subproducts" title="Subproducts">
                                             {this.state.subProducts.map((item)=>
-                                                <ProductItemNew item={item}/>
+                                                <ProductItemNew key={Math.random() * 100} item={item}/>
                                             )}
                                         </Tab>}
 
@@ -866,7 +865,7 @@ class ProductDetailCycle extends Component {
 
                                             {this.state.searches.map((item) =>
 
-                                                <SearchItem item={item}/>
+                                                <SearchItem key={Math.random() * 100} item={item}/>
                                             )}
 
                                         </Tab>}
@@ -937,7 +936,7 @@ class ProductDetailCycle extends Component {
 
                                                         {this.state.sites.map((item) =>
 
-                                                            <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
+                                                            <option key={Math.random() * 100} value={item._key}>{item.name + "(" + item.address + ")"}</option>
 
                                                         )}
 

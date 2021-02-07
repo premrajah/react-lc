@@ -56,11 +56,13 @@ class  ProductPopUp extends Component{
                 className={"custom-modal-popup popup-form"}
             >
 
-                    <div className="">
-                <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                    <div className="m-1">
+                <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close">
+                    Done
+                </button>
 
                 </div>
-                <div className="row py-3 justify-content-center mobile-menu-row pt-3">
+                <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
                     <div className="col mobile-menu">
 
 
@@ -69,7 +71,11 @@ class  ProductPopUp extends Component{
                           {this.props.showCreateSubProduct && <ProductForm  heading={"Create A Sub Product"}/>}
 
                           {this.props.showCreateProduct && <ProductForm  heading={"Create A Product"}/>}
-                          {this.props.showSubProductView && <ProductExpandItem productId={this.props.product.product._key}/>}
+                          {this.props.showSubProductView && <ProductExpandItem  showLinkProducts={true} productId={this.props.product.product._key}/>}
+
+                            {/*<ProductExpandItem productId={"product-1612196249585-OoEd1eCa56"}/>*/}
+
+
                           {/*{this.props.showProductView && <ProductView  />}*/}
 
 
@@ -83,15 +89,15 @@ class  ProductPopUp extends Component{
 
                 </div>
 
-                <div className="row py-3 justify-content-center mobile-menu-row pt-3">
+                {/*<div className="row py-3 justify-content-center mobile-menu-row pt-3">*/}
 
-                    <div className="col-3 mobile-menu">
+                    {/*<div className="col-3 mobile-menu">*/}
 
-                        {this.props.showSubProductView &&  <button type={"submit"} onClick={this.hidePopUp} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Done</button>}
+                        {/*{this.props.showSubProductView &&  <button type={"submit"} onClick={this.hidePopUp} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Done</button>}*/}
 
 
-                    </div>
-                </div>
+                    {/*</div>*/}
+                {/*</div>*/}
 
 
 

@@ -52,8 +52,8 @@ class MessageSeller extends Component {
             .then((response) => {
 
                 var response = response.data;
-                console.log("detail resource response")
-                console.log(response)
+
+
 
 
                 this.setState({
@@ -66,9 +66,9 @@ class MessageSeller extends Component {
 
                     var status = error.response.status
 
-                    console.log("resource error")
 
-                    console.log(error)
+
+
 
 
                 }
@@ -83,7 +83,7 @@ class MessageSeller extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 

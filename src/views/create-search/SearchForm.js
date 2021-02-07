@@ -107,7 +107,8 @@
                 purpose: ["defined", "prototype", "aggregate"],
                 site: {},
                 dateRequiredBy: null,
-                dateRequiredFrom:null
+                dateRequiredFrom:null,
+                success: false
 
             }
 
@@ -140,7 +141,21 @@
             this.makeActive=this.makeActive.bind(this)
             this.goToSearchPage=this.goToSearchPage.bind(this)
 
+            this.phonenumber = this.phonenumber.bind(this)
 
+
+
+        }
+
+        phonenumber(inputtxt) {
+
+            var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
+            if(inputtxt.match(phoneno)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
 
@@ -267,8 +282,8 @@
                     var responseAll = response.data.data;
 
 
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
 
 
@@ -283,8 +298,8 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -305,8 +320,8 @@
                 .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -318,8 +333,8 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -379,19 +394,23 @@
             )
                 .then(res => {
 
-                    console.log(res.data)
+
 
                     this.setState({
                         // createSearchData: res.data.data,
                         searchObj:res.data.data,
+                        success: true
                     })
 
                     this.getSite()
 
+
+
+
                 }).catch(error => {
 
-                console.log("search error found ")
-                console.log(error)
+
+
 
             });
 
@@ -415,8 +434,8 @@
                     .then((response) => {
 
                         var response = response.data;
-                        console.log("resource response")
-                        console.log(response)
+
+
 
 
 
@@ -433,8 +452,8 @@
                         (error) => {
 
                             var status = error.response.status
-                            console.log("resource error")
-                            console.log(error)
+
+
 
                         }
                     );
@@ -593,7 +612,7 @@
             ).then((response) => {
 
                     var response = _.sortBy(response.data.data, ['name']);
-                console.log("resource response ", response)
+
 
                 this.setState({
 
@@ -603,8 +622,8 @@
             },
                 (error) => {
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -647,7 +666,7 @@
 
 
 
-            console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
+
 
             this.setState({
 
@@ -835,8 +854,8 @@
             this.setState({ errors: errors });
 
 
-            console.log("errors")
-            console.log(errors)
+
+
             return formIsValid;
 
         }
@@ -1122,7 +1141,7 @@
 
                 if (event.target.value!=="Select") {
 
-                    console.log(event.target.value)
+
 
 
                     var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
@@ -1392,6 +1411,11 @@
                 errors["phone"] = "Required";
             }
 
+            if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+                formIsValid = false;
+                errors["phone"] = "Invalid Phone Number!";
+            }
 
 
             if (!fields["email"]) {
@@ -1435,7 +1459,7 @@
                 const form = event.currentTarget;
 
 
-                console.log(new FormData(event.target))
+
 
 
                 this.setState({
@@ -1452,7 +1476,7 @@
                 const phone = data.get("phone")
 
 
-                console.log("site submit called")
+
 
 
                 axios.put(baseUrl + "site",
@@ -1483,7 +1507,7 @@
                     }).catch(error => {
 
 
-                    console.log(error)
+
 
 
 
@@ -1499,7 +1523,7 @@
         loadType(field, event) {
 
 
-            console.log(field,event.target.value)
+
 
 
             var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
@@ -1522,8 +1546,8 @@
             })
 
 
-            // console.log(catSelected)
-            // console.log(subCategories)
+            //
+            //
 
 
         }
@@ -1532,7 +1556,7 @@
         loadStates(field, event) {
 
 
-            console.log(field,event.target.value)
+
 
 
             var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
@@ -1554,8 +1578,8 @@
             })
 
 
-            // console.log(subCatSelected)
-            // console.log(states)
+            //
+            //
 
 
         }
@@ -1810,7 +1834,10 @@
                                                 <option value={null}>Select</option>
 
 
-                                                {this.props.productList.filter((item)=> item.listing_id === null ).map((item) =>
+                                                {/*{this.props.productList.filter((item)=> item.listing_id === null &&item.product.is_listable=== true ).map((item) =>*/}
+
+
+                                                {this.props.productList.map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
@@ -2233,11 +2260,11 @@
                                         </button>}
 
 
-                                                {this.state.page === 3 &&
+                                                {this.state.page === 3 &&this.state.success &&
 
 
 
-                                                    <button onClick={this.goToSearchPage} type="button"
+                                                 <button onClick={this.goToSearchPage} type="button"
                                                         className={"btn-next shadow-sm mr-2 btn btn-link blue-btn  mt-2 mb-2 "}>
                                                         View Search
 
@@ -2323,7 +2350,7 @@
                                                     </div>
                                                     <div className="col-12 mt-4">
 
-                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+                                                        <TextField id="outlined-basic" type={"text"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
 
                                                         {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 

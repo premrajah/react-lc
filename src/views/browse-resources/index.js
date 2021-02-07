@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import clsx from 'clsx';
@@ -7,6 +6,8 @@ import FilterImg from '../../img/icons/filter-icon.png';
 import HeaderDark from '../header/HeaderDark'
 import Footer from '../Footer/Footer'
 import Sidebar from '../menu/Sidebar'
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -23,7 +24,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CalGrey from '../../img/icons/calender-dgray.png';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-class Message extends Component {
+class BrowseResources extends Component {
 
 
     constructor(props) {
@@ -39,7 +40,10 @@ class Message extends Component {
             categories: [],
             showFilter: false,
             activeFilters: {},
-            states: ["Bailed", "Loose", "Chips"]
+            states: ["Bailed", "Loose", "Chips"],
+            page: 1,
+            pageSize: 2,
+            pages: [1, 2, 3, 4, 5]
 
         }
 
@@ -50,9 +54,47 @@ class Message extends Component {
     }
 
 
+
+    changePage(e) {
+
+        this.setState({
+
+            page: e.currentTarget.dataset.page
+
+        })
+
+
+        this.getResources()
+
+
+    }
+
     getResources() {
 
-        axios.get(baseUrl + "resource",
+        const filters = this.state.activeFilters
+
+
+
+
+        var url = baseUrl + "resource?m=a&f=" + this.state.page + "&s=" + this.state.pageSize
+
+
+
+
+        if (filters.category) {
+
+            url = url + "&t=category.keyword:" + filters.category[0];
+        }
+
+
+        // if (filters.category>0&&filters.category.length>0){
+        //
+        //
+        //     url =url +"category.keyword:"+filters.category[0]
+        // }
+
+
+        axios.get(url,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -62,8 +104,10 @@ class Message extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
+
+
 
                 this.setState({
 
@@ -74,8 +118,8 @@ class Message extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -93,8 +137,8 @@ class Message extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -105,8 +149,8 @@ class Message extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -137,10 +181,13 @@ class Message extends Component {
 
         })
 
-        console.log("selection filters")
-        console.log(this.state.activeFilters)
 
 
+
+
+
+
+        this.getResources()
 
     }
 
@@ -156,7 +203,6 @@ class Message extends Component {
 
 
         this.toggleFilter()
-
 
 
 
@@ -233,6 +279,32 @@ class Message extends Component {
                             )
                         }
 
+
+                        <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
+
+                            <div className={"col-auto"} >
+                                <nav aria-label="Page navigation example">
+                                    <ul className="pagination">
+
+                                        {this.state.page > 1 && <li className="page-item page-next"><a data-page={(this.state.page - 1)} className="page-link" onClick={this.changePage.bind(this)}>
+                                            <NavigateBeforeIcon style={{ color: "white" }} />
+                                        </a></li>}
+
+                                        {this.state.pages.map(item =>
+
+                                            <li className={this.state.page === item ? "page-item active-page" : "page-item "}><a data-page={item} className="page-link" onClick={this.changePage.bind(this)}>{item}</a></li>
+
+                                        )}
+
+                                        {(this.state.pages.length > this.state.page) && <li className="page-item page-next">
+                                            <a data-page={(this.state.page + 1)} className="page-link " onClick={this.changePage.bind(this)}>
+                                                <NavigateNextIcon style={{ color: "white" }} />
+                                            </a>
+                                        </li>}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
 
 
                     </div>
@@ -327,7 +399,7 @@ class Message extends Component {
 
                             </div>
 
-                            <div className="container   search-container pt-3" >
+                            <div className="container price-filter pb-5  search-container pt-5" >
 
                                 <div className="row no-gutters  pb-4">
 
@@ -395,7 +467,7 @@ function FiltersCat(props) {
     const handleChange = event => {
 
 
-        console.log(event.target.value)
+
 
 
         var values = items
@@ -414,15 +486,15 @@ function FiltersCat(props) {
 
         if (!checkExists) {
 
-            console.log("not found added")
+
 
             values.push(event.target.value)
 
         } else {
-            console.log(" found removed")
+
             // values.pop(event.revmoe.value)
 
-            values = values.filter((item) => item != event.target.value)
+            values = values.filter((item) => item !== event.target.value)
 
 
         }
@@ -430,7 +502,6 @@ function FiltersCat(props) {
 
 
         setItems(values)
-
 
         // for(var i=0; i<props.items.length;i++){
         //
@@ -447,8 +518,8 @@ function FiltersCat(props) {
 
 
         // }
-        console.log("values")
-        console.log(values)
+        //
+        //
 
 
     }
@@ -557,7 +628,7 @@ function FiltersState(props) {
     const handleChange = event => {
 
 
-        console.log(event.target.value)
+
 
 
         var values = items
@@ -576,15 +647,15 @@ function FiltersState(props) {
 
         if (!checkExists) {
 
-            console.log("not found added")
+
 
             values.push(event.target.value)
 
         } else {
-            console.log(" found removed")
+
             // values.pop(event.revmoe.value)
 
-            values = values.filter((item) => item != event.target.value)
+            values = values.filter((item) => item !== event.target.value)
 
 
         }
@@ -596,8 +667,8 @@ function FiltersState(props) {
 
 
         // }
-        console.log("values")
-        console.log(values)
+
+
 
 
     }
@@ -867,7 +938,7 @@ function Filters(props) {
 
             </div>
 
-            <div className="container   search-container pt-3" >
+            <div className="container price-container pb-3  search-container pt-3" >
 
                 <div className="row no-gutters  pb-4">
 
@@ -974,7 +1045,7 @@ function PriceRange(props) {
 
         setShow(true)
         setValue(newValue)
-        console.log(newValue)
+
         setActive(true);
 
         props.setFilters({ "name": props.type, "value": newValue })
@@ -1131,4 +1202,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(Message);
+)(BrowseResources);

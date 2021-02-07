@@ -12,7 +12,6 @@ import {Card, Typography, TextField, CardContent} from '@material-ui/core'
 
 class EditAccount extends Component {
 
-
     constructor(props) {
 
         super(props)
@@ -37,8 +36,6 @@ class EditAccount extends Component {
         this.UserInfo = this.UserInfo.bind(this)
 
     }
-
-
 
 
     UserInfo() {
@@ -71,8 +68,8 @@ class EditAccount extends Component {
                     // var status = error.response.status
 
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
 
 
@@ -81,8 +78,6 @@ class EditAccount extends Component {
             );
 
     }
-
-
 
 
     handleValidationSite() {
@@ -114,7 +109,6 @@ class EditAccount extends Component {
         this.setState({ errors: errors });
         return formIsValid;
     }
-
 
 
     handleChangeSite(field, e) {
@@ -165,7 +159,7 @@ class EditAccount extends Component {
         if(this.handleValidationSite()) {
 
             const form = event.currentTarget;
-            console.log(new FormData(event.target))
+
             this.setState({
                 loading: true
             })
@@ -180,7 +174,7 @@ class EditAccount extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.post(baseUrl + "user",
@@ -213,7 +207,7 @@ class EditAccount extends Component {
                     loading: false
                 })
 
-                console.log(error)
+
 
 
 

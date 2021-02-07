@@ -75,8 +75,8 @@ class SubProductView extends Component {
             .then((response) => {
 
                     var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
+
+
 
                     this.setState({
 
@@ -88,8 +88,8 @@ class SubProductView extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -102,7 +102,7 @@ class SubProductView extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -132,8 +132,8 @@ class SubProductView extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("detail resource response")
-                    console.log(responseAll)
+
+
 
 
                     this.setState({
@@ -151,7 +151,7 @@ class SubProductView extends Component {
 
                 },
                 (error) => {
-                    console.log("resource error", error)
+
                 }
             );
 
@@ -177,8 +177,8 @@ class SubProductView extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("detail resource response")
-                    console.log(responseAll)
+
+
 
 
                     var subProducts = this.state.subProducts
@@ -193,7 +193,7 @@ class SubProductView extends Component {
 
                 },
                 (error) => {
-                    console.log("resource error", error)
+
                 }
             );
 

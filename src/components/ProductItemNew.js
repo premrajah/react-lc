@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import moment from "moment/moment";
 import PlaceholderImg from '../img/place-holder-lc.png';
 import { Link } from "react-router-dom";
+import MoreMenu from './MoreMenu'
+import ProductEditForm from "./ProductEditForm";
 
 
 class ProductItemNew extends Component {
@@ -26,15 +28,260 @@ class ProductItemNew extends Component {
             count: 0,
             nextIntervalFlag: false,
             offers:[],
-            images:[]
+            images:[],
+            showSubmitSite:false,
+            errorRegister:false,
+            siteSelected:null,
+            showProductEdit:false,
+            productDuplicate:false,
         }
 
         this.showPopUp=this.showPopUp.bind(this)
         this.fetchImage=this.fetchImage.bind(this)
+        this.getSites=this.getSites.bind(this)
+        this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.showProductEdit=this.showProductEdit.bind(this)
+        this.showProductDuplicate=this.showProductDuplicate.bind(this)
+
+        this.callBackResult=this.callBackResult.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+        this.removeItem=this.removeItem.bind(this)
+
+        this.callBackSubmit=this.callBackSubmit.bind(this)
+
+
 
     }
 
 
+    callBackSubmit(){
+
+        // alert("submit ")
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+
+        })
+
+        this.props.loadProductsWithoutParent(this.props.userDetail.token)
+
+
+    }
+
+
+    getSites() {
+
+        axios.get(baseUrl + "site",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+
+
+
+                    this.setState({
+
+                        sites: responseAll
+
+                    })
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+    callBackResult(action){
+
+        if (action==="edit"){
+
+            this.showProductEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+        else if (action==="duplicate"){
+
+            // this.showProductDuplicate()
+
+            this.submitDuplicateProduct()
+        }
+
+
+        else if (action==="remove"){
+
+            this.removeItem()
+        }
+    }
+
+
+
+
+    submitDuplicateProduct = event => {
+
+
+        axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
+            {
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+
+                this.props.loadProductsWithoutParent(this.props.userDetail.token)
+
+
+
+            }).catch(error => {
+
+
+
+            // this.setState({
+            //
+            //     errorRegister:error.response.data.errors[0].message
+            // })
+
+        });
+
+    }
+
+
+    triggerCallback() {
+
+
+
+        this.props.triggerCallback()
+
+
+    }
+
+    removeItem() {
+
+
+
+        var data={
+
+            product_id:this.props.parentId,
+            sub_products_ids:[this.props.item&&this.props.item.product?this.props.item.product._key:this.props.item._key]
+        }
+
+
+
+        axios.post(baseUrl + "product/sub-product/remove", data,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+
+
+    showProductEdit(){
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+            productDuplicate:false
+
+        })
+    }
+
+    showProductDuplicate(){
+
+
+        this.setState({
+
+            showProductEdit:!this.state.showProductEdit,
+            productDuplicate:true
+
+        })
+    }
+
+
+
+    showSubmitSite(){
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+        this.setState({
+
+            showSubmitSite:!this.state.showSubmitSite
+        })
+    }
 
     showPopUp() {
 
@@ -73,7 +320,7 @@ class ProductItemNew extends Component {
         }else {
 
 
-            var url = baseUrl + "product/" + this.props.item.product._key + "/artifact"
+            var url =  this.props.item&&this.props.item.product?baseUrl + "product/" +this.props.item.product._key + "/artifact":baseUrl + "product/" +this.props.item._key + "/artifact"
 
 
             axios.get(url,
@@ -86,8 +333,8 @@ class ProductItemNew extends Component {
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("img product response")
-                        console.log(responseAll)
+
+
 
                         this.setState({
 
@@ -98,8 +345,8 @@ class ProductItemNew extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("listing error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -117,7 +364,13 @@ class ProductItemNew extends Component {
 
 
         return (
-<Link to={"/product/"+this.props.item.product._key}>
+       <>
+
+
+
+
+{this.props.item&&this.props.item.product?
+    <Link to={"/product/"+this.props.item.product._key}>
         <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
@@ -141,11 +394,68 @@ class ProductItemNew extends Component {
                 <div style={{ textAlign: "right" }} className={"col-3"}>
 
                     <p className={"text-gray-light small"}>  {moment(this.props.item.product._ts_epoch_ms).format("DD MMM YYYY")} </p>
+                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}   />
+
 
                 </div>
             </div>
 
-</Link>
+        </Link>
+
+:
+           <Link to={"/product/"+this.props.item._key}>
+               <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+
+
+                   <div className={"col-2 "}>
+
+
+                       {this.state.images.length>0? <img className={"img-fluid img-list"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+
+
+
+                   </div>
+                   <div className={"col-7 pl-2  content-box-listing"}>
+
+                       <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.name}</p>
+                       <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.purpose}</p>
+                       <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.category}, {this.props.item.type}, {this.props.item.state} {this.props.item.volume} {this.props.item.units}</p>
+                       {this.props.item.search_ids && <p style={{ fontSize: "16px" }} className="text-mute mb-1 bottom-tag-p">{this.props.item.search_ids.length} Searches</p>}
+                       {this.props.item.sub_product_ids&&this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
+
+                   </div>
+                   <div style={{ textAlign: "right" }} className={"col-3"}>
+
+                       <p className={"text-gray-light small"}>  {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")} </p>
+                       <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}   />
+
+
+                   </div>
+               </div>
+
+           </Link>}
+
+
+
+           <Modal
+               size="lg"
+               show={this.state.showProductEdit}
+               onHide={this.showProductEdit}
+               className={"custom-modal-popup popup-form"}
+           >
+
+               <div className="">
+                   <button onClick={this.showProductEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+               </div>
+
+
+               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item&&this.props.item.product?this.props.item.product._key:this.props.item._key}/>
+
+
+           </Modal>
+
+            </>
+
         );
     }
 }
@@ -178,6 +488,8 @@ const mapDispachToProps = dispatch => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
+
 
 
 

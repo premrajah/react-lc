@@ -32,7 +32,17 @@ class ComponentsNavbar extends React.Component {
         this.showLoginPopUp = this.showLoginPopUp.bind(this);
         this.logOut = this.logOut.bind(this);
         this.showSignUpPopUp = this.showSignUpPopUp.bind(this);
+        this.showProductSelection=this.showProductSelection.bind(this)
+
     }
+
+
+    showProductSelection() {
+
+        this.props.showProductPopUp({type:"create_product",show:true})
+
+    }
+
 
     toggleMenu = (event) => {
         document.body.classList.add("sidemenu-open");
@@ -62,6 +72,9 @@ class ComponentsNavbar extends React.Component {
 
     componentDidMount() {
         window.addEventListener("scroll", this.changeColor);
+        if(this.props.isLoggedIn) {
+            this.getArtifactForOrg();
+        }
     }
     componentWillUnmount() {
         window.removeEventListener("scroll", this.changeColor);
@@ -95,6 +108,26 @@ class ComponentsNavbar extends React.Component {
     };
     scrollToDownload = () => {
         document.getElementById("download-section").scrollIntoView({ behavior: "smooth" });
+    };
+
+    getArtifactForOrg = () => {
+        let url = `${baseUrl}org/${encodeURIComponent(this.props.userDetail.orgId)}/artifact`;
+        axios
+            .get(url, {
+                headers: { Authorization: "Bearer " + this.props.userDetail.token },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    if(response.data.data.length > 0) {
+                        this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
+
+                        this.props.setOrgImage(response.data.data[response.data.data.length -1].blob_url)
+                    }
+                }
+            })
+            .catch((error) => {
+
+            });
     };
 
     render() {
@@ -135,7 +168,7 @@ class ComponentsNavbar extends React.Component {
                                         className="nav-link d-none d-lg-block wl-link-white "
                                         color="default"
                                         to={"/find-resources"}>
-                                        Find Resources
+                                        Browse Listings
                                     </Link>
                                 </NavItem>
 
@@ -149,6 +182,16 @@ class ComponentsNavbar extends React.Component {
                                 {/*Sell Resources*/}
                                 {/*</Link>*/}
                                 {/*</NavItem>*/}
+                                <NavItem className={"web-only"}>
+                                    <Link
+                                        onClick={this.showProductSelection}
+                                        to={"/my-products"}
+                                        className="nav-link d-none d-lg-block wl-link-white"
+                                        color="default"
+                                        >
+                                        Add Product
+                                    </Link>
+                                </NavItem>
 
                                 <NavItem className={"web-only"}>
                                     <Link
@@ -217,15 +260,17 @@ class ComponentsNavbar extends React.Component {
                                             className="avatar avatar-60 border-0">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
-                                                    this.state.orgImage.length > 0 ? (
+                                                    this.props.orgImage  ? (
                                                         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                                             <img
-                                                                src={this.state.orgImage}
+                                                                src={this.props.orgImage}
                                                                 alt=""
                                                                 style={{
                                                                     maxHeight: "30px",
                                                                     maxWidth: "30px",
                                                                     objectFit: "contain",
+                                                                    width: '30px',
+                                                                    height: '30px'
                                                                 }}
                                                             />
                                                         </div>
@@ -337,6 +382,7 @@ const mapStateToProps = (state) => {
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
+        orgImage: state.orgImage,
     };
 };
 
@@ -348,6 +394,10 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         logOut: (data) => dispatch(actionCreator.logOut(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);

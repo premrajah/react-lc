@@ -117,8 +117,8 @@ class SearchMatches extends Component {
                 .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("matches response")
-                    console.log(responseAll)
+
+
 
 
                     this.setState({
@@ -132,8 +132,8 @@ class SearchMatches extends Component {
                 },
                     (error) => {
 
-                        console.log("match search error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -154,8 +154,8 @@ class SearchMatches extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("listings for search response")
-                    console.log(responseAll)
+
+
 
 
                     var matches = this.state.listingsForSearch
@@ -176,8 +176,8 @@ class SearchMatches extends Component {
                 },
                 (error) => {
 
-                    console.log("listings for search error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -270,7 +270,7 @@ class SearchMatches extends Component {
 
                 <div className={"tab-content-listing col-12"}>
 
-                    <NavTabs matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
+                    <NavTabs history={this.props.history} matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
 
                 </div>
                     </div>
@@ -417,14 +417,16 @@ function NavTabs(props) {
                 <div className={"container"}>
 
                     {props.suggesstions.map((item) =>
+<>
+
+                        {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
 
 
-                        <Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>
+                            <ResourceItem history={props.history} link={"/match/"+props.slug+"/"+item.listing.listing._key }  searchId={props.slug} item={item}  />
 
+                        {/* </Link>*/}
 
-                            <ResourceItem  searchId={props.slug} item={item}  />
-
-                        </Link>
+                        </>
 
                     )}
 

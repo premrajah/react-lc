@@ -15,6 +15,7 @@ import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import CycleItem from '../../components/CycleItem'
 import moment from "moment";
+import PageHeader from "../../components/PageHeader";
 
 
 class MyCycles extends Component {
@@ -50,8 +51,8 @@ class MyCycles extends Component {
         ).then((response) => {
 
                 var response = response.data.data;
-                console.log("match response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -66,8 +67,8 @@ class MyCycles extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("cycles error")
-                    console.log(error)
+
+
 
                     this.props.showLoading(false)
 
@@ -98,44 +99,17 @@ class MyCycles extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper ">
+                <div className="wrapper">
 
                     <HeaderDark />
 
+                    <div className="container  pb-4 pt-4">
 
-                    <div className="container   pb-4 pt-4">
-
-
-                        <div className="row ">
-
-                            <div className="col-auto pb-4 ">
-                                <img style={{height:"auto", width:"40px"}} className={" "} src={RingBlue} alt="" />
-
-                            </div>
-                        </div>
-                        <div className="row  pb-2  ">
-
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Cycles
-                                </h3>
-
-                            </div>
-                        </div>
-
-
-                        <div className="row  pb-4 pt-2 ">
-
-                            <div className="col-auto" >
-                                <p className={"text-gray-light "}>Cycles are transactions in progress. Keep track of cycles in progress as well as  </p>
-
-                            </div>
-                        </div>
+                        <PageHeader pageIcon={RingBlue} pageTitle="My Cycles" subTitle="Cycles are transactions in progress. Keep track of cycles in progress as well as" />
 
                         <div className="row   search-container listing-row-border pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchField />
-
-
                             </div>
                         </div>
 

@@ -10,15 +10,17 @@ class ImagesSlider extends React.Component {
         super(props);
 
     }
-    
 
-    componentWillMount() {
+
+
+
+    setImages(){
 
 
         for (let i = 0; i < this.props.images.length; i++) {
 
 
-            // console.log(props.images[i])
+            //
             this.imagesArray.push(
                 {
                     original:  this.props.images[i].blob_url,
@@ -28,6 +30,21 @@ class ImagesSlider extends React.Component {
             )
 
         }
+
+    }
+
+    componentWillReceiveProps(newProps){
+        this.imagesArray = []
+
+
+        this.setImages()
+    }
+
+    componentWillMount() {
+        this.imagesArray = []
+
+
+        this.setImages()
 
     }
     componentWillUnmount() {

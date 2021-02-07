@@ -6,9 +6,9 @@ export const loadUserData = () => {
     if (sessionStorage.getItem('user')) {
 
 
-        // console.log(store.get("user"))
-        //  console.log(store.get("token"))
-        //  console.log(" user exists")
+        //
+        //
+        //
 
 
 
@@ -17,7 +17,7 @@ export const loadUserData = () => {
 
     } else {
 
-        // console.log("no user exists")
+        //
 
         return null
 

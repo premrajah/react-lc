@@ -234,8 +234,8 @@ class CreateListing extends Component {
 
     handleChangeFile(event) {
 
-        console.log("change event files")
-        console.log(event.target.files)
+
+
 
         var files = this.state.files
         var filesUrl = this.state.filesUrl
@@ -251,8 +251,8 @@ class CreateListing extends Component {
         }
 
 
-        console.log(files)
-        console.log(filesUrl)
+
+
 
         this.setState({
             files: files,
@@ -293,7 +293,7 @@ class CreateListing extends Component {
         var name = e.currentTarget.dataset.name;
         var url = e.currentTarget.dataset.url;
 
-        console.log("image selected " + index)
+
 
 
         var files = this.state.files.filter((item) => item.name !== name)
@@ -310,7 +310,7 @@ class CreateListing extends Component {
         })
 
 
-        console.log(images)
+
 
         this.setState({
 
@@ -348,8 +348,8 @@ class CreateListing extends Component {
 
                     data => {
 
-                        console.log("uploading "+i)
-                        console.log(files[i])
+
+
 
                         axios.post(baseUrl + "resource/image64", btoa(data)
                             , {
@@ -359,7 +359,7 @@ class CreateListing extends Component {
                             }
                         ).then(res => {
 
-                                // console.log(res.data.content)
+                                //
 
 
                                 var images = this.state.images
@@ -370,13 +370,13 @@ class CreateListing extends Component {
                                 this.setState({
                                     images: images
                                 })
-                            console.log("images urls")
-                            console.log(images)
+
+
 
                             }).catch(error => {
 
-                                console.log("image upload error ")
-                                // console.log(error.response.data)
+
+                                //
 
                             })
 
@@ -432,8 +432,8 @@ class CreateListing extends Component {
             .then((response) => {
 
                 var responseAll = response.data.data;
-                console.log("resource response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -445,8 +445,8 @@ class CreateListing extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -467,8 +467,8 @@ class CreateListing extends Component {
             .then((response) => {
 
                 var responseAll = response.data.data;
-                console.log("sites  response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -480,8 +480,8 @@ class CreateListing extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("sites error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -491,8 +491,8 @@ class CreateListing extends Component {
     createListing() {
 
 
-        console.log("images sbmit")
-        console.log(this.state.images)
+
+
 
 
 
@@ -579,7 +579,7 @@ class CreateListing extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
 
                 this.setState({
@@ -588,8 +588,8 @@ class CreateListing extends Component {
 
             }).catch(error => {
 
-                console.log("login error found ")
-                console.log(error.response.data)
+
+
 
             });
 
@@ -623,8 +623,8 @@ class CreateListing extends Component {
                 .then((response) => {
 
                     var response = response.data.content;
-                    console.log("resource response")
-                    console.log(response)
+
+
 
 
 
@@ -641,8 +641,8 @@ class CreateListing extends Component {
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -705,7 +705,7 @@ class CreateListing extends Component {
 
 
 
-        console.log("next clicked ", this.state.page ,this.state.activePage )
+
 
 
         if (this.state.activePage === 0) {
@@ -798,8 +798,8 @@ class CreateListing extends Component {
         ).then((response) => {
 
             var response = response.data.data;
-            console.log("resource response")
-            console.log(response)
+
+
 
             this.setState({
 
@@ -810,8 +810,8 @@ class CreateListing extends Component {
             (error) => {
 
                 var status = error.response.status
-                console.log("resource error")
-                console.log(error)
+
+
 
             }
         );
@@ -856,7 +856,7 @@ class CreateListing extends Component {
 
 
 
-        console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
+
 
 
         this.setState({
@@ -1060,7 +1060,7 @@ class CreateListing extends Component {
         this.setState({ errors: errors });
 
 
-        console.log(errors)
+
         return formIsValid;
 
     }
@@ -1316,7 +1316,7 @@ class CreateListing extends Component {
 
 
 
-        console.log(errors)
+
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -1569,7 +1569,7 @@ class CreateListing extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
             // if (this.handleValidationSite()){
 
 
@@ -1597,8 +1597,8 @@ class CreateListing extends Component {
             // }
 
 
-            console.log("site submit called")
-            // console.log(postData)
+
+            //
 
 
             axios.post(baseUrl + "site",
@@ -1619,7 +1619,7 @@ class CreateListing extends Component {
                 })
                 .then(res => {
 
-                    console.log("site added succesfull")
+
 
                     // dispatch({type: "SIGN_UP", value : res.data})
 
@@ -1634,7 +1634,7 @@ class CreateListing extends Component {
 
                 // dispatch(signUpFailed(error.response.data.content.message))
 
-                console.log(error)
+
                 // dispatch({ type: AUTH_FAILED });
                 // dispatch({ type: ERROR, payload: error.data.error.message });
 

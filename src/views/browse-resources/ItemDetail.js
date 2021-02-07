@@ -5,24 +5,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from "react-router-dom";
-// import MarkerIcon from '../../img/icons/marker.png';
-// import CalIcon from '../../img/icons/calender-dgray.png';
 import PlaceholderImg from '../../img/place-holder-lc.png';
-import StateIcon from '../../img/icons/state.png';
-import FabricatingImg from '../../img/components/Main_Fabricating_Station_1400.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
-import ImagesSlider from "../../components/ImagesSlider";
 import encodeUrl  from "encodeurl"
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../../img/icons/gray-loop.png';
+import { Modal, ModalBody ,Alert} from 'react-bootstrap';
 import { withStyles } from "@material-ui/core/styles/index";
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -30,8 +21,8 @@ import MatchItemSeller from '../../components/MatchItemSeller'
 import NotFound from "../NotFound/index"
 import ProductExpandItem from '../../components/ProductExpandItem'
 import Org from "../../components/Org/Org";
-import {Edit as EditIcon, Delete as DeleteIcon} from "@material-ui/icons";
-
+import MoreMenu from '../../components/MoreMenu'
+import ListEditForm from '../../components/ListEditForm'
 
 
 class ItemDetail extends Component {
@@ -53,7 +44,8 @@ class ItemDetail extends Component {
             matches:[],
             notFound:false,
             site:null,
-            previewImage:null
+            previewImage:null,
+            showEdit:false,
         }
 
 
@@ -70,6 +62,66 @@ class ItemDetail extends Component {
 
         this.getPreviewImage=this.getPreviewImage.bind(this)
 
+        this.callBackResult=this.callBackResult.bind(this)
+        this.showEdit=this.showEdit.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+
+    }
+
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    this.props.history.push("/my-listings")
+                    // this.props.loadProducts()
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+
+
+    }
+
+
+    showEdit(){
+
+        this.setState({
+
+            showEdit:!this.state.showEdit,
+
+        })
     }
 
 
@@ -86,7 +138,7 @@ class ItemDetail extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response", responseAll)
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -99,7 +151,7 @@ class ItemDetail extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error", error)
+
 
                 }
             );
@@ -110,7 +162,7 @@ class ItemDetail extends Component {
     acceptMatch() {
 
 
-        console.log("create loop")
+
 
 
         axios.post(baseUrl + "match",
@@ -126,7 +178,7 @@ class ItemDetail extends Component {
             .then(res => {
 
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -141,8 +193,8 @@ class ItemDetail extends Component {
 
 
 
-            // console.log("loop convert error found ")
-            console.log(error.response.data)
+            //
+
 
 
             this.setState({
@@ -175,7 +227,7 @@ class ItemDetail extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -194,8 +246,8 @@ class ItemDetail extends Component {
             .then((response) => {
 
                 var responseData = response.data;
-                console.log("detail resource response")
-                console.log(responseData)
+
+
 
 
                 this.setState({
@@ -211,7 +263,7 @@ class ItemDetail extends Component {
 
             },
                 (error) => {
-                    console.log("listing error", error)
+
 
 
                     this.setState({
@@ -237,8 +289,8 @@ class ItemDetail extends Component {
             .then((response) => {
 
                     var response = response.data;
-                    console.log("site resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -250,7 +302,7 @@ class ItemDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("listing error", error)
+
 
 
                     this.setState({
@@ -279,8 +331,8 @@ class ItemDetail extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -294,7 +346,7 @@ class ItemDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 
@@ -315,8 +367,8 @@ class ItemDetail extends Component {
 
                     var response = response.data;
 
-                    console.log("match check response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -330,7 +382,7 @@ class ItemDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 
@@ -347,10 +399,13 @@ class ItemDetail extends Component {
 
     componentDidMount() {
 
+        window.scrollTo(0, 0)
 
         this.checkMatch()
         this.getResources()
 
+
+        this.getMatches()
 
         this.interval = setInterval(() => {
 
@@ -426,8 +481,27 @@ class ItemDetail extends Component {
                                 <div className="row justify-content-start pb-3 pt-3 ">
 
                                     <div className="col-12 mt-2">
+                                        <div className="row">
+                                            <div className="col-8">
                                         <h5 className={"blue-text text-heading"}>{this.state.item.listing.name}
                                         </h5>
+                                            </div>
+
+                                            <div className="col-4 text-right">
+
+
+                                                <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} edit={true} remove={false} duplicate={false}   />
+
+
+
+                                                {/*<EditIcon className={"mr-2"} onClick={this.showEdit}  />*/}
+
+                                                {/*<DeleteIcon className={""}   />*/}
+                                            </div>
+
+
+
+                                        </div>
 
                                     </div>
 
@@ -567,7 +641,28 @@ class ItemDetail extends Component {
                      </div>
 
 
-                    {this.state.item.org_id != this.props.userDetail.orgId &&
+
+
+                        <Modal
+                            size="lg"
+                            show={this.state.showEdit}
+                            onHide={this.showEdit}
+                            className={"custom-modal-popup popup-form"}
+                        >
+
+                            <div className="">
+                                <button onClick={this.showEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                            </div>
+
+
+                            <ListEditForm  triggerCallback={this.callBackResult} listingId={this.state.item.listing._key}/>
+
+
+                        </Modal>
+
+
+
+                        {this.state.item.org_id != this.props.userDetail.orgId &&
                         <React.Fragment>
 
                         <CssBaseline/>

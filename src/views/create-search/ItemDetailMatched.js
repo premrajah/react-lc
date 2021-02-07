@@ -81,8 +81,8 @@ class ItemDetailMatch extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -95,8 +95,8 @@ class ItemDetailMatch extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -107,7 +107,7 @@ class ItemDetailMatch extends Component {
     requestMatch() {
 
 
-        console.log("create loop")
+
 
 
         axios.post(baseUrl + "match",
@@ -123,7 +123,7 @@ class ItemDetailMatch extends Component {
             .then(res => {
 
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -142,8 +142,8 @@ class ItemDetailMatch extends Component {
 
 
 
-            // console.log("loop convert error found ")
-            console.log(error)
+            //
+
 
 
             this.setState({
@@ -176,7 +176,7 @@ class ItemDetailMatch extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -195,8 +195,8 @@ class ItemDetailMatch extends Component {
             .then((response) => {
 
                     var responseData = response.data.data;
-                    console.log("match  response")
-                    console.log(responseData)
+
+
 
 
                     this.setState({
@@ -215,7 +215,7 @@ class ItemDetailMatch extends Component {
 
                 },
                 (error) => {
-                    console.log("listing error", error)
+
                 }
             );
 
@@ -238,9 +238,9 @@ class ItemDetailMatch extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
 
-                    console.log(response)
+
+
 
                     this.setState({
 
@@ -250,7 +250,7 @@ class ItemDetailMatch extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 
@@ -258,20 +258,25 @@ class ItemDetailMatch extends Component {
 
 
 
-
-
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
-
-
 
         this.getResources()
 
+        this.interval = setInterval(() => {
+
+
+            this.getResources()
+
+
+        }, 5000);
 
     }
+
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
+    }
+
 
 
 
@@ -378,7 +383,7 @@ class ItemDetailMatch extends Component {
                                         <div className={"col-auto"}>
 
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available From</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.item&&this.state.item.listing.listing.available_from_epoch_ms).format("DD MMM YYYY")} </p>
                                         </div>
                                     </div>
 
@@ -388,7 +393,7 @@ class ItemDetailMatch extends Component {
 
                                         <div className={"col-auto"}>
                                             <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Available Until</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
+                                            <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item && moment(this.state.item.listing.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
                                         </div>
 
 

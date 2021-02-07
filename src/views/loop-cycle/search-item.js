@@ -8,6 +8,8 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import PlaceholderImg from '../../img/place-holder-lc.png';
 import moment from "moment";
+import MoreMenu from '../../components/MoreMenu'
+
 
 
 class SearchItem extends Component {
@@ -23,13 +25,80 @@ class SearchItem extends Component {
             count: 0,
             nextIntervalFlag: false,
             items: [],
-            previewImage:null
+            previewImage:null,
+            showEdit:null,
         }
 
         this.getPreviewImage=this.getPreviewImage.bind(this)
+        this.callBackResult=this.callBackResult.bind(this)
+        this.showEdit=this.showEdit.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
+
+    }
+    callBackResult(action){
+
+
+        if (action==="edit"){
+
+            this.showEdit()
+        }
+        else if (action==="delete"){
+
+            this.deleteItem()
+        }
+
+    }
+
+    triggerCallback() {
+
+            this.props.triggerCallback()
 
 
     }
+
+    deleteItem() {
+
+        axios.delete(baseUrl + "search/"+this.props.item.search._key,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+
+                this.triggerCallback()
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
+
+
+    showEdit(){
+
+        this.setState({
+
+            showEdit:!this.state.showEdit,
+
+        })
+    }
+
+
+
 
     getPreviewImage(productSelectedKey){
 
@@ -44,8 +113,8 @@ class SearchItem extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -58,8 +127,8 @@ class SearchItem extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -97,7 +166,9 @@ class SearchItem extends Component {
                     <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.search.description.substr(0, 60)}..</p>
                         {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}
 
-                </div>
+
+
+                        </div>
                 <div style={{ textAlign: "right" }} className={"col-2"}>
                     <p className={(this.props.item.stage === "matched" && "orange-text ") + (this.props.item.search.stage === "active" && " green-text") + "   text-caps"}>{this.props.item.search.stage}</p>
                 </div>
@@ -108,6 +179,10 @@ class SearchItem extends Component {
                         {/*{this.props.item.search.stage}*/}
                         {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
                         </p>
+
+                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={false}  />
+
+
                 </div>
 
 

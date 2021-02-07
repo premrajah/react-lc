@@ -6,22 +6,12 @@
     import FormControl from '@material-ui/core/FormControl';
     import SearchIcon from '../../img/icons/search-icon.png';
     import { Link } from "react-router-dom";
-    import { Alert} from 'react-bootstrap';
-
     import InputLabel from '@material-ui/core/InputLabel';
-    import Close from '@material-ui/icons/Close';
-    import NavigateBefore from '@material-ui/icons/NavigateBefore';
     import { makeStyles } from '@material-ui/core/styles';
     import CssBaseline from '@material-ui/core/CssBaseline';
     import Toolbar from '@material-ui/core/Toolbar';
     import AppBar from '@material-ui/core/AppBar';
-    import TextField from '@material-ui/core/TextField';
-    import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-    import clsx from 'clsx';
-    import InputAdornment from '@material-ui/core/InputAdornment';
     import { withStyles } from "@material-ui/core/styles/index";
-    import CalGrey from '../../img/icons/calender-dgray.png';
-    import LinkGray from '../../img/icons/link-icon.png';
     import MarkerIcon from '../../img/icons/marker.png';
     import CalenderIcon from '../../img/icons/calender.png';
     import ListIcon from '../../img/icons/list.png';
@@ -29,15 +19,15 @@
     import StateIcon from '../../img/icons/state.png';
     import axios from "axios/index";
     import { baseUrl } from "../../Util/Constants";
-    import LinearProgress from '@material-ui/core/LinearProgress';
-    import HeaderWhiteBack from '../header/HeaderWhiteBack'
-    import ResourceItem from '../item/ResourceItem'
     import HeaderDark from '../header/HeaderDark'
     import Sidebar from '../menu/Sidebar'
-    import MomentUtils from '@date-io/moment';
     import moment from 'moment';
     import NotFound from "../NotFound/index"
     import ProductExpandItem from '../../components/ProductExpandItem'
+    import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
+    import SearchEditForm from '../../components/SearchEditForm'
+    import { Modal, ModalBody, Alert } from 'react-bootstrap';
+    import MoreMenu from '../../components/MoreMenu'
 
 
     import {
@@ -67,8 +57,6 @@
 
     class ViewSearch extends Component {
 
-
-        slug
         constructor(props) {
 
             super(props)
@@ -117,8 +105,9 @@
                 dateRequiredFrom:null,
                 matchesCount:0,
                 notFound:false,
+                previewImage:null,
+                showEdit:false,
 
-                previewImage:null
             }
 
             this.getPreviewImage=this.getPreviewImage.bind(this)
@@ -144,8 +133,68 @@
             this.toggleDateOpen = this.toggleDateOpen.bind(this)
             this.makeActive=this.makeActive.bind(this)
             this.selectCreateSearch=this.selectCreateSearch.bind(this)
+            this.callBackResult=this.callBackResult.bind(this)
+            this.showEdit=this.showEdit.bind(this)
+            this.deleteItem=this.deleteItem.bind(this)
 
 
+        }
+
+
+
+        callBackResult(action){
+
+
+
+
+            if (action==="edit"){
+
+                this.showEdit()
+            }
+            else if (action==="delete"){
+
+                this.deleteItem()
+            }
+
+        }
+
+        deleteItem() {
+
+            axios.delete(baseUrl + "search/"+this.state.createSearchData.search._key,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        // var responseAll = response.data.data;
+
+
+                        this.props.history.push("/my-search")
+                        // this.props.loadProducts()
+
+
+                    },
+                    (error) => {
+
+
+
+
+                    }
+                );
+
+        }
+
+        showEdit(){
+
+            this.getSearch()
+            this.setState({
+
+                showEdit:!this.state.showEdit,
+
+            })
         }
 
 
@@ -162,8 +211,8 @@
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("product image  response")
-                        console.log(responseAll)
+
+
 
                         if(responseAll.length>0) {
                             this.setState({
@@ -176,8 +225,8 @@
                     },
                     (error) => {
 
-                        console.log("produt image error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -295,6 +344,8 @@
         getSearch() {
 
 
+
+
             axios.get(baseUrl + "search/" + this.slug+"/expand",
                 {
                     headers: {
@@ -306,9 +357,9 @@
 
                         var responseData = response.data.data;
 
-                        console.log("detail search response")
 
-                        console.log(response)
+
+
 
 
                         this.setState({
@@ -326,7 +377,7 @@
 
                     },
                     (error) => {
-                        console.log("search resource error", error)
+
 
                         this.setState({
 
@@ -339,9 +390,9 @@
 
         getSite() {
 
-         
+
          if (this.state.createSearchData)
-         
+
             axios.get(baseUrl + "site/" + this.state.createSearchData.site._key,
                 {
                     headers: {
@@ -352,8 +403,8 @@
                 .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("site response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -365,8 +416,8 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -390,8 +441,8 @@
                     .then((response) => {
 
                             var responseAll = response.data.data;
-                            console.log("site response")
-                            console.log(responseAll)
+
+
 
                             this.setState({
 
@@ -402,8 +453,8 @@
                         },
                         (error) => {
 
-                            console.log("search error")
-                            console.log(error)
+
+
 
                         }
                     );
@@ -453,7 +504,7 @@
             )
                 .then(res => {
 
-                    console.log(res.data.content)
+
 
                     this.setState({
                         createSearchData: res.data.content
@@ -463,8 +514,8 @@
 
                 }).catch(error => {
 
-                console.log("login error found ")
-                console.log(error.response.data)
+
+
 
             });
 
@@ -484,8 +535,8 @@
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("matches response")
-                        console.log(responseAll)
+
+
 
 
                         this.setState({
@@ -499,8 +550,8 @@
                     },
                     (error) => {
 
-                        console.log("match search error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -686,8 +737,6 @@
 
                         <>
 
-                    {/*<div className="container pt-4 p-2 mt-5 ">*/}
-                    {/*</div>*/}
 
                         {this.state.createSearchData &&
                             <>
@@ -700,7 +749,7 @@
 
                                         <div className="col-md-4 col-sm-12 col-xs-12 pb-5 pt-5 ">
 
-                                            <div className="row stick-left-box container-gray justify-content-center pb-5 pt-5">
+                                            <div className="row stick-left-box container-gray justify-content-center ">
 
                                                 {this.state.previewImage?
                                                     <img className={"img-fluid"} src={this.state.previewImage} alt="" />:
@@ -721,9 +770,32 @@
 
                                             <div className="row justify-content-start pb-3 pt-4 listing-row-border">
 
-                                                <div className="col-12 mt-2">
+                                                <div className="col-12 ">
+                                                    <div className="row">
+                                                    <div className="col-8 text-left">
+
                                                     <h5 className={"blue-text text-heading"}>{this.state.createSearchData.search.name}
                                                     </h5>
+                                                    </div>
+                                                        <div className="col-4 text-right">
+                                                            {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
+
+
+                                                            {/*<EditIcon className={"mr-2"} onClick={this.showEdit}  />*/}
+
+                                                            {/*/!*<FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />*!/*/}
+
+                                                            {/*<DeleteIcon className={""} onClick={this.showProductEdit}  />*/}
+
+                                                            {/*<MoreMenu/>*/}
+
+
+                                                            <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={true}  />
+
+                                                        </div>
+
+                                                    </div>
+
 
                                                 </div>
 
@@ -861,10 +933,31 @@
                                 </div>
 
 
+                                <Modal
+                                    size="lg"
+                                    show={this.state.showEdit}
+                                    onHide={this.showEdit}
+                                    className={"custom-modal-popup popup-form"}
+                                >
 
+                                    <div className="">
+                                        <button onClick={this.showEdit} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                                    </div>
+
+
+                                    <SearchEditForm  triggerCallback={this.showEdit} searchId={this.state.createSearchData.search._key}/>
+
+
+                                </Modal>
 
 
                             </>
+
+
+
+
+
+
                         }
 
 

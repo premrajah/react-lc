@@ -80,8 +80,8 @@ class MatchItem extends Component {
 
                     var responseAll = response.data;
 
-                    console.log("offers with match response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -91,7 +91,7 @@ class MatchItem extends Component {
 
                 },
                 (error) => {
-                    console.log("offers error", error)
+
                 }
             );
 
@@ -112,7 +112,7 @@ class MatchItem extends Component {
             )
                 .then(res => {
 
-                    console.log(res.data.data)
+
 
                     this.setState({
 
@@ -121,8 +121,8 @@ class MatchItem extends Component {
 
                 }).catch(error => {
 
-                console.log("loop accept error found ")
-                console.log(error)
+
+
 
 
             });
@@ -145,7 +145,7 @@ class MatchItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -160,9 +160,9 @@ class MatchItem extends Component {
 
 
 
-            console.log("loop accept error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -190,7 +190,7 @@ class MatchItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -205,9 +205,9 @@ class MatchItem extends Component {
 
 
 
-            console.log("loop accept error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -249,7 +249,7 @@ class MatchItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -264,9 +264,9 @@ class MatchItem extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -308,7 +308,7 @@ class MatchItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -323,9 +323,9 @@ class MatchItem extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -366,7 +366,7 @@ class MatchItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -381,9 +381,9 @@ class MatchItem extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -413,7 +413,7 @@ class MatchItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -428,9 +428,9 @@ class MatchItem extends Component {
 
 
 
-            console.log("loop decline error found ")
 
-            console.log(error)
+
+
 
             // this.setState({
             //

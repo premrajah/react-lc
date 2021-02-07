@@ -7,14 +7,14 @@ export const loadUserData = () => {
 
 
 
-        // console.log(store.get("user"))
-        //  console.log(store.get("token"))
-        //  console.log(" user exists")
+        //
+        //
+        //
 
 
         if (store.get("user").isGuest) {
 
-            // console.log(" user is guest")
+            //
 
         }
         return store.get("user")
@@ -23,7 +23,7 @@ export const loadUserData = () => {
     } else {
 
 
-        // console.log("no user exists")
+        //
 
         return null
 

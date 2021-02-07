@@ -3,6 +3,8 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import clsx from 'clsx';
 import FilterImg from '../../img/icons/filter-icon.png';
+import SearchHeaderImg from '../../img/search-header.png';
+import SearchBottleImg from '../../img/search-bottle.png';
 import HeaderDark from '../header/HeaderDark'
 import Footer from '../Footer/Footer'
 import Sidebar from '../menu/Sidebar'
@@ -15,6 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 import { baseUrl } from '../../Util/Constants'
 import ResourceItem from '../item/ResourceItem'
+import DummyItem from '../item/DummyListItem'
 import axios from "axios/index";
 import Slider from "@material-ui/core/Slider/index";
 import Checkbox from '@material-ui/core/Checkbox';
@@ -22,10 +25,11 @@ import Close from '@material-ui/icons/Close';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import CalGrey from '../../img/icons/calender-dgray.png';
+import DummyIcon from '../../img/icons/product-blue.png';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Link } from "react-router-dom";
 
-class BrowseResources extends Component {
-
+class FindResources extends Component {
 
     constructor(props) {
 
@@ -63,9 +67,7 @@ class BrowseResources extends Component {
 
         })
 
-
         this.getResources()
-
 
     }
 
@@ -79,7 +81,7 @@ class BrowseResources extends Component {
         var url = baseUrl + "resource?m=a&f=" + this.state.page + "&s=" + this.state.pageSize
 
 
-        console.log(url)
+
 
         if (filters.category) {
 
@@ -104,8 +106,8 @@ class BrowseResources extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
 
 
 
@@ -118,8 +120,8 @@ class BrowseResources extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -137,8 +139,8 @@ class BrowseResources extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -149,8 +151,8 @@ class BrowseResources extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -181,8 +183,8 @@ class BrowseResources extends Component {
 
         })
 
-        console.log("selection filters")
-        console.log(this.state.activeFilters)
+
+
 
 
 
@@ -230,54 +232,181 @@ class BrowseResources extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper accountpage">
+                <div className="container-main">
 
                     <HeaderDark />
 
 
-                    <div className={"container"}>
+                    <div className={"container-fluid "}>
 
-                        <div className="row  justify-content-center search-container listing-row-border pt-4 pb-4">
-                            <div className={"col-12"}>
 
-                                <TextField
-                                    label={"Search this seller’s listings"}
-                                    variant="outlined"
-                                    className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                    id="input-with-icon-textfield"
+                        <div className="row  justify-content-center search-container     pt-4 pb-4">
+                            <div className={"col-12"} style={{textAlign:"center"}}>
 
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
-
-                            <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">5 out of 76 Listings</p>
-
-                            </div>
-                            <div className="text-mute col-auto pl-0">
-
-                                <span style={{ fontSize: "18px" }}>Filter</span>   <img onClick={this.toggleFilter} src={FilterImg} className={"filter-icon"} alt="" />
+                                <img  src={SearchHeaderImg} className={"search-header-img img-fluid"} alt="" />
 
                             </div>
 
                         </div>
 
-                        {
-                            this.state.items && this.state.items.map((item, index) =>
 
-                                <ResourceItem item={item} />
+                        <div className="row justify-content-center pb-2 pt-4 ">
 
-                            )
-                        }
+                            <div className="col-auto">
+                                <h3 className={"blue-text text-heading"}>Find Products
+                                </h3>
+
+                            </div>
+                        </div>
+
+                        <div className="row justify-content-center pb-4 pt-2 ">
+
+                            <div className="col-12">
+                                <p className={"text-gray-light  text-center"}>Have specific requirements? Create a search. We’ll notify you when you receive a match.
+                                </p>
+
+
+
+                            </div>
+                            <div className="col-auto mt-4">
+
+                            <Link to={"/search-form"}
+                                  className="nav-link  d-lg-block green-link "
+                                  color="default"
+                            >
+                                Create a search
+
+                            </Link>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div id="container-fluid wave-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fafafa" fill-opacity="1" d="M0,224L80,208C160,192,320,160,480,165.3C640,171,800,213,960,234.7C1120,256,1280,256,1360,256L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+                    </div>
+
+
+                    <div className={"container bg-grey  "}>
+
+
+
+                        <div className="row  justify-content-center search-container      pt-4 pb-4">
+                            <div className={"col-12"} style={{textAlign:"center"}}>
+
+                                <img  src={SearchBottleImg} className={"search-header-img img-fluid"} alt="" />
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="row justify-content-center pb-2 pt-4 ">
+
+                            <div className="col-auto">
+                                <h3 className={"blue-text text-heading"}>Sell Products
+                                </h3>
+
+                            </div>
+                        </div>
+
+                        <div className="row justify-content-center pb-4 pt-2 ">
+
+                            <div className="col-12">
+                                <p className={"text-gray-light  text-center"}>
+                                    Have a resource to sell? Create a new listing and we’ll notify you when you receive a match.
+                                </p>
+
+
+
+                            </div>
+                            <div className="col-auto mt-4">
+
+                                <Link to={"/list-form"}
+                                      className="nav-link  d-lg-block green-link "
+                                      color="default"
+                                >
+                                    New Listing
+
+                                </Link>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className={"container-fluid "}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fafafa" fill-opacity="1" d="M0,224L80,208C160,192,320,160,480,165.3C640,171,800,213,960,234.7C1120,256,1280,256,1360,256L1440,256L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+                    </div>
+
+                    <div className={"container "}>
+
+
+
+                        <div className="row  pb-2 pt-4 ">
+
+                            <div className="col-auto">
+                                <h3 className={"blue-text text-heading"}>Explore by category
+                                </h3>
+
+                            </div>
+                        </div>
+
+
+
+                        <div className="row justify-content-center pb-2 pt-4 cat-box-container ">
+                            {this.state.categories.map((item) =>
+                            <div className="col-md-2 col-sm-3 col-xs-4">
+
+
+                                    <div className={"cat-box"}>
+                                      <img src={DummyIcon} />
+
+                                        <p className={"blue-text"}>{item.name}</p>
+
+                                    </div>
+
+
+
+                            </div>
+                            )}
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div className={"container "}>
+
+                        <div className="row justify-content-center pb-2 pt-4 ">
+
+                            <div className="col-12">
+                                <h3 className={"blue-text text-heading"}>All Products
+                                </h3>
+
+                            </div>
+
+
+                            <div className="col-12">
+
+                                <p className={""}>Simply want to browse products? <span className={"forgot-password-link"}>Browse All</span></p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div className="row justify-content-center pb-2 pt-4 cat-box-container ">
+
+                            <DummyItem/>
+
+                        </div>
+
 
 
                         <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
@@ -310,8 +439,6 @@ class BrowseResources extends Component {
                     </div>
 
 
-
-
                     <Footer />
 
 
@@ -319,112 +446,6 @@ class BrowseResources extends Component {
                 </div>
 
 
-                <>
-
-                    <div className={this.state.showFilter ? "wrapper  filter-page" : "d-none"} >
-
-                        <div className="container    pt-3 " >
-
-                            <div className="row no-gutters  pb-4">
-                                <div className="col text-left blue-text" style={{ margin: "auto" }}>
-                                    <h6 className={" text-heading"}>Filters</h6>
-                                </div>
-
-                                <div className="col-auto">
-
-                                    <button className="btn   btn-link text-dark menu-btn">
-                                        <Close onClick={this.toggleFilter} className="" style={{ fontSize: 32 }} />
-
-                                    </button>
-                                </div>
-
-
-                            </div>
-
-
-                            <FiltersCat type={"category"} setFilters={(filter) => this.setFilters(filter)} items={this.state.categories} />
-                            <FiltersState type={"state"} setFilters={(filter) => this.setFilters(filter)} items={this.state.states} />
-
-                            <div className="container   search-container pt-3" >
-
-                                <div className="row no-gutters  pb-4">
-
-                                    <div className="col text-left blue-text" style={{ margin: "auto" }}>
-                                        <h6 className={" text-heading"}>Availability</h6>
-                                    </div>
-
-
-                                </div>
-                                <div className="row no-gutters  pb-2">
-
-                                    <div className="col-12 mb-3">
-
-                                        <TextField
-                                            type="date"
-                                            variant="outlined"
-                                            className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                            id="input-with-icon-textfield"
-
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-
-                                    </div>
-                                    <div className="col-12 mb-3">
-
-                                        <TextField
-                                            type={"date"}
-                                            variant="outlined"
-                                            className={clsx(classes.margin, classes.textField) + " full-width-field"}
-                                            id="input-with-icon-textfield"
-
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <img className={"input-field-icon"} src={CalGrey} style={{ fontSize: 24, color: "#B2B2B2" }} alt="" />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-
-                            <div className="container price-filter pb-5  search-container pt-5" >
-
-                                <div className="row no-gutters  pb-4">
-
-                                    <div className="col text-left blue-text" style={{ margin: "auto" }}>
-                                        <h6 className={" text-heading"}>Price Range</h6>
-                                    </div>
-
-
-                                </div>
-                                <div className="row  justify-content-center  pb-2">
-                                    <div className="col-auto" style={{ margin: "auto" }}>
-
-                                        <PriceRange />
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <BottomAppBar resetFilters={() => this.resetFilters()} hideFilters={() => this.toggleFilter()} />
-
-                    </div>
-
-                </>
 
 
 
@@ -467,7 +488,7 @@ function FiltersCat(props) {
     const handleChange = event => {
 
 
-        console.log(event.target.value)
+
 
 
         var values = items
@@ -486,12 +507,12 @@ function FiltersCat(props) {
 
         if (!checkExists) {
 
-            console.log("not found added")
+
 
             values.push(event.target.value)
 
         } else {
-            console.log(" found removed")
+
             // values.pop(event.revmoe.value)
 
             values = values.filter((item) => item !== event.target.value)
@@ -518,8 +539,8 @@ function FiltersCat(props) {
 
 
         // }
-        // console.log("values")
-        // console.log(values)
+        //
+        //
 
 
     }
@@ -628,7 +649,7 @@ function FiltersState(props) {
     const handleChange = event => {
 
 
-        console.log(event.target.value)
+
 
 
         var values = items
@@ -647,12 +668,12 @@ function FiltersState(props) {
 
         if (!checkExists) {
 
-            console.log("not found added")
+
 
             values.push(event.target.value)
 
         } else {
-            console.log(" found removed")
+
             // values.pop(event.revmoe.value)
 
             values = values.filter((item) => item !== event.target.value)
@@ -667,8 +688,8 @@ function FiltersState(props) {
 
 
         // }
-        console.log("values")
-        console.log(values)
+
+
 
 
     }
@@ -1045,7 +1066,7 @@ function PriceRange(props) {
 
         setShow(true)
         setValue(newValue)
-        console.log(newValue)
+
         setActive(true);
 
         props.setFilters({ "name": props.type, "value": newValue })
@@ -1161,11 +1182,6 @@ function BottomAppBar(props) {
 
 
 
-
-
-
-
-
 const mapStateToProps = state => {
     return {
         loginError: state.loginError,
@@ -1202,4 +1218,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(BrowseResources);
+)(FindResources);

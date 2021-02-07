@@ -7,6 +7,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
 import { Spinner } from "react-bootstrap";
+import * as actionCreator from "../../store/actions/actions";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -40,13 +41,15 @@ class CompanyInfo extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     if(response.data.data.length > 0) {
-                        this.setState({orgImage: response.data.data[response.data.data.length -1].blob_url})
+                        this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
+                        this.props.setOrgImage(response.data.data[response.data.data.length -1].blob_url)
+
                     }
 
                 }
             })
             .catch((error) => {
-                console.log("get artifact error", error);
+
             });
     };
 
@@ -59,7 +62,7 @@ class CompanyInfo extends Component {
             })
             .then((response) => {
                 var responseOrg = response.data;
-                console.log("org response ", responseOrg);
+
 
                 this.setState({
                     org: responseOrg.data,
@@ -70,7 +73,7 @@ class CompanyInfo extends Component {
                 this.getArtifactForOrg();
             })
             .catch((error) => {
-                console.log("Org fetch error ", error);
+
             });
     }
 
@@ -167,7 +170,7 @@ class CompanyInfo extends Component {
                     });
                 })
                 .catch((error) => {
-                    console.log("Org update error ", error);
+
                     this.setState({
                         loading: false,
                     });
@@ -204,11 +207,13 @@ class CompanyInfo extends Component {
                                     },
                                 })
                                 .then((resposne) => {
-                                    //TODO
-                                    console.log("added to artifiact", resposne);
+                                    this.companyInfo(); // get company info
+
+
+
                                 })
                                 .catch((error) => {
-                                    console.log("added to artifact error", error);
+
                                 });
 
                             this.setState({
@@ -217,7 +222,7 @@ class CompanyInfo extends Component {
                         }
                     })
                     .catch((error) => {
-                        console.log("artifact upload error ", error);
+
                         this.setState({ loading: false });
                     });
             }
@@ -354,11 +359,18 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
+        orgImage: state.orgImage,
+
     };
 };
 
 const mapDispachToProps = (dispatch) => {
-    return {};
+    return {
+
+
+        setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
+
+    };
 };
 
 export default connect(mapStateToProps, mapDispachToProps)(CompanyInfo);

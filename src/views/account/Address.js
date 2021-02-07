@@ -40,6 +40,8 @@ class PaymentMethod extends Component {
         this.handleValidationSite = this.handleValidationSite.bind(this)
         this.handleChangeSite = this.handleChangeSite.bind(this)
         this.handleSubmitSite = this.handleSubmitSite.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
+
 
 
     }
@@ -89,11 +91,23 @@ class PaymentMethod extends Component {
 
 
 
-        if (!fields["phone"]) {
+        // if (!fields["phone"]) {
+        //     formIsValid = false;
+        //     errors["phone"] = "Required";
+        // }
+
+
+
+        if ((!fields["phone"])) {
             formIsValid = false;
             errors["phone"] = "Required";
         }
 
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
 
 
         if (!fields["email"]) {
@@ -117,6 +131,18 @@ class PaymentMethod extends Component {
     }
 
 
+     phonenumber(inputtxt) {
+
+        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
+        if(inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
 
     handleChangeSite(field, e) {
 
@@ -137,7 +163,7 @@ class PaymentMethod extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -154,7 +180,7 @@ class PaymentMethod extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -186,7 +212,7 @@ class PaymentMethod extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 
@@ -213,8 +239,8 @@ class PaymentMethod extends Component {
             .then((response) => {
 
                     var responseAll = response.data.content;
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -228,8 +254,8 @@ class PaymentMethod extends Component {
                 },
                 (error) => {
 
-                    console.log("site resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -248,8 +274,8 @@ class PaymentMethod extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("sites  response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -260,8 +286,8 @@ class PaymentMethod extends Component {
                 },
                 (error) => {
 
-                    console.log("sites response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -292,16 +318,16 @@ class PaymentMethod extends Component {
             .then((response) => {
                     var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+
+
 
                 },
                 (error) => {
                     var status = error.response.status
 
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
 
 
@@ -435,7 +461,7 @@ class PaymentMethod extends Component {
                                             </div>
                                             <div className="col-12 mt-4">
 
-                                                <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
+                                                <TextField id="outlined-basic" type={"text"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
 
                                                 {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
 

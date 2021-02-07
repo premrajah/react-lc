@@ -62,7 +62,7 @@ class ProductDetail extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -87,9 +87,9 @@ class ProductDetail extends Component {
         //
         //             var response = response.data;
         //
-        //             console.log("search code")
         //
-        //             console.log(response)
+        //
+        //
         //
         //             var searches = this.state.searches
         //
@@ -105,9 +105,9 @@ class ProductDetail extends Component {
         //
         //                 var status = error.response.status
         //
-        //                 console.log("search error")
         //
-        //                 console.log(error)
+        //
+        //
         //
         //             }
         //         );
@@ -124,7 +124,7 @@ class ProductDetail extends Component {
 
 
 
-        this.productQrCode = "http://api.makealoop.io/api/1/product/" + id + "/code?u=" + frontEndUrl + "product-cycle-detail";
+        this.productQrCode = "http://api.makealoop.io/api/2/product/" + id + "/code?u=" + frontEndUrl + "p";
 
     }
 
@@ -143,8 +143,8 @@ class ProductDetail extends Component {
             .then((response) => {
 
                 var responseAll = response.data;
-                console.log("detail resource response")
-                console.log(responseAll)
+
+
 
 
                 this.setState({
@@ -161,9 +161,9 @@ class ProductDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("resource error")
 
-                    console.log(error)
+
+
 
 
                 }
@@ -304,9 +304,9 @@ class ProductDetail extends Component {
 
                                 {/*<img src={"http://api.makealoop.io/api/1/product/"+this.state.item.id+"/code?u="+frontEndUrl+"product-cycle-detail/"+this.state.item.id} />*/}
 
-                                <img src={this.productQrCode} alt="" />
+                                <img src={this.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} />
 
-                                <Link to={"/product-cycle-detail/" + this.state.item.product._key}> Go To Preview Page</Link>
+                                <Link to={"/p/" + this.state.item.product._key}> Go To Preview Page</Link>
 
 
                             </div>

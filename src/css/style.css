@@ -40,13 +40,14 @@
 /* basic */
 html {
 	height: 100%;
+	font-family:  'Nunito', sans-serif !important;
 }
 
 body {
 	min-height: 100%;
 	height: auto;
 	overflow-y: auto;
-	font-family:  'Nunito', sans-serif;
+	font-family:  'Nunito', sans-serif !important;
 	font-size: 16px;
 	line-height: 30px;
 	-webkit-overflow-scrolling: touch;
@@ -2104,6 +2105,9 @@ background: transparent;
 
 
 }
+.blue-btn:hover {
+	color: rgba(255,255,255,0.5);
+}
 .btn{
 
 	border-radius: 7px;
@@ -2982,43 +2986,6 @@ a.page-link:hover{
 	/*top:4px;*/
 }
 
-.qr-code-container{
-
-	width: 300px;
-	height: 300px;
-
-}
-
-.qr-code-container>.qr-code-bg{
-	position: absolute;
-	margin: auto;
-	transform: translate(-50%, -50%);
-	left: 50%;
-	top: 50%;
-}
-
-.qr-code-container>.qr-code{
-	position: absolute;
-	margin: auto;
-	transform: translate(-50%, -50%) rotate(45deg);
-	left: 50%;
-	top: 50%;
-}
-.qr-code{
-	height: 150px;
-	width:150px;
-	top: 95px;
-	left: 85px;
-	transform: rotate(45deg);
-	z-index: 1;
-
-}
-.qr-code-bg{
-
-	height: 300px;
-	width: auto;
-	z-index: 1000;
-}
 
 
 .MuiFormHelperText-contained{
@@ -3100,4 +3067,40 @@ a.page-link:hover{
 .image-gallery-icon:hover .image-gallery-svg {
 
 	color: #27245C!important;
+}
+
+
+.tree-view-item{
+
+	background: #ffffff;
+	padding:2px 6px 2px 6px;
+	border-radius: 8px;
+}
+.tree-view-item-selected{
+
+	background: #05AD88;
+	font-weight: bold;
+	color: white;
+}
+.tree-view-menu p {
+	margin-bottom: 2px;
+}
+
+.tree-view-menu{
+
+	max-height: 250px;
+	overflow: scroll;
+}
+
+.tree-menu-container{
+	/*border: 1px solid #eee;*/
+	padding-top: 20px
+}
+.tree-view-menu{
+	margin-top: 10px;
+}
+
+.click-item{
+
+	cursor: pointer;
 }

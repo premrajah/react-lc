@@ -258,7 +258,7 @@ class ViewCycle extends Component {
             )
                 .then(res => {
 
-                    console.log(res.data.content)
+
 
                     this.setState({
 
@@ -271,8 +271,8 @@ class ViewCycle extends Component {
                 }).catch(error => {
 
 
-                console.log("loop confirm error found ")
-                console.log(error.response.data)
+
+
 
                 this.setState({
 
@@ -323,7 +323,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -339,8 +339,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -409,7 +409,7 @@ class ViewCycle extends Component {
 
 
 
-        console.log(dataStep)
+
         axios.put(baseUrl + "step",dataStep
 
        , {
@@ -420,7 +420,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -435,8 +435,8 @@ class ViewCycle extends Component {
             }).catch(error => {
 
 
-            console.log("cycle step error")
-            console.log(error)
+
+
 
 
 
@@ -466,7 +466,7 @@ class ViewCycle extends Component {
         //
         // }
 
-        console.log(email)
+
 
 
         axios.get(baseUrl + "org/email/"+email
@@ -478,7 +478,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                 console.log(res.data.data)
+
                  this.showOrgForm()
                  this.getOrgs()
                 
@@ -486,8 +486,8 @@ class ViewCycle extends Component {
             }).catch(error => {
 
 
-            console.log("cycle step error")
-            console.log(error)
+
+
 
 
 
@@ -511,8 +511,8 @@ class ViewCycle extends Component {
             "new_stage": action,
         }
 
-        console.log("update step error")
-        console.log(data)
+
+
 
         axios.post(baseUrl + "step/stage",data
             , {
@@ -523,7 +523,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
 
                 this.getResources()
@@ -533,8 +533,8 @@ class ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("step update error found ")
-            console.log(error)
+
+
 
             //
             // this.setState({
@@ -560,8 +560,8 @@ class ViewCycle extends Component {
             "new_stage": action,
         }
 
-        console.log("update cycle ")
-        console.log(data)
+
+
 
         axios.post(baseUrl + "cycle/stage",data
             , {
@@ -572,7 +572,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                this.showPopUpAction()
 
@@ -581,8 +581,8 @@ class ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("cycle update error found ")
-            console.log(error)
+
+
 
             //
             // this.setState({
@@ -611,7 +611,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -627,8 +627,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -656,7 +656,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -672,8 +672,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -703,7 +703,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -717,8 +717,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -745,7 +745,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -756,8 +756,8 @@ class ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -784,7 +784,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -795,8 +795,8 @@ class ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -824,7 +824,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -840,8 +840,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -875,7 +875,7 @@ class ViewCycle extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -893,8 +893,8 @@ class ViewCycle extends Component {
 
                 var responseData = response.data;
 
-                console.log("cycle detail response")
-                console.log(response)
+
+
 
 
 
@@ -917,9 +917,9 @@ class ViewCycle extends Component {
             },
             (error) => {
 
-                console.log("cycle error")
 
-                console.log(error)
+
+
 
                 this.setState({
 
@@ -945,8 +945,8 @@ class ViewCycle extends Component {
         ).then((response) => {
 
                 var response = response.data;
-                console.log("cycle detail response")
-                console.log(response)
+
+
 
 
 
@@ -959,9 +959,9 @@ class ViewCycle extends Component {
             },
             (error) => {
 
-                console.log("cycle error")
 
-                console.log(error)
+
+
 
 
             }
@@ -1306,12 +1306,13 @@ class ViewCycle extends Component {
 
                                             {this.state.item.next_action.possible_actions.map((item) =>
                                                 <>
-                                                    <button data-action={item} onClick={this.showPopUpAction.bind(this)}
+
+                                                    {!(item==="progress" &&this.state.item.cycle.stage==="progress") && <button data-action={item} onClick={this.showPopUpAction.bind(this)}
                                                             type="button"
                                                             className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green text-caps">
 
                                                         {item}
-                                                    </button>
+                                                    </button>}
 
                                                 </>
                                             )}

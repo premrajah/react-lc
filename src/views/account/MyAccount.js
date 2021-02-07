@@ -8,6 +8,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import * as actionCreator from "../../store/actions/actions";
+import PageHeader from "../../components/PageHeader";
 
 
 class MyAccount extends Component {
@@ -57,11 +58,11 @@ class MyAccount extends Component {
         )
             .then((response) => {
                 var response = response.data;
-                console.log("resource response", response)
+
             },
                 (error) => {
                     var status = error.response.status
-                    console.log("resource error", error)
+
                 }
             );
     }
@@ -79,16 +80,13 @@ class MyAccount extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper ">
+                <div className="wrapper">
 
                     <HeaderDark />
 
-                    <div className="container  pt-3">
-                        <div className="row mb-3 justify-content-center ">
-                            <div className="col-12  justify-content-center">
-                                <h4 className={"text-blue text-bold"}>  <img src={SettingsWhite} className={"account-icons truck-icon "} alt="" /> Account</h4>
-                            </div>
-                        </div>
+                    <div className="container  pb-4 pt-4">
+
+                        <PageHeader pageIcon={SettingsWhite} pageTitle="Account" subTitle="User account settings" bottomLine={<hr/>} />
 
 
                         <div className="row">

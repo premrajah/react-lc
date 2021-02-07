@@ -1632,11 +1632,11 @@ class ViewCycle extends Component {
                                     </div>
 
 
-                                    <div className={"col-12 text-center mb-4"}>
+                                    {/*<div className={"col-12 text-center mb-4"}>*/}
 
-                                        <TextField id="outlined-basic" label="Note" variant="outlined" fullWidth={true} name={"note"} type={"text"} />
+                                    {/*    <TextField id="outlined-basic" label="Note" variant="outlined" fullWidth={true} name={"note"} type={"text"} />*/}
 
-                                    </div>
+                                    {/*</div>*/}
 
 
                                     <div className={"col-12 text-center mb-4"}>

@@ -27,17 +27,28 @@ class ProductTreeItemView extends Component {
             products:[],
             currentSubProducts:[],
             tree:[],
-            open:false
+            open:false,
+            selected: false
 
         }
 
         this.getSubProducts=this.getSubProducts.bind(this)
         this.setTree=this.setTree.bind(this)
+        this.setSelected=this.setSelected.bind(this)
 
 
 
     }
 
+
+
+    setSelected(){
+
+
+        this.setState({
+            selected:! this.state.selected
+        })
+    }
 
     setOpen(){
 
@@ -177,12 +188,14 @@ class ProductTreeItemView extends Component {
         return (
 
             <>
-                <div style={{"marginLeft": "25px", "marginTop": "10px"}} data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)}>
+                <div  style={{"marginLeft": "25px", "marginTop": "2px"}} >
 
-                    <p> {this.props.item.sub_products.length>0 &&(this.state.open?<MinusSquare className={"mr-2"}/>:<PlusSquare className={"mr-2"} />)}{this.props.item.name}({this.props.item.sub_products.length+" Sub Products"})</p>
+                    <p> {this.props.item.sub_products.length>0 ?(this.state.open?<MinusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"}/>:<PlusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"} />):<span className={"mr-4"}></span>}
+
+                        <span onClick={this.setSelected} className={this.state.selected?"tree-view-item-selected tree-view-item":"tree-view-item"}>{this.props.item.name}({this.props.item.sub_products.length+" Sub Products"})</span></p>
                     {this.state.open &&this.state.tree.map((item) =>
                         <>
-                            <ProductTreeItemView item={item}  token={this.props.token}  />
+                            <ProductTreeItemView on  item={item}  token={this.props.token}  />
 
                         </>
                     )}

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
+import Sidebar from '../menu/Sidebar'
 import Footer from "../../components/Footer/Footer";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
@@ -89,6 +90,7 @@ class FindResourcePage extends Component {
         return (
             <>
                 <HeaderDark />
+                <Sidebar />
 
                 <div className="container">
                     <div className="row mt-5" style={{ marginTop: "80px" }}>

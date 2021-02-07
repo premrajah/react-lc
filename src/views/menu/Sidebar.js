@@ -169,16 +169,16 @@ class Sidebar extends Component {
                                         <Link onClick={this.toggleMenu} to={"/list-form"}
                                             className="white-text list-group-item list-group-item-action">Create A Listing </Link>
                                         {/*{this.props.isLoggedIn &&   <Link onClick={this.toggleMenu} to={"/delivery-resource"} className="white-text list-group-item list-group-item-action">Deliver Resources </Link>}*/}
-                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={""}
+                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/account"}
                                             className="white-text list-group-item list-group-item-action">Account</Link>}
-                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/loops"}
+                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/my-cycles"}
                                             className="white-text list-group-item list-group-item-action">My
                             Cycles</Link>}
 
                                         {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/my-listings"}
                                             className="white-text list-group-item list-group-item-action">My
                             Listings </Link>}
-                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/searches"}
+                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/my-searches"}
                                             className="white-text list-group-item list-group-item-action">My
                             Searches </Link>}
                                         {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/my-products"}

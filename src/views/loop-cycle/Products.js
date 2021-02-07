@@ -186,7 +186,7 @@ class Products extends Component {
                         </div>
 
 
-                        {this.props.productWithoutParentList.filter((item)=> item.product.is_listable=== true).map((item) =>
+                        {this.props.productWithoutParentList.map((item) =>
 
                             <>
 

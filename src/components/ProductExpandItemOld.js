@@ -76,8 +76,8 @@ class ProductExpandItem extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("detail resource response")
-                    console.log(responseAll)
+
+
 
 
                     this.setState({
@@ -98,7 +98,7 @@ class ProductExpandItem extends Component {
 
                 },
                 (error) => {
-                    console.log("resource error", error)
+
                 }
             );
 
@@ -149,8 +149,8 @@ class ProductExpandItem extends Component {
                 .then((response) => {
 
                         var responseAll = response.data;
-                        console.log("detail resource response")
-                        console.log(responseAll)
+
+
 
 
                         var subProducts = this.state.subProducts
@@ -167,7 +167,7 @@ class ProductExpandItem extends Component {
 
                     },
                     (error) => {
-                        console.log("resource error", error)
+
                     }
                 );
 

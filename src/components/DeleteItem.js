@@ -75,8 +75,8 @@ class DeleteItem extends Component {
                 },
                 (error) => {
 
-                    console.log("delete response error")
-                    console.log(error)
+
+
 
                 }
             );

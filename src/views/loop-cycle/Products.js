@@ -70,8 +70,8 @@ class Products extends Component {
                     this.props.showLoading(false)
 
                 var responseAll = response.data.data;
-                console.log("resource response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -83,8 +83,8 @@ class Products extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("prouduct  error")
-                    console.log(error)
+
+
 
                     this.props.showLoading(false)
 

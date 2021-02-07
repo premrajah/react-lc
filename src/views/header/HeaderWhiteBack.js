@@ -28,7 +28,7 @@ class HeaderWhiteBack extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 

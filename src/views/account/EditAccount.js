@@ -68,8 +68,8 @@ class EditAccount extends Component {
                     // var status = error.response.status
 
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
 
 
@@ -159,7 +159,7 @@ class EditAccount extends Component {
         if(this.handleValidationSite()) {
 
             const form = event.currentTarget;
-            console.log(new FormData(event.target))
+
             this.setState({
                 loading: true
             })
@@ -174,7 +174,7 @@ class EditAccount extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.post(baseUrl + "user",
@@ -207,7 +207,7 @@ class EditAccount extends Component {
                     loading: false
                 })
 
-                console.log(error)
+
 
 
 

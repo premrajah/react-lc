@@ -82,7 +82,7 @@ class ProductTreeView extends Component {
 
             })
 
-            console.log(this.state.siteSelected)
+
 
         }
 
@@ -154,7 +154,7 @@ class ProductTreeView extends Component {
             tree:tree
         })
 
-        console.log(tree)
+
 
 
     }
@@ -199,7 +199,7 @@ class ProductTreeView extends Component {
             tree:tree
         })
 
-        console.log(tree)
+
 
 
     }
@@ -228,8 +228,8 @@ class ProductTreeView extends Component {
 
                 var responseAll = response.data.data;
 
-                console.log("product tree response")
-                console.log(responseAll)
+
+
 
             this.setState({
 
@@ -243,8 +243,8 @@ class ProductTreeView extends Component {
             (error) => {
 
                 // var status = error.response.status
-                console.log("products error")
-                console.log(error)
+
+
 
 
 
@@ -270,8 +270,8 @@ class ProductTreeView extends Component {
 
                     var responseAll = response.data.data;
 
-                    console.log("sub product tree response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -286,8 +286,8 @@ class ProductTreeView extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("products error")
-                    console.log(error)
+
+
 
 
 

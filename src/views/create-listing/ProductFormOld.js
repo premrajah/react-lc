@@ -138,8 +138,8 @@ class ProductForm extends Component {
 
     handleChangeFile(event) {
 
-        console.log("change event files")
-        console.log(event.target.files)
+
+
 
         let files = this.state.files
         // var filesUrl = this.state.filesUrl
@@ -157,8 +157,8 @@ class ProductForm extends Component {
 
         //
         //
-        console.log(files)
-        // console.log(filesUrl)
+
+        //
         //
 
 
@@ -185,18 +185,18 @@ class ProductForm extends Component {
         var name = e.currentTarget.dataset.name;
         var url = e.currentTarget.dataset.url;
 
-        console.log("image selected " + index)
 
 
-        console.log("before delete")
-        console.log(this.state.files)
+
+
+
 
         var files = this.state.files.filter((item) => item.file.name !== name)
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
 
-        console.log("after delete")
-        console.log(files)
+
+
 
         // var images = this.state.images.filter((item)=> item !==index )
 
@@ -220,7 +220,7 @@ class ProductForm extends Component {
         })
 
 
-        console.log(images)
+
 
         this.setState({
 
@@ -256,15 +256,15 @@ class ProductForm extends Component {
 
                 let imgFile = files[i]
 
-                console.log(imgFile)
+
 
 
                 this.getBase64(files[i]).then(
 
                     data => {
 
-                        console.log("uploading "+i)
-                        console.log(files[i])
+
+
 
                         axios.post(baseUrl + "artifact",
                             {
@@ -289,7 +289,7 @@ class ProductForm extends Component {
 
                         ).then(res => {
 
-                            // console.log(res.data.content)
+                            //
 
 
                             var images = this.state.images
@@ -302,14 +302,14 @@ class ProductForm extends Component {
 
                                 images: images,
                             })
-                            console.log("images urls")
-                            console.log(images)
+
+
 
                         }).catch(error => {
 
-                            console.log("image upload error ")
-                            console.log(error)
-                            // console.log(error.response.data)
+
+
+                            //
 
                         })
 
@@ -340,7 +340,7 @@ class ProductForm extends Component {
 
                 let imgFile = files[i]
 
-                console.log(imgFile)
+
 
 
                 this.getBase64(imgFile.file).then(
@@ -368,7 +368,7 @@ class ProductForm extends Component {
 
                         ).then(res => {
 
-                            // console.log(res.data.content)
+                            //
 
 
                             let images = this.state.images
@@ -402,14 +402,14 @@ class ProductForm extends Component {
                             })
 
 
-                            console.log("images urls")
-                            console.log(images)
+
+
 
                         }).catch(error => {
 
-                            console.log("image upload error")
-                            console.log(error)
-                            // console.log(error.response.data)
+
+
+                            //
 
 
 
@@ -550,7 +550,7 @@ class ProductForm extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -567,7 +567,7 @@ class ProductForm extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -602,7 +602,7 @@ class ProductForm extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 
@@ -627,8 +627,8 @@ class ProductForm extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("sites  response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -639,8 +639,8 @@ class ProductForm extends Component {
                 },
                 (error) => {
 
-                    console.log("sites response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -708,8 +708,8 @@ class ProductForm extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -721,8 +721,8 @@ class ProductForm extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -826,8 +826,8 @@ class ProductForm extends Component {
         this.setState({ errorsProduct: errors });
 
 
-        console.log("val errors")
-        console.log(errors)
+
+
         return formIsValid;
     }
 
@@ -920,7 +920,7 @@ class ProductForm extends Component {
 
             if (event.target.value !== "Select") {
 
-                console.log(field, event.target.value)
+
 
 
                 var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
@@ -939,8 +939,8 @@ class ProductForm extends Component {
                 })
 
 
-                console.log(catSelected)
-                console.log(subCategories)
+
+
 
             } else {
 
@@ -966,7 +966,7 @@ class ProductForm extends Component {
             if (event.target.value !== "Select") {
 
 
-                console.log(field, event.target.value)
+
 
 
                 var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
@@ -988,8 +988,8 @@ class ProductForm extends Component {
                 })
 
 
-                console.log(subCatSelected)
-                console.log(states)
+
+
 
             } else {
 
@@ -1033,7 +1033,7 @@ class ProductForm extends Component {
 
             const data = new FormData(event.target);
 
-            console.log("form data")
+
 
 
             const title = data.get("title")
@@ -1113,10 +1113,10 @@ class ProductForm extends Component {
             }
 
 
-            console.log("product data")
 
-            console.log(productData)
-            console.log(this.state.images)
+
+
+
 
 
             axios.put(baseUrl + "product",
@@ -1130,7 +1130,7 @@ class ProductForm extends Component {
                 .then(res => {
 
 
-                    console.log(res.data.data)
+
 
 
                     if (!this.props.parentProduct) {
@@ -1145,7 +1145,7 @@ class ProductForm extends Component {
 
                     this.showProductSelection()
 
-                    console.log("product added succesfully")
+
 
 
                     this.props.loadProducts(this.props.userDetail.token)
@@ -1173,7 +1173,7 @@ class ProductForm extends Component {
 
                 // dispatch(signUpFailed(error.response.data.message))
 
-                console.log(error.data)
+
                 // dispatch({ type: AUTH_FAILED });
                 // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -1202,8 +1202,8 @@ class ProductForm extends Component {
         ).then((response) => {
 
                 var responseAll = _.sortBy(response.data.data, ['name']);
-                console.log("category response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -1213,8 +1213,8 @@ class ProductForm extends Component {
             },
             (error) => {
 
-                console.log("cat error")
-                console.log(error)
+
+
 
             }
         );
@@ -1244,7 +1244,7 @@ class ProductForm extends Component {
 
 
 
-        console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
+
 
 
         this.setState({

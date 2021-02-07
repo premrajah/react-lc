@@ -124,8 +124,8 @@ export const setLocation = val => {
 
 export const setReviewBoxOpen = val => {
 
-    console.log("edit cart action")
-    console.log("login " + val)
+
+
     return { type: "REVIEW_BOX_OPEN", value: val };
 
 
@@ -133,8 +133,8 @@ export const setReviewBoxOpen = val => {
 
 export const setEditCartPopUp = val => {
 
-    console.log("edit cart action")
-    console.log("login " + val)
+
+
     return { type: "SET_EDIT_CART_POPUP", value: val };
 
 
@@ -142,8 +142,8 @@ export const setEditCartPopUp = val => {
 
 export const editCartPopUp = val => {
 
-    console.log("edit cart action")
-    console.log("login " + val)
+
+
     return { type: "EDIT_CART_POPUP", value: val };
 
 
@@ -151,8 +151,8 @@ export const editCartPopUp = val => {
 
 export const addBundleCartItem = val => {
 
-    console.log("edit cart action")
-    console.log("login " + val)
+
+
 
 
     return { type: "ADD_BUNDLE_CART_ITEM", value: val };
@@ -174,8 +174,8 @@ export const setEditBundleCartPopUp = val => {
 
 export const editBundleCartPopUp = val => {
 
-    console.log("edit cart action")
-    console.log("login " + val)
+
+
     return { type: "EDIT_BUNDLE_CART_POPUP", value: val };
 
 
@@ -192,8 +192,8 @@ export const showNewsletter = val => {
 
 export const loginPopUp = val => {
 
-    console.log("action")
-    console.log("login " + val)
+
+
     return { type: "LOGIN_POPUP", value: val };
 
 
@@ -202,8 +202,8 @@ export const loginPopUp = val => {
 
 export const stayAtHomeAddress = val => {
 
-    console.log("action")
-    console.log("login " + val)
+
+
     return { type: "STAY_AT_HOME_ADDRESS", value: val };
 
 
@@ -211,8 +211,8 @@ export const stayAtHomeAddress = val => {
 
 export const addressExist = val => {
 
-    console.log("action")
-    console.log("login " + val)
+
+
     return { type: "ADDRESS_EXIST", value: val };
 
 
@@ -223,8 +223,8 @@ export const addressExist = val => {
 
 export const socialLoginPopUp = val => {
 
-    console.log("social login action pop up")
-    console.log("login " + val)
+
+
     return { type: "SOCIAL_LOGIN_POPUP", value: val };
 
 
@@ -233,8 +233,8 @@ export const socialLoginPopUp = val => {
 
 export const setSocialUserInfo = val => {
 
-    console.log("action")
-    console.log("login " + val)
+
+
     return { type: "SOCIAL_USER_INFO", value: val };
 
 
@@ -242,9 +242,9 @@ export const setSocialUserInfo = val => {
 
 export const loginCheckoutPopUp = val => {
 
-    console.log("action")
 
-    console.log("login " + val)
+
+
 
 
     return { type: "LOGIN_CHECKOUT_POPUP", value: val };
@@ -255,7 +255,7 @@ export const loginCheckoutPopUp = val => {
 
 export const setProduct = val => {
 
-    console.log("product id",val);
+
 
     return { type: "PRODUCT_ID", value: val };
 
@@ -265,7 +265,7 @@ export const setProduct = val => {
 
 export const setParentProduct = val => {
 
-    console.log("parent product id ",val);
+
 
     return { type: "PARENT_PRODUCT_ID", value: val };
 
@@ -275,7 +275,7 @@ export const setParentProduct = val => {
 
 export const showProductPopUp = val => {
 
-    console.log("product pop up",val);
+
 
     return { type: "PRODUCT_POPUP", value: val };
 
@@ -327,7 +327,7 @@ export const ageUp = val => {
 
 // export const loadProducts = val => {
 //
-//     console.log("PRODUCT_LIST ",val);
+//
 //
 //     // return { type: "PRODUCT_ID", value: val };
 //     return  { type: "PRODUCT_LIST", value: [] };
@@ -405,8 +405,8 @@ export const loadSitesSync = (data) => dispatch => {
 
                 var responseAll = response.data.data;
 
-                console.log("site response")
-                console.log(responseAll)
+
+
 
                 dispatch({ type: "SITE_LIST", value: responseAll })
 
@@ -417,8 +417,8 @@ export const loadSitesSync = (data) => dispatch => {
             (error) => {
 
                 // var status = error.response.status
-                console.log("sites error")
-                console.log(error)
+
+
 
                 // dispatch({ type: "PRODUCT_LIST", value: [] })
 
@@ -449,8 +449,8 @@ export const loadProductsSync = (data) => dispatch => {
 
                 var responseAll = response.data.data;
 
-                console.log("product response")
-                console.log(responseAll)
+
+
 
                 dispatch({ type: "PRODUCT_LIST", value: responseAll })
                // dispatch()
@@ -460,8 +460,8 @@ export const loadProductsSync = (data) => dispatch => {
             (error) => {
 
                 // var status = error.response.status
-                console.log("products error")
-                console.log(error)
+
+
 
                 dispatch({ type: "PRODUCT_LIST", value: [] })
 
@@ -491,8 +491,8 @@ export const loadProductsWithoutParentSync = (data) => dispatch => {
 
                 var responseAll = response.data.data;
 
-                console.log("product response")
-                console.log(responseAll)
+
+
 
                 dispatch({ type: "PRODUCT_NPARENT_LIST", value: responseAll })
                 // dispatch()
@@ -502,8 +502,8 @@ export const loadProductsWithoutParentSync = (data) => dispatch => {
             (error) => {
 
                 // var status = error.response.status
-                console.log("products error")
-                console.log(error)
+
+
 
                 dispatch({ type: "PRODUCT_NPARENT_LIST", value: [] })
 
@@ -541,8 +541,8 @@ export function loadProductsSync2(data){
 
                         var responseAll = response.data.data;
 
-                        console.log("product response")
-                        console.log(responseAll)
+
+
 
                         dispatch ({ type: "Product_List", value: responseAll })
                         // dispatch()
@@ -552,8 +552,8 @@ export function loadProductsSync2(data){
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("products error")
-                        console.log(error)
+
+
 
                         dispatch({ type: "Product_List", value: [] })
 
@@ -600,20 +600,20 @@ export const loadSalesQuote = (data) => {
 
 export const loadSalesQuoteSync = (data) => dispatch => {
 
-    console.log("load sales quotes")
+
 
     axios.get(baseUrl + "customers/" + data.id + "?groups[]=sales-quotes")
         .then(res => {
 
 
-            console.log(res.data)
+
             dispatch({ type: "LOAD_CART_ITEMS", value: res.data })
 
 
         }).catch(error => {
 
-            console.log("cart Items error found " + error)
-            console.log(error)
+
+
 
 
         });
@@ -628,14 +628,14 @@ export const loadFavoriteSync = (data) => dispatch => {
         .then(res => {
 
 
-            // console.log(res.data)
+            //
             dispatch({ type: "FAVORITES", value: res.data })
 
 
         }).catch(error => {
 
-            console.log("favorites error found " + error)
-            console.log("favorites error found " + error)
+
+
 
             // dispatch({type: "LOGIN_FAILED", value : error})
             // dispatch(stopLoading())
@@ -643,7 +643,7 @@ export const loadFavoriteSync = (data) => dispatch => {
 
             dispatch(loginFailed(error))
 
-            console.log(error)
+
 
 
         });
@@ -658,7 +658,7 @@ export const logInSync = (data) => dispatch => {
         .then(res => {
 
 
-            console.log(res)
+
 
             // saveUserToken(res.data.data);
             // dispatch(getUserDetail(data));
@@ -670,7 +670,7 @@ export const logInSync = (data) => dispatch => {
 
                 saveUserToken(res.data.data);
 
-                console.log("login success found")
+
                 saveKey("user", res.data.data)
                 dispatch({ type: "LOGIN", value: res.data.data })
 
@@ -679,7 +679,7 @@ export const logInSync = (data) => dispatch => {
 
 
 
-                // console.log("login failed " + res.errors[0].message)
+                //
 
                 // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
             }
@@ -687,9 +687,9 @@ export const logInSync = (data) => dispatch => {
 
         }).catch(error => {
 
-            console.log("login error found ")
 
-            console.log(error.response)
+
+
 
             dispatch({ type: "LOGIN_ERROR", value: error.response.data.errors[0].message })
 
@@ -719,8 +719,8 @@ export const signUpWithCartItem = (data) => {
 export const signUpWithCartItemSync = (data) => dispatch => {
 
 
-    console.log("sign pop up called")
-    console.log(data)
+
+
 
 
     var user = data.user
@@ -729,7 +729,7 @@ export const signUpWithCartItemSync = (data) => dispatch => {
         user)
         .then(res => {
 
-            console.log("sign up successfull")
+
 
 
             if (res.data.isGuest) {
@@ -773,7 +773,7 @@ export const signUpWithCartItemSync = (data) => dispatch => {
 
             dispatch(loginFailed())
 
-            console.log(error)
+
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -800,14 +800,14 @@ export const reviewSubmit = (data) => {
 export const reviewSubmitSync = (data) => dispatch => {
 
 
-    console.log("review submit  called")
+
 
     axios.post(baseUrl + "activity_reviews.json?groups[]=reviews",
         data)
         .then(res => {
 
-            console.log(" review submit successfull")
-            console.log(res.data)
+
+
 
 
 
@@ -818,7 +818,7 @@ export const reviewSubmitSync = (data) => dispatch => {
 
 
 
-            console.log(error)
+
             // dispatch(stopLoading());
 
 
@@ -860,8 +860,8 @@ export const signUpHost = (data) => {
 export const signUpHostSync = (data) => dispatch => {
 
 
-    console.log("host sign up called")
-    console.log(data)
+
+
 
     axios.post(baseUrl + "hosts.json",
         data
@@ -876,7 +876,7 @@ export const signUpHostSync = (data) => dispatch => {
     )
         .then(res => {
 
-            console.log("host sign up successfull")
+
 
 
 
@@ -887,14 +887,14 @@ export const signUpHostSync = (data) => dispatch => {
 
         }).catch(error => {
 
-            console.log("host sign up error")
+
 
 
             // dispatch(stopLoading())
 
             dispatch(loginFailed())
 
-            console.log(error)
+
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -909,13 +909,13 @@ export const signUpHostSync = (data) => dispatch => {
 export const signUpSync = (data) => dispatch => {
 
 
-    console.log("sign up called")
+
     axios.post(baseUrl + "user/signup",
         // axios.post(baseUrl+"customers.json",
         data)
         .then(res => {
 
-            console.log("sign up successfull")
+
 
             dispatch({ type: "SIGN_UP", value: res.data })
 
@@ -929,7 +929,7 @@ export const signUpSync = (data) => dispatch => {
 
         dispatch(signUpFailed(error.response.data.errors[0].message))
 
-            console.log(error)
+
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -974,7 +974,7 @@ export const checkGuestCartItemsSync = (data) => dispatch => {
 
     var url = baseUrl + "customers.json?groups[]=customer&email=" + data.username;
 
-    console.log(url)
+
 
 
     axios.get(url)
@@ -985,7 +985,7 @@ export const checkGuestCartItemsSync = (data) => dispatch => {
 
             if (data.cartItems.length > 0) {
 
-                console.log("cart  abondoned item exits")
+
 
 
                 dispatch(addCartItem({ "user": res.data.user, "cartItem": data.cartItems[0] }))
@@ -1003,7 +1003,7 @@ export const checkGuestCartItemsSync = (data) => dispatch => {
 
             dispatch(loginFailed())
 
-            console.log(error)
+
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -1028,8 +1028,8 @@ export const loadUserDetail = (data) => {
 
     var userDetials = getKey("user");
 
-    // console.log("user details")
-    // console.log(userDetials)
+    //
+    //
     return { type: "LOAD_USER_DETAIL", value: userDetials };
 
 
@@ -1056,16 +1056,16 @@ export const getUserDetailSync = (data) => dispatch => {
 
     var url = baseUrl + "customers.json?groups[]=customer&email=" + data.username;
 
-    console.log(url)
+
 
 
     axios.get(url)
         .then(res => {
 
 
-            console.log("user data exits")
 
-            console.log(res.data)
+
+
 
             dispatch({ type: "USER_DETAIL", value: res.data[0] })
             saveUserData(res.data[0])
@@ -1083,7 +1083,7 @@ export const getUserDetailSync = (data) => dispatch => {
 
             dispatch(loginFailed())
 
-            console.log(error)
+
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -1148,7 +1148,7 @@ export const removeCartItemSync = (val) => {
 
         var url = baseUrl + "customer_carts";
 
-        console.log(url)
+
 
         var data;
 
@@ -1180,11 +1180,11 @@ export const removeCartItemSync = (val) => {
         //     }
         // }
 
-        console.log(data)
+
         axios.post(url, data)
             .then(res => {
 
-                console.log(res.data)
+
 
                 // return { type: "REMOVE_CART_ITEM", value: val };
 
@@ -1232,7 +1232,7 @@ export const addCartItem = (val) => {
     } else {
 
 
-        console.log("add cart item guest called")
+
 
         return { type: "ADD_CART_ITEM_GUEST", value: val };
 
@@ -1327,7 +1327,7 @@ export const removeCouponSync = (val) => {
         axios.post(url, postData)
             .then(res => {
 
-                console.log(res.data)
+
 
                 dispatch(disableCouponLoading())
                 dispatch(loadSalesQuote({ id: val.customer }));
@@ -1335,7 +1335,7 @@ export const removeCouponSync = (val) => {
 
             }).catch(error => {
 
-                console.log(error)
+
                 return { type: "ERROR_REQUEST", value: error };
 
 
@@ -1365,7 +1365,7 @@ export const addCouponSync = (val) => {
         axios.post(url, postData)
             .then(res => {
 
-                console.log(res.data)
+
 
                 dispatch(loadingCoupon())
                 dispatch(loadSalesQuote({ id: val.customer }));
@@ -1373,7 +1373,7 @@ export const addCouponSync = (val) => {
 
             }).catch(error => {
 
-                console.log(error)
+
                 return { type: "ERROR_REQUEST", value: error };
 
 
@@ -1418,7 +1418,7 @@ export const addCartItemSync = (val) => {
 
         var url = baseUrl + "customer_carts";
 
-        console.log(url)
+
 
 
         var options = [];
@@ -1470,24 +1470,24 @@ export const addCartItemSync = (val) => {
         }
 
 
-        console.log("cart synch data")
 
-        console.log(data)
+
+
 
 
         axios.post(url, data)
             .then(res => {
 
-                console.log(res.data)
+
 
                 dispatch(loadSalesQuote({ id: val.user.id }));
 
 
             }).catch(error => {
 
-                console.log("Add Cart Error")
 
-                console.log(error)
+
+
 
                 return { type: "ERROR_REQUEST", value: error };
 

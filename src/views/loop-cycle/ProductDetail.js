@@ -62,7 +62,7 @@ class ProductDetail extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -87,9 +87,9 @@ class ProductDetail extends Component {
         //
         //             var response = response.data;
         //
-        //             console.log("search code")
         //
-        //             console.log(response)
+        //
+        //
         //
         //             var searches = this.state.searches
         //
@@ -105,9 +105,9 @@ class ProductDetail extends Component {
         //
         //                 var status = error.response.status
         //
-        //                 console.log("search error")
         //
-        //                 console.log(error)
+        //
+        //
         //
         //             }
         //         );
@@ -143,8 +143,8 @@ class ProductDetail extends Component {
             .then((response) => {
 
                 var responseAll = response.data;
-                console.log("detail resource response")
-                console.log(responseAll)
+
+
 
 
                 this.setState({
@@ -161,9 +161,9 @@ class ProductDetail extends Component {
 
                     var status = error.response.status
 
-                    console.log("resource error")
 
-                    console.log(error)
+
+
 
 
                 }

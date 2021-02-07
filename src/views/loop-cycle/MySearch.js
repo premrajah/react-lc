@@ -68,7 +68,7 @@ class MySearch extends Component {
         var url = baseUrl + "search/expand"
 
 
-        console.log(url)
+
 
         this.props.showLoading(true)
 
@@ -82,8 +82,8 @@ class MySearch extends Component {
             .then((response) => {
 
                 var response = response.data.data;
-                console.log("my search response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -97,8 +97,8 @@ class MySearch extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("my searches error")
-                    console.log(error)
+
+
 
                     this.props.showLoading(false)
 

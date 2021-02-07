@@ -281,8 +281,8 @@
                     var responseAll = response.data.data;
 
 
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
 
 
@@ -297,8 +297,8 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -319,8 +319,8 @@
                 .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -332,8 +332,8 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -393,7 +393,7 @@
             )
                 .then(res => {
 
-                    console.log(res.data)
+
 
                     this.setState({
                         // createSearchData: res.data.data,
@@ -404,8 +404,8 @@
 
                 }).catch(error => {
 
-                console.log("search error found ")
-                console.log(error)
+
+
 
             });
 
@@ -429,8 +429,8 @@
                     .then((response) => {
 
                         var response = response.data;
-                        console.log("resource response")
-                        console.log(response)
+
+
 
 
 
@@ -447,8 +447,8 @@
                         (error) => {
 
                             var status = error.response.status
-                            console.log("resource error")
-                            console.log(error)
+
+
 
                         }
                     );
@@ -607,7 +607,7 @@
             ).then((response) => {
 
                     var response = _.sortBy(response.data.data, ['name']);
-                console.log("resource response ", response)
+
 
                 this.setState({
 
@@ -617,8 +617,8 @@
             },
                 (error) => {
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -661,7 +661,7 @@
 
 
 
-            console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
+
 
             this.setState({
 
@@ -849,8 +849,8 @@
             this.setState({ errors: errors });
 
 
-            console.log("errors")
-            console.log(errors)
+
+
             return formIsValid;
 
         }
@@ -1136,7 +1136,7 @@
 
                 if (event.target.value!=="Select") {
 
-                    console.log(event.target.value)
+
 
 
                     var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
@@ -1454,7 +1454,7 @@
                 const form = event.currentTarget;
 
 
-                console.log(new FormData(event.target))
+
 
 
                 this.setState({
@@ -1471,7 +1471,7 @@
                 const phone = data.get("phone")
 
 
-                console.log("site submit called")
+
 
 
                 axios.put(baseUrl + "site",
@@ -1502,7 +1502,7 @@
                     }).catch(error => {
 
 
-                    console.log(error)
+
 
 
 
@@ -1518,7 +1518,7 @@
         loadType(field, event) {
 
 
-            console.log(field,event.target.value)
+
 
 
             var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
@@ -1541,8 +1541,8 @@
             })
 
 
-            // console.log(catSelected)
-            // console.log(subCategories)
+            //
+            //
 
 
         }
@@ -1551,7 +1551,7 @@
         loadStates(field, event) {
 
 
-            console.log(field,event.target.value)
+
 
 
             var subCatSelected = this.state.subCategories.filter((item) => item.name === event.target.value)[0]
@@ -1573,8 +1573,8 @@
             })
 
 
-            // console.log(subCatSelected)
-            // console.log(states)
+            //
+            //
 
 
         }

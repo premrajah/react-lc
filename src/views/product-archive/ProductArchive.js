@@ -21,11 +21,11 @@ class ProductArchive extends Component {
                 headers: { Authorization: "Bearer " + this.props.userDetail.token },
             })
             .then((response) => {
-                console.log(response.data.data);
+
                 this.setState({allArchivedProducts: response.data.data})
             })
             .catch((error) => {
-                console.log("archived products error ", error);
+
             });
     };
 

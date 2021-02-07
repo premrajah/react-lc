@@ -163,8 +163,8 @@ class ListForm extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -177,8 +177,8 @@ class ListForm extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -207,7 +207,7 @@ class ListForm extends Component {
             })
 
 
-            console.log(this.state.fields)
+
         }
 
 
@@ -243,7 +243,7 @@ class ListForm extends Component {
             })
 
 
-            console.log(this.state.fields)
+
 
         }
         else  if (this.state.page === 2&&this.handleValidateTwo()) {
@@ -255,7 +255,7 @@ class ListForm extends Component {
             })
 
 
-            console.log(this.state.fields)
+
         }
 
 
@@ -266,7 +266,7 @@ class ListForm extends Component {
 
 
             this.createListing()
-            // console.log(this.state.fields)
+            //
         }
 
         else  if (this.state.page === 4) {
@@ -309,7 +309,7 @@ class ListForm extends Component {
 
     handleBack() {
 
-        console.log(this.state.fields)
+
 
 
 
@@ -380,7 +380,7 @@ class ListForm extends Component {
 
             })
 
-            console.log(this.state.siteSelected)
+
 
         }
 
@@ -432,8 +432,8 @@ class ListForm extends Component {
 
 
 
-        console.log("validation one error")
-        console.log(errors)
+
+
 
 
         this.setState({
@@ -484,9 +484,9 @@ class ListForm extends Component {
         }
 
 
-        console.log("validation two error")
 
-        console.log(errors)
+
+
 
 
 
@@ -632,8 +632,8 @@ class ListForm extends Component {
             }
 
 
-        console.log("listing data")
-        console.log(data)
+
+
 
         axios.put(baseUrl + "listing",
             {
@@ -650,7 +650,7 @@ class ListForm extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
 
                 this.setState({
@@ -665,8 +665,8 @@ class ListForm extends Component {
 
             }).catch(error => {
 
-            console.log("login error found ")
-            console.log(error)
+
+
 
         });
 
@@ -693,8 +693,8 @@ class ListForm extends Component {
         }
 
 
-        console.log("listing data")
-        console.log(data)
+
+
 
         axios.put(baseUrl + "listing",
             {
@@ -711,7 +711,7 @@ class ListForm extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
 
                 this.setState({
@@ -726,8 +726,8 @@ class ListForm extends Component {
 
             }).catch(error => {
 
-            console.log("login error found ")
-            console.log(error)
+
+
 
         });
 
@@ -935,7 +935,7 @@ class ListForm extends Component {
         this.setState({ errors: errors });
 
 
-        console.log(errors)
+
         return formIsValid;
 
     }
@@ -1047,7 +1047,7 @@ class ListForm extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
             // if (this.handleValidationSite()){
 
 
@@ -1075,8 +1075,8 @@ class ListForm extends Component {
             // }
 
 
-            console.log("site submit called")
-            // console.log(postData)
+
+            //
 
 
             axios.put(baseUrl + "site",
@@ -1097,7 +1097,7 @@ class ListForm extends Component {
                 })
                 .then(res => {
 
-                    console.log("site added succesfull")
+
 
                     // dispatch({type: "SIGN_UP", value : res.data})
 
@@ -1112,7 +1112,7 @@ class ListForm extends Component {
 
                 // dispatch(signUpFailed(error.response.data.content.message))
 
-                console.log(error)
+
                 // dispatch({ type: AUTH_FAILED });
                 // dispatch({ type: ERROR, payload: error.data.error.message });
 

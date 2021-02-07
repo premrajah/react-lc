@@ -90,8 +90,8 @@ class ItemDetail extends Component {
                 },
                 (error) => {
 
-                    console.log("delete response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -138,7 +138,7 @@ class ItemDetail extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response", responseAll)
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -151,7 +151,7 @@ class ItemDetail extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error", error)
+
 
                 }
             );
@@ -162,7 +162,7 @@ class ItemDetail extends Component {
     acceptMatch() {
 
 
-        console.log("create loop")
+
 
 
         axios.post(baseUrl + "match",
@@ -178,7 +178,7 @@ class ItemDetail extends Component {
             .then(res => {
 
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -193,8 +193,8 @@ class ItemDetail extends Component {
 
 
 
-            // console.log("loop convert error found ")
-            console.log(error.response.data)
+            //
+
 
 
             this.setState({
@@ -227,7 +227,7 @@ class ItemDetail extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -246,8 +246,8 @@ class ItemDetail extends Component {
             .then((response) => {
 
                 var responseData = response.data;
-                console.log("detail resource response")
-                console.log(responseData)
+
+
 
 
                 this.setState({
@@ -263,7 +263,7 @@ class ItemDetail extends Component {
 
             },
                 (error) => {
-                    console.log("listing error", error)
+
 
 
                     this.setState({
@@ -289,8 +289,8 @@ class ItemDetail extends Component {
             .then((response) => {
 
                     var response = response.data;
-                    console.log("site resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -302,7 +302,7 @@ class ItemDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("listing error", error)
+
 
 
                     this.setState({
@@ -331,8 +331,8 @@ class ItemDetail extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -346,7 +346,7 @@ class ItemDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 
@@ -367,8 +367,8 @@ class ItemDetail extends Component {
 
                     var response = response.data;
 
-                    console.log("match check response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -382,7 +382,7 @@ class ItemDetail extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 

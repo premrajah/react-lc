@@ -162,7 +162,7 @@ class ViewCycle extends Component {
             )
                 .then(res => {
 
-                    console.log(res.data.content)
+
 
                     this.setState({
 
@@ -175,8 +175,8 @@ class ViewCycle extends Component {
                 }).catch(error => {
 
 
-                console.log("loop confirm error found ")
-                console.log(error.response.data)
+
+
 
                 this.setState({
 
@@ -228,7 +228,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -244,8 +244,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -285,7 +285,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -301,8 +301,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -330,7 +330,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -346,8 +346,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -377,7 +377,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -391,8 +391,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -419,7 +419,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -430,8 +430,8 @@ class ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -458,7 +458,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -469,8 +469,8 @@ class ViewCycle extends Component {
 
             }).catch(error => {
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -498,7 +498,7 @@ class ViewCycle extends Component {
         )
             .then(res => {
 
-                console.log(res.data.content)
+
 
                 this.setState({
 
@@ -514,8 +514,8 @@ class ViewCycle extends Component {
 
 
 
-            console.log("loop confirm error found ")
-            console.log(error.response.data)
+
+
 
 
             this.setState({
@@ -549,7 +549,7 @@ class ViewCycle extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -567,8 +567,8 @@ class ViewCycle extends Component {
         ).then((response) => {
 
                 var response = response.data;
-                console.log("cycle detail response")
-                console.log(response)
+
+
 
 
 
@@ -581,9 +581,9 @@ class ViewCycle extends Component {
             },
             (error) => {
 
-                console.log("cycle error")
 
-                console.log(error)
+
+
 
 
             }

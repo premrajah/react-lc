@@ -81,8 +81,8 @@ class ItemDetailMatch extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -95,8 +95,8 @@ class ItemDetailMatch extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -107,7 +107,7 @@ class ItemDetailMatch extends Component {
     requestMatch() {
 
 
-        console.log("create loop")
+
 
 
         axios.post(baseUrl + "match",
@@ -123,7 +123,7 @@ class ItemDetailMatch extends Component {
             .then(res => {
 
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -142,8 +142,8 @@ class ItemDetailMatch extends Component {
 
 
 
-            // console.log("loop convert error found ")
-            console.log(error)
+            //
+
 
 
             this.setState({
@@ -176,7 +176,7 @@ class ItemDetailMatch extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -195,8 +195,8 @@ class ItemDetailMatch extends Component {
             .then((response) => {
 
                     var responseData = response.data.data;
-                    console.log("match  response")
-                    console.log(responseData)
+
+
 
 
                     this.setState({
@@ -215,7 +215,7 @@ class ItemDetailMatch extends Component {
 
                 },
                 (error) => {
-                    console.log("listing error", error)
+
                 }
             );
 
@@ -238,9 +238,9 @@ class ItemDetailMatch extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
 
-                    console.log(response)
+
+
 
                     this.setState({
 
@@ -250,7 +250,7 @@ class ItemDetailMatch extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 

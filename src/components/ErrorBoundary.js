@@ -13,8 +13,8 @@ class ErrorBoundary extends Component {
     }
 
     componentDidCatch(error, info) {
-        console.log('[ErrorBoundary] ', error? error : 'cant display error')
-        console.log('[ErrorBoundary] ', info? info : 'cant display info')
+
+
     }
 
     render() {

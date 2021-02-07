@@ -11,7 +11,7 @@ export const loadUserData = () => {
 
     } else {
 
-        // console.log("no user exists")
+        //
 
         return null
 

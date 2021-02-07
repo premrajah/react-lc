@@ -62,8 +62,8 @@ class Message extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -74,8 +74,8 @@ class Message extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -93,8 +93,8 @@ class Message extends Component {
             .then((response) => {
 
                 var response = response.data.content;
-                console.log("resource response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -105,8 +105,8 @@ class Message extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -137,8 +137,8 @@ class Message extends Component {
 
         })
 
-        console.log("selection filters")
-        console.log(this.state.activeFilters)
+
+
 
 
 
@@ -395,7 +395,7 @@ function FiltersCat(props) {
     const handleChange = event => {
 
 
-        console.log(event.target.value)
+
 
 
         var values = items
@@ -414,12 +414,12 @@ function FiltersCat(props) {
 
         if (!checkExists) {
 
-            console.log("not found added")
+
 
             values.push(event.target.value)
 
         } else {
-            console.log(" found removed")
+
             // values.pop(event.revmoe.value)
 
             values = values.filter((item) => item != event.target.value)
@@ -447,8 +447,8 @@ function FiltersCat(props) {
 
 
         // }
-        console.log("values")
-        console.log(values)
+
+
 
 
     }
@@ -557,7 +557,7 @@ function FiltersState(props) {
     const handleChange = event => {
 
 
-        console.log(event.target.value)
+
 
 
         var values = items
@@ -576,12 +576,12 @@ function FiltersState(props) {
 
         if (!checkExists) {
 
-            console.log("not found added")
+
 
             values.push(event.target.value)
 
         } else {
-            console.log(" found removed")
+
             // values.pop(event.revmoe.value)
 
             values = values.filter((item) => item != event.target.value)
@@ -596,8 +596,8 @@ function FiltersState(props) {
 
 
         // }
-        console.log("values")
-        console.log(values)
+
+
 
 
     }
@@ -974,7 +974,7 @@ function PriceRange(props) {
 
         setShow(true)
         setValue(newValue)
-        console.log(newValue)
+
         setActive(true);
 
         props.setFilters({ "name": props.type, "value": newValue })

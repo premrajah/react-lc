@@ -187,7 +187,7 @@ class ProductDetailCycle extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -204,7 +204,7 @@ class ProductDetailCycle extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -242,7 +242,7 @@ class ProductDetailCycle extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 
@@ -274,7 +274,7 @@ class ProductDetailCycle extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -286,7 +286,7 @@ class ProductDetailCycle extends Component {
             const site = data.get("site")
 
 
-            console.log("register submit called")
+
 
 
             axios.post(baseUrl + "product/register",
@@ -307,7 +307,7 @@ class ProductDetailCycle extends Component {
 
                 }).catch(error => {
 
-                console.log(error)
+
 
                 this.setState({
 
@@ -335,8 +335,8 @@ class ProductDetailCycle extends Component {
         .then((response) => {
 
                 var responseAll = response.data.data;
-                console.log("sites  response")
-                console.log(responseAll)
+
+
 
                 this.setState({
 
@@ -347,8 +347,8 @@ class ProductDetailCycle extends Component {
             },
             (error) => {
 
-                console.log("sites response error")
-                console.log(error)
+
+
 
             }
         );
@@ -404,8 +404,8 @@ class ProductDetailCycle extends Component {
             productQrCode: baseUrl+"product/"+this.props.item.product._key+"/code?u=" + frontEndUrl + "p"
 
         })
-        console.log("qr code")
-        console.log(this.state.productQrCode)
+
+
 
     }
 
@@ -425,8 +425,8 @@ class ProductDetailCycle extends Component {
             .then((response) => {
 
                     var responseData = response.data.data;
-                    console.log("product listing response")
-                    console.log(responseData)
+
+
 
                     this.setState({
 
@@ -438,8 +438,8 @@ class ProductDetailCycle extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("product listing error")
-                    console.log(error)
+
+
 
 
 
@@ -470,8 +470,8 @@ class ProductDetailCycle extends Component {
                 .then((response) => {
 
                         var responseData = response.data.data;
-                        console.log("product search response")
-                        console.log(responseData)
+
+
 
                         var searches = this.state.searches
 
@@ -487,8 +487,8 @@ class ProductDetailCycle extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("product search error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -514,8 +514,8 @@ class ProductDetailCycle extends Component {
                 .then((response) => {
 
                         var responseAll = response.data;
-                        console.log("sub product response")
-                        console.log(responseAll)
+
+
 
 
                         var subProducts = this.state.subProducts
@@ -531,7 +531,7 @@ class ProductDetailCycle extends Component {
 
                     },
                     (error) => {
-                        console.log("resource error", error)
+
                     }
                 );
 
@@ -544,7 +544,7 @@ class ProductDetailCycle extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -565,8 +565,8 @@ class ProductDetailCycle extends Component {
 
                     var response = response.data;
 
-                    console.log("matches resource response")
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -580,7 +580,7 @@ class ProductDetailCycle extends Component {
 
                 },
                 (error) => {
-                    console.log("matchees error", error)
+
                 }
             );
 

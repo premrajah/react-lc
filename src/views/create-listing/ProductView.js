@@ -84,7 +84,7 @@ class ProductView extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -102,8 +102,8 @@ class ProductView extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("product detail")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -112,7 +112,7 @@ class ProductView extends Component {
 
                 },
                 (error) => {
-                    console.log("listing error", error)
+
 
                     this.setState({
 

@@ -52,7 +52,7 @@ class CreateProduct extends Component {
     }
 
     handleForward = () => {
-        console.log(this.props.history)
+
         this.props.history.go(+1)
     }
 
@@ -159,8 +159,8 @@ class CreateProduct extends Component {
                 .then(res => {
 
 
-                    console.log(res.data.content)
-                    console.log("product added succesfully")
+
+
 
                     // dispatch({type: "SIGN_UP", value : res.data})
 
@@ -180,7 +180,7 @@ class CreateProduct extends Component {
 
                     // dispatch(signUpFailed(error.response.data.content.message))
 
-                    console.log(error)
+
                     // dispatch({ type: AUTH_FAILED });
                     // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -226,8 +226,8 @@ class CreateProduct extends Component {
         ).then((response) => {
 
             var response = response.data.content;
-            console.log("resource response")
-            console.log(response)
+
+
 
             this.setState({
 
@@ -238,8 +238,8 @@ class CreateProduct extends Component {
             (error) => {
 
                 var status = error.response.status
-                console.log("resource error")
-                console.log(error)
+
+
 
             }
         );

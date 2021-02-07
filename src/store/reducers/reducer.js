@@ -76,7 +76,7 @@ const reducer = (state = initialState, action) => {
 
                 newState.userDetail = action.value
 
-                // console.log(newState.userDetail)
+                //
 
 
             }else {
@@ -95,8 +95,8 @@ const reducer = (state = initialState, action) => {
             newState.token = action.value.token
             newState.showLoginPopUp = false;
             newState.userDetail= getKey("user")
-            // console.log("Session user")
-            // console.log(getKey("user"))
+            //
+            //
 
             break;
 
@@ -144,9 +144,9 @@ const reducer = (state = initialState, action) => {
             newState.productList = action.value
             newState.loading = false;
 
-            console.log("product list loaded ")
 
-            console.log(action.value)
+
+
 
 
 
@@ -159,9 +159,9 @@ const reducer = (state = initialState, action) => {
 
             newState.loading = false;
 
-            console.log("product no parent list loaded ")
 
-            console.log(action.value)
+
+
 
 
 
@@ -177,9 +177,9 @@ const reducer = (state = initialState, action) => {
 
             newState.loading = false;
 
-            console.log("site list loaded ")
 
-            console.log(action.value)
+
+
 
 
             break;
@@ -203,7 +203,7 @@ const reducer = (state = initialState, action) => {
 
         case "PRODUCT_POPUP":
 
-            console.log("reducer")
+
 
             newState.loginFailed= false
             newState.showSubProductView= false
@@ -246,22 +246,22 @@ const reducer = (state = initialState, action) => {
                 newState.showSubProductView= true
             }
 
-            console.log(action.value+" product show value reducer")
+
 
             break;
 
         case "LOGIN_POPUP":
 
-            console.log("reducer")
+
             newState.loginFailed= false
             newState.showLoginPopUp = action.value;
-            console.log(action.value+" "+newState.showLoginPopUp)
+
 
             break;
 
         case "LOGIN_POPUP_STATUS":
 
-            console.log("reducer")
+
             newState.loginPopUpStatus = action.value;
 
             break;
@@ -269,21 +269,21 @@ const reducer = (state = initialState, action) => {
 
         case "SOCIAL_LOGIN_POPUP":
 
-            console.log("reducer")
+
             // newState.loginFailed= false
             newState.showSocialLoginPopUp = action.value;
             newState.showLoginPopUp = action.value;
-            // console.log(action.value+" "+newState.showLoginPopUp)
+            //
 
 
             break;
 
         case "SOCIAL_USER_INFO":
 
-            console.log("reducer")
+
             // newState.loginFailed= false
             newState.socialUserInfo = action.value;
-            // console.log(action.value+" "+newState.showLoginPopUp)
+            //
 
 
             break;
@@ -345,7 +345,7 @@ const reducer = (state = initialState, action) => {
 
         case "ERROR_REQUEST":
             newState.loading = false;
-            console.log(action.value)
+
             break;
 
 
@@ -353,8 +353,8 @@ const reducer = (state = initialState, action) => {
         case "SET_CATEGORIES":
 
             newState.categories = action.value;
-            console.log("set categories props")
-            console.log(action.value)
+
+
             break;
 
         case "SET_LOCATION":
@@ -418,8 +418,8 @@ const reducer = (state = initialState, action) => {
             //     newState.isGuest = false;
             // }
             //
-            // console.log(" user sign up ")
-            // console.log(action.value)
+            //
+            //
             //
             // newState.showLoginPopUp = false
             // newState.showLoginCheckoutPopUp = false

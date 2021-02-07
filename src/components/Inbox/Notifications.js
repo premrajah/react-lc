@@ -29,7 +29,7 @@ class Notifications extends Component {
             })
             .then((response) => {
 
-                console.log(response.data.data)
+
                 this.setState({
                     allNotifications: _.orderBy(
                         response.data.data,
@@ -39,7 +39,7 @@ class Notifications extends Component {
                 });
             })
             .catch((error) => {
-                console.log("[Notifications] ", error);
+
             });
     };
 
@@ -52,12 +52,12 @@ class Notifications extends Component {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    console.log("deleted?");
+
                     this.getNotifications(this.props.userDetail);
                 }
             })
             .catch((error) => {
-                console.log("Delete notification error ", error);
+
             });
     };
 
@@ -136,7 +136,7 @@ class Notifications extends Component {
 
     this.interval = setInterval(() => {
 
-        console.log("check notifications")
+
 
         this.getNotifications(this.props.userDetail)
 
@@ -203,7 +203,7 @@ function SearchLinks(props) {
 
         text = text.replace(replacementText,"<a  class='green-link-url' href='/cycle/"+id+"'>Cycle</Link>")
 
-        // console.log(start,end)
+        //
 
         changed=true
 
@@ -224,7 +224,7 @@ function SearchLinks(props) {
 
         text = text.replace(replacementText,"<a class='green-link-url' href='/product/"+id+"'>Product</Link>")
 
-        console.log(start,end)
+
 
         changed=true
 

@@ -69,7 +69,7 @@ class MyListings extends Component {
         var url = baseUrl + "listing"
 
 
-        console.log(url)
+
 
         this.props.showLoading(true)
 
@@ -85,8 +85,8 @@ class MyListings extends Component {
             .then((response) => {
 
                 var responseAll = response.data.data;
-                console.log("my search response")
-                console.log(responseAll)
+
+
 
 
                     this.props.showLoading(false)
@@ -102,8 +102,8 @@ class MyListings extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("listing error")
-                    console.log(error)
+
+
 
                     this.props.showLoading(false)
 

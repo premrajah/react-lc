@@ -20,15 +20,15 @@ class Messages extends Component {
             })
             .then((response) => {
                 this.setState({ allMessages: response.data.data });
-                console.log('M => ', this.state.allMessages);
+
             })
             .catch((error) => {
-                console.log("[Notifications] ", error);
+
             });
     }
 
     handleDeleteMessage = (key) => {
-        console.log('[Messages] ', key)
+
     }
 
     componentDidMount() {

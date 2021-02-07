@@ -54,7 +54,7 @@ class FindResourcePage extends Component {
                 this.setState({ allListings: response.data.data });
             })
             .catch((error) => {
-                console.log("find all listing error ", error);
+
             });
     };
 

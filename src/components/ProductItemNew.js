@@ -83,8 +83,8 @@ class ProductItemNew extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("sites  response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -95,8 +95,8 @@ class ProductItemNew extends Component {
                 },
                 (error) => {
 
-                    console.log("sites response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -150,7 +150,7 @@ class ProductItemNew extends Component {
 
             }).catch(error => {
 
-            console.log(error)
+
 
             // this.setState({
             //
@@ -181,7 +181,7 @@ class ProductItemNew extends Component {
             sub_products_ids:[this.props.item&&this.props.item.product?this.props.item.product._key:this.props.item._key]
         }
 
-        console.log("remove data",data)
+
 
         axios.post(baseUrl + "product/sub-product/remove", data,
             {
@@ -199,14 +199,14 @@ class ProductItemNew extends Component {
                     // this.props.loadProducts()
 
 
-                console.log("sub product removed succcessfully")
+
 
 
                 },
                 (error) => {
 
-                    console.log("remove response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -234,8 +234,8 @@ class ProductItemNew extends Component {
                 },
                 (error) => {
 
-                    console.log("delete response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -333,8 +333,8 @@ class ProductItemNew extends Component {
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("img product response")
-                        console.log(responseAll)
+
+
 
                         this.setState({
 
@@ -345,8 +345,8 @@ class ProductItemNew extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("listing error")
-                        console.log(error)
+
+
 
                     }
                 );

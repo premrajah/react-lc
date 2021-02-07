@@ -49,7 +49,7 @@ class CompanyInfo extends Component {
                 }
             })
             .catch((error) => {
-                console.log("get artifact error", error);
+
             });
     };
 
@@ -62,7 +62,7 @@ class CompanyInfo extends Component {
             })
             .then((response) => {
                 var responseOrg = response.data;
-                console.log("org response ", responseOrg);
+
 
                 this.setState({
                     org: responseOrg.data,
@@ -73,7 +73,7 @@ class CompanyInfo extends Component {
                 this.getArtifactForOrg();
             })
             .catch((error) => {
-                console.log("Org fetch error ", error);
+
             });
     }
 
@@ -170,7 +170,7 @@ class CompanyInfo extends Component {
                     });
                 })
                 .catch((error) => {
-                    console.log("Org update error ", error);
+
                     this.setState({
                         loading: false,
                     });
@@ -213,7 +213,7 @@ class CompanyInfo extends Component {
 
                                 })
                                 .catch((error) => {
-                                    console.log("added to artifact error", error);
+
                                 });
 
                             this.setState({
@@ -222,7 +222,7 @@ class CompanyInfo extends Component {
                         }
                     })
                     .catch((error) => {
-                        console.log("artifact upload error ", error);
+
                         this.setState({ loading: false });
                     });
             }

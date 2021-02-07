@@ -79,8 +79,8 @@ class SearchItem extends Component {
                 },
                 (error) => {
 
-                    console.log("delete response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -113,8 +113,8 @@ class SearchItem extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("product image  response")
-                    console.log(responseAll)
+
+
 
                     if(responseAll.length>0) {
                         this.setState({
@@ -127,8 +127,8 @@ class SearchItem extends Component {
                 },
                 (error) => {
 
-                    console.log("produt image error")
-                    console.log(error)
+
+
 
                 }
             );

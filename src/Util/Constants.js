@@ -1,6 +1,6 @@
 const { REACT_APP_BRANCH_ENV } = process.env;
 
-console.log("REACT_APP_BRANCH_ENV : " + REACT_APP_BRANCH_ENV);
+
 
 export const baseUrl = REACT_APP_BRANCH_ENV === "master" ?
     "http://graph.makealoop.io/api/2/" : "local" ?
@@ -14,7 +14,7 @@ export const frontEndUrl = REACT_APP_BRANCH_ENV === "master" ?
     "http://u.lpcy.uk/" : "local" ?
         "http://d.lpcy.uk/" : "http://d.lpcy.uk/";
 
-console.log("baseUrl : " + baseUrl);
-console.log("baseImgUrl : " + baseImgUrl);
+
+
 
 

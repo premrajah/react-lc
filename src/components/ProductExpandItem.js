@@ -188,8 +188,8 @@ class ProductExpandItem extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("product expand resource response")
-                    console.log(responseAll)
+
+
 
 
                     this.setState({
@@ -212,7 +212,7 @@ class ProductExpandItem extends Component {
 
                 },
                 (error) => {
-                    console.log("product expand error", error)
+
                 }
             );
 
@@ -237,7 +237,7 @@ class ProductExpandItem extends Component {
 
             const form = event.currentTarget;
 
-            console.log(new FormData(event.target))
+
             // if (this.handleValidationSite()){
 
             this.setState({
@@ -246,9 +246,9 @@ class ProductExpandItem extends Component {
 
             const data = new FormData(event.target);
 
-            console.log(data.get("volume[]"))
-           console.log(data.get("volume"))
-        console.log(data.get("volume[1]"))
+
+
+
 
             // const volume = data.get("volume[]")
             // const subProduct = data.get("product[]")
@@ -259,7 +259,7 @@ class ProductExpandItem extends Component {
 
         for (let i=0;i<this.state.addCount.length;i++){
 
-            console.log(data.get(`volume[${i}]`))
+
 
             array.push({id:data.get(`product[${i}]`),volume:data.get(`volume[${i}]`)})
 
@@ -284,7 +284,7 @@ class ProductExpandItem extends Component {
             })
             .then(res => {
 
-                console.log("sub product added succesfull")
+
 
                 // dispatch({type: "SIGN_UP", value : res.data})
 
@@ -306,7 +306,7 @@ class ProductExpandItem extends Component {
 
             // dispatch(signUpFailed(error.response.data.content.message))
 
-            console.log(error)
+
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
 
@@ -359,8 +359,8 @@ class ProductExpandItem extends Component {
                 .then((response) => {
 
                         var responseAll = response.data;
-                        console.log("detail resource response")
-                        console.log(responseAll)
+
+
 
 
                         var subProducts = this.state.subProducts
@@ -377,7 +377,7 @@ class ProductExpandItem extends Component {
 
                     },
                     (error) => {
-                        console.log("resource error", error)
+
                     }
                 );
 

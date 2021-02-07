@@ -59,16 +59,16 @@ class  MatchDetail extends Component {
             .then((response) => {
                     var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+
+
 
                 },
                 (error) => {
                     var status = error.response.status
 
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
 
 

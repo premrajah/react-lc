@@ -64,8 +64,8 @@ class CycleItem extends Component {
 
                     var responseAll = response.data;
 
-                    console.log("offers with match response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -75,7 +75,7 @@ class CycleItem extends Component {
 
                 },
                 (error) => {
-                    console.log("offers error", error)
+
                 }
             );
 
@@ -96,7 +96,7 @@ class CycleItem extends Component {
             )
                 .then(res => {
 
-                    console.log(res.data.data)
+
 
                     this.setState({
 
@@ -111,9 +111,9 @@ class CycleItem extends Component {
 
 
 
-                console.log("loop accept error found ")
 
-                console.log(error)
+
+
                 // this.setState({
                 //
                 //     showPopUp: true,
@@ -142,7 +142,7 @@ class CycleItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -157,9 +157,9 @@ class CycleItem extends Component {
 
 
 
-            console.log("loop accept error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -206,7 +206,7 @@ class CycleItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -221,9 +221,9 @@ class CycleItem extends Component {
 
 
 
-            console.log("make an offer error found ")
 
-            console.log(error)
+
+
             // this.setState({
             //
             //     showPopUp: true,
@@ -252,7 +252,7 @@ class CycleItem extends Component {
         )
             .then(res => {
 
-                console.log(res.data.data)
+
 
                 this.setState({
 
@@ -267,9 +267,9 @@ class CycleItem extends Component {
 
 
 
-            console.log("loop decline error found ")
 
-            console.log(error)
+
+
 
             // this.setState({
             //

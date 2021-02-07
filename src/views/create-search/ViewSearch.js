@@ -179,8 +179,8 @@
                     },
                     (error) => {
 
-                        console.log("delete response error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -211,8 +211,8 @@
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("product image  response")
-                        console.log(responseAll)
+
+
 
                         if(responseAll.length>0) {
                             this.setState({
@@ -225,8 +225,8 @@
                     },
                     (error) => {
 
-                        console.log("produt image error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -357,9 +357,9 @@
 
                         var responseData = response.data.data;
 
-                        console.log("detail search response")
 
-                        console.log(response)
+
+
 
 
                         this.setState({
@@ -377,7 +377,7 @@
 
                     },
                     (error) => {
-                        console.log("search resource error", error)
+
 
                         this.setState({
 
@@ -403,8 +403,8 @@
                 .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("site response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -416,8 +416,8 @@
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -441,8 +441,8 @@
                     .then((response) => {
 
                             var responseAll = response.data.data;
-                            console.log("site response")
-                            console.log(responseAll)
+
+
 
                             this.setState({
 
@@ -453,8 +453,8 @@
                         },
                         (error) => {
 
-                            console.log("search error")
-                            console.log(error)
+
+
 
                         }
                     );
@@ -504,7 +504,7 @@
             )
                 .then(res => {
 
-                    console.log(res.data.content)
+
 
                     this.setState({
                         createSearchData: res.data.content
@@ -514,8 +514,8 @@
 
                 }).catch(error => {
 
-                console.log("login error found ")
-                console.log(error.response.data)
+
+
 
             });
 
@@ -535,8 +535,8 @@
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("matches response")
-                        console.log(responseAll)
+
+
 
 
                         this.setState({
@@ -550,8 +550,8 @@
                     },
                     (error) => {
 
-                        console.log("match search error")
-                        console.log(error)
+
+
 
                     }
                 );

@@ -78,8 +78,8 @@ class DuplicateItem extends Component {
                 },
                 (error) => {
 
-                    console.log("delete response error")
-                    console.log(error)
+
+
 
                 }
             );

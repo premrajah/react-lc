@@ -39,8 +39,8 @@ class ResourceItem extends Component {
     componentDidMount() {
 
 
-        console.log(" recieved item")
-        console.log(this.props.item)
+
+
 
     }
 
@@ -100,8 +100,8 @@ class ResourceItem extends Component {
                 },
                 (error) => {
 
-                    console.log("delete response error")
-                    console.log(error)
+
+
 
                 }
             );

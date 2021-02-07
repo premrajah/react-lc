@@ -424,7 +424,7 @@ function PriceRange(props) {
 
         setShow(true)
         setValue(newValue)
-        console.log(newValue)
+
         setActive(true);
 
         props.setFilters({ "name": props.type, "value": newValue })

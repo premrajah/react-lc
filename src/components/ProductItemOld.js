@@ -86,8 +86,8 @@ class ProductItemNew extends Component {
                 .then((response) => {
 
                         var responseAll = response.data.data;
-                        console.log("img product response")
-                        console.log(responseAll)
+
+
 
                         this.setState({
 
@@ -98,8 +98,8 @@ class ProductItemNew extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("listing error")
-                        console.log(error)
+
+
 
                     }
                 );

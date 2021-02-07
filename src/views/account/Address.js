@@ -163,7 +163,7 @@ class PaymentMethod extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -180,7 +180,7 @@ class PaymentMethod extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -212,7 +212,7 @@ class PaymentMethod extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 
@@ -239,8 +239,8 @@ class PaymentMethod extends Component {
             .then((response) => {
 
                     var responseAll = response.data.content;
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -254,8 +254,8 @@ class PaymentMethod extends Component {
                 },
                 (error) => {
 
-                    console.log("site resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -274,8 +274,8 @@ class PaymentMethod extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("sites  response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -286,8 +286,8 @@ class PaymentMethod extends Component {
                 },
                 (error) => {
 
-                    console.log("sites response error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -318,16 +318,16 @@ class PaymentMethod extends Component {
             .then((response) => {
                     var response = response.data;
 
-                    console.log("resource response")
-                    console.log(response)
+
+
 
                 },
                 (error) => {
                     var status = error.response.status
 
 
-                    console.log("resource error")
-                    console.log(error)
+
+
 
 
 

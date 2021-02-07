@@ -226,8 +226,8 @@ class ListEditForm extends Component {
 
             })
 
-            console.log(subCatSelected)
-            console.log(states)
+
+
 
         }
 
@@ -249,9 +249,9 @@ class ListEditForm extends Component {
 
                     var responseData = response.data.data;
 
-                    console.log("search edit response")
 
-                    console.log(response)
+
+
 
 
                     this.setState({
@@ -268,7 +268,7 @@ class ListEditForm extends Component {
 
                 },
                 (error) => {
-                    console.log("search resource error", error)
+
 
                     this.setState({
 
@@ -411,8 +411,8 @@ class ListEditForm extends Component {
                     var responseAll = response.data.data;
 
 
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
 
 
@@ -427,8 +427,8 @@ class ListEditForm extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -449,8 +449,8 @@ class ListEditForm extends Component {
             .then((response) => {
 
                     var responseAll = response.data;
-                    console.log("resource response")
-                    console.log(responseAll)
+
+
 
                     this.setState({
 
@@ -462,8 +462,8 @@ class ListEditForm extends Component {
                 (error) => {
 
                     var status = error.response.status
-                    console.log("resource error")
-                    console.log(error)
+
+
 
                 }
             );
@@ -530,9 +530,9 @@ class ListEditForm extends Component {
         )
             .then(res => {
 
-                console.log("search update sucess")
 
-                console.log(res.data)
+
+
 
 
 
@@ -547,8 +547,8 @@ class ListEditForm extends Component {
 
             }).catch(error => {
 
-            console.log("search error found ")
-            console.log(error)
+
+
 
         });
 
@@ -572,8 +572,8 @@ class ListEditForm extends Component {
                 .then((response) => {
 
                         var response = response.data;
-                        console.log("resource response")
-                        console.log(response)
+
+
 
 
 
@@ -590,8 +590,8 @@ class ListEditForm extends Component {
                     (error) => {
 
                         var status = error.response.status
-                        console.log("resource error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -750,7 +750,7 @@ class ListEditForm extends Component {
         ).then((response) => {
 
                 var response = _.sortBy(response.data.data, ['name']);
-                console.log("resource response ", response)
+
 
                 this.setState({
 
@@ -764,8 +764,8 @@ class ListEditForm extends Component {
             },
             (error) => {
 
-                console.log("resource error")
-                console.log(error)
+
+
 
             }
         );
@@ -808,7 +808,7 @@ class ListEditForm extends Component {
 
 
 
-        console.log(this.state.products.filter((item) => item.title === event.currentTarget.dataset.name)[0])
+
 
         this.setState({
 
@@ -996,8 +996,8 @@ class ListEditForm extends Component {
         this.setState({ errors: errors });
 
 
-        console.log("errors")
-        console.log(errors)
+
+
         return formIsValid;
 
     }
@@ -1299,7 +1299,7 @@ class ListEditForm extends Component {
 
             if (event.target.value!=="Select") {
 
-                console.log(event.target.value)
+
 
 
                 var catSelected = this.state.categories.filter((item) => item.name === event.target.value)[0]
@@ -1608,7 +1608,7 @@ class ListEditForm extends Component {
             const form = event.currentTarget;
 
 
-            console.log(new FormData(event.target))
+
 
 
             this.setState({
@@ -1625,7 +1625,7 @@ class ListEditForm extends Component {
             const phone = data.get("phone")
 
 
-            console.log("site submit called")
+
 
 
             axios.put(baseUrl + "site",
@@ -1656,7 +1656,7 @@ class ListEditForm extends Component {
                 }).catch(error => {
 
 
-                console.log(error)
+
 
 
 

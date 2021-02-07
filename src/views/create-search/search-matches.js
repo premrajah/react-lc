@@ -117,8 +117,8 @@ class SearchMatches extends Component {
                 .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("matches response")
-                    console.log(responseAll)
+
+
 
 
                     this.setState({
@@ -132,8 +132,8 @@ class SearchMatches extends Component {
                 },
                     (error) => {
 
-                        console.log("match search error")
-                        console.log(error)
+
+
 
                     }
                 );
@@ -154,8 +154,8 @@ class SearchMatches extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-                    console.log("listings for search response")
-                    console.log(responseAll)
+
+
 
 
                     var matches = this.state.listingsForSearch
@@ -176,8 +176,8 @@ class SearchMatches extends Component {
                 },
                 (error) => {
 
-                    console.log("listings for search error")
-                    console.log(error)
+
+
 
                 }
             );

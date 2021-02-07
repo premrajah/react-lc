@@ -4,7 +4,7 @@ import {Alert} from "react-bootstrap";
 const MessageItem = ({item, onDelete}) => {
 
     const handleCloseMessage = () => {
-        console.log('Message closed')
+
         onDelete('//TODO key')
     }
 

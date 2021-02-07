@@ -20,7 +20,7 @@ class ImagesSlider extends React.Component {
         for (let i = 0; i < this.props.images.length; i++) {
 
 
-            // console.log(props.images[i])
+            //
             this.imagesArray.push(
                 {
                     original:  this.props.images[i].blob_url,

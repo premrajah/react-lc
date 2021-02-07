@@ -51,8 +51,8 @@ class MyCycles extends Component {
         ).then((response) => {
 
                 var response = response.data.data;
-                console.log("match response")
-                console.log(response)
+
+
 
                 this.setState({
 
@@ -67,8 +67,8 @@ class MyCycles extends Component {
                 (error) => {
 
                     // var status = error.response.status
-                    console.log("cycles error")
-                    console.log(error)
+
+
 
                     this.props.showLoading(false)
 

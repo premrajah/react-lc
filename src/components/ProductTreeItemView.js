@@ -102,7 +102,7 @@ class ProductTreeItemView extends Component {
             tree:tree
         })
 
-        console.log(tree)
+
 
 
     }
@@ -127,7 +127,7 @@ class ProductTreeItemView extends Component {
 
             var currentProductId = event.currentTarget.dataset.id
 
-            console.log("clicked product", currentProductId)
+
 
             axios.get(baseUrl + "product/" + currentProductId + "/sub-product/expand",
                 {
@@ -140,8 +140,8 @@ class ProductTreeItemView extends Component {
 
                         var responseAll = response.data.data;
 
-                        console.log("sub product tree response")
-                        console.log(responseAll)
+
+
 
                         this.setState({
 
@@ -156,8 +156,8 @@ class ProductTreeItemView extends Component {
                     (error) => {
 
                         // var status = error.response.status
-                        console.log("products error")
-                        console.log(error)
+
+
 
 
                     }

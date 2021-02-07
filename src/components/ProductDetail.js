@@ -1090,7 +1090,7 @@ class ProductDetail extends Component {
 
                                         {this.state.listingLinked &&
                                         <Tab eventKey="listing" title="Listing">
-                                            {this.state.listingLinked && <ResourceItem    item={this.state.listingLinked}/>}
+                                            {this.state.listingLinked && <ResourceItem history={this.props.history}   item={this.state.listingLinked}/>}
                                         </Tab>}
 
 

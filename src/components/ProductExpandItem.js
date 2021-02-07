@@ -176,7 +176,7 @@ class ProductExpandItem extends Component {
     loadProduct(productKey){
 
 
-        if (productKey) 
+        if (productKey)
 
         axios.get(baseUrl + "product/" + productKey,
             {

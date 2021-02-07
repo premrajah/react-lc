@@ -107,7 +107,8 @@
                 purpose: ["defined", "prototype", "aggregate"],
                 site: {},
                 dateRequiredBy: null,
-                dateRequiredFrom:null
+                dateRequiredFrom:null,
+                success: false
 
             }
 
@@ -398,9 +399,13 @@
                     this.setState({
                         // createSearchData: res.data.data,
                         searchObj:res.data.data,
+                        success: true
                     })
 
                     this.getSite()
+
+
+
 
                 }).catch(error => {
 
@@ -2255,11 +2260,11 @@
                                         </button>}
 
 
-                                                {this.state.page === 3 &&
+                                                {this.state.page === 3 &&this.state.success &&
 
 
 
-                                                    <button onClick={this.goToSearchPage} type="button"
+                                                 <button onClick={this.goToSearchPage} type="button"
                                                         className={"btn-next shadow-sm mr-2 btn btn-link blue-btn  mt-2 mb-2 "}>
                                                         View Search
 

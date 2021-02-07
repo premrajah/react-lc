@@ -210,25 +210,25 @@ function SearchLinks(props) {
     }
 
 
-    if (text.indexOf("Product/")>=0){
-
-        let  start= text.indexOf("Product/")
-        let end = text.indexOf(" ",start)
-
-        let replacementText = text.substr(start,end)
-        id = text.substr(start,end)
-
-
-        // startText = text.substr(0,start-8)
-        // endText = text.substr(end,text.length)
-
-        text = text.replace(replacementText,"<a class='green-link-url' href='/product/"+id+"'>Product</Link>")
-
-
-
-        changed=true
-
-    }
+    // if (text.indexOf("Product/")>=0){
+    //
+    //     let  start= text.indexOf("Product/")
+    //     let end = text.indexOf(" ",start)
+    //
+    //     let replacementText = text.substr(start,end)
+    //     id = text.substr(start,end)
+    //
+    //
+    //     // startText = text.substr(0,start-8)
+    //     // endText = text.substr(end,text.length)
+    //
+    //     text = text.replace(replacementText,"<a class='green-link-url' href='/product/"+id+"'>Product</Link>")
+    //
+    //
+    //
+    //     changed=true
+    //
+    // }
 
 
     return (<div dangerouslySetInnerHTML={createMarkup(text)}/>);

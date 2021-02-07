@@ -3078,8 +3078,24 @@ a.page-link:hover{
 }
 .tree-view-item-selected{
 
-	background: #eee;
+	background: #05AD88;
+	font-weight: bold;
+	color: white;
 }
 .tree-view-menu p {
-	margin-bottom: 0;
+	margin-bottom: 2px;
+}
+
+.tree-view-menu{
+
+	max-height: 250px;
+	overflow: scroll;
+}
+
+.tree-menu-container{
+	/*border: 1px solid #eee;*/
+	padding-top: 20px
+}
+.tree-view-menu{
+	margin-top: 10px;
 }

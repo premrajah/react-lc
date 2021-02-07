@@ -14,6 +14,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
 import ProductTreeItemView from './ProductTreeItemView'
+import TextField from '@material-ui/core/TextField';
 
 
 
@@ -28,25 +29,29 @@ class ProductTreeView extends Component {
             errors: {},
             products:[],
             currentSubProducts:[],
-            tree:[]
+            tree:[],
+            filteredList:[],
+            selectedProductId:null
 
         }
 
         this.getItems=this.getItems.bind(this)
         this.getSubProducts=this.getSubProducts.bind(this)
         this.setTree=this.setTree.bind(this)
-
-
+        this.handleSearch=this.handleSearch.bind(this)
 
     }
-
     
     
     productSelected(productId){
 
+        this.setState({
+            selectedProductId:productId
 
-        console.log(productId)
+        })
 
+
+        this.props.triggerCallback(productId)
 
     }
 
@@ -115,58 +120,13 @@ class ProductTreeView extends Component {
 
 
     componentWillMount() {
-        window.scrollTo(0, 0)
     }
 
 
 
 
 
-    updateTree(){
 
-
-        let list= this.state.products
-
-        let tree= this.state.tree
-
-        for (let i=0;i<list.length;i++){
-
-
-            var treeItem;
-
-            treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
-
-
-            if (list[i].sub_products.length>0){
-
-                var sub_products=[]
-
-                for (let k=0;k<list[i].sub_products.length;k++){
-
-                    sub_products.push({id:list[i].sub_products[k]._key, name:list[i].sub_products[k].name})
-
-                }
-
-                treeItem.sub_products= sub_products
-
-            }
-
-
-
-            tree.push(treeItem)
-
-        }
-
-
-        this.setState({
-
-            tree:tree
-        })
-
-
-
-
-    }
     setTree(){
 
 
@@ -177,35 +137,41 @@ class ProductTreeView extends Component {
         for (let i=0;i<list.length;i++){
 
 
-            var treeItem;
+            // if (!list[i].parent_product&&!list[i].listing) {
+            if (!list[i].parent_product&&list[i].product.is_listable) {
 
-            treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
+                var treeItem;
+
+                treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
+                    sub_products: [] , canSelect:list[i].listing?false:true}
 
 
-            if (list[i].sub_products.length>0){
+                if (list[i].sub_products.length > 0) {
 
-                var sub_products=[]
+                    var sub_products = []
 
-                for (let k=0;k<list[i].sub_products.length;k++){
+                    for (let k = 0; k < list[i].sub_products.length; k++) {
 
-                    sub_products.push({id:list[i].sub_products[k]._key, name:list[i].sub_products[k].name})
+                        sub_products.push({ id: list[i].sub_products[k]._key, name: list[i].sub_products[k].name })
+
+                    }
+
+                    treeItem.sub_products = sub_products
 
                 }
 
-                treeItem.sub_products= sub_products
 
+                tree.push(treeItem)
             }
 
-
-
-            tree.push(treeItem)
 
         }
 
 
         this.setState({
 
-            tree:tree
+            tree:tree,
+            filteredList:tree
         })
 
 
@@ -215,11 +181,8 @@ class ProductTreeView extends Component {
     componentDidMount() {
 
 
-        this.props.loadProducts(this.props.userDetail.token)
-
         this.getItems()
 
-        this.getSubProducts()
 
     }
 
@@ -261,6 +224,41 @@ class ProductTreeView extends Component {
         );
 
 }
+
+
+
+    handleSearch(field, e) {
+
+        // let fields = this.state.fieldsSite;
+        // fields[field] = e.target.value;
+        // this.setState({ fields: fields });
+
+
+        var products = this.state.tree.filter(
+            (item)=>
+
+        {
+            if (e.target.value.length === 0) {
+                return item;
+            } else if (
+                item.name
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+            ) {
+                return item;
+            }
+        }
+
+
+        )
+
+
+        this.setState({
+            filteredList: products
+        })
+
+    }
+
 
 
     getSubProducts(){
@@ -317,59 +315,40 @@ class ProductTreeView extends Component {
             <>
                  
 
-                <div className="row m-4 p-4">
+                <div className="row  mb-4">
 
                     <div className="col-md-12 col-sm-6 col-xs-12 ">
-                        <TreeView
-                            className={classes.root+" d-none"}
-                            defaultExpanded={['3']}
-                            defaultCollapseIcon={<MinusSquare />}
-                            defaultExpandIcon={<PlusSquare />}
-                            // defaultEndIcon={<div style={{ width: 24 }} />}
-                            defaultEndIcon={<CloseSquare />}
-                        >
 
-                            {/*{this.state.products.filter((item)=> item.listing_id === null && item.product.is_listable=== true).map((item) =>*/}
+                        <div  className={"row tree-menu-container "}>
 
-                            {this.state.tree.map((item) =>
-                            <>
-
-                                    <StyledTreeItem data-id={item.id}  nodeId={item.id} labelText={item.name+"("+item.sub_products.length+" Sub Products)"}>
-
-                                        {item.sub_products.map((subItem)=>
-                                            <>
-                                            <StyledTreeItem
-                                            onClick={()=> this.updateTree}
-                                            nodeId="5"
-                                            labelText={subItem.name}
-                                            labelInfo="90"
-                                            color="#1a73e8"
-                                            bgColor="#e8f0fe"
-                                            >
-
-
-                                            </StyledTreeItem>
-                                            </>
-                                        )}
-                                        </StyledTreeItem>
-
-                                        </>
-
-                            )}
-
-                        </TreeView>
-
-                    <div  className={"row tree-view-menu"}>
-
-                        {this.state.tree.map((item) =>
-                            <>
                             <div  className={"col-12"}>
-                            <ProductTreeItemView triggerCallback={(productId)=>this.productSelected(productId)} item={item}  token={this.props.userDetail.token}  />
+
+                                <TextField id="outlined-basic" label="Search products here .... "
+                                           variant="outlined" fullWidth={true}
+                                           name={"name"}
+                                           onChange={this.handleSearch.bind(this, "name")}/>
+                            </div>
+                            <div  className={"col-12"}>
+
+
+                            <div  className={"row tree-view-menu"}>
+
+
+                                {this.state.filteredList.map((item) =>
+                                    <>
+                                        <div  className={"col-12"}>
+                                            <ProductTreeItemView selected={this.state.selectedProductId} triggerCallback={(productId)=>this.productSelected(productId)} item={item}  token={this.props.userDetail.token}  />
+                                        </div>
+
+                                    </>
+                                )}
+                            </div>
                             </div>
 
-                            </>
-                        )}
-                    </div>
+
+                        </div>
+
+
 
 
 

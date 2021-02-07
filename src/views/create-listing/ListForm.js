@@ -23,6 +23,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
 import ProductExpandItem from '../../components/ProductExpandItem'
 import ItemDetailPreview from '../../components/ItemDetailPreview'
+import ProductTreeView from '../../components/ProductTreeView'
+
 
 import {
     MuiPickersUtilsProvider,
@@ -112,7 +114,8 @@ class ListForm extends Component {
             images: [],
             yearsList:[],
             purpose: ["defined", "prototype", "aggregate"],
-            previewImage:null
+            previewImage:null,
+            selectedProductId:null
 
 
         }
@@ -133,6 +136,34 @@ class ListForm extends Component {
         this.getPreviewImage=this.getPreviewImage.bind(this)
         this.showProductSelection = this.showProductSelection.bind(this)
         this.phonenumber = this.phonenumber.bind(this)
+        this.productSelected=this.productSelected.bind(this)
+
+
+
+    }
+
+
+    productSelected(productId){
+
+        this.setState({
+            selectedProductId:productId
+
+        })
+
+
+        this.getPreviewImage(productId)
+
+
+        let fields = this.state.fields;
+
+
+
+        fields["product"] = productId;
+
+
+        this.setState({ fields });
+
+
 
 
 
@@ -151,6 +182,7 @@ class ListForm extends Component {
 
 
     getPreviewImage(productSelectedKey){
+
 
 
         axios.get(baseUrl + "product/"+productSelectedKey+"/artifact",
@@ -185,49 +217,6 @@ class ListForm extends Component {
 
     }
 
-    handleNextOld() {
-
-
-        if (this.state.page === 1&&this.handleValidateOne()) {
-
-            this.setState({
-
-                page: 2,
-                progressBar: 66
-            })
-
-
-        }
-        else  if (this.state.page === 2&&this.handleValidateTwo()) {
-
-            this.setState({
-
-                page: 3,
-                progressBar: 100
-            })
-
-
-
-        }
-
-
-        else  if (this.state.page === 3) {
-
-
-
-
-
-            this.createListing()
-
-        }
-
-        else  if (this.state.page === 4) {
-
-            this.props.history.push("/" + this.state.listResourceData._key)
-
-        }
-
-    }
 
 
 
@@ -358,7 +347,7 @@ class ListForm extends Component {
 
 
 
-        if (field === "product"){
+        if (this.state.selectedProductId === "product"){
 
 
             this.setState({
@@ -424,6 +413,11 @@ class ListForm extends Component {
         }
 
 
+        // if (!this.state.selectedProductId) {
+        //     formIsValid = false;
+        //     errors["product"] = "Required";
+        // }
+
         if (!fields["product"]) {
             formIsValid = false;
             errors["product"] = "Required";
@@ -432,6 +426,8 @@ class ListForm extends Component {
 
 
 
+
+        console.log(errors)
 
 
 
@@ -951,7 +947,7 @@ class ListForm extends Component {
 
 
        this.props.loadSites(this.props.userDetail.token)
-       this.props.loadProducts(this.props.userDetail.token)
+       // this.props.loadProducts(this.props.userDetail.token)
 
     }
 
@@ -995,7 +991,13 @@ class ListForm extends Component {
             errors["phone"] = "Required";
         }
 
-        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+        // if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+        //
+        //     formIsValid = false;
+        //     errors["phone"] = "Invalid Phone Number!";
+        // }
+
+        if ((fields["phone"])) {
 
             formIsValid = false;
             errors["phone"] = "Invalid Phone Number!";
@@ -1181,6 +1183,7 @@ class ListForm extends Component {
                                 </div>
 
                                 <div className="col-12 mt-4">
+
                                     <div className={"custom-label text-bold text-blue mb-1"}>Description</div>
 
 
@@ -1190,62 +1193,19 @@ class ListForm extends Component {
 
                                 </div>
 
-                                <div className="col-12 mt-4">
+                                <div className="col-12 mt-4 mb-4">
 
-                                    <div className="row ">
-
-                                <div className="col-md-12 col-sm-6 col-xs-12 ">
                                     <div className={"custom-label text-bold text-blue mb-1"}>Link a product</div>
 
 
-                                    <FormControl variant="outlined" className={classes.formControl}>
+                                    <ProductTreeView triggerCallback={(productId)=>this.productSelected(productId)} className={"mb-4"}/>
 
 
-                                        <Select
+                                    <TextField value={this.state.selectedProductId} className={"d-none"} onChange={this.handleChange.bind(this, "product")} name={"product"} placeholder={"product"} id="outlined-basic"  variant="outlined" fullWidth={true} />
 
-                                            name= "product"
-                                            // label={"Link a product"}
-                                            native
-                                            onChange={this.handleChange.bind(this, "product")}
-                                            inputProps={{
-                                                name: 'product',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
-
-                                            <option value={null}>Select</option>
-
-                                            {this.props.productList.filter((item)=> item.listing_id === null && item.product.is_listable=== true).map((item) =>
-                                                
-
-                                                <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
-
-                                            )}
-
-                                        </Select>
-                                        {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
+                                    {this.state.errors["product"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["product"]}</span>}
 
 
-                                        <FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?
-
-                                            <span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>
-
-                                        </FormHelperText>
-                                    </FormControl>
-
-
-                                    {this.state.productSelected&&
-                                    <>
-
-                                        <ProductExpandItem hideAddAll={true} productId={this.state.productSelected}/>
-
-                                    </>
-                                    }
-
-                                </div>
-
-
-                                    </div>
                                 </div>
 
                             </div>

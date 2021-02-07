@@ -909,7 +909,7 @@ class ProductEditForm extends Component {
 
     getProducts() {
 
-        axios.get(baseUrl + "product",
+        axios.get(baseUrl + "product/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token

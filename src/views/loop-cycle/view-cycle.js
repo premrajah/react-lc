@@ -1306,12 +1306,13 @@ class ViewCycle extends Component {
 
                                             {this.state.item.next_action.possible_actions.map((item) =>
                                                 <>
-                                                    <button data-action={item} onClick={this.showPopUpAction.bind(this)}
+
+                                                    {!(item==="progress" &&this.state.item.cycle.stage==="progress") && <button data-action={item} onClick={this.showPopUpAction.bind(this)}
                                                             type="button"
                                                             className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green text-caps">
 
                                                         {item}
-                                                    </button>
+                                                    </button>}
 
                                                 </>
                                             )}

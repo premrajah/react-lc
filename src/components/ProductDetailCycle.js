@@ -658,7 +658,7 @@ class ProductDetailCycle extends Component {
 
                                         {this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id&&
                                         <>
-                                        <div className={"col-12 pb-5 mb-5"}>
+                                        <div className={"col-12 pb-5 mb-5 d-none"}>
 
                                             <div className="row justify-content-start pb-3 pt-3 ">
 

@@ -77,7 +77,8 @@ class FindResourcePage extends Component {
                       ) {
                           return item;
                       }
-                  })
+                  }
+                  )
                   .map((item) => (
                       <ErrorBoundary>
                           <FindResourceListingItem key={item.listing._id} item={item} />

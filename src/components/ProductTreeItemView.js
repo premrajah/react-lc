@@ -42,12 +42,16 @@ class ProductTreeItemView extends Component {
 
 
 
-    setSelected(){
+    setSelected(event){
 
 
-        this.setState({
-            selected:! this.state.selected
-        })
+        var currentProductId = event.currentTarget.dataset.id
+
+        this.props.triggerCallback(currentProductId)
+
+        // this.setState({
+        //     selected:! this.state.selected
+        // })
     }
 
     setOpen(){
@@ -62,7 +66,6 @@ class ProductTreeItemView extends Component {
 
 
     componentWillMount() {
-        window.scrollTo(0, 0)
     }
 
 
@@ -79,39 +82,50 @@ class ProductTreeItemView extends Component {
 
         let tree= this.state.tree
 
-        for (let i=0;i<list.length;i++){
+        for (let i=0;i<list.length;i++) {
 
 
-            var treeItem;
-
-            treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
+            if (list[i].product.is_listable) {
 
 
-            if (list[i].sub_products.length>0){
+                var treeItem;
 
-                var sub_products=[]
+                // treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
 
-                for (let k=0;k<list[i].sub_products.length;k++){
 
-                    sub_products.push({id:list[i].sub_products[k]._key, name:list[i].sub_products[k].name})
+                treeItem = {
+                    id: list[i].product._key,
+                    name: list[i].listing ? list[i].product.name + "(NA)" : list[i].product.name,
+                    sub_products: [],
+                    canSelect: list[i].listing ? false : true
+                }
+
+
+                if (list[i].sub_products.length > 0) {
+
+                    var sub_products = []
+
+                    for (let k = 0; k < list[i].sub_products.length; k++) {
+
+                        sub_products.push({ id: list[i].sub_products[k]._key, name: list[i].sub_products[k].name })
+
+                    }
+
+                    treeItem.sub_products = sub_products
 
                 }
 
-                treeItem.sub_products= sub_products
+
+                tree.push(treeItem)
 
             }
 
 
+            this.setState({
 
-            tree.push(treeItem)
-
+                tree: tree
+            })
         }
-
-
-        this.setState({
-
-            tree:tree
-        })
 
 
 
@@ -132,8 +146,6 @@ class ProductTreeItemView extends Component {
 
       this.setOpen()
 
-
-
         if (!this.state.open) {
 
             var currentProductId = event.currentTarget.dataset.id
@@ -150,9 +162,6 @@ class ProductTreeItemView extends Component {
                 .then((response) => {
 
                         var responseAll = response.data.data;
-
-
-
 
                         this.setState({
 
@@ -188,15 +197,18 @@ class ProductTreeItemView extends Component {
         return (
 
             <>
-                <div  style={{"marginLeft": "25px", "marginTop": "2px"}} >
+                <div  style={{ "marginTop": "5px"}} >
 
                     <p> {this.props.item.sub_products.length>0 ?(this.state.open?<MinusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"}/>:<PlusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"} />):<span className={"mr-4"}></span>}
 
-                        <span onClick={this.setSelected} className={this.state.selected?"tree-view-item-selected tree-view-item":"tree-view-item"}>{this.props.item.name}({this.props.item.sub_products.length+" Sub Products"})</span></p>
+                        <span data-id={this.props.item.id} onClick={this.props.item.canSelect&&this.setSelected} className={this.props.selected===this.props.item.id?"tree-view-item-selected tree-view-item":"tree-view-item"}>{this.props.item.name} - {this.props.item.sub_products.length+" Sub Products"}</span></p>
                     {this.state.open &&this.state.tree.map((item) =>
                         <>
-                            <ProductTreeItemView   item={item}  token={this.props.token}  />
+                        <div  style={{"marginLeft": "25px", "marginTop": "5px",marginBottom:"5px"}} >
 
+                        <ProductTreeItemView selected={this.props.selected} triggerCallback={(productId)=>this.props.triggerCallback(productId)}  item={item}  token={this.props.token}  />
+
+                        </div>
                         </>
                     )}
                  </div>

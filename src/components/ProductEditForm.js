@@ -1096,11 +1096,11 @@ class ProductEditForm extends Component {
             errors["volume"] = "Required";
         }
 
-
-        if (!data.get("manufacturedDate")) {
-            formIsValid = false;
-            errors["manufacturedDate"] = "Required";
-        }
+        //
+        // if (!data.get("manufacturedDate")) {
+        //     formIsValid = false;
+        //     errors["manufacturedDate"] = "Required";
+        // }
 
 
 
@@ -2291,6 +2291,8 @@ class ProductEditForm extends Component {
                                                     }}
                                                 >
 
+
+                                                    <option value={null}>Select</option>
 
                                                     {this.state.yearsList.map((item) =>
 

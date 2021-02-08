@@ -333,6 +333,8 @@ class ProductExpandItem extends Component {
             addCount:[1]
         })
 
+        this.props.loadProducts(this.props.userDetail.token)
+
         this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
     }
@@ -492,7 +494,7 @@ class ProductExpandItem extends Component {
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productWithoutParentList.filter((item)=> item.product._key!==this.state.product.product._key).map((item) =>
+                                                {this.props.productList.filter((item)=> item.product._key!==this.state.product.product._key).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>

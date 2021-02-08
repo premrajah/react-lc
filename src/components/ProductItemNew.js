@@ -300,8 +300,8 @@ class ProductItemNew extends Component {
     componentDidMount() {
 
             this.fetchImage()
-        console.log("product new")
-        console.log(this.props.item)
+
+
 
     }
 

@@ -427,7 +427,7 @@ class ListForm extends Component {
 
 
 
-        console.log(errors)
+
 
 
 

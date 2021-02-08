@@ -17,6 +17,7 @@ import LogoText from '../../img/logo-text.png';
 import styles from './Footer.module.css';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
+import AcceptableUse from "../Terms/AcceptableUse";
 
 class Footer extends React.Component {
 
@@ -68,9 +69,9 @@ class Footer extends React.Component {
                 <NavItem>
                   <a className={styles.footerlink} href="https://loopcycle.io/about-us/" target="_blank" rel="noopener noreferrer">About</a>
                 </NavItem>
-                <NavItem>
-                  <a className={styles.footerlink} href="https://loopcycle.io/what-we-do/" target="_blank" rel="noopener noreferrer">What We Do</a>
-                </NavItem>
+                {/*<NavItem>*/}
+                {/*  <a className={styles.footerlink} href="https://loopcycle.io/what-we-do/" target="_blank" rel="noopener noreferrer">What We Do</a>*/}
+                {/*</NavItem>*/}
                 <NavItem>
                   <a className={styles.footerlink} href="https://loopcycle.io/how-it-works/" target="_blank" rel="noopener noreferrer">How It Works</a>
                 </NavItem>
@@ -90,7 +91,7 @@ class Footer extends React.Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} tag={Link}>
+                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/find-resources"} tag={Link}>
                     Browse All
                         </NavLink>
                 </NavItem>
@@ -104,11 +105,11 @@ class Footer extends React.Component {
                     Listings
                         </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} tag={Link}>
-                    Deliver
-                  </NavLink>
-                </NavItem>
+                {/*<NavItem>*/}
+                {/*  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} tag={Link}>*/}
+                {/*    Deliver*/}
+                {/*  </NavLink>*/}
+                {/*</NavItem>*/}
 
               </Nav>
             </Col>

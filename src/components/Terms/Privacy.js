@@ -1,16 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
+import Footer from "../../views/Footer/Footer";
+import HeaderDark from "../../views/header/HeaderDark";
 
-const Privacy = ({ header, footer }) => {
+const Privacy = ({ title, header, footer }) => {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div>
-            {header}
-            <div className="container" style={{ marginTop: "100px" }}>
+            {header ? header : <HeaderDark />}
+            <div className="container mb-5" style={{ marginTop: "100px" }}>
                 <div className="row mt-5 mb-5">
                     <div className="col">
-                        <Link to="/" className="btn btn-green">
-                            Home
-                        </Link>
+                        <h3 className="blue-text">{title ? title : 'Privacy Policy'}</h3>
                     </div>
                 </div>
 
@@ -1034,15 +1038,9 @@ const Privacy = ({ header, footer }) => {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-sm-12 mt-5 mb-5">
-                        <Link to="/" className="btn btn-green">
-                            Home
-                        </Link>
-                    </div>
-                </div>
+
             </div>
-            {footer}
+            {footer ? footer : <Footer />}
         </div>
     );
 };

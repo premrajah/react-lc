@@ -1,19 +1,24 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
+import HeaderDark from "../../views/header/HeaderDark";
+import Footer from "../../views/Footer/Footer";
 
-const TermsAndConditions = ({ header, footer, acceptBtn }) => {
+const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div>
-            {header}
-            <div className="container" style={{ marginTop: "100px" }}>
+            {header ? header : <HeaderDark />}
+            <div className="container mb-5" style={{ marginTop: "100px" }}>
                 <div className="row mt-5 mb-5">
                     <div className="col">
                         {acceptBtn ? (
                             acceptBtn
                         ) : (
-                            <Link to="/" className="btn btn-green">
-                                Home
-                            </Link>
+                            <h3 className="blue-text">{title ? title : 'Terms and Conditions'}</h3>
                         )}
                     </div>
                 </div>
@@ -440,19 +445,9 @@ const TermsAndConditions = ({ header, footer, acceptBtn }) => {
                     </div>
                 </div>
 
-                <div className="row mt-5 mb-5">
-                    <div className="col">
-                        {acceptBtn ? (
-                            acceptBtn
-                        ) : (
-                            <Link to="/" className="btn btn-green">
-                                Home
-                            </Link>
-                        )}
-                    </div>
-                </div>
+
             </div>
-            {footer}
+            {footer ? footer : <Footer />}
         </div>
     );
 };

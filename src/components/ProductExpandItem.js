@@ -178,7 +178,7 @@ class ProductExpandItem extends Component {
 
         if (productKey)
 
-        axios.get(baseUrl + "product/" + productKey,
+        axios.get(baseUrl + "product/" + productKey+"/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -205,7 +205,7 @@ class ProductExpandItem extends Component {
                         subProducts:[]
                     })
 
-                    if (responseAll.data.sub_product_ids.length > 0) {
+                    if (responseAll.data.sub_products.length > 0) {
                         this.getSubProducts()
                     }
 
@@ -294,7 +294,7 @@ class ProductExpandItem extends Component {
                     addCount:[],
                     count:0
                 })
-                this.loadProduct()
+                this.loadProduct(this.state.product.product._key)
 
 
 
@@ -345,45 +345,51 @@ class ProductExpandItem extends Component {
     getSubProducts() {
 
 
-        var subProductIds = this.state.product.sub_products?this.state.product.sub_products:[]
+        // var subProductIds = this.state.product.sub_products?this.state.product.sub_products:[]
+        //
+        // for (var i = 0; i < subProductIds.length; i++) {
+        //
+        //
+        //
+        //     axios.get(baseUrl + "product/" + subProductIds[i].replace('Product/',''),
+        //         {
+        //             headers: {
+        //                 "Authorization": "Bearer " + this.props.userDetail.token
+        //             }
+        //         }
+        //     )
+        //         .then((response) => {
+        //
+        //                 var responseAll = response.data;
+        //
+        //
+        //
+        //
+        //                 var subProducts = this.state.subProducts
+        //
+        //                 subProducts.push(responseAll.data)
+        //
+        //                 this.setState({
+        //
+        //                     subProducts: subProducts
+        //                 })
+        //
+        //
+        //
+        //
+        //             },
+        //             (error) => {
+        //
+        //             }
+        //         );
+        //
+        // }
 
-        for (var i = 0; i < subProductIds.length; i++) {
-
-
-
-            axios.get(baseUrl + "product/" + subProductIds[i].replace('Product/',''),
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                        var responseAll = response.data;
 
 
 
 
-                        var subProducts = this.state.subProducts
 
-                        subProducts.push(responseAll.data)
-
-                        this.setState({
-
-                            subProducts: subProducts
-                        })
-
-                    
-
-
-                    },
-                    (error) => {
-
-                    }
-                );
-
-        }
     }
 
 
@@ -397,6 +403,8 @@ class ProductExpandItem extends Component {
                 <>
                     {this.state.product &&
                    <ProductItemNew item={this.state.product}/>}
+
+
 
                     {/*{(this.state.subProducts.length> 0) &&*/}
                      {/*<div className="row no-gutters  justify-content-left">*/}
@@ -423,6 +431,13 @@ class ProductExpandItem extends Component {
 
 
                                     <p className={"custom-label text-bold text-blue mb-1"}>Sub Products</p>
+
+                                        {this.state.product && this.state.product.sub_products.map((item,index)=>
+                                           <>
+                                            <span className={""}>{index+1}. {item.name}</span><br/>
+                                           </>
+
+                                        )}
 
                                     </div>
                                     <div className="col-12" >
@@ -484,6 +499,7 @@ class ProductExpandItem extends Component {
                                                 name= {`product[${index}]`}
 
                                                 // label={"Link a product"}
+                                                required={true}
                                                 native
                                                 onChange={this.handleChange.bind(this, "product")}
                                                 inputProps={{
@@ -527,7 +543,7 @@ class ProductExpandItem extends Component {
                                     <div className="col-3">
                                         {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
 
-                                        <TextField type={"number"} onChange={this.handleChange.bind(this, "volume")} name={`volume[${index}]`} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
+                                        <TextField  required={true} type={"number"} onChange={this.handleChange.bind(this, "volume")} name={`volume[${index}]`} placeholder={"Volume"} id="outlined-basic"  variant="outlined" fullWidth={true} InputProps={{inputProps: {min: 0}}} />
                                         {this.state.errors["volume"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["volume"]}</span>}
 
 
@@ -586,11 +602,7 @@ class ProductExpandItem extends Component {
                         </>}
 
 
-                    {this.state.subProducts.map((item)=>
 
-                    <ProductItemNew item={item}/>
-
-                    )}
 
                 </>
 

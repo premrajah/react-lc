@@ -300,6 +300,8 @@ class ProductItemNew extends Component {
     componentDidMount() {
 
             this.fetchImage()
+        console.log("product new")
+        console.log(this.props.item)
 
     }
 
@@ -371,7 +373,7 @@ class ProductItemNew extends Component {
 
 {this.props.item&&this.props.item.product?
     <Link to={"/product/"+this.props.item.product._key}>
-        <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
 
 
                 <div className={"col-2 "}>
@@ -383,7 +385,6 @@ class ProductItemNew extends Component {
 
                 </div>
                 <div className={"col-7 pl-2  content-box-listing"}>
-
                     <p style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.name}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.purpose}</p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state} {this.props.item.product.volume} {this.props.item.product.units}</p>
@@ -421,7 +422,7 @@ class ProductItemNew extends Component {
                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.purpose}</p>
                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.category}, {this.props.item.type}, {this.props.item.state} {this.props.item.volume} {this.props.item.units}</p>
                        {this.props.item.search_ids && <p style={{ fontSize: "16px" }} className="text-mute mb-1 bottom-tag-p">{this.props.item.search_ids.length} Searches</p>}
-                       {this.props.item.sub_product_ids&&this.props.item.sub_product_ids.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
+                       {this.props.item.sub_products&&this.props.item.sub_products.length>0 && <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.sub_product_ids.length} Sub Products</p>}
 
                    </div>
                    <div style={{ textAlign: "right" }} className={"col-3"}>

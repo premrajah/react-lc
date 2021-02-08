@@ -16,7 +16,7 @@ import ProductItemNew from './ProductItemNew'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles, withStyles } from "@material-ui/core/styles/index";
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStylesSelect = makeStyles((theme) => ({
@@ -58,9 +58,53 @@ class ProductExpandItem extends Component {
         this.addCount=this.addCount.bind(this)
         this.subtractCount=this.subtractCount.bind(this)
         this.showExisting=this.showExisting.bind(this)
+        this.removeItem=this.removeItem.bind(this)
 
     }
 
+
+    removeItem(event) {
+
+
+
+        var data={
+
+            product_id:this.state.product.product._key,
+            sub_products_ids:[event.currentTarget.dataset.id]
+        }
+
+
+
+        axios.post(baseUrl + "product/sub-product/remove", data,
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    // var responseAll = response.data.data;
+
+
+                    // this.props.history.push("/my-products")
+                    // this.props.loadProducts()
+
+                    this.loadProduct(this.state.product.product._key)
+
+
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
 
     showExisting() {
 
@@ -432,12 +476,15 @@ class ProductExpandItem extends Component {
 
                                     <p className={"custom-label text-bold text-blue mb-1"}>Sub Products</p>
 
+                                        <ul>
+
                                         {this.state.product && this.state.product.sub_products.map((item,index)=>
                                            <>
-                                            <span className={""}>{index+1}. {item.name}</span><br/>
+                                               <li className={""}> <span className={"d-flex justify-content-start align-items-center"}>{item.name} <DeleteIcon  classname={"click-item ml-2 "} data-id={item._key} style={{color:"#ccc", fontSize:"16px"}} onClick={this.removeItem.bind(this)}  /></span>    </li>
                                            </>
 
                                         )}
+                                        </ul>
 
                                     </div>
                                     <div className="col-12" >
@@ -510,7 +557,7 @@ class ProductExpandItem extends Component {
 
                                                 <option value={null}>Select</option>
 
-                                                {this.props.productList.filter((item)=> item.product._key!==this.state.product.product._key).map((item) =>
+                                                {this.props.productList.filter((item)=> item.product._key!==this.state.product.product._key && !(this.state.product.sub_products.filter((subItem)=> subItem._key===item.product._key).length>0)  ).map((item) =>
 
 
                                                     <option value={item.product._key}>{item.product.name} ({item.sub_product_ids.length} Sub Products)</option>
@@ -549,14 +596,14 @@ class ProductExpandItem extends Component {
 
                                     </div>
 
-                                    <div className="col-1 text-center">
+                                    <div className="col-1 text-center" style={{display:"flex"}}>
 
 
                                         {item > 1 &&
                                         <>
                                             {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                            <DeleteIcon style={{color:"red",margin:"auto"}} onClick={() => this.subtractCount()}  />
+                                            <DeleteIcon classname={"click-item"} style={{color:"#ccc",margin:"auto"}} onClick={() => this.subtractCount()}  />
                                         </>
                                         }
                                     </div>

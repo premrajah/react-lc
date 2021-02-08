@@ -2973,6 +2973,21 @@ a.page-link:hover{
 	z-index: 1000;
 }
 
+.btn-close.close-done{
+
+	right:20px;
+	margin:10px;
+	position: absolute;
+	cursor: pointer;
+	display: block;
+	z-index: 1000;
+	color:#05AD88!important;
+	background: transparent;
+	border:none;
+	font-size: 20px;
+	font-weight: bold;
+}
+
 .tab-content .tab-pane{padding: 20px;}
 
 

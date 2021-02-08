@@ -57,7 +57,7 @@ class  ProductPopUp extends Component{
             >
 
                     <div className="m-1">
-                <button onClick={this.hidePopUp} className="btn-close close" data-dismiss="modal" aria-label="Close">
+                <button onClick={this.hidePopUp} className="btn-close close-done" data-dismiss="modal" aria-label="Close">
                     Done
                 </button>
 

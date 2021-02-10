@@ -7,10 +7,10 @@
 stages:
 - dev_build
 - dev_deploy
-- prod_build
-- prod_deploy
 - stage_build
 - stage_deploy
+- prod_build
+- prod_deploy
 
 variables:
 #  CI_DEBUG_TRACE: "true"

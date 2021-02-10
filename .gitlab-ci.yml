@@ -5,9 +5,12 @@
 #  - vendor/
 
 stages:
-- release
-- deploy
-#- aws
+- dev_build
+- dev_deploy
+- prod_build
+- prod_deploy
+- stage_build
+- stage_deploy
 
 variables:
 #  CI_DEBUG_TRACE: "true"
@@ -16,8 +19,8 @@ variables:
   DOCKER_DRIVER: overlay2
 
 
-gcr:
-  stage: release
+build_dev:
+  stage: dev_build
   image: docker:git
   services:
     - docker:dind
@@ -45,8 +48,8 @@ gcr:
     - develop-api2
 
 
-deploy_gke_dev:
-  stage: deploy
+deploy_dev:
+  stage: dev_deploy
   image: kiwigrid/gcloud-kubectl-helm
   # <<: *deploy_precursor
   script:
@@ -73,8 +76,33 @@ deploy_gke_dev:
     - develop_refactor
     - develop-api2
 
-deploy_gke_prod:
-  stage: deploy
+build_prod:
+  stage: prod_build
+  image: docker:git
+  services:
+    - docker:dind
+  before_script:
+    - echo $GCR_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - cat /tmp/$CI_PIPELINE_ID.json | docker login -u _json_key --password-stdin https://${GCR_DOMAIN}
+  after_script:
+    - rm /tmp/$CI_PIPELINE_ID.json
+  script:
+    - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./.env
+    - export APP_NAME=loopcycyle/${CI_PROJECT_NAME}
+    - export IMAGE_TAG=${GCR_DOMAIN}/${GCP_PROJECT_ID}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${CI_PIPELINE_IID}
+    - docker build -t ${APP_NAME} .
+    - docker tag ${APP_NAME} ${IMAGE_TAG}
+    - docker push ${IMAGE_TAG}
+    - echo ${IMAGE_TAG} | tee image_tag.txt
+  artifacts:
+    paths:
+      - image_tag.txt
+  only:
+    - master
+
+deploy_prod:
+  stage: prod_deploy
   image: kiwigrid/gcloud-kubectl-helm
   # <<: *deploy_precursor
   script:
@@ -100,8 +128,33 @@ deploy_gke_prod:
     - master
   when: manual
 
-deploy_gke_stage:
-  stage: deploy
+build_stage:
+  stage: stage_build
+  image: docker:git
+  services:
+    - docker:dind
+  before_script:
+    - echo $GCR_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - cat /tmp/$CI_PIPELINE_ID.json | docker login -u _json_key --password-stdin https://${GCR_DOMAIN}
+  after_script:
+    - rm /tmp/$CI_PIPELINE_ID.json
+  script:
+    - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./.env
+    - export APP_NAME=loopcycyle/${CI_PROJECT_NAME}
+    - export IMAGE_TAG=${GCR_DOMAIN}/${GCP_PROJECT_ID}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${CI_PIPELINE_IID}
+    - docker build -t ${APP_NAME} .
+    - docker tag ${APP_NAME} ${IMAGE_TAG}
+    - docker push ${IMAGE_TAG}
+    - echo ${IMAGE_TAG} | tee image_tag.txt
+  artifacts:
+    paths:
+      - image_tag.txt
+  only:
+    - master
+
+deploy_stage:
+  stage: stage_deploy
   image: kiwigrid/gcloud-kubectl-helm
   # <<: *deploy_precursor
   script:

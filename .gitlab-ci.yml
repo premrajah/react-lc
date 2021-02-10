@@ -70,8 +70,60 @@ deploy_gke_dev:
   - kubectl apply -f ./scripts/k8s/gcp_service.yaml
   only:
     - develop
-    - master
     - develop_refactor
     - develop-api2
+
+deploy_gke_prod:
+  stage: deploy
+  image: kiwigrid/gcloud-kubectl-helm
+  # <<: *deploy_precursor
+  script:
+    #  - apk add --update -t curl
+    - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+    - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
+    - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
+    - gcloud config set project ${GCP_PROJECT_ID}
+    - gcloud config set container/cluster ${GKE_CLUSTER}
+    - gcloud config set compute/zone ${GKE_ZONE}
+    - gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
+    - export IMAGE_TAG=$(cat image_tag.txt)
+    - echo $IMAGE_TAG
+
+    - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/gcp_service.yaml
+    - cat ./scripts/k8s/deployment.yaml
+    #  - kubectl delete -f ./scripts/k8s/deployment.yaml
+    - kubectl apply -f ./scripts/k8s/deployment.yaml
+    - kubectl apply -f ./scripts/k8s/gcp_service.yaml
+  only:
+    - master
+  when: manual
+
+deploy_gke_stage:
+  stage: deploy
+  image: kiwigrid/gcloud-kubectl-helm
+  # <<: *deploy_precursor
+  script:
+    #  - apk add --update -t curl
+    - export ENVIRONMENT=stage
+    - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
+    - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
+    - gcloud config set project ${GCP_PROJECT_ID}
+    - gcloud config set container/cluster ${GKE_CLUSTER}
+    - gcloud config set compute/zone ${GKE_ZONE}
+    - gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
+    - export IMAGE_TAG=$(cat image_tag.txt)
+    - echo $IMAGE_TAG
+
+    - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/gcp_service.yaml
+    - cat ./scripts/k8s/deployment.yaml
+    #  - kubectl delete -f ./scripts/k8s/deployment.yaml
+    - kubectl apply -f ./scripts/k8s/deployment.yaml
+    - kubectl apply -f ./scripts/k8s/gcp_service.yaml
+  only:
+    - master
 
 

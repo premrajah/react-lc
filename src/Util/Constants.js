@@ -18,6 +18,7 @@ export const frontEndUrl = REACT_APP_BRANCH_ENV === "master" ?
         "http://127.0.0.1/" : "http://d.lpcy.uk/";
 
 console.log("REACT_APP_BRANCH_ENV : " + REACT_APP_BRANCH_ENV);
+console.log("baseUrl : " + baseUrl);
 
 
 

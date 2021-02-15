@@ -32,7 +32,7 @@ const ProductRecordItem = ({ item }) => {
 
                 </Card>
             </div>
-            <div className="col-lg-4 col-sm-12">
+            {listing && <div className="col-lg-4 col-sm-12">
 
                 {listing.price ? (
                     <p align="right" style={{ fontWeight: "bold" }}>
@@ -51,7 +51,7 @@ const ProductRecordItem = ({ item }) => {
 
                 {listing ? <div align="right">Created: {moment(listing._ts_epoch_ms).format('DD/MM/YY')}</div> : null}
                 {listing ? <div align="right">Available {moment(listing.available_from_epoch_ms).format('DD/MM/YY') +' - '+ moment(listing.expire_after_epoch_ms).format('DD/MM/YY')}</div> : null}
-            </div>
+            </div>}
         </div>
     );
 };

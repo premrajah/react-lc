@@ -30,7 +30,7 @@ class ProductArchive extends Component {
     };
 
     displayArchivedProducts = () => {
-        if(this.state.allArchivedProducts.length > 0) {
+        if(this.state.allArchivedProducts !== null && this.state.allArchivedProducts.length > 0) {
             return (
                 this.state.allArchivedProducts.map(item => {
                     return (

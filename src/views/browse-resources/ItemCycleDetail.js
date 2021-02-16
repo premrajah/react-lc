@@ -408,11 +408,13 @@ class ItemCycleDetail extends Component {
 
                         <div>
 
+                            <div className={"row"}>
                             <div className="col-12 mt-5 mb-4" >
 
                                 <h3 className={"blue-text text-heading"}>Product Details
                                 </h3>
 
+                            </div>
                             </div>
 
 

@@ -723,7 +723,7 @@ class ProductDetailCycle extends Component {
 
                                 <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
 
-                                    <div className="row justify-content-start pb-3  listing-row-border">
+                                    <div className="row justify-content-start pb-3  ">
 
                                         <div className="col-12 mt-2">
 
@@ -756,8 +756,10 @@ class ProductDetailCycle extends Component {
 
                                     </div>
 
+                                    <div className={"listing-row-border "}></div>
 
-                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+
+                                    <div className="row justify-content-start pb-3 pt-3 ">
 
                                         <div className="col-auto">
                                             <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.props.item.product.description}
@@ -766,6 +768,8 @@ class ProductDetailCycle extends Component {
                                         </div>
 
                                     </div>
+                                    <div className={"listing-row-border "}></div>
+
                                     <div className="row justify-content-start pb-3 pt-3 ">
 
                                     <div className="col-12 mt-2">
@@ -853,7 +857,7 @@ class ProductDetailCycle extends Component {
                                         {this.state.subProducts.length>0 &&
                                         <Tab eventKey="subproducts" title="Subproducts">
                                             {this.state.subProducts.map((item)=>
-                                                <ProductItemNew key={Math.random() * 100} item={item}/>
+                                                <ProductItemNew hideMore={true} key={Math.random() * 100} item={item}/>
                                             )}
                                         </Tab>}
 

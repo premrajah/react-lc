@@ -107,15 +107,16 @@ class MyCycles extends Component {
 
                         <PageHeader pageIcon={RingBlue} pageTitle="My Cycles" subTitle="Cycles are transactions in progress. Keep track of cycles in progress as well as" />
 
-                        <div className="row   search-container listing-row-border pt-3 pb-4">
+                        <div className="row   search-container  pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchField />
                             </div>
                         </div>
 
 
+                        <div className={"listing-row-border "}></div>
 
-                        <div className="row   filter-row listing-row-border  pt-3 pb-3">
+                        <div className="row   filter-row   pt-3 pb-3">
 
                             <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
@@ -139,6 +140,7 @@ class MyCycles extends Component {
                             </div>
 
                         </div>
+                        <div className={"listing-row-border mb-3"}></div>
 
 
                         {this.state.loops.map((item) =>

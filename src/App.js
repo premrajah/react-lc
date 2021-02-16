@@ -146,7 +146,6 @@ class App extends Component{
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
                         <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
-
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />

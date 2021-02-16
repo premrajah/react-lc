@@ -1045,7 +1045,7 @@ class ViewCycle extends Component {
 
                             <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
 
-                                <div className="row justify-content-start pb-3 pt-3 ">
+                                <div className="row justify-content-start pb-3 pt-4 ">
 
                                     <div className="col-12 mt-2">
                                         <h5 className={"blue-text text-heading"}>{this.state.item.listing.name}
@@ -1053,7 +1053,7 @@ class ViewCycle extends Component {
 
                                     </div>
 
-                                    <div className="col-12 listing-row-border">
+                                    <div className="col-12 ">
 
                                         <div className="row">
                                             <div className="col-7">
@@ -1071,9 +1071,11 @@ class ViewCycle extends Component {
 
                                     </div>
 
-                                    <div className={"col-12"}>
+                                    <div className={"col-12 pt-3"}>
+                                        <div className={"listing-row-border"}></div>
 
-                                        <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+
+                                        <div className="row justify-content-start pb-3 pt-3 ">
 
                                             <div className="col-auto">
                                                 <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.state.item.listing.description}
@@ -1082,6 +1084,8 @@ class ViewCycle extends Component {
                                             </div>
 
                                         </div>
+                                        <div className={"listing-row-border"}></div>
+
                                     </div>
 
                                 </div>
@@ -1160,10 +1164,10 @@ class ViewCycle extends Component {
                                     </div>
                                 </div>
 
-                                    <ProductExpandItem  hideAddAll={true} productId={this.state.item.product.product._key}/>
+                                    <ProductExpandItem hideMore={true} hideAddAll={true} productId={this.state.item.product.product._key}/>
 
 
-                                    <div className="row listing-row-border pb-4 mb-4">
+                                    <div className="row  pb-4 mb-4">
 
                                         <div className="col-1 ">
                                             <h5 className={"text-bold text-left text-blue"}>Steps</h5>

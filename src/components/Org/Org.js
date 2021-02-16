@@ -18,6 +18,8 @@ const Org = ({
 }) => {
     const orgNameSub = orgId ? orgId.substr(4) : "";
 
+
+
     const orgPopover = (
         <Popover id="org-popover">
             <Popover.Title as="h3">

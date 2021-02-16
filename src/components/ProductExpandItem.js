@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import Paper from '../img/place-holder-lc.png';
 import axios from "axios/index";
 import { baseUrl } from "../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
-import moment from "moment/moment";
-import PlaceholderImg from '../img/place-holder-lc.png';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import ProductItemNew from './ProductItemNew'
-import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles, withStyles } from "@material-ui/core/styles/index";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -48,7 +41,7 @@ class ProductExpandItem extends Component {
             errors: {},
             subProductSelected:null,
             addCount:[],
-            count:1,
+            count:0,
             showExisting:false
         }
 
@@ -374,7 +367,8 @@ class ProductExpandItem extends Component {
         this.loadProduct(this.props.productId)
         this.setState({
 
-            addCount:[1]
+            addCount:[1],
+            count:1
         })
 
         this.props.loadProducts(this.props.userDetail.token)
@@ -446,7 +440,7 @@ class ProductExpandItem extends Component {
 
                 <>
                     {this.state.product &&
-                   <ProductItemNew item={this.state.product}/>}
+                   <ProductItemNew  hideMore={this.props.hideMore?this.props.hideMore:false} item={this.state.product}/>}
 
 
 
@@ -516,19 +510,6 @@ class ProductExpandItem extends Component {
 
                             <div className="col-12 mt-4" style={{padding:"0!important"}}>
 
-                                {/*<div className="row ">*/}
-                                    {/*<div className="col-7">*/}
-                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
-
-                                    {/*</div>*/}
-                                    {/*<div className="col-3">*/}
-                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
-                                    {/*</div>*/}
-                                    {/*<div className="col-2">*/}
-                                    {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-                                    {/*</div>*/}
-
-                                {/*</div>*/}
 
                                 {this.state.addCount.map((item,index)=>
 

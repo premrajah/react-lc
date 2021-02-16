@@ -378,10 +378,7 @@ class ProductItemNew extends Component {
 
                 <div className={"col-2 "}>
 
-
                     {this.state.images.length>0? <img className={"img-fluid img-list"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
-
-
 
                 </div>
                 <div className={"col-7 pl-2  content-box-listing"}>
@@ -395,8 +392,11 @@ class ProductItemNew extends Component {
                 <div style={{ textAlign: "right" }} className={"col-3"}>
 
                     <p className={"text-gray-light small"}>  {moment(this.props.item.product._ts_epoch_ms).format("DD MMM YYYY")} </p>
-                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}   />
 
+                    {!this.props.hideMore &&
+                    <MoreMenu triggerCallback={(action) => this.callBackResult(action)} delete={this.props.delete}
+                              edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}/>
+                    }
 
                 </div>
             </div>

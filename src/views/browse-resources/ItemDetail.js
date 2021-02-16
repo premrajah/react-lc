@@ -451,7 +451,7 @@ class ItemDetail extends Component {
                      <div className="container " style={{ padding: "0" }}>
 
 
-                        <div className="row no-gutters  justify-content-center listing-row-border mb-4 pb-4">
+                        <div className="row no-gutters  justify-content-center  mb-4 pb-4">
 
                             {/*<div className="floating-back-icon" style={{ margin: "auto" }}>*/}
 
@@ -505,31 +505,31 @@ class ItemDetail extends Component {
 
                                     </div>
 
-                                    <div className="col-12 listing-row-border">
+
+                                    <div className="col-12 ">
 
                                         <div className="row">
                                             <div className="col-7">
                                                 <p><Org orgId={this.state.item.org_id} /></p>
                                             </div>
 
-                                            <div className="col-3 green-text text-heading text-right">
+                                            <div className="col-5 green-text text-heading text-right">
 
                                                 {this.state.item.listing.price ?<>GBP {this.state.item.listing.price.value}</> : "Free"}
 
                                             </div>
 
-                                            <div className="col-2  text-right">
-                                                {/*<Tooltip title="Delete">  <EditIcon/> </Tooltip>*/}
-                                                {/*<Tooltip title={"Delete"} > <DeleteIcon/> </Tooltip>*/}
 
-                                            </div>
                                         </div>
 
                                     </div>
 
-                                    <div className={"col-12"}>
 
-                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+                                    <div className={"col-12 pt-3"}>
+                                        <div className={"listing-row-border"}></div>
+
+
+                                        <div className="row justify-content-start pb-3 pt-3 ">
 
                                         <div className="col-auto">
                                             <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.state.item.listing.description}
@@ -538,9 +538,15 @@ class ItemDetail extends Component {
                                         </div>
 
                                     </div>
+                                        <div className={"listing-row-border"}></div>
+
+
                                     </div>
 
+
+
                                 </div>
+
 
                                 <div className="row  justify-content-start search-container  pb-4">
 
@@ -604,7 +610,7 @@ class ItemDetail extends Component {
                                     </div>
                                 </div>
 
-                                {this.state.item && <ProductExpandItem hideAddAll={true} productId={this.state.item.product_id.replace("Product/","")}/>}
+                                {this.state.item && <ProductExpandItem hideMore={true} hideAddAll={true} productId={this.state.item.product_id.replace("Product/","")}/>}
 
 
 

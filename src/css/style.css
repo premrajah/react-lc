@@ -2049,6 +2049,22 @@ background: transparent;
 	border: 2px solid #07AB88;
 }
 
+.white-border-btn,.white-border-btn:hover{
+
+	color: #ffffff!important;
+	/*border-radius: 25px!important;*/
+
+	font-size: 16px;
+	padding: .270rem .75rem;
+
+	border: 2px solid #ffffff;
+	background: transparent;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+
 .white-text{
 
 	color: white;
@@ -2115,10 +2131,11 @@ background: transparent;
 }
 
 .home-icon{max-width: 41px;}
-.blue-btn-border{
+.blue-btn-border,.blue-btn-border:hover{
 
 	border: 2px solid #3C3972;
 color: #3C3972;
+	text-decoration: none;
 
 }
 
@@ -3118,4 +3135,11 @@ a.page-link:hover{
 .click-item{
 
 	cursor: pointer;
+}
+
+.time-text{
+	position: absolute;
+	left: 55px;
+	bottom: -22px;
+	font-size: 12px;
 }

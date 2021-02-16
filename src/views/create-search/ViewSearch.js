@@ -765,10 +765,10 @@
                                         <div className="col-md-8 col-sm-12 col-xs-12 pb-5 pt-5 pl-4 mt-4">
 
                                             <div className="row ">
-                                                <div className="col-12 ">
+                                                <div className="col-12 mt-2">
 
 
-                                            <div className="row justify-content-start pb-3 pt-4 listing-row-border">
+                                            <div className="row justify-content-start pb-3 pt-4 ">
 
                                                 <div className="col-12 ">
                                                     <div className="row">
@@ -778,17 +778,6 @@
                                                     </h5>
                                                     </div>
                                                         <div className="col-4 text-right">
-                                                            {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
-
-
-                                                            {/*<EditIcon className={"mr-2"} onClick={this.showEdit}  />*/}
-
-                                                            {/*/!*<FileCopyIcon  className={"mr-2"} onClick={this.showProductDuplicate}  />*!/*/}
-
-                                                            {/*<DeleteIcon className={""} onClick={this.showProductEdit}  />*/}
-
-                                                            {/*<MoreMenu/>*/}
-
 
                                                             <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={true}  />
 
@@ -803,10 +792,12 @@
                                                     <Org orgId={this.state.createSearchData.org._id} orgDescription={this.state.createSearchData.org.description} />
                                                 </div>
 
+
                                             </div>
+                                                    <div className={"listing-row-border"}></div>
 
 
-                                            <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+                                            <div className="row justify-content-start pb-3 pt-3 ">
 
                                                 <div className="col-auto">
                                                     <p style={{ fontSize: "16px" }} className={"text-gray-light "}>{this.state.createSearchData.search.description}
@@ -816,59 +807,44 @@
 
                                             </div>
 
-                                            <div className="row justify-content-start pb-4 pt-3 ">
-                                                <div className="col-auto">
-                                                    <h6 className={""}>Item Details
-                                                    </h6>
+                                                    <div className={"listing-row-border"}></div>
 
-                                                </div>
-                                            </div>
 
-                                            <div className={"container pb-5"}>
+                                                <div className="row  justify-content-start search-container pt-3 pb-3 ">
 
-                                                <div className="row  justify-content-start search-container  pb-3 ">
-                                                    <div className={"col-1"}>
-                                                        <img className={"icon-about"} src={ListIcon} alt="" />
-                                                    </div>
                                                     <div className={"col-auto"}>
 
-                                                        <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Category</p>
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.category}, {this.state.createSearchData.search.type} </p>
                                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.type}</p>*/}
 
                                                     </div>
                                                 </div>
                                                 <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-1"}>
-                                                        <img className={"icon-about"} src={AmountIcon} alt="" />
-                                                    </div>
+
                                                     <div className={"col-auto"}>
 
-                                                        <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Amount</p>
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Amount</p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.volume} {this.state.createSearchData.search.units}</p>
                                                     </div>
                                                 </div>
 
 
                                                 <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-1"}>
-                                                        <img className={"icon-about"} src={StateIcon} alt="" />
-                                                    </div>
+
                                                     <div className={"col-auto"}>
 
-                                                        <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">State</p>
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.state}</p>
                                                     </div>
                                                 </div>
 
 
                                                 <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-1"}>
-                                                        <img className={"icon-about"} src={CalenderIcon} alt="" />
-                                                    </div>
+
                                                     <div className={"col-auto"}>
 
-                                                        <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required From </p>
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Required From </p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.search.require_after_epoch_ms).format("DD MMM YYYY")}</p>
 
 
@@ -877,12 +853,10 @@
                                                 </div>
 
                                                 <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-1"}>
-                                                        <img className={"icon-about"} src={CalenderIcon} alt="" />
-                                                    </div>
+
                                                     <div className={"col-auto"}>
 
-                                                        <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Required by </p>
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Required by </p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{moment(this.state.createSearchData.search.expire_after_epoch_ms).format("DD MMM YYYY")}</p>
 
 
@@ -890,12 +864,10 @@
                                                     </div>
                                                 </div>
                                                 <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-1"}>
-                                                        <img className={"icon-about"} src={MarkerIcon} alt="" />
-                                                    </div>
+
                                                     <div className={"col-auto"}>
 
-                                                        <p style={{ fontSize: "18px" }} className="text-mute text-gray-light mb-1">Location  </p>
+                                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Location  </p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.site.name},{this.state.createSearchData.site.contact}</p>
                                                         <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.site.address}</p>
                                                     </div>
@@ -915,13 +887,13 @@
                                                     </div>
                                                 </div>
 
-                                                {this.state.createSearchData && <ProductExpandItem hideAddAll={true} productId={this.state.createSearchData.product._id.replace("Product/","")}/>}
+                                                {this.state.createSearchData && <ProductExpandItem hideMore={true} hideAddAll={true} productId={this.state.createSearchData.product._id.replace("Product/","")}/>}
 
                                                 </>}
 
 
 
-                                            </div>
+
 
                                             </div>
                                             </div>

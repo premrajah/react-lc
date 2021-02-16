@@ -31,7 +31,6 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
-import InputLabel from '@material-ui/core/InputLabel';
 
 
 
@@ -64,10 +63,7 @@ class ProductDetailCycle extends Component {
             errorRegister:false,
             siteSelected:null,
             showDeletePopUp:false,
-            showReleaseProduct:false,
-            showOrgForm:false,
-            orgs:[],
-            email:null
+
         }
 
 
@@ -79,120 +75,13 @@ class ProductDetailCycle extends Component {
         this.showRegister=this.showRegister.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
-        this.showReleaseProduct=this.showReleaseProduct.bind(this)
-        this.showOrgForm=this.showOrgForm.bind(this)
-        this.handleSubmitOrg=this.handleSubmitOrg.bind(this)
-        this.getOrgs=this.getOrgs.bind(this)
 
 
 
     }
 
 
-    handleChangeEmail(field, e) {
 
-        this.setState({ email: e.target.value});
-
-    }
-
-    getOrgs() {
-
-
-        axios.get(baseUrl + "org/all",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        ).then((response) => {
-
-                var response = response.data;
-
-
-
-
-
-
-                this.setState({
-
-                    orgs: response.data
-                })
-
-            },
-            (error) => {
-
-
-
-
-
-
-            }
-        );
-
-    }
-    handleSubmitOrg () {
-
-
-        const email = this.state.email
-
-
-
-        // var dataStep= {
-        //     "step": {
-        //         "email": name,
-        //         "description": description,
-        //         "type":  type,
-        //         // "predecessor": null,
-        //         "notes": notes
-        //     },
-        //     "cycle_id": this.slug,
-        //     "org_id": data.get("org")
-        //
-        // }
-
-
-
-
-        axios.get(baseUrl + "org/email/"+email
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then(res => {
-
-
-                this.showOrgForm()
-                this.getOrgs()
-
-
-            }).catch(error => {
-
-
-
-
-
-
-
-        });
-
-
-    }
-
-
-
-    showOrgForm(){
-
-
-
-
-        this.setState({
-
-            showOrgForm:!this.state.showOrgForm
-        })
-
-    }
 
 
 
@@ -512,19 +401,7 @@ class ProductDetailCycle extends Component {
 
     }
 
-    showReleaseProduct(){
 
-
-
-        this.getSites()
-        this.setState({
-
-            showReleaseProduct:!this.state.showReleaseProduct
-        })
-
-
-
-    }
 
     getQrCode() {
 
@@ -734,23 +611,8 @@ class ProductDetailCycle extends Component {
     componentDidMount() {
 
 
-        this.getOrgs()
+
         this.getQrCode()
-
-
-        // if (this.props.item.listing&&this.props.isLoggedIn){
-        //
-        //     this.getListing()
-        //
-        // }
-        //
-        //
-        //
-        // if (this.props.item.searches.length>0){
-        //
-        //     this.getSearches()
-        //
-        // }
 
 
         
@@ -802,21 +664,7 @@ class ProductDetailCycle extends Component {
                                         </>
                                         }
 
-                                        {true&&
-                                        <>
-                                            <div className={"col-12 pb-5 mb-5 "}>
 
-                                                <div className="row justify-content-start pb-3 pt-3 ">
-
-                                                    <div className="col-12 ">
-                                                        <button  onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Release this product</button>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </>
-                                        }
 
 
                                         <div className={"col-12 pb-5 mb-5"}>
@@ -935,14 +783,14 @@ class ProductDetailCycle extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {/*<div className="row  justify-content-start search-container  pb-2">*/}
 
-                                                <div className={"col-auto"}>
+                                                {/*<div className={"col-auto"}>*/}
 
-                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
-                                                </div>
-                                            </div>
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
 
 
 
@@ -1280,278 +1128,7 @@ class ProductDetailCycle extends Component {
 
 
 
-                        <Modal className={"loop-popup"}
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showReleaseProduct} onHide={this.showReleaseProduct} animation={false}>
 
-                            <ModalBody>
-
-
-
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Release Product: {this.props.item.product.name}</p>
-
-                                    </div>
-                                </div>
-
-                                <form onSubmit={this.showReleaseProduct}  >
-
-                                    <div className={"row justify-content-center p-2"}>
-
-
-                                        <div className={"col-12 text-center mt-2"}>
-
-
-                                            <div className={"row justify-content-center"}>
-
-
-                                                <div className={"col-12 text-center mb-4"}>
-
-                                                    <FormControl variant="outlined" className={classes.formControl}>
-                                                        <InputLabel htmlFor="outlined-age-native-simple">Select Organisation</InputLabel>
-                                                        <Select
-                                                            native
-                                                            label={"Select Organisation"}
-                                                            inputProps={{
-                                                                name: 'org',
-                                                                id: 'outlined-age-native-simple',
-                                                            }}
-                                                        >
-
-                                                            <option value={null}>Select</option>
-
-                                                            {this.state.orgs.map((item) =>
-
-                                                                <option value={item._key}>{item.name}</option>
-
-                                                            )}
-
-                                                        </Select>
-                                                    </FormControl>
-
-
-                                                    <p>Is the company you are looking for doesn't exist ?<span className={"green-link-url "} onClick={this.showOrgForm}>{this.state.showOrgForm?"Hide ":"Add Company"}</span></p>
-
-
-                                                    {this.state.showOrgForm &&
-
-                                                    <>
-
-                                                        <div className={"row m-2 container-gray"}>
-                                                            <div className={"col-12 text-left mt-2 "}>
-
-                                                                <p className={"text-bold text-blue"}>Add Company's Email</p>
-
-                                                            </div>
-                                                            <div className={"col-12 text-center "}>
-
-                                                                <>
-                                                                    <div className={"row justify-content-center"}>
-
-                                                                        <div className={"col-12 text-center mb-2"}>
-
-                                                                            <TextField id="outlined-basic"
-                                                                                       onChange={this.handleChangeEmail.bind(this, "email")}
-                                                                                       variant="outlined" fullWidth={true}
-                                                                                       name={"email"} type={"text"}
-
-                                                                                       value={this.state.email}
-                                                                            />
-
-                                                                        </div>
-
-                                                                        <div className={"col-12 text-center mb-2"}>
-
-                                                                            <button onClick={this.handleSubmitOrg}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}  >Submit </button>
-
-
-
-                                                                        </div>
-
-                                                                    </div>
-                                                                </>
-                                                            </div>
-                                                        </div>
-                                                    </>
-                                                    }
-
-                                                </div>
-
-
-                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                                    <div className={"custom-label text-bold  mb-1 text-left"}>Select Site To Register Product</div>
-
-
-
-
-
-
-                                                    <FormControl variant="outlined" className={classes.formControl}>
-
-
-
-
-                                                        <Select
-                                                            name={"deliver"}
-                                                            native
-                                                            // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                            inputProps={{
-                                                                name: 'site',
-                                                                id: 'outlined-age-native-simple',
-                                                            }}
-                                                        >
-
-
-                                                            <option value={null}>Select</option>
-
-                                                            {this.state.sites.map((item) =>
-
-                                                                <option key={Math.random() * 100} value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                                            )}
-
-                                                        </Select>
-
-                                                    </FormControl>
-
-
-                                                    {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
-
-
-                                                    <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
-
-
-
-                                                </div>
-
-
-                                                {this.state.errorRegister &&    <div className={"row justify-content-center"}>
-
-
-                                                    <div className={"col-12"} style={{textAlign:"center"}}>
-
-
-                                                        <Alert key={"alert"} variant={"danger"}>
-                                                            {this.state.errorRegister}
-                                                        </Alert>
-
-                                                    </div>
-
-                                                </div>}
-
-                                                {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
-
-                                                    <div className={"row justify-content-center"}>
-
-
-                                                        <div className={"col-6"} style={{textAlign:"center"}}>
-
-                                                            <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
-
-
-                                                        </div>
-                                                        <div className={"col-6"} style={{textAlign:"center"}}>
-                                                            <p onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>}
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                </form>
-
-
-                                {this.state.showSubmitSite &&
-
-                                <div className={"row justify-content-center p-2"}>
-                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
-
-                                    </div>
-                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <form onSubmit={this.handleSubmitSite}>
-                                                    <div className="row no-gutters justify-content-center ">
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
-
-                                                            {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                            {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                                                            {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                        </div>
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
-
-                                                            {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
-
-                                                            {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                                        </div>
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
-
-                                                            {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
-                                                        </div>
-
-
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-
-                                </div>}
-
-
-
-                            </ModalBody>
-
-                        </Modal>
 
                     </>
                   

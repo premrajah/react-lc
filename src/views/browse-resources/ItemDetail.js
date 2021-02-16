@@ -559,14 +559,14 @@ class ItemDetail extends Component {
                                     </div>
                                 </div>
 
-                                <div className="row  justify-content-start search-container  pb-4">
+                                {/*<div className="row  justify-content-start search-container  pb-4">*/}
 
-                                    <div className={"col-auto"}>
+                                    {/*<div className={"col-auto"}>*/}
 
-                                        <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                        <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id.substr(4)} </p>
-                                    </div>
-                                </div>
+                                        {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
+                                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id.substr(4)} </p>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
 
 
                                 <div className="row  justify-content-start search-container  pb-4">

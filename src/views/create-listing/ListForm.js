@@ -365,11 +365,12 @@ class ListForm extends Component {
 
             this.setState({
 
-                siteSelected: this.state.sites.filter((item)=> item._key===e.target.value)[0]
+                siteSelected: this.props.siteList.filter((item)=> item._key===e.target.value)[0]
 
             })
 
-
+            console.log("site selected")
+            console.log(this.props.siteList.filter((item)=> item._key===e.target.value)[0])
 
         }
 

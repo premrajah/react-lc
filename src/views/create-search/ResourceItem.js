@@ -33,10 +33,12 @@ class ResourceItem extends Component {
     }
 
     componentWillMount() {
-
+        console.log("Resource item")
+        console.log(this.props.item)
     }
 
     componentDidMount() {
+
 
 
 
@@ -136,7 +138,8 @@ class ResourceItem extends Component {
 
                     <div className={"col-2"}>
 
-                        {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+
+                        {this.props.item.listing.artifacts&&this.props.item.listing.artifacts.length>0? <img className={"img-fluid"} src={this.props.item.listing.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                     </div>
                     <div className={"col-4 pl-3 content-box-listing"}>
@@ -188,6 +191,7 @@ class ResourceItem extends Component {
 
 
                 <div className={"col-2"}>
+                    
 
                     {this.props.item.artifacts&&this.props.item.artifacts.length>0? <img className={"img-fluid img-list"} src={this.props.item.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 

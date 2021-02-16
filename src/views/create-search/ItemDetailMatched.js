@@ -421,8 +421,6 @@ class ItemDetailMatch extends Component {
                                     {this.state.item && <ProductExpandItem hideMore={true} hideAddAll={true} productId={this.state.item.listing.product._id.replace("Product/","")}/>}
 
 
-
-
                                 </div>
                             </div>
                         </div>

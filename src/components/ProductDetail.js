@@ -390,6 +390,10 @@ class ProductDetail extends Component {
 
             this.submitDuplicateProduct()
         }
+        else if (action==="release"){
+
+            this.showReleaseProduct()
+        }
     }
 
 
@@ -1095,21 +1099,21 @@ class ProductDetail extends Component {
                                         }
 
 
-                                        {true&&
-                                        <>
-                                            <div className={"col-12 pb-5 mb-5 "}>
+                                        {/*{true&&*/}
+                                        {/*<>*/}
+                                            {/*<div className={"col-12 pb-5 mb-5 "}>*/}
 
-                                                <div className="row justify-content-start pb-3 pt-3 ">
+                                                {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
 
-                                                    <div className="col-12 ">
-                                                        <button  onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Release this product</button>
-                                                    </div>
-                                                </div>
+                                                    {/*<div className="col-12 ">*/}
+                                                        {/*<button  onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Release this product</button>*/}
+                                                    {/*</div>*/}
+                                                {/*</div>*/}
 
 
-                                            </div>
-                                        </>
-                                        }
+                                            {/*</div>*/}
+                                        {/*</>*/}
+                                        {/*}*/}
                                             <div className={"col-12 pb-5 mb-5"}>
 
 
@@ -1163,7 +1167,7 @@ class ProductDetail extends Component {
 
                                     <div className="row justify-content-start pb-3  ">
 
-                                        <div className="col-12 mt-2">
+                                        <div className="col-12 ">
 
                                             <div className="row">
 
@@ -1184,7 +1188,7 @@ class ProductDetail extends Component {
                                                     {/*<FileCopyIcon  onClick={this.showProductDuplicate}  />*/}
 
 
-                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={false} duplicate={true} edit={true}  />
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} release={true} delete={false} duplicate={true} edit={true}  />
 
 
 

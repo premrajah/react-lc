@@ -30,8 +30,20 @@ class Messages extends Component {
         console.log('[Messages.js] ', key)
     };
 
+    interval;
+    updateMessages() {
+        this.interval = setInterval(() => {
+            this.getMessages(this.props.userDetail);
+        }, 10000);
+    }
+
     componentDidMount() {
         this.getMessages(this.props.userDetail);
+        this.updateMessages();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval)
     }
 
     render() {
@@ -47,7 +59,7 @@ class Messages extends Component {
                               return (
                                   <MessageItem
                                       item={item}
-                                      key={Date.now()}
+                                      key={item.message._ts_epoch_ms + Math.random()}
                                       onDelete={this.handleDeleteMessage}
                                   />
                               );

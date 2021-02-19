@@ -37,7 +37,7 @@ const MessageItem = ({ item, onDelete }) => {
                         <div>
                             {orgs.map((org) => {
                                 return (
-                                    <span>
+                                    <span key={org.org._ts_epoch_ms + Math.random()}>
                                         <span className="mr-1">
                                             {org.actor === "message_from" ? "From:" : "To:"}
                                         </span>

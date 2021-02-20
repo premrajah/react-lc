@@ -95,7 +95,9 @@ class ProductTreeItemView extends Component {
 
                 treeItem = {
                     id: list[i].product._key,
-                    name: list[i].listing ? list[i].product.name + "(NA)" : list[i].product.name,
+                    // name: list[i].listing ? list[i].product.name + "(NA)" : list[i].product.name,
+                    name: list[i].listing ? list[i].product.name  : list[i].product.name,
+
                     sub_products: [],
                     canSelect: list[i].listing ? false : true
                 }
@@ -199,9 +201,10 @@ class ProductTreeItemView extends Component {
             <>
                 <div  style={{ "marginTop": "5px"}} >
 
-                    <p> {this.props.item.sub_products.length>0 ?(this.state.open?<MinusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"}/>:<PlusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"} />):<span className={"mr-4"}></span>}
+                    <p> {this.props.item.sub_products.length>0 ?
+                        (this.state.open?<MinusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"}/>:<PlusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"} />):<span className={"mr-4"}></span>}
 
-                        <span data-id={this.props.item.id} onClick={this.props.item.canSelect&&this.setSelected} className={this.props.selected===this.props.item.id?"tree-view-item-selected tree-view-item":"tree-view-item"}>{this.props.item.name} - {this.props.item.sub_products.length+" Sub Products"}</span></p>
+                        <span data-id={this.props.item.id} onClick={this.props.item.canSelect&&this.setSelected} className={this.props.item.canSelect?(this.props.selected===this.props.item.id?"tree-view-item-selected tree-view-item":"tree-view-item"):"tree-view-item text-mute"}>{this.props.item.name} - {this.props.item.sub_products.length+" Sub Products"}</span></p>
                     {this.state.open &&this.state.tree.map((item) =>
                         <>
                         <div  style={{"marginLeft": "25px", "marginTop": "5px",marginBottom:"5px"}} >

@@ -3143,3 +3143,15 @@ a.page-link:hover{
 	bottom: -22px;
 	font-size: 12px;
 }
+
+
+.full-width-product-popup{
+	position: fixed;
+	width: 100%;
+	max-width: 100%!important;
+	z-index: 100000000!important;
+	right: 0;
+	top: 70px;
+	background: white;
+	margin:  auto!important;
+}

@@ -31,6 +31,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
+import MoreMenu from './MoreMenu'
 
 
 
@@ -75,6 +76,7 @@ class ProductDetailCycle extends Component {
         this.showRegister=this.showRegister.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.callBackResult=this.callBackResult.bind(this)
 
 
 
@@ -83,7 +85,19 @@ class ProductDetailCycle extends Component {
 
 
 
+    callBackResult(action){
 
+
+        if (action==="report"){
+
+            this.showProductEdit()
+        }
+
+        else if (action==="register"){
+
+            this.showRegister()
+        }
+    }
 
 
 
@@ -724,14 +738,20 @@ class ProductDetailCycle extends Component {
 
                                             <div className="row">
 
-                                                <div className="col-12">
+                                                <div className="col-8">
 
-                                            <h4 className={"blue-text text-heading"}>
-                                                {this.props.item.product.name}
-                                            </h4>
+                                                    <h4 className={"blue-text text-heading"}>
+                                                        {this.props.item.product.name}
+                                                    </h4>
                                                 </div>
 
+                                                <div className="col-4 text-right">
+
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} report={true} register={this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id?true:false}  />
+
                                                 </div>
+
+                                            </div>
 
                                         </div>
 

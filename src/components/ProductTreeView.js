@@ -142,7 +142,9 @@ class ProductTreeView extends Component {
 
                 var treeItem;
 
-                treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
+                // treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
+                treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name :list[i].product.name,
+
                     sub_products: [] , canSelect:list[i].listing?false:true}
 
 

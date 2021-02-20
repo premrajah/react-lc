@@ -219,6 +219,9 @@ class MoreMenu extends Component {
                             {this.props.duplicate &&     <MenuItem data-action={"duplicate"} onClick={this.handleClose}>Duplicate</MenuItem>}
                             {this.props.remove &&     <MenuItem data-action={"remove"} onClick={this.handleClose}>Remove</MenuItem>}
                             {this.props.release &&     <MenuItem data-action={"release"} onClick={this.handleClose}>Release</MenuItem>}
+                            {this.props.register &&     <MenuItem data-action={"register"} onClick={this.handleClose}>Register</MenuItem>}
+                            {this.props.report &&     <MenuItem data-action={"report"} onClick={this.handleClose}>Report</MenuItem>}
+
 
                         </Menu>
                     </Button>

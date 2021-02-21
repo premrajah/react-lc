@@ -31,6 +31,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
+import MoreMenu from './MoreMenu'
 
 
 
@@ -75,15 +76,49 @@ class ProductDetailCycle extends Component {
         this.showRegister=this.showRegister.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.callBackResult=this.callBackResult.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
 
 
 
     }
 
+    phonenumber(inputtxt) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
 
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
 
 
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
+
+    callBackResult(action){
+
+
+        if (action==="report"){
+
+            this.showProductEdit()
+        }
+
+        else if (action==="register"){
+
+            this.showRegister()
+        }
+    }
 
 
 
@@ -139,6 +174,11 @@ class ProductDetailCycle extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
 
 
 
@@ -161,7 +201,6 @@ class ProductDetailCycle extends Component {
         this.setState({ errorsSite: errors });
         return formIsValid;
     }
-
 
 
     handleChangeSite(field, e) {
@@ -724,14 +763,20 @@ class ProductDetailCycle extends Component {
 
                                             <div className="row">
 
-                                                <div className="col-12">
+                                                <div className="col-8">
 
-                                            <h4 className={"blue-text text-heading"}>
-                                                {this.props.item.product.name}
-                                            </h4>
+                                                    <h4 className={"blue-text text-heading"}>
+                                                        {this.props.item.product.name}
+                                                    </h4>
                                                 </div>
 
+                                                <div className="col-4 text-right">
+
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} report={true} register={this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id?true:false}  />
+
                                                 </div>
+
+                                            </div>
 
                                         </div>
 

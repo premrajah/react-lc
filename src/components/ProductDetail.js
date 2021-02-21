@@ -44,7 +44,7 @@ class ProductDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: null,
+            item: this.props.item,
             showPopUp:false,
             subProducts:[],
             listingLinked:null,
@@ -85,10 +85,37 @@ class ProductDetail extends Component {
         this.showOrgForm=this.showOrgForm.bind(this)
         this.handleSubmitOrg=this.handleSubmitOrg.bind(this)
         this.getOrgs=this.getOrgs.bind(this)
+        this.loadInfo=this.loadInfo.bind(this)
+        this.loadProduct=this.loadProduct.bind(this)
+
+        this.phonenumber = this.phonenumber.bind(this)
 
 
 
     }
+
+    phonenumber(inputtxt) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
 
     showReleaseProduct(){
 
@@ -344,13 +371,26 @@ class ProductDetail extends Component {
 
 
 
+        if (!this.props.item){
+
+            this.loadProduct(this.props.productId)
+
+        }else{
 
 
-        this.getQrCode()
 
+            this.setState({
+                item:newProps.item
+            })
 
+            this.getQrCode()
 
             this.getSubProducts()
+
+            this.loadInfo()
+
+        }
+
 
 
     }
@@ -402,7 +442,7 @@ class ProductDetail extends Component {
     submitDuplicateProduct = event => {
 
 
-        axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
+        axios.post(baseUrl + "product/"+this.state.item.product._key+"/duplicate",
             {
             }
             , {
@@ -440,7 +480,7 @@ class ProductDetail extends Component {
 
     deleteItem() {
 
-        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+        axios.delete(baseUrl + "listing/"+this.state.item.listing._key,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -543,6 +583,11 @@ class ProductDetail extends Component {
         if (!fields["phone"]) {
             formIsValid = false;
             errors["phone"] = "Required";
+        }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
         }
 
 
@@ -703,7 +748,7 @@ class ProductDetail extends Component {
 
                 {
                     site_id: site,
-                    product_id: this.props.item.product._key,
+                    product_id: this.state.item.product._key,
                 }
                 , {
                     headers: {
@@ -727,8 +772,6 @@ class ProductDetail extends Component {
             });
 
     }
-
-
 
 
 
@@ -809,6 +852,8 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
+
+
         this.interval = setInterval(() => {
 
 
@@ -820,7 +865,7 @@ class ProductDetail extends Component {
 
             this.setState({
 
-                productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
+                productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`
 
             })
 
@@ -837,7 +882,7 @@ class ProductDetail extends Component {
 
         // var siteKey = (this.props.item.site_id).replace("Site/","")
 
-        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
+        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","") ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -875,7 +920,7 @@ class ProductDetail extends Component {
     getSearches() {
 
 
-        var searches = this.props.item.searches
+        var searches = this.state.item.searches
 
         for (var i = 0; i < searches.length; i++) {
 
@@ -923,10 +968,10 @@ class ProductDetail extends Component {
 
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
+        if (this.state.item.sub_products&&this.state.item.sub_products.length>0&&this.props.isLoggedIn) {
 
 
-        var subProductIds = this.props.item.sub_products
+        var subProductIds = this.state.item.sub_products
 
         for (var i = 0; i < subProductIds.length; i++) {
 
@@ -1026,35 +1071,109 @@ class ProductDetail extends Component {
 
         // this.getSubProducts()
 
+
+
+    }
+
+
+
+
+    loadProduct(productKey){
+
+
+        if (productKey)
+
+            axios.get(baseUrl + "product/" + productKey+"/expand",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseAll = response.data;
+
+
+
+
+                        this.setState({
+
+                            item: responseAll.data
+                        })
+
+                        this.loadInfo()
+
+
+                    },
+                    (error) => {
+
+                    }
+                );
+
+
+
     }
 
     componentDidMount() {
 
-        this.getOrgs()
-        this.getQrCode()
+
+        if (!this.props.item){
+
+            this.loadProduct(this.props.productId)
+
+        }else{
+
+            // alert("props exists")
+
+            console.log("here")
+            console.log(this.props.item)
 
 
-        if (this.props.item.listing&&this.props.isLoggedIn){
+            this.setState({
+                item:this.props.item
+            })
 
-            this.getListing()
+            this.loadInfo()
 
         }
 
 
-
-        if (this.props.item.searches.length>0){
-
-            this.getSearches()
-
-        }
-
-
-        
-        if (this.props.showRegister&&this.props.isLoggedIn&&this.props.userDetail)
-        this.getSites()
 
     }
 
+
+
+    loadInfo(){
+
+        if (this.state.item) {
+
+            // alert("loading info")
+            // console.log(this.state.item)
+            this.getOrgs()
+            this.getQrCode()
+
+
+            if (this.state.item.listing && this.props.isLoggedIn) {
+
+                this.getListing()
+
+            }
+
+
+            if (this.state.item && this.state.item.searches.length > 0) {
+
+                this.getSearches()
+
+            }
+
+
+            if (this.state.showRegister && this.state.isLoggedIn && this.state.userDetail)
+                this.getSites()
+
+
+        }
+    }
 
 
 
@@ -1066,6 +1185,10 @@ class ProductDetail extends Component {
         return (
             
                     <>
+                        
+
+
+{this.state.item ? <>
 
 
                             <div className="row no-gutters  justify-content-center">
@@ -1074,15 +1197,15 @@ class ProductDetail extends Component {
 
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
-                                    {this.props.item&&this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
-                                    <ImagesSlider images={this.props.item.artifacts} /> :
+                                    {this.state.item&&this.state.item.artifacts&&this.state.item.artifacts.length > 0 ?
+                                    <ImagesSlider images={this.state.item.artifacts} /> :
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
 
                                         </div>
 
 
-                                        {this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id&&
+                                        {this.state.isLoggedIn &&  !this.state.hideRegister && this.state.userDetail.orgId!==this.state.item.org._id&&
                                         <>
                                         <div className={"col-12 pb-5 mb-5"}>
 
@@ -1139,12 +1262,12 @@ class ProductDetail extends Component {
                                                     <div className="col-12 border-box">
 
                                                         <div className="d-flex flex-column justify-content-center align-items-center" >
-                                                            {this.state.productQrCode&&<img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} style={{width: '90%'}}/>}
+                                                            {this.state.productQrCode&&<img className="" src={this.state.productQrCode} alt={this.state.item.product.name} title={this.state.item.product.name} style={{width: '90%'}}/>}
 
                                                             <div className="d-flex justify-content-center w-100">
                                                                 {this.props.hideRegister &&   <p className={"green-text"}>
-                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}>[Product Provenance]</Link>
-                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.state.item.product._key}>[Product Provenance]</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.state.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
                                                                 </p>}
                                                             </div>
                                                         </div>
@@ -1174,7 +1297,7 @@ class ProductDetail extends Component {
                                                 <div className="col-8">
 
                                             <h4 className={"blue-text text-heading"}>
-                                                {this.props.item.product.name}
+                                                {this.state.item.product.name}
                                             </h4>
                                                 </div>
 
@@ -1202,7 +1325,7 @@ class ProductDetail extends Component {
 
                                             <div className="row">
                                                 <div className="col-7">
-                                                    <p> <Org orgId={this.props.item.org._id} /></p>
+                                                    <p> <Org orgId={this.state.item.org._id} /></p>
                                                 </div>
 
 
@@ -1219,7 +1342,7 @@ class ProductDetail extends Component {
                                     <div className="row justify-content-start pb-3 pt-3 ">
 
                                         <div className="col-auto">
-                                            <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.props.item.product.description}
+                                            <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.state.item.product.description}
                                             </p>
 
                                         </div>
@@ -1240,7 +1363,7 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state} {this.props.item.product.volume} {this.props.item.product.units} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.category}, {this.state.item.product.type}, {this.state.item.product.state} {this.state.item.product.volume} {this.state.item.product.units} </p>
 
                                                 </div>
                                             </div>
@@ -1256,44 +1379,44 @@ class ProductDetail extends Component {
 
 
 
-                                            {this.props.item&&this.props.item.product.year_of_making &&   <div className="row  justify-content-start search-container  pb-2">
+                                            {this.state.item&&this.state.item.product.year_of_making &&   <div className="row  justify-content-start search-container  pb-2">
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Year Of Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item.product.year_of_making}</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.product.year_of_making}</p>
                                                 </div>
                                             </div>}
 
 
 
 
-                                            {this.props.item&&this.props.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
+                                            {this.state.item&&this.state.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
 
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.model} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.sku.model} </p>
 
 
                                                 </div>
                                             </div>}
 
-                                            {this.props.item&&this.props.item.product.sku.serial && <div className="row  justify-content-start search-container  pb-2">
+                                            {this.state.item&&this.state.item.product.sku.serial && <div className="row  justify-content-start search-container  pb-2">
 
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.serial} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.sku.serial} </p>
 
                                                 </div>
                                             </div>}
 
 
-                                            {this.props.item&&this.props.item.product.sku.brand && <div className="row  justify-content-start search-container  pb-2 ">
+                                            {this.state.item&&this.state.item.product.sku.brand && <div className="row  justify-content-start search-container  pb-2 ">
 
                                                 <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.brand} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.sku.brand} </p>
 
 
                                                 </div>
@@ -1304,7 +1427,7 @@ class ProductDetail extends Component {
 
                                                 <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.state} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state} </p>
                                                 </div>
                                             </div>
 
@@ -1318,16 +1441,16 @@ class ProductDetail extends Component {
 
                                             <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
 
-                                                <span data-parent={this.props.item.product._key} onClick={this.showProductSelection} >Link Sub Product</span>
+                                                <span data-parent={this.state.item.product._key} onClick={this.showProductSelection} >Link Sub Product</span>
 
                                             </p>
 
-                                            {this.props.item.sub_products.length > 0 &&
+                                            {this.state.item.sub_products.length > 0 &&
 
                                                 <>
 
-                                            { this.props.item.sub_products.map((item) =>
-                                                <ProductItemNew  parentId={this.props.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
+                                            { this.state.item.sub_products.map((item) =>
+                                                <ProductItemNew goToLink={true} history={this.props.history}  parentId={this.state.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
                                             )}
 
                                             </>
@@ -1375,7 +1498,7 @@ class ProductDetail extends Component {
 
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>
-                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Register Product: {this.props.item.product.name}</p>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Register Product: {this.state.item.product.name}</p>
 
                                     </div>
                                 </div>
@@ -1573,7 +1696,7 @@ class ProductDetail extends Component {
                                     </div>
 
 
-                               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+                               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.state.item.product._key}/>
 
 
                         </Modal>
@@ -1589,7 +1712,7 @@ class ProductDetail extends Component {
 
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>
-                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Release Product: {this.props.item.product.name}</p>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Release Product: {this.state.item.product.name}</p>
 
                                     </div>
                                 </div>
@@ -1854,7 +1977,7 @@ class ProductDetail extends Component {
 
 
 
-
+</>:<div className={"loading-screen"}> Loading .... </div>}
 
 
 

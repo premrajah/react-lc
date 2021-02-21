@@ -86,7 +86,7 @@
                 fieldsSite: {},
                 errorsSite: {},
                 units: [],
-                progressBar: 33,
+                progressBar: 50,
 
                 productSelected: null,
                 nextBlue: false,
@@ -149,13 +149,24 @@
 
         phonenumber(inputtxt) {
 
-            var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
-            if(inputtxt.match(phoneno)) {
+            var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+            var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+            if(inputtxt.match(phoneNoWithCode)) {
                 return true;
             }
+            else if (inputtxt.match(phoneWithZero)) {
+                return true
+
+            }
+
             else {
                 return false;
             }
+
         }
 
 
@@ -536,14 +547,18 @@
 
                 if (this.handleValidation()) {
 
+                    window.scrollTo(0, 0)
+
                     this.setState({
 
                         active: 4,
                         page: 2,
-                        progressBar: 66
+                        progressBar: 100
                     })
 
                 }
+
+
 
             }
 
@@ -551,6 +566,8 @@
 
 
                 if (this.handleValidationAddDetail()) {
+
+                    window.scrollTo(0, 0)
 
                     this.setState({
 
@@ -566,7 +583,7 @@
 
 
             else if (this.state.page === 3) {
-
+                window.scrollTo(0, 0)
 
                 this.setState({
 
@@ -1859,7 +1876,7 @@
                                         {this.state.productSelected&&
                                         <>
 
-                                            <ProductExpandItem hideAddAll={true} productId={this.state.productSelected}/>
+                                            <ProductExpandItem hideMore={true}  hideAddAll={true} productId={this.state.productSelected}/>
 
                                         </>
                                         }
@@ -2232,16 +2249,16 @@
                                         <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
 
                                             <div className="col-auto">
-                                                {this.state.page > 1 && this.state.page < 4 && <button type="button" onClick={this.handleBack}
+                                                {this.state.page > 1 && this.state.page < 3 && <button type="button" onClick={this.handleBack}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                                     Back
 
                                         </button>}
                                             </div>
-                                            <div className="col-auto" style={{ margin: "auto" }}>
+                                            {this.state.page < 3 && <div className="col-auto" style={{ margin: "auto" }}>
 
-                                                <p className={"blue-text"}> Page {this.state.page}/3</p>
-                                            </div>
+                                                <p className={"blue-text"}> Page {this.state.page}/2</p>
+                                            </div>}
                                             <div className="col-auto">
 
                                                 {this.state.page === 1 &&
@@ -2254,10 +2271,10 @@
 
                                                 {this.state.page === 2 &&
                                                     <button onClick={this.handleNext} type="button"
-                                                        className={this.state.nextBlueAddDetail ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
-                                                        Next
+                                                        className={this.state.nextBlueAddDetail? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 " : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "}>
+                                                        Create Search
 
-                                        </button>}
+                                                      </button>}
 
 
                                                 {this.state.page === 3 &&this.state.success &&

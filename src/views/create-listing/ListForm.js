@@ -171,13 +171,24 @@ class ListForm extends Component {
 
     phonenumber(inputtxt) {
 
-        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
-        if(inputtxt.match(phoneno)) {
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
             return true;
         }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
         else {
             return false;
         }
+
     }
 
 
@@ -1162,7 +1173,7 @@ class ListForm extends Component {
 
                 <div className={this.state.page === 1 ? "" : "d-none"}>
 
-                    <div className="container add-listing-container   pb-5 pt-5">
+                    <div className="container add-listing-container   pb-5 pt-2">
                         <div className="row no-gutters">
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>Create a Listing
@@ -1173,7 +1184,7 @@ class ListForm extends Component {
 
 
                         <div onSubmit={this.createListing} className={"mb-5"}>
-                            <div className="row no-gutters justify-content-center mt-5">
+                            <div className="row no-gutters justify-content-center mt-2">
                                 <div className="col-12">
                                     <div className={"custom-label text-bold text-blue mb-1"}>Title</div>
 
@@ -1219,7 +1230,7 @@ class ListForm extends Component {
 
                 <div className={this.state.page === 2 ? "" : "d-none"}>
 
-                    <div className="container add-listing-container   pb-5 pt-5">
+                    <div className="container add-listing-container   pb-5 pt-2">
                         <div className="row no-gutters">
                             <div className="col-auto">
                                 <h3 className={"blue-text text-heading"}>Add Details
@@ -1230,7 +1241,7 @@ class ListForm extends Component {
 
 
                         <div onSubmit={this.createListing} className={"mb-5"}>
-                            <div className="row no-gutters justify-content-center mt-5">
+                            <div className="row no-gutters justify-content-center mt-2">
 
                                 <div className="col-12 mt-4">
 

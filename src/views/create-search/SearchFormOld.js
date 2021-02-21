@@ -274,11 +274,6 @@
 
 
 
-
-
-
-
-
                     this.setState({
 
                         products: responseAll

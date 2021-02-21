@@ -183,7 +183,7 @@ class ItemDetailPreview extends Component {
                                             <h5 className={"text-blue"}>Product Linked</h5>
                                         </div>
                                         <div className={"col-12"}>
-                                            <ProductExpandItem hideAddAll={true} productId={this.props.fields["product"]}/>
+                                            <ProductExpandItem  hideMore={true} hideAddAll={true} productId={this.props.fields["product"]}/>
                                         </div>
 
                                     </div>

@@ -139,6 +139,8 @@ class ProductForm extends Component {
         this.showSubmitSite=this.showSubmitSite.bind(this)
         this.checkListable=this.checkListable.bind(this)
         this.showMoreDetails=this.showMoreDetails.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
+
 
 
 
@@ -456,6 +458,29 @@ class ProductForm extends Component {
     }
 
 
+    phonenumber(inputtxt) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
+
     handleValidationSite() {
 
 
@@ -490,6 +515,11 @@ class ProductForm extends Component {
         if (!fields["phone"]) {
             formIsValid = false;
             errors["phone"] = "Required";
+        }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
         }
 
 

@@ -178,7 +178,7 @@ class MySearch extends Component {
                         {this.state.items.map((item) =>
 
 
-                            <SearchItem triggerCallback={()=>this.callBackResult()}  item={item} />
+                            <SearchItem showMoreMenu={true} triggerCallback={()=>this.callBackResult()}  item={item} />
 
 
                         )}

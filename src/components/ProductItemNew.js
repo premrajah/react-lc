@@ -85,13 +85,14 @@ class ProductItemNew extends Component {
     }
     
     
-    goToProduct(){
+    goToProduct(event){
 
-        if (this.props.history){
+        if (this.props.goToLink){
         //
         //     this.props.history.push(this.props.item&&this.props.item.product?"/product/"+this.props.item.product._key:"/product/"+this.props.item._key)
         }else{
 
+            event.preventDefault()
             this.showProductHide()
         }
 
@@ -401,8 +402,8 @@ class ProductItemNew extends Component {
 {this.props.item&&this.props.item.product?
 
     <>
-    <Link to={!this.props.history&&"/product/"+this.props.item.product._key}>
-        <div  onClick={this.goToProduct} className="row no-gutters justify-content-center mt-4 mb-4 ">
+    <Link onClick={ this.goToProduct } to={"/product/"+this.props.item.product._key}>
+        <div   className="row no-gutters justify-content-center mt-4 mb-4 ">
 
 
                 <div className={"col-2 "}>
@@ -435,8 +436,8 @@ class ProductItemNew extends Component {
 
 :
     <>
-           <Link to={this.props.history&&"/product/"+this.props.item._key}>
-               <div onClick={this.goToProduct} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+           <Link  onClick={ this.goToProduct }  to={"/product/"+this.props.item._key}>
+               <div  className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
                    <div className={"col-2 "}>
@@ -492,7 +493,7 @@ class ProductItemNew extends Component {
 
 {this.state.showProductHide  &&
 
-         <div className={"container pb-5 mb-5 full-width-product-popup"}>
+         <div className={"container pl-5 mb-5 full-width-product-popup"}>
 
                <div className="row">
                    <div className="col-12">

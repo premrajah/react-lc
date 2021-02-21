@@ -199,7 +199,7 @@ class ProductTreeItemView extends Component {
         return (
 
             <>
-                <div  style={{ "marginTop": "5px"}} >
+                <div className={"tree-item-container"} style={{ "padding": "5px"}} >
 
                     <p> {this.props.item.sub_products.length>0 ?
                         (this.state.open?<MinusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"}/>:<PlusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"} />):<span className={"mr-4"}></span>}
@@ -207,7 +207,7 @@ class ProductTreeItemView extends Component {
                         <span data-id={this.props.item.id} onClick={this.props.item.canSelect&&this.setSelected} className={this.props.item.canSelect?(this.props.selected===this.props.item.id?"tree-view-item-selected tree-view-item":"tree-view-item"):"tree-view-item text-mute"}>{this.props.item.name} - {this.props.item.sub_products.length+" Sub Products"}</span></p>
                     {this.state.open &&this.state.tree.map((item) =>
                         <>
-                        <div  style={{"marginLeft": "25px", "marginTop": "5px",marginBottom:"5px"}} >
+                        <div  style={{"marginLeft": "25px", "padding": "5px",marginBottom:"5px"}} >
 
                         <ProductTreeItemView selected={this.props.selected} triggerCallback={(productId)=>this.props.triggerCallback(productId)}  item={item}  token={this.props.token}  />
 

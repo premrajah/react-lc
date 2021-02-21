@@ -77,12 +77,33 @@ class ProductDetailCycle extends Component {
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
         this.callBackResult=this.callBackResult.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
 
 
 
     }
 
+    phonenumber(inputtxt) {
 
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
 
 
     callBackResult(action){
@@ -153,6 +174,11 @@ class ProductDetailCycle extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
 
 
 
@@ -175,7 +201,6 @@ class ProductDetailCycle extends Component {
         this.setState({ errorsSite: errors });
         return formIsValid;
     }
-
 
 
     handleChangeSite(field, e) {

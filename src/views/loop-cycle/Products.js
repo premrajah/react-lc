@@ -196,7 +196,7 @@ class Products extends Component {
 
                             {/*<Link to={"/product/" + item.product._key}>*/}
 
-                               <ProductItem   delete={false} edit={true} remove={false} duplicate={true}   item={item} />
+                               <ProductItem   goToLink={true} delete={false} edit={true} remove={false} duplicate={true}   item={item} />
 
                             {/*</Link>*/}
                             </>

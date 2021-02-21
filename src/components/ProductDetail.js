@@ -44,7 +44,7 @@ class ProductDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: null,
+            item: this.props.item,
             showPopUp:false,
             subProducts:[],
             listingLinked:null,
@@ -88,9 +88,34 @@ class ProductDetail extends Component {
         this.loadInfo=this.loadInfo.bind(this)
         this.loadProduct=this.loadProduct.bind(this)
 
+        this.phonenumber = this.phonenumber.bind(this)
+
 
 
     }
+
+    phonenumber(inputtxt) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
 
     showReleaseProduct(){
 
@@ -352,8 +377,10 @@ class ProductDetail extends Component {
 
         }else{
 
+
+
             this.setState({
-                item:this.props.item
+                item:newProps.item
             })
 
             this.getQrCode()
@@ -556,6 +583,11 @@ class ProductDetail extends Component {
         if (!fields["phone"]) {
             formIsValid = false;
             errors["phone"] = "Required";
+        }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
         }
 
 
@@ -820,7 +852,7 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
-        alert("get qr code")
+
 
         this.interval = setInterval(() => {
 
@@ -1094,6 +1126,10 @@ class ProductDetail extends Component {
 
             // alert("props exists")
 
+            console.log("here")
+            console.log(this.props.item)
+
+
             this.setState({
                 item:this.props.item
             })
@@ -1111,6 +1147,9 @@ class ProductDetail extends Component {
     loadInfo(){
 
         if (this.state.item) {
+
+            // alert("loading info")
+            // console.log(this.state.item)
             this.getOrgs()
             this.getQrCode()
 
@@ -1149,7 +1188,9 @@ class ProductDetail extends Component {
                         
 
 
-{this.state.item && <>
+{this.state.item ? <>
+
+
                             <div className="row no-gutters  justify-content-center">
 
                                 <div className="col-md-4 col-sm-12 col-xs-12 ">
@@ -1409,7 +1450,7 @@ class ProductDetail extends Component {
                                                 <>
 
                                             { this.state.item.sub_products.map((item) =>
-                                                <ProductItemNew history={this.props.history}  parentId={this.state.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
+                                                <ProductItemNew goToLink={true} history={this.props.history}  parentId={this.state.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
                                             )}
 
                                             </>
@@ -1936,7 +1977,7 @@ class ProductDetail extends Component {
 
 
 
-</>}
+</>:<div className={"loading-screen"}> Loading .... </div>}
 
 
 

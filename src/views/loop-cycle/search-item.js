@@ -151,7 +151,7 @@ class SearchItem extends Component {
         return (
 
             <Link to={"/search/" + this.props.item.search._key}>
-            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+            <div className="row no-gutters justify-content-center  mb-2 mt-2      pb-4">
 
                 <div className={!this.state.previewImage?"col-2 search-column-left":"col-2 "}>
                     {this.state.previewImage?<img className={"img-fluid img-list"} src={this.state.previewImage} alt="" />
@@ -180,7 +180,7 @@ class SearchItem extends Component {
                         {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
                         </p>
 
-                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={false}  />
+                    {this.props.showMoreMenu &&  <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={true} duplicate={false} edit={false}  />}
 
 
                 </div>

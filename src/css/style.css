@@ -2772,7 +2772,7 @@ color: #3C3972;
 .search-column-left {
 	background: #eee;
 	text-align: center;
-	display:table;
+	/*display:table;*/
 }
 .search-column-left a{
 	margin: auto;
@@ -3154,4 +3154,24 @@ a.page-link:hover{
 	top: 70px;
 	background: white;
 	margin:  auto!important;
+	max-height: 100%;
+	min-height: 100%;
+	overflow: scroll;
+}
+
+.full-width-product-popup .btn-close{
+
+	position: relative!important;
+	right: 0px;
+}
+
+.loading-screen{
+
+	text-align: center;
+	/*width: 100%;*/
+	margin: auto;
+	position: absolute;
+	left: 50%;
+	top: 100px;
+
 }

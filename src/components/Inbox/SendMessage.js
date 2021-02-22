@@ -10,8 +10,8 @@ class SendMessage extends Component {
     state = {
         allOrgs: [],
         selectedOrgs: [],
-        message: '',
-        messageStatus: '',
+        message: "",
+        messageStatus: "",
     };
 
     getALlOrgs = () => {
@@ -33,15 +33,20 @@ class SendMessage extends Component {
                 headers: { Authorization: "Bearer " + this.props.userDetail.token },
             })
             .then((response) => {
-
-                if(response.status === 200) {
-                    this.setState({messageStatus: <p className="text-success">Message sent successfully!</p>})
-                    this.getALlOrgs()
+                if (response.status === 200) {
+                    this.setState({
+                        messageStatus: <p className="text-success">Message sent successfully!</p>,
+                    });
+                    this.getALlOrgs();
                 }
             })
             .catch((error) => {
-                this.setState({messageStatus: <p className="text-warning">Unable to send message at this time.</p>})
-                this.getALlOrgs()
+                this.setState({
+                    messageStatus: (
+                        <p className="text-warning">Unable to send message at this time.</p>
+                    ),
+                });
+                this.getALlOrgs();
             });
     };
 
@@ -55,8 +60,7 @@ class SendMessage extends Component {
             selectedOrgs.push(selectedOption.item(i).value);
         }
 
-        this.setState({ selectedOrgs: selectedOrgs, messageStatus: '' });
-
+        this.setState({ selectedOrgs: selectedOrgs, messageStatus: "" });
     };
 
     handleMessageSubmission = (e) => {
@@ -72,7 +76,7 @@ class SendMessage extends Component {
             };
 
             this.sendChatMessage(payload);
-            this.setState({ selectedOrgs: [], message: '' }); //reset fields
+            this.setState({ selectedOrgs: [], message: "" }); //reset fields
         } else {
             return;
         }
@@ -119,7 +123,9 @@ class SendMessage extends Component {
                                                 rows={3}
                                                 style={{ borderRadius: 5 }}
                                                 value={this.state.message}
-                                                onChange={(e) => this.setState({ message: e.target.value })}
+                                                onChange={(e) =>
+                                                    this.setState({ message: e.target.value })
+                                                }
                                             />
                                         </Form.Group>
                                         <div className="d-flex justify-content-end">
@@ -130,7 +136,8 @@ class SendMessage extends Component {
                                                 type="submit"
                                                 className="btn btn-green"
                                                 disabled={
-                                                    this.state.selectedOrgs.length > 0 && this.state.message
+                                                    this.state.selectedOrgs.length > 0 &&
+                                                    this.state.message
                                                         ? false
                                                         : true
                                                 }>

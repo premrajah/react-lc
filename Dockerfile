@@ -1,6 +1,6 @@
 ## Stage 0, "builder", based on Node.js, to build and compile the frontend
 # base image
-FROM node:alpine as builder
+FROM node:12.16.2-alpine as builder
 
 RUN echo "NODE_VERSION" $NODE_VERSION
 RUN echo "YARN_VERSION" $YARN_VERSION

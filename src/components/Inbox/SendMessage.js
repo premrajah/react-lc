@@ -96,7 +96,7 @@ class SendMessage extends Component {
                                 <CardContent>
                                     <Form onSubmit={this.handleMessageSubmission}>
                                         <Form.Group>
-                                            <Form.Label>Select Organisations to message</Form.Label>
+                                            <Form.Label>Select organisations to message</Form.Label>
                                             <Form.Control
                                                 as="select"
                                                 multiple

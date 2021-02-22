@@ -111,7 +111,7 @@ class ProductDetailCycle extends Component {
 
         if (action==="report"){
 
-            this.showProductEdit()
+            // this.showProductEdit()
         }
 
         else if (action==="register"){

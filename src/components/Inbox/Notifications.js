@@ -41,7 +41,6 @@ class Notifications extends Component {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    console.log("[Notification] ", "key ", key, "res ", response);
                     this.getNotifications(this.props.userDetail);
                 }
             })

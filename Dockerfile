@@ -2,6 +2,9 @@
 # base image
 FROM node:alpine as builder
 
+RUN echo "NODE_VERSION" $NODE_VERSION
+RUN echo "YARN_VERSION" $YARN_VERSION
+
 # set working directory
 WORKDIR /app
 

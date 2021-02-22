@@ -54,7 +54,7 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
-class ListEditForm extends Component {
+class ListEditFormOld extends Component {
 
 
     constructor(props) {
@@ -2311,4 +2311,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(ListEditForm);
+)(ListEditFormOld);

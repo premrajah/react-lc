@@ -122,6 +122,8 @@ class ItemDetail extends Component {
             showEdit:!this.state.showEdit,
 
         })
+
+        this.getResources()
     }
 
 
@@ -661,7 +663,7 @@ class ItemDetail extends Component {
                             </div>
 
 
-                            <ListEditForm  triggerCallback={this.callBackResult} listingId={this.state.item.listing._key}/>
+                            <ListEditForm  triggerCallback={this.showEdit} listingId={this.state.item.listing._key}/>
 
 
                         </Modal>

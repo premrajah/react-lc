@@ -171,6 +171,7 @@ class ListForm extends Component {
 
     phonenumber(inputtxt) {
 
+
         var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
 
@@ -698,6 +699,7 @@ class ListForm extends Component {
                 "value": this.state.free?0:this.state.fields["price"],
                 "currency": "gbp"
             },
+
         }
 
 

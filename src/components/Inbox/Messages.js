@@ -69,11 +69,7 @@ class Messages extends Component {
     render() {
         return (
             <>
-                <div className="row mb-3">
-                    <div className="col">
-                        <SendMessage />
-                    </div>
-                </div>
+                <SendMessage />
 
                 <hr/>
 

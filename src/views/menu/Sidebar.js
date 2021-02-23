@@ -181,6 +181,8 @@ class Sidebar extends Component {
                                             className="white-text list-group-item list-group-item-action">My Products </Link>}
                                         {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/approve"}
                                             className="white-text list-group-item list-group-item-action">Approvals </Link>}
+                                        {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/issues"}
+                                            className="white-text list-group-item list-group-item-action">Issues </Link>}
                                         {this.props.isLoggedIn && <Link onClick={this.toggleMenu} to={"/statistics"}
                                             className="white-text list-group-item list-group-item-action">Statistics</Link>}
                                     </div>

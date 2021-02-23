@@ -69,6 +69,7 @@ import FindResourcePage from "./views/browse-resources/FindResourcePage";
 import ProductArchive from "./views/product-archive/ProductArchive";
 import ProductTreeView from "./components/ProductTreeView";
 import Approvals from "./views/approvals/Approvals";
+import Issues from "./views/issues/Issues";
 
 
 
@@ -114,6 +115,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         <LoggedInRoute exact path="/my-products" component={Products} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
+                        <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />

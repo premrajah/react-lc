@@ -65,8 +65,8 @@ class IssueSubmitForm extends Component {
                     product_id: this.state.productId,
                     title: this.state.titleSelectedValue,
                     description: this.state.descriptionSelectedValue,
-                    priority: this.state.prioritySelectedValue ? this.state.prioritySelectedValue : {},
-                    stage: this.state.stageSelectedValue ? this.state.stageSelectedValue : {},
+                    priority: this.state.prioritySelectedValue,
+                    stage: this.state.stageSelectedValue,
                 },
             };
 

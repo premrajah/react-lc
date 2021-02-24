@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {FormControl, FormHelperText, MenuItem, Select, TextField} from "@material-ui/core";
-import {Form} from "react-bootstrap";
+import {FormControl, MenuItem, Select, TextField} from "@material-ui/core";
 
 class IssueSubmitForm extends Component {
 
@@ -11,26 +10,52 @@ class IssueSubmitForm extends Component {
         editForm: {
             title: this.props.edit ? this.props.issue.title : '',
             description: this.props.edit ? this.props.issue.description : '',
-            priority: this.props.edit ? this.props.issue.priority : '',
-            stage: this.props.edit? this.props.issue.stage : ''
+            priority: this.props.edit ? this.props.issue.priority : 'low',
+            stage: this.props.edit? this.props.issue.stage : 'open'
         },
-        priorityValues: ['low', 'medium', 'high'],
-        stageValues: ['open', 'progress', 'closed']
+        titleSelectedValue: '',
+        descriptionSelectedValue: '',
+        prioritySelectedValue: '',
+        stageSelectedValue: '',
 
-    }
-
-    componentDidMount() {
-        console.log('ISF> ', this.state.issue)
     }
 
     handlePrioritySelect = (e) => {
-        this.setState({editForm: {priority: e}})
+        if(!e) return;
+        this.setState({prioritySelectedValue: e.target.value});
+    }
+
+    handleStageSelect = (e) => {
+        if(!e) return;
+        this.setState({stageSelectedValue: e.target.value});
+    }
+
+    handleTitleValue = (e) => {
+        if(!e) return;
+        this.setState({titleSelectedValue: e.target.value});
+    }
+
+    handleDescriptionValue = (e) => {
+        if(!e) return;
+        this.setState({descriptionSelectedValue: e.target.value});
     }
 
     handleIssueFormSubmit = (e) => {
         if(!e) return;
         e.preventDefault();
-        console.log(this.state.editForm)
+
+        if(this.state.edit && this.state.editForm) {
+            const payload = {
+                id: this.state.issue._id,
+                update : {
+                    title: this.state.titleSelectedValue,
+                    description: this.state.descriptionSelectedValue,
+                    priority: this.state.prioritySelectedValue
+                }
+            }
+
+            console.log(payload);
+        }
     }
 
     render() {
@@ -43,9 +68,8 @@ class IssueSubmitForm extends Component {
                                 className="mb-3"
                                 variant="outlined"
                                 label="Title"
-                                name="title"
-                                value={this.state.editForm.title}
-                                onChange={(e) => this.setState({editForm: {title: e.target.value}}) }
+                                defaultValue={this.state.editForm.title}
+                                onChange={(e) => this.handleTitleValue(e)}
                                     />
                         </FormControl>
 
@@ -54,11 +78,34 @@ class IssueSubmitForm extends Component {
                                 className="mb-3"
                                 variant="outlined"
                                 label="Description"
-                                name="description"
-                                value={this.state.editForm.description}
-                                onChange={(e) => this.setState({editForm: {title: e.target.value}})}
+                                defaultValue={this.state.editForm.description}
+                                onChange={(e) => this.handleDescriptionValue(e)}
                                 />
                         </FormControl>
+
+                        <FormControl>
+                            <Select
+                                defaultValue={this.state.editForm.priority ? this.state.editForm.priority : 'low'}
+                                onChange={this.handlePrioritySelect}
+                            >
+                                <MenuItem value="low">low</MenuItem>
+                                <MenuItem value="medium">medium</MenuItem>
+                                <MenuItem value="high">high</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        {
+                            !this.props.edit && <FormControl>
+                            <Select
+                                defaultValue={this.state.editForm.stage ? this.state.editForm.stage : 'open'}
+                                onChange={this.handleStageSelect}
+                            >
+                                <MenuItem value="open">open</MenuItem>
+                                <MenuItem value="progress">progress</MenuItem>
+                                <MenuItem value="closed">closed</MenuItem>
+                            </Select>
+                        </FormControl>
+                        }
 
 
                         <div className="mt-3 d-flex justify-content-center">

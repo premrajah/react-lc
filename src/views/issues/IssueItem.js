@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import Org from "../../components/Org/Org";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
 
-const IssueItem = ({ item }) => {
+const IssueItem = ({ item, onSubmitted }) => {
     const { artifacts, creator, issue, product, service_agent } = item;
     const [editModal, setEditModal] = useState(false);
 
@@ -33,6 +33,10 @@ const IssueItem = ({ item }) => {
 
     const handleEdit =(e) => {
         handleShowEditModal();
+    }
+
+    const handleIssueSubmitted = () => {
+        onSubmitted();
     }
 
 
@@ -167,7 +171,7 @@ const IssueItem = ({ item }) => {
                     {issue.title ? <Modal.Title>Edit Issue: {issue.title}</Modal.Title> : <Modal.Title>New Issue</Modal.Title>}
                 </Modal.Header>
                 <Modal.Body>
-                    <IssueSubmitForm issue={issue} edit productId={product.product._id}  />
+                    <IssueSubmitForm issue={issue} edit productId={product.product._id} onSubmitted={handleIssueSubmitted} />
                 </Modal.Body>
             </Modal>
         </>

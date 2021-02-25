@@ -56,10 +56,12 @@ class ProductDetail extends Component {
             errorsSite: {},
             showSubmitSite:false,
             errorRegister:false,
+            errorRelease:false,
             siteSelected:null,
             showProductEdit:false,
             productDuplicate:false,
             showReleaseProduct:false,
+            showReleaseSuccess:false,
             showOrgForm:false,
             orgs:[],
             email:null
@@ -117,19 +119,7 @@ class ProductDetail extends Component {
     }
 
 
-    showReleaseProduct(){
 
-
-
-        this.getSites()
-        this.setState({
-
-            showReleaseProduct:!this.state.showReleaseProduct
-        })
-
-
-
-    }
 
     handleChangeEmail(field, e) {
 
@@ -238,6 +228,10 @@ class ProductDetail extends Component {
     showReleaseProduct(){
 
 
+        this.setState({
+
+            errorRelease:false
+        })
 
         this.getSites()
         this.setState({
@@ -249,100 +243,7 @@ class ProductDetail extends Component {
 
     }
 
-    handleChangeEmail(field, e) {
 
-        this.setState({ email: e.target.value});
-
-    }
-
-    getOrgs() {
-
-
-        axios.get(baseUrl + "org/all",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        ).then((response) => {
-
-                var response = response.data;
-
-
-
-
-
-
-                this.setState({
-
-                    orgs: response.data
-                })
-
-            },
-            (error) => {
-
-
-
-
-
-
-            }
-        );
-
-    }
-    handleSubmitOrg () {
-
-
-        const email = this.state.email
-
-
-
-        // var dataStep= {
-        //     "step": {
-        //         "email": name,
-        //         "description": description,
-        //         "type":  type,
-        //         // "predecessor": null,
-        //         "notes": notes
-        //     },
-        //     "cycle_id": this.slug,
-        //     "org_id": data.get("org")
-        //
-        // }
-
-
-
-
-        axios.get(baseUrl + "org/email/"+email
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then(res => {
-
-
-                this.showOrgForm()
-                this.getOrgs()
-
-
-            }).catch(error => {
-
-
-
-
-
-
-
-        });
-
-
-    }
-
-
-
-    interval
 
 
     componentWillUnmount() {
@@ -456,8 +357,6 @@ class ProductDetail extends Component {
 
 
             }).catch(error => {
-
-
 
             // this.setState({
             //
@@ -711,7 +610,10 @@ class ProductDetail extends Component {
 
 
 
-    submitRegisterProduct = event => {
+
+
+
+    submitReleaseProduct = event => {
 
 
 
@@ -726,50 +628,52 @@ class ProductDetail extends Component {
 
 
 
-            const form = event.currentTarget;
+        const form = event.currentTarget;
 
 
 
+        this.setState({
+            btnLoading: true
+        })
 
+        const data = new FormData(event.target);
 
-            this.setState({
-                btnLoading: true
-            })
-
-            const data = new FormData(event.target);
-
-            const site = data.get("site")
-
+        const site = data.get("org")
 
 
 
+        axios.post(baseUrl + "release",
 
-            axios.post(baseUrl + "product/register",
-
-                {
-                    site_id: site,
-                    product_id: this.state.item.product._key,
+            {
+                org_id: site,
+                product_id: this.props.item.product._key,
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
-                .then(res => {
+            })
+            .then(res => {
 
-                    this.toggleSite()
-                    this.showRegister()
-
-                }).catch(error => {
 
 
 
                 this.setState({
 
-                    errorRegister:error.response.data.errors[0].message
+                    showReleaseSuccess:true
                 })
 
-            });
+
+            }).catch(error => {
+
+
+
+            this.setState({
+
+                errorRelease:error.response.data.errors[0].message
+            })
+
+        });
 
     }
 
@@ -1488,198 +1392,7 @@ class ProductDetail extends Component {
 
 
 
-                        <Modal className={"loop-popup"}
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showRegister} onHide={this.showRegister} animation={false}>
 
-                            <ModalBody>
-
-
-
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Register Product: {this.state.item.product.name}</p>
-
-                                    </div>
-                                </div>
-
-                                <form onSubmit={this.submitRegisterProduct}>
-
-                                <div className={"row justify-content-center p-2"}>
-
-
-                                    <div className={"col-12 text-center mt-2"}>
-
-
-                                        <div className={"row justify-content-center"}>
-
-
-                                            <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                                <div className={"custom-label text-bold  mb-1 text-left"}>Select Site To Register Product</div>
-
-
-                                                <FormControl variant="outlined" className={classes.formControl}>
-
-                                                    <Select
-                                                        name={"deliver"}
-                                                        native
-                                                        // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                        inputProps={{
-                                                            name: 'site',
-                                                            id: 'outlined-age-native-simple',
-                                                        }}
-                                                    >
-
-
-                                                        <option value={null}>Select</option>
-
-                                                        {this.state.sites.map((item) =>
-
-                                                            <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                                        )}
-
-                                                    </Select>
-
-                                                </FormControl>
-
-
-                                                {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
-
-
-                                                <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
-
-
-
-                                            </div>
-
-
-                                            {this.state.errorRegister &&    <div className={"row justify-content-center"}>
-
-
-                                                <div className={"col-12"} style={{textAlign:"center"}}>
-
-
-                                                    <Alert key={"alert"} variant={"danger"}>
-                                                    {this.state.errorRegister}
-                                                    </Alert>
-
-                                                </div>
-
-                                            </div>}
-
-                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
-
-                                                <div className={"row justify-content-center"}>
-
-
-                                                <div className={"col-6"} style={{textAlign:"center"}}>
-
-                                                <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
-
-
-                                            </div>
-                                            <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
-                                            </div>
-
-                                                </div>
-
-                                            </div>}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                </form>
-
-
-                                {this.state.showSubmitSite &&
-
-                                <div className={"row justify-content-center p-2"}>
-                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
-
-                                    </div>
-                                <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <form onSubmit={this.handleSubmitSite}>
-                                                <div className="row no-gutters justify-content-center ">
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
-
-                                                        {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                        {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                                                        {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                    </div>
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
-
-                                                        {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
-
-                                                        {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                                    </div>
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
-
-                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
-                                                    </div>
-
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-                                </div>}
-
-
-
-                            </ModalBody>
-
-                        </Modal>
 
 
 
@@ -1717,258 +1430,153 @@ class ProductDetail extends Component {
                                     </div>
                                 </div>
 
-                                <form onSubmit={this.showReleaseProduct}  >
+                                {!this.state.showReleaseSuccess ? <form onSubmit={this.submitReleaseProduct}>
 
-                                    <div className={"row justify-content-center p-2"}>
-
-
-                                        <div className={"col-12 text-center mt-2"}>
+                                        <div className={"row justify-content-center p-2"}>
 
 
-                                            <div className={"row justify-content-center"}>
+                                            <div className={"col-12 text-center mt-2"}>
 
 
-                                                <div className={"col-12 text-center mb-4"}>
-
-                                                    <FormControl variant="outlined" className={classes.formControl}>
-                                                        <InputLabel htmlFor="outlined-age-native-simple">Select Organisation</InputLabel>
-                                                        <Select
-                                                            native
-                                                            label={"Select Organisation"}
-                                                            inputProps={{
-                                                                name: 'org',
-                                                                id: 'outlined-age-native-simple',
-                                                            }}
-                                                        >
-
-                                                            <option value={null}>Select</option>
-
-                                                            {this.state.orgs.map((item) =>
-
-                                                                <option value={item._key}>{item.name}</option>
-
-                                                            )}
-
-                                                        </Select>
-                                                    </FormControl>
+                                                <div className={"row justify-content-center"}>
 
 
-                                                    <p>Is the company you are looking for doesn't exist ?<span className={"green-link-url "} onClick={this.showOrgForm}>{this.state.showOrgForm?"Hide ":"Add Company"}</span></p>
+                                                    <div className={"col-12 text-center mb-4"}>
 
 
-                                                    {this.state.showOrgForm &&
+                                                        <FormControl variant="outlined" className={classes.formControl}>
+                                                            <InputLabel htmlFor="outlined-age-native-simple">Select
+                                                                Organisation</InputLabel>
+                                                            <Select
+                                                                native
+                                                                label={"Select Organisation"}
+                                                                inputProps={{
+                                                                    name: 'org',
+                                                                    id: 'outlined-age-native-simple',
+                                                                }}
+                                                            >
 
-                                                    <>
+                                                                <option value={null}>Select</option>
 
-                                                        <div className={"row m-2 container-gray"}>
-                                                            <div className={"col-12 text-left mt-2 "}>
+                                                                {this.state.orgs.map((item) =>
 
-                                                                <p className={"text-bold text-blue"}>Add Company's Email</p>
+                                                                    <option value={item._key}>{item.name}</option>
+                                                                )}
 
-                                                            </div>
-                                                            <div className={"col-12 text-center "}>
+                                                            </Select>
+                                                        </FormControl>
 
-                                                                <>
-                                                                    <div className={"row justify-content-center"}>
 
-                                                                        <div className={"col-12 text-center mb-2"}>
+                                                        <p>Is the company you are looking for doesn't exist ?<span
+                                                            className={"green-link-url "}
+                                                            onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
+                                                        </p>
 
-                                                                            <TextField id="outlined-basic"
-                                                                                       onChange={this.handleChangeEmail.bind(this, "email")}
-                                                                                       variant="outlined" fullWidth={true}
-                                                                                       name={"email"} type={"text"}
 
-                                                                                       value={this.state.email}
-                                                                            />
+                                                        {this.state.showOrgForm &&
+
+                                                        <>
+
+                                                            <div className={"row m-2 container-gray"}>
+                                                                <div className={"col-12 text-left mt-2 "}>
+
+                                                                    <p className={"text-bold text-blue"}>Add Company's
+                                                                        Email</p>
+
+                                                                </div>
+                                                                <div className={"col-12 text-center "}>
+
+                                                                    <>
+                                                                        <div className={"row justify-content-center"}>
+
+                                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                                <TextField id="outlined-basic"
+                                                                                           onChange={this.handleChangeEmail.bind(this, "email")}
+                                                                                           variant="outlined"
+                                                                                           fullWidth={true}
+                                                                                           name={"email"} type={"text"}
+
+                                                                                           value={this.state.email}
+                                                                                />
+
+                                                                            </div>
+
+                                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                                <button onClick={this.handleSubmitOrg}
+                                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Submit
+                                                                                </button>
+
+
+                                                                            </div>
 
                                                                         </div>
-
-                                                                        <div className={"col-12 text-center mb-2"}>
-
-                                                                            <button onClick={this.handleSubmitOrg}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}  >Submit </button>
-
-
-
-                                                                        </div>
-
-                                                                    </div>
-                                                                </>
+                                                                    </>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </>
-                                                    }
-
-                                                </div>
-
-
-                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                                    <div className={"custom-label text-bold  mb-1 text-left"}>Select Site</div>
-
-
-
-
-
-
-                                                    <FormControl variant="outlined" className={classes.formControl}>
-
-
-
-
-                                                        <Select
-                                                            name={"deliver"}
-                                                            native
-                                                            // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                            inputProps={{
-                                                                name: 'site',
-                                                                id: 'outlined-age-native-simple',
-                                                            }}
-                                                        >
-
-
-                                                            <option value={null}>Select</option>
-
-                                                            {this.state.sites.map((item) =>
-
-                                                                <option key={Math.random() * 100} value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                                            )}
-
-                                                        </Select>
-
-                                                    </FormControl>
-
-
-                                                    {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
-
-
-                                                    <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
-
-
-
-                                                </div>
-
-
-                                                {this.state.errorRegister &&    <div className={"row justify-content-center"}>
-
-
-                                                    <div className={"col-12"} style={{textAlign:"center"}}>
-
-
-                                                        <Alert key={"alert"} variant={"danger"}>
-                                                            {this.state.errorRegister}
-                                                        </Alert>
+                                                        </>
+                                                        }
 
                                                     </div>
 
-                                                </div>}
 
-                                                {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
-
+                                                    {this.state.errorRelease &&
                                                     <div className={"row justify-content-center"}>
 
 
-                                                        <div className={"col-6"} style={{textAlign:"center"}}>
+                                                        <div className={"col-12"} style={{ textAlign: "center" }}>
 
-                                                            <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
 
+                                                            <Alert key={"alert"} variant={"danger"}>
+                                                                {this.state.errorRelease}
+                                                            </Alert>
 
                                                         </div>
-                                                        <div className={"col-6"} style={{textAlign:"center"}}>
-                                                            <p onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+
+                                                    </div>}
+
+                                                    <div className={"col-12 justify-content-center "}>
+
+                                                        <div className={"row justify-content-center"}>
+
+
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                                                <button style={{ minWidth: "120px" }}
+                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                                        type={"submit"}>Yes
+                                                                </button>
+
+
+                                                            </div>
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+                                                                <p onClick={this.showReleaseProduct}
+                                                                   className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                            </div>
+
                                                         </div>
 
                                                     </div>
+                                                </div>
 
-                                                </div>}
                                             </div>
 
                                         </div>
 
-                                    </div>
 
+                                    </form> :
 
-                                </form>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your release request has been submitted successfully. Thanks
+                                            </Alert>
 
-
-                                {this.state.showSubmitSite &&
-
-                                <div className={"row justify-content-center p-2"}>
-                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
-
-                                    </div>
-                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                        <div className={"row"}>
-                                            <div className={"col-12"}>
-                                                <form onSubmit={this.handleSubmitSite}>
-                                                    <div className="row no-gutters justify-content-center ">
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
-
-                                                            {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                            {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                                                            {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                        </div>
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
-
-                                                            {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
-
-                                                            {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                                        </div>
-                                                        <div className="col-12 mt-4">
-
-                                                            <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
-
-                                                            {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-
-                                                        </div>
-
-                                                        <div className="col-12 mt-4">
-
-                                                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
-                                                        </div>
-
-
-                                                    </div>
-                                                </form>
-                                            </div>
                                         </div>
-
-
                                     </div>
 
-
-                                </div>}
-
+                                }
 
 
                             </ModalBody>

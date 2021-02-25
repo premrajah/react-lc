@@ -22,19 +22,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import clsx from 'clsx';
-import LangIcon from '../../img/icons/lang.png';
-import MarkerIcon from '../../img/icons/marker.png';
-import CalenderIcon from '../../img/icons/calender.png';
-import HandGreyIcon from '../../img/icons/hand-gray.png';
-import EditGray from '../../img/icons/edit-gray.png';
-import RingGray from '../../img/icons/ring-gray.png';
-import SearchGray from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Paper from '../../img/paper.png';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import FilterImg from '../../img/icons/filter-icon.png';
+
 
 
 

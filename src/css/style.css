@@ -3175,3 +3175,9 @@ a.page-link:hover{
 	top: 100px;
 
 }
+
+.tab-content-listing{
+
+	padding-left: 0;
+	padding-right: 0;
+}

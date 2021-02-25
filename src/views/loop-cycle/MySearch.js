@@ -13,7 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import SearchItem from './search-item'

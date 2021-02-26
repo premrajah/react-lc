@@ -66,6 +66,7 @@ class ProductDetailCycle extends Component {
             siteSelected:null,
             showDeletePopUp:false,
             isVisibleReportModal: false,
+            showRegisterSuccess:false,
 
         }
 
@@ -336,7 +337,7 @@ class ProductDetailCycle extends Component {
 
 
 
-            axios.post(baseUrl + "product/register",
+            axios.post(baseUrl + "register",
 
                 {
                     site_id: site,
@@ -349,11 +350,17 @@ class ProductDetailCycle extends Component {
                 })
                 .then(res => {
 
-                    this.toggleSite()
-                    this.showRegister()
+                    // this.toggleSite()
+                    // this.showRegister()
+
+                    this.setState({
+
+                        showRegisterSuccess:true
+                    })
+
+
 
                 }).catch(error => {
-
 
 
                 this.setState({
@@ -965,98 +972,121 @@ class ProductDetailCycle extends Component {
                                     </div>
                                 </div>
 
+                                {!this.state.showRegisterSuccess?
+
                                 <form onSubmit={this.submitRegisterProduct}>
 
-                                <div className={"row justify-content-center p-2"}>
+                                    <div className={"row justify-content-center p-2"}>
 
 
-                                    <div className={"col-12 text-center mt-2"}>
+                                        <div className={"col-12 text-center mt-2"}>
 
 
-                                        <div className={"row justify-content-center"}>
+                                            <div className={"row justify-content-center"}>
 
 
-                                            <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
 
-                                                <div className={"custom-label text-bold  mb-1 text-left"}>Select Site To Register Product</div>
-
-
-                                                <FormControl variant="outlined" className={classes.formControl}>
-
-                                                    <Select
-                                                        name={"deliver"}
-                                                        native
-                                                        // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                        inputProps={{
-                                                            name: 'site',
-                                                            id: 'outlined-age-native-simple',
-                                                        }}
-                                                    >
+                                                    <div className={"custom-label text-bold  mb-1 text-left"}>Select
+                                                        Site To Register Product
+                                                    </div>
 
 
-                                                        <option value={null}>Select</option>
+                                                    <FormControl variant="outlined" className={classes.formControl}>
 
-                                                        {this.state.sites.map((item) =>
-
-                                                            <option key={Math.random() * 100} value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                                        )}
-
-                                                    </Select>
-
-                                                </FormControl>
-
-
-                                                {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
+                                                        <Select
+                                                            name={"deliver"}
+                                                            native
+                                                            // onChange={this.handleChangeProduct.bind(this, "deliver")}
+                                                            inputProps={{
+                                                                name: 'site',
+                                                                id: 'outlined-age-native-simple',
+                                                            }}
+                                                        >
 
 
-                                                <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
+                                                            <option value={null}>Select</option>
+
+                                                            {this.state.sites.map((item) =>
+
+                                                                <option key={Math.random() * 100}
+                                                                        value={item._key}>{item.name + "(" + item.address + ")"}</option>
+                                                            )}
+
+                                                        </Select>
+
+                                                    </FormControl>
 
 
-
-                                            </div>
-
-
-                                            {this.state.errorRegister &&    <div className={"row justify-content-center"}>
+                                                    {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
 
 
-                                                <div className={"col-12"} style={{textAlign:"center"}}>
+                                                    <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see
+                                                        it on here? <span onClick={this.showSubmitSite}
+                                                                          className={"green-text forgot-password-link text-mute small"}>Add a site</span>
+                                                    </p>
 
-
-                                                    <Alert key={"alert"} variant={"danger"}>
-                                                    {this.state.errorRegister}
-                                                    </Alert>
 
                                                 </div>
 
-                                            </div>}
 
-                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
-
+                                                {this.state.errorRegister &&
                                                 <div className={"row justify-content-center"}>
 
 
-                                                <div className={"col-6"} style={{textAlign:"center"}}>
-
-                                                <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
+                                                    <div className={"col-12"} style={{ textAlign: "center" }}>
 
 
+                                                        <Alert key={"alert"} variant={"danger"}>
+                                                            {this.state.errorRegister}
+                                                        </Alert>
+
+                                                    </div>
+
+                                                </div>}
+
+                                                {!this.state.showSubmitSite &&
+                                                <div className={"col-12 justify-content-center "}>
+
+                                                    <div className={"row justify-content-center"}>
+
+
+                                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                                            <button style={{ minWidth: "120px" }}
+                                                                    className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                                    type={"submit"}>Yes
+                                                            </button>
+
+
+                                                        </div>
+                                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                                            <p onClick={this.showRegister}
+                                                               className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>}
                                             </div>
-                                            <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
-                                            </div>
 
-                                                </div>
-
-                                            </div>}
                                         </div>
 
                                     </div>
 
-                                </div>
 
+                                </form>:
 
-                                </form>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your register request has been submitted successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                }
 
 
                                 {this.state.showSubmitSite &&

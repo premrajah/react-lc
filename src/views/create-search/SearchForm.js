@@ -39,6 +39,7 @@
         KeyboardDatePicker,
         DatePicker
     } from '@material-ui/pickers';
+    import PageHeader from "../../components/PageHeader";
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -515,6 +516,8 @@
         handleBack() {
 
             if (this.state.page === 2) {
+
+                window.scrollTo(0, 0)
 
                 if (this.handleValidation()) {
 
@@ -1611,30 +1614,24 @@
             return (
 
                 <>
+                <Sidebar />
+                <div className="wrapper">
 
-
-                    {/*<div className="container  p-2">*/}
-                    {/*</div>*/}
-                    <Sidebar />
                     <HeaderDark />
 
-                    <div className="container pt-4 p-2 mt-3 ">
-                    </div>
+                    <div className="container  pb-4 pt-4">
+
+                        <PageHeader  pageTitle={"Create A Search"}  />
+
+
 
                     <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
 
-                        <div className="container   pb-5 pt-5">
-                            <div className="row no-gutters mt-3">
-                                <div className="col-auto">
-                                    <h3 className={"blue-text text-heading"}>Create a Search
-                                </h3>
-
-                                </div>
-                            </div>
-
+                        <div className="row">
+                            <div className="col-12">
 
                             <form onSubmit={this.handleSubmit}>
-                                <div className="row no-gutters justify-content-center mt-5">
+                                <div className="row no-gutters justify-content-center mt-3">
                                     <div className="col-12">
 
 
@@ -1802,6 +1799,7 @@
                                     </div>
                                 </div>
                             </form>
+                            </div>
 
                         </div>
                     </div>
@@ -1813,20 +1811,14 @@
                     <div className={this.state.active === 4 ? "" : "d-none"}>
 
 
-                        <div className="container pt-4  pl-2 mt-3 mb-5 pb-5">
+                        <div className="row   pl-2  mb-5 pb-5">
+                            <div className={"col-12"}>
 
-                            <div className="row no-gutters">
+
+                            <div className="row no-gutters ">
                                 <div className="col-auto">
-                                    <h5 className={"blue-text text-heading"}>Create Search
+                                    <h5 className={" text-heading text-bold"}>Add Details
                                     </h5>
-
-                                </div>
-                            </div>
-
-                            <div className="row no-gutters mt-3">
-                                <div className="col-auto">
-                                    <h3 className={"blue-text text-heading"}>Add Details
-                                    </h3>
 
                                 </div>
                             </div>
@@ -1972,6 +1964,7 @@
 
 
                             </div>
+                        </div>
                         </div>
                     </div>
 
@@ -2227,7 +2220,7 @@
 
 
 
-
+</div>
 
 
 
@@ -2405,9 +2398,10 @@
                         </>
                     }
 
-
+                </div>
 
                 </>
+
 
 
 

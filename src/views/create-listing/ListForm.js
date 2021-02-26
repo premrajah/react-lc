@@ -32,6 +32,7 @@ import {
     DatePicker
 } from '@material-ui/pickers';
 import moment from "moment/moment";
+import PageHeader from "../../components/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -236,6 +237,7 @@ class ListForm extends Component {
 
 
         if (this.state.page === 1&&this.handleValidateOne()) {
+            window.scrollTo(0, 0)
 
             this.setState({
 
@@ -248,6 +250,8 @@ class ListForm extends Component {
 
         }
         else  if (this.state.page === 2&&this.handleValidateTwo()) {
+
+            window.scrollTo(0, 0)
 
             this.setState({
 
@@ -316,6 +320,7 @@ class ListForm extends Component {
 
         if (this.state.page === 3) {
 
+            window.scrollTo(0, 0)
             this.setState({
 
                 page: 2,
@@ -327,6 +332,8 @@ class ListForm extends Component {
 
 
         else  if (this.state.page === 2) {
+
+            window.scrollTo(0, 0)
 
             this.setState({
 
@@ -1164,25 +1171,19 @@ class ListForm extends Component {
         return (
 
             <>
+            <Sidebar />
+            <div className="wrapper">
 
-                <Sidebar />
                 <HeaderDark />
 
-                <div className="container pt-4 p-2 mt-5 ">
-
-                </div>
+                <div className="container  pb-4 pt-4">
+                    <PageHeader  pageTitle={"Create A Listing"}  />
 
 
                 <div className={this.state.page === 1 ? "" : "d-none"}>
 
-                    <div className="container add-listing-container   pb-5 pt-2">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Create a Listing
-                            </h3>
-
-                            </div>
-                        </div>
+                    <div className="row add-listing-container   pb-5 pt-2">
+<div className={"col-12"}>
 
 
                         <div onSubmit={this.createListing} className={"mb-5"}>
@@ -1226,17 +1227,21 @@ class ListForm extends Component {
 
                         </div>
 
+</div>
+
                     </div>
                 </div>
 
 
                 <div className={this.state.page === 2 ? "" : "d-none"}>
 
-                    <div className="container add-listing-container   pb-5 pt-2">
+                    <div className="row add-listing-container   pb-5 pt-2">
+
+                        <div className={"col-12"}>
                         <div className="row no-gutters">
                             <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Add Details
-                                </h3>
+                                <h5 className={" text-heading"}>Add Details
+                                </h5>
 
                             </div>
                         </div>
@@ -1413,7 +1418,7 @@ class ListForm extends Component {
 
 
                         </div>
-
+                        </div>
 
 
                     </div>
@@ -1481,6 +1486,10 @@ class ListForm extends Component {
                         </div>
 
                     </div>
+
+                </div>
+
+
 
                 </div>
 
@@ -1616,6 +1625,9 @@ class ListForm extends Component {
                     </div>
                 </>
                 }
+
+
+            </div>
 
 
 

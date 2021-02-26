@@ -57,7 +57,7 @@ class Approvals extends Component {
 
     fetchReleaseRequest(){
 
-        axios.get(baseUrl + "release/responder" ,
+        axios.get(baseUrl + "release" ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -68,9 +68,6 @@ class Approvals extends Component {
 
                     var responseAll = response.data.data;
 
-
-
-                    console.log(responseAll)
 
                     this.setState({
 
@@ -91,7 +88,7 @@ class Approvals extends Component {
     }
     fetchRegisterRequest(){
 
-        axios.get(baseUrl + "register/responder" ,
+        axios.get(baseUrl + "register" ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -101,10 +98,6 @@ class Approvals extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-
-
-
-                    console.log(responseAll)
 
                     this.setState({
 
@@ -127,7 +120,7 @@ class Approvals extends Component {
 
     fetchServiceAgentRequest(){
 
-        axios.get(baseUrl + "service-agent/responder" ,
+        axios.get(baseUrl + "service-agent" ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -137,8 +130,6 @@ class Approvals extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-
-
 
                     console.log(responseAll)
 

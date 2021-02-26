@@ -59,11 +59,11 @@ class ProductDetailCycle extends Component {
             productQrCode:null,
             showRegister:false,
             sites:[],
+            siteSelected:null,
             fieldsSite: {},
             errorsSite: {},
             showSubmitSite:false,
             errorRegister:false,
-            siteSelected:null,
             showDeletePopUp:false,
             isVisibleReportModal: false,
             showRegisterSuccess:false,
@@ -302,8 +302,6 @@ class ProductDetailCycle extends Component {
         }
     }
 
-
-
     submitRegisterProduct = event => {
 
 
@@ -371,10 +369,6 @@ class ProductDetailCycle extends Component {
             });
 
     }
-
-
-
-
 
 
     getSites() {
@@ -468,8 +462,6 @@ class ProductDetailCycle extends Component {
 
     getListing() {
 
-
-        // var siteKey = (this.props.item.site_id).replace("Site/","")
 
         axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
             {
@@ -899,6 +891,14 @@ class ProductDetailCycle extends Component {
                                                 </div>
                                             </div>
 
+                                            <div className="row  justify-content-start search-container  pb-2 ">
+
+                                                <div className={"col-auto"}>
+                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Service Agent</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.state.item.service_agent._id} /> </p>
+                                                </div>
+                                            </div>
+
 
 
                                         </Tab>
@@ -1016,9 +1016,6 @@ class ProductDetailCycle extends Component {
                                                         </Select>
 
                                                     </FormControl>
-
-
-                                                    {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
 
 
                                                     <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see

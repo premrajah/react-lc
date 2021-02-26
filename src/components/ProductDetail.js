@@ -61,10 +61,13 @@ class ProductDetail extends Component {
             showProductEdit:false,
             productDuplicate:false,
             showReleaseProduct:false,
+            showServiceAgent:false,
             showReleaseSuccess:false,
+            showServiceAgentSuccess:false,
             showOrgForm:false,
             orgs:[],
-            email:null
+            email:null,
+            errorServiceAgent:false
         }
 
 
@@ -84,6 +87,7 @@ class ProductDetail extends Component {
         this.showProductSelection=this.showProductSelection.bind(this)
         this.submitDuplicateProduct=this.submitDuplicateProduct.bind(this)
         this.showReleaseProduct=this.showReleaseProduct.bind(this)
+        this.showServiceAgent=this.showServiceAgent.bind(this)
         this.showOrgForm=this.showOrgForm.bind(this)
         this.handleSubmitOrg=this.handleSubmitOrg.bind(this)
         this.getOrgs=this.getOrgs.bind(this)
@@ -243,6 +247,24 @@ class ProductDetail extends Component {
 
     }
 
+    showServiceAgent(){
+
+
+        this.setState({
+
+            errorServiceAgent:false
+        })
+
+        this.getSites()
+        this.setState({
+
+            showServiceAgent:!this.state.showServiceAgent
+        })
+
+
+
+    }
+
 
 
 
@@ -334,6 +356,10 @@ class ProductDetail extends Component {
         else if (action==="release"){
 
             this.showReleaseProduct()
+        }
+        else if (action==="serviceAgent"){
+
+            this.showServiceAgent()
         }
     }
 
@@ -671,6 +697,69 @@ class ProductDetail extends Component {
             this.setState({
 
                 errorRelease:error.response.data.errors[0].message
+            })
+
+        });
+
+    }
+
+
+    submitServiceAgentProduct = event => {
+
+
+
+        this.setState({
+
+            errorServiceAgent:null
+        })
+
+
+
+        event.preventDefault();
+
+
+
+        const form = event.currentTarget;
+
+
+
+        this.setState({
+            btnLoading: true
+        })
+
+        const data = new FormData(event.target);
+
+        const site = data.get("org")
+
+
+
+        axios.post(baseUrl + "service-agent",
+
+            {
+                org_id: site,
+                product_id: this.props.item.product._key,
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+
+                this.setState({
+
+                    showServiceAgentSuccess:true
+                })
+
+
+            }).catch(error => {
+
+
+
+            this.setState({
+
+                errorServiceAgent:error.response.data.errors[0].message
             })
 
         });
@@ -1215,7 +1304,7 @@ class ProductDetail extends Component {
                                                     {/*<FileCopyIcon  onClick={this.showProductDuplicate}  />*/}
 
 
-                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} release={true} delete={false} duplicate={true} edit={true}  />
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} serviceAgent={true} release={true} delete={false} duplicate={true} edit={true}  />
 
 
 
@@ -1334,6 +1423,15 @@ class ProductDetail extends Component {
                                                     <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state} </p>
                                                 </div>
                                             </div>
+                                            <div className="row  justify-content-start search-container  pb-2 ">
+
+                                                <div className={"col-auto"}>
+                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Service Agent</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.state.item.service_agent._id} /> </p>
+                                                </div>
+                                            </div>
+
+
 
 
 
@@ -1582,6 +1680,174 @@ class ProductDetail extends Component {
                             </ModalBody>
 
                         </Modal>
+    <Modal className={"loop-popup"}
+           aria-labelledby="contained-modal-title-vcenter"
+           centered show={this.state.showServiceAgent} onHide={this.showServiceAgent} animation={false}>
+
+        <ModalBody>
+
+
+
+            <div className={"row justify-content-center"}>
+                <div className={"col-10 text-center"}>
+                    <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Change Service Agent For: {this.state.item.product.name}</p>
+
+                </div>
+            </div>
+
+            {!this.state.showServiceAgentSuccess?
+                <form onSubmit={this.submitServiceAgentProduct}>
+
+                    <div className={"row justify-content-center p-2"}>
+
+
+                        <div className={"col-12 text-center mt-2"}>
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mb-4"}>
+
+
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Select
+                                            Organisation</InputLabel>
+                                        <Select
+                                            native
+                                            label={"Select Organisation"}
+                                            inputProps={{
+                                                name: 'org',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
+
+                                            <option value={null}>Select</option>
+
+                                            {this.state.orgs.map((item) =>
+
+                                                <option value={item._key}>{item.name}</option>
+                                            )}
+
+                                        </Select>
+                                    </FormControl>
+
+
+                                    <p>Is the company you are looking for doesn't exist ?<span
+                                        className={"green-link-url "}
+                                        onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
+                                    </p>
+
+
+                                    {this.state.showOrgForm &&
+
+                                    <>
+
+                                        <div className={"row m-2 container-gray"}>
+                                            <div className={"col-12 text-left mt-2 "}>
+
+                                                <p className={"text-bold text-blue"}>Add Company's
+                                                    Email</p>
+
+                                            </div>
+                                            <div className={"col-12 text-center "}>
+
+                                                <>
+                                                    <div className={"row justify-content-center"}>
+
+                                                        <div className={"col-12 text-center mb-2"}>
+
+                                                            <TextField id="outlined-basic"
+                                                                       onChange={this.handleChangeEmail.bind(this, "email")}
+                                                                       variant="outlined"
+                                                                       fullWidth={true}
+                                                                       name={"email"} type={"text"}
+
+                                                                       value={this.state.email}
+                                                            />
+
+                                                        </div>
+
+                                                        <div className={"col-12 text-center mb-2"}>
+
+                                                            <button onClick={this.handleSubmitOrg}
+                                                                    className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Submit
+                                                            </button>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </>
+                                            </div>
+                                        </div>
+                                    </>
+                                    }
+
+                                </div>
+
+
+                                {this.state.errorRelease &&
+                                <div className={"row justify-content-center"}>
+
+
+                                    <div className={"col-12"} style={{ textAlign: "center" }}>
+
+
+                                        <Alert key={"alert"} variant={"danger"}>
+                                            {this.state.errorRelease}
+                                        </Alert>
+
+                                    </div>
+
+                                </div>}
+
+                                <div className={"col-12 justify-content-center "}>
+
+                                    <div className={"row justify-content-center"}>
+
+
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                            <button style={{ minWidth: "120px" }}
+                                                    className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                    type={"submit"}>Yes
+                                            </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                            <p onClick={this.showReleaseProduct}
+                                               className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </form> :
+
+                <div className={"row justify-content-center"}>
+                    <div className={"col-10 text-center"}>
+                        <Alert key={"alert"} variant={"success"}>
+                            Your change service agent request has been submitted successfully. Thanks
+                        </Alert>
+
+                    </div>
+                </div>
+
+            }
+
+
+        </ModalBody>
+
+    </Modal>
 
 
 

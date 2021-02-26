@@ -55,13 +55,13 @@ class Notifications extends Component {
 
         text = message.text.replaceAll(REGEX_ID_ARRAY, (match) => {
             if (match.startsWith("Product/")) {
-                return `<a href="/${match.toLowerCase()}" class="green-link-url" style={{color: 'red'}}>Product</a>`;
+                return `<a href="/${match}" class="green-link-url" style={{color: 'red'}}>Product</a>`;
             } else if (match.startsWith("Org/")) {
                 return `<span class="blue-text"><b>${match.substr(4)}</b></span>`;
             } else if (match.startsWith("Cycle/")) {
-                return `<a href="/${match.toLowerCase()}" class="green-link-url">Cycle</a>`;
+                return `<a href="/${match}" class="green-link-url">Cycle</a>`;
             } else if (match.startsWith("Match/")) {
-                return `<a href="/${match.toLowerCase()}" class="green-link-url">Match</a>`;
+                return `<a href="/${match}" class="green-link-url">Match</a>`;
             } else {
                 return match;
             }

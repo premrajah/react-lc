@@ -119,7 +119,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                                                 <span>
                                                                     {issue.stage && (
                                                                         <span>
-                                                                            Stage: {issue.stage}
+                                                                            Stage: <b>{issue.stage}</b>
                                                                         </span>
                                                                     )}
                                                                 </span>
@@ -130,9 +130,15 @@ const IssueItem = ({ item, onSubmitted }) => {
                                             )}
 
                                             <div>
+                                                {issue._ts_epoch_ms && (
+                                                    <span className="mr-3">
+                                                        <span>Created: {moment(issue._ts_epoch_ms).fromNow()}</span>
+                                                    </span>
+                                                )}
+
                                                 {creator && (
                                                     <span className="mr-3">
-                                                        Created by:
+                                                        <span className="mr-2">Created by:</span>
                                                         <Org
                                                             orgId={creator._id}
                                                             orgDescription={creator.description}
@@ -141,7 +147,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                                 )}
                                                 {service_agent && (
                                                     <span>
-                                                        Service Agent:
+                                                        <span className="mr-2">Service Agent:</span>
                                                         <Org
                                                             orgId={service_agent._id}
                                                             orgDescription={
@@ -150,6 +156,8 @@ const IssueItem = ({ item, onSubmitted }) => {
                                                         />
                                                     </span>
                                                 )}
+
+
                                             </div>
                                         </div>
 

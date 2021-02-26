@@ -17,8 +17,8 @@ class IssueSubmitForm extends Component {
         },
         titleSelectedValue: "",
         descriptionSelectedValue: "",
-        prioritySelectedValue: "",
-        stageSelectedValue: "",
+        prioritySelectedValue: "low",
+        stageSelectedValue: "open",
         status: "",
     };
 
@@ -34,7 +34,7 @@ class IssueSubmitForm extends Component {
 
     handleTitleValue = (e) => {
         if (!e) return;
-        this.setState({ titleSelectedValue: e.target.value, status: "" });
+        this.setState({ titleSelectedValue: e.target.value.trim(), status: "" });
     };
 
     handleDescriptionValue = (e) => {
@@ -42,13 +42,17 @@ class IssueSubmitForm extends Component {
         this.setState({ descriptionSelectedValue: e.target.value, status: "" });
     };
 
+    handleValidation = (value) => {
+
+    }
+
     handleIssueFormSubmit = (e) => {
         if (!e) return;
         e.preventDefault();
 
         if (this.state.edit) {
             // update
-            const payload = {
+            let payload = {
                 id: this.state.issue._key,
                 update: {
                     title: this.state.titleSelectedValue,
@@ -58,8 +62,9 @@ class IssueSubmitForm extends Component {
             };
 
             this.handleUpdateOrCreateIssue(payload);
-        } else if(!this.state.edit) {
-            const payload = {
+
+        } else if(!this.state.edit && this.state.productId) {
+            let payload = {
                 // new
                 issue: {
                     product_id: this.state.productId,
@@ -86,6 +91,7 @@ class IssueSubmitForm extends Component {
                 })
                 .then((response) => {
                     if (response.status === 200) {
+                        console.log('edit ', response.data)
                         this.setState({
                             status: <p className="text-success">Successfully updated data</p>,
                         });
@@ -104,6 +110,7 @@ class IssueSubmitForm extends Component {
                 })
                 .then((response) => {
                     if (response.status === 200) {
+                        console.log('new issue ', response.data)
                         this.setState({
                             status: <p className="text-success">Successfully submitted data</p>,
                         });
@@ -124,8 +131,12 @@ class IssueSubmitForm extends Component {
                     <form noValidate autoComplete="off" onSubmit={this.handleIssueFormSubmit}>
                         <FormControl>
                             <TextField
+                                error={this.state.titleSelectedValue ? false : true}
+                                helperText="Title is required"
                                 className="mb-3"
                                 variant="outlined"
+                                required
+                                name="title"
                                 label="Title"
                                 defaultValue={this.state.editForm.title}
                                 onChange={(e) => this.handleTitleValue(e)}
@@ -136,6 +147,7 @@ class IssueSubmitForm extends Component {
                             <TextField
                                 className="mb-3"
                                 variant="outlined"
+                                name="description"
                                 label="Description"
                                 defaultValue={this.state.editForm.description}
                                 onChange={(e) => this.handleDescriptionValue(e)}
@@ -146,13 +158,15 @@ class IssueSubmitForm extends Component {
                             <FormHelperText>Select Priority</FormHelperText>
                             <Select
                                 className="mb-3"
+                                name="priority"
+                                required
+                                // value={this.state.prioritySelectedValue}
                                 defaultValue={
                                     this.state.editForm.priority
                                         ? this.state.editForm.priority
                                         : "low"
                                 }
                                 onChange={this.handlePrioritySelect}>
-                                <MenuItem value="">None</MenuItem>
                                 <MenuItem value="low">low</MenuItem>
                                 <MenuItem value="medium">medium</MenuItem>
                                 <MenuItem value="high">high</MenuItem>
@@ -164,13 +178,15 @@ class IssueSubmitForm extends Component {
                                 <FormHelperText>Select Stage</FormHelperText>
                                 <Select
                                     className="mb-3"
+                                    name="stage"
+                                    required
+                                    // value={this.state.stageSelectedValue}
                                     defaultValue={
                                         this.state.editForm.stage
                                             ? this.state.editForm.stage
                                             : "open"
                                     }
                                     onChange={this.handleStageSelect}>
-                                    <MenuItem value="">None</MenuItem>
                                     <MenuItem value="open">open</MenuItem>
                                     <MenuItem value="progress">progress</MenuItem>
                                     <MenuItem value="closed">closed</MenuItem>
@@ -179,7 +195,7 @@ class IssueSubmitForm extends Component {
                         )}
 
                         <div className="mt-3 mb-3 d-flex justify-content-center">
-                            <button className="btn btn-green">Submit</button>
+                            <button className="btn btn-green" disabled={this.state.titleSelectedValue ? false : true}>Submit</button>
                         </div>
 
                         <div>

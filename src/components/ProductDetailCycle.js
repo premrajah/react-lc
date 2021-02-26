@@ -32,6 +32,7 @@ import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
 import MoreMenu from './MoreMenu'
+import IssueSubmitForm from "./IssueSubmitForm";
 
 
 
@@ -64,6 +65,7 @@ class ProductDetailCycle extends Component {
             errorRegister:false,
             siteSelected:null,
             showDeletePopUp:false,
+            isVisibleReportModal: false,
 
         }
 
@@ -105,13 +107,14 @@ class ProductDetailCycle extends Component {
 
     }
 
+    showReportModal = () => this.setState({isVisibleReportModal: true});
+    hideReportModal = () => this.setState({isVisibleReportModal: false});
 
     callBackResult(action){
 
 
         if (action==="report"){
-
-            // this.showProductEdit()
+            this.showReportModal();
         }
 
         else if (action==="register"){
@@ -930,7 +933,22 @@ class ProductDetailCycle extends Component {
                                 </div>
                             </div>
 
-
+                        <Modal id="reportModal" show={this.state.isVisibleReportModal} onHide={this.hideReportModal} animation={false}>
+                            <Modal.Title>
+                                <div className="row">
+                                    <div className="col">
+                                        <button className="btn float-right mr-3 mt-2 mb-2" onClick={this.hideReportModal}>X</button>
+                                        <div className="text-center mt-2 mb-2">Report Issue</div>
+                                    </div>
+                                </div>
+                            </Modal.Title>
+                            <Modal.Body>
+                                {this.props.item.product._key && <div>
+                                    <div className="mt-2 mb-2">Product: <span><b>{this.props.item.product.name}</b></span></div>
+                                    <IssueSubmitForm productId={this.props.item.product._key}/>
+                                </div>}
+                            </Modal.Body>
+                        </Modal>
 
                         <Modal className={"loop-popup"}
                                aria-labelledby="contained-modal-title-vcenter"

@@ -46,7 +46,7 @@ class Issues extends Component {
                             <div className="col">
                                 {this.state.allIssues.length > 0
                                     ? this.state.allIssues.map(issue => {
-                                        return <IssueItem key={`${issue._id}_${issue._ts_epoch_ms}`} item={issue} onSubmitted={this.handleOnSubmittedIssue}/>
+                                        return <IssueItem key={`${issue._id}_${Math.random() * 10}`} item={issue} onSubmitted={this.handleOnSubmittedIssue}/>
                                     })
                                     : "No issues yet..."}
                             </div>

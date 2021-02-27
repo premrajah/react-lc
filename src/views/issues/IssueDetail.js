@@ -9,18 +9,18 @@ import ImagesSlider from "../../components/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";
-import {Link} from "react-router-dom";
-import {Badge, Modal} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
 
 class IssueDetail extends Component {
     state = {
         issue: null,
-        editModal: false
+        editModal: false,
     };
 
-    handleShowEditModal = () => this.setState({editModal: true});
-    handleHideEditModal = () => this.setState({editModal: false});
+    handleShowEditModal = () => this.setState({ editModal: true });
+    handleHideEditModal = () => this.setState({ editModal: false });
 
     getIssue = (issueKey) => {
         if (!issueKey) return;
@@ -43,9 +43,9 @@ class IssueDetail extends Component {
     };
 
     handleIssueSubmitted = (issueKey) => {
-        console.log('triggered')
-        this.getIssue(issueKey)
-    }
+        console.log("triggered");
+        this.getIssue(issueKey);
+    };
 
     handleEdit = (e) => {
         this.handleShowEditModal();
@@ -70,7 +70,6 @@ class IssueDetail extends Component {
                             <div>
                                 <div className="row">
                                     <div className="col-md-4 col-sm-12 col-xs-12 ">
-
                                         <div className="row stick-left-box ">
                                             <div className="col text-center">
                                                 {this.state.issue.product &&
@@ -91,12 +90,22 @@ class IssueDetail extends Component {
 
                                         <div className="row mt-3">
                                             <div className="col">
-                                                {this.state.issue.product && <Link to={`/product/${this.state.issue.product.product._key}`}>
-                                                    <h4 className={"blue-text text-heading"}>
-                                                        {this.state.issue.product.product.name}
-                                                    </h4>
-                                                    <p>{this.state.issue.product.product.description}</p>
-                                                </Link>}
+                                                {this.state.issue.product && (
+                                                    <div>
+                                                        <Link
+                                                            to={`/product/${this.state.issue.product.product._key}`}>
+                                                            <h4 className={"blue-text text-heading"}>
+                                                                {this.state.issue.product.product.name}
+                                                            </h4>
+                                                        </Link>
+                                                        <p>
+                                                            {
+                                                                this.state.issue.product.product
+                                                                    .description
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -109,21 +118,31 @@ class IssueDetail extends Component {
                                                 </h4>
                                             </div>
                                             <div className="col-md-2 text-right">
-                                                <MoreMenu triggerCallback={(e) => this.handleEdit(e)} edit={true}/>
+                                                <MoreMenu
+                                                    triggerCallback={(e) => this.handleEdit(e)}
+                                                    edit={true}
+                                                />
                                             </div>
                                         </div>
 
                                         <div className="row">
                                             <div className="col">
                                                 <div>
-                                                    {this.state.issue.issue && <span className="mr-3">
+                                                    {this.state.issue.issue && (
+                                                        <span className="mr-3">
                                                             <Badge
                                                                 variant={this.checkPriority(
                                                                     this.state.issue.issue.priority
                                                                 )}>
                                                                 {this.state.issue.issue.priority.toUpperCase()}
                                                             </Badge>
-                                                        </span>}
+                                                        </span>
+                                                    )}
+
+                                                    {this.state.issue.issue.stage && <span className="mr-3">
+                                                        <span>Stage: </span>
+                                                        <span><b>{this.state.issue.issue.stage}</b></span>
+                                                    </span>}
 
                                                     {this.state.issue.creator && (
                                                         <span className="mr-3">
@@ -146,7 +165,11 @@ class IssueDetail extends Component {
                                                                         this.state.issue
                                                                             .service_agent._id
                                                                     }
-                                                                    orgDescription={this.state.issue.service_agent.description}
+                                                                    orgDescription={
+                                                                        this.state.issue
+                                                                            .service_agent
+                                                                            .description
+                                                                    }
                                                                 />
                                                             </span>
                                                         </span>
@@ -161,22 +184,24 @@ class IssueDetail extends Component {
                                             </div>
                                         </div>
 
-                                        {this.state.issue.issue.description && <div>
-                                            <div className="row">
-                                                <div className="col">
-                                                    <p className="text-gray-light">{this.state.issue.issue.description}</p>
+                                        {this.state.issue.issue.description && (
+                                            <div>
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <p className="text-gray-light">
+                                                            {this.state.issue.issue.description}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row mt-2 mb-2">
+                                                    <div className="col">
+                                                        <div
+                                                            className={"listing-row-border "}></div>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div className="row mt-2 mb-2">
-                                                <div className="col">
-                                                    <div className={"listing-row-border "}></div>
-                                                </div>
-                                            </div>
-                                        </div>}
-
-
-
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -185,25 +210,29 @@ class IssueDetail extends Component {
                 </div>
 
                 {/*Modals*/}
-                {this.state.issue && <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
-                    <Modal.Header closeButton>
-                        {this.state.issue.issue.title ? (
-                            <Modal.Title>Edit Issue: {this.state.issue.issue.title}</Modal.Title>
-                        ) : (
-                            <Modal.Title>Edit Issue</Modal.Title>
-                        )}
-                    </Modal.Header>
-                    <Modal.Body>
-                        <IssueSubmitForm
-                            issue={this.state.issue.issue}
-                            edit
-                            productId={this.state.issue.product.product._id}
-                            onSubmitted={() => this.handleIssueSubmitted(this.state.issue.issue._key)}
-                        />
-                    </Modal.Body>
-                </Modal>}
-
-
+                {this.state.issue && (
+                    <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
+                        <Modal.Header closeButton>
+                            {this.state.issue.issue.title ? (
+                                <Modal.Title>
+                                    Edit Issue: {this.state.issue.issue.title}
+                                </Modal.Title>
+                            ) : (
+                                <Modal.Title>Edit Issue</Modal.Title>
+                            )}
+                        </Modal.Header>
+                        <Modal.Body>
+                            <IssueSubmitForm
+                                issue={this.state.issue.issue}
+                                edit
+                                productId={this.state.issue.product.product._id}
+                                onSubmitted={() =>
+                                    this.handleIssueSubmitted(this.state.issue.issue._key)
+                                }
+                            />
+                        </Modal.Body>
+                    </Modal>
+                )}
             </div>
         );
     }

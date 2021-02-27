@@ -158,7 +158,7 @@ class IssueSubmitForm extends Component {
                                         ? this.state.editForm.priority
                                         : "low"
                                 }
-                                onChange={this.handlePrioritySelect}>
+                                onChange={() => this.handlePrioritySelect}>
                                 <MenuItem value="low">low</MenuItem>
                                 <MenuItem value="medium">medium</MenuItem>
                                 <MenuItem value="high">high</MenuItem>

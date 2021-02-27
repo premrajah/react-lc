@@ -12,15 +12,22 @@ import Org from "../../components/Org/Org";
 import { Link } from "react-router-dom";
 import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
+import {FormControl, FormHelperText, MenuItem, Select} from "@material-ui/core";
 
 class IssueDetail extends Component {
     state = {
         issue: null,
         editModal: false,
+        stageModal: false,
+        stageForm: 'open',
+        stageSelectedValue: 'open'
     };
 
     handleShowEditModal = () => this.setState({ editModal: true });
     handleHideEditModal = () => this.setState({ editModal: false });
+
+    handleShowStageModal = () => this.setState({stageModal: true});
+    handleHideStageModal = () => this.setState({stageModal: false});
 
     getIssue = (issueKey) => {
         if (!issueKey) return;
@@ -43,13 +50,36 @@ class IssueDetail extends Component {
     };
 
     handleIssueSubmitted = (issueKey) => {
-        console.log("triggered");
         this.getIssue(issueKey);
     };
 
+    handleSetStage = () => {
+        this.handleShowStageModal();
+    }
+
     handleEdit = (e) => {
-        this.handleShowEditModal();
+
+        if(e === 'edit') {
+            this.handleShowEditModal();
+        }
+
+        if(e === 'stage') {
+            this.handleSetStage();
+        }
     };
+
+    handleStageSubmit = (e) => {
+        if(!e) return;
+        e.preventDefault();
+
+
+        console.log('form submitted', this.state.stageSelectedValue)
+    }
+
+    handleStageSelect = (e) => {
+        if(!e) return;
+        this.setState({stageSelectedValue: e.target.value})
+    }
 
     componentDidMount() {
         const {
@@ -94,8 +124,14 @@ class IssueDetail extends Component {
                                                     <div>
                                                         <Link
                                                             to={`/product/${this.state.issue.product.product._key}`}>
-                                                            <h4 className={"blue-text text-heading"}>
-                                                                {this.state.issue.product.product.name}
+                                                            <h4
+                                                                className={
+                                                                    "blue-text text-heading"
+                                                                }>
+                                                                {
+                                                                    this.state.issue.product.product
+                                                                        .name
+                                                                }
                                                             </h4>
                                                         </Link>
                                                         <p>
@@ -120,7 +156,8 @@ class IssueDetail extends Component {
                                             <div className="col-md-2 text-right">
                                                 <MoreMenu
                                                     triggerCallback={(e) => this.handleEdit(e)}
-                                                    edit={true}
+                                                    edit
+                                                    stage
                                                 />
                                             </div>
                                         </div>
@@ -139,10 +176,16 @@ class IssueDetail extends Component {
                                                         </span>
                                                     )}
 
-                                                    {this.state.issue.issue.stage && <span className="mr-3">
-                                                        <span>Stage: </span>
-                                                        <span><b>{this.state.issue.issue.stage}</b></span>
-                                                    </span>}
+                                                    {this.state.issue.issue.stage && (
+                                                        <span className="mr-3">
+                                                            <span>Stage: </span>
+                                                            <span>
+                                                                <b>
+                                                                    {this.state.issue.issue.stage}
+                                                                </b>
+                                                            </span>
+                                                        </span>
+                                                    )}
 
                                                     {this.state.issue.creator && (
                                                         <span className="mr-3">
@@ -211,27 +254,64 @@ class IssueDetail extends Component {
 
                 {/*Modals*/}
                 {this.state.issue && (
-                    <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
-                        <Modal.Header closeButton>
-                            {this.state.issue.issue.title ? (
-                                <Modal.Title>
-                                    Edit Issue: {this.state.issue.issue.title}
-                                </Modal.Title>
-                            ) : (
-                                <Modal.Title>Edit Issue</Modal.Title>
-                            )}
-                        </Modal.Header>
-                        <Modal.Body>
-                            <IssueSubmitForm
-                                issue={this.state.issue.issue}
-                                edit
-                                productId={this.state.issue.product.product._id}
-                                onSubmitted={() =>
-                                    this.handleIssueSubmitted(this.state.issue.issue._key)
-                                }
-                            />
-                        </Modal.Body>
-                    </Modal>
+                    <>
+                        <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
+                            <Modal.Header closeButton>
+                                {this.state.issue.issue.title ? (
+                                    <Modal.Title>
+                                        Edit Issue: {this.state.issue.issue.title}
+                                    </Modal.Title>
+                                ) : (
+                                    <Modal.Title>Edit Issue</Modal.Title>
+                                )}
+                            </Modal.Header>
+                            <Modal.Body>
+                                <IssueSubmitForm
+                                    issue={this.state.issue.issue}
+                                    edit
+                                    productId={this.state.issue.product.product._id}
+                                    onSubmitted={() =>
+                                        this.handleIssueSubmitted(this.state.issue.issue._key)
+                                    }
+                                />
+                            </Modal.Body>
+                        </Modal>
+
+                        <Modal show={this.state.stageModal} onHide={this.handleHideStageModal}>
+                            <Modal.Header closeButton>
+                                {this.state.issue.issue.title ? <Modal.Title>Set Stage: {this.state.issue.issue.title}</Modal.Title> : <Modal.Title>Set Stage</Modal.Title>}
+                            </Modal.Header>
+
+                            <Modal.Body>
+                                <div className="row">
+                                    <div className="col">
+                                        <form noValidate autoComplete="off" onSubmit={(e) => this.handleStageSubmit(e)}>
+                                            <FormControl>
+                                                <FormHelperText>Select Stage</FormHelperText>
+                                                <Select
+                                                    className="mb-3"
+                                                    name="stage"
+                                                    defaultValue={
+                                                        this.state.issue.issue.stage
+                                                            ? this.state.issue.issue.stage
+                                                            : "open"
+                                                    }
+                                                    onChange={() => this.handleStageSelect}>
+                                                    <MenuItem value="open">open</MenuItem>
+                                                    <MenuItem value="closed">closed</MenuItem>
+                                                    <MenuItem value="progress">progress</MenuItem>
+                                                </Select>
+                                            </FormControl>
+
+                                            <div className="mt-3 mb-3 d-flex justify-content-center">
+                                                <button className="btn btn-green">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </Modal.Body>
+                        </Modal>
+                    </>
                 )}
             </div>
         );

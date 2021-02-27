@@ -221,6 +221,7 @@ class MoreMenu extends Component {
                             {this.props.release &&     <MenuItem data-action={"release"} onClick={this.handleClose}>Release</MenuItem>}
                             {this.props.register &&     <MenuItem data-action={"register"} onClick={this.handleClose}>Register</MenuItem>}
                             {this.props.report &&     <MenuItem data-action={"report"} onClick={this.handleClose}>Report</MenuItem>}
+                            {this.props.stage &&     <MenuItem data-action={"stage"} onClick={this.handleClose}>Set Stage</MenuItem>}
 
 
                         </Menu>

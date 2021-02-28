@@ -140,7 +140,7 @@ class IssueDetail extends Component {
                                                 )}
                                             </div>
 
-                                            <div className="col-12">
+                                            <div className="col-12 mt-5">
                                                 {this.state.issue.product && (
                                                     <div>
                                                         <Link

@@ -12,14 +12,11 @@ import LoginPopUp from "./views/login/LoginPopUp";
 import Account from "./views/account/Account";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
-
-
 import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browse-resources/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
-import ProductDetail from "./views/loop-cycle/ProductDetail";
-import CreateProduct from "./views/create-product/create-product";
+import ProductsService from "./views/loop-cycle/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
 import Loops from "./views/loop-cycle/Loops";
@@ -28,7 +25,6 @@ import LoopDetail from "./views/loop-cycle/LoopDetail";
 import ViewCycle from "./views/loop-cycle/view-cycle";
 import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
-import ListingForm from "./views/create-listing/ListingForm";
 import CreateListing from "./views/create-listing/create-listing";
 import SubProductView from "./views/create-listing/SubProductView";
 import ProductView from "./views/create-listing/ProductView";
@@ -41,14 +37,11 @@ import AddDetail from "./views/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browse-resources/index";
-import FindResources from "./views/browse-resources/FindResources";
 import MessageSeller from "./views/browse-resources/message-seller";
-import MakeOffer from "./views/browse-resources/make-offer";
 import ItemDetailMatch from "./views/create-search/ItemDetailMatch";
 import ItemDetailMatched from "./views/create-search/ItemDetailMatched";
 import Search from "./views/browse-resources/Search";
 import Filter from "./views/browse-resources/Filter";
-import AuthRoute from "./Util/AuthRoute";
 import LoggedInRoute from "./Util/LoggedInRoute";
 import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
@@ -58,7 +51,6 @@ import Address from "./views/account/Address";
 import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
 import ProductPopUp from './views/create-product/create-product-popup'
-
 import NotFound from "./views/NotFound/index"
 import TermsAndConditions from "./components/Terms/TermsAndConditions";
 import Cookie from "./components/Terms/Cookie";
@@ -115,6 +107,7 @@ class App extends Component{
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         <LoggedInRoute exact path="/my-products" component={Products} />
+                        <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />

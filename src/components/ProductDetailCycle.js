@@ -774,7 +774,8 @@ class ProductDetailCycle extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} report={this.props.isLoggedIn ? true : false} register={this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id?true:false}  />
+                                                    {this.props.isLoggedIn &&   <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                                                           report={this.props.userDetail.orgId===this.props.item.org._id?true:false} register={this.props.userDetail.orgId!==this.props.item.org._id}  />}
 
                                                 </div>
 
@@ -895,7 +896,7 @@ class ProductDetailCycle extends Component {
 
                                                 <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Service Agent</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.state.item.service_agent._id} /> </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.props.item.service_agent._id} /> </p>
                                                 </div>
                                             </div>
 

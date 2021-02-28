@@ -1065,6 +1065,8 @@ class ProductDetail extends Component {
         // this.getSubProducts()
 
 
+        // console.log(this.props.userDetail)
+
 
     }
 
@@ -1296,15 +1298,15 @@ class ProductDetail extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
 
 
-                                                    {/*<EditIcon className={"mr-2"} onClick={this.showProductEdit}  />*/}
+                                                    {this.state.item.service_agent._id===this.props.userDetail.orgId &&<MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                               serviceAgent={true}   />}
 
-                                                    {/*<FileCopyIcon  onClick={this.showProductDuplicate}  />*/}
 
 
-                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} serviceAgent={true} release={true} delete={false} duplicate={true} edit={true}  />
+                                                    {this.state.item.org._id===this.props.userDetail.orgId &&<MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                                release={true} delete={false} duplicate={true} edit={true}  />}
 
 
 

@@ -24,7 +24,7 @@ import ProductItem from '../../components/ProductItemNew'
 import PageHeader from "../../components/PageHeader";
 
 
-class Products extends Component {
+class ProductsService extends Component {
 
 
     constructor(props) {
@@ -57,7 +57,7 @@ class Products extends Component {
 
 
         this.props.showLoading(true)
-        axios.get(baseUrl + "product",
+        axios.get(baseUrl + "product/service-agent",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -98,28 +98,20 @@ class Products extends Component {
 
 
 
-
-
-
-
-    interval
-
-
     componentWillMount() {
 
     }
 
     componentDidMount() {
 
-        // this.getProducts()
+        this.getProducts()
 
-        this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
 
         this.interval = setInterval(() => {
 
 
-            this.props.loadProductsWithoutParent(this.props.userDetail.token)
+            this.getProducts()
 
 
         }, 15000);
@@ -156,15 +148,13 @@ class Products extends Component {
 
                     <div className="container  pb-4 pt-4">
 
-                        <PageHeader pageIcon={CubeBlue} pageTitle="My Products" subTitle="Products created can be assigned to resource searches" />
+                        <PageHeader pageIcon={CubeBlue} pageTitle="Service Products" subTitle="Products created can be assigned to resource searches" />
 
-                        <div className="row">
-                            <div className="col-12 d-flex justify-content-end">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">Product Service</Link>
-
-                                <Link to="/product-archive" className="btn btn-sm blue-btn">Product Record</Link>
-                            </div>
-                        </div>
+                        {/*<div className="row">*/}
+                            {/*<div className="col-12 d-flex justify-content-end">*/}
+                                {/*<Link to="/product-archive" className="btn btn-sm blue-btn">Product Record</Link>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
@@ -177,7 +167,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
 
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.props.productWithoutParentList.filter((item)=> item.product.is_listable=== true).length} Products </p>
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.products.length} Products </p>
 
                             </div>
                             <div className="text-mute col-auto pl-0">
@@ -191,10 +181,9 @@ class Products extends Component {
 
 
 
-                        {this.props.productWithoutParentList.map((item) =>
+                        {this.state.products.map((item) =>
 
                             <>
-
 
                             {/*<Link to={"/product/" + item.product._key}>*/}
 
@@ -204,41 +193,12 @@ class Products extends Component {
                             </>
 
 
-
                         )}
 
 
                     </div>
 
 
-
-
-                    <React.Fragment>
-
-                        <CssBaseline />
-
-                        <AppBar position="fixed" color="#ffffff" className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                            <Toolbar>
-
-
-                                <div className="row  justify-content-center search-container " style={{ margin: "auto" }}>
-
-                                    <div className="col-auto">
-
-                                        <a onClick={this.showProductSelection}>
-                                            <p className={"green-text bottom-bar-text"}> Create New Product </p>
-                                        </a>
-
-
-                                    </div>
-
-                                </div>
-
-
-                            </Toolbar>
-                        </AppBar>
-
-                    </React.Fragment>
 
 
                 </div>
@@ -323,4 +283,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(Products);
+)(ProductsService);

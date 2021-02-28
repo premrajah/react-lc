@@ -12,22 +12,22 @@ import Org from "../../components/Org/Org";
 import { Link } from "react-router-dom";
 import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
-import {FormControl, FormHelperText, MenuItem, Select} from "@material-ui/core";
+import { FormControl, FormHelperText, MenuItem, Select } from "@material-ui/core";
 
 class IssueDetail extends Component {
     state = {
         issue: null,
         editModal: false,
         stageModal: false,
-        stageForm: 'open',
-        stageSelectedValue: 'open'
+        stageForm: "open",
+        stageSelectedValue: "open",
     };
 
     handleShowEditModal = () => this.setState({ editModal: true });
     handleHideEditModal = () => this.setState({ editModal: false });
 
-    handleShowStageModal = () => this.setState({stageModal: true});
-    handleHideStageModal = () => this.setState({stageModal: false});
+    handleShowStageModal = () => this.setState({ stageModal: true });
+    handleHideStageModal = () => this.setState({ stageModal: false });
 
     getIssue = (issueKey) => {
         if (!issueKey) return;
@@ -55,31 +55,29 @@ class IssueDetail extends Component {
 
     handleSetStage = () => {
         this.handleShowStageModal();
-    }
+    };
 
     handleEdit = (e) => {
-
-        if(e === 'edit') {
+        if (e === "edit") {
             this.handleShowEditModal();
         }
 
-        if(e === 'stage') {
+        if (e === "stage") {
             this.handleSetStage();
         }
     };
 
     handleStageSubmit = (e) => {
-        if(!e) return;
+        if (!e) return;
         e.preventDefault();
 
-
-        console.log('form submitted', this.state.stageSelectedValue)
-    }
+        console.log("form submitted", this.state.stageSelectedValue);
+    };
 
     handleStageSelect = (e) => {
-        if(!e) return;
-        this.setState({stageSelectedValue: e.target.value})
-    }
+        if (!e) return;
+        this.setState({ stageSelectedValue: e.target.value });
+    };
 
     componentDidMount() {
         const {
@@ -101,7 +99,7 @@ class IssueDetail extends Component {
                                 <div className="row">
                                     <div className="col-md-4 col-sm-12 col-xs-12 ">
                                         <div className="row stick-left-box ">
-                                            <div className="col text-center">
+                                            <div className="col-12 text-center">
                                                 {this.state.issue.product &&
                                                 this.state.issue.product.artifacts &&
                                                 this.state.issue.product.artifacts.length > 0 ? (
@@ -116,10 +114,8 @@ class IssueDetail extends Component {
                                                     />
                                                 )}
                                             </div>
-                                        </div>
 
-                                        <div className="row mt-3">
-                                            <div className="col">
+                                            <div className="col-12">
                                                 {this.state.issue.product && (
                                                     <div>
                                                         <Link
@@ -279,13 +275,22 @@ class IssueDetail extends Component {
 
                         <Modal show={this.state.stageModal} onHide={this.handleHideStageModal}>
                             <Modal.Header closeButton>
-                                {this.state.issue.issue.title ? <Modal.Title>Set Stage: {this.state.issue.issue.title}</Modal.Title> : <Modal.Title>Set Stage</Modal.Title>}
+                                {this.state.issue.issue.title ? (
+                                    <Modal.Title>
+                                        Set Stage: {this.state.issue.issue.title}
+                                    </Modal.Title>
+                                ) : (
+                                    <Modal.Title>Set Stage</Modal.Title>
+                                )}
                             </Modal.Header>
 
                             <Modal.Body>
                                 <div className="row">
                                     <div className="col">
-                                        <form noValidate autoComplete="off" onSubmit={(e) => this.handleStageSubmit(e)}>
+                                        <form
+                                            noValidate
+                                            autoComplete="off"
+                                            onSubmit={(e) => this.handleStageSubmit(e)}>
                                             <FormControl>
                                                 <FormHelperText>Select Stage</FormHelperText>
                                                 <Select

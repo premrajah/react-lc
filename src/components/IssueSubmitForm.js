@@ -17,9 +17,15 @@ class IssueSubmitForm extends Component {
         },
         titleSelectedValue: "",
         descriptionSelectedValue: "",
-        prioritySelectedValue: "low",
+        prioritySelectedValue: "",
         status: "",
     };
+
+    componentDidMount() {
+        if(this.props.edit) {
+            this.setState({titleSelectedValue: this.state.editForm.title, descriptionSelectedValue: this.state.editForm.description, prioritySelectedValue: this.state.editForm.priority})
+        }
+    }
 
     handlePrioritySelect = (e) => {
         if (!e) return;
@@ -158,7 +164,7 @@ class IssueSubmitForm extends Component {
                                         ? this.state.editForm.priority
                                         : "low"
                                 }
-                                onChange={() => this.handlePrioritySelect}>
+                                onChange={this.handlePrioritySelect}>
                                 <MenuItem value="low">low</MenuItem>
                                 <MenuItem value="medium">medium</MenuItem>
                                 <MenuItem value="high">high</MenuItem>

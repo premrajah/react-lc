@@ -782,7 +782,7 @@ class ProductDetailCycle extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} report={true} register={this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id?true:false}  />
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} report={this.props.isLoggedIn ? true : false} register={this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id?true:false}  />
 
                                                 </div>
 

@@ -1318,7 +1318,7 @@ class ProductDetail extends Component {
 
                                             <div className="row">
                                                 <div className="col-7">
-                                                    <p> <Org orgId={this.state.item.org._id} /></p>
+                                                    <Org orgId={this.state.item.org._id} />
                                                 </div>
 
 

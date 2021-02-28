@@ -17,20 +17,21 @@ class IssueSubmitForm extends Component {
         },
         titleSelectedValue: "",
         descriptionSelectedValue: "",
-        prioritySelectedValue: "low",
-        stageSelectedValue: "open",
+        prioritySelectedValue: "",
         status: "",
     };
+
+    componentDidMount() {
+        if(this.props.edit) {
+            this.setState({titleSelectedValue: this.state.editForm.title, descriptionSelectedValue: this.state.editForm.description, prioritySelectedValue: this.state.editForm.priority})
+        }
+    }
 
     handlePrioritySelect = (e) => {
         if (!e) return;
         this.setState({ prioritySelectedValue: e.target.value, status: "" });
     };
 
-    handleStageSelect = (e) => {
-        if (!e) return;
-        this.setState({ stageSelectedValue: e.target.value, status: "" });
-    };
 
     handleTitleValue = (e) => {
         if (!e) return;
@@ -71,7 +72,6 @@ class IssueSubmitForm extends Component {
                     title: this.state.titleSelectedValue,
                     description: this.state.descriptionSelectedValue,
                     priority: this.state.prioritySelectedValue,
-                    stage: this.state.stageSelectedValue,
                 },
             };
 
@@ -131,8 +131,7 @@ class IssueSubmitForm extends Component {
                     <form noValidate autoComplete="off" onSubmit={this.handleIssueFormSubmit}>
                         <FormControl>
                             <TextField
-                                error={this.state.titleSelectedValue ? false : true}
-                                helperText="Title is required"
+                                helperText="Can't be empty"
                                 className="mb-3"
                                 variant="outlined"
                                 required
@@ -160,7 +159,6 @@ class IssueSubmitForm extends Component {
                                 className="mb-3"
                                 name="priority"
                                 required
-                                // value={this.state.prioritySelectedValue}
                                 defaultValue={
                                     this.state.editForm.priority
                                         ? this.state.editForm.priority
@@ -173,35 +171,14 @@ class IssueSubmitForm extends Component {
                             </Select>
                         </FormControl>
 
-                        {!this.props.edit && (
-                            <FormControl>
-                                <FormHelperText>Select Stage</FormHelperText>
-                                <Select
-                                    className="mb-3"
-                                    name="stage"
-                                    required
-                                    // value={this.state.stageSelectedValue}
-                                    defaultValue={
-                                        this.state.editForm.stage
-                                            ? this.state.editForm.stage
-                                            : "open"
-                                    }
-                                    onChange={this.handleStageSelect}>
-                                    <MenuItem value="open">open</MenuItem>
-                                    <MenuItem value="progress">progress</MenuItem>
-                                    <MenuItem value="closed">closed</MenuItem>
-                                </Select>
-                            </FormControl>
-                        )}
-
                         <div className="mt-3 mb-3 d-flex justify-content-center">
                             <button className="btn btn-green" disabled={this.state.titleSelectedValue ? false : true}>Submit</button>
                         </div>
 
+                    </form>
                         <div>
                             {this.state.status}
                         </div>
-                    </form>
                 </div>
             </div>
         );

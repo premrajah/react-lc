@@ -221,8 +221,6 @@ class ProductDetail extends Component {
     showOrgForm(){
 
 
-
-
         this.setState({
 
             showOrgForm:!this.state.showOrgForm
@@ -566,25 +564,17 @@ class ProductDetail extends Component {
 
             const form = event.currentTarget;
 
-
-
-
-
             this.setState({
                 btnLoading: true
             })
 
             const data = new FormData(event.target);
-
             const email = data.get("email")
             const others = data.get("others")
             const name = data.get("name")
             const contact = data.get("contact")
             const address = data.get("address")
             const phone = data.get("phone")
-
-
-
 
 
             axios.put(baseUrl + "site",
@@ -620,11 +610,6 @@ class ProductDetail extends Component {
 
 
                 }).catch(error => {
-
-
-
-
-
 
             });
 

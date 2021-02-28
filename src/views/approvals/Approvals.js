@@ -100,6 +100,11 @@ class Approvals extends Component {
 
                     this.setState({
 
+                        releaseRequests: []
+                    })
+
+                    this.setState({
+
                         releaseRequests: responseAll
                     })
 
@@ -128,6 +133,12 @@ class Approvals extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
+
+                    this.setState({
+
+                        registerRequests: []
+                    })
+
 
                     this.setState({
 
@@ -161,6 +172,12 @@ class Approvals extends Component {
                     var responseAll = response.data.data;
 
                     console.log(responseAll)
+
+                    this.setState({
+
+                        serviceAgentRequests: []
+                    })
+
 
                     this.setState({
 

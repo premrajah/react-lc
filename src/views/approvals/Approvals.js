@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,useState,useEffect} from 'react';
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
@@ -41,19 +41,48 @@ class Approvals extends Component {
             nextIntervalFlag: false,
             releaseRequests: [],
             registerRequests: [],
-            serviceAgentRequests: []
+            serviceAgentRequests: [],
+            value:0
         }
 
 
         this.fetchReleaseRequest = this.fetchReleaseRequest.bind(this)
-        this.fetchRegisterRequest = this.fetchRegisterRequest.bind(this)
         this.fetchServiceAgentRequest = this.fetchServiceAgentRequest.bind(this)
-
+        this.fetchRegisterRequest = this.fetchRegisterRequest.bind(this)
 
 
 
     }
+    handleChange = (event, newValue)=>{
 
+        console.log(newValue)
+
+        this.setState({
+
+            value:newValue
+        })
+        
+        if (newValue===0){
+
+
+            console.log("reaload products")
+            this.fetchReleaseRequest()
+
+        }
+       else  if(newValue===1){
+
+
+            this.fetchRegisterRequest()
+        }
+
+
+        else  if(newValue===2){
+
+
+            this.fetchServiceAgentRequest()
+        }
+
+    }
 
     fetchReleaseRequest(){
 
@@ -86,6 +115,7 @@ class Approvals extends Component {
             );
 
     }
+
     fetchRegisterRequest(){
 
         axios.get(baseUrl + "register" ,
@@ -116,7 +146,6 @@ class Approvals extends Component {
             );
 
     }
-
 
     fetchServiceAgentRequest(){
 
@@ -163,6 +192,11 @@ class Approvals extends Component {
 
 
     render(){
+
+
+        // const classes = useStylesTabs();
+
+
         return (
             <div>
                 <Sidebar />
@@ -176,11 +210,115 @@ class Approvals extends Component {
 
                         <div className={"tab-content-listing col-12"}>
 
-                            <NavTabs
-                                      releases={this.state.releaseRequests}
-                                      registers={this.state.registerRequests}
-                                      serviceAgents={this.state.serviceAgentRequests}
-                            />
+                            {/*<NavTabs token={this.props.userDetail.token}*/}
+                                      {/*releases={this.state.releaseRequests}*/}
+                                      {/*registers={this.state.registerRequests}*/}
+                                      {/*serviceAgents={this.state.serviceAgentRequests}*/}
+                            {/*/>*/}
+
+
+                            <div >
+                                <AppBar position="static" style={{boxShadhow:"none"}} elevation={0}>
+                                    <Tabs
+                                        style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadow:"none"}}
+                                        indicatorColor="secondary"
+                                        variant="fullWidth"
+                                        value={this.state.value}
+
+                                        onChange={this.handleChange.bind(this)}
+                                        aria-label="nav tabs example"
+
+                                    >
+
+                                        {/*{props.releases.length>0 &&*/}
+                                        <LinkTab label={"Product Release Requests ("+this.state.releaseRequests.length+")"}  {...a11yProps(0)} />
+                                        {/*}*/}
+
+                                        {/*{props.suggesstions.length > 0 &&*/}
+
+                                        {/*{props.registers.length>0 &&*/}
+                                        <LinkTab label={"Product Register Requests ("+this.state.registerRequests.length+")"}  {...a11yProps(1)} />
+                                        {/*}*/}
+
+
+                                        {/*{props.serviceAgents.length>0 &&*/}
+                                        <LinkTab label={"Change Service Agent Requests  ("+this.state.serviceAgentRequests.length+")"}  {...a11yProps(2)} />
+                                        {/*}*/}
+
+                                        {/*}*/}
+
+
+                                    </Tabs>
+                                </AppBar>
+
+
+                                <TabPanel value={this.state.value} index={0}>
+                                    <div className={"container"}>
+
+                                        {this.state.releaseRequests.map((item) =>
+                                            <>
+
+                                                <RequestReleaseItem history={this.props.history}  item={item}  />
+
+                                            </>
+
+                                        )}
+
+                                        { this.state.releaseRequests.length === 0 &&
+                                        <div className={" column-empty-message"}>
+                                            <p>This search currently has no results</p>
+                                        </div>
+                                        }
+
+
+                                    </div>
+                                </TabPanel>
+
+
+                                <TabPanel value={this.state.value} index={1}>
+                                    <div className={"container"}>
+
+                                        {this.state.registerRequests.map((item) =>
+                                            <>
+
+                                                <RequestRegisterItem history={this.props.history}  item={item}  />
+
+                                            </>
+
+                                        )}
+
+                                        { this.state.registerRequests.length === 0 &&
+                                        <div className={" column-empty-message"}>
+                                            <p>This search currently has no results</p>
+                                        </div>
+                                        }
+
+
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value={this.state.value} index={2}>
+                                    <div className={"container"}>
+
+                                        {this.state.serviceAgentRequests.map((item) =>
+                                            <>
+                                                <RequestServiceAgentItem history={this.props.history}  item={item}  />
+
+                                            </>
+
+                                        )}
+
+                                        { this.state.serviceAgentRequests.length === 0 &&
+                                        <div className={" column-empty-message"}>
+                                            <p>This search currently has no results</p>
+                                        </div>
+                                        }
+
+
+                                    </div>
+                                </TabPanel>
+
+                            </div>
+
 
                         </div>
 
@@ -196,12 +334,132 @@ class Approvals extends Component {
 
 
 function NavTabs(props) {
+
+
+
     const classes = useStylesTabs();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+
+
     };
+
+
+    const  [releases,setReleases]=useState([])
+    const  [registers,setRegisters]=useState([])
+    const  [serviceAgents,setServiceAgents]=useState([])
+
+
+
+    const getReleases = () => {
+    axios.get(baseUrl + "release",
+        {
+            headers: {
+                "Authorization": "Bearer " + props.token
+            }
+        }
+    )
+        .then((response) => {
+
+                var responseAll = response.data.data;
+
+
+                // this.setState({
+                //
+                //     releaseRequests: responseAll
+                // })
+
+
+            setReleases(responseAll)
+
+
+            },
+            (error) => {
+
+
+            }
+        );
+
+
+}
+
+    const getRegisters = () => {
+        axios.get(baseUrl + "register",
+            {
+                headers: {
+                    "Authorization": "Bearer " + props.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+
+
+                    // this.setState({
+                    //
+                    //     releaseRequests: responseAll
+                    // })
+
+
+                    setRegisters(responseAll)
+
+
+                },
+                (error) => {
+
+
+                }
+            );
+
+
+    }
+
+    const getServiceAgents = () => {
+        axios.get(baseUrl + "service-agent",
+            {
+                headers: {
+                    "Authorization": "Bearer " + props.token
+                }
+            }
+        )
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+
+
+                    // this.setState({
+                    //
+                    //     releaseRequests: responseAll
+                    // })
+
+
+                    setRegisters(responseAll)
+
+
+                },
+                (error) => {
+
+
+                }
+            );
+
+
+    }
+
+
+
+
+useEffect(()=> {
+
+    getReleases()
+    getRegisters()
+    getServiceAgents()
+
+})
+
 
     return (
         <div className={classes.root}>
@@ -217,18 +475,18 @@ function NavTabs(props) {
                 >
 
                     {/*{props.releases.length>0 &&*/}
-                    <LinkTab label={"Product Release Requests ("+props.releases.length+")"} href="/drafts" {...a11yProps(0)} />
+                    <LinkTab label={"Product Release Requests ("+releases.length+")"}  {...a11yProps(0)} />
                     {/*}*/}
 
                     {/*{props.suggesstions.length > 0 &&*/}
 
                     {/*{props.registers.length>0 &&*/}
-                    <LinkTab label={"Product Register Requests ("+props.registers.length+")"} href="/drafts" {...a11yProps(1)} />
+                    <LinkTab label={"Product Register Requests ("+registers.length+")"}  {...a11yProps(1)} />
                     {/*}*/}
 
 
                     {/*{props.serviceAgents.length>0 &&*/}
-                    <LinkTab label={"Change Service Agent Requests  ("+props.serviceAgents.length+")"} href="/drafts" {...a11yProps(2)} />
+                    <LinkTab label={"Change Service Agent Requests  ("+serviceAgents.length+")"}  {...a11yProps(2)} />
                     {/*}*/}
 
                     {/*}*/}
@@ -241,7 +499,7 @@ function NavTabs(props) {
             <TabPanel value={value} index={0}>
                 <div className={"container"}>
 
-                    {props.releases.map((item) =>
+                    {releases.map((item) =>
                         <>
 
                             <RequestReleaseItem history={props.history}  item={item}  />
@@ -250,7 +508,7 @@ function NavTabs(props) {
 
                     )}
 
-                    { props.releases.length === 0 &&
+                    { releases.length === 0 &&
                     <div className={" column-empty-message"}>
                         <p>This search currently has no results</p>
                     </div>
@@ -264,7 +522,7 @@ function NavTabs(props) {
             <TabPanel value={value} index={1}>
                 <div className={"container"}>
 
-                    {props.registers.map((item) =>
+                    {registers.map((item) =>
                         <>
 
                             <RequestRegisterItem history={props.history}  item={item}  />
@@ -273,7 +531,7 @@ function NavTabs(props) {
 
                     )}
 
-                    { props.releases.length === 0 &&
+                    { releases.length === 0 &&
                     <div className={" column-empty-message"}>
                         <p>This search currently has no results</p>
                     </div>
@@ -285,7 +543,7 @@ function NavTabs(props) {
             <TabPanel value={value} index={2}>
                 <div className={"container"}>
 
-                    {props.serviceAgents.map((item) =>
+                    {serviceAgents.map((item) =>
                         <>
                             <RequestServiceAgentItem history={props.history}  item={item}  />
 
@@ -293,7 +551,7 @@ function NavTabs(props) {
 
                     )}
 
-                    { props.serviceAgents.length === 0 &&
+                    { serviceAgents.length === 0 &&
                     <div className={" column-empty-message"}>
                         <p>This search currently has no results</p>
                     </div>

@@ -1300,13 +1300,13 @@ class ProductDetail extends Component {
 
 
 
-                                                    {this.state.item.service_agent._id===this.props.userDetail.orgId &&<MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
-                                                               serviceAgent={true}   />}
 
 
 
-                                                    {this.state.item.org._id===this.props.userDetail.orgId &&<MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
-                                                                release={true} delete={false} duplicate={true} edit={true}  />}
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                             serviceAgent={this.state.item.service_agent._id===this.props.userDetail.orgId?true:false}
+                                                               release={this.state.item.org._id===this.props.userDetail.orgId?true:false} delete={this.state.item.org._id===this.props.userDetail.orgId?true:false} duplicate={this.state.item.org._id===this.props.userDetail.orgId?true:false}
+                                                               edit={this.state.item.org._id===this.props.userDetail.orgId?true:false}  />
 
 
 

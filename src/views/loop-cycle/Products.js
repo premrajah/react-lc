@@ -173,7 +173,6 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border "}></div>
 
-
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
 
                             <div className="col">
@@ -195,12 +194,8 @@ class Products extends Component {
 
                             <>
 
-
-                            {/*<Link to={"/product/" + item.product._key}>*/}
-
                                <ProductItem   goToLink={true} delete={false} edit={true} remove={false} duplicate={true}   item={item} />
 
-                            {/*</Link>*/}
                             </>
 
 

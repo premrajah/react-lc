@@ -150,11 +150,13 @@ class ProductsService extends Component {
 
                         <PageHeader pageIcon={CubeBlue} pageTitle="Service Products" subTitle="Products created can be assigned to resource searches" />
 
-                        {/*<div className="row">*/}
-                            {/*<div className="col-12 d-flex justify-content-end">*/}
-                                {/*<Link to="/product-archive" className="btn btn-sm blue-btn">Product Record</Link>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
+                        <div className="row">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/my-products" className="btn btn-sm blue-btn mr-2">My Products</Link>
+
+                                <Link to="/product-archive" className="btn btn-sm blue-btn">Product Record</Link>
+                            </div>
+                        </div>
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>

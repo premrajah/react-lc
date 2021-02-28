@@ -70,9 +70,12 @@ class ProductArchive extends Component {
 
                         <div className="row mt-3 mb-5">
                             <div className="col-12 d-flex justify-content-end">
+                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">Product Service</Link>
+
                                 <Link to="/my-products" className="btn btn-sm blue-btn">My Products</Link>
                             </div>
                         </div>
+
 
                         <div className="row">
                             <div className="col-12">

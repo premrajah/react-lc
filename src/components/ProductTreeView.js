@@ -191,8 +191,6 @@ class ProductTreeView extends Component {
 
     getItems(){
 
-
-        console.log("getting prpducts")
     axios.get(baseUrl + "product/expand",
         {
             headers: {

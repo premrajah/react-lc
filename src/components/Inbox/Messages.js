@@ -46,7 +46,7 @@ class Messages extends Component {
     };
 
     handleDeleteMessage = (key) => {
-        console.log("[Messages.js] ", key);
+        // console.log("[Messages.js] ", key);
     };
 
     interval;

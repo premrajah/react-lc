@@ -337,7 +337,6 @@ class ProductEditForm extends Component {
                         item: responseAll.data
                     })
 
-                console.log(responseAll.data)
 
 
                 this.loadSelection()

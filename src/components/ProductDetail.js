@@ -991,7 +991,6 @@ class ProductDetail extends Component {
 
         }else{
 
-            // alert("mno sub")
             this.setState({
                 subProducts:[]
             })
@@ -1045,14 +1044,7 @@ class ProductDetail extends Component {
 
 
     componentWillMount() {
-
-
         // this.getSubProducts()
-
-
-        // console.log(this.props.userDetail)
-
-
     }
 
 
@@ -1104,11 +1096,6 @@ class ProductDetail extends Component {
 
         }else{
 
-            // alert("props exists")
-
-            console.log("here")
-            console.log(this.props.item)
-
 
             this.setState({
                 item:this.props.item
@@ -1128,8 +1115,6 @@ class ProductDetail extends Component {
 
         if (this.state.item) {
 
-            // alert("loading info")
-            // console.log(this.state.item)
             this.getOrgs()
             this.getQrCode()
 

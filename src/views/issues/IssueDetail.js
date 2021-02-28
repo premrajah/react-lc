@@ -42,7 +42,7 @@ class IssueDetail extends Component {
                 if (response.status === 200) {
                     this.setState({ stageSelectedValue: this.state.issue.issue.stage });
                 }
-                console.log(">> ", this.state.issue);
+
             })
             .catch((error) => {});
     };
@@ -91,7 +91,6 @@ class IssueDetail extends Component {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    console.log("response stage ", response.data);
                     this.getIssue(this.state.issue.issue._key);
                     this.handleHideStageModal();
                 }

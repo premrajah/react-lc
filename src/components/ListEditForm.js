@@ -180,8 +180,6 @@ class ListEditForm extends Component {
 
     loadSelection(){
 
-        console.log("edit item ")
-        console.log(this.state.item)
         this.setState({
 
             dateRequiredBy: this.state.item.listing.expire_after_epoch_ms,

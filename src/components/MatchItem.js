@@ -444,12 +444,6 @@ class MatchItem extends Component {
 
     }
 
-    componentWillMount() {
-
-        console.log("Matches item")
-        console.log(this.props.item)
-
-    }
 
     componentDidMount() {
         this.getOffer()

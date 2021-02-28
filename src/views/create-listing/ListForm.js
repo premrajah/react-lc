@@ -388,8 +388,6 @@ class ListForm extends Component {
 
             })
 
-            console.log("site selected")
-            console.log(this.props.siteList.filter((item)=> item._key===e.target.value)[0])
 
         }
 

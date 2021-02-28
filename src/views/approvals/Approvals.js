@@ -55,7 +55,6 @@ class Approvals extends Component {
     }
     handleChange = (event, newValue)=>{
 
-        console.log(newValue)
 
         this.setState({
 
@@ -170,8 +169,6 @@ class Approvals extends Component {
             .then((response) => {
 
                     var responseAll = response.data.data;
-
-                    console.log(responseAll)
 
                     this.setState({
 

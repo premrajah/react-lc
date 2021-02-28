@@ -20,7 +20,7 @@ class IssueDetail extends Component {
         editModal: false,
         stageModal: false,
         stageForm: "open",
-        stageSelectedValue: "open",
+        stageSelectedValue: "",
     };
 
     handleShowEditModal = () => this.setState({ editModal: true });
@@ -38,6 +38,10 @@ class IssueDetail extends Component {
             })
             .then((response) => {
                 this.setState({ issue: response.data.data });
+
+                if (response.status === 200) {
+                    this.setState({ stageSelectedValue: this.state.issue.issue.stage });
+                }
                 console.log(">> ", this.state.issue);
             })
             .catch((error) => {});
@@ -71,7 +75,28 @@ class IssueDetail extends Component {
         if (!e) return;
         e.preventDefault();
 
-        console.log("form submitted", this.state.stageSelectedValue);
+        const payload = {
+            id: this.state.issue.issue._key,
+            new_stage: this.state.stageSelectedValue,
+        };
+
+        this.updateStage(payload);
+    };
+
+    updateStage = (payload) => {
+        console.log("payload", payload);
+        axios
+            .post(`${baseUrl}issue/stage`, payload, {
+                headers: { Authorization: "Bearer " + this.props.userDetail.token },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("response stage ", response.data);
+                    this.getIssue(this.state.issue.issue._key);
+                    this.handleHideStageModal();
+                }
+            })
+            .catch((error) => {});
     };
 
     handleStageSelect = (e) => {
@@ -291,22 +316,32 @@ class IssueDetail extends Component {
                                             noValidate
                                             autoComplete="off"
                                             onSubmit={(e) => this.handleStageSubmit(e)}>
-                                            <FormControl>
-                                                <FormHelperText>Select Stage</FormHelperText>
-                                                <Select
-                                                    className="mb-3"
-                                                    name="stage"
-                                                    defaultValue={
-                                                        this.state.issue.issue.stage
-                                                            ? this.state.issue.issue.stage
-                                                            : "open"
-                                                    }
-                                                    onChange={() => this.handleStageSelect}>
-                                                    <MenuItem value="open">open</MenuItem>
-                                                    <MenuItem value="closed">closed</MenuItem>
-                                                    <MenuItem value="progress">progress</MenuItem>
-                                                </Select>
-                                            </FormControl>
+                                            {this.state.issue.issue.stage === "closed" ? (
+                                                <FormControl>
+                                                    <FormHelperText>Select Stage</FormHelperText>
+                                                    <Select
+                                                        className="mb-3"
+                                                        name="stage"
+                                                        defaultValue="open"
+                                                        onChange={(e) => this.handleStageSelect(e)}>
+                                                        <MenuItem value="open">open</MenuItem>
+                                                        <MenuItem value="progress">progress</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            ) : (
+                                                <FormControl>
+                                                    <FormHelperText>Select Stage</FormHelperText>
+                                                    <Select
+                                                        className="mb-3"
+                                                        name="stage"
+                                                        defaultValue={this.state.issue.issue.stage}
+                                                        onChange={(e) => this.handleStageSelect(e)}>
+                                                        <MenuItem value="open">open</MenuItem>
+                                                        <MenuItem value="closed">closed</MenuItem>
+                                                        <MenuItem value="progress">progress</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            )}
 
                                             <div className="mt-3 mb-3 d-flex justify-content-center">
                                                 <button className="btn btn-green">Submit</button>

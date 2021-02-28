@@ -13,7 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import SearchItem from './search-item'
@@ -137,17 +136,22 @@ class MySearch extends Component {
 
 
 
-                        <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
+
+
+                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+
                             <div className={"col-12"}>
 
                                 <SearchField />
 
                             </div>
                         </div>
+                        <div className={"listing-row-border"}></div>
 
 
 
-                        <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
+
+                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
 
                             <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Searches </p>
@@ -165,6 +169,7 @@ class MySearch extends Component {
                             </div>
 
                         </div>
+                        <div className={"listing-row-border mb-3"}></div>
 
 
 
@@ -172,7 +177,7 @@ class MySearch extends Component {
                         {this.state.items.map((item) =>
 
 
-                            <SearchItem triggerCallback={()=>this.callBackResult()}  item={item} />
+                            <SearchItem showMoreMenu={true} triggerCallback={()=>this.callBackResult()}  item={item} />
 
 
                         )}

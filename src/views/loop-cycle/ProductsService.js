@@ -2,23 +2,29 @@ import React, { Component } from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
+import Paper from '../../img/paper.png';
 import clsx from 'clsx';
-import RingBlue from '../../img/icons/ring-blue.png';
+import CubeBlue from '../../img/icons/product-icon-big.png';
 import { Link } from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
+import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
-import CycleItem from '../../components/CycleItem'
-import moment from "moment";
+import axios from "axios/index";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import PlaceholderImg from '../../img/place-holder-lc.png';
+import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from "@material-ui/core/styles/index";
+import moment from "moment/moment";
+import ProductItem from '../../components/ProductItemNew'
 import PageHeader from "../../components/PageHeader";
 
 
-class MyCycles extends Component {
+class ProductsService extends Component {
 
 
     constructor(props) {
@@ -30,40 +36,50 @@ class MyCycles extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            loops: []
+            products: []
         }
 
-        this.getCycles = this.getCycles.bind(this)
+
+        this.getProducts = this.getProducts.bind(this)
+
+        this.showProductSelection=this.showProductSelection.bind(this)
 
     }
 
 
-    getCycles() {
+    showProductSelection() {
+
+        this.props.showProductPopUp({type:"create_product",show:true})
+
+    }
+    getProducts() {
+
+
 
         this.props.showLoading(true)
-
-        axios.get(baseUrl + "cycle/expand",
+        axios.get(baseUrl + "product/service-agent",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
                 }
             }
-        ).then((response) => {
+        )
+            .then((response) => {
 
-                var response = response.data.data;
+
+                    this.props.showLoading(false)
+
+                var responseAll = response.data.data;
 
 
 
                 this.setState({
 
-                    loops: response
+                    products: responseAll
 
                 })
 
-                    this.props.showLoading(false)
-
-
-                },
+            },
                 (error) => {
 
                     // var status = error.response.status
@@ -72,11 +88,15 @@ class MyCycles extends Component {
 
                     this.props.showLoading(false)
 
-
                 }
             );
 
     }
+
+
+
+
+
 
     componentWillMount() {
 
@@ -84,8 +104,23 @@ class MyCycles extends Component {
 
     componentDidMount() {
 
-        this.getCycles()
+        this.getProducts()
 
+
+
+        this.interval = setInterval(() => {
+
+
+            this.getProducts()
+
+
+        }, 15000);
+
+    }
+
+    componentWillUnmount() {
+
+        clearInterval(this.interval)
     }
 
 
@@ -93,7 +128,15 @@ class MyCycles extends Component {
 
 
 
+
+
     render() {
+
+
+        const classes = withStyles();
+        const classesBottom = withStyles();
+
+
 
         return (
             <div>
@@ -105,35 +148,31 @@ class MyCycles extends Component {
 
                     <div className="container  pb-4 pt-4">
 
-                        <PageHeader pageIcon={RingBlue} pageTitle="My Cycles" subTitle="Cycles are transactions in progress. Keep track of cycles in progress as well as" />
+                        <PageHeader pageIcon={CubeBlue} pageTitle="Service Products" subTitle="Products created can be assigned to resource searches" />
 
-                        <div className="row   search-container  pt-3 pb-4">
+                        <div className="row">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/my-products" className="btn btn-sm blue-btn mr-2">My Products</Link>
+
+                                <Link to="/product-archive" className="btn btn-sm blue-btn">Product Record</Link>
+                            </div>
+                        </div>
+
+                        <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchField />
                             </div>
                         </div>
-
-
                         <div className={"listing-row-border "}></div>
 
-                        <div className="row   filter-row   pt-3 pb-3">
 
-                            <div className="col-6">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">Cycles</p>
+                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
 
-                            </div>
-                            <div className="text-mute col-2 pl-0 text-right">
-
-                                <span style={{ fontSize: "18px" }}>Price</span>
+                            <div className="col">
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.products.length} Products </p>
 
                             </div>
-
-                            <div className="text-mute col-2 pl-0 text-right">
-
-                                <span style={{ fontSize: "18px" }}>Status</span>
-
-                            </div>
-                            <div className="text-mute col-2 pl-0 text-right">
+                            <div className="text-mute col-auto pl-0">
 
                                 <span style={{ fontSize: "18px" }}>Created</span>
 
@@ -143,16 +182,24 @@ class MyCycles extends Component {
                         <div className={"listing-row-border mb-3"}></div>
 
 
-                        {this.state.loops.map((item) =>
 
-                            <CycleItem item={item} />
+                        {this.state.products.map((item) =>
+
+                            <>
+
+                            {/*<Link to={"/product/" + item.product._key}>*/}
+
+                               <ProductItem   goToLink={true} delete={false} edit={true} remove={false} duplicate={true}   item={item} />
+
+                            {/*</Link>*/}
+                            </>
+
 
                         )}
 
 
-
-
                     </div>
+
 
 
 
@@ -197,33 +244,40 @@ function SearchField() {
 
 
 
+
+
+
+
+
 const mapStateToProps = state => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+
+        productWithoutParentList: state.productWithoutParentList,
+        
 
 
     };
 };
 
 const mapDispachToProps = dispatch => {
-
     return {
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
+
 
 
     };
@@ -231,5 +285,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(MyCycles);
-
+)(ProductsService);

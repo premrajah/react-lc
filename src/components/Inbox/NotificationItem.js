@@ -1,9 +1,9 @@
 import React from "react";
-import { Alert } from "react-bootstrap";
 import moment from "moment/moment";
-import Org from "../Org/Org";
-import {Link} from "react-router-dom";
-import {Link as NotifLinkIcon} from '@material-ui/icons'
+import NotIcon from "@material-ui/icons/Notifications";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Card, CardContent } from "@material-ui/core";
+import MoreMenu from "../MoreMenu";
 
 const NotificationItem = ({ item, editText, onClose }) => {
     const { message, orgs } = item;
@@ -13,33 +13,33 @@ const NotificationItem = ({ item, editText, onClose }) => {
     };
 
     return (
-        <div>
-            <Alert
-                variant={message.type === "notification" ? "success" : "primary"}
-                onClose={() => handleOnClose(message._key)}
-                dismissible>
-                <div>
-                    {moment(message._ts_epoch_ms).format("DD MMM YYYY")} : {editText}
+        <Card variant="outlined" className="mb-2">
+            <CardContent>
+                <div className="row">
+                    <div className={"col-12"}>
+                        <NotIcon
+                            style={{
+                                color: "#eee",
+                                float: "left",
+                                marginRight: "15px",
+                                marginTop: "3px",
+                            }}
+                        />
+                        <p
+                            style={{ float: "left", marginBottom: "0" }}
+                            dangerouslySetInnerHTML={{ __html: editText ? editText : "" }}></p>
+
+                        <span className="text-mute time-text">
+                            {moment(message._ts_epoch_ms).fromNow()}
+                        </span>
+
+                        <span style={{ float: "right" }}>
+                            <MoreMenu delete={true} />
+                        </span>
+                    </div>
                 </div>
-                <div>
-                    {orgs.length > 0
-                        ? orgs.map((orgItem) => {
-                              return (
-                                  <span key={message._key + Math.random()}>
-                                      {orgItem.actor === "message_from" ? "From: " : "To: "}{" "}
-                                      <span className="mr-4">
-                                          <Org
-                                              orgId={orgItem.org._id}
-                                              orgDescription={orgItem.org.description}
-                                          />
-                                      </span>
-                                  </span>
-                              );
-                          })
-                        : null}
-                </div>
-            </Alert>
-        </div>
+            </CardContent>
+        </Card>
     );
 };
 

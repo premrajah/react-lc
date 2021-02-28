@@ -23,20 +23,22 @@ const Org = ({
             <Popover.Title as="h3">
                 <span style={{ textTransform: "capitalize" }}>{orgId ? orgNameSub : ""}</span>
             </Popover.Title>
-            <Popover.Content>
-                {orgName ? <p>{orgName}</p> : ""}
-                {orgFirstName && orgLastName ? (
-                    <p>
-                        <span>
-                            `${orgFirstName} ${orgLastName}`
-                        </span>
-                    </p>
-                ) : (
-                    ""
-                )}
-                {orgDescription ? <p>{orgDescription}</p> : ""}
-                {orgEmail ? <p>`Email: ${orgEmail}`</p> : ""}
-            </Popover.Content>
+            {orgDescription && (
+                <Popover.Content>
+                    {orgName ? <p>{orgName}</p> : ""}
+                    {orgFirstName && orgLastName ? (
+                        <p>
+                            <span>
+                                `${orgFirstName} ${orgLastName}`
+                            </span>
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                    {orgDescription ? <p>{orgDescription}</p> : ""}
+                    {orgEmail ? <p>`Email: ${orgEmail}`</p> : ""}
+                </Popover.Content>
+            )}
         </Popover>
     );
 
@@ -57,10 +59,13 @@ const Org = ({
                     {orgNameSub}
                 </div>
                 <OverlayTrigger
-                    trigger={trigger ? trigger : ['hover', 'focus']}
+                    trigger={trigger ? trigger : ["hover", "focus"]}
                     placement={placement ? placement : "right"}
                     overlay={orgPopover}>
-                    <Info style={{ cursor: "pointer", color: infoColor ? infoColor : "#27245C" }} fontSize={infoSize? infoSize : 'small'} />
+                    <Info
+                        style={{ cursor: "pointer", color: infoColor ? infoColor : "#27245C" }}
+                        fontSize={infoSize ? infoSize : "small"}
+                    />
                 </OverlayTrigger>
             </div>
         </>

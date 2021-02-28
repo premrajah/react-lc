@@ -139,7 +139,7 @@ class MyListings extends Component {
 
                         <PageHeader pageIcon={ProductBlue} pageTitle="My Listings" subTitle="Accept or decline a match to start a loop." />
 
-                        <div className="row  justify-content-center search-container listing-row-border pt-3 pb-4">
+                        <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchField />
 
@@ -148,8 +148,9 @@ class MyListings extends Component {
                         </div>
 
 
+                        <div className={"listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
+                        <div className="row  justify-content-center filter-row    pt-3 pb-2">
 
                             <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">{this.state.items.length} Listings </p>
@@ -174,6 +175,9 @@ class MyListings extends Component {
                             </div>
 
                         </div>
+
+                        <div className={"listing-row-border mb-3"}></div>
+
 
 
                         {this.state.items.map((item) =>

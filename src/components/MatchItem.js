@@ -444,9 +444,6 @@ class MatchItem extends Component {
 
     }
 
-    componentWillMount() {
-
-    }
 
     componentDidMount() {
         this.getOffer()
@@ -469,9 +466,9 @@ class MatchItem extends Component {
                 <div className={"col-2"}>
 
 
-                        {this.props.item.images ? <img className={"resource-item-img img-list img-fluid"}
-                                                       src={this.props.item.images[0]} alt="" />
-                            : <img className={"img-fluid"} src={Paper} alt="" />}
+                        <img className={"resource-item-img img-list img-fluid"}
+                                                       src={this.props.item.listing.artifacts.length>0 ?this.props.item.listing.artifacts[0].blob_url:Paper} alt="" />
+
 
 
                 </div>

@@ -133,13 +133,27 @@ class PaymentMethod extends Component {
 
      phonenumber(inputtxt) {
 
-        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
-        if(inputtxt.match(phoneno)) {
+
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+         var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+         if(inputtxt.match(phoneNoWithCode)) {
             return true;
         }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+        
         else {
             return false;
         }
+
+
     }
 
 

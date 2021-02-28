@@ -32,6 +32,7 @@ import {
     DatePicker
 } from '@material-ui/pickers';
 import moment from "moment/moment";
+import PageHeader from "../../components/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -171,13 +172,25 @@ class ListForm extends Component {
 
     phonenumber(inputtxt) {
 
-        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
-        if(inputtxt.match(phoneno)) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
             return true;
         }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
         else {
             return false;
         }
+
     }
 
 
@@ -224,6 +237,7 @@ class ListForm extends Component {
 
 
         if (this.state.page === 1&&this.handleValidateOne()) {
+            window.scrollTo(0, 0)
 
             this.setState({
 
@@ -236,6 +250,8 @@ class ListForm extends Component {
 
         }
         else  if (this.state.page === 2&&this.handleValidateTwo()) {
+
+            window.scrollTo(0, 0)
 
             this.setState({
 
@@ -304,6 +320,7 @@ class ListForm extends Component {
 
         if (this.state.page === 3) {
 
+            window.scrollTo(0, 0)
             this.setState({
 
                 page: 2,
@@ -315,6 +332,8 @@ class ListForm extends Component {
 
 
         else  if (this.state.page === 2) {
+
+            window.scrollTo(0, 0)
 
             this.setState({
 
@@ -365,10 +384,9 @@ class ListForm extends Component {
 
             this.setState({
 
-                siteSelected: this.state.sites.filter((item)=> item._key===e.target.value)[0]
+                siteSelected: this.props.siteList.filter((item)=> item._key===e.target.value)[0]
 
             })
-
 
 
         }
@@ -686,6 +704,7 @@ class ListForm extends Component {
                 "value": this.state.free?0:this.state.fields["price"],
                 "currency": "gbp"
             },
+
         }
 
 
@@ -1150,29 +1169,23 @@ class ListForm extends Component {
         return (
 
             <>
+            <Sidebar />
+            <div className="wrapper">
 
-                <Sidebar />
                 <HeaderDark />
 
-                <div className="container pt-4 p-2 mt-5 ">
-
-                </div>
+                <div className="container  pb-4 pt-4">
+                    <PageHeader  pageTitle={"Create A Listing"}  />
 
 
                 <div className={this.state.page === 1 ? "" : "d-none"}>
 
-                    <div className="container add-listing-container   pb-5 pt-5">
-                        <div className="row no-gutters">
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Create a Listing
-                            </h3>
-
-                            </div>
-                        </div>
+                    <div className="row add-listing-container   pb-5 pt-2">
+<div className={"col-12"}>
 
 
                         <div onSubmit={this.createListing} className={"mb-5"}>
-                            <div className="row no-gutters justify-content-center mt-5">
+                            <div className="row no-gutters justify-content-center mt-2">
                                 <div className="col-12">
                                     <div className={"custom-label text-bold text-blue mb-1"}>Title</div>
 
@@ -1212,24 +1225,28 @@ class ListForm extends Component {
 
                         </div>
 
+</div>
+
                     </div>
                 </div>
 
 
                 <div className={this.state.page === 2 ? "" : "d-none"}>
 
-                    <div className="container add-listing-container   pb-5 pt-5">
+                    <div className="row add-listing-container   pb-5 pt-2">
+
+                        <div className={"col-12"}>
                         <div className="row no-gutters">
                             <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Add Details
-                                </h3>
+                                <h5 className={" text-heading"}>Add Details
+                                </h5>
 
                             </div>
                         </div>
 
 
                         <div onSubmit={this.createListing} className={"mb-5"}>
-                            <div className="row no-gutters justify-content-center mt-5">
+                            <div className="row no-gutters justify-content-center mt-2">
 
                                 <div className="col-12 mt-4">
 
@@ -1399,7 +1416,7 @@ class ListForm extends Component {
 
 
                         </div>
-
+                        </div>
 
 
                     </div>
@@ -1467,6 +1484,10 @@ class ListForm extends Component {
                         </div>
 
                     </div>
+
+                </div>
+
+
 
                 </div>
 
@@ -1602,6 +1623,9 @@ class ListForm extends Component {
                     </div>
                 </>
                 }
+
+
+            </div>
 
 
 

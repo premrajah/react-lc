@@ -100,8 +100,8 @@ class MyAccount extends Component {
                                         Company Info  <NavigateNextIcon />
                                     </Link>
 
-                                    <Link to={"/payment"} className="list-group-item list-group-item-action ">
-                                    Payment Methods <NavigateNextIcon /></Link>
+                                    {/*<Link to={"/payment"} className="list-group-item list-group-item-action ">*/}
+                                    {/*Payment Methods <NavigateNextIcon /></Link>*/}
 
                                     <Link to={"/addresses"} className="list-group-item list-group-item-action ">
                                     Address/Sites <NavigateNextIcon />

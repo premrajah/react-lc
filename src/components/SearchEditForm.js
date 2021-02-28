@@ -162,6 +162,12 @@ class SearchEditForm extends Component {
     loadSelection(){
 
 
+        this.setState({
+
+            dateRequiredBy: this.state.item.search.expire_after_epoch_ms,
+            dateRequiredFrom:this.state.item.search.require_after_epoch_ms,
+        })
+
         let catSelected =  this.state.categories.filter((item) => item.name === this.state.item.search.category)[0]
 
 

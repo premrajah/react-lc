@@ -54,7 +54,7 @@ const useStylesTabs = makeStyles((theme) => ({
 }));
 
 
-class ListEditForm extends Component {
+class ListEditFormOld extends Component {
 
 
     constructor(props) {
@@ -95,7 +95,7 @@ class ListEditForm extends Component {
             title: null,
             description: null,
             volume: null,
-            handleUpdateListingData: null,
+            createSearchData: null,
             searchObj:null,
             resourcesMatched: [],
             showCreateSite: false,
@@ -124,7 +124,7 @@ class ListEditForm extends Component {
         this.getProducts = this.getProducts.bind(this)
         this.selectProduct = this.selectProduct.bind(this)
         // this.handleDateChange = this.handleDateChange.bind(this)
-        this.handleUpdateListing = this.handleUpdateListing.bind(this)
+        this.createSearch = this.createSearch.bind(this)
         this.loadMatches = this.loadMatches.bind(this)
         this.showCreateSite = this.showCreateSite.bind(this)
         this.getSites = this.getSites.bind(this)
@@ -135,7 +135,7 @@ class ListEditForm extends Component {
         this.handleChangeDate = this.handleChangeDate.bind(this)
         this.makeActive=this.makeActive.bind(this)
         this.goToSearchPage=this.goToSearchPage.bind(this)
-        this.getListing=this.getListing.bind(this)
+        this.getSearch=this.getSearch.bind(this)
         this.triggerCallback=this.triggerCallback.bind(this)
         this.loadSelection=this.loadSelection.bind(this)
         this.toggleFree = this.toggleFree.bind(this)
@@ -180,11 +180,9 @@ class ListEditForm extends Component {
 
     loadSelection(){
 
-        this.setState({
 
-            dateRequiredBy: this.state.item.listing.expire_after_epoch_ms,
-            dateRequiredFrom:this.state.item.listing.available_from_epoch_ms,
-        })
+
+
 
 
 
@@ -237,7 +235,7 @@ class ListEditForm extends Component {
     }
 
 
-    getListing() {
+    getSearch() {
 
 
         axios.get(baseUrl + "listing/" + this.props.listingId+"/expand",
@@ -488,7 +486,7 @@ class ListEditForm extends Component {
         })
     }
 
-    handleUpdateListing(event) {
+    createSearch(event) {
 
 
         event.preventDefault();
@@ -507,9 +505,11 @@ class ListEditForm extends Component {
                 "description": dataFORM.get("description"),
                 "category": dataFORM.get("category"), //this.state.catSelected.name,
                 "type": dataFORM.get("type"),
+                "units": dataFORM.get("unit"),
+                "volume": dataFORM.get("volume"),
                 "state": dataFORM.get("state"),
-                "available_from_epoch_ms": new Date(this.state.dateRequiredFrom).getTime() ,
-                "expire_after_epoch_ms": new Date(this.state.dateRequiredBy).getTime() ,
+                "require_after_epoch_ms":  new Date(this.state.dateRequiredFrom).getTime(),
+                "expire_after_epoch_ms":  new Date(this.state.dateRequiredBy).getTime(),
 
                 // "require_after_epoch_ms":  new Date(dataFORM.get("dateRequiredFrom")).getTime(),
                 // "expire_after_epoch_ms":  new Date(dataFORM.get("dateRequiredBy")).getTime(),
@@ -521,9 +521,7 @@ class ListEditForm extends Component {
         }
 
 
-        console.log(data)
-
-        axios.post(baseUrl + "listing",
+        axios.post(baseUrl + "search",
             data, {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -534,10 +532,14 @@ class ListEditForm extends Component {
 
 
 
+
+
+
+
                 this.triggerCallback()
 
                 // this.setState({
-                //     // handleUpdateListingData: res.data.data,
+                //     // createSearchData: res.data.data,
                 //     item:res.data.data,
                 // })
 
@@ -558,9 +560,9 @@ class ListEditForm extends Component {
     loadMatches() {
 
 
-        for (var i = 0; i < this.state.handleUpdateListingData.resources.length; i++) {
+        for (var i = 0; i < this.state.createSearchData.resources.length; i++) {
 
-            axios.get(baseUrl + "resource/" + this.state.handleUpdateListingData.resources[i],
+            axios.get(baseUrl + "resource/" + this.state.createSearchData.resources[i],
                 {
                     headers: {
                         "Authorization": "Bearer " + this.props.userDetail.token
@@ -695,7 +697,7 @@ class ListEditForm extends Component {
                     progressBar: 100
                 })
 
-                this.handleUpdateListing()
+                this.createSearch()
             }
 
         }
@@ -756,7 +758,7 @@ class ListEditForm extends Component {
                 })
 
 
-                this.getListing(this.props.listingId)
+                this.getSearch(this.props.listingId)
 
 
             },
@@ -1691,7 +1693,7 @@ class ListEditForm extends Component {
                         </div>
 
 
-                        <form onSubmit={this.handleUpdateListing}>
+                        <form onSubmit={this.createSearch}>
                             <div className="row no-gutters justify-content-center mt-2 pb-4">
                                 <div className="col-12">
 
@@ -2309,4 +2311,4 @@ const mapDispachToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispachToProps
-)(ListEditForm);
+)(ListEditFormOld);

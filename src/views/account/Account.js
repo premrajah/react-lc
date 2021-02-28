@@ -68,7 +68,7 @@ class Account extends Component {
                         <div className="row mb-3 justify-content-center ">
 
                             <div className="col-12  justify-content-center">
-                                <h4 className={"text-blue text-bold"}>My LoopCycle</h4>
+                                <h4 className={"text-blue text-bold"}>My Loopcycle</h4>
                             </div>
                         </div>
 

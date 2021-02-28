@@ -11,6 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import CompanyInfo from './CompanyInfo'
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
+import Org from "./Org/Org";
 
 
 class CycleItem extends Component {
@@ -321,7 +322,7 @@ class CycleItem extends Component {
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
 
-                    <h5 style={{ fontSize: "18px" }} className=" mb-1">{this.props.item.product.product.name}</h5>
+                    <p style={{ fontSize: "18px" }} className=" mb-1 text-bold text-blue">{this.props.item.product.product.name}</p>
                     <p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.product.product.description.substr(0, 60)} ..</p>
 
 
@@ -330,7 +331,9 @@ class CycleItem extends Component {
                    </>
                     </Link>
 
-                    <p style={{ fontSize: "16px" }} className=" mb-1">  <span className={"text-bold"}>{this.props.item.sender.name}</span> <CompanyInfo item={this.props.item.sender}/> → <span className={"text-bold"} >{this.props.item.receiver.name}  <CompanyInfo item={this.props.item.receiver}/> </span></p>
+                    <p style={{ fontSize: "16px" }} className=" mb-1">
+
+                        <Org orgId={this.props.item.sender._id}/> →   <Org orgId={this.props.item.receiver._id}/> </p>
 
                               {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}
 

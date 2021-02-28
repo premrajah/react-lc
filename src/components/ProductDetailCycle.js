@@ -31,6 +31,9 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
+import MoreMenu from './MoreMenu'
+import IssueSubmitForm from "./IssueSubmitForm";
+
 
 
 
@@ -56,12 +59,15 @@ class ProductDetailCycle extends Component {
             productQrCode:null,
             showRegister:false,
             sites:[],
+            siteSelected:null,
             fieldsSite: {},
             errorsSite: {},
             showSubmitSite:false,
             errorRegister:false,
-            siteSelected:null,
-            showDeletePopUp:false
+            showDeletePopUp:false,
+            isVisibleReportModal: false,
+            showRegisterSuccess:false,
+
         }
 
 
@@ -73,12 +79,50 @@ class ProductDetailCycle extends Component {
         this.showRegister=this.showRegister.bind(this)
         this.getSites=this.getSites.bind(this)
         this.showSubmitSite=this.showSubmitSite.bind(this)
+        this.callBackResult=this.callBackResult.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
 
 
 
     }
 
+    phonenumber(inputtxt) {
 
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
+    showReportModal = () => this.setState({isVisibleReportModal: true});
+    hideReportModal = () => this.setState({isVisibleReportModal: false});
+
+    callBackResult(action){
+
+
+        if (action==="report"){
+            this.showReportModal();
+        }
+
+        else if (action==="register"){
+
+            this.showRegister()
+        }
+    }
 
 
 
@@ -134,6 +178,11 @@ class ProductDetailCycle extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
 
 
 
@@ -156,7 +205,6 @@ class ProductDetailCycle extends Component {
         this.setState({ errorsSite: errors });
         return formIsValid;
     }
-
 
 
     handleChangeSite(field, e) {
@@ -254,8 +302,6 @@ class ProductDetailCycle extends Component {
         }
     }
 
-
-
     submitRegisterProduct = event => {
 
 
@@ -289,7 +335,7 @@ class ProductDetailCycle extends Component {
 
 
 
-            axios.post(baseUrl + "product/register",
+            axios.post(baseUrl + "register",
 
                 {
                     site_id: site,
@@ -302,11 +348,17 @@ class ProductDetailCycle extends Component {
                 })
                 .then(res => {
 
-                    this.toggleSite()
-                    this.showRegister()
+                    // this.toggleSite()
+                    // this.showRegister()
+
+                    this.setState({
+
+                        showRegisterSuccess:true
+                    })
+
+
 
                 }).catch(error => {
-
 
 
                 this.setState({
@@ -317,10 +369,6 @@ class ProductDetailCycle extends Component {
             });
 
     }
-
-
-
-
 
 
     getSites() {
@@ -397,6 +445,7 @@ class ProductDetailCycle extends Component {
     }
 
 
+
     getQrCode() {
 
 
@@ -413,8 +462,6 @@ class ProductDetailCycle extends Component {
 
     getListing() {
 
-
-        // var siteKey = (this.props.item.site_id).replace("Site/","")
 
         axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
             {
@@ -605,22 +652,8 @@ class ProductDetailCycle extends Component {
     componentDidMount() {
 
 
+
         this.getQrCode()
-
-
-        // if (this.props.item.listing&&this.props.isLoggedIn){
-        //
-        //     this.getListing()
-        //
-        // }
-        //
-        //
-        //
-        // if (this.props.item.searches.length>0){
-        //
-        //     this.getSearches()
-        //
-        // }
 
 
         
@@ -672,7 +705,10 @@ class ProductDetailCycle extends Component {
                                         </>
                                         }
 
-                                            <div className={"col-12 pb-5 mb-5"}>
+
+
+
+                                        <div className={"col-12 pb-5 mb-5"}>
 
 
                                                 <div className="row justify-content-start pb-3 pt-3 ">
@@ -723,20 +759,27 @@ class ProductDetailCycle extends Component {
 
                                 <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
 
-                                    <div className="row justify-content-start pb-3  listing-row-border">
+                                    <div className="row justify-content-start pb-3  ">
 
                                         <div className="col-12 mt-2">
 
                                             <div className="row">
 
-                                                <div className="col-12">
+                                                <div className="col-8">
 
-                                            <h4 className={"blue-text text-heading"}>
-                                                {this.props.item.product.name}
-                                            </h4>
+                                                    <h4 className={"blue-text text-heading"}>
+                                                        {this.props.item.product.name}
+                                                    </h4>
                                                 </div>
 
+                                                <div className="col-4 text-right">
+
+                                                    {this.props.isLoggedIn &&   <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                                                           report={this.props.userDetail.orgId===this.props.item.org._id?true:false} register={this.props.userDetail.orgId!==this.props.item.org._id}  />}
+
                                                 </div>
+
+                                            </div>
 
                                         </div>
 
@@ -756,8 +799,10 @@ class ProductDetailCycle extends Component {
 
                                     </div>
 
+                                    <div className={"listing-row-border "}></div>
 
-                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+
+                                    <div className="row justify-content-start pb-3 pt-3 ">
 
                                         <div className="col-auto">
                                             <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.props.item.product.description}
@@ -766,6 +811,8 @@ class ProductDetailCycle extends Component {
                                         </div>
 
                                     </div>
+                                    <div className={"listing-row-border "}></div>
+
                                     <div className="row justify-content-start pb-3 pt-3 ">
 
                                     <div className="col-12 mt-2">
@@ -784,24 +831,24 @@ class ProductDetailCycle extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {/*<div className="row  justify-content-start search-container  pb-2">*/}
 
-                                                <div className={"col-auto"}>
+                                                {/*<div className={"col-auto"}>*/}
 
-                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
-                                                </div>
-                                            </div>
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
 
 
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {this.props.item&&this.props.item.product.year_of_making &&  <div className="row  justify-content-start search-container  pb-2">
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Year Of Manufacturer</p>
                                                     <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item.product.year_of_making}</p>
                                                 </div>
-                                            </div>
+                                            </div>}
 
 
                                             {this.props.item&&this.props.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
@@ -845,6 +892,14 @@ class ProductDetailCycle extends Component {
                                                 </div>
                                             </div>
 
+                                            <div className="row  justify-content-start search-container  pb-2 ">
+
+                                                <div className={"col-auto"}>
+                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Service Agent</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.props.item.service_agent._id} /> </p>
+                                                </div>
+                                            </div>
+
 
 
                                         </Tab>
@@ -853,7 +908,7 @@ class ProductDetailCycle extends Component {
                                         {this.state.subProducts.length>0 &&
                                         <Tab eventKey="subproducts" title="Subproducts">
                                             {this.state.subProducts.map((item)=>
-                                                <ProductItemNew key={Math.random() * 100} item={item}/>
+                                                <ProductItemNew hideMore={true} key={Math.random() * 100} item={item}/>
                                             )}
                                         </Tab>}
 
@@ -886,7 +941,22 @@ class ProductDetailCycle extends Component {
                                 </div>
                             </div>
 
-
+                        <Modal id="reportModal" show={this.state.isVisibleReportModal} onHide={this.hideReportModal} animation={false}>
+                            <Modal.Title>
+                                <div className="row">
+                                    <div className="col">
+                                        <button className="btn float-right mr-3 mt-2 mb-2" onClick={this.hideReportModal}>X</button>
+                                        <div className="text-center mt-2 mb-2">Report Issue</div>
+                                    </div>
+                                </div>
+                            </Modal.Title>
+                            <Modal.Body>
+                                {this.props.item.product._key && <div>
+                                    <div className="mt-2 mb-2">Product: <span><b>{this.props.item.product.name}</b></span></div>
+                                    <IssueSubmitForm productId={this.props.item.product._key}/>
+                                </div>}
+                            </Modal.Body>
+                        </Modal>
 
                         <Modal className={"loop-popup"}
                                aria-labelledby="contained-modal-title-vcenter"
@@ -903,98 +973,118 @@ class ProductDetailCycle extends Component {
                                     </div>
                                 </div>
 
+                                {!this.state.showRegisterSuccess?
+
                                 <form onSubmit={this.submitRegisterProduct}>
 
-                                <div className={"row justify-content-center p-2"}>
+                                    <div className={"row justify-content-center p-2"}>
 
 
-                                    <div className={"col-12 text-center mt-2"}>
+                                        <div className={"col-12 text-center mt-2"}>
 
 
-                                        <div className={"row justify-content-center"}>
+                                            <div className={"row justify-content-center"}>
 
 
-                                            <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
 
-                                                <div className={"custom-label text-bold  mb-1 text-left"}>Select Site To Register Product</div>
-
-
-                                                <FormControl variant="outlined" className={classes.formControl}>
-
-                                                    <Select
-                                                        name={"deliver"}
-                                                        native
-                                                        // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                        inputProps={{
-                                                            name: 'site',
-                                                            id: 'outlined-age-native-simple',
-                                                        }}
-                                                    >
+                                                    <div className={"custom-label text-bold  mb-1 text-left"}>Select
+                                                        Site To Register Product
+                                                    </div>
 
 
-                                                        <option value={null}>Select</option>
+                                                    <FormControl variant="outlined" className={classes.formControl}>
 
-                                                        {this.state.sites.map((item) =>
-
-                                                            <option key={Math.random() * 100} value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                                        )}
-
-                                                    </Select>
-
-                                                </FormControl>
-
-
-                                                {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
+                                                        <Select
+                                                            name={"deliver"}
+                                                            native
+                                                            // onChange={this.handleChangeProduct.bind(this, "deliver")}
+                                                            inputProps={{
+                                                                name: 'site',
+                                                                id: 'outlined-age-native-simple',
+                                                            }}
+                                                        >
 
 
-                                                <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
+                                                            <option value={null}>Select</option>
+
+                                                            {this.state.sites.map((item) =>
+
+                                                                <option key={Math.random() * 100}
+                                                                        value={item._key}>{item.name + "(" + item.address + ")"}</option>
+                                                            )}
+
+                                                        </Select>
+
+                                                    </FormControl>
 
 
+                                                    <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see
+                                                        it on here? <span onClick={this.showSubmitSite}
+                                                                          className={"green-text forgot-password-link text-mute small"}>Add a site</span>
+                                                    </p>
 
-                                            </div>
-
-
-                                            {this.state.errorRegister &&    <div className={"row justify-content-center"}>
-
-
-                                                <div className={"col-12"} style={{textAlign:"center"}}>
-
-
-                                                    <Alert key={"alert"} variant={"danger"}>
-                                                    {this.state.errorRegister}
-                                                    </Alert>
 
                                                 </div>
 
-                                            </div>}
 
-                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
-
+                                                {this.state.errorRegister &&
                                                 <div className={"row justify-content-center"}>
 
 
-                                                <div className={"col-6"} style={{textAlign:"center"}}>
-
-                                                <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
+                                                    <div className={"col-12"} style={{ textAlign: "center" }}>
 
 
+                                                        <Alert key={"alert"} variant={"danger"}>
+                                                            {this.state.errorRegister}
+                                                        </Alert>
+
+                                                    </div>
+
+                                                </div>}
+
+                                                {!this.state.showSubmitSite &&
+                                                <div className={"col-12 justify-content-center "}>
+
+                                                    <div className={"row justify-content-center"}>
+
+
+                                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                                            <button style={{ minWidth: "120px" }}
+                                                                    className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                                    type={"submit"}>Yes
+                                                            </button>
+
+
+                                                        </div>
+                                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                                            <p onClick={this.showRegister}
+                                                               className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>}
                                             </div>
-                                            <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
-                                            </div>
 
-                                                </div>
-
-                                            </div>}
                                         </div>
 
                                     </div>
 
-                                </div>
 
+                                </form>:
 
-                                </form>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your register request has been submitted successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                }
 
 
                                 {this.state.showSubmitSite &&
@@ -1126,6 +1216,9 @@ class ProductDetailCycle extends Component {
                             </ModalBody>
 
                         </Modal>
+
+
+
 
 
                     </>

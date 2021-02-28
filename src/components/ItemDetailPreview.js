@@ -132,14 +132,14 @@ class ItemDetailPreview extends Component {
 
                                     </div>
 
-                                    <div className="row  justify-content-start search-container  pb-2">
+                                    {/*<div className="row  justify-content-start search-container  pb-2">*/}
 
-                                        <div className={"col-auto"}>
+                                        {/*<div className={"col-auto"}>*/}
 
-                                            <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                            <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.userDetail.orgId} </p>
-                                        </div>
-                                    </div>
+                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
+                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.props.userDetail.orgId} </p>*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
 
 
 
@@ -183,7 +183,7 @@ class ItemDetailPreview extends Component {
                                             <h5 className={"text-blue"}>Product Linked</h5>
                                         </div>
                                         <div className={"col-12"}>
-                                            <ProductExpandItem hideAddAll={true} productId={this.props.fields["product"]}/>
+                                            <ProductExpandItem  hideMore={true} hideAddAll={true} productId={this.props.fields["product"]}/>
                                         </div>
 
                                     </div>

@@ -13,6 +13,7 @@ import PlaceholderImg from '../img/place-holder-lc.png';
 import { Link } from "react-router-dom";
 import MoreMenu from './MoreMenu'
 import ProductEditForm from "./ProductEditForm";
+import ProductDetail from "./ProductDetail";
 
 
 class ProductItemNew extends Component {
@@ -34,6 +35,7 @@ class ProductItemNew extends Component {
             siteSelected:null,
             showProductEdit:false,
             productDuplicate:false,
+            showProductHide:false
         }
 
         this.showPopUp=this.showPopUp.bind(this)
@@ -48,17 +50,15 @@ class ProductItemNew extends Component {
         this.removeItem=this.removeItem.bind(this)
 
         this.callBackSubmit=this.callBackSubmit.bind(this)
-
+        this.showProductHide=this.showProductHide.bind(this)
+        this.goToProduct=this.goToProduct.bind(this)
 
 
     }
 
 
     callBackSubmit(){
-
-        // alert("submit ")
-
-
+        
         this.setState({
 
             showProductEdit:!this.state.showProductEdit,
@@ -67,6 +67,34 @@ class ProductItemNew extends Component {
 
         this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
+
+    }
+
+    callBackHide(){
+        this.showProductHide()
+
+    }
+
+    showProductHide(){
+
+        this.setState({
+
+            showProductHide:!this.state.showProductHide,
+
+        })
+    }
+    
+    
+    goToProduct(event){
+
+        if (this.props.goToLink){
+        //
+        //     this.props.history.push(this.props.item&&this.props.item.product?"/product/"+this.props.item.product._key:"/product/"+this.props.item._key)
+        }else{
+
+            event.preventDefault()
+            this.showProductHide()
+        }
 
     }
 
@@ -372,16 +400,15 @@ class ProductItemNew extends Component {
 
 
 {this.props.item&&this.props.item.product?
-    <Link to={"/product/"+this.props.item.product._key}>
-        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
+
+    <>
+    <Link onClick={ this.goToProduct } to={"/product/"+this.props.item.product._key}>
+        <div   className="row no-gutters justify-content-center mt-4 mb-4 ">
 
 
                 <div className={"col-2 "}>
 
-
                     {this.state.images.length>0? <img className={"img-fluid img-list"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
-
-
 
                 </div>
                 <div className={"col-7 pl-2  content-box-listing"}>
@@ -395,17 +422,22 @@ class ProductItemNew extends Component {
                 <div style={{ textAlign: "right" }} className={"col-3"}>
 
                     <p className={"text-gray-light small"}>  {moment(this.props.item.product._ts_epoch_ms).format("DD MMM YYYY")} </p>
-                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={this.props.delete} edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}   />
 
+                    {!this.props.hideMore &&
+                    <MoreMenu triggerCallback={(action) => this.callBackResult(action)} delete={this.props.delete}
+                              edit={this.props.edit} remove={this.props.remove} duplicate={this.props.duplicate}/>
+                    }
 
                 </div>
             </div>
 
         </Link>
+    </>
 
 :
-           <Link to={"/product/"+this.props.item._key}>
-               <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+    <>
+           <Link  onClick={ this.goToProduct }  to={"/product/"+this.props.item._key}>
+               <div  className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
 
 
                    <div className={"col-2 "}>
@@ -434,7 +466,10 @@ class ProductItemNew extends Component {
                    </div>
                </div>
 
-           </Link>}
+           </Link>
+
+        </>
+        }
 
 
 
@@ -455,7 +490,29 @@ class ProductItemNew extends Component {
 
            </Modal>
 
-            </>
+
+{this.state.showProductHide  &&
+
+         <div className={"container pl-5 mb-5 full-width-product-popup"}>
+
+               <div className="row">
+                   <div className="col-12">
+                   <button onClick={this.showProductHide} className="btn-close close" data-dismiss="modal" aria-label="Close"><i className="fas fa-times"></i></button>
+                   </div>
+               </div>
+             <div className="row">
+                 <div className="col-12">
+
+               <ProductDetail productId={this.props.item&&this.props.item.product?this.props.item.product._key:this.props.item._key}  history={this.props.history} hideRegister={true} />
+
+                 </div>
+             </div>
+
+           </div>}
+
+
+
+       </>
 
         );
     }

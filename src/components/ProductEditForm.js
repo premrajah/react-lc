@@ -100,6 +100,7 @@ class ProductEditForm extends Component {
             filesStatus:[],
             free: false,
             price: null,
+            sku: null,
             brand: null,
             manufacturedDate: null,
             model: null,
@@ -163,16 +164,26 @@ class ProductEditForm extends Component {
         })
     }
 
-
     phonenumber(inputtxt) {
 
-        var phoneno = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/g;
-        if(inputtxt.match(phoneno)) {
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
             return true;
         }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
         else {
             return false;
         }
+
     }
 
 
@@ -1243,154 +1254,7 @@ class ProductEditForm extends Component {
 
 
 
-    handleSubmitProduct = event => {
 
-        event.preventDefault();
-
-        const data = new FormData(event.target);
-
-        if (this.handleValidationProduct(data)) {
-
-
-            const form = event.currentTarget;
-
-            this.setState({
-                btnLoading: true
-            })
-
-
-
-
-
-            const title = data.get("title")
-            const purpose = data.get("purpose")
-            const description = data.get("description")
-            const category = data.get("category")
-            const type = data.get("type")
-            const units = data.get("units")
-
-            const serial = data.get("serial")
-            const model = data.get("model")
-            const brand = data.get("brand")
-
-            const volume = data.get("volume")
-            const sku = data.get("sku")
-            const upc = data.get("upc")
-            const part_no = data.get("part_no")
-            const state = data.get("state")
-
-            // const site=data.get("deliver")
-
-            var productData = {
-
-                "purpose": purpose,
-                "name": title,
-                "description": description,
-                "category": category,
-                "type": type,
-                "units": units,
-                "state": state,
-                "volume": volume,
-                // "stage" : "certified",
-                "is_listable":this.state.is_listable,
-                "sku": {
-                    "serial": serial,
-                    "model": model,
-                    "brand": brand,
-                    "sku": sku,
-                    "upc": upc,
-                    "part_no": part_no
-                },
-
-                "year_of_making": data.get("manufacturedDate")
-
-            }
-
-
-            var completeData;
-
-
-            // if (this.props.parentProduct) {
-
-                completeData = {
-
-                    product: productData,
-                    "sub_products": [],
-                    "artifact_ids": this.state.images,
-                    "site_id": data.get("deliver"),
-                    "parent_product_id": null,
-
-
-                }
-
-
-
-
-
-
-
-
-            axios.put(baseUrl + "product",
-
-                completeData
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
-                .then(res => {
-
-
-
-
-
-
-
-                    this.props.loadProducts(this.props.userDetail.token)
-
-
-                    this.triggerCallback()
-
-
-                    // if (this.slug) {
-                    //     this.props.history.push("/sub-product-view/" + this.slug)
-                    //
-                    //
-                    // }else{
-                    //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
-                    //
-                    //
-                    // }
-
-
-                    // this.showProductSelection()
-
-                    // this.getProducts()
-
-
-                }).catch(error => {
-
-                // dispatch(stopLoading())
-
-                // dispatch(signUpFailed(error.response.data.message))
-
-
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
-
-
-            });
-
-
-            // } else {
-            //
-            //
-            //
-            // }
-
-        }
-
-    }
 
 
 
@@ -1592,7 +1456,6 @@ class ProductEditForm extends Component {
 
 
 
-
             axios.post(baseUrl + "product",
 
                 productData
@@ -1605,11 +1468,6 @@ class ProductEditForm extends Component {
 
 
 
-
-
-
-
-
                     if (this.state.fields["deliver"]){
 
                         this.updateSite()
@@ -1619,27 +1477,13 @@ class ProductEditForm extends Component {
                     this.updateImages()
 
 
-
-
                 }).catch(error => {
 
-                // dispatch(stopLoading())
-
-                // dispatch(signUpFailed(error.response.data.message))
-
-
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
 
 
             });
 
 
-            // } else {
-            //
-            //
-            //
-            // }
 
         }
 
@@ -2265,10 +2109,9 @@ class ProductEditForm extends Component {
 
                                 </div>
 
-                                {this.state.moreDetail &&
-                                <>
 
-                                <div className="col-12 mt-4">
+
+                                <div className={this.state.moreDetail?"col-12 mt-4":"d-none"}>
 
                                     <div className="row">
                                         <div className="col-md-4 col-sm-6 col-xs-6">
@@ -2330,7 +2173,8 @@ class ProductEditForm extends Component {
 
                                             <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
 
-                                            <TextField value={this.state.model}
+                                            <TextField
+
                                                        value={this.state.model?this.state.model:this.state.item.product.sku.model}
 
                                                        onChange={this.handleChangeProduct.bind(this, "model")}
@@ -2363,7 +2207,7 @@ class ProductEditForm extends Component {
 
                                             <TextField
 
-                                                value={this.state.sku?this.state.serial:this.state.item.product.sku.sku}
+                                                value={this.state.sku?this.state.sku:this.state.item.product.sku.sku}
                                                 onChange={this.handleChangeProduct.bind(this, "sku")}
                                                        name={"sku"} id="outlined-basic" variant="outlined"
                                                        fullWidth={true}/>
@@ -2410,7 +2254,7 @@ class ProductEditForm extends Component {
                                 </div>
 
 
-                                </>}
+
 
 
 

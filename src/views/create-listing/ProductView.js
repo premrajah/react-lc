@@ -50,6 +50,11 @@ class ProductView extends Component {
 
     }
 
+    componentWillMount() {
+        window.scrollTo(0, 0)
+    }
+
+
 
 
 
@@ -60,7 +65,6 @@ class ProductView extends Component {
 
 
             this.slug= newProps.match.params.slug
-            // alert("changed")
 
             this.getResources()
 
@@ -130,9 +134,7 @@ class ProductView extends Component {
 
 
 
-    componentWillMount() {
 
-    }
 
     componentDidMount() {
 

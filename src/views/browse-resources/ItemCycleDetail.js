@@ -277,8 +277,9 @@ class ItemCycleDetail extends Component {
 
 
     componentWillMount() {
-
+        window.scrollTo(0, 0)
     }
+
 
     componentDidMount() {
 
@@ -408,11 +409,13 @@ class ItemCycleDetail extends Component {
 
                         <div>
 
-                            <div className="col-12 mt-5 mb-4" >
+                            <div className={"row"}>
+                            <div className="col-12 mt-2 mb-2" >
 
                                 <h3 className={"blue-text text-heading"}>Product Details
                                 </h3>
 
+                            </div>
                             </div>
 
 

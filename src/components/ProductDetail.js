@@ -26,6 +26,8 @@ import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import ProductEditForm from "./ProductEditForm";
 import MoreMenu from './MoreMenu'
+import InputLabel from '@material-ui/core/InputLabel';
+
 
 
 class ProductDetail extends Component {
@@ -42,7 +44,7 @@ class ProductDetail extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: null,
+            item: this.props.item,
             showPopUp:false,
             subProducts:[],
             listingLinked:null,
@@ -54,9 +56,18 @@ class ProductDetail extends Component {
             errorsSite: {},
             showSubmitSite:false,
             errorRegister:false,
+            errorRelease:false,
             siteSelected:null,
             showProductEdit:false,
             productDuplicate:false,
+            showReleaseProduct:false,
+            showServiceAgent:false,
+            showReleaseSuccess:false,
+            showServiceAgentSuccess:false,
+            showOrgForm:false,
+            orgs:[],
+            email:null,
+            errorServiceAgent:false
         }
 
 
@@ -75,13 +86,184 @@ class ProductDetail extends Component {
         this.deleteItem=this.deleteItem.bind(this)
         this.showProductSelection=this.showProductSelection.bind(this)
         this.submitDuplicateProduct=this.submitDuplicateProduct.bind(this)
+        this.showReleaseProduct=this.showReleaseProduct.bind(this)
+        this.showServiceAgent=this.showServiceAgent.bind(this)
+        this.showOrgForm=this.showOrgForm.bind(this)
+        this.handleSubmitOrg=this.handleSubmitOrg.bind(this)
+        this.getOrgs=this.getOrgs.bind(this)
+        this.loadInfo=this.loadInfo.bind(this)
+        this.loadProduct=this.loadProduct.bind(this)
+
+        this.phonenumber = this.phonenumber.bind(this)
+
+
+
+    }
+
+    phonenumber(inputtxt) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
+
+
+
+    handleChangeEmail(field, e) {
+
+        this.setState({ email: e.target.value});
+
+    }
+
+    getOrgs() {
+
+
+        axios.get(baseUrl + "org/all",
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        ).then((response) => {
+
+                var response = response.data;
+
+
+
+
+
+
+                this.setState({
+
+                    orgs: response.data
+                })
+
+            },
+            (error) => {
+
+
+
+
+
+
+            }
+        );
+
+    }
+    handleSubmitOrg () {
+
+
+        const email = this.state.email
+
+
+
+        // var dataStep= {
+        //     "step": {
+        //         "email": name,
+        //         "description": description,
+        //         "type":  type,
+        //         // "predecessor": null,
+        //         "notes": notes
+        //     },
+        //     "cycle_id": this.slug,
+        //     "org_id": data.get("org")
+        //
+        // }
+
+
+
+
+        axios.get(baseUrl + "org/email/"+email
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+
+                this.showOrgForm()
+                this.getOrgs()
+
+
+            }).catch(error => {
+
+
+
+
+
+
+
+        });
 
 
     }
 
 
 
-    interval
+    showOrgForm(){
+
+
+        this.setState({
+
+            showOrgForm:!this.state.showOrgForm
+        })
+
+    }
+    showReleaseProduct(){
+
+
+        this.setState({
+
+            errorRelease:false
+        })
+
+        this.getSites()
+        this.setState({
+
+            showReleaseProduct:!this.state.showReleaseProduct
+        })
+
+
+
+    }
+
+    showServiceAgent(){
+
+
+        this.setState({
+
+            errorServiceAgent:false
+        })
+
+        this.getSites()
+        this.setState({
+
+            showServiceAgent:!this.state.showServiceAgent
+        })
+
+
+
+    }
+
+
 
 
     componentWillUnmount() {
@@ -110,13 +292,26 @@ class ProductDetail extends Component {
 
 
 
+        if (!this.props.item){
+
+            this.loadProduct(this.props.productId)
+
+        }else{
 
 
-        this.getQrCode()
 
+            this.setState({
+                item:newProps.item
+            })
 
+            this.getQrCode()
 
             this.getSubProducts()
+
+            this.loadInfo()
+
+        }
+
 
 
     }
@@ -156,6 +351,14 @@ class ProductDetail extends Component {
 
             this.submitDuplicateProduct()
         }
+        else if (action==="release"){
+
+            this.showReleaseProduct()
+        }
+        else if (action==="serviceAgent"){
+
+            this.showServiceAgent()
+        }
     }
 
 
@@ -164,7 +367,7 @@ class ProductDetail extends Component {
     submitDuplicateProduct = event => {
 
 
-        axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
+        axios.post(baseUrl + "product/"+this.state.item.product._key+"/duplicate",
             {
             }
             , {
@@ -178,8 +381,6 @@ class ProductDetail extends Component {
 
 
             }).catch(error => {
-
-
 
             // this.setState({
             //
@@ -202,7 +403,7 @@ class ProductDetail extends Component {
 
     deleteItem() {
 
-        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
+        axios.delete(baseUrl + "listing/"+this.state.item.listing._key,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -306,6 +507,11 @@ class ProductDetail extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
 
 
 
@@ -358,25 +564,17 @@ class ProductDetail extends Component {
 
             const form = event.currentTarget;
 
-
-
-
-
             this.setState({
                 btnLoading: true
             })
 
             const data = new FormData(event.target);
-
             const email = data.get("email")
             const others = data.get("others")
             const name = data.get("name")
             const contact = data.get("contact")
             const address = data.get("address")
             const phone = data.get("phone")
-
-
-
 
 
             axios.put(baseUrl + "site",
@@ -413,11 +611,6 @@ class ProductDetail extends Component {
 
                 }).catch(error => {
 
-
-
-
-
-
             });
 
 
@@ -428,7 +621,10 @@ class ProductDetail extends Component {
 
 
 
-    submitRegisterProduct = event => {
+
+
+
+    submitReleaseProduct = event => {
 
 
 
@@ -443,54 +639,117 @@ class ProductDetail extends Component {
 
 
 
-            const form = event.currentTarget;
+        const form = event.currentTarget;
 
 
 
+        this.setState({
+            btnLoading: true
+        })
 
+        const data = new FormData(event.target);
 
-            this.setState({
-                btnLoading: true
-            })
-
-            const data = new FormData(event.target);
-
-            const site = data.get("site")
-
+        const site = data.get("org")
 
 
 
+        axios.post(baseUrl + "release",
 
-            axios.post(baseUrl + "product/register",
-
-                {
-                    site_id: site,
-                    product_id: this.props.item.product._key,
+            {
+                org_id: site,
+                product_id: this.props.item.product._key,
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
-                .then(res => {
+            })
+            .then(res => {
 
-                    this.toggleSite()
-                    this.showRegister()
-
-                }).catch(error => {
 
 
 
                 this.setState({
 
-                    errorRegister:error.response.data.errors[0].message
+                    showReleaseSuccess:true
                 })
 
-            });
+
+            }).catch(error => {
+
+
+
+            this.setState({
+
+                errorRelease:error.response.data.errors[0].message
+            })
+
+        });
 
     }
 
 
+    submitServiceAgentProduct = event => {
+
+
+
+        this.setState({
+
+            errorServiceAgent:null
+        })
+
+
+
+        event.preventDefault();
+
+
+
+        const form = event.currentTarget;
+
+
+
+        this.setState({
+            btnLoading: true
+        })
+
+        const data = new FormData(event.target);
+
+        const site = data.get("org")
+
+
+
+        axios.post(baseUrl + "service-agent",
+
+            {
+                org_id: site,
+                product_id: this.props.item.product._key,
+            }
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            })
+            .then(res => {
+
+
+                this.setState({
+
+                    showServiceAgentSuccess:true
+                })
+
+
+            }).catch(error => {
+
+
+
+            this.setState({
+
+                errorServiceAgent:error.response.data.errors[0].message
+            })
+
+        });
+
+    }
 
 
 
@@ -571,6 +830,8 @@ class ProductDetail extends Component {
 
     getQrCode() {
 
+
+
         this.interval = setInterval(() => {
 
 
@@ -582,7 +843,7 @@ class ProductDetail extends Component {
 
             this.setState({
 
-                productQrCode: `${baseUrl}product/${this.props.item.product._key}/code?u=${frontEndUrl}p`
+                productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`
 
             })
 
@@ -599,7 +860,7 @@ class ProductDetail extends Component {
 
         // var siteKey = (this.props.item.site_id).replace("Site/","")
 
-        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
+        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","") ,
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -637,7 +898,7 @@ class ProductDetail extends Component {
     getSearches() {
 
 
-        var searches = this.props.item.searches
+        var searches = this.state.item.searches
 
         for (var i = 0; i < searches.length; i++) {
 
@@ -685,10 +946,10 @@ class ProductDetail extends Component {
 
 
 
-        if (this.props.item.sub_products&&this.props.item.sub_products.length>0&&this.props.isLoggedIn) {
+        if (this.state.item.sub_products&&this.state.item.sub_products.length>0&&this.props.isLoggedIn) {
 
 
-        var subProductIds = this.props.item.sub_products
+        var subProductIds = this.state.item.sub_products
 
         for (var i = 0; i < subProductIds.length; i++) {
 
@@ -730,7 +991,6 @@ class ProductDetail extends Component {
 
         }else{
 
-            // alert("mno sub")
             this.setState({
                 subProducts:[]
             })
@@ -784,39 +1044,101 @@ class ProductDetail extends Component {
 
 
     componentWillMount() {
-
-
         // this.getSubProducts()
+    }
+
+
+
+
+    loadProduct(productKey){
+
+
+        if (productKey)
+
+            axios.get(baseUrl + "product/" + productKey+"/expand",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.props.userDetail.token
+                    }
+                }
+            )
+                .then((response) => {
+
+                        var responseAll = response.data;
+
+
+
+
+                        this.setState({
+
+                            item: responseAll.data
+                        })
+
+                        this.loadInfo()
+
+
+                    },
+                    (error) => {
+
+                    }
+                );
+
+
 
     }
 
     componentDidMount() {
 
 
-        this.getQrCode()
+        if (!this.props.item){
+
+            this.loadProduct(this.props.productId)
+
+        }else{
 
 
-        if (this.props.item.listing&&this.props.isLoggedIn){
+            this.setState({
+                item:this.props.item
+            })
 
-            this.getListing()
-
-        }
-
-
-
-        if (this.props.item.searches.length>0){
-
-            this.getSearches()
+            this.loadInfo()
 
         }
 
 
-        
-        if (this.props.showRegister&&this.props.isLoggedIn&&this.props.userDetail)
-        this.getSites()
 
     }
 
+
+
+    loadInfo(){
+
+        if (this.state.item) {
+
+            this.getOrgs()
+            this.getQrCode()
+
+
+            if (this.state.item.listing && this.props.isLoggedIn) {
+
+                this.getListing()
+
+            }
+
+
+            if (this.state.item && this.state.item.searches.length > 0) {
+
+                this.getSearches()
+
+            }
+
+
+            if (this.state.showRegister && this.state.isLoggedIn && this.state.userDetail)
+                this.getSites()
+
+
+        }
+    }
 
 
 
@@ -828,6 +1150,10 @@ class ProductDetail extends Component {
         return (
             
                     <>
+                        
+
+
+{this.state.item ? <>
 
 
                             <div className="row no-gutters  justify-content-center">
@@ -836,15 +1162,15 @@ class ProductDetail extends Component {
 
                                     <div className="row stick-left-box  ">
                                         <div className="col-12 text-center ">
-                                    {this.props.item&&this.props.item.artifacts&&this.props.item.artifacts.length > 0 ?
-                                    <ImagesSlider images={this.props.item.artifacts} /> :
+                                    {this.state.item&&this.state.item.artifacts&&this.state.item.artifacts.length > 0 ?
+                                    <ImagesSlider images={this.state.item.artifacts} /> :
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
 
                                         </div>
 
 
-                                        {this.props.isLoggedIn &&  !this.props.hideRegister && this.props.userDetail.orgId!==this.props.item.org._id&&
+                                        {this.state.isLoggedIn &&  !this.state.hideRegister && this.state.userDetail.orgId!==this.state.item.org._id&&
                                         <>
                                         <div className={"col-12 pb-5 mb-5"}>
 
@@ -860,7 +1186,25 @@ class ProductDetail extends Component {
                                         </>
                                         }
 
+
+                                        {/*{true&&*/}
+                                        {/*<>*/}
+                                            {/*<div className={"col-12 pb-5 mb-5 "}>*/}
+
+                                                {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
+
+                                                    {/*<div className="col-12 ">*/}
+                                                        {/*<button  onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Release this product</button>*/}
+                                                    {/*</div>*/}
+                                                {/*</div>*/}
+
+
+                                            {/*</div>*/}
+                                        {/*</>*/}
+                                        {/*}*/}
                                             <div className={"col-12 pb-5 mb-5"}>
+
+
 
 
                                                 <div className="row justify-content-start pb-3 pt-3 ">
@@ -883,12 +1227,12 @@ class ProductDetail extends Component {
                                                     <div className="col-12 border-box">
 
                                                         <div className="d-flex flex-column justify-content-center align-items-center" >
-                                                            {this.state.productQrCode&&<img className="" src={this.state.productQrCode} alt={this.props.item.product.name} title={this.props.item.product.name} style={{width: '90%'}}/>}
+                                                            {this.state.productQrCode&&<img className="" src={this.state.productQrCode} alt={this.state.item.product.name} title={this.state.item.product.name} style={{width: '90%'}}/>}
 
                                                             <div className="d-flex justify-content-center w-100">
                                                                 {this.props.hideRegister &&   <p className={"green-text"}>
-                                                                    <Link className={"mr-3"} to={"/p/" + this.props.item.product._key}>[Product Provenance]</Link>
-                                                                    <Link onClick={() => this.handlePrintPdf(this.props.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
+                                                                    <Link className={"mr-3"} to={"/p/" + this.state.item.product._key}>[Product Provenance]</Link>
+                                                                    <Link onClick={() => this.handlePrintPdf(this.state.item.product, this.state.productQrCode, QrCodeBg, LoopcycleLogo)}>[Print PDF]</Link>
                                                                 </p>}
                                                             </div>
                                                         </div>
@@ -909,30 +1253,30 @@ class ProductDetail extends Component {
 
                                 <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
 
-                                    <div className="row justify-content-start pb-3  listing-row-border">
+                                    <div className="row justify-content-start pb-3  ">
 
-                                        <div className="col-12 mt-2">
+                                        <div className="col-12 ">
 
                                             <div className="row">
 
                                                 <div className="col-8">
 
                                             <h4 className={"blue-text text-heading"}>
-                                                {this.props.item.product.name}
+                                                {this.state.item.product.name}
                                             </h4>
                                                 </div>
 
                                                 <div className="col-4 text-right">
 
-                                                    {/*<EditItem item={this.props.item} history={this.props.history}  />*/}
 
 
-                                                    {/*<EditIcon className={"mr-2"} onClick={this.showProductEdit}  />*/}
-
-                                                    {/*<FileCopyIcon  onClick={this.showProductDuplicate}  />*/}
 
 
-                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)} delete={false} duplicate={true} edit={true}  />
+
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                             serviceAgent={this.state.item.service_agent._id===this.props.userDetail.orgId?true:false}
+                                                               release={this.state.item.org._id===this.props.userDetail.orgId?true:false} delete={this.state.item.org._id===this.props.userDetail.orgId?true:false} duplicate={this.state.item.org._id===this.props.userDetail.orgId?true:false}
+                                                               edit={this.state.item.org._id===this.props.userDetail.orgId?true:false}  />
 
 
 
@@ -946,7 +1290,7 @@ class ProductDetail extends Component {
 
                                             <div className="row">
                                                 <div className="col-7">
-                                                    <p> <Org orgId={this.props.item.org._id} /></p>
+                                                    <Org orgId={this.state.item.org._id} />
                                                 </div>
 
 
@@ -957,17 +1301,20 @@ class ProductDetail extends Component {
 
 
                                     </div>
+                                    <div className={"listing-row-border "}></div>
 
 
-                                    <div className="row justify-content-start pb-3 pt-3 listing-row-border">
+                                    <div className="row justify-content-start pb-3 pt-3 ">
 
                                         <div className="col-auto">
-                                            <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.props.item.product.description}
+                                            <p style={{ fontSize: "16px" }} className={"text-gray-light  "}>{this.state.item.product.description}
                                             </p>
 
                                         </div>
 
                                     </div>
+                                    <div className={"listing-row-border "}></div>
+
                                     <div className="row justify-content-start pb-3 pt-3 ">
 
                                     <div className="col-12 mt-2">
@@ -981,60 +1328,60 @@ class ProductDetail extends Component {
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Category</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state} {this.props.item.product.volume} {this.props.item.product.units} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.category}, {this.state.item.product.type}, {this.state.item.product.state} {this.state.item.product.volume} {this.state.item.product.units} </p>
 
                                                 </div>
                                             </div>
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {/*<div className="row  justify-content-start search-container  pb-2">*/}
 
-                                                <div className={"col-auto"}>
+                                                {/*<div className={"col-auto"}>*/}
 
-                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>
-                                                </div>
-                                            </div>
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
+                                                    {/*<p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
 
 
 
-                                            <div className="row  justify-content-start search-container  pb-2">
+                                            {this.state.item&&this.state.item.product.year_of_making &&   <div className="row  justify-content-start search-container  pb-2">
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Year Of Manufacturer</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1"> {this.props.item.product.year_of_making}</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"> {this.state.item.product.year_of_making}</p>
                                                 </div>
-                                            </div>
+                                            </div>}
 
 
 
 
-                                            {this.props.item&&this.props.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
+                                            {this.state.item&&this.state.item.product.sku.model && <div className="row  justify-content-start search-container  pb-2">
 
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Model Number</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.model} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.sku.model} </p>
 
 
                                                 </div>
                                             </div>}
 
-                                            {this.props.item&&this.props.item.product.sku.serial && <div className="row  justify-content-start search-container  pb-2">
+                                            {this.state.item&&this.state.item.product.sku.serial && <div className="row  justify-content-start search-container  pb-2">
 
                                                 <div className={"col-auto"}>
 
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Serial Number</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.serial} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.sku.serial} </p>
 
                                                 </div>
                                             </div>}
 
 
-                                            {this.props.item&&this.props.item.product.sku.brand && <div className="row  justify-content-start search-container  pb-2 ">
+                                            {this.state.item&&this.state.item.product.sku.brand && <div className="row  justify-content-start search-container  pb-2 ">
 
                                                 <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Brand</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item&&this.props.item.product.sku.brand} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item&&this.state.item.product.sku.brand} </p>
 
 
                                                 </div>
@@ -1045,9 +1392,18 @@ class ProductDetail extends Component {
 
                                                 <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">State</p>
-                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.props.item.product.state} </p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.product.state} </p>
                                                 </div>
                                             </div>
+                                            <div className="row  justify-content-start search-container  pb-2 ">
+
+                                                <div className={"col-auto"}>
+                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Service Agent</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.state.item.service_agent._id} /> </p>
+                                                </div>
+                                            </div>
+
+
 
 
 
@@ -1059,16 +1415,16 @@ class ProductDetail extends Component {
 
                                             <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
 
-                                                <span data-parent={this.props.item.product._key} onClick={this.showProductSelection} >Link Sub Product</span>
+                                                <span data-parent={this.state.item.product._key} onClick={this.showProductSelection} >Link Sub Product</span>
 
                                             </p>
 
-                                            {this.props.item.sub_products.length > 0 &&
+                                            {this.state.item.sub_products.length > 0 &&
 
                                                 <>
 
-                                            { this.props.item.sub_products.map((item) =>
-                                                <ProductItemNew  parentId={this.props.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
+                                            { this.state.item.sub_products.map((item) =>
+                                                <ProductItemNew goToLink={true} history={this.props.history}  parentId={this.state.item.product._key} delete={false} duplicate={false} remove={true} edit={false} item={item}/>
                                             )}
 
                                             </>
@@ -1106,198 +1462,7 @@ class ProductDetail extends Component {
 
 
 
-                        <Modal className={"loop-popup"}
-                               aria-labelledby="contained-modal-title-vcenter"
-                               centered show={this.state.showRegister} onHide={this.showRegister} animation={false}>
 
-                            <ModalBody>
-
-
-
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Register Product: {this.props.item.product.name}</p>
-
-                                    </div>
-                                </div>
-
-                                <form onSubmit={this.submitRegisterProduct}>
-
-                                <div className={"row justify-content-center p-2"}>
-
-
-                                    <div className={"col-12 text-center mt-2"}>
-
-
-                                        <div className={"row justify-content-center"}>
-
-
-                                            <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                                <div className={"custom-label text-bold  mb-1 text-left"}>Select Site To Register Product</div>
-
-
-                                                <FormControl variant="outlined" className={classes.formControl}>
-
-                                                    <Select
-                                                        name={"deliver"}
-                                                        native
-                                                        // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                        inputProps={{
-                                                            name: 'site',
-                                                            id: 'outlined-age-native-simple',
-                                                        }}
-                                                    >
-
-
-                                                        <option value={null}>Select</option>
-
-                                                        {this.state.sites.map((item) =>
-
-                                                            <option value={item._key}>{item.name + "(" + item.address + ")"}</option>
-
-                                                        )}
-
-                                                    </Select>
-
-                                                </FormControl>
-
-
-                                                {/*{this.state.errors["deliver"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["deliver"]}</span>}*/}
-
-
-                                                <p className={"text-left"} style={{ margin: "10px 0" }}> Don’t see it on here? <span  onClick={this.showSubmitSite} className={"green-text forgot-password-link text-mute small"}>Add a site</span></p>
-
-
-
-                                            </div>
-
-
-                                            {this.state.errorRegister &&    <div className={"row justify-content-center"}>
-
-
-                                                <div className={"col-12"} style={{textAlign:"center"}}>
-
-
-                                                    <Alert key={"alert"} variant={"danger"}>
-                                                    {this.state.errorRegister}
-                                                    </Alert>
-
-                                                </div>
-
-                                            </div>}
-
-                                            {!this.state.showSubmitSite &&  <div className={"col-12 justify-content-center "}>
-
-                                                <div className={"row justify-content-center"}>
-
-
-                                                <div className={"col-6"} style={{textAlign:"center"}}>
-
-                                                <button  style={{minWidth:"120px"}}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes</button>
-
-
-                                            </div>
-                                            <div className={"col-6"} style={{textAlign:"center"}}>
-                                                <p onClick={this.showRegister} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
-                                            </div>
-
-                                                </div>
-
-                                            </div>}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                </form>
-
-
-                                {this.state.showSubmitSite &&
-
-                                <div className={"row justify-content-center p-2"}>
-                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
-
-                                    </div>
-                                <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <form onSubmit={this.handleSubmitSite}>
-                                                <div className="row no-gutters justify-content-center ">
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label=" Name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
-
-                                                        {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label="Contact" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                        {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                                                        {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                    </div>
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" type={"number"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
-
-                                                        {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
-
-                                                        {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                                    </div>
-                                                    <div className="col-12 mt-4">
-
-                                                        <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Others" variant="outlined" fullWidth={true} type={"others"} />
-
-                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-
-                                                    </div>
-
-                                                    <div className="col-12 mt-4">
-
-                                                        <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
-                                                    </div>
-
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-                                </div>}
-
-
-
-                            </ModalBody>
-
-                        </Modal>
 
 
 
@@ -1314,15 +1479,351 @@ class ProductDetail extends Component {
                                     </div>
 
 
-                               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.props.item.product._key}/>
+                               <ProductEditForm triggerCallback={(action)=>this.callBackSubmit(action)} isDuplicate={this.state.productDuplicate} productId={this.state.item.product._key}/>
 
 
                         </Modal>
 
 
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showReleaseProduct} onHide={this.showReleaseProduct} animation={false}>
+
+                            <ModalBody>
 
 
 
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Release Product: {this.state.item.product.name}</p>
+
+                                    </div>
+                                </div>
+
+                                {!this.state.showReleaseSuccess ? <form onSubmit={this.submitReleaseProduct}>
+
+                                        <div className={"row justify-content-center p-2"}>
+
+
+                                            <div className={"col-12 text-center mt-2"}>
+
+
+                                                <div className={"row justify-content-center"}>
+
+
+                                                    <div className={"col-12 text-center mb-4"}>
+
+
+                                                        <FormControl variant="outlined" className={classes.formControl}>
+                                                            <InputLabel htmlFor="outlined-age-native-simple">Select
+                                                                Organisation</InputLabel>
+                                                            <Select
+                                                                native
+                                                                label={"Select Organisation"}
+                                                                inputProps={{
+                                                                    name: 'org',
+                                                                    id: 'outlined-age-native-simple',
+                                                                }}
+                                                            >
+
+                                                                <option value={null}>Select</option>
+
+                                                                {this.state.orgs.map((item) =>
+
+                                                                    <option value={item._key}>{item.name}</option>
+                                                                )}
+
+                                                            </Select>
+                                                        </FormControl>
+
+
+                                                        <p>Is the company you are looking for doesn't exist ?<span
+                                                            className={"green-link-url "}
+                                                            onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
+                                                        </p>
+
+
+                                                        {this.state.showOrgForm &&
+
+                                                        <>
+
+                                                            <div className={"row m-2 container-gray"}>
+                                                                <div className={"col-12 text-left mt-2 "}>
+
+                                                                    <p className={"text-bold text-blue"}>Add Company's
+                                                                        Email</p>
+
+                                                                </div>
+                                                                <div className={"col-12 text-center "}>
+
+                                                                    <>
+                                                                        <div className={"row justify-content-center"}>
+
+                                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                                <TextField id="outlined-basic"
+                                                                                           onChange={this.handleChangeEmail.bind(this, "email")}
+                                                                                           variant="outlined"
+                                                                                           fullWidth={true}
+                                                                                           name={"email"} type={"text"}
+
+                                                                                           value={this.state.email}
+                                                                                />
+
+                                                                            </div>
+
+                                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                                <button onClick={this.handleSubmitOrg}
+                                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Submit
+                                                                                </button>
+
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                        }
+
+                                                    </div>
+
+
+                                                    {this.state.errorRelease &&
+                                                    <div className={"row justify-content-center"}>
+
+
+                                                        <div className={"col-12"} style={{ textAlign: "center" }}>
+
+
+                                                            <Alert key={"alert"} variant={"danger"}>
+                                                                {this.state.errorRelease}
+                                                            </Alert>
+
+                                                        </div>
+
+                                                    </div>}
+
+                                                    <div className={"col-12 justify-content-center "}>
+
+                                                        <div className={"row justify-content-center"}>
+
+
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                                                <button style={{ minWidth: "120px" }}
+                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                                        type={"submit"}>Yes
+                                                                </button>
+
+
+                                                            </div>
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+                                                                <p onClick={this.showReleaseProduct}
+                                                                   className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </form> :
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your release request has been submitted successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                }
+
+
+                            </ModalBody>
+
+                        </Modal>
+    <Modal className={"loop-popup"}
+           aria-labelledby="contained-modal-title-vcenter"
+           centered show={this.state.showServiceAgent} onHide={this.showServiceAgent} animation={false}>
+
+        <ModalBody>
+
+
+
+            <div className={"row justify-content-center"}>
+                <div className={"col-10 text-center"}>
+                    <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Change Service Agent For: {this.state.item.product.name}</p>
+
+                </div>
+            </div>
+
+            {!this.state.showServiceAgentSuccess?
+                <form onSubmit={this.submitServiceAgentProduct}>
+
+                    <div className={"row justify-content-center p-2"}>
+
+
+                        <div className={"col-12 text-center mt-2"}>
+
+
+                            <div className={"row justify-content-center"}>
+
+
+                                <div className={"col-12 text-center mb-4"}>
+
+
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Select
+                                            Organisation</InputLabel>
+                                        <Select
+                                            native
+                                            label={"Select Organisation"}
+                                            inputProps={{
+                                                name: 'org',
+                                                id: 'outlined-age-native-simple',
+                                            }}
+                                        >
+
+                                            <option value={null}>Select</option>
+
+                                            {this.state.orgs.map((item) =>
+
+                                                <option value={item._key}>{item.name}</option>
+                                            )}
+
+                                        </Select>
+                                    </FormControl>
+
+
+                                    <p>Is the company you are looking for doesn't exist ?<span
+                                        className={"green-link-url "}
+                                        onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
+                                    </p>
+
+
+                                    {this.state.showOrgForm &&
+
+                                    <>
+
+                                        <div className={"row m-2 container-gray"}>
+                                            <div className={"col-12 text-left mt-2 "}>
+
+                                                <p className={"text-bold text-blue"}>Add Company's
+                                                    Email</p>
+
+                                            </div>
+                                            <div className={"col-12 text-center "}>
+
+                                                <>
+                                                    <div className={"row justify-content-center"}>
+
+                                                        <div className={"col-12 text-center mb-2"}>
+
+                                                            <TextField id="outlined-basic"
+                                                                       onChange={this.handleChangeEmail.bind(this, "email")}
+                                                                       variant="outlined"
+                                                                       fullWidth={true}
+                                                                       name={"email"} type={"text"}
+
+                                                                       value={this.state.email}
+                                                            />
+
+                                                        </div>
+
+                                                        <div className={"col-12 text-center mb-2"}>
+
+                                                            <button onClick={this.handleSubmitOrg}
+                                                                    className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Submit
+                                                            </button>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </>
+                                            </div>
+                                        </div>
+                                    </>
+                                    }
+
+                                </div>
+
+
+                                {this.state.errorRelease &&
+                                <div className={"row justify-content-center"}>
+
+
+                                    <div className={"col-12"} style={{ textAlign: "center" }}>
+
+
+                                        <Alert key={"alert"} variant={"danger"}>
+                                            {this.state.errorRelease}
+                                        </Alert>
+
+                                    </div>
+
+                                </div>}
+
+                                <div className={"col-12 justify-content-center "}>
+
+                                    <div className={"row justify-content-center"}>
+
+
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                            <button style={{ minWidth: "120px" }}
+                                                    className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                    type={"submit"}>Yes
+                                            </button>
+
+
+                                        </div>
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                            <p onClick={this.showReleaseProduct}
+                                               className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </form> :
+
+                <div className={"row justify-content-center"}>
+                    <div className={"col-10 text-center"}>
+                        <Alert key={"alert"} variant={"success"}>
+                            Your change service agent request has been submitted successfully. Thanks
+                        </Alert>
+
+                    </div>
+                </div>
+
+            }
+
+
+        </ModalBody>
+
+    </Modal>
+
+
+
+</>:<div className={"loading-screen"}> Loading .... </div>}
 
 
 

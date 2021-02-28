@@ -244,9 +244,6 @@ class MatchItemSeller extends Component {
         event.preventDefault();
 
 
-
-
-
         const form = event.currentTarget;
 
         const formData = new FormData(event.target);
@@ -611,7 +608,8 @@ class MatchItemSeller extends Component {
 
                         <div className="col-auto">
 
-                            <button  data-action="accept" onClick={this.showPopUpInitiateAction} type="button" className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue" style={{height: '42px'}}>
+                            <button  data-action="accept" onClick={this.showPopUpInitiateAction} type="button"
+                                     className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue" style={{height: '42px'}}>
                                 Accept
                             </button>
 

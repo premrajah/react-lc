@@ -139,6 +139,8 @@ class ProductForm extends Component {
         this.showSubmitSite=this.showSubmitSite.bind(this)
         this.checkListable=this.checkListable.bind(this)
         this.showMoreDetails=this.showMoreDetails.bind(this)
+        this.phonenumber = this.phonenumber.bind(this)
+
 
 
 
@@ -363,7 +365,7 @@ class ProductForm extends Component {
                                     "name": imgFile.file.name,
                                     "mime_type": imgFile.file.type,
                                     "context": ""
-                            },
+                                },
 
                                 data_as_base64_string: btoa(data)
                             },
@@ -456,6 +458,29 @@ class ProductForm extends Component {
     }
 
 
+    phonenumber(inputtxt) {
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
+
     handleValidationSite() {
 
 
@@ -490,6 +515,11 @@ class ProductForm extends Component {
         if (!fields["phone"]) {
             formIsValid = false;
             errors["phone"] = "Required";
+        }
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
         }
 
 
@@ -700,7 +730,7 @@ class ProductForm extends Component {
         this.props.loadProductsWithoutParent(this.props.userDetail.token)
 
 
-            this.props.showProductPopUp({type:"sub_product_view",show:true})
+        this.props.showProductPopUp({type:"sub_product_view",show:true})
 
     }
 
@@ -1042,7 +1072,7 @@ class ProductForm extends Component {
 
 
 
-}
+    }
 
 
 
@@ -1401,8 +1431,8 @@ class ProductForm extends Component {
 
                     <div className="col-12  ">
 
-                            <h3 className={"blue-text text-heading"}>{this.props.heading}
-                            </h3>
+                        <h3 className={"blue-text text-heading"}>{this.props.heading}
+                        </h3>
 
                     </div>
 
@@ -1757,106 +1787,106 @@ class ProductForm extends Component {
                                 <div className="col-12 text-left">
 
 
-                                <span style={{ margin: "10px 0",float:"left" }}> <span  onClick={this.showMoreDetails} className={"green-text forgot-password-link text-mute small"}>{this.state.moreDetail?"Hide Details":"Add More details"}</span></span>
+                                    <span style={{ margin: "10px 0",float:"left" }}> <span  onClick={this.showMoreDetails} className={"green-text forgot-password-link text-mute small"}>{this.state.moreDetail?"Hide Details":"Add More details"}</span></span>
 
                                 </div>
 
                                 {this.state.moreDetail &&
-                                    <>
-                                <div className="col-12 mt-4">
+                                <>
+                                    <div className="col-12 mt-4">
 
-                                    <div className="row">
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
+                                        <div className="row">
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
 
-                                        <div className={"custom-label text-bold text-blue mb-1"}>Year Of Manufacture</div>
-
-
-                                        <FormControl variant="outlined" className={classes.formControl}>
-                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Year Of Manufacture</InputLabel>*/}
-                                            <Select
-                                                native
-                                                name={"manufacturedDate"}
-                                                onChange={this.handleChangeProduct.bind(this, "manufacturedDate")}
-                                                // label="Year Of Manufacture"
-                                                inputProps={{
-                                                    name: 'manufacturedDate',
-                                                    id: 'outlined-age-native-simple',
-                                                }}
-                                            >
-
-                                                <option value={null}>Select</option>
-
-                                                {this.state.yearsList.map((item) =>
-
-                                                    <option value={item}>{item}</option>
-
-                                                )}
-
-                                            </Select>
-                                        </FormControl>
+                                                <div className={"custom-label text-bold text-blue mb-1"}>Year Of Manufacture</div>
 
 
-                                        {this.state.errorsProduct["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
-                                        </div>
+                                                <FormControl variant="outlined" className={classes.formControl}>
+                                                    {/*<InputLabel htmlFor="outlined-age-native-simple">Year Of Manufacture</InputLabel>*/}
+                                                    <Select
+                                                        native
+                                                        name={"manufacturedDate"}
+                                                        onChange={this.handleChangeProduct.bind(this, "manufacturedDate")}
+                                                        // label="Year Of Manufacture"
+                                                        inputProps={{
+                                                            name: 'manufacturedDate',
+                                                            id: 'outlined-age-native-simple',
+                                                        }}
+                                                    >
 
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
+                                                        <option value={null}>Select</option>
 
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Brand</div>
+                                                        {this.state.yearsList.map((item) =>
 
+                                                            <option value={item}>{item}</option>
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
+                                                        )}
 
-                                        </div>
-
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
-
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
-
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
-                                        </div>
-
-
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Serial Number</div>
-
-
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
-
-                                        </div>
+                                                    </Select>
+                                                </FormControl>
 
 
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
+                                                {this.state.errorsProduct["manufacturedDate"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["manufacturedDate"]}</span>}
+                                            </div>
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
 
-                                        </div>
-
-
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>UPC</div>
+                                                <div className={"custom-label text-bold text-blue mb-1"}>Brand</div>
 
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
+                                                <TextField onChange={this.handleChangeProduct.bind(this, "brand")} name={"brand"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                {this.state.errorsProduct["brand"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["brand"]}</span>}
 
-                                        </div>
+                                            </div>
 
-                                        <div className="col-md-4 col-sm-6 col-xs-6">
-                                            <div className={"custom-label text-bold text-blue mb-1"}>Part No.</div>
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+
+                                                <div className={"custom-label text-bold text-blue mb-1"}>Model Number</div>
+
+                                                <TextField onChange={this.handleChangeProduct.bind(this, "model")} name={"model"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                {this.state.errorsProduct["model"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["model"]}</span>}
+                                            </div>
 
 
-                                            <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic"  variant="outlined" fullWidth={true} />
-                                            {this.state.errorsProduct["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["part_no"]}</span>}
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div className={"custom-label text-bold text-blue mb-1"}>Serial Number</div>
+
+
+                                                <TextField onChange={this.handleChangeProduct.bind(this, "serial")} name={"serial"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                {this.state.errorsProduct["serial"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["serial"]}</span>}
+
+                                            </div>
+
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div className={"custom-label text-bold text-blue mb-1"}>SKU</div>
+
+                                                <TextField onChange={this.handleChangeProduct.bind(this, "sku")} name={"sku"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                {this.state.errorsProduct["sku"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["sku"]}</span>}
+
+                                            </div>
+
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div className={"custom-label text-bold text-blue mb-1"}>UPC</div>
+
+
+                                                <TextField onChange={this.handleChangeProduct.bind(this, "upc")} name={"upc"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                {this.state.errorsProduct["upc"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["upc"]}</span>}
+
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div className={"custom-label text-bold text-blue mb-1"}>Part No.</div>
+
+
+                                                <TextField onChange={this.handleChangeProduct.bind(this, "part_no")} name={"part_no"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                {this.state.errorsProduct["part_no"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsProduct["part_no"]}</span>}
+                                            </div>
+
                                         </div>
 
                                     </div>
-
-                                </div>
                                 </>}
 
 
@@ -1895,7 +1925,7 @@ class ProductForm extends Component {
 
                                                                         {/*<img src={URL.createObjectURL(item)}/>*/}
                                                                         <div data-index={index}
-                                                                             // data-url={URL.createObjectURL(item.file)}
+                                                                            // data-url={URL.createObjectURL(item.file)}
 
                                                                              className={"file-uploader-thumbnail"} style={{ backgroundImage: "url(" + URL.createObjectURL(item.file) + ")" }}>
 
@@ -1908,7 +1938,7 @@ class ProductForm extends Component {
                                                                                 style={{color:"#cccccc"}}
                                                                                 className={"center-spinner"}
 
-                                                                             />}
+                                                                            />}
 
                                                                             {item.status===1 &&   <Check style={{color:"#cccccc"}} className={" file-upload-img-thumbnail-check"} />}
                                                                             {item.status===2 &&   <span className={"file-upload-img-thumbnail-error"}><Error style={{color:"red"}} className={" "} />
@@ -1944,7 +1974,7 @@ class ProductForm extends Component {
 
                                     {this.state.files.length>0?
                                         (this.state.files.filter((item)=> item.status===0).length>0? <button  className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>Upload in progress ....</button>:
-                                          <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create A Product</button>):
+                                            <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create A Product</button>):
 
                                         <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Create A Product</button>
 

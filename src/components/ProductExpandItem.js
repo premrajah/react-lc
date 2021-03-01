@@ -234,8 +234,6 @@ class ProductExpandItem extends Component {
                         product: responseAll.data
                     })
 
-                // alert("loading priduct")
-
 
                     this.setState({
 
@@ -360,8 +358,6 @@ class ProductExpandItem extends Component {
     }
 
     componentDidMount() {
-
-        // alert("expand item")
 
 
         this.loadProduct(this.props.productId)

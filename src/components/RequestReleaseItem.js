@@ -434,8 +434,6 @@ class RequestReleaseItem extends Component {
 
                 var responseData = response.data;
 
-                console.log(responseData)
-
                 this.setState({
                     item:responseData.data
                 })

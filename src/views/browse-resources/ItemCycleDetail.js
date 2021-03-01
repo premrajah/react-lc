@@ -564,7 +564,7 @@ function CustomizedTimeline(props) {
                             <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
                                 {item.org.name}, {item.org.description}
                             </Typography>
-                           
+
                         </Paper>
                     </TimelineContent>
                 </TimelineItem>

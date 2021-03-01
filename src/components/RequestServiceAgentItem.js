@@ -413,11 +413,7 @@ class RequestServiceAgentItem extends Component {
 
     componentDidMount() {
 
-
-        console.log(this.state.item)
-
         this.getSites()
-
 
     }
 

@@ -83,7 +83,6 @@ class IssueSubmitForm extends Component {
 
     handleUpdateOrCreateIssue = (payload) => {
         if (!payload) return;
-        console.log(payload)
         if (this.state.edit) {
             axios
                 .post(`${baseUrl}issue/update`, payload, {
@@ -110,7 +109,6 @@ class IssueSubmitForm extends Component {
                 })
                 .then((response) => {
                     if (response.status === 200) {
-                        console.log('new issue ', response.data)
                         this.setState({
                             status: <p className="text-success">Successfully submitted data</p>,
                         });

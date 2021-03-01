@@ -65,7 +65,6 @@ class ProductView extends Component {
 
 
             this.slug= newProps.match.params.slug
-            // alert("changed")
 
             this.getResources()
 

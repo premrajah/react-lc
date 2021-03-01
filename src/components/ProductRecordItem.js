@@ -27,7 +27,7 @@ const ProductRecordItem = ({ item }) => {
                     {item.sub_products.length > 0 ? <span>Sub products: {item.sub_products.length}</span> : <span>Sub products: none</span>}
                     {product ? <span>{product.category}, {product.purpose}, {product.state}</span> : null}
                     {org ? (
-                            <span>Seller: <Org orgId={org._id} orgDescription={org.description}  /></span>
+                            <span><Org orgId={org._id} orgDescription={org.description}  /></span>
                     ) : null}
 
                 </Card>

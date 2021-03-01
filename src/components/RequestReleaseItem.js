@@ -549,6 +549,8 @@ class RequestReleaseItem extends Component {
 
                    <>
                        <FormControl variant="outlined" className={classes.formControl}>
+                           <div className={"custom-label text-bold text-blue mb-3"}>Select the location of product</div>
+
 
                            <Select
                                name={"site"}

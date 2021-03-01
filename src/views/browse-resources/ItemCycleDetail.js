@@ -490,7 +490,7 @@ function CustomizedTimeline(props) {
                     <TimelineOppositeContent>
                         <Paper elevation={0} className={classes.paper}>
                             <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                {item.org.name}, {item.org.description}
+                                <span className={"text-caps"}>{item.org.name}{item.org.description&&", "+item.org.description}</span>
                             </Typography>
 
                         </Paper>
@@ -521,7 +521,7 @@ function CustomizedTimeline(props) {
                     <TimelineOppositeContent>
                         <Paper elevation={0} className={classes.paper}>
                             <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                {item.org.name}, {item.org.description}
+                                <span className={"text-caps"}>  {item.org.name}{item.org.description&&", "+item.org.description}</span>
                             </Typography>
 
                         </Paper>
@@ -553,7 +553,7 @@ function CustomizedTimeline(props) {
                     <TimelineOppositeContent>
                         <Paper elevation={0} className={classes.paper}>
                             <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                {item.org.name}, {item.org.description}
+                                <span className={"text-caps"}>   {item.org.name}{item.org.description&&", "+item.org.description}</span>
                             </Typography>
 
                         </Paper>

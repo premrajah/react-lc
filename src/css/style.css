@@ -3036,10 +3036,10 @@ a.page-link:hover{
 }
 
 
-.MuiTimelineContent-root {
-	flex: 1;
-	padding: 0px 0px 0px 6px;
-}
+/*.MuiTimelineContent-root {*/
+	/*flex: 1;*/
+	/*padding: 0px 0px 0px 6px;*/
+/*}*/
 
 .step-box{
 	border: 1px solid #eee;
@@ -3065,10 +3065,10 @@ a.page-link:hover{
 /*}*/
 
 
-.MuiTimelineContent-root{
+/*.MuiTimelineContent-root{*/
 
-	padding: 0px 6px!important;
-}
+	/*padding: 0px 6px!important;*/
+/*}*/
 
 .MuiTimelineContent-root>.MuiPaper-root{
 
@@ -3180,4 +3180,23 @@ a.page-link:hover{
 
 	padding-left: 0;
 	padding-right: 0;
+}
+
+
+
+.MuiTimelineItem-oppositeContent,.MuiTimelineItem-oppositeContent .makeStyles-paper-1{
+
+	padding: 0;margin: 0px 10px!important;
+}
+
+.MuiTimelineOppositeContent-root {
+	padding: 3px 0px !important;
+
+}
+
+.MuiTimelineOppositeContent-root {
+	flex: 1;
+	padding: 6px 0px!important;
+	text-align: right;
+	margin-right: auto;
 }

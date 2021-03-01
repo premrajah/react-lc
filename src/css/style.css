@@ -3196,7 +3196,7 @@ a.page-link:hover{
 
 .MuiTimelineOppositeContent-root {
 	flex: 1;
-	padding: 6px 0px!important;
+	padding: 2px 0px!important;
 	text-align: right;
 	margin-right: auto;
 }

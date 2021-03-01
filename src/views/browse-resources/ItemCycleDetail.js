@@ -488,9 +488,13 @@ function CustomizedTimeline(props) {
 
                 <TimelineItem>
                     <TimelineOppositeContent>
-                        <Typography>
-                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
-                        </Typography>
+                        <Paper elevation={0} className={classes.paper}>
+                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
+                                {item.org.name}, {item.org.description}
+                            </Typography>
+
+                        </Paper>
+
                     </TimelineOppositeContent>
 
                     <TimelineSeparator>
@@ -503,12 +507,9 @@ function CustomizedTimeline(props) {
                     </TimelineSeparator>
 
                     <TimelineContent>
-                        <Paper elevation={0} className={classes.paper}>
-                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                {item.org.name}, {item.org.description}
-                            </Typography>
-
-                        </Paper>
+                        <Typography>
+                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
+                        </Typography>
                     </TimelineContent>
                 </TimelineItem>
 
@@ -518,9 +519,14 @@ function CustomizedTimeline(props) {
 
                 <TimelineItem>
                     <TimelineOppositeContent>
-                        <Typography>
-                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
-                        </Typography>
+                        <Paper elevation={0} className={classes.paper}>
+                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
+                                {item.org.name}, {item.org.description}
+                            </Typography>
+
+                        </Paper>
+
+
                     </TimelineOppositeContent>
 
                     <TimelineSeparator>
@@ -533,12 +539,9 @@ function CustomizedTimeline(props) {
 
                     </TimelineSeparator>
                     <TimelineContent>
-                        <Paper elevation={0} className={classes.paper}>
-                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                {item.org.name}, {item.org.description}
-                            </Typography>
-
-                        </Paper>
+                        <Typography>
+                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
+                        </Typography>
                     </TimelineContent>
                 </TimelineItem>
 
@@ -548,9 +551,13 @@ function CustomizedTimeline(props) {
 
                 <TimelineItem>
                     <TimelineOppositeContent>
-                        <Typography>
-                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
-                        </Typography>
+                        <Paper elevation={0} className={classes.paper}>
+                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
+                                {item.org.name}, {item.org.description}
+                            </Typography>
+
+                        </Paper>
+
                     </TimelineOppositeContent>
 
                     <TimelineSeparator>
@@ -560,12 +567,9 @@ function CustomizedTimeline(props) {
 
                     </TimelineSeparator>
                     <TimelineContent>
-                        <Paper elevation={0} className={classes.paper}>
-                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                {item.org.name}, {item.org.description}
-                            </Typography>
-
-                        </Paper>
+                        <Typography>
+                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
+                        </Typography>
                     </TimelineContent>
                 </TimelineItem>
 

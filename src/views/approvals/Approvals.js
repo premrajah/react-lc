@@ -53,6 +53,9 @@ class Approvals extends Component {
 
 
     }
+
+
+
     handleChange = (event, newValue)=>{
 
         console.log(newValue)
@@ -65,6 +68,11 @@ class Approvals extends Component {
         if (newValue===0){
 
 
+            this.setState({
+
+                releaseRequests: []
+            })
+
             console.log("reaload products")
             this.fetchReleaseRequest()
 
@@ -72,12 +80,21 @@ class Approvals extends Component {
        else  if(newValue===1){
 
 
+            this.setState({
+
+                registerRequests: []
+            })
+
             this.fetchRegisterRequest()
         }
 
 
         else  if(newValue===2){
 
+            this.setState({
+
+                serviceAgentRequests: []
+            })
 
             this.fetchServiceAgentRequest()
         }
@@ -98,10 +115,7 @@ class Approvals extends Component {
                     var responseAll = response.data.data;
 
 
-                    this.setState({
 
-                        releaseRequests: []
-                    })
 
                     this.setState({
 
@@ -134,10 +148,6 @@ class Approvals extends Component {
 
                     var responseAll = response.data.data;
 
-                    this.setState({
-
-                        registerRequests: []
-                    })
 
 
                     this.setState({
@@ -173,10 +183,7 @@ class Approvals extends Component {
 
                     console.log(responseAll)
 
-                    this.setState({
 
-                        serviceAgentRequests: []
-                    })
 
 
                     this.setState({
@@ -201,8 +208,8 @@ class Approvals extends Component {
     componentDidMount(){
 
         this.fetchReleaseRequest()
-        this.fetchRegisterRequest()
-        this.fetchServiceAgentRequest()
+        // this.fetchRegisterRequest()
+        // this.fetchServiceAgentRequest()
     }
 
 
@@ -248,18 +255,18 @@ class Approvals extends Component {
                                     >
 
                                         {/*{props.releases.length>0 &&*/}
-                                        <LinkTab label={"Product Release Requests ("+this.state.releaseRequests.length+")"}  {...a11yProps(0)} />
+                                        <LinkTab label={this.state.releaseRequests.length>0?"Product Release Requests ("+this.state.releaseRequests.length+")":"Product Release Requests"}  {...a11yProps(0)} />
                                         {/*}*/}
 
                                         {/*{props.suggesstions.length > 0 &&*/}
 
                                         {/*{props.registers.length>0 &&*/}
-                                        <LinkTab label={"Product Register Requests ("+this.state.registerRequests.length+")"}  {...a11yProps(1)} />
+                                        <LinkTab label={this.state.registerRequests.length>0?"Product Register Requests ("+this.state.registerRequests.length+")":"Product Register Requests"}  {...a11yProps(1)} />
                                         {/*}*/}
 
 
                                         {/*{props.serviceAgents.length>0 &&*/}
-                                        <LinkTab label={"Change Service Agent Requests  ("+this.state.serviceAgentRequests.length+")"}  {...a11yProps(2)} />
+                                        <LinkTab label={this.state.serviceAgentRequests.length>0?"Change Service Agent Requests  ("+this.state.serviceAgentRequests.length+")":"Change Service Agent Requests"}  {...a11yProps(2)} />
                                         {/*}*/}
 
                                         {/*}*/}
@@ -275,7 +282,7 @@ class Approvals extends Component {
                                         {this.state.releaseRequests.map((item) =>
                                             <>
 
-                                                <RequestReleaseItem history={this.props.history}  item={item}  />
+                                                <RequestReleaseItem  history={this.props.history}  item={item}  />
 
                                             </>
 
@@ -298,7 +305,7 @@ class Approvals extends Component {
                                         {this.state.registerRequests.map((item) =>
                                             <>
 
-                                                <RequestRegisterItem history={this.props.history}  item={item}  />
+                                                <RequestRegisterItem  history={this.props.history}  item={item}  />
 
                                             </>
 
@@ -318,7 +325,7 @@ class Approvals extends Component {
 
                                         {this.state.serviceAgentRequests.map((item) =>
                                             <>
-                                                <RequestServiceAgentItem history={this.props.history}  item={item}  />
+                                                <RequestServiceAgentItem  history={this.props.history}  item={item}  />
 
                                             </>
 

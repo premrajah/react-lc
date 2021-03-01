@@ -381,10 +381,13 @@ class RequestRegisterItem extends Component {
         )
             .then(res => {
 
+
+
                 this.getDetails()
 
 
                 this.showPopUpInitiateAction()
+
 
 
 

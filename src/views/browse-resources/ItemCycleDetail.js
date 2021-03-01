@@ -547,33 +547,33 @@ function CustomizedTimeline(props) {
 
             )}
 
-            {props.item.transitions.filter((item)=>  item.relation==="service_agent_for").map((item,index)=>
+            {/*{props.item.transitions.filter((item)=>  item.relation==="service_agent_for").map((item,index)=>*/}
 
-                <TimelineItem>
-                    <TimelineOppositeContent>
-                        <Paper elevation={0} className={classes.paper}>
-                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                                <span className={"text-caps"}>   {item.org.name}{item.org.description&&", "+item.org.description}</span>
-                            </Typography>
+                {/*<TimelineItem>*/}
+                    {/*<TimelineOppositeContent>*/}
+                        {/*<Paper elevation={0} className={classes.paper}>*/}
+                            {/*<Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>*/}
+                                {/*<span className={"text-caps"}>   {item.org.name}{item.org.description&&", "+item.org.description}</span>*/}
+                            {/*</Typography>*/}
 
-                        </Paper>
+                        {/*</Paper>*/}
 
-                    </TimelineOppositeContent>
+                    {/*</TimelineOppositeContent>*/}
 
-                    <TimelineSeparator>
-                        <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>
-                            {/*<BusinessIcon />*/}
-                        </TimelineDot>
+                    {/*<TimelineSeparator>*/}
+                        {/*<TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>*/}
+                            {/*/!*<BusinessIcon />*!/*/}
+                        {/*</TimelineDot>*/}
 
-                    </TimelineSeparator>
-                    <TimelineContent>
-                        <Typography>
-                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
-                        </Typography>
-                    </TimelineContent>
-                </TimelineItem>
+                    {/*</TimelineSeparator>*/}
+                    {/*<TimelineContent>*/}
+                        {/*<Typography>*/}
+                            {/*<p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>*/}
+                        {/*</Typography>*/}
+                    {/*</TimelineContent>*/}
+                {/*</TimelineItem>*/}
 
-            )}
+            {/*)}*/}
 
 
 

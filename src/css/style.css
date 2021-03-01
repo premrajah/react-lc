@@ -3200,3 +3200,7 @@ a.page-link:hover{
 	text-align: right;
 	margin-right: auto;
 }
+.MuiPaper-root{
+
+	padding: 0!important;
+}

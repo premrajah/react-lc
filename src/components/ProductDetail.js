@@ -1398,6 +1398,13 @@ class ProductDetail extends Component {
                                             <div className="row  justify-content-start search-container  pb-2 ">
 
                                                 <div className={"col-auto"}>
+                                                    <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Located At</p>
+                                                    <p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.site.name}, {this.state.item.site.address} </p>
+                                                </div>
+                                            </div>
+                                            <div className="row  justify-content-start search-container  pb-2 ">
+
+                                                <div className={"col-auto"}>
                                                     <p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Service Agent</p>
                                                     <p style={{ fontSize: "18px" }} className="  mb-1"><Org orgId={this.state.item.service_agent._id} /> </p>
                                                 </div>

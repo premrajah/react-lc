@@ -382,10 +382,11 @@ class RequestServiceAgentItem extends Component {
         )
             .then(res => {
 
+
                 this.getDetails()
 
-
                 this.showPopUpInitiateAction()
+
 
 
 
@@ -464,7 +465,7 @@ class RequestServiceAgentItem extends Component {
 
                         <div className={"col-2 "}>
 
-                            {this.state.images.length>0? <img className={"img-fluid img-list"} src={this.state.images[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+                            {this.state.item.product.artifacts.length>0? <img className={"img-fluid img-list"} src={this.state.item.product.artifacts[0].blob_url} alt="" />: <img className={"img-fluid"} src={PlaceholderImg} alt="" />}
 
                         </div>
                         <div className={"col-5 pl-2  content-box-listing"}>

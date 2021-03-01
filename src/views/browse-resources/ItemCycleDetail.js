@@ -33,6 +33,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 import TextField from '@material-ui/core/TextField';
 import ProductDetailCycle from '../../components/ProductDetailCycle'
 import moment from "moment";
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 
 
 class ItemCycleDetail extends Component {
@@ -481,32 +482,99 @@ function CustomizedTimeline(props) {
 
         <Timeline >
 
-            {props.item.transitions.map((item,index)=>
 
-            <TimelineItem>
 
-                <TimelineSeparator>
-                    <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>
-                        {/*<BusinessIcon />*/}
-                    </TimelineDot>
+            {props.item.transitions.filter((item)=>  item.relation==="belongs_to").map((item,index)=>
 
-                    {props.item.transitions.length > index + 1 &&
-                    <TimelineConnector style={{ backgroundColor: "#05AD88", height: "150px" }}/>
-                    }
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={0} className={classes.paper}>
-                        <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
-                            {item.org.name}, {item.org.description}
-                        </Typography>
+                <TimelineItem>
+                    <TimelineOppositeContent>
+                        <Paper elevation={0} className={classes.paper}>
+                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
+                                <span className={"text-caps"}>{item.org.name}{item.org.description&&", "+item.org.description}</span>
+                            </Typography>
+
+                        </Paper>
+
+                    </TimelineOppositeContent>
+
+                    <TimelineSeparator>
+                        <TimelineDot style={{ backgroundColor:"#27245C", width:"25px",height:"25px"}}>
+                            {/*<BusinessIcon />*/}
+                        </TimelineDot>
+
+
+                        <TimelineConnector style={{ backgroundColor: "#05AD88", height: "100px" }}/>
+                    </TimelineSeparator>
+
+                    <TimelineContent>
                         <Typography>
                             <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
                         </Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
+                    </TimelineContent>
+                </TimelineItem>
 
             )}
+
+            {props.item.transitions.filter((item)=>  item.relation==="past_owner").map((item,index)=>
+
+                <TimelineItem>
+                    <TimelineOppositeContent>
+                        <Paper elevation={0} className={classes.paper}>
+                            <Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>
+                                <span className={"text-caps"}>  {item.org.name}{item.org.description&&", "+item.org.description}</span>
+                            </Typography>
+
+                        </Paper>
+
+
+                    </TimelineOppositeContent>
+
+                    <TimelineSeparator>
+                        <TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>
+                            {/*<BusinessIcon />*/}
+                        </TimelineDot>
+
+
+                        <TimelineConnector style={{ backgroundColor: "#05AD88", height: "100px" }}/>
+
+                    </TimelineSeparator>
+                    <TimelineContent>
+                        <Typography>
+                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
+                        </Typography>
+                    </TimelineContent>
+                </TimelineItem>
+
+            )}
+
+            {/*{props.item.transitions.filter((item)=>  item.relation==="service_agent_for").map((item,index)=>*/}
+
+                {/*<TimelineItem>*/}
+                    {/*<TimelineOppositeContent>*/}
+                        {/*<Paper elevation={0} className={classes.paper}>*/}
+                            {/*<Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>*/}
+                                {/*<span className={"text-caps"}>   {item.org.name}{item.org.description&&", "+item.org.description}</span>*/}
+                            {/*</Typography>*/}
+
+                        {/*</Paper>*/}
+
+                    {/*</TimelineOppositeContent>*/}
+
+                    {/*<TimelineSeparator>*/}
+                        {/*<TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>*/}
+                            {/*/!*<BusinessIcon />*!/*/}
+                        {/*</TimelineDot>*/}
+
+                    {/*</TimelineSeparator>*/}
+                    {/*<TimelineContent>*/}
+                        {/*<Typography>*/}
+                            {/*<p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>*/}
+                        {/*</Typography>*/}
+                    {/*</TimelineContent>*/}
+                {/*</TimelineItem>*/}
+
+            {/*)}*/}
+
 
 
 

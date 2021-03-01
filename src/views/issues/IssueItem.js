@@ -50,10 +50,10 @@ const IssueItem = ({ item, onSubmitted }) => {
 
                                     <div className="row">
                                         <div className="col-md-2 col-sm-12">
-                                            {product.product.artifacts && product.product.artifacts.length > 0 ? (
+                                            {product.artifacts && product.artifacts.length > 0 ? (
                                                 <img
                                                     className="img-fluid img-list"
-                                                    src={product.product.artifacts[0].blob_url}
+                                                    src={product.artifacts[0].blob_url}
                                                     alt=""
                                                 />
                                             ) : (

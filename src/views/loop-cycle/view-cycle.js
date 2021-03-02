@@ -469,7 +469,7 @@ class ViewCycle extends Component {
 
 
 
-        axios.post(baseUrl + "org/email/",
+        axios.post(baseUrl + "org/email",
             {email:email}
             , {
                 headers: {

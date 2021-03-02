@@ -222,7 +222,7 @@ class ProductDetail extends Component {
         
         if (!this.state.emailError)
 
-        axios.post(baseUrl + "org/email/",{
+        axios.post(baseUrl + "org/email",{
             email:email
             }
             , {

@@ -77,7 +77,6 @@ class Approvals extends Component {
                 releaseRequests: []
             })
 
-            console.log("reaload products")
             this.fetchReleaseRequest()
 
         }

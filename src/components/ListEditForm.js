@@ -521,7 +521,7 @@ class ListEditForm extends Component {
         }
 
 
-        console.log(data)
+
 
         axios.post(baseUrl + "listing",
             data, {

@@ -469,7 +469,8 @@ class ViewCycle extends Component {
 
 
 
-        axios.get(baseUrl + "org/email/"+email
+        axios.post(baseUrl + "org/email",
+            {email:email}
             , {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token

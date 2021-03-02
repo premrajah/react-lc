@@ -57,7 +57,7 @@ class ProductsService extends Component {
 
 
         this.props.showLoading(true)
-        axios.get(baseUrl + "product/service-agent",
+        axios.get(baseUrl + "product/service-agent/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -148,7 +148,7 @@ class ProductsService extends Component {
 
                     <div className="container  pb-4 pt-4">
 
-                        <PageHeader pageIcon={CubeBlue} pageTitle="Service Products" subTitle="Products created can be assigned to resource searches" />
+                        <PageHeader pageIcon={CubeBlue} pageTitle="Product Service" subTitle="Products created can be assigned to resource searches" />
 
                         <div className="row">
                             <div className="col-12 d-flex justify-content-end">

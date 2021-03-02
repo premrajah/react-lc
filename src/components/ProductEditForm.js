@@ -557,12 +557,7 @@ class ProductEditForm extends Component {
 
             for (let i = 0; i < files.length; i++) {
 
-
-
                 let imgFile = files[i]
-
-
-
 
                 this.getBase64(imgFile.file).then(
 
@@ -607,7 +602,6 @@ class ProductEditForm extends Component {
                             for (let k=0;k<currentFiles.length;k++){
 
                                 if (currentFiles[k].file.name === imgFile.file.name){
-
 
                                     currentFiles[k].status = 1  //success
                                     currentFiles[k].id = res.data.data._key  //success
@@ -2303,8 +2297,6 @@ class ProductEditForm extends Component {
                                                                         className={"file-uploader-thumbnail-container"}>
 
                                                                         <div data-index={index}
-                                                                             data-url={item.imgUrl?item.imgUrl:URL.createObjectURL(item.file)}
-
                                                                              className={"file-uploader-thumbnail"}
                                                                              style={{ backgroundImage: "url(" + (item.imgUrl?item.imgUrl:URL.createObjectURL(item.file)) + ")" }}
 

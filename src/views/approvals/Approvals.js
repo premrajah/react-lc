@@ -42,7 +42,8 @@ class Approvals extends Component {
             releaseRequests: [],
             registerRequests: [],
             serviceAgentRequests: [],
-            value:0
+            value:0,
+            loading:false
         }
 
 
@@ -58,6 +59,10 @@ class Approvals extends Component {
 
     handleChange = (event, newValue)=>{
 
+
+        this.setState({
+            loading:true
+        })
 
         this.setState({
 
@@ -121,11 +126,18 @@ class Approvals extends Component {
                         releaseRequests: responseAll
                     })
 
+                    this.setState({
+                        loading:false
+                    })
 
 
                 },
                 (error) => {
 
+
+                    this.setState({
+                        loading:false
+                    })
 
 
 
@@ -148,6 +160,9 @@ class Approvals extends Component {
                     var responseAll = response.data.data;
 
 
+                    this.setState({
+                        loading:false
+                    })
 
                     this.setState({
 
@@ -161,6 +176,9 @@ class Approvals extends Component {
 
 
 
+                    this.setState({
+                        loading:false
+                    })
 
                 }
             );
@@ -182,6 +200,9 @@ class Approvals extends Component {
 
 
 
+                    this.setState({
+                        loading:false
+                    })
 
 
 
@@ -197,6 +218,9 @@ class Approvals extends Component {
 
 
 
+                    this.setState({
+                        loading:false
+                    })
 
                 }
             );
@@ -289,7 +313,7 @@ class Approvals extends Component {
 
                                         { this.state.releaseRequests.length === 0 &&
                                         <div className={" column-empty-message"}>
-                                            <p>This search currently has no results</p>
+                                            <p>{this.state.loading?"Loading...":"This search currently has no results"}</p>
                                         </div>
                                         }
 
@@ -312,7 +336,7 @@ class Approvals extends Component {
 
                                         { this.state.registerRequests.length === 0 &&
                                         <div className={" column-empty-message"}>
-                                            <p>This search currently has no results</p>
+                                            <p>{this.state.loading?"Loading...":"This search currently has no results"}</p>
                                         </div>
                                         }
 
@@ -332,7 +356,7 @@ class Approvals extends Component {
 
                                         { this.state.serviceAgentRequests.length === 0 &&
                                         <div className={" column-empty-message"}>
-                                            <p>This search currently has no results</p>
+                                            <p>{this.state.loading?"Loading...":"This search currently has no results"}</p>
                                         </div>
                                         }
 

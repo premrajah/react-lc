@@ -67,7 +67,8 @@ class ProductDetail extends Component {
             showOrgForm:false,
             orgs:[],
             email:null,
-            errorServiceAgent:false
+            errorServiceAgent:false,
+            emailError:false
         }
 
 
@@ -127,7 +128,36 @@ class ProductDetail extends Component {
 
     handleChangeEmail(field, e) {
 
-        this.setState({ email: e.target.value});
+        
+        var email = e.target.value
+        
+        var error =false
+
+        if (!email) {
+            error=true
+        }
+
+        if (typeof email !== "undefined") {
+
+            let lastAtPos = email.lastIndexOf('@');
+            let lastDotPos = email.lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && email.indexOf('@@') === -1 && lastDotPos > 2 && (email.length - lastDotPos) > 2)) {
+                error=true
+            }
+        }
+        
+        
+
+        this.setState({
+            email: e.target.value,
+           emailError:error
+        });
+        
+        
+        
+        
+        
 
     }
 
@@ -169,7 +199,7 @@ class ProductDetail extends Component {
     handleSubmitOrg () {
 
 
-        const email = this.state.email
+        var email = this.state.email
 
 
 
@@ -189,7 +219,12 @@ class ProductDetail extends Component {
 
 
 
-        axios.get(baseUrl + "org/email/"+email
+        
+        if (!this.state.emailError)
+
+        axios.post(baseUrl + "org/email",{
+            email:email
+            }
             , {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token
@@ -1275,7 +1310,7 @@ class ProductDetail extends Component {
 
                                                     <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
                                                              serviceAgent={this.state.item.service_agent._id===this.props.userDetail.orgId?true:false}
-                                                               release={this.state.item.org._id===this.props.userDetail.orgId?true:false} delete={this.state.item.org._id===this.props.userDetail.orgId?true:false} duplicate={this.state.item.org._id===this.props.userDetail.orgId?true:false}
+                                                               release={this.state.item.org._id===this.props.userDetail.orgId?true:false}  duplicate={this.state.item.org._id===this.props.userDetail.orgId?true:false}
                                                                edit={this.state.item.org._id===this.props.userDetail.orgId?true:false}  />
 
 
@@ -1507,7 +1542,11 @@ class ProductDetail extends Component {
                                     </div>
                                 </div>
 
-                                {!this.state.showReleaseSuccess ? <form onSubmit={this.submitReleaseProduct}>
+                                {!this.state.showReleaseSuccess ?
+
+
+                                    <>
+                                    <form onSubmit={this.submitReleaseProduct}>
 
                                         <div className={"row justify-content-center p-2"}>
 
@@ -1550,50 +1589,7 @@ class ProductDetail extends Component {
                                                         </p>
 
 
-                                                        {this.state.showOrgForm &&
 
-                                                        <>
-
-                                                            <div className={"row m-2 container-gray"}>
-                                                                <div className={"col-12 text-left mt-2 "}>
-
-                                                                    <p className={"text-bold text-blue"}>Add Company's
-                                                                        Email</p>
-
-                                                                </div>
-                                                                <div className={"col-12 text-center "}>
-
-                                                                    <>
-                                                                        <div className={"row justify-content-center"}>
-
-                                                                            <div className={"col-12 text-center mb-2"}>
-
-                                                                                <TextField id="outlined-basic"
-                                                                                           onChange={this.handleChangeEmail.bind(this, "email")}
-                                                                                           variant="outlined"
-                                                                                           fullWidth={true}
-                                                                                           name={"email"} type={"text"}
-
-                                                                                           value={this.state.email}
-                                                                                />
-
-                                                                            </div>
-
-                                                                            <div className={"col-12 text-center mb-2"}>
-
-                                                                                <button onClick={this.handleSubmitOrg}
-                                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Submit
-                                                                                </button>
-
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </>
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                        }
 
                                                     </div>
 
@@ -1613,6 +1609,7 @@ class ProductDetail extends Component {
 
                                                     </div>}
 
+                                                    {!this.state.showOrgForm &&
                                                     <div className={"col-12 justify-content-center "}>
 
                                                         <div className={"row justify-content-center"}>
@@ -1634,7 +1631,7 @@ class ProductDetail extends Component {
 
                                                         </div>
 
-                                                    </div>
+                                                    </div>}
                                                 </div>
 
                                             </div>
@@ -1642,7 +1639,62 @@ class ProductDetail extends Component {
                                         </div>
 
 
-                                    </form> :
+                                    </form>
+
+
+
+                                        {this.state.showOrgForm &&
+
+                                        <>
+
+                                            <div className={"row m-2 container-gray"}>
+                                                <div className={"col-12 text-left mt-2 "}>
+
+                                                    <p className={"text-bold text-blue"}>Add Company's
+                                                        Email</p>
+
+                                                </div>
+                                                <div className={"col-12 text-center "}>
+
+                                                    <>
+                                                        <div className={"row justify-content-center"}>
+
+                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                <TextField id="outlined-basic"
+                                                                           onChange={this.handleChangeEmail.bind(this, "email")}
+                                                                           variant="outlined"
+                                                                           fullWidth={true}
+                                                                           name={"email"} type={"email"}
+
+                                                                           value={this.state.email}
+                                                                />
+
+                                                            </div>
+
+                                                            {this.state.emailError && <Alert key={"alert"} variant={"danger"}>
+                                                                Oops!Invalid Email Address!
+                                                            </Alert>}
+
+                                                            <div className={"col-12 text-center mb-2"}>
+
+                                                                <button onClick={this.handleSubmitOrg}
+                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>Submit
+                                                                </button>
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </>
+                                                </div>
+                                            </div>
+                                        </>
+                                        }
+
+                                    </>
+
+                                    :
 
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-10 text-center"}>

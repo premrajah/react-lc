@@ -219,12 +219,12 @@ class ProductDetail extends Component {
 
 
 
-        email = email.replace("@","%40")
-
         
         if (!this.state.emailError)
 
-        axios.get(baseUrl + "org/email/"+email
+        axios.post(baseUrl + "org/email/",{
+            email:email
+            }
             , {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token

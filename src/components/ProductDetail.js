@@ -199,7 +199,7 @@ class ProductDetail extends Component {
     handleSubmitOrg () {
 
 
-        const email = this.state.email
+        var email = this.state.email
 
 
 
@@ -218,8 +218,11 @@ class ProductDetail extends Component {
 
 
 
+
+        email = email.replace("@","%40")
+
         
-        if (!this.state.emailError) 
+        if (!this.state.emailError)
 
         axios.get(baseUrl + "org/email/"+email
             , {

@@ -57,7 +57,7 @@ class ProductsService extends Component {
 
 
         this.props.showLoading(true)
-        axios.get(baseUrl + "product/service-agent",
+        axios.get(baseUrl + "product/service-agent/expand",
             {
                 headers: {
                     "Authorization": "Bearer " + this.props.userDetail.token

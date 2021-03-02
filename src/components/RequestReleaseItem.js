@@ -13,7 +13,7 @@ import PlaceholderImg from '../img/place-holder-lc.png';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { withStyles } from "@material-ui/core/styles/index";
-
+import Org from "./Org/Org";
 
 class RequestReleaseItem extends Component {
 
@@ -471,6 +471,9 @@ class RequestReleaseItem extends Component {
                 </div>
                 <div className={"col-5 pl-2  content-box-listing"}>
                     <p style={{ fontSize: "18px" }} className=" mb-1">{this.state.item.product.product.name}</p>
+
+                    <p style={{ margin: "0" }} >     <Org orgId={this.state.item.originator._id} /> → <Org orgId={this.state.item.responder._id} /> </p>
+
                     <p style={{ fontSize: "16px" }} className=" mb-1 text-caps">{this.state.item.Release.stage}</p>
 
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.state.item.product.product.purpose}</p>

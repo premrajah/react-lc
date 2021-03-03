@@ -84,7 +84,6 @@ class IssueDetail extends Component {
     };
 
     updateStage = (payload) => {
-        console.log("payload", payload);
         axios
             .post(`${baseUrl}issue/stage`, payload, {
                 headers: { Authorization: "Bearer " + this.props.userDetail.token },

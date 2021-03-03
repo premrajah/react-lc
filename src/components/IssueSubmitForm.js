@@ -90,7 +90,6 @@ class IssueSubmitForm extends Component {
                 })
                 .then((response) => {
                     if (response.status === 200) {
-                        console.log('edit ', response.data)
                         this.setState({
                             status: <p className="text-success">Successfully updated data</p>,
                         });

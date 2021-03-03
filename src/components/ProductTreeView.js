@@ -209,8 +209,6 @@ class ProductTreeView extends Component {
 
                 products:responseAll
             })
-
-                console.log("loaded products")
             this.setTree()
 
 

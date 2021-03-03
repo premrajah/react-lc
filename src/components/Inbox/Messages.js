@@ -5,12 +5,13 @@ import { baseUrl } from "../../Util/Constants";
 import MessageItem from "./MessageItem";
 import _ from "lodash";
 import SendMessage from "./SendMessage";
-import { getUserDetail } from "../../store/actions/actions";
+import {Modal} from "react-bootstrap";
 
 class Messages extends Component {
     state = {
         allMessages: [],
         allOrgs: [],
+        sendMessageModal: false,
     };
 
     getMessages = (userDetails) => {
@@ -45,6 +46,11 @@ class Messages extends Component {
             .catch((error) => {});
     };
 
+    handleHideMessageModal = () => this.setState({sendMessageModal: false});
+    handleShowMessageModal = () => this.setState({sendMessageModal: true});
+
+
+
     handleDeleteMessage = (key) => {
         // console.log("[Messages.js] ", key);
     };
@@ -69,7 +75,13 @@ class Messages extends Component {
     render() {
         return (
             <>
-                <SendMessage />
+                <div className="row">
+                    <div className="col">
+                        <div className="d-flex justify-content-center">
+                            <button className="btn btn-green" onClick={this.handleShowMessageModal}>Send Messages</button>
+                        </div>
+                    </div>
+                </div>
 
                 <hr/>
 
@@ -102,7 +114,17 @@ class Messages extends Component {
                         </div>
                     </div>
                 </div>
+
+                <Modal show={this.state.sendMessageModal} onHide={this.handleHideMessageModal} backdrop="static">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Send Message</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <SendMessage apiPath="chat" />
+                    </Modal.Body>
+                </Modal>
             </>
+
         );
     }
 }

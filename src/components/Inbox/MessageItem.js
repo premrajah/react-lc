@@ -35,18 +35,18 @@ const MessageItem = ({ item, onDelete }) => {
                 <div className="row">
                     <div className="col">
                         <div>
-                            {orgs.map((org) => {
+                            {orgs.map((org, i) => {
                                 return (
-                                    <span key={org.org._ts_epoch_ms + Math.random()}>
-                                        <span className="mr-1">
-                                            {org.actor === "message_from" ? "From:" : "To:"}
-                                        </span>
-                                        <span className="mr-2">
-                                            <Org
-                                                orgId={org.org._id}
-                                                orgDescription={org.org.description}
-                                            />
-                                        </span>
+                                    <span key={org.org._ts_epoch_ms_i}>
+                                        {org.actor === "message_from" && (
+                                            <span>
+                                                <span>From: </span>
+                                                <Org
+                                                    orgId={org.org._id}
+                                                    orgDescription={org.org.description}
+                                                />
+                                            </span>
+                                        )}
                                     </span>
                                 );
                             })}
@@ -59,6 +59,6 @@ const MessageItem = ({ item, onDelete }) => {
             </CardContent>
         </Card>
     );
-};
+}
 
 export default MessageItem;

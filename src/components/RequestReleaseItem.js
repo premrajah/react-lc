@@ -157,11 +157,11 @@ class RequestReleaseItem extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
-        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
-
-            formIsValid = false;
-            errors["phone"] = "Invalid Phone Number!";
-        }
+        // if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+        //
+        //     formIsValid = false;
+        //     errors["phone"] = "Invalid Phone Number!";
+        // }
 
 
 

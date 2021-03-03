@@ -1848,7 +1848,7 @@ class ProductDetail extends Component {
 
                                         </div>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
-                                            <p onClick={this.showReleaseProduct}
+                                            <p onClick={this.showServiceAgent}
                                                className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
                                         </div>
 

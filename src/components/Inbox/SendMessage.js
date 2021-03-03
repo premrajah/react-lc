@@ -55,6 +55,10 @@ class SendMessage extends Component {
         this.setState({selectedOrgs: e.target.value, messageStatus: ""});
     }
 
+    handleClearMultiSelect= () => {
+        this.setState({selectedOrgs: [], messageStatus: ""});
+    }
+
     handleMessageSubmission = (e) => {
         e.preventDefault();
 
@@ -107,8 +111,8 @@ class SendMessage extends Component {
                                                 </Select>
                                             </FormControl>
                                             <Form.Text className="text-muted">
-                                                use cmd + click or ctrl + click to select multiple
-                                                organisations
+                                                {this.state.selectedOrgs.length > 0 ? <button className="btn btn-link float-right"
+                                                         onClick={this.handleClearMultiSelect}>clear</button> : null}
                                             </Form.Text>
                                         </Form.Group>
                                         <Form.Group className="mb-3">

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import _ from "lodash";
-import { Card, CardContent } from "@material-ui/core";
+import {Card, CardContent, FormControl, Input, InputLabel, MenuItem, Select} from "@material-ui/core";
 import { Button, Form } from "react-bootstrap";
 
 class SendMessage extends Component {
@@ -29,7 +29,7 @@ class SendMessage extends Component {
         if (!payload) return;
 
         axios
-            .post(`${baseUrl}message/chat`, payload, {
+            .post(`${baseUrl}message/${this.props.apiPath ? this.props.apiPath : 'chat'}`, payload, {
                 headers: { Authorization: "Bearer " + this.props.userDetail.token },
             })
             .then((response) => {
@@ -50,18 +50,14 @@ class SendMessage extends Component {
             });
     };
 
+
     handleMultiSelect = (e) => {
-        if (!e) return;
+        this.setState({selectedOrgs: e.target.value, messageStatus: ""});
+    }
 
-        const selectedOrgs = [];
-        let selectedOption = e.target.selectedOptions;
-
-        for (let i = 0; i < selectedOption.length; i++) {
-            selectedOrgs.push(selectedOption.item(i).value);
-        }
-
-        this.setState({ selectedOrgs: selectedOrgs, messageStatus: "" });
-    };
+    handleClearMultiSelect= () => {
+        this.setState({selectedOrgs: [], messageStatus: ""});
+    }
 
     handleMessageSubmission = (e) => {
         e.preventDefault();
@@ -96,24 +92,27 @@ class SendMessage extends Component {
                                 <CardContent>
                                     <Form onSubmit={this.handleMessageSubmission}>
                                         <Form.Group>
-                                            <Form.Label>Select organisations to message</Form.Label>
-                                            <Form.Control
-                                                as="select"
-                                                multiple
-                                                style={{ borderRadius: 5 }}
-                                                value={this.state.selectedOrgs}
-                                                onChange={(e) => this.handleMultiSelect(e)}>
-                                                {this.state.allOrgs.map((org) => {
-                                                    return (
-                                                        <option key={org._id} value={org._id}>
-                                                            {org.name}
-                                                        </option>
-                                                    );
-                                                })}
-                                            </Form.Control>
+                                            <FormControl>
+                                                <InputLabel id="multi-select">Select organisations to message</InputLabel>
+                                                <Select
+                                                    labelId="multi-select"
+                                                    multiple
+                                                    value={this.state.selectedOrgs}
+                                                    onChange={this.handleMultiSelect}
+                                                    input={<Input />}
+                                                >
+                                                    {this.state.allOrgs.map((org) => {
+                                                        return (
+                                                            <MenuItem key={org._id} value={org._id}>
+                                                                {org.name}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </Select>
+                                            </FormControl>
                                             <Form.Text className="text-muted">
-                                                use cmd + click or ctrl + click to select multiple
-                                                organisations
+                                                {this.state.selectedOrgs.length > 0 ? <button className="btn btn-link float-right"
+                                                         onClick={this.handleClearMultiSelect}>clear</button> : null}
                                             </Form.Text>
                                         </Form.Group>
                                         <Form.Group className="mb-3">

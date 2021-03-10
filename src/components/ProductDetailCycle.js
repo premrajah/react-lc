@@ -1,49 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
 import { connect } from "react-redux";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
-import PlaceholderImg from '../img/place-holder-lc.png';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
-import { makeStyles } from '@material-ui/core/styles';
+import PlaceholderImg from "../img/place-holder-lc.png";
+import { makeStyles } from "@material-ui/core/styles";
 import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
-import encodeUrl  from "encodeurl"
-import { Tabs,Tab } from 'react-bootstrap';
+import encodeUrl from "encodeurl";
+import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductItemNew from './ProductItemNew'
-import MatchItem from '../components/MatchItem'
-import jspdf from 'jspdf'
-import QrCodeBg from '../img/qr-code-bg.png';
-import SearchItem from '../views/loop-cycle/search-item'
-import ResourceItem from '../views/create-search/ResourceItem'
-import { Modal, ModalBody, Alert } from 'react-bootstrap';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
+import ProductItemNew from "./ProductItemNew";
+import jspdf from "jspdf";
+import QrCodeBg from "../img/qr-code-bg.png";
+import SearchItem from "../views/loop-cycle/search-item";
+import ResourceItem from "../views/create-search/ResourceItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
-import MoreMenu from './MoreMenu'
+import MoreMenu from "./MoreMenu";
 import IssueSubmitForm from "./IssueSubmitForm";
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-
-
+import Timeline from "@material-ui/lab/Timeline";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineContent from "@material-ui/lab/TimelineContent";
+import TimelineDot from "@material-ui/lab/TimelineDot";
+import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 
 
 class ProductDetailCycle extends Component {

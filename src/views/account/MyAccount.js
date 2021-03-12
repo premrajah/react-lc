@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
+import React, {Component} from 'react';
+import {connect} from "react-redux";
 import SettingsWhite from '../../img/icons/settings-blue.png';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import * as actionCreator from "../../store/actions/actions";

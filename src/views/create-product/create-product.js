@@ -1,21 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Select from '@material-ui/core/Select';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import { ChatController, MuiChat } from 'chat-ui-react'
-
-
-
-
-
-import Toolbar from '@material-ui/core/Toolbar';
-import { withStyles } from "@material-ui/core/styles/index";
+import {ChatController, MuiChat} from 'chat-ui-react'
+import {withStyles} from "@material-ui/core/styles/index";
 
 
 class CreateProduct extends Component {

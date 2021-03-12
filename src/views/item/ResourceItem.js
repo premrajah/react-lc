@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import PlaceholderImg from '../../img/place-holder-lc.png';
 
 
-import { Link } from "react-router-dom";
-
+import {Link} from "react-router-dom";
 
 
 class ResourceItem extends Component {

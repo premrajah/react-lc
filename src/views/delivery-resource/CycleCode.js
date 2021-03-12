@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,7 +6,7 @@ import QRCodeImg from '../../img/qr-code.png';
 import CubeBlue from '../../img/icons/cube-blue.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 class CycleCode extends Component {
 

@@ -1,37 +1,30 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Close from '@material-ui/icons/Close';
 import '../../Util/upload-file.css'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ProductBlue from '../../img/icons/product-blue.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
-import ProductExpandItem from '../../components/ProductExpandItem'
 import ItemDetailPreview from '../../components/ItemDetailPreview'
 import ProductTreeView from '../../components/ProductTreeView'
 
 
-import {
-    MuiPickersUtilsProvider,
-
-    DatePicker
-} from '@material-ui/pickers';
-import moment from "moment/moment";
+import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import PageHeader from "../../components/PageHeader";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
+import React, {Component} from 'react';
+import {connect} from "react-redux";
 import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
 import Close from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PaperImg from '../../img/paper-big.png';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,7 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import clsx from 'clsx';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import CalGrey from '../../img/icons/calender-dgray.png';
 import MarkerGrey from '../../img/icons/marker-dgray.png';
 import LinkGray from '../../img/icons/link-icon.png';
@@ -27,7 +27,6 @@ import StateIcon from '../../img/icons/state.png';
 import CameraGray from '../../img/icons/camera-gray.png';
 import PlusGray from '../../img/icons/plus-icon.png';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-
 
 
 const useStyles = makeStyles((theme) => ({

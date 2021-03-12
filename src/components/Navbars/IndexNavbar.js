@@ -1,19 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 // reactstrap components
-import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
 
-import { NavbarBrand, Navbar, NavItem, Nav } from "react-bootstrap";
+import {Nav, Navbar, NavbarBrand, NavItem} from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
 import LogoNew from "../../img/logo-cropped.png";
 import LogoText from "../../img/logo-text.png";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 
 class ComponentsNavbar extends React.Component {

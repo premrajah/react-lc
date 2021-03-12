@@ -101,13 +101,7 @@ class ProductItemNew extends Component {
 
     getSites() {
 
-        axios.get(baseUrl + "site",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "site")
             .then((response) => {
 
                     var responseAll = response.data.data;
@@ -164,11 +158,7 @@ class ProductItemNew extends Component {
         axios.post(baseUrl + "product/"+this.props.item.product._key+"/duplicate",
             {
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+            , )
             .then(res => {
 
 
@@ -211,13 +201,7 @@ class ProductItemNew extends Component {
 
 
 
-        axios.post(baseUrl + "product/sub-product/remove", data,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.post(baseUrl + "product/sub-product/remove", data)
             .then((response) => {
 
                     // var responseAll = response.data.data;
@@ -243,13 +227,7 @@ class ProductItemNew extends Component {
 
     deleteItem() {
 
-        axios.delete(baseUrl + "listing/"+this.props.item.listing._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.delete(baseUrl + "listing/"+this.props.item.listing._key)
             .then((response) => {
 
                     // var responseAll = response.data.data;
@@ -353,13 +331,7 @@ class ProductItemNew extends Component {
             var url =  this.props.item&&this.props.item.product?baseUrl + "product/" +this.props.item.product._key + "/artifact":baseUrl + "product/" +this.props.item._key + "/artifact"
 
 
-            axios.get(url,
-                {
-                    headers: {
-                        "Authorization": "Bearer " +  this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(url)
                 .then((response) => {
 
                         var responseAll = response.data.data;

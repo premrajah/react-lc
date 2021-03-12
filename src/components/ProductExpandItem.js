@@ -68,13 +68,7 @@ class ProductExpandItem extends Component {
 
 
 
-        axios.post(baseUrl + "product/sub-product/remove", data,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.post(baseUrl + "product/sub-product/remove", data)
             .then((response) => {
 
                     // var responseAll = response.data.data;
@@ -215,13 +209,7 @@ class ProductExpandItem extends Component {
 
         if (productKey)
 
-        axios.get(baseUrl + "product/" + productKey+"/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "product/" + productKey+"/expand")
             .then((response) => {
 
                     var responseAll = response.data;
@@ -310,13 +298,7 @@ class ProductExpandItem extends Component {
         }
 
 
-        axios.post(baseUrl + "product/sub-product",dataForm
-
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+        axios.post(baseUrl + "product/sub-product",dataForm)
             .then(res => {
 
 

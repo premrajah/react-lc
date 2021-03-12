@@ -164,13 +164,7 @@ class ProductDetail extends Component {
     getOrgs() {
 
 
-        axios.get(baseUrl + "org/all",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        ).then((response) => {
+        axios.get(baseUrl + "org/all").then((response) => {
 
                 var response = response.data;
 
@@ -225,11 +219,7 @@ class ProductDetail extends Component {
         axios.post(baseUrl + "org/email",{
             email:email
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+
         )
             .then(res => {
 
@@ -405,11 +395,7 @@ class ProductDetail extends Component {
         axios.post(baseUrl + "product/"+this.state.item.product._key+"/duplicate",
             {
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+            )
             .then(res => {
 
                 this.props.history.push("/my-products")
@@ -438,13 +424,7 @@ class ProductDetail extends Component {
 
     deleteItem() {
 
-        axios.delete(baseUrl + "listing/"+this.state.item.listing._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.delete(baseUrl + "listing/"+this.state.item.listing._key)
             .then((response) => {
 
                     // var responseAll = response.data.data;
@@ -624,11 +604,7 @@ class ProductDetail extends Component {
                     }
 
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
+                )
                 .then(res => {
 
                     // this.toggleSite()
@@ -693,11 +669,6 @@ class ProductDetail extends Component {
             {
                 org_id: site,
                 product_id: this.props.item.product._key,
-            }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
             })
             .then(res => {
 
@@ -759,11 +730,7 @@ class ProductDetail extends Component {
                 org_id: site,
                 product_id: this.props.item.product._key,
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+            )
             .then(res => {
 
 
@@ -790,13 +757,7 @@ class ProductDetail extends Component {
 
     getSites() {
 
-    axios.get(baseUrl + "site",
-        {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
-            }
-        }
-    )
+    axios.get(baseUrl + "site")
         .then((response) => {
 
                 var responseAll = response.data.data;
@@ -895,12 +856,7 @@ class ProductDetail extends Component {
 
         // var siteKey = (this.props.item.site_id).replace("Site/","")
 
-        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","") ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","")
         )
             .then((response) => {
 
@@ -938,13 +894,7 @@ class ProductDetail extends Component {
         for (var i = 0; i < searches.length; i++) {
 
 
-            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""),
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""))
                 .then((response) => {
 
                         var responseData = response.data.data;
@@ -990,13 +940,7 @@ class ProductDetail extends Component {
 
 
 
-            axios.get(baseUrl + "product/" + subProductIds[i]._key,
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "product/" + subProductIds[i]._key)
                 .then((response) => {
 
                         var responseAll = response.data;
@@ -1040,13 +984,7 @@ class ProductDetail extends Component {
     getMatches() {
 
 
-        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug),
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug))
             .then((response) => {
 
 
@@ -1090,13 +1028,7 @@ class ProductDetail extends Component {
 
         if (productKey)
 
-            axios.get(baseUrl + "product/" + productKey+"/expand",
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "product/" + productKey+"/expand")
                 .then((response) => {
 
                         var responseAll = response.data;

@@ -69,13 +69,7 @@ class MatchItem extends Component {
     getOffer() {
 
 
-        axios.get(baseUrl + "offer/match/" + this.props.item.match._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "offer/match/" + this.props.item.match._key)
             .then((response) => {
 
                     var responseAll = response.data;

@@ -57,12 +57,7 @@ class Products extends Component {
 
 
         this.props.showLoading(true)
-        axios.get(baseUrl + "product",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+        axios.get(baseUrl + "product"
         )
             .then((response) => {
 

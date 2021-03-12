@@ -191,12 +191,7 @@ class ProductTreeView extends Component {
 
     getItems(){
 
-    axios.get(baseUrl + "product/expand",
-        {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
-            }
-        }
+    axios.get(baseUrl + "product/expand"
     )
         .then((response) => {
 
@@ -267,13 +262,7 @@ class ProductTreeView extends Component {
 
         var currentProductId= "j2D6JU2oIU"
 
-        axios.get(baseUrl + "product/"+currentProductId+"/sub-product/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "product/"+currentProductId+"/sub-product/expand")
             .then((response) => {
 
                     var responseAll = response.data.data;

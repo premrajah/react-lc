@@ -50,12 +50,7 @@ class ProductItem extends Component {
     getOffer() {
 
 
-        axios.get(baseUrl + "offer/match/" + this.props.item.match._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+        axios.get(baseUrl + "offer/match/" + this.props.item.match._key
         )
             .then((response) => {
 
@@ -85,10 +80,6 @@ class ProductItem extends Component {
                     match_id:this.props.item.match._key,
                     note:"Accepted"
 
-                }, {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
                 }
             )
                 .then(res => {
@@ -131,11 +122,7 @@ class ProductItem extends Component {
                 "offer_id": event.currentTarget.dataset.id,
                 "new_stage": "accepted"
 
-            }, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+            },
         )
             .then(res => {
 
@@ -195,10 +182,6 @@ class ProductItem extends Component {
 
         }
 
-            }, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
             }
         )
             .then(res => {
@@ -241,11 +224,7 @@ class ProductItem extends Component {
                 match_id:this.props.item.match._key,
                 note:"Accepted"
 
-            }, {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+            },
         )
             .then(res => {
 

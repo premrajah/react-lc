@@ -375,11 +375,6 @@ class RequestServiceAgentItem extends Component {
         axios.post(baseUrl + "service-agent/stage",
             data
 
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
         )
             .then(res => {
 

@@ -267,11 +267,7 @@ class ProductDetailCycle extends Component {
                     }
 
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
+                )
                 .then(res => {
 
                     // this.toggleSite()
@@ -341,11 +337,7 @@ class ProductDetailCycle extends Component {
                     site_id: site,
                     product_id: this.props.item.product._key,
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
+                )
                 .then(res => {
 
                     // this.toggleSite()
@@ -373,13 +365,7 @@ class ProductDetailCycle extends Component {
 
     getSites() {
 
-    axios.get(baseUrl + "site",
-        {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
-            }
-        }
-    )
+    axios.get(baseUrl + "site")
         .then((response) => {
 
                 var responseAll = response.data.data;
@@ -463,13 +449,7 @@ class ProductDetailCycle extends Component {
     getListing() {
 
 
-        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") )
             .then((response) => {
 
                     var responseData = response.data.data;
@@ -508,13 +488,7 @@ class ProductDetailCycle extends Component {
         for (var i = 0; i < searches.length; i++) {
 
 
-            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""),
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""))
                 .then((response) => {
 
                         var responseData = response.data.data;
@@ -601,13 +575,7 @@ class ProductDetailCycle extends Component {
     getMatches() {
 
 
-        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug),
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug))
             .then((response) => {
 
 

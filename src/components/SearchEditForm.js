@@ -381,13 +381,7 @@ class SearchEditForm extends Component {
 
     getProducts() {
 
-        axios.get(baseUrl + "product",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "product")
             .then((response) => {
 
                     var responseAll = response.data.data;
@@ -421,13 +415,7 @@ class SearchEditForm extends Component {
 
     getSite() {
 
-        axios.get(baseUrl + "site/" + this.state.siteSelected,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "site/" + this.state.siteSelected)
             .then((response) => {
 
                     var responseAll = response.data;

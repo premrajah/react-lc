@@ -54,12 +54,7 @@ class RequestRegisterItem extends Component {
 
     fetchRegisterRequest(){
 
-        axios.get(baseUrl + "register" ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+        axios.get(baseUrl + "register"
         )
             .then((response) => {
 

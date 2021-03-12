@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Paper from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import moment from "moment/moment";
 import Org from "./Org/Org";
 

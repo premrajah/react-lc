@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import UnableToLoad from "./UnableToLoad";
 
 class ErrorBoundary extends Component {

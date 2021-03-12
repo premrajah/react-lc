@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import Paper from '../img/place-holder-lc.png';
+import React, {Component} from 'react';
+import PlaceholderImg from '../img/place-holder-lc.png';
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../img/icons/gray-loop.png';
+import {Modal, ModalBody} from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import moment from "moment/moment";
-import PlaceholderImg from '../img/place-holder-lc.png';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import Org from "./Org/Org";
 
 class RequestReleaseItem extends Component {

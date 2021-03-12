@@ -1,6 +1,4 @@
 import React from "react";
-import {Pages} from "@material-ui/icons";
-import {Image} from "react-bootstrap";
 
 
 const PageHeader = ({ pageIcon, pageTitle, subTitle, bottomLine }) => {

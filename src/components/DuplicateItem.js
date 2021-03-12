@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 import '../Util/upload-file.css'
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { Spinner} from 'react-bootstrap';
-
-// import {ContentCopy as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-import FileCopyIcon  from '@material-ui/icons/FileCopy';
-
-import { Modal, ModalBody, Alert } from 'react-bootstrap';
-
+import {baseUrl} from "../Util/Constants";
+import {Modal, ModalBody} from 'react-bootstrap';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 
 class DuplicateItem extends Component {

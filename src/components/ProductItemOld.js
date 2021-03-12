@@ -1,16 +1,11 @@
-import React, { Component } from 'react';
-import Paper from '../img/place-holder-lc.png';
-import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
-import * as actionCreator from "../store/actions/actions";
-
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../img/icons/gray-loop.png';
-import TextField from '@material-ui/core/TextField';
-import moment from "moment/moment";
+import React, {Component} from 'react';
 import PlaceholderImg from '../img/place-holder-lc.png';
-import { Link } from "react-router-dom";
+import axios from "axios/index";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
+import * as actionCreator from "../store/actions/actions";
+import moment from "moment/moment";
+import {Link} from "react-router-dom";
 
 
 class ProductItemNew extends Component {

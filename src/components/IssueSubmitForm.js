@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { FormControl, FormHelperText, MenuItem, Select, TextField } from "@material-ui/core";
+import React, {Component} from "react";
+import {FormControl, FormHelperText, MenuItem, Select, TextField} from "@material-ui/core";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl} from "../Util/Constants";
 import {connect} from "react-redux";
 
 class IssueSubmitForm extends Component {

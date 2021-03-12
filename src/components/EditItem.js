@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 import '../Util/upload-file.css'
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { Spinner} from 'react-bootstrap';
-
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-import { Modal, ModalBody, Alert } from 'react-bootstrap';
-
+import {baseUrl} from "../Util/Constants";
+import {Modal, ModalBody} from 'react-bootstrap';
+import {Edit as EditIcon} from '@material-ui/icons';
 
 
 class EditItem extends Component {

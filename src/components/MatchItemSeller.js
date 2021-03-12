@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
-import Paper from '../img/place-holder-lc.png';
+import React, {Component} from 'react';
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-
-import { Modal, ModalBody } from 'react-bootstrap';
+import {Modal, ModalBody} from 'react-bootstrap';
 import GrayLoop from '../img/icons/gray-loop.png';
 import TextField from '@material-ui/core/TextField';
-import { Link } from "react-router-dom";
-
+import {Link} from "react-router-dom";
 import CompanyInfo from './CompanyInfo'
+
 class MatchItemSeller extends Component {
 
 

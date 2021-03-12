@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import { InputAdornment, TextField } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import React, {Component} from "react";
+import {InputAdornment, TextField} from "@material-ui/core";
 import SearchGray from "@material-ui/icons/Search";
 
 class SearchBar extends Component {

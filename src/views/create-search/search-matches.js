@@ -1,29 +1,21 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
+import {connect} from "react-redux";
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import HeaderWhiteBack from '../header/HeaderWhiteBack'
+import {baseUrl} from "../../Util/Constants";
 import ResourceItem from './ResourceItem'
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import MatchItem from '../../components/MatchItem'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
-
-
 
 
 const useStyles = makeStyles((theme) => ({

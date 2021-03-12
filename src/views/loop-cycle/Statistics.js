@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import clsx from "clsx";
 import StatBLue from "../../img/icons/stat-blue.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { Doughnut } from "react-chartjs-2";
-import { makeStyles } from "@material-ui/core/styles";
+import {Doughnut} from "react-chartjs-2";
+import {makeStyles} from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from "@material-ui/core/TextField";
 import SearchGray from "@material-ui/icons/Search";

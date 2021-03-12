@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
-
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { makeStyles } from '@material-ui/core/styles';
-
-import { baseUrl, frontEndUrl } from "../../Util/Constants";
+import {makeStyles} from '@material-ui/core/styles';
+import {baseUrl, frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import CubeBlue from '../../img/icons/product-icon-big.png';
 import Timeline from '@material-ui/lab/Timeline';
@@ -20,7 +17,6 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import BusinessIcon from '@material-ui/icons/Business';
-
 
 
 class ProductDetail extends Component {

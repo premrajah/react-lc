@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import clsx from 'clsx';
 import FilterImg from '../../img/icons/filter-icon.png';
 import HeaderDark from '../header/HeaderDark'
@@ -9,11 +9,11 @@ import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import AppBar from '@material-ui/core/AppBar';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-import { baseUrl } from '../../Util/Constants'
+import {baseUrl} from '../../Util/Constants'
 import ResourceItem from '../item/ResourceItem'
 import axios from "axios/index";
 import Slider from "@material-ui/core/Slider/index";

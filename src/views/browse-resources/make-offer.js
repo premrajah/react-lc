@@ -1,21 +1,17 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from '../item/ResourceItem'
-
-
-
-
 
 
 class MakeOffer extends Component {

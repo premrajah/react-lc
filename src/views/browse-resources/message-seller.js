@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from '../item/ResourceItem'
 
 
-
-
-import { ChatController, MuiChat } from 'chat-ui-react'
+import {ChatController, MuiChat} from 'chat-ui-react'
 
 
 class MessageSeller extends Component {

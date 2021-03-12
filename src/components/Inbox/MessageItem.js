@@ -1,8 +1,7 @@
 import React from "react";
-import { Alert } from "react-bootstrap";
 import Org from "../Org/Org";
 import moment from "moment/moment";
-import { Card, CardContent } from "@material-ui/core";
+import {Card, CardContent} from "@material-ui/core";
 import MoreMenu from "../MoreMenu";
 
 const MessageItem = ({ item, onDelete }) => {

@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import history from "../../History/history";
 import FooterNew from "../../components/Footer/Footer";
 import WaveBorder from './WaveBorder'
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-
-
-
 
 
 class Footer extends Component {

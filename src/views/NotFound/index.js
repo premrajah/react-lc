@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { Link} from 'react-router-dom'
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-
 
 
 class  NotFound extends Component{

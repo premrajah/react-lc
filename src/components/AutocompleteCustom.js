@@ -134,6 +134,7 @@ class AutocompleteCustom extends Component {
                     onChange={onChange}
                     onKeyDown={onKeyDown}
                     value={userInput}
+               autoComplete={"new-password"}
                 />
                 {suggestionsListComponent}
             </Fragment>

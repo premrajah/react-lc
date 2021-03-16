@@ -73,7 +73,7 @@ class SignUp extends Component {
 
 
         // alert(detail)
-        console.log(detail)
+        // console.log(detail)
 
 
         if (detail.org){
@@ -92,8 +92,9 @@ class SignUp extends Component {
 
                         var responseAll = response.data.data;
 
-                        console.log(response.data.data)
-                    
+                        // console.log(response.data.data)
+
+
 
                         this.setState({
 
@@ -101,6 +102,8 @@ class SignUp extends Component {
 
                         })
 
+
+                    // console.log(responseAll._key)
 
 
                     },

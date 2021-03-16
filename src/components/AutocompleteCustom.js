@@ -22,7 +22,7 @@ class AutocompleteCustom extends Component {
 
                     var responseAll = response.data.data;
 
-                    console.log(response.data.data)
+                    // console.log(response.data.data)
 
 
 

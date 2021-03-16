@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import  './autocomplete-custom.css';
+import { baseUrl } from "../Util/Constants";
+import axios from "axios/index";
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -10,6 +12,74 @@ class AutocompleteCustom extends Component {
     static defaultProps = {
         suggestions: []
     };
+
+
+    changeInput= (key)=>{
+
+
+        axios.get(baseUrl + "org/search?page=1&size=10&q="+key)
+            .then((response) => {
+
+                    var responseAll = response.data.data;
+
+                    console.log(response.data.data)
+
+
+
+                    this.setState({
+
+                        orgs: responseAll.companies
+
+                    })
+
+
+
+                    var companies=[]
+
+                    for (var i=0;i<responseAll.companies.length;i++){
+
+                        companies.push({name:responseAll.companies[i].title,company:responseAll.companies[i].company_number})
+
+                    }
+
+
+
+                    for (var i=0;i<responseAll.orgs.length;i++){
+
+                        companies.push({name:responseAll.orgs[i].name,org:responseAll.orgs[i]._key})
+
+                    }
+
+
+                    this.setState({
+
+                        orgNames: companies
+
+                    })
+
+
+
+                    this.setState({
+                        filteredSuggestions: companies
+
+                    });
+                    this.setState({
+                        activeSuggestion: 0,
+                        showSuggestions: true,
+                        // userInput: key
+                    });
+
+
+                },
+                (error) => {
+
+
+
+
+                }
+            );
+
+    }
 
     constructor(props) {
         super(props);
@@ -22,7 +92,9 @@ class AutocompleteCustom extends Component {
             // Whether or not the suggestion list is shown
             showSuggestions: false,
             // What the user has entered
-            userInput: ""
+            userInput: "",
+            orgs:[],
+            orgNames:[],
         };
     }
 
@@ -30,18 +102,30 @@ class AutocompleteCustom extends Component {
         const { suggestions } = this.props;
         const userInput = e.currentTarget.value;
 
-        // Filter our suggestions that don't contain the user's input
-        const filteredSuggestions = suggestions.filter(
-            suggestion =>
-                suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-        );
 
+        // alert(userInput)
         this.setState({
             activeSuggestion: 0,
-            filteredSuggestions,
+            // filteredSuggestions,
             showSuggestions: true,
             userInput: e.currentTarget.value
         });
+
+        this.changeInput(userInput)
+
+        // this.props.detectChangeInput(userInput)
+        // Filter our suggestions that don't contain the user's input
+        // const filteredSuggestions = suggestions.filter(
+        //     suggestion =>
+        //         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        // );
+
+        // this.setState({
+        //     activeSuggestion: 0,
+        //     // filteredSuggestions,
+        //     showSuggestions: true,
+        //     userInput: e.currentTarget.value
+        // });
     };
 
     onClick = e => {
@@ -51,6 +135,16 @@ class AutocompleteCustom extends Component {
             showSuggestions: false,
             userInput: e.currentTarget.innerText
         });
+
+
+
+        this.props.selectedCompany(
+            {
+                "name":e.currentTarget.innerText,
+                "company":e.currentTarget.dataset.company,
+                "org":e.currentTarget.dataset.org
+
+            })
     };
 
     onKeyDown = e => {
@@ -82,6 +176,9 @@ class AutocompleteCustom extends Component {
         }
     };
 
+
+
+
     render() {
         const {
             onChange,
@@ -110,8 +207,8 @@ class AutocompleteCustom extends Component {
                             }
 
                             return (
-                                <li className={className} key={suggestion} onClick={onClick}>
-                                    {suggestion}
+                                <li className={className} data-company={suggestion.company} data-org={suggestion.org} key={suggestion} onClick={onClick}>
+                                    {suggestion.name}
                                 </li>
                             );
                         })}
@@ -135,7 +232,11 @@ class AutocompleteCustom extends Component {
                     onKeyDown={onKeyDown}
                     value={userInput}
                autoComplete={"new-password"}
+               placeholder={"Company (Type your company name here)"}
+               onFocusOut={this.createCompany}
                 />
+
+
                 {suggestionsListComponent}
             </Fragment>
         );

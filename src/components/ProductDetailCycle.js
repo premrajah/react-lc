@@ -67,7 +67,10 @@ class ProductDetailCycle extends Component {
             showDeletePopUp:false,
             isVisibleReportModal: false,
             showRegisterSuccess:false,
-
+            showOrgInput:false,
+            showOrgInputSuccess:false,
+            errorRelease:false,
+orgIdAuth:null
         }
 
 
@@ -121,6 +124,11 @@ class ProductDetailCycle extends Component {
         else if (action==="register"){
 
             this.showRegister()
+        }
+
+        else if (action==="release"){
+      this.showOrgInput()
+
         }
     }
 
@@ -363,6 +371,119 @@ class ProductDetailCycle extends Component {
     }
 
 
+    submitOrgId = event => {
+
+
+
+        event.preventDefault();
+
+        const form = event.currentTarget;
+
+        const data = new FormData(event.target);
+
+        const orgId = data.get("orgId")
+
+
+        this.setState({
+
+            orgIdAuth:orgId
+        })
+
+
+        console.log(orgId)
+
+        axios.get(baseUrl + "release?p="+this.props.item.product._key+"&o="+orgId)
+            .then(res => {
+
+
+                console.log(res.data.data)
+
+                // this.setState({
+                //
+                //     showRegisterSuccess:true
+                // })
+
+
+
+            }).catch(error => {
+
+
+
+                console.log(error.toString())
+            this.setState({
+
+                errorRelease:"Oops! Organisation ID entered is incorrect. Thanks"
+            })
+
+        });
+
+
+
+    }
+    submitApproveRelease = event => {
+
+
+
+        this.setState({
+
+            errorRegister:null
+        })
+
+
+
+        event.preventDefault();
+
+
+
+        const form = event.currentTarget;
+
+
+
+
+
+        this.setState({
+            btnLoading: true
+        })
+
+        const data = new FormData(event.target);
+
+        const site = data.get("site")
+
+
+
+
+
+        axios.post(baseUrl + "register",
+
+            {
+                site_id: site,
+                product_id: this.props.item.product._key,
+            }
+        )
+            .then(res => {
+
+                // this.toggleSite()
+                // this.showRegister()
+
+                this.setState({
+
+                    showRegisterSuccess:true
+                })
+
+
+
+            }).catch(error => {
+
+
+            this.setState({
+
+                errorRegister:error.response.data.errors[0].message
+            })
+
+        });
+
+    }
+
     getSites() {
 
     axios.get(baseUrl + "site")
@@ -417,7 +538,19 @@ class ProductDetailCycle extends Component {
 
 
 
-    showRegister(){
+    showOrgInput(){
+
+        this.setState({
+
+            showOrgInput:!this.state.showOrgInput
+        })
+
+
+    }
+
+
+
+        showRegister(){
 
 
         this.getSites()
@@ -742,8 +875,15 @@ class ProductDetailCycle extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    {this.props.isLoggedIn &&   <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                    {this.props.isLoggedIn &&
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
                                                                                            report={this.props.userDetail.orgId===this.props.item.org._id?true:false} register={this.props.userDetail.orgId!==this.props.item.org._id}  />}
+
+
+                                                    {!this.props.isLoggedIn &&
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                                release={true}  />}
+
 
                                                 </div>
 
@@ -1208,7 +1348,108 @@ class ProductDetailCycle extends Component {
 
                         </Modal>
 
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showOrgInput} onHide={this.showOrgInput} animation={false}>
 
+                            <ModalBody>
+
+
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Enter Your Organisation Id</p>
+
+                                    </div>
+                                </div>
+
+                                {!this.state.showRegisterSuccess?
+
+                                    <form onSubmit={this.submitOrgId}>
+
+                                        <div className={"row justify-content-center p-2"}>
+
+
+                                            <div className={"col-12 text-center mt-2"}>
+
+
+                                                <div className={"row justify-content-center"}>
+
+
+                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                        <div className={"custom-label text-bold  mb-1 text-left"}>Organisation Id
+                                                        </div>
+
+
+                                                        <TextField required={true} name={"orgId"} placeholder={"xxxxx"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+
+
+                                                    </div>
+
+
+                                                    {this.state.errorRelease &&
+
+
+                                                        <div className={"col-12 mt-3 justify-content-center"} style={{ textAlign: "center" }}>
+
+
+                                                            <Alert key={"alert"} variant={"danger"}>
+                                                                {this.state.errorRelease}
+                                                            </Alert>
+
+                                                        </div>
+
+                                                    }
+
+                                                    {!this.state.showSubmitSite &&
+                                                    <div className={"col-12 justify-content-center "}>
+
+                                                        <div className={"row justify-content-center"}>
+
+
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                                                <button style={{ minWidth: "120px" }}
+                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                                        type={"submit"}>Yes
+                                                                </button>
+
+
+                                                            </div>
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+                                                                <p onClick={this.showOrgInput}
+                                                                   className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </form>:
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your register request has been submitted successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                }
+
+
+
+                            </ModalBody>
+
+                        </Modal>
 
 
 

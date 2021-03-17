@@ -69,8 +69,12 @@ class ProductDetailCycle extends Component {
             showRegisterSuccess:false,
             showOrgInput:false,
             showOrgInputSuccess:false,
+            showApproveRelease:false,
+            showApproveReleasePopUp:false,
+            approveReleasePopUpSuccess:false,
             errorRelease:false,
-orgIdAuth:null
+            orgIdAuth:null,
+            approveReleaseId:null,
         }
 
 
@@ -130,6 +134,12 @@ orgIdAuth:null
       this.showOrgInput()
 
         }
+
+
+        else if (action==="approveRelease"){
+            this.showApproveReleasePopUp()
+
+        }
     }
 
 
@@ -147,6 +157,15 @@ orgIdAuth:null
         this.setState({
 
             showSubmitSite:!this.state.showSubmitSite
+        })
+    }
+
+
+    showApproveReleasePopUp=()=> {
+
+        this.setState({
+
+            showApproveReleasePopUp:!this.state.showApproveReleasePopUp
         })
     }
 
@@ -390,9 +409,13 @@ orgIdAuth:null
         })
 
 
+
+        this.showOrgInput()
+
+
         console.log(orgId)
 
-        axios.get(baseUrl + "release?p="+this.props.item.product._key+"&o="+orgId)
+        axios.get(baseUrl + "release/no-auth?p="+this.props.item.product._key+"&o="+orgId)
             .then(res => {
 
 
@@ -403,6 +426,29 @@ orgIdAuth:null
                 //     showRegisterSuccess:true
                 // })
 
+                var response= res.data.data
+                
+                for (var i=0;i<response.length;i++){
+
+
+                    if (response[i].stage==="requested") {
+
+
+
+
+                        this.setState({
+
+                            showApproveRelease:true,
+                            approveReleaseId:response[i]._key,
+
+                        })
+
+
+                    }
+                    
+                } 
+                
+                
 
 
             }).catch(error => {
@@ -424,40 +470,13 @@ orgIdAuth:null
 
 
 
-        this.setState({
-
-            errorRegister:null
-        })
 
 
-
-        event.preventDefault();
-
-
-
-        const form = event.currentTarget;
-
-
-
-
-
-        this.setState({
-            btnLoading: true
-        })
-
-        const data = new FormData(event.target);
-
-        const site = data.get("site")
-
-
-
-
-
-        axios.post(baseUrl + "register",
+        axios.post(baseUrl + "release/complete",
 
             {
-                site_id: site,
-                product_id: this.props.item.product._key,
+                id: this.state.approveReleaseId,
+                org_id: this.state.orgIdAuth,
             }
         )
             .then(res => {
@@ -465,10 +484,16 @@ orgIdAuth:null
                 // this.toggleSite()
                 // this.showRegister()
 
+                // this.setState({
+                //
+                //     showRegisterSuccess:true
+                // })
+
                 this.setState({
 
-                    showRegisterSuccess:true
+                    approveReleasePopUpSuccess:true
                 })
+
 
 
 
@@ -538,7 +563,7 @@ orgIdAuth:null
 
 
 
-    showOrgInput(){
+    showOrgInput= ()=>{
 
         this.setState({
 
@@ -880,9 +905,13 @@ orgIdAuth:null
                                                                                            report={this.props.userDetail.orgId===this.props.item.org._id?true:false} register={this.props.userDetail.orgId!==this.props.item.org._id}  />}
 
 
-                                                    {!this.props.isLoggedIn &&
+                                                    {!this.props.isLoggedIn && !this.state.orgIdAuth &&
                                                     <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
                                                                 release={true}  />}
+
+                                                    {this.state.showApproveRelease &&
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                               approveRelease={true}  />}
 
 
                                                 </div>
@@ -1452,6 +1481,71 @@ orgIdAuth:null
                         </Modal>
 
 
+
+
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showApproveReleasePopUp} onHide={this.showApproveReleasePopUp} animation={false}>
+
+                            <ModalBody>
+
+
+                                {!this.state.approveReleasePopUpSuccess ?
+                                <>
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p className={"text-bold"}>Approve Release Request</p>
+                                        <p>Are you sure you want to approve release request ?</p>
+                                    </div>
+                                </div>
+
+
+
+                                <div className={"row justify-content-center"}>
+
+
+                                    <div className={"col-12 text-center mt-2"}>
+
+
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                                <button onClick={this.submitApproveRelease}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes </button>
+
+
+                                            </div>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
+                                                <p onClick={this.showApproveReleasePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>No</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                </>
+                                    :
+
+                                <>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your product release request has been completed successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                </>
+
+
+                                }
+
+
+                            </ModalBody>
+
+                        </Modal>
 
                     </>
                   

@@ -9,7 +9,6 @@ import {Visibility, VisibilityOff} from '@material-ui/icons'
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
-import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -337,12 +336,29 @@ class SignUp extends Component {
             const phone = data.get("phone")
 
 
-            this.props.signUp(
-                {
-                    "email": username, "password": password, "lastName": lastName,
-                    "firstName": firstName, "phone": phone , org_id:this.state.org_id}
-                )
 
+            let dataSignUp={}
+
+
+            if (this.state.org_id) {
+
+                dataSignUp = {
+                    "email": username, "password": password, "lastName": lastName,
+                    "firstName": firstName, "phone": phone, org_id: this.state.org_id
+
+            }
+
+
+            }else{
+
+                dataSignUp=  {
+                    "email": username, "password": password, "lastName": lastName,
+                    "firstName": firstName, "phone": phone }
+
+
+            }
+            
+            this.props.signUp(dataSignUp)
 
 
 

@@ -8,6 +8,7 @@ import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
 import {Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
+import AutocompleteCustom from "../../components/AutocompleteCustom";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class CompanyInfo extends Component {
             base64Data: null,
             uploadedImgName: "",
             uploadedImgType: "",
+            companyNumber:null
         };
 
         this.companyInfo = this.companyInfo.bind(this);
@@ -52,6 +54,68 @@ class CompanyInfo extends Component {
 
             });
     };
+
+
+    companyDetails=(detail)=>{
+
+
+        // alert(detail)
+        // console.log(detail)
+
+
+        this.setState({
+
+            companyNumber:detail.company
+        })
+
+
+
+
+    }
+
+
+    submitCompanyNumber=()=>{
+
+
+        this.setState({
+            loading: true,
+        });
+
+        axios.post(baseUrl + "org/company",{
+
+            company_number:this.state.companyNumber
+        })
+            .then((response) => {
+
+
+
+                    this.setState({
+                        loading: false,
+                    });
+
+                    var responseAll = response.data.data;
+
+
+                    this.companyInfo()
+
+
+                },
+                (error) => {
+
+
+
+                    this.setState({
+                        loading: false,
+                    });
+
+                }
+            );
+
+
+
+
+    }
+
 
     companyInfo() {
         axios
@@ -348,6 +412,56 @@ class CompanyInfo extends Component {
                                 </div>
                             </div>
                         )}
+
+
+
+
+                        {this.state.org && !this.state.org.company &&
+
+                        <>
+                        <div className="row mb-5 pb-5">
+
+                            <div className="col-12 mt-4">
+
+
+
+                                <AutocompleteCustom
+
+                                    onlyCompanies={true}
+                                    suggestions={this.state.orgNames}
+                                    selectedCompany={(action) => this.companyDetails(action)}
+                                />
+                            </div>
+
+
+                            <div className="col-12 mt-4">
+                                <button
+                                    onClick={this.submitCompanyNumber}
+
+
+                                    className={
+                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                    }>
+                                    {this.state.loading && (
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+
+                                    {this.state.loading ? "Wait.." : "Submit Company"}
+                                </button>
+                            </div>
+                        </div>
+
+                        </>}
+
+
+
+
                     </div>
                 </div>
             </div>

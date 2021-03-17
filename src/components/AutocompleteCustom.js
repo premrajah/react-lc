@@ -44,6 +44,7 @@ class AutocompleteCustom extends Component {
 
 
 
+                    if (!this.props.onlyCompanies)
                     for (var i=0;i<responseAll.orgs.length;i++){
 
                         companies.push({name:responseAll.orgs[i].name,org:responseAll.orgs[i]._key})

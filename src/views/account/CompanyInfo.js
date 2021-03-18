@@ -301,7 +301,7 @@ class CompanyInfo extends Component {
         return (
             <div>
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
                     <HeaderDark />
 
                     <div className="container  pt-3">
@@ -315,7 +315,7 @@ class CompanyInfo extends Component {
                         </div>
 
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col-4">
                                 {this.state.orgImage ? (
                                     <img
                                         src={this.state.orgImage}
@@ -324,6 +324,36 @@ class CompanyInfo extends Component {
                                     />
                                 ) : null}
                             </div>
+
+                            <div className="col-8">
+                                {this.state.org && this.state.org.company &&
+
+                                <>
+                                    <h5 className={"text-bold"}>Company Registration Details</h5>
+                                    <p className={""}>
+                                        <span className={"text-bold text-blue"}>Name: {this.state.org.company.company_name}</span>
+                                        <br/>
+                                        <span className={""}>Company Number: {this.state.org.company.company_number}</span>
+
+                                        <br/>
+                                        <span className={""}>Registered Address: {this.state.org.company.registered_office_address.address_line_1},
+                                            {this.state.org.company.registered_office_address.address_line_2}</span>
+
+                                        <br/>
+                                        <span className={""}>Locality: {this.state.org.company.registered_office_address.locality},
+                                            {this.state.org.company.registered_office_address.country}</span>
+
+                                    </p>
+
+
+
+                                </>
+
+                                }
+
+
+
+                                    </div>
                         </div>
 
                         {this.state.org && (

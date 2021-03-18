@@ -230,7 +230,7 @@ class EditAccount extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
 
                     <HeaderDark />
 

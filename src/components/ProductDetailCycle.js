@@ -35,6 +35,7 @@ import TimelineDot from "@material-ui/lab/TimelineDot";
 import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import AutocompleteCustom from "./AutocompleteCustom";
 
 
 class ProductDetailCycle extends Component {
@@ -130,7 +131,7 @@ class ProductDetailCycle extends Component {
             this.showRegister()
         }
 
-        else if (action==="release"){
+        else if (action==="selectCompany"){
       this.showOrgInput()
 
         }
@@ -388,7 +389,25 @@ class ProductDetailCycle extends Component {
             });
 
     }
+    companyDetails=(detail)=>{
 
+
+        // alert(detail)
+        // console.log(detail)
+
+
+        if (detail.org){
+
+
+            this.setState({
+
+                orgIdAuth:detail.org
+            })
+        }
+
+
+
+    }
 
     submitOrgId = event => {
 
@@ -907,7 +926,7 @@ class ProductDetailCycle extends Component {
 
                                                     {!this.props.isLoggedIn && !this.state.orgIdAuth &&
                                                     <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
-                                                                release={true}  />}
+                                                                selectCompany={true}  />}
 
                                                     {this.state.showApproveRelease &&
                                                     <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
@@ -1387,14 +1406,27 @@ class ProductDetailCycle extends Component {
 
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>
-                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Enter Your Organisation Id</p>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Choose Your Organisation </p>
 
                                     </div>
                                 </div>
 
                                 {!this.state.showRegisterSuccess?
 
-                                    <form onSubmit={this.submitOrgId}>
+                                    <>
+
+
+                                        <AutocompleteCustom
+
+                                            orgs={true}
+
+                                            suggestions={this.state.orgNames}
+                                            selectedCompany={(action) => this.companyDetails(action)}
+                                        />
+
+
+
+                                        <form onSubmit={this.submitOrgId}>
 
                                         <div className={"row justify-content-center p-2"}>
 
@@ -1405,13 +1437,13 @@ class ProductDetailCycle extends Component {
                                                 <div className={"row justify-content-center"}>
 
 
-                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                                    <div className="col-md-12 col-sm-12 col-xs-12 d-none">
 
                                                         <div className={"custom-label text-bold  mb-1 text-left"}>Organisation Id
                                                         </div>
 
 
-                                                        <TextField required={true} name={"orgId"} placeholder={"xxxxx"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+                                                        <TextField required={true} value={this.state.orgIdAuth} name={"orgId"} placeholder={"xxxxx"} id="outlined-basic"  variant="outlined" fullWidth={true} />
 
 
                                                     </div>
@@ -1461,7 +1493,10 @@ class ProductDetailCycle extends Component {
                                         </div>
 
 
-                                    </form>:
+                                    </form>
+
+                                    </>
+                                    :
 
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-10 text-center"}>

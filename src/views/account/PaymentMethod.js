@@ -62,7 +62,7 @@ class PaymentMethod extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
 
                     <HeaderDark />
 
@@ -73,9 +73,6 @@ class PaymentMethod extends Component {
                                 <h4 className={"text-blue text-bold"}>Payment Method</h4>
                             </div>
                         </div>
-
-
-
 
                         <div className="row">
                             <div className="col-12">

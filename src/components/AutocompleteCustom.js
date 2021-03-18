@@ -36,6 +36,8 @@ class AutocompleteCustom extends Component {
 
                     var companies=[]
 
+
+                      if (this.props.companies)
                     for (var i=0;i<responseAll.companies.length;i++){
 
                         companies.push({name:responseAll.companies[i].title,company:responseAll.companies[i].company_number})
@@ -43,8 +45,7 @@ class AutocompleteCustom extends Component {
                     }
 
 
-
-                    if (!this.props.onlyCompanies)
+                    if (this.props.orgs)
                     for (var i=0;i<responseAll.orgs.length;i++){
 
                         companies.push({name:responseAll.orgs[i].name,org:responseAll.orgs[i]._key})
@@ -234,7 +235,7 @@ class AutocompleteCustom extends Component {
                     value={userInput}
                autoComplete={"new-password"}
                placeholder={"Company (Type your company name here)"}
-               onFocusOut={this.createCompany}
+
                 />
 
 

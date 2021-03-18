@@ -430,7 +430,8 @@ class SignUp extends Component {
 
 
                                 <AutocompleteCustom
-
+                                    orgs={true}
+                                    companies={true}
                                     suggestions={this.state.orgNames}
                                     selectedCompany={(action) => this.companyDetails(action)}
                                 />

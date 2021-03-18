@@ -110,7 +110,7 @@ class MyAccount extends Component {
                                 </div>
 
 
-                                <div className="row">
+                                <div className="row d-none">
                                     <div className="col-12">
                                         <button style={{width:"100%"}} onClick={this.logOut}
                                                 className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">Logout

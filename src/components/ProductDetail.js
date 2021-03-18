@@ -26,6 +26,7 @@ import Org from "./Org/Org";
 import ProductEditForm from "./ProductEditForm";
 import MoreMenu from './MoreMenu'
 import InputLabel from '@material-ui/core/InputLabel';
+import AutocompleteCustom from "./AutocompleteCustom";
 
 
 class ProductDetail extends Component {
@@ -66,7 +67,8 @@ class ProductDetail extends Component {
             orgs:[],
             email:null,
             errorServiceAgent:false,
-            emailError:false
+            emailError:false,
+            org_id:null
         }
 
 
@@ -94,6 +96,27 @@ class ProductDetail extends Component {
         this.loadProduct=this.loadProduct.bind(this)
 
         this.phonenumber = this.phonenumber.bind(this)
+
+
+
+    }
+
+
+    companyDetails=(detail)=>{
+
+
+        // alert(detail)
+        // console.log(detail)
+
+
+        if (detail.org){
+
+
+            this.setState({
+
+                org_id:detail.org
+            })
+        }
 
 
 
@@ -1476,7 +1499,17 @@ class ProductDetail extends Component {
 
 
                                     <>
-                                    <form onSubmit={this.submitReleaseProduct}>
+
+                                        <AutocompleteCustom
+
+                                            orgs={true}
+
+                                            suggestions={this.state.orgNames}
+                                            selectedCompany={(action) => this.companyDetails(action)}
+                                        />
+
+
+                                        <form onSubmit={this.submitReleaseProduct}>
 
                                         <div className={"row justify-content-center p-2"}>
 
@@ -1490,27 +1523,36 @@ class ProductDetail extends Component {
                                                     <div className={"col-12 text-center mb-4"}>
 
 
-                                                        <FormControl variant="outlined" className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple">Select
-                                                                Organisation</InputLabel>
-                                                            <Select
-                                                                native
-                                                                label={"Select Organisation"}
-                                                                inputProps={{
-                                                                    name: 'org',
-                                                                    id: 'outlined-age-native-simple',
-                                                                }}
-                                                            >
 
-                                                                <option value={null}>Select</option>
 
-                                                                {this.state.orgs.map((item) =>
+                                                        <input className={"d-none"} value={this.state.org_id} name={"org"}/>
 
-                                                                    <option value={item._key}>{item.name}</option>
-                                                                )}
 
-                                                            </Select>
-                                                        </FormControl>
+                                                        {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Select*/}
+                                                                {/*Organisation</InputLabel>*/}
+                                                            {/*<Select*/}
+                                                                {/*native*/}
+                                                                {/*label={"Select Organisation"}*/}
+                                                                {/*inputProps={{*/}
+                                                                    {/*name: 'org',*/}
+                                                                    {/*id: 'outlined-age-native-simple',*/}
+                                                                {/*}}*/}
+                                                            {/*>*/}
+
+                                                                {/*<option value={null}>Select</option>*/}
+
+                                                                {/*{this.state.orgs.map((item) =>*/}
+
+                                                                    {/*<option value={item._key}>{item.name}</option>*/}
+                                                                {/*)}*/}
+
+                                                            {/*</Select>*/}
+                                                        {/*</FormControl>*/}
+
+
+
+
 
 
                                                         <p>Is the company you are looking for doesn't exist ?<span

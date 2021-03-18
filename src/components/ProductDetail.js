@@ -1603,7 +1603,7 @@ class ProductDetail extends Component {
                                                             </div>
 
                                                             {this.state.emailError && <Alert key={"alert"} variant={"danger"}>
-                                                                Oops!Invalid Email Address!
+                                                                Invalid Email Address!
                                                             </Alert>}
 
                                                             <div className={"col-12 text-center mb-2"}>

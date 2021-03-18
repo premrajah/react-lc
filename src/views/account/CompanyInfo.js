@@ -315,7 +315,7 @@ class CompanyInfo extends Component {
                         </div>
 
                         <div className="row">
-                            <div className="col-4">
+                            <div className="col-3">
                                 {this.state.orgImage ? (
                                     <img
                                         src={this.state.orgImage}
@@ -325,7 +325,7 @@ class CompanyInfo extends Component {
                                 ) : null}
                             </div>
 
-                            <div className="col-8">
+                            <div className="col-9">
                                 {this.state.org && this.state.org.company &&
 
                                 <>

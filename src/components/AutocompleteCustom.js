@@ -210,7 +210,7 @@ class AutocompleteCustom extends Component {
 
                             return (
                                 <li className={className} data-company={suggestion.company} data-org={suggestion.org} key={suggestion} onClick={onClick}>
-                                    {suggestion.name}
+                                    {suggestion.name}{suggestion.company?" ("+suggestion.company+")":""}
                                 </li>
                             );
                         })}

@@ -457,7 +457,7 @@ class CompanyInfo extends Component {
 
                                 <AutocompleteCustom
 
-                                    onlyCompanies={true}
+                                    companies={true}
                                     suggestions={this.state.orgNames}
                                     selectedCompany={(action) => this.companyDetails(action)}
                                 />

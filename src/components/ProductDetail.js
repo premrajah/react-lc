@@ -109,6 +109,9 @@ class ProductDetail extends Component {
         // console.log(detail)
 
 
+
+
+
         if (detail.org){
 
 
@@ -116,6 +119,43 @@ class ProductDetail extends Component {
 
                 org_id:detail.org
             })
+        } else{
+
+
+
+            axios.get(baseUrl + "org/company/"+detail.company)
+                .then((response) => {
+
+                        var responseAll = response.data.data;
+
+                        // console.log(response.data.data)
+
+
+
+                        this.setState({
+
+                            org_id: responseAll._key
+
+                        })
+
+
+                        // console.log(responseAll._key)
+
+
+                    },
+                    (error) => {
+
+
+
+
+                    }
+                );
+
+
+
+
+
+
         }
 
 
@@ -1503,6 +1543,7 @@ class ProductDetail extends Component {
                                         <AutocompleteCustom
 
                                             orgs={true}
+                                            companies={true}
 
                                             suggestions={this.state.orgNames}
                                             selectedCompany={(action) => this.companyDetails(action)}
@@ -1699,6 +1740,18 @@ class ProductDetail extends Component {
             </div>
 
             {!this.state.showServiceAgentSuccess?
+
+
+                <>
+
+                    <AutocompleteCustom
+
+                        orgs={true}
+                        companies={true}
+
+                        suggestions={this.state.orgNames}
+                        selectedCompany={(action) => this.companyDetails(action)}
+                    />
                 <form onSubmit={this.submitServiceAgentProduct}>
 
                     <div className={"row justify-content-center p-2"}>
@@ -1713,27 +1766,31 @@ class ProductDetail extends Component {
                                 <div className={"col-12 text-center mb-4"}>
 
 
-                                    <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple">Select
-                                            Organisation</InputLabel>
-                                        <Select
-                                            native
-                                            label={"Select Organisation"}
-                                            inputProps={{
-                                                name: 'org',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
+                                    <input className={"d-none"} value={this.state.org_id} name={"org"}/>
 
-                                            <option value={null}>Select</option>
 
-                                            {this.state.orgs.map((item) =>
 
-                                                <option value={item._key}>{item.name}</option>
-                                            )}
+                                    {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+                                        {/*<InputLabel htmlFor="outlined-age-native-simple">Select*/}
+                                            {/*Organisation</InputLabel>*/}
+                                        {/*<Select*/}
+                                            {/*native*/}
+                                            {/*label={"Select Organisation"}*/}
+                                            {/*inputProps={{*/}
+                                                {/*name: 'org',*/}
+                                                {/*id: 'outlined-age-native-simple',*/}
+                                            {/*}}*/}
+                                        {/*>*/}
 
-                                        </Select>
-                                    </FormControl>
+                                            {/*<option value={null}>Select</option>*/}
+
+                                            {/*{this.state.orgs.map((item) =>*/}
+
+                                                {/*<option value={item._key}>{item.name}</option>*/}
+                                            {/*)}*/}
+
+                                        {/*</Select>*/}
+                                    {/*</FormControl>*/}
 
 
                                     <p>Is the company you are looking for doesn't exist ?<span
@@ -1834,7 +1891,9 @@ class ProductDetail extends Component {
                     </div>
 
 
-                </form> :
+                </form>
+                    
+                </>:
 
                 <div className={"row justify-content-center"}>
                     <div className={"col-10 text-center"}>

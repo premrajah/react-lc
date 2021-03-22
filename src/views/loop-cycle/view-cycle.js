@@ -1589,7 +1589,7 @@ class ViewCycle extends Component {
                                             </Select>
                                         </FormControl>
 
-                                        <p>Is the company you are looking for doesn't exist ?<span className={"green-link-url "} onClick={this.showOrgForm}> Add Company</span></p>
+                                        <p>Is the company you are looking for doesn't exist? <span className={"green-link-url "} onClick={this.showOrgForm}>Add Company</span></p>
 
 
                                         {this.state.showOrgForm &&

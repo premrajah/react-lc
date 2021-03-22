@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./autocomplete-custom.css";
 import {baseUrl} from "../Util/Constants";
 import axios from "axios/index";
+import CompaniesHouseLogo from '../img/icons/companies_house_logo_18px.png';
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -178,8 +179,11 @@ class AutocompleteCustom extends Component {
                                     data-org={suggestion.org}
                                     key={suggestion}
                                     onClick={onClick}>
-                                    {suggestion.name}
-                                    {suggestion.company ? " (" + suggestion.company + ")" : ""}
+                                    <div className="d-flex justify-content-start align-items-center">
+                                        {suggestion.company ? <div className="mr-1"><img src={CompaniesHouseLogo} alt=""/></div> : ''}
+                                        <div>{suggestion.name}
+                                            {suggestion.company ? " (" + suggestion.company + ")" : ""}</div>
+                                    </div>
                                 </li>
                             );
                         })}

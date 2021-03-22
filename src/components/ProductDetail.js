@@ -1596,7 +1596,7 @@ class ProductDetail extends Component {
 
 
 
-                                                        <p>Is the company you are looking for doesn't exist ?<span
+                                                        <p>Is the company you are looking for doesn't exist? <span
                                                             className={"green-link-url "}
                                                             onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
                                                         </p>
@@ -1793,7 +1793,7 @@ class ProductDetail extends Component {
                                     {/*</FormControl>*/}
 
 
-                                    <p>Is the company you are looking for doesn't exist ?<span
+                                    <p>Is the company you are looking for doesn't exist? <span
                                         className={"green-link-url "}
                                         onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
                                     </p>

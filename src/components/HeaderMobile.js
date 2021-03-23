@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
+import React, {Component} from 'react';
+import {connect} from "react-redux";
 import history from "../../History/history";
 import IndexNavbar from "../../components/Navbars/IndexNavbar";
 

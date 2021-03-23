@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import _ from "lodash";
 import {Card, CardContent, FormControl, Input, InputLabel, MenuItem, Select} from "@material-ui/core";
-import { Button, Form } from "react-bootstrap";
+import {Form} from "react-bootstrap";
 
 class SendMessage extends Component {
     state = {

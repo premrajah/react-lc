@@ -1,24 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import React, {Component} from 'react';
 // import MarkerIcon from '../../img/icons/marker.png';
 // import CalIcon from '../../img/icons/calender-dgray.png';
 import PlaceholderImg from '../img/place-holder-lc.png';
-import StateIcon from '../img/icons/state.png';
-import FabricatingImg from '../img/components/Main_Fabricating_Station_1400.png';
-
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-import axios from "axios/index";
+import {makeStyles} from '@material-ui/core/styles';
 import moment from "moment";
-import ImagesSlider from "./ImagesSlider";
-import encodeUrl  from "encodeurl"
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../img/icons/gray-loop.png';
-import { withStyles } from "@material-ui/core/styles/index";
-import TextField from '@material-ui/core/TextField';
-import MatchItemSeller from './MatchItemSeller'
+import {withStyles} from "@material-ui/core/styles/index";
 import ProductExpandItem from './ProductExpandItem'
 
 

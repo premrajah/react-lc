@@ -1,27 +1,24 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import SendIcon from '../../img/send-icon.png';
 import Select from '@material-ui/core/Select';
-
 import FormControl from '@material-ui/core/FormControl';
 import SearchIcon from '../../img/icons/search-icon.png';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import InputLabel from '@material-ui/core/InputLabel';
 import Close from '@material-ui/icons/Close';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import '../../Util/upload-file.css'
-import { Cancel } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import {Cancel} from '@material-ui/icons';
+import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import clsx from 'clsx';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles } from "@material-ui/core/styles/index";
-import CalGrey from '../../img/icons/calender-dgray.png';
+import {withStyles} from "@material-ui/core/styles/index";
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
@@ -29,7 +26,7 @@ import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import HeaderWhiteBack from '../header/HeaderWhiteBack'
 import ResourceItem from '../item/ResourceItem'
@@ -43,12 +40,7 @@ import ControlImg from '../../img/components/Control_Panel_1450.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import MomentUtils from '@date-io/moment';
-
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-    DatePicker
-} from '@material-ui/pickers';
+import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import moment from "moment/moment";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,29 +1,21 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import React, {Component} from 'react';
 import TruckBlue from '../../img/icons/truck-blue.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
-
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import HandGreyIcon from '../../img/icons/hand-gray.png';
-import HandBlue from '../../img/icons/hand.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 

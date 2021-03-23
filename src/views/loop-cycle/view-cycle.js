@@ -1,35 +1,35 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import HeaderDark from '../header/HeaderDark'
-import Sidebar from '../menu/Sidebar'
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../../img/icons/gray-loop.png';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import { baseUrl } from "../../Util/Constants";
+import {connect} from "react-redux";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
+import HeaderDark from "../header/HeaderDark";
+import Sidebar from "../menu/Sidebar";
+import {Modal, ModalBody} from "react-bootstrap";
+import GrayLoop from "../../img/icons/gray-loop.png";
+import {makeStyles} from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import moment from "moment/moment";
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import CheckIcon from '@material-ui/icons/Check';
-import AddIcon from '@material-ui/icons/Add';
-import NotFound from "../NotFound/index"
-import PlaceholderImg from '../../img/place-holder-lc.png';
-import ProductExpandItem from '../../components/ProductExpandItem'
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import Typography from "@material-ui/core/Typography";
+import Timeline from "@material-ui/lab/Timeline";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
+import TimelineContent from "@material-ui/lab/TimelineContent";
+import TimelineDot from "@material-ui/lab/TimelineDot";
+import CheckIcon from "@material-ui/icons/Check";
+import AddIcon from "@material-ui/icons/Add";
+import NotFound from "../NotFound/index";
+import PlaceholderImg from "../../img/place-holder-lc.png";
+import ProductExpandItem from "../../components/ProductExpandItem";
 import Org from "../../components/Org/Org";
 
 
@@ -1589,7 +1589,7 @@ class ViewCycle extends Component {
                                             </Select>
                                         </FormControl>
 
-                                        <p>Is the company you are looking for doesn't exist ?<span className={"green-link-url "} onClick={this.showOrgForm}> Add Company</span></p>
+                                        <p>Is the company you are looking for doesn't exist? <span className={"green-link-url "} onClick={this.showOrgForm}>Add Company</span></p>
 
 
                                         {this.state.showOrgForm &&

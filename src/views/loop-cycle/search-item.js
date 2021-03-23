@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { withStyles } from '@material-ui/core/styles';
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import {withStyles} from '@material-ui/core/styles';
 import SearchGray from '@material-ui/icons/Search';
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import PlaceholderImg from '../../img/place-holder-lc.png';
 import moment from "moment";
 import MoreMenu from '../../components/MoreMenu'
-
 
 
 class SearchItem extends Component {

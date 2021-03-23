@@ -1,12 +1,10 @@
-import React, {Component, Fragment, useState} from 'react';
-
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 import Paper from '../../img/paper.png';
 import clsx from 'clsx';
 import FilterImg from '../../img/icons/filter-icon.png';
-import { Router, Route, Switch , Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import LangIcon from '../../img/icons/lang.png';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
@@ -14,19 +12,16 @@ import HandGreyIcon from '../../img/icons/hand-gray.png';
 import EditGray from '../../img/icons/edit-gray.png';
 import RingGray from '../../img/icons/ring-gray.png';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
-import {baseUrl,baseImgUrl} from  '../../Util/Constants'
-import axios from "axios/index";
 
 
 class  DummyListItem extends Component {

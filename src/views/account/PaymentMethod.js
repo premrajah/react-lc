@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
+import React, {Component} from 'react';
+import {connect} from "react-redux";
 import VisaIcon from '../../img/visa.png';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 
 
@@ -62,7 +62,7 @@ class PaymentMethod extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
 
                     <HeaderDark />
 
@@ -73,9 +73,6 @@ class PaymentMethod extends Component {
                                 <h4 className={"text-blue text-bold"}>Payment Method</h4>
                             </div>
                         </div>
-
-
-
 
                         <div className="row">
                             <div className="col-12">

@@ -1,14 +1,13 @@
-import React, {Component,useState,useEffect} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
-import { makeStyles } from "@material-ui/core/styles/index";
+import {makeStyles} from "@material-ui/core/styles/index";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchGray from '@material-ui/icons/Search';
 import clsx from 'clsx';
-import { Link } from "react-router-dom";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -16,14 +15,10 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import RequestReleaseItem from '../../components/RequestReleaseItem'
 import RequestRegisterItem from '../../components/RequestRegisterItem'
 import RequestServiceAgentItem from '../../components/RequestServiceAgentItem'
-
-
-
-
 
 
 class Approvals extends Component {

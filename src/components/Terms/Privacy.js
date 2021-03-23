@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import { Link } from "react-router-dom";
 import Footer from "../../views/Footer/Footer";
 import HeaderDark from "../../views/header/HeaderDark";
 

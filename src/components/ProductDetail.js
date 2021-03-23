@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import PlaceholderImg from '../img/place-holder-lc.png';
-import { makeStyles } from '@material-ui/core/styles';
-import { baseUrl, frontEndUrl } from "../Util/Constants";
+import {makeStyles} from '@material-ui/core/styles';
+import {baseUrl, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
-import encodeUrl  from "encodeurl"
-import { Tabs,Tab } from 'react-bootstrap';
-import { withStyles } from "@material-ui/core/styles/index";
+import encodeUrl from "encodeurl"
+import {Alert, Modal, ModalBody, Tab, Tabs} from 'react-bootstrap';
+import {withStyles} from "@material-ui/core/styles/index";
 import ProductItemNew from './ProductItemNew'
 import jspdf from 'jspdf'
 import QrCodeBg from '../img/qr-code-bg.png';
 import LoopcycleLogo from '../img/logo-text.png';
 import SearchItem from '../views/loop-cycle/search-item'
 import ResourceItem from '../views/create-search/ResourceItem'
-import { Modal, ModalBody, Alert } from 'react-bootstrap';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
@@ -27,7 +26,7 @@ import Org from "./Org/Org";
 import ProductEditForm from "./ProductEditForm";
 import MoreMenu from './MoreMenu'
 import InputLabel from '@material-ui/core/InputLabel';
-
+import AutocompleteCustom from "./AutocompleteCustom";
 
 
 class ProductDetail extends Component {
@@ -68,7 +67,8 @@ class ProductDetail extends Component {
             orgs:[],
             email:null,
             errorServiceAgent:false,
-            emailError:false
+            emailError:false,
+            org_id:null
         }
 
 
@@ -96,6 +96,67 @@ class ProductDetail extends Component {
         this.loadProduct=this.loadProduct.bind(this)
 
         this.phonenumber = this.phonenumber.bind(this)
+
+
+
+    }
+
+
+    companyDetails=(detail)=>{
+
+
+        // alert(detail)
+        // console.log(detail)
+
+
+
+
+
+        if (detail.org){
+
+
+            this.setState({
+
+                org_id:detail.org
+            })
+        } else{
+
+
+
+            axios.get(baseUrl + "org/company/"+detail.company)
+                .then((response) => {
+
+                        var responseAll = response.data.data;
+
+                        // console.log(response.data.data)
+
+
+
+                        this.setState({
+
+                            org_id: responseAll._key
+
+                        })
+
+
+                        // console.log(responseAll._key)
+
+
+                    },
+                    (error) => {
+
+
+
+
+                    }
+                );
+
+
+
+
+
+
+        }
 
 
 
@@ -164,13 +225,7 @@ class ProductDetail extends Component {
     getOrgs() {
 
 
-        axios.get(baseUrl + "org/all",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        ).then((response) => {
+        axios.get(baseUrl + "org/all").then((response) => {
 
                 var response = response.data;
 
@@ -225,11 +280,7 @@ class ProductDetail extends Component {
         axios.post(baseUrl + "org/email",{
             email:email
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+
         )
             .then(res => {
 
@@ -405,11 +456,7 @@ class ProductDetail extends Component {
         axios.post(baseUrl + "product/"+this.state.item.product._key+"/duplicate",
             {
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+            )
             .then(res => {
 
                 this.props.history.push("/my-products")
@@ -438,13 +485,7 @@ class ProductDetail extends Component {
 
     deleteItem() {
 
-        axios.delete(baseUrl + "listing/"+this.state.item.listing._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.delete(baseUrl + "listing/"+this.state.item.listing._key)
             .then((response) => {
 
                     // var responseAll = response.data.data;
@@ -624,11 +665,7 @@ class ProductDetail extends Component {
                     }
 
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
+                )
                 .then(res => {
 
                     // this.toggleSite()
@@ -693,11 +730,6 @@ class ProductDetail extends Component {
             {
                 org_id: site,
                 product_id: this.props.item.product._key,
-            }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
             })
             .then(res => {
 
@@ -759,11 +791,7 @@ class ProductDetail extends Component {
                 org_id: site,
                 product_id: this.props.item.product._key,
             }
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+            )
             .then(res => {
 
 
@@ -790,13 +818,7 @@ class ProductDetail extends Component {
 
     getSites() {
 
-    axios.get(baseUrl + "site",
-        {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
-            }
-        }
-    )
+    axios.get(baseUrl + "site")
         .then((response) => {
 
                 var responseAll = response.data.data;
@@ -895,12 +917,7 @@ class ProductDetail extends Component {
 
         // var siteKey = (this.props.item.site_id).replace("Site/","")
 
-        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","") ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
+        axios.get(baseUrl + "listing/" +this.state.item.listing.replace("Listing/","")
         )
             .then((response) => {
 
@@ -938,13 +955,7 @@ class ProductDetail extends Component {
         for (var i = 0; i < searches.length; i++) {
 
 
-            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""),
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""))
                 .then((response) => {
 
                         var responseData = response.data.data;
@@ -990,13 +1001,7 @@ class ProductDetail extends Component {
 
 
 
-            axios.get(baseUrl + "product/" + subProductIds[i]._key,
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "product/" + subProductIds[i]._key)
                 .then((response) => {
 
                         var responseAll = response.data;
@@ -1040,13 +1045,7 @@ class ProductDetail extends Component {
     getMatches() {
 
 
-        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug),
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug))
             .then((response) => {
 
 
@@ -1090,13 +1089,7 @@ class ProductDetail extends Component {
 
         if (productKey)
 
-            axios.get(baseUrl + "product/" + productKey+"/expand",
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "product/" + productKey+"/expand")
                 .then((response) => {
 
                         var responseAll = response.data;
@@ -1546,7 +1539,18 @@ class ProductDetail extends Component {
 
 
                                     <>
-                                    <form onSubmit={this.submitReleaseProduct}>
+
+                                        <AutocompleteCustom
+
+                                            orgs={true}
+                                            companies={true}
+
+                                            suggestions={this.state.orgNames}
+                                            selectedCompany={(action) => this.companyDetails(action)}
+                                        />
+
+
+                                        <form onSubmit={this.submitReleaseProduct}>
 
                                         <div className={"row justify-content-center p-2"}>
 
@@ -1560,30 +1564,39 @@ class ProductDetail extends Component {
                                                     <div className={"col-12 text-center mb-4"}>
 
 
-                                                        <FormControl variant="outlined" className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple">Select
-                                                                Organisation</InputLabel>
-                                                            <Select
-                                                                native
-                                                                label={"Select Organisation"}
-                                                                inputProps={{
-                                                                    name: 'org',
-                                                                    id: 'outlined-age-native-simple',
-                                                                }}
-                                                            >
-
-                                                                <option value={null}>Select</option>
-
-                                                                {this.state.orgs.map((item) =>
-
-                                                                    <option value={item._key}>{item.name}</option>
-                                                                )}
-
-                                                            </Select>
-                                                        </FormControl>
 
 
-                                                        <p>Is the company you are looking for doesn't exist ?<span
+                                                        <input className={"d-none"} value={this.state.org_id} name={"org"}/>
+
+
+                                                        {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Select*/}
+                                                                {/*Organisation</InputLabel>*/}
+                                                            {/*<Select*/}
+                                                                {/*native*/}
+                                                                {/*label={"Select Organisation"}*/}
+                                                                {/*inputProps={{*/}
+                                                                    {/*name: 'org',*/}
+                                                                    {/*id: 'outlined-age-native-simple',*/}
+                                                                {/*}}*/}
+                                                            {/*>*/}
+
+                                                                {/*<option value={null}>Select</option>*/}
+
+                                                                {/*{this.state.orgs.map((item) =>*/}
+
+                                                                    {/*<option value={item._key}>{item.name}</option>*/}
+                                                                {/*)}*/}
+
+                                                            {/*</Select>*/}
+                                                        {/*</FormControl>*/}
+
+
+
+
+
+
+                                                        <p>Is the company you are looking for doesn't exist? <span
                                                             className={"green-link-url "}
                                                             onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
                                                         </p>
@@ -1673,7 +1686,7 @@ class ProductDetail extends Component {
                                                             </div>
 
                                                             {this.state.emailError && <Alert key={"alert"} variant={"danger"}>
-                                                                Oops!Invalid Email Address!
+                                                                Invalid Email Address!
                                                             </Alert>}
 
                                                             <div className={"col-12 text-center mb-2"}>
@@ -1727,6 +1740,18 @@ class ProductDetail extends Component {
             </div>
 
             {!this.state.showServiceAgentSuccess?
+
+
+                <>
+
+                    <AutocompleteCustom
+
+                        orgs={true}
+                        companies={true}
+
+                        suggestions={this.state.orgNames}
+                        selectedCompany={(action) => this.companyDetails(action)}
+                    />
                 <form onSubmit={this.submitServiceAgentProduct}>
 
                     <div className={"row justify-content-center p-2"}>
@@ -1741,30 +1766,34 @@ class ProductDetail extends Component {
                                 <div className={"col-12 text-center mb-4"}>
 
 
-                                    <FormControl variant="outlined" className={classes.formControl}>
-                                        <InputLabel htmlFor="outlined-age-native-simple">Select
-                                            Organisation</InputLabel>
-                                        <Select
-                                            native
-                                            label={"Select Organisation"}
-                                            inputProps={{
-                                                name: 'org',
-                                                id: 'outlined-age-native-simple',
-                                            }}
-                                        >
-
-                                            <option value={null}>Select</option>
-
-                                            {this.state.orgs.map((item) =>
-
-                                                <option value={item._key}>{item.name}</option>
-                                            )}
-
-                                        </Select>
-                                    </FormControl>
+                                    <input className={"d-none"} value={this.state.org_id} name={"org"}/>
 
 
-                                    <p>Is the company you are looking for doesn't exist ?<span
+
+                                    {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+                                        {/*<InputLabel htmlFor="outlined-age-native-simple">Select*/}
+                                            {/*Organisation</InputLabel>*/}
+                                        {/*<Select*/}
+                                            {/*native*/}
+                                            {/*label={"Select Organisation"}*/}
+                                            {/*inputProps={{*/}
+                                                {/*name: 'org',*/}
+                                                {/*id: 'outlined-age-native-simple',*/}
+                                            {/*}}*/}
+                                        {/*>*/}
+
+                                            {/*<option value={null}>Select</option>*/}
+
+                                            {/*{this.state.orgs.map((item) =>*/}
+
+                                                {/*<option value={item._key}>{item.name}</option>*/}
+                                            {/*)}*/}
+
+                                        {/*</Select>*/}
+                                    {/*</FormControl>*/}
+
+
+                                    <p>Is the company you are looking for doesn't exist? <span
                                         className={"green-link-url "}
                                         onClick={this.showOrgForm}>{this.state.showOrgForm ? "Hide " : "Add Company"}</span>
                                     </p>
@@ -1862,7 +1891,9 @@ class ProductDetail extends Component {
                     </div>
 
 
-                </form> :
+                </form>
+                    
+                </>:
 
                 <div className={"row justify-content-center"}>
                     <div className={"col-10 text-center"}>

@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import SendIcon from '../../img/send-icon.png';
 import history from "../../History/history";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
 
 
 const useStyles = makeStyles((theme) => ({

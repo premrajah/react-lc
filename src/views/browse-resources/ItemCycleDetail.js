@@ -1,33 +1,19 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-
-import MarkerIcon from '../../img/icons/marker.png';
-
-import BottomDetail from '../../img/bottom-detail.png';
-
-import ProImg from '../../img/img-product.png';
-import StateIcon from '../../img/icons/state.png';
+import {connect} from "react-redux";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 
-import { Spinner, Alert } from 'react-bootstrap';
+import {Alert, Spinner} from 'react-bootstrap';
 
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-
-import BusinessIcon from '@material-ui/icons/Business';
 import TextField from '@material-ui/core/TextField';
 import ProductDetailCycle from '../../components/ProductDetailCycle'
-import moment from "moment";
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 
 
 class ItemCycleDetail extends Component {
@@ -298,110 +284,6 @@ class ItemCycleDetail extends Component {
 
                     <div className="container ">
 
-
-                        {!this.props.isLoggedIn && <>
-
-                            <div className="row justify-content-start pb-3 pt-4 listing-row-border ">
-
-                                <div className="col-12">
-                                    <h3 className={"blue-text text-heading"}>Register my product
-                                </h3>
-
-                                </div>
-
-                            </div>
-                            <div className="row   ">
-                                <div className="row no-gutters">
-                                    <div className="col-12 p-3">
-                                        <p >Congratulations on your recent purchase!
-                                    </p>
-
-                                        <p >To register your product with Loopcycle, please sign in below or <span onClick={this.showSignUpPopUp} className={"blue-text forgot-password-link"}>sign up</span>.
-
-                                    </p>
-
-                                        <p >Register your product and we’ll give you back 5% of the product’s original cost if you eventually sell it on the platform.
-
-                                    </p>
-
-                                    </div>
-                                </div>
-
-                                <div className="row no-gutters">
-
-
-
-
-                                    <div className="col-12 p-3">
-
-                                        <form onSubmit={this.handleSubmit}>
-                                            <div className="row no-gutters justify-content-center">
-                                                <div className="col-12">
-
-                                                    <TextField
-                                                        type={"email"}
-                                                        onChange={this.handleChange.bind(this, "email")}
-                                                        id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} />
-
-                                                    {this.state.errors["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["email"]}</span>}
-
-
-
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-
-                                                    <TextField type={"password"} onChange={this.handleChange.bind(this, "password")} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} name={"password"} />
-
-                                                    {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
-
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-                                                    <p onClick={this.forGotPass} className={"forgot-password-link text-mute small"}>Forgot your password? </p>
-                                                </div>
-
-
-                                                {this.props.loginFailed &&
-
-                                                    <div className="col-12 mt-4">
-                                                        <Alert key={"alert"} variant={"danger"}>
-                                                            {this.props.loginError}
-                                                        </Alert>
-                                                    </div>
-                                                }
-
-                                                <div className="col-12 mt-4">
-
-                                                    <button type={"submit"} className={this.state.formValid ? "btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn" : "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"}>
-                                                        {this.props.loading && <Spinner
-                                                            as="span"
-                                                            animation="border"
-                                                            size="sm"
-                                                            role="status"
-                                                            aria-hidden="true"
-
-                                                        />}
-
-                                                        {this.props.loading ? "Wait.." : "Log In"}
-
-                                                    </button>
-                                                </div>
-
-
-                                            </div>
-
-                                        </form>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </>}
-
-
-
                         <div>
 
                             <div className={"row"}>
@@ -424,10 +306,6 @@ class ItemCycleDetail extends Component {
 
 
                         </div>
-
-
-
-
 
                     </div>
 

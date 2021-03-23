@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, {Component} from 'react';
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import { Spinner} from 'react-bootstrap';
-import {Card, Typography, TextField, CardContent} from '@material-ui/core'
-
+import {Spinner} from 'react-bootstrap';
+import {Card, CardContent, TextField, Typography} from '@material-ui/core'
 
 
 class EditAccount extends Component {
@@ -231,7 +230,7 @@ class EditAccount extends Component {
             <div>
 
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
 
                     <HeaderDark />
 

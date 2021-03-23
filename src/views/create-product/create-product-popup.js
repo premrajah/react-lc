@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-import axios from "axios/index";
-import { Spinner,Button, Col, Row, Carousel, CarouselItem, Modal, ModalFooter,ModalDialog, Alert, ModalBody, Form, FormControl, FormCheck, FormGroup, FormLabel, FormText, InputGroup} from 'react-bootstrap'
+import React, {Component} from 'react';
+import {Modal} from 'react-bootstrap'
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import ProductForm from "../create-listing/ProductForm";
-import SubProductView from "../create-listing/SubProductView";
-import ProductView from "../create-listing/ProductView";
 import ProductExpandItem from '../../components/ProductExpandItem'
-
 
 
 class  ProductPopUp extends Component{

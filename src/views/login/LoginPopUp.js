@@ -1,24 +1,17 @@
-import React, { Component } from 'react';
-
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import LogoNew from '../../img/logo-cropped.png';
-
 import LogoText from '../../img/logo-text.png';
-
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Close from '@material-ui/icons/Close';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-
+import {makeStyles} from '@material-ui/core/styles';
 import Login from './Login';
 import ResetPassword from './ResetPassword';
 import RecoverPassword from './RecoverPassword';
 import SignUp from './SignUp';
 import SuccessSignUp from './SuccessSignUp';
 import ForgotPassword from './ForgotPassword';
-
 
 
 const useStyles = makeStyles((theme) => ({

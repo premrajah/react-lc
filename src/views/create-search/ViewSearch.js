@@ -1,43 +1,29 @@
-    import React, { Component } from 'react';
-    import * as actionCreator from "../../store/actions/actions";
-    import { connect } from "react-redux";
-    import SendIcon from '../../img/send-icon.png';
-    import Select from '@material-ui/core/Select';
-    import FormControl from '@material-ui/core/FormControl';
-    import SearchIcon from '../../img/icons/search-icon.png';
-    import { Link } from "react-router-dom";
-    import InputLabel from '@material-ui/core/InputLabel';
-    import { makeStyles } from '@material-ui/core/styles';
-    import CssBaseline from '@material-ui/core/CssBaseline';
-    import Toolbar from '@material-ui/core/Toolbar';
-    import AppBar from '@material-ui/core/AppBar';
-    import { withStyles } from "@material-ui/core/styles/index";
-    import MarkerIcon from '../../img/icons/marker.png';
-    import CalenderIcon from '../../img/icons/calender.png';
-    import ListIcon from '../../img/icons/list.png';
-    import AmountIcon from '../../img/icons/amount.png';
-    import StateIcon from '../../img/icons/state.png';
-    import axios from "axios/index";
-    import { baseUrl } from "../../Util/Constants";
-    import HeaderDark from '../header/HeaderDark'
-    import Sidebar from '../menu/Sidebar'
-    import moment from 'moment';
-    import NotFound from "../NotFound/index"
-    import ProductExpandItem from '../../components/ProductExpandItem'
-    import {Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon} from '@material-ui/icons';
-    import SearchEditForm from '../../components/SearchEditForm'
-    import { Modal, ModalBody, Alert } from 'react-bootstrap';
-    import MoreMenu from '../../components/MoreMenu'
+import React, {Component} from 'react';
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import SearchIcon from '../../img/icons/search-icon.png';
+import {Link} from "react-router-dom";
+import InputLabel from '@material-ui/core/InputLabel';
+import {makeStyles} from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import {withStyles} from "@material-ui/core/styles/index";
+import axios from "axios/index";
+import {baseUrl} from "../../Util/Constants";
+import HeaderDark from '../header/HeaderDark'
+import Sidebar from '../menu/Sidebar'
+import moment from 'moment';
+import NotFound from "../NotFound/index"
+import ProductExpandItem from '../../components/ProductExpandItem'
+import SearchEditForm from '../../components/SearchEditForm'
+import {Modal} from 'react-bootstrap';
+import MoreMenu from '../../components/MoreMenu'
+import Org from "../../components/Org/Org";
 
-
-    import {
-        MuiPickersUtilsProvider,
-        KeyboardDatePicker,
-        DatePicker
-    } from '@material-ui/pickers';
-    import Org from "../../components/Org/Org";
-
-    const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
         root: {
             '& > *': {
                 margin: theme.spacing(1),

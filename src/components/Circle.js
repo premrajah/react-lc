@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "./countdown.css"
 
 class CircularProgressBar extends React.Component {

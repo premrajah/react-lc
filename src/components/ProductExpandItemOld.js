@@ -1,16 +1,8 @@
-import React, { Component } from 'react';
-import Paper from '../img/place-holder-lc.png';
+import React, {Component} from 'react';
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../img/icons/gray-loop.png';
-import TextField from '@material-ui/core/TextField';
-import moment from "moment/moment";
-import PlaceholderImg from '../img/place-holder-lc.png';
-
 import ProductItemNew from './ProductItemNew'
 
 

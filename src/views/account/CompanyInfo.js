@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
-import { Spinner } from "react-bootstrap";
+import {Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
+import AutocompleteCustom from "../../components/AutocompleteCustom";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class CompanyInfo extends Component {
             base64Data: null,
             uploadedImgName: "",
             uploadedImgType: "",
+            companyNumber:null
         };
 
         this.companyInfo = this.companyInfo.bind(this);
@@ -52,6 +54,68 @@ class CompanyInfo extends Component {
 
             });
     };
+
+
+    companyDetails=(detail)=>{
+
+
+        // alert(detail)
+        // console.log(detail)
+
+
+        this.setState({
+
+            companyNumber:detail.company
+        })
+
+
+
+
+    }
+
+
+    submitCompanyNumber=()=>{
+
+
+        this.setState({
+            loading: true,
+        });
+
+        axios.post(baseUrl + "org/company",{
+
+            company_number:this.state.companyNumber
+        })
+            .then((response) => {
+
+
+
+                    this.setState({
+                        loading: false,
+                    });
+
+                    var responseAll = response.data.data;
+
+
+                    this.companyInfo()
+
+
+                },
+                (error) => {
+
+
+
+                    this.setState({
+                        loading: false,
+                    });
+
+                }
+            );
+
+
+
+
+    }
+
 
     companyInfo() {
         axios
@@ -237,7 +301,7 @@ class CompanyInfo extends Component {
         return (
             <div>
                 <Sidebar />
-                <div className="wrapper  accountpage">
+                <div className="wrapper  ">
                     <HeaderDark />
 
                     <div className="container  pt-3">
@@ -251,7 +315,7 @@ class CompanyInfo extends Component {
                         </div>
 
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col-3">
                                 {this.state.orgImage ? (
                                     <img
                                         src={this.state.orgImage}
@@ -260,6 +324,36 @@ class CompanyInfo extends Component {
                                     />
                                 ) : null}
                             </div>
+
+                            <div className="col-9">
+                                {this.state.org && this.state.org.company &&
+
+                                <>
+                                    <h5 className={"text-bold"}>Company Registration Details</h5>
+                                    <p className={""}>
+                                        <span className={"text-bold text-blue"}>Name: {this.state.org.company.company_name}</span>
+                                        <br/>
+                                        <span className={""}>Company Number: {this.state.org.company.company_number}</span>
+
+                                        <br/>
+                                        <span className={""}>Registered Address: {this.state.org.company.registered_office_address.address_line_1},
+                                            {this.state.org.company.registered_office_address.address_line_2}</span>
+
+                                        <br/>
+                                        <span className={""}>Locality: {this.state.org.company.registered_office_address.locality},
+                                            {this.state.org.company.registered_office_address.country}</span>
+
+                                    </p>
+
+
+
+                                </>
+
+                                }
+
+
+
+                                    </div>
                         </div>
 
                         {this.state.org && (
@@ -348,6 +442,56 @@ class CompanyInfo extends Component {
                                 </div>
                             </div>
                         )}
+
+
+
+
+                        {this.state.org && !this.state.org.company &&
+
+                        <>
+                        <div className="row mb-5 pb-5">
+
+                            <div className="col-12 mt-4">
+
+
+
+                                <AutocompleteCustom
+
+                                    companies={true}
+                                    suggestions={this.state.orgNames}
+                                    selectedCompany={(action) => this.companyDetails(action)}
+                                />
+                            </div>
+
+
+                            <div className="col-12 mt-4">
+                                <button
+                                    onClick={this.submitCompanyNumber}
+
+
+                                    className={
+                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                    }>
+                                    {this.state.loading && (
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+
+                                    {this.state.loading ? "Wait.." : "Submit Company"}
+                                </button>
+                            </div>
+                        </div>
+
+                        </>}
+
+
+
+
                     </div>
                 </div>
             </div>

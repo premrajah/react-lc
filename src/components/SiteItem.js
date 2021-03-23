@@ -1,5 +1,4 @@
 import React from "react";
-import { Business, Delete, Edit, Info, MailOutline, Person, Phone } from "@material-ui/icons";
 
 const SiteItem = ({ name, address, email, contact, phone, others, itemKey }) => {
     return (

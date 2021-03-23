@@ -1,11 +1,7 @@
-import React, {Component, Fragment, useState} from 'react';
-
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import React, {Component} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Router, Route, Switch , Link} from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import ListIcon from '../../img/icons/list.png';
@@ -14,9 +10,7 @@ import StateIcon from '../../img/icons/state.png';
 import PaperImg from '../../img/paper-big.png';
 import Sidebar from '../menu/Sidebar'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import { Col, Form, Button, Nav, NavDropdown, Dropdown, DropdownItem, Row, ButtonGroup, Navbar} from 'react-bootstrap';
-import { makeStyles } from '@material-ui/core/styles';
-
+import {makeStyles} from '@material-ui/core/styles';
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 

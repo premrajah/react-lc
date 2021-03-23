@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import history from "../../History/history";
-import { makeStyles } from '@material-ui/core/styles';
-import { Alert } from 'react-bootstrap';
-import {Checkbox, TextField, InputAdornment, IconButton} from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons'
-
+import {makeStyles} from '@material-ui/core/styles';
+import {Alert} from 'react-bootstrap';
+import {Checkbox, IconButton, InputAdornment, TextField} from '@material-ui/core';
+import {Visibility, VisibilityOff} from '@material-ui/icons'
+import { baseUrl } from "../../Util/Constants";
+import axios from "axios/index";
+import AutocompleteCustom from "../../components/AutocompleteCustom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,7 +44,9 @@ class SignUp extends Component {
             nextIntervalFlag: false,
             active: 0,   //0 logn. 1- sign up , 3 -search,
             showPassword: false,
-            isChecked: false
+            isChecked: false,
+            org_id:null
+
 
         }
 
@@ -56,11 +60,71 @@ class SignUp extends Component {
 
         this.goHome = this.goHome.bind(this)
 
-
         this.hideLoginPopUp = this.hideLoginPopUp.bind(this);
+        // this.changeInput=this.changeInput.bind(this)
+
 
 
     }
+
+
+    companyDetails=(detail)=>{
+
+
+        // alert(detail)
+        // console.log(detail)
+
+
+        if (detail.org){
+
+
+            this.setState({
+
+                org_id:detail.org
+            })
+        } else{
+
+
+
+            axios.get(baseUrl + "org/company/"+detail.company)
+                .then((response) => {
+
+                        var responseAll = response.data.data;
+
+                        // console.log(response.data.data)
+
+
+
+                        this.setState({
+
+                            org_id: responseAll._key
+
+                        })
+
+
+                    // console.log(responseAll._key)
+
+
+                    },
+                    (error) => {
+
+
+
+
+                    }
+                );
+
+
+
+
+
+
+        }
+
+    }
+
+
+
     hideLoginPopUp = (event) => {
 
 
@@ -70,11 +134,15 @@ class SignUp extends Component {
     }
 
 
+
+
     goHome() {
 
 
         history.push("/")
     }
+
+
 
 
 
@@ -137,6 +205,7 @@ class SignUp extends Component {
     }
 
     componentDidMount() {
+
 
     }
 
@@ -267,8 +336,29 @@ class SignUp extends Component {
             const phone = data.get("phone")
 
 
-            this.props.signUp({ "email": username, "password": password, "lastName": lastName, "firstName": firstName, "phone": phone })
 
+            let dataSignUp={}
+
+
+            if (this.state.org_id) {
+
+                dataSignUp = {
+                    "email": username, "password": password, "lastName": lastName,
+                    "firstName": firstName, "phone": phone, org_id: this.state.org_id
+
+            }
+
+
+            }else{
+
+                dataSignUp=  {
+                    "email": username, "password": password, "lastName": lastName,
+                    "firstName": firstName, "phone": phone }
+
+
+            }
+            
+            this.props.signUp(dataSignUp)
 
 
 
@@ -286,6 +376,9 @@ class SignUp extends Component {
 
     render() {
 
+
+
+
         return (
 
             <>
@@ -299,7 +392,7 @@ class SignUp extends Component {
                         </div>
                     </div>
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form  onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
 
                             <div className="col-12 mt-4">
@@ -331,12 +424,70 @@ class SignUp extends Component {
                                 {this.state.errors["phone"] && <span className={"text-mute small"}><span style={{color: "red"}}>* </span>{this.state.errors["phone"]}</span> }
                             </div>
 
-                            {/*<div className="col-12 mt-4">*/}
-                            {/*    <TextField id="outlined-basic" label="Company" variant="outlined" fullWidth={true} />*/}
-                            {/*</div>*/}
+
+                            <div className="col-12 mt-4">
+
+
+
+                                <AutocompleteCustom
+                                    orgs={true}
+                                    companies={true}
+                                    suggestions={this.state.orgNames}
+                                    selectedCompany={(action) => this.companyDetails(action)}
+                                />
+
+                                {/*No id, name, class: <input list="myList" /><br />*/}
+                                {/*With class: <input name="myInputClass" list="myList" autoComplete="off" />*/}
+
+                                {/*<datalist id="myList">*/}
+                                    {/*<option value="Option 1"></option>*/}
+                                    {/*<option value="Option 2"></option>*/}
+                                {/*</datalist>*/}
+
+                                {/*<Autocomplete*/}
+
+                                    {/*id="combo-box-demo"*/}
+                                    {/*options={top100Films}*/}
+                                    {/*getOptionLabel={(option) => option.title}*/}
+                                    {/*style={{ width: 300 }}*/}
+                                    {/*renderInput={(params) =>*/}
+                                        {/*<TextField*/}
+
+                                        {/**/}
+                                        {/*autoComplete={"new-password"} {...params} label="Combo box" variant="outlined" />}*/}
+                                {/*/>*/}
+
+
+
+                            </div>
+                            <div className="col-12 mt-4">
+
+                                <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="password" label="*Password" variant="outlined" fullWidth={true} type={this.state.showPassword ? "text" : "password"} InputProps={{
+                                    endAdornment: (<InputAdornment position="end">
+                                        <IconButton
+                                            onClick={this.handleShowPassword}
+                                            edge="end"
+                                        >
+                                            {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>)
+                                }} />
+
+                                {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
+                                {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
+                            </div>
+
+                            <div className="col-12 mt-4">
+
+                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="*Confirm Password" variant="outlined" fullWidth={true} type={this.state.showPassword ? "text" : "password"} />
+
+                                {this.state.errors["confirmPassword"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["confirmPassword"]}</span>}
+                                {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
+                            </div>
+
                             {/*<div className="col-12 mt-4 justify-content-center">*/}
-                            {/*    <p className={"text-mute small"}>Don’t see your company here?</p>*/}
-                            {/*    <p className={"forgot-password-link text-mute small"}>Create a new company profile</p>*/}
+                                {/*<p className={"text-mute small"}>Don’t see your company here?</p>*/}
+                                {/*<p className={"forgot-password-link text-mute small"}>Create a new company profile</p>*/}
                             {/*</div>*/}
 
                             <div className="col-12 mt-4 justify-content-center">
@@ -356,30 +507,7 @@ class SignUp extends Component {
                             </div>
 
 
-                            <div className="col-12 mt-4">
 
-                                <TextField onChange={this.handleChange.bind(this, "password")} name={"password"} id="password" label="*Password" variant="outlined" fullWidth={true} type={this.state.showPassword ? "text" : "password"} InputProps={{
-                                    endAdornment: (<InputAdornment position="end">
-                                    <IconButton
-                                    onClick={this.handleShowPassword}
-                                    edge="end"
-                                    >
-                                {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                    </InputAdornment>)
-                                    }} />
-
-                                {this.state.errors["password"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["password"]}</span>}
-                                {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
-                            </div>
-
-                            <div className="col-12 mt-4">
-
-                                <TextField onChange={this.handleChange.bind(this, "confirmPassword")} name={"confirmPassword"} id="outlined-basic" label="*Confirm Password" variant="outlined" fullWidth={true} type={this.state.showPassword ? "text" : "password"} />
-
-                                {this.state.errors["confirmPassword"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errors["confirmPassword"]}</span>}
-                                {this.state.errors["Does-Not-Match"] && <span className={"text-mute small"}><span> style={{color: "red"}}>* </span>{this.state.errors["Does-Not-Match"]}</span> }
-                            </div>
 
                             {this.props.signUpFailed &&
 

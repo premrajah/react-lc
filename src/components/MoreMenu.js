@@ -3,8 +3,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from "@material-ui/icons/MoreHoriz";
-import { connect } from "react-redux";
-import { Modal, ModalBody, Alert } from 'react-bootstrap';
+import {Modal, ModalBody} from 'react-bootstrap';
 
 
 class MoreMenu extends Component {
@@ -225,6 +224,10 @@ class MoreMenu extends Component {
                             {this.props.serviceAgent &&     <MenuItem data-action={"serviceAgent"} onClick={this.handleClose}>Change Service Agent</MenuItem>}
 
                             {this.props.stage &&     <MenuItem data-action={"stage"} onClick={this.handleClose}>Set Stage</MenuItem>}
+
+                            {this.props.approveRelease &&  <MenuItem data-action={"approveRelease"} onClick={this.handleClose}>Approve Release</MenuItem>}
+
+                            {this.props.selectCompany &&  <MenuItem data-action={"selectCompany"} onClick={this.handleClose}>Select Company</MenuItem>}
 
 
 

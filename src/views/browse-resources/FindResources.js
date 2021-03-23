@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import clsx from 'clsx';
-import FilterImg from '../../img/icons/filter-icon.png';
 import SearchHeaderImg from '../../img/search-header.png';
 import SearchBottleImg from '../../img/search-bottle.png';
 import HeaderDark from '../header/HeaderDark'
@@ -11,23 +10,20 @@ import Sidebar from '../menu/Sidebar'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import AppBar from '@material-ui/core/AppBar';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
-import SearchGray from '@material-ui/icons/Search';
-import { baseUrl } from '../../Util/Constants'
-import ResourceItem from '../item/ResourceItem'
+import {baseUrl} from '../../Util/Constants'
 import DummyItem from '../item/DummyListItem'
 import axios from "axios/index";
 import Slider from "@material-ui/core/Slider/index";
 import Checkbox from '@material-ui/core/Checkbox';
-import Close from '@material-ui/icons/Close';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import CalGrey from '../../img/icons/calender-dgray.png';
 import DummyIcon from '../../img/icons/product-blue.png';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 class FindResources extends Component {
 

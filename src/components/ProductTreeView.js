@@ -1,21 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-import Select from '@material-ui/core/Select';
-import { Alert} from 'react-bootstrap';
-
-import FormControl from '@material-ui/core/FormControl';
+import {connect} from "react-redux";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl} from "../Util/Constants";
 import PropTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import { fade, makeStyles, withStyles, } from '@material-ui/core/styles';
-import TreeView from '@material-ui/lab/TreeView';
+import {makeStyles, withStyles,} from '@material-ui/core/styles';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
 import ProductTreeItemView from './ProductTreeItemView'
 import TextField from '@material-ui/core/TextField';
-
 
 
 class ProductTreeView extends Component {
@@ -191,12 +185,7 @@ class ProductTreeView extends Component {
 
     getItems(){
 
-    axios.get(baseUrl + "product/expand",
-        {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
-            }
-        }
+    axios.get(baseUrl + "product/expand"
     )
         .then((response) => {
 
@@ -267,13 +256,7 @@ class ProductTreeView extends Component {
 
         var currentProductId= "j2D6JU2oIU"
 
-        axios.get(baseUrl + "product/"+currentProductId+"/sub-product/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "product/"+currentProductId+"/sub-product/expand")
             .then((response) => {
 
                     var responseAll = response.data.data;

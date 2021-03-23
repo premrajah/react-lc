@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
 import ListIcon from '../../img/icons/list.png';
@@ -15,18 +15,14 @@ import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import LoopDetail from './LoopDetail'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import { Modal, ModalBody } from 'react-bootstrap';
+import {Modal, ModalBody} from 'react-bootstrap';
 import GrayLoop from '../../img/icons/gray-loop.png';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import Moment from 'react-moment';
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import moment from "moment/moment";
-
-
-
 
 
 class ViewCycle extends Component {

@@ -1,7 +1,7 @@
 import React from "react";
-import { Info } from "@material-ui/icons";
-import { connect } from "react-redux";
-import { OverlayTrigger, Popover } from "react-bootstrap";
+import {Info} from "@material-ui/icons";
+import {connect} from "react-redux";
+import {OverlayTrigger, Popover} from "react-bootstrap";
 
 const Org = ({
     orgId,

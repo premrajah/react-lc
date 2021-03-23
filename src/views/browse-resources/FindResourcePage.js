@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Image } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Image} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from '../menu/Sidebar'
 import Footer from "../../components/Footer/Footer";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 
 import SearchIcon from "../../img/resource_icons/icon_search_bottle.png";
 import BottleDollarIcon from "../../img/resource_icons/icon_bottle_dollar.png";

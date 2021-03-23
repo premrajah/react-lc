@@ -1,8 +1,7 @@
 import React from "react";
 import moment from "moment/moment";
 import NotIcon from "@material-ui/icons/Notifications";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { Card, CardContent } from "@material-ui/core";
+import {Card, CardContent} from "@material-ui/core";
 import MoreMenu from "../MoreMenu";
 
 const NotificationItem = ({ item, editText, onClose }) => {

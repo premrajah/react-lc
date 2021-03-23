@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, {Component} from 'react';
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import {TextField} from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
 import SiteItem from "../../components/SiteItem";
-
 
 
 class PaymentMethod extends Component {

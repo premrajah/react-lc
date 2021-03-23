@@ -1,49 +1,41 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import { Link } from "react-router-dom";
-import PlaceholderImg from '../img/place-holder-lc.png';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import {Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-
-import CalIcon from '@material-ui/icons/Today';
-import MarkerIcon from '@material-ui/icons/RoomOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-import { baseUrl, frontEndUrl } from "../Util/Constants";
+import {connect} from "react-redux";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
+import {Link} from "react-router-dom";
+import PlaceholderImg from "../img/place-holder-lc.png";
+import {makeStyles} from "@material-ui/core/styles";
+import {baseUrl, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
-import encodeUrl  from "encodeurl"
-import { Tabs,Tab } from 'react-bootstrap';
-import { withStyles } from "@material-ui/core/styles/index";
-import ProductItemNew from './ProductItemNew'
-import MatchItem from '../components/MatchItem'
-import jspdf from 'jspdf'
-import QrCodeBg from '../img/qr-code-bg.png';
-import SearchItem from '../views/loop-cycle/search-item'
-import ResourceItem from '../views/create-search/ResourceItem'
-import { Modal, ModalBody, Alert } from 'react-bootstrap';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
+import encodeUrl from "encodeurl";
+import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
+import {withStyles} from "@material-ui/core/styles/index";
+import ProductItemNew from "./ProductItemNew";
+import jspdf from "jspdf";
+import QrCodeBg from "../img/qr-code-bg.png";
+import SearchItem from "../views/loop-cycle/search-item";
+import ResourceItem from "../views/create-search/ResourceItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
 import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
-import MoreMenu from './MoreMenu'
+import MoreMenu from "./MoreMenu";
 import IssueSubmitForm from "./IssueSubmitForm";
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-
-
+import Timeline from "@material-ui/lab/Timeline";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineContent from "@material-ui/lab/TimelineContent";
+import TimelineDot from "@material-ui/lab/TimelineDot";
+import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import AutocompleteCustom from "./AutocompleteCustom";
 
 
 class ProductDetailCycle extends Component {
@@ -76,7 +68,14 @@ class ProductDetailCycle extends Component {
             showDeletePopUp:false,
             isVisibleReportModal: false,
             showRegisterSuccess:false,
-
+            showOrgInput:false,
+            showOrgInputSuccess:false,
+            showApproveRelease:false,
+            showApproveReleasePopUp:false,
+            approveReleasePopUpSuccess:false,
+            errorRelease:false,
+            orgIdAuth:null,
+            approveReleaseId:null,
         }
 
 
@@ -131,6 +130,17 @@ class ProductDetailCycle extends Component {
 
             this.showRegister()
         }
+
+        else if (action==="selectCompany"){
+      this.showOrgInput()
+
+        }
+
+
+        else if (action==="approveRelease"){
+            this.showApproveReleasePopUp()
+
+        }
     }
 
 
@@ -148,6 +158,15 @@ class ProductDetailCycle extends Component {
         this.setState({
 
             showSubmitSite:!this.state.showSubmitSite
+        })
+    }
+
+
+    showApproveReleasePopUp=()=> {
+
+        this.setState({
+
+            showApproveReleasePopUp:!this.state.showApproveReleasePopUp
         })
     }
 
@@ -276,11 +295,7 @@ class ProductDetailCycle extends Component {
                     }
 
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
+                )
                 .then(res => {
 
                     // this.toggleSite()
@@ -350,11 +365,7 @@ class ProductDetailCycle extends Component {
                     site_id: site,
                     product_id: this.props.item.product._key,
                 }
-                , {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                })
+                )
                 .then(res => {
 
                     // this.toggleSite()
@@ -378,17 +389,148 @@ class ProductDetailCycle extends Component {
             });
 
     }
+    companyDetails=(detail)=>{
 
+
+        // alert(detail)
+        // console.log(detail)
+
+
+        if (detail.org){
+
+
+            this.setState({
+
+                orgIdAuth:detail.org
+            })
+        }
+
+
+
+    }
+
+    submitOrgId = event => {
+
+
+
+        event.preventDefault();
+
+        const form = event.currentTarget;
+
+        const data = new FormData(event.target);
+
+        const orgId = data.get("orgId")
+
+
+        this.setState({
+
+            orgIdAuth:orgId
+        })
+
+
+
+        this.showOrgInput()
+
+
+        console.log(orgId)
+
+        axios.get(baseUrl + "release/no-auth?p="+this.props.item.product._key+"&o="+orgId)
+            .then(res => {
+
+
+                console.log(res.data.data)
+
+                // this.setState({
+                //
+                //     showRegisterSuccess:true
+                // })
+
+                var response= res.data.data
+                
+                for (var i=0;i<response.length;i++){
+
+
+                    if (response[i].stage==="requested") {
+
+
+
+
+                        this.setState({
+
+                            showApproveRelease:true,
+                            approveReleaseId:response[i]._key,
+
+                        })
+
+
+                    }
+                    
+                } 
+                
+                
+
+
+            }).catch(error => {
+
+
+
+                console.log(error.toString())
+            this.setState({
+
+                errorRelease:"Oops! Organisation ID entered is incorrect. Thanks"
+            })
+
+        });
+
+
+
+    }
+    submitApproveRelease = event => {
+
+
+
+
+
+        axios.post(baseUrl + "release/complete",
+
+            {
+                id: this.state.approveReleaseId,
+                org_id: this.state.orgIdAuth,
+            }
+        )
+            .then(res => {
+
+                // this.toggleSite()
+                // this.showRegister()
+
+                // this.setState({
+                //
+                //     showRegisterSuccess:true
+                // })
+
+                this.setState({
+
+                    approveReleasePopUpSuccess:true
+                })
+
+
+
+
+            }).catch(error => {
+
+
+            this.setState({
+
+                errorRegister:error.response.data.errors[0].message
+            })
+
+        });
+
+    }
 
     getSites() {
 
-    axios.get(baseUrl + "site",
-        {
-            headers: {
-                "Authorization": "Bearer " + this.props.userDetail.token
-            }
-        }
-    )
+    axios.get(baseUrl + "site")
         .then((response) => {
 
                 var responseAll = response.data.data;
@@ -440,7 +582,19 @@ class ProductDetailCycle extends Component {
 
 
 
-    showRegister(){
+    showOrgInput= ()=>{
+
+        this.setState({
+
+            showOrgInput:!this.state.showOrgInput
+        })
+
+
+    }
+
+
+
+        showRegister(){
 
 
         this.getSites()
@@ -472,13 +626,7 @@ class ProductDetailCycle extends Component {
     getListing() {
 
 
-        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "listing/" +this.props.item.listing.replace("Listing/","") )
             .then((response) => {
 
                     var responseData = response.data.data;
@@ -517,13 +665,7 @@ class ProductDetailCycle extends Component {
         for (var i = 0; i < searches.length; i++) {
 
 
-            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""),
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
+            axios.get(baseUrl + "search/" + searches[i].replace("Search/", ""))
                 .then((response) => {
 
                         var responseData = response.data.data;
@@ -610,13 +752,7 @@ class ProductDetailCycle extends Component {
     getMatches() {
 
 
-        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug),
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug))
             .then((response) => {
 
 
@@ -783,8 +919,19 @@ class ProductDetailCycle extends Component {
 
                                                 <div className="col-4 text-right">
 
-                                                    {this.props.isLoggedIn &&   <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                    {this.props.isLoggedIn &&
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
                                                                                            report={this.props.userDetail.orgId===this.props.item.org._id?true:false} register={this.props.userDetail.orgId!==this.props.item.org._id}  />}
+
+
+                                                    {!this.props.isLoggedIn && !this.state.orgIdAuth &&
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                                selectCompany={true}  />}
+
+                                                    {this.state.showApproveRelease &&
+                                                    <MoreMenu  triggerCallback={(action)=>this.callBackResult(action)}
+                                                               approveRelease={true}  />}
+
 
                                                 </div>
 
@@ -1249,9 +1396,191 @@ class ProductDetailCycle extends Component {
 
                         </Modal>
 
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showOrgInput} onHide={this.showOrgInput} animation={false}>
+
+                            <ModalBody>
 
 
 
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Choose Your Organisation </p>
+
+                                    </div>
+                                </div>
+
+                                {!this.state.showRegisterSuccess?
+
+                                    <>
+
+
+                                        <AutocompleteCustom
+
+                                            orgs={true}
+
+                                            suggestions={this.state.orgNames}
+                                            selectedCompany={(action) => this.companyDetails(action)}
+                                        />
+
+
+
+                                        <form onSubmit={this.submitOrgId}>
+
+                                        <div className={"row justify-content-center p-2"}>
+
+
+                                            <div className={"col-12 text-center mt-2"}>
+
+
+                                                <div className={"row justify-content-center"}>
+
+
+                                                    <div className="col-md-12 col-sm-12 col-xs-12 d-none">
+
+                                                        <div className={"custom-label text-bold  mb-1 text-left"}>Organisation Id
+                                                        </div>
+
+
+                                                        <TextField required={true} value={this.state.orgIdAuth} name={"orgId"} placeholder={"xxxxx"} id="outlined-basic"  variant="outlined" fullWidth={true} />
+
+
+                                                    </div>
+
+
+                                                    {this.state.errorRelease &&
+
+
+                                                        <div className={"col-12 mt-3 justify-content-center"} style={{ textAlign: "center" }}>
+
+
+                                                            <Alert key={"alert"} variant={"danger"}>
+                                                                {this.state.errorRelease}
+                                                            </Alert>
+
+                                                        </div>
+
+                                                    }
+
+                                                    {!this.state.showSubmitSite &&
+                                                    <div className={"col-12 justify-content-center "}>
+
+                                                        <div className={"row justify-content-center"}>
+
+
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                                                <button style={{ minWidth: "120px" }}
+                                                                        className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}
+                                                                        type={"submit"}>Yes
+                                                                </button>
+
+
+                                                            </div>
+                                                            <div className={"col-6"} style={{ textAlign: "center" }}>
+                                                                <p onClick={this.showOrgInput}
+                                                                   className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel</p>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </form>
+
+                                    </>
+                                    :
+
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your register request has been submitted successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                }
+
+
+
+                            </ModalBody>
+
+                        </Modal>
+
+
+
+
+                        <Modal className={"loop-popup"}
+                               aria-labelledby="contained-modal-title-vcenter"
+                               centered show={this.state.showApproveReleasePopUp} onHide={this.showApproveReleasePopUp} animation={false}>
+
+                            <ModalBody>
+
+
+                                {!this.state.approveReleasePopUpSuccess ?
+                                <>
+
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-10 text-center"}>
+                                        <p className={"text-bold"}>Approve Release Request</p>
+                                        <p>Are you sure you want to approve release request ?</p>
+                                    </div>
+                                </div>
+
+
+
+                                <div className={"row justify-content-center"}>
+
+
+                                    <div className={"col-12 text-center mt-2"}>
+
+
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
+
+                                                <button onClick={this.submitApproveRelease}  className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"} type={"submit"}  >Yes </button>
+
+
+                                            </div>
+                                            <div className={"col-6"} style={{textAlign:"center"}}>
+                                                <p onClick={this.showApproveReleasePopUp} className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>No</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                </>
+                                    :
+
+                                <>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your product release request has been completed successfully. Thanks
+                                            </Alert>
+
+                                        </div>
+                                    </div>
+
+                                </>
+
+
+                                }
+
+
+                            </ModalBody>
+
+                        </Modal>
 
                     </>
                   

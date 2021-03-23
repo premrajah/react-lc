@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Paper from '../img/place-holder-lc.png';
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-
-import { Modal, ModalBody } from 'react-bootstrap';
-import GrayLoop from '../img/icons/gray-loop.png';
-import TextField from '@material-ui/core/TextField';
 
 
 class MatchItem extends Component {
@@ -69,13 +65,7 @@ class MatchItem extends Component {
     getOffer() {
 
 
-        axios.get(baseUrl + "offer/match/" + this.props.item.match._key,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "offer/match/" + this.props.item.match._key)
             .then((response) => {
 
                     var responseAll = response.data;

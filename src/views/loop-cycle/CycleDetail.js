@@ -1,20 +1,15 @@
-import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
+import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar';
 import PaperImg from '../../img/place-holder-lc.png';
+import PlaceholderImg from '../../img/place-holder-lc.png';
 import Sidebar from '../menu/Sidebar'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import { withStyles } from "@material-ui/core/styles/index";
-
+import {withStyles} from "@material-ui/core/styles/index";
 import CircleProgress from '../../components/Circle'
-import PlaceholderImg from '../../img/place-holder-lc.png';
 
 
 class CycleDetail extends Component {

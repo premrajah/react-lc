@@ -1,7 +1,6 @@
 import React from "react";
-import { Image, Card } from "react-bootstrap";
+import {Card, Image} from "react-bootstrap";
 import moment from "moment/moment";
-
 import PlaceHolderImage from "../img/place-holder-lc.png";
 import Org from "./Org/Org";
 

@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../../Util/Constants";
+import {connect} from "react-redux";
 import ProductRecordItem from "../../components/ProductRecordItem";
-import FindResourceListingItem from "../../components/FindResourceListingItem";
 import {Link} from "react-router-dom";
 
 class ProductArchive extends Component {

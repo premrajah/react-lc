@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import ProductItemNew from './ProductItemNew'
-import { makeStyles, withStyles } from "@material-ui/core/styles/index";
+import {makeStyles, withStyles} from "@material-ui/core/styles/index";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -68,13 +68,7 @@ class ProductExpandItem extends Component {
 
 
 
-        axios.post(baseUrl + "product/sub-product/remove", data,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.post(baseUrl + "product/sub-product/remove", data)
             .then((response) => {
 
                     // var responseAll = response.data.data;
@@ -215,13 +209,7 @@ class ProductExpandItem extends Component {
 
         if (productKey)
 
-        axios.get(baseUrl + "product/" + productKey+"/expand",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+        axios.get(baseUrl + "product/" + productKey+"/expand")
             .then((response) => {
 
                     var responseAll = response.data;
@@ -310,13 +298,7 @@ class ProductExpandItem extends Component {
         }
 
 
-        axios.post(baseUrl + "product/sub-product",dataForm
-
-            , {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            })
+        axios.post(baseUrl + "product/sub-product",dataForm)
             .then(res => {
 
 

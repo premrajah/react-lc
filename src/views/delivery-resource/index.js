@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import axios from "axios/index";
-import { baseUrl } from '../../Util/Constants'
+import {baseUrl} from '../../Util/Constants'
 import ListIcon from '../../img/icons/list.png';
 import AmountIcon from '../../img/icons/amount.png';
 import StateIcon from '../../img/icons/state.png';
 import PaperImg from '../../img/paper-big.png';
 import Sidebar from '../menu/Sidebar'
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import MarkerIcon from '../../img/icons/marker.png';
 import CalenderIcon from '../../img/icons/calender.png';
-
 
 
 class DeliveryResource extends Component {

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Card, CardContent } from "@material-ui/core";
+import React, {useState} from "react";
+import {Card, CardContent} from "@material-ui/core";
 import PlaceHolderImg from "../../img/place-holder-lc.png";
 import moment from "moment/moment";
 import MoreMenu from "../../components/MoreMenu";
-import { Badge, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Org from "../../components/Org/Org";
+import {Badge, Modal} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
 
 const IssueItem = ({ item, onSubmitted }) => {

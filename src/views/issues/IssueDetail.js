@@ -1,18 +1,17 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
-import PageHeader from "../../components/PageHeader";
 import axios from "axios/index";
-import { connect } from "react-redux";
-import { baseUrl } from "../../Util/Constants";
+import {connect} from "react-redux";
+import {baseUrl} from "../../Util/Constants";
 import ImagesSlider from "../../components/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";
-import { Link } from "react-router-dom";
-import { Badge, Modal } from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {Badge, Modal} from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
-import { FormControl, FormHelperText, MenuItem, Select } from "@material-ui/core";
+import {FormControl, FormHelperText, MenuItem, Select} from "@material-ui/core";
 
 class IssueDetail extends Component {
     state = {

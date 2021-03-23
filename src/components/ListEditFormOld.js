@@ -1,40 +1,25 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-import SendIcon from '../img/send-icon.png';
+import {connect} from "react-redux";
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import SearchIcon from '../img/icons/search-icon.png';
-import { Link } from "react-router-dom";
 
 import InputLabel from '@material-ui/core/InputLabel';
 import Close from '@material-ui/icons/Close';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from "@material-ui/core/styles/index";
-import MarkerIcon from '../img/icons/marker.png';
-import CalenderIcon from '../img/icons/calender.png';
-import ListIcon from '../img/icons/list.png';
-import AmountIcon from '../img/icons/amount.png';
-import StateIcon from '../img/icons/state.png';
+import {withStyles} from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl} from "../Util/Constants";
 import ProductExpandItem from './ProductExpandItem'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MomentUtils from '@date-io/moment';
-import moment from 'moment';
 import _ from 'lodash';
 import clsx from 'clsx';
-
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-    DatePicker
-} from '@material-ui/pickers';
+import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -24,6 +24,8 @@ export const initialState = {
     productList:[],
     productWithoutParentList:[],
     siteList:[],
+    showSitePopUp:false,
+
     orgImage:null
 
 
@@ -60,6 +62,14 @@ const reducer = (state = initialState, action) => {
             newState.reviewLoading = true;
 
             break;
+
+        case "SITE_POPUP":
+
+            newState.showSitePopUp = action.value;
+
+            break;
+
+
         case "REVIEW_BOX_OPEN":
 
             newState.reviewBoxOpen = action.value;
@@ -176,10 +186,6 @@ const reducer = (state = initialState, action) => {
             newState.siteList = action.value
 
             newState.loading = false;
-
-
-
-
 
 
             break;

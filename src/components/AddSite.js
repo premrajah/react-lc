@@ -7,6 +7,7 @@ import * as actionCreator from "../store/actions/actions";
 import {Link} from "react-router-dom";
 import moment from "moment/moment";
 import Org from "./Org/Org";
+import {TextField} from '@material-ui/core';
 
 
 class AddSite extends Component {
@@ -21,12 +22,130 @@ class AddSite extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            offers:[]
+            offers:[],
+            fieldsSite: {},
+            errorsSite: {},
         }
 
 
     }
 
+
+    phonenumber=(inputtxt)=> {
+
+
+
+        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+
+
+        var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+
+
+        if(inputtxt.match(phoneNoWithCode)) {
+            return true;
+        }
+        else if (inputtxt.match(phoneWithZero)) {
+            return true
+
+        }
+
+        else {
+            return false;
+        }
+
+
+    }
+
+
+
+    handleValidationSite=() =>{
+
+
+        let fields = this.state.fieldsSite;
+        let errors = {};
+        let formIsValid = true;
+
+        //Name
+        if (!fields["name"]) {
+            formIsValid = false;
+            errors["name"] = "Required";
+        }
+
+        // if (!fields["others"]) {
+        //     formIsValid = false;
+        //     errors["others"] = "Required";
+        // }
+
+
+        if (!fields["address"]) {
+            formIsValid = false;
+            errors["address"] = "Required";
+        }
+        // if(!fields["agree"]){
+        //     formIsValid = false;
+        //     errors["agree"] = "Required";
+        // }
+
+        //
+        // if (!fields["name"]) {
+        //     formIsValid = false;
+        //     errors["name"] = "Required";
+        // }
+        if (!fields["contact"]) {
+            formIsValid = false;
+            errors["contact"] = "Required";
+        }
+
+
+
+
+
+        // if (!fields["phone"]) {
+        //     formIsValid = false;
+        //     errors["phone"] = "Required";
+        // }
+
+
+
+        if ((!fields["phone"])) {
+            formIsValid = false;
+            errors["phone"] = "Required";
+        }
+
+        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
+
+            formIsValid = false;
+            errors["phone"] = "Invalid Phone Number!";
+        }
+
+
+        if (!fields["email"]) {
+            formIsValid = false;
+            errors["email"] = "Required";
+        }
+
+        if (typeof fields["email"] !== "undefined") {
+
+            let lastAtPos = fields["email"].lastIndexOf('@');
+            let lastDotPos = fields["email"].lastIndexOf('.');
+
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+                formIsValid = false;
+                errors["email"] = "Invalid email address";
+            }
+        }
+
+        this.setState({ errorsSite: errors });
+        return formIsValid;
+    }
+
+    handleChangeSite=(field, e) =>{
+
+        let fields = this.state.fieldsSite;
+        fields[field] = e.target.value;
+        this.setState({ fields: fields });
+
+    }
 
 
     handleSubmitSite = event => {
@@ -94,7 +213,7 @@ class AddSite extends Component {
                     this.props.loadSites(this.props.userDetail.token)
 
 
-                    this.showSubmitSite()
+                    this.props.triggerCallback()
 
 
                 }).catch(error => {
@@ -122,7 +241,6 @@ class AddSite extends Component {
     }
 
     componentDidMount() {
-        this.getOffer()
     }
 
 
@@ -135,16 +253,6 @@ class AddSite extends Component {
         return (
 
 
-            <div className={"row justify-content-center p-2 container-gray"}>
-                <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                    <div className={"custom-label text-bold text-blue mb-1"}>Add New Site</div>
-
-                </div>
-                <div className="col-md-12 col-sm-12 col-xs-12 ">
-
-                    <div className={"row"}>
-                        <div className={"col-12"}>
                             <form onSubmit={this.handleSubmitSite}>
                                 <div className="row no-gutters justify-content-center ">
 
@@ -202,14 +310,6 @@ class AddSite extends Component {
 
                                 </div>
                             </form>
-                        </div>
-                    </div>
-
-
-                </div>
-
-
-            </div>
 
 
         );
@@ -238,6 +338,7 @@ const mapDispachToProps = dispatch => {
 
 
         logIn: (data) => dispatch(actionCreator.logIn(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),

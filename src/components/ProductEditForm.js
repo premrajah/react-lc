@@ -20,6 +20,7 @@ import _ from 'lodash';
 import {Spinner} from 'react-bootstrap';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import AddSite from "./AddSite";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -1968,96 +1969,7 @@ class ProductEditForm extends Component {
 
                                                     <div className={"row"}>
                                                         <div className={"col-12"}>
-                                                            <form onSubmit={this.handleSubmitSite}>
-                                                                <div className="row no-gutters justify-content-center ">
-
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" label=" Name"
-                                                                                   variant="outlined" fullWidth={true}
-                                                                                   name={"name"}
-                                                                                   onChange={this.handleChangeSite.bind(this, "name")}/>
-
-                                                                        {this.state.errorsSite["name"] &&
-                                                                        <span className={"text-mute small"}><span
-                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                                                    </div>
-
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" label="Contact"
-                                                                                   variant="outlined" fullWidth={true}
-                                                                                   name={"contact"}
-                                                                                   onChange={this.handleChangeSite.bind(this, "contact")}/>
-
-                                                                        {this.state.errorsSite["contact"] &&
-                                                                        <span className={"text-mute small"}><span
-                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                                                    </div>
-
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" label="Address"
-                                                                                   variant="outlined" fullWidth={true}
-                                                                                   name={"address"} type={"text"}
-                                                                                   onChange={this.handleChangeSite.bind(this, "address")}/>
-
-                                                                        {this.state.errorsSite["address"] &&
-                                                                        <span className={"text-mute small"}><span
-                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                                                    </div>
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" type={"text"}
-                                                                                   name={"phone"}
-                                                                                   onChange={this.handleChangeSite.bind(this, "phone")}
-                                                                                   label="Phone" variant="outlined"
-                                                                                   fullWidth={true}/>
-
-                                                                        {this.state.errorsSite["phone"] &&
-                                                                        <span className={"text-mute small"}><span
-                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-                                                                    </div>
-
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField id="outlined-basic" label="Email"
-                                                                                   variant="outlined" fullWidth={true}
-                                                                                   name={"email"} type={"email"}
-                                                                                   onChange={this.handleChangeSite.bind(this, "email")}/>
-
-                                                                        {this.state.errorsSite["email"] &&
-                                                                        <span className={"text-mute small"}><span
-                                                                            style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                                                    </div>
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <TextField
-                                                                            onChange={this.handleChangeSite.bind(this, "others")}
-                                                                            name={"others"} id="outlined-basic"
-                                                                            label="Others" variant="outlined"
-                                                                            fullWidth={true} type={"others"}/>
-
-                                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-
-                                                                    </div>
-
-                                                                    <div className="col-12 mt-4">
-
-                                                                        <button type={"submit"}
-                                                                                className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add
-                                                                            Site
-                                                                        </button>
-                                                                    </div>
-
-
-                                                                </div>
-                                                            </form>
+                                                            <AddSite  triggerCallback={()=>this.showSubmitSite()}/>
                                                         </div>
                                                     </div>
 
@@ -2243,13 +2155,6 @@ class ProductEditForm extends Component {
                                     </div>
 
                                 </div>
-
-
-
-
-
-
-
 
 
 

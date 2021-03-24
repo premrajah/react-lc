@@ -1694,7 +1694,7 @@ function CustomizedTimeline(props) {
 
                     <TimelineContent>
                         <Typography>
-                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
+                            <p className={"text-blue"}>{moment(item.trans_ts_epoch_ms).format("DD MMM YYYY")}</p>
                         </Typography>
                     </TimelineContent>
                 </TimelineItem>
@@ -1729,7 +1729,7 @@ function CustomizedTimeline(props) {
                     </TimelineSeparator>
                     <TimelineContent>
                         <Typography>
-                            <p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>
+                            <p className={"text-blue"}>{moment(item.trans_ts_epoch_ms).format("DD MMM YYYY")}</p>
                         </Typography>
                     </TimelineContent>
                 </TimelineItem>

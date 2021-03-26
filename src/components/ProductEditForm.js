@@ -2038,7 +2038,7 @@ class ProductEditForm extends Component {
                                                 >
 
 
-                                                    <option value={null}>Select</option>
+                                                    <option value={""}>Select</option>
 
                                                     {this.state.yearsList.map((item) =>
 

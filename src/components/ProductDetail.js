@@ -1709,6 +1709,8 @@ class ProductDetail extends Component {
 
                                     :
 
+                                    <>
+
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-10 text-center"}>
                                             <Alert key={"alert"} variant={"success"}>
@@ -1716,7 +1718,31 @@ class ProductDetail extends Component {
                                             </Alert>
 
                                         </div>
+
+
+
+
                                     </div>
+
+                                    <div className={"row justify-content-center"}>
+
+
+                                    <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                    <button style={{ minWidth: "120px" }} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>
+                                    <Link to={"/approve"}>Check Approval</Link>
+                                    </button>
+
+
+                                    </div>
+                                    <div className={"col-6"} style={{ textAlign: "center" }}>
+                                    <p onClick={this.showReleaseProduct}
+                                    className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel Release</p>
+                                    </div>
+
+                                    </div>
+
+                                    </>
 
                                 }
 

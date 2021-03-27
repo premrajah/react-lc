@@ -7,6 +7,7 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import {Spinner} from 'react-bootstrap';
 import {Card, CardContent, TextField, Typography} from '@material-ui/core'
+import {Alert} from 'react-bootstrap';
 
 
 class EditAccount extends Component {
@@ -27,7 +28,9 @@ class EditAccount extends Component {
             lastName:null,
             email:null,
             phone:null,
-            loading: false
+            loading: false,
+            submitSuccess:false
+
         }
 
 
@@ -194,7 +197,8 @@ class EditAccount extends Component {
 
 
                     this.setState({
-                        loading: false
+                        loading: false,
+                        submitSuccess:true
                     })
 
                     this.UserInfo()
@@ -220,6 +224,8 @@ class EditAccount extends Component {
 
 
     componentDidMount() {
+
+        window.scrollTo(0, 0)
         this.UserInfo()
     }
 
@@ -244,14 +250,16 @@ class EditAccount extends Component {
                             </div>
                         </div>
 
+
+                        {this.state.submitSuccess &&  <Alert key={"alert"} variant={"success"}>
+                            {"Personal information updated successfully"}
+                        </Alert>}
+
                         <div className="row">
                             <div className="col-12">
-                                <Card>
-                                    <CardContent>
-                                        <Typography>Full Name</Typography>
-                                        <Typography variant="h5" component="h2">{this.state.firstName} {this.state.lastName}</Typography>
-                                    </CardContent>
-                                </Card>
+                                <span className={"text-bold"}>
+                                        <Typography>Name: {this.state.firstName} {this.state.lastName}</Typography>
+                                </span>
                             </div>
                         </div>
 

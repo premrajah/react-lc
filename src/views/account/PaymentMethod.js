@@ -23,34 +23,21 @@ class PaymentMethod extends Component {
         }
 
 
-        this.getResources = this.getResources.bind(this)
 
     }
 
 
-    getResources() {
 
 
-        axios.get(baseUrl + "resource",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-                var response = response.data;
 
-            },
-                (error) => {
-                    var status = error.response.status
 
-                }
-            );
+
+    componentDidMount(){
+
+
+        window.scrollTo(0, 0)
 
     }
-
-
 
 
     interval

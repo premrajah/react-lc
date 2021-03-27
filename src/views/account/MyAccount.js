@@ -26,7 +26,6 @@ class MyAccount extends Component {
             activePage:1
         }
 
-        this.getResources = this.getResources.bind(this)
         this.logOut = this.logOut.bind(this)
 
     }
@@ -45,29 +44,12 @@ class MyAccount extends Component {
 
 
 
-
-    getResources() {
-
-
-        axios.get(baseUrl + "resource",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-                var response = response.data;
-
-            },
-                (error) => {
-                    var status = error.response.status
-
-                }
-            );
-    }
+componentDidMount(){
 
 
+    window.scrollTo(0, 0)
+
+}
 
 
     interval

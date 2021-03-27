@@ -25,8 +25,8 @@ import TextField from '@material-ui/core/TextField';
 import Org from "./Org/Org";
 import ProductEditForm from "./ProductEditForm";
 import MoreMenu from './MoreMenu'
-import InputLabel from '@material-ui/core/InputLabel';
 import AutocompleteCustom from "./AutocompleteCustom";
+import Close from '@material-ui/icons/Close';
 
 
 class ProductDetail extends Component {
@@ -68,7 +68,9 @@ class ProductDetail extends Component {
             email:null,
             errorServiceAgent:false,
             emailError:false,
-            org_id:null
+            org_id:null,
+            currentReleaseId:null,
+            cancelReleaseSuccess:false
         }
 
 
@@ -101,6 +103,65 @@ class ProductDetail extends Component {
 
     }
 
+
+
+
+    actionSubmit=()=>{
+
+
+
+        var  data = {
+
+            "id": this.state.currentReleaseId,
+            "new_stage": "cancelled",
+            // "site_id": this.state.site
+
+        }
+
+
+
+        axios.post(baseUrl + "release/stage",
+            data
+
+            , {
+                headers: {
+                    "Authorization": "Bearer " + this.props.userDetail.token
+                }
+            }
+        )
+            .then(res => {
+
+                // this.getDetails()
+                //
+                //
+                // this.showPopUpInitiateAction()
+
+
+                // this.showReleaseProduct()
+
+
+                this.setState({
+
+                    cancelReleaseSuccess:true
+
+                })
+
+
+
+            }).catch(error => {
+
+
+
+
+            // this.setState({
+            //
+            //     showPopUp: true,
+            //     loopError: error.response.data.content.message
+            // })
+
+        });
+
+    }
 
     companyDetails=(detail)=>{
 
@@ -734,6 +795,14 @@ class ProductDetail extends Component {
             .then(res => {
 
 
+
+
+                console.log(res)
+
+                this.setState({
+
+                    currentReleaseId:res.data.data._key
+                })
 
 
                 this.setState({
@@ -1528,6 +1597,15 @@ class ProductDetail extends Component {
 
 
 
+
+                                <div className=" text-right web-only">
+
+
+                                     <Close onClick={this.showReleaseProduct} className="blue-text click-item" style={{ fontSize: 32 }} />
+
+                                </div>
+
+
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>
                                         <p  style={{textTransform:"Capitalize"}} className={"text-bold text-blue"}>Release Product: {this.state.item.product.name}</p>
@@ -1567,33 +1645,6 @@ class ProductDetail extends Component {
 
 
                                                         <input className={"d-none"} value={this.state.org_id} name={"org"}/>
-
-
-                                                        {/*<FormControl variant="outlined" className={classes.formControl}>*/}
-                                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Select*/}
-                                                                {/*Organisation</InputLabel>*/}
-                                                            {/*<Select*/}
-                                                                {/*native*/}
-                                                                {/*label={"Select Organisation"}*/}
-                                                                {/*inputProps={{*/}
-                                                                    {/*name: 'org',*/}
-                                                                    {/*id: 'outlined-age-native-simple',*/}
-                                                                {/*}}*/}
-                                                            {/*>*/}
-
-                                                                {/*<option value={null}>Select</option>*/}
-
-                                                                {/*{this.state.orgs.map((item) =>*/}
-
-                                                                    {/*<option value={item._key}>{item.name}</option>*/}
-                                                                {/*)}*/}
-
-                                                            {/*</Select>*/}
-                                                        {/*</FormControl>*/}
-
-
-
-
 
 
                                                         <p>Is the company you are looking for doesn't exist? <span
@@ -1709,14 +1760,57 @@ class ProductDetail extends Component {
 
                                     :
 
-                                    <div className={"row justify-content-center"}>
+                                    <>
+
+                                    {!this.state.cancelReleaseSuccess &&   <div className={"row justify-content-center"}>
                                         <div className={"col-10 text-center"}>
                                             <Alert key={"alert"} variant={"success"}>
                                                 Your release request has been submitted successfully. Thanks
                                             </Alert>
 
                                         </div>
+
+
+
+
+                                    </div>}
+
+
+                                    {this.state.cancelReleaseSuccess&&   <div className={"row justify-content-center"}>
+                                            <div className={"col-10 text-center"}>
+                                                <Alert key={"alert"} variant={"success"}>
+                                                    Your release request has been cancelled successfully. Thanks
+                                                </Alert>
+
+                                            </div>
+
+
+
+
+                                        </div>}
+
+
+
+
+                                    <div className={"row justify-content-center"}>
+
+
+                                    <div className={"col-6"} style={{ textAlign: "center" }}>
+
+                                    <button style={{ minWidth: "120px" }} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>
+                                    <Link to={"/approve"}>Check Approval</Link>
+                                    </button>
+
+
                                     </div>
+                                    <div className={"col-6"} style={{ textAlign: "center" }}>
+                                    <p onClick={this.actionSubmit}
+                                    className={"shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"}>Cancel Release</p>
+                                    </div>
+
+                                    </div>
+
+                                    </>
 
                                 }
 
@@ -1767,30 +1861,6 @@ class ProductDetail extends Component {
 
 
                                     <input className={"d-none"} value={this.state.org_id} name={"org"}/>
-
-
-
-                                    {/*<FormControl variant="outlined" className={classes.formControl}>*/}
-                                        {/*<InputLabel htmlFor="outlined-age-native-simple">Select*/}
-                                            {/*Organisation</InputLabel>*/}
-                                        {/*<Select*/}
-                                            {/*native*/}
-                                            {/*label={"Select Organisation"}*/}
-                                            {/*inputProps={{*/}
-                                                {/*name: 'org',*/}
-                                                {/*id: 'outlined-age-native-simple',*/}
-                                            {/*}}*/}
-                                        {/*>*/}
-
-                                            {/*<option value={null}>Select</option>*/}
-
-                                            {/*{this.state.orgs.map((item) =>*/}
-
-                                                {/*<option value={item._key}>{item.name}</option>*/}
-                                            {/*)}*/}
-
-                                        {/*</Select>*/}
-                                    {/*</FormControl>*/}
 
 
                                     <p>Is the company you are looking for doesn't exist? <span

@@ -9,6 +9,7 @@ import Close from '@material-ui/icons/Close';
 import SiteItem from "../../components/SiteItem"
 import AddSite from "../../components/AddSite";
 import * as actionCreator from "../../store/actions/actions";
+import {Alert} from 'react-bootstrap';
 
 
 class PaymentMethod extends Component {
@@ -28,12 +29,12 @@ class PaymentMethod extends Component {
             showCreateSite: false,
             fieldsSite: {},
             errorsSite: {},
+            submitSuccess:false
 
 
         }
 
 
-        this.getResources = this.getResources.bind(this)
         this.getSites = this.getSites.bind(this)
         this.getSite = this.getSite.bind(this)
         this.toggleSite = this.toggleSite.bind(this)
@@ -207,51 +208,18 @@ class PaymentMethod extends Component {
     }
 
 
-    getResources() {
-
-
-        axios.get(baseUrl + "resource",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-                    var response = response.data;
-
-
-
-
-                },
-                (error) => {
-                    var status = error.response.status
-
-
-
-
-
-
-
-
-                }
-            );
-
-    }
-
-
-
-
-    interval
-
-
     componentWillMount() {
 
     }
 
+
+
     componentDidMount() {
 
-     this.props.loadSites()
+        window.scrollTo(0, 0)
+
+
+        this.props.loadSites()
 
     }
 
@@ -279,6 +247,11 @@ class PaymentMethod extends Component {
 
                             </div>
                         </div>
+
+
+                        {this.state.submitSuccess &&  <Alert key={"alert"} variant={"success"}>
+                            {"New address created successfully"}
+                        </Alert>}
 
                         <div className="row mb-3">
                             <div className="col-12">
@@ -333,9 +306,17 @@ class PaymentMethod extends Component {
                             </div>
 
 
+
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <AddSite  triggerCallback={()=>this.toggleSite()}/>
+                                    <AddSite  triggerCallback={()=>  {
+                                        this.toggleSite()
+
+                                        this.setState({
+
+                                            submitSuccess:true
+                                        })
+                                    }}/>
                                 </div>
                             </div>
 

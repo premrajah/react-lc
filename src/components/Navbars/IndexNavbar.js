@@ -239,7 +239,7 @@ class ComponentsNavbar extends React.Component {
                                         <MenuOutline
                                             className="white-text"
                                             style={{ fontSize: 24 }}></MenuOutline>
-                                        <span className="new-notification"></span>
+                                        <span className="new-notification d-none"></span>
                                     </Link>
                                 </button>
                             </NavItem>

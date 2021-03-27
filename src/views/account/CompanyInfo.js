@@ -9,6 +9,8 @@ import TextField from "@material-ui/core/TextField";
 import {Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
+import {Alert} from 'react-bootstrap';
+
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -28,7 +30,9 @@ class CompanyInfo extends Component {
             base64Data: null,
             uploadedImgName: "",
             uploadedImgType: "",
-            companyNumber:null
+            companyNumber:null,
+            submitSuccess:false
+
         };
 
         this.companyInfo = this.companyInfo.bind(this);
@@ -91,6 +95,8 @@ class CompanyInfo extends Component {
 
                     this.setState({
                         loading: false,
+                        submitSuccess:true
+
                     });
 
                     var responseAll = response.data.data;
@@ -231,6 +237,8 @@ class CompanyInfo extends Component {
                 .then((res) => {
                     this.setState({
                         loading: false,
+                        submitSuccess:true
+
                     });
                 })
                 .catch((error) => {
@@ -294,6 +302,8 @@ class CompanyInfo extends Component {
     };
 
     componentDidMount() {
+
+        window.scrollTo(0, 0)
         this.companyInfo();
     }
 
@@ -313,6 +323,11 @@ class CompanyInfo extends Component {
                                 <h4 className={"text-blue text-bold"}>Company Info</h4>
                             </div>
                         </div>
+
+
+                        {this.state.submitSuccess &&  <Alert key={"alert"} variant={"success"}>
+                            {"Company information updated successfully"}
+                        </Alert>}
 
                         <div className="row">
                             <div className="col-3">
@@ -417,6 +432,9 @@ class CompanyInfo extends Component {
                                                     )}
                                                 />
                                             </div>
+
+
+
 
                                             <div className="col-12 mt-4">
                                                 <button

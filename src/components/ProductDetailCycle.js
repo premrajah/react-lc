@@ -684,7 +684,7 @@ class ProductDetailCycle extends Component {
                                 <div className="row">
                                     <div className="col-7">
                                         <p>
-                                            {" "}
+                                            
                                             <Org orgId={this.props.item.org._id} />
                                         </p>
                                     </div>
@@ -715,11 +715,11 @@ class ProductDetailCycle extends Component {
                                                     Category
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.props.item.product.category},{" "}
-                                                    {this.props.item.product.type},{" "}
-                                                    {this.props.item.product.state}{" "}
-                                                    {this.props.item.product.volume}{" "}
-                                                    {this.props.item.product.units}{" "}
+                                                    {this.props.item.product.category},
+                                                    {this.props.item.product.type},
+                                                    {this.props.item.product.state}
+                                                    {this.props.item.product.volume}
+                                                    {this.props.item.product.units}
                                                 </p>
                                             </div>
                                         </div>
@@ -744,7 +744,7 @@ class ProductDetailCycle extends Component {
                                                     <p
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
-                                                        {" "}
+                                                        
                                                         {this.props.item.product.year_of_making}
                                                     </p>
                                                 </div>
@@ -763,7 +763,7 @@ class ProductDetailCycle extends Component {
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
                                                         {this.props.item &&
-                                                            this.props.item.product.sku.model}{" "}
+                                                            this.props.item.product.sku.model}
                                                     </p>
                                                 </div>
                                             </div>
@@ -781,7 +781,7 @@ class ProductDetailCycle extends Component {
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
                                                         {this.props.item &&
-                                                            this.props.item.product.sku.serial}{" "}
+                                                            this.props.item.product.sku.serial}
                                                     </p>
                                                 </div>
                                             </div>
@@ -799,7 +799,7 @@ class ProductDetailCycle extends Component {
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
                                                         {this.props.item &&
-                                                            this.props.item.product.sku.brand}{" "}
+                                                            this.props.item.product.sku.brand}
                                                     </p>
                                                 </div>
                                             </div>
@@ -813,7 +813,7 @@ class ProductDetailCycle extends Component {
                                                     State
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.props.item.product.state}{" "}
+                                                    {this.props.item.product.state}
                                                 </p>
                                             </div>
                                         </div>
@@ -828,7 +828,7 @@ class ProductDetailCycle extends Component {
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     <Org
                                                         orgId={this.props.item.service_agent._id}
-                                                    />{" "}
+                                                    />
                                                 </p>
                                             </div>
                                         </div>
@@ -903,7 +903,7 @@ class ProductDetailCycle extends Component {
                         {this.props.item.product._key && (
                             <div>
                                 <div className="mt-2 mb-2">
-                                    Product:{" "}
+                                    Product:
                                     <span>
                                         <b>{this.props.item.product.name}</b>
                                     </span>
@@ -974,8 +974,8 @@ class ProductDetailCycle extends Component {
                                                 <p
                                                     className={"text-left"}
                                                     style={{ margin: "10px 0" }}>
-                                                    {" "}
-                                                    Don’t see it on here?{" "}
+                                                    
+                                                    Don’t see it on here?
                                                     <span
                                                         onClick={this.showSubmitSite}
                                                         className={
@@ -1070,7 +1070,7 @@ class ProductDetailCycle extends Component {
                                                         {this.state.errorsSite["name"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errorsSite["name"]}
                                                             </span>
@@ -1093,7 +1093,7 @@ class ProductDetailCycle extends Component {
                                                         {this.state.errorsSite["contact"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errorsSite["contact"]}
                                                             </span>
@@ -1117,7 +1117,7 @@ class ProductDetailCycle extends Component {
                                                         {this.state.errorsSite["address"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errorsSite["address"]}
                                                             </span>
@@ -1140,7 +1140,7 @@ class ProductDetailCycle extends Component {
                                                         {this.state.errorsSite["phone"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errorsSite["phone"]}
                                                             </span>
@@ -1164,7 +1164,7 @@ class ProductDetailCycle extends Component {
                                                         {this.state.errorsSite["email"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errorsSite["email"]}
                                                             </span>
@@ -1231,7 +1231,7 @@ class ProductDetailCycle extends Component {
                                                 "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                             }
                                             type={"submit"}>
-                                            Submit{" "}
+                                            Submit
                                         </button>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
@@ -1262,7 +1262,7 @@ class ProductDetailCycle extends Component {
                                 <p
                                     style={{ textTransform: "Capitalize" }}
                                     className={"text-bold text-blue"}>
-                                    Choose Your Organisation{" "}
+                                    Choose Your Organisation
                                 </p>
                             </div>
                         </div>
@@ -1392,7 +1392,7 @@ class ProductDetailCycle extends Component {
                                                         "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                     }
                                                     type={"submit"}>
-                                                    Yes{" "}
+                                                    Yes
                                                 </button>
                                             </div>
                                             <div
@@ -1556,7 +1556,7 @@ function CustomizedTimeline(props) {
                                     component="h1"
                                     style={{ color: "#05AD88" }}>
                                     <span className={"text-caps"}>
-                                        {" "}
+                                        
                                         {item.org.name}
                                         {item.org.description && ", " + item.org.description}
                                     </span>

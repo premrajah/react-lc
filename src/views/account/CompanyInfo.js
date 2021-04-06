@@ -63,9 +63,6 @@ class CompanyInfo extends Component {
     companyDetails=(detail)=>{
 
 
-        // alert(detail)
-        // console.log(detail)
-
 
         this.setState({
 

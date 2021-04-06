@@ -72,6 +72,8 @@ class ProductDetailCycle extends Component {
             errorRelease: false,
             orgIdAuth: null,
             approveReleaseId: null,
+            orgTrails: null,
+            siteTrails: null,
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -521,7 +523,23 @@ class ProductDetailCycle extends Component {
         this.getQrCode();
 
         if (this.props.showRegister && this.props.isLoggedIn && this.props.userDetail)
+        {
             this.getSites();
+        }
+
+        this.getProductTrails(this.props.item.product._key);
+
+    }
+
+    getProductTrails(productKey) {
+        axios.get(`${baseUrl}code/${productKey}/trail`)
+            .then(response => {
+                const data = response.data.data;
+                this.setState({orgTrails: data.org_trails, siteTrails: data.site_trails});
+            })
+            .catch(error => {
+                console.log('trail error ', error);
+            })
     }
 
     render() {
@@ -875,8 +893,8 @@ class ProductDetailCycle extends Component {
                                 </p>
                             </div>
                         </div>
-
-                        {this.props.item && <CustomizedTimeline item={this.props.item} />}
+                        {console.log('OrgTrails ', this.state.orgTrails)}
+                        {this.state.orgTrails && <CustomizedTimeline item={this.props.item} orgTrails={this.state.orgTrails} />}
                     </div>
                 </div>
 
@@ -1497,10 +1515,10 @@ function CustomizedTimeline(props) {
 
     return (
         <Timeline>
-            {props.item.transitions
-                .filter((item) => item.relation === "belongs_to")
+            {props.orgTrails
+                .filter((item) => item._relation === "belongs_to")
                 .map((item, index) => (
-                    <TimelineItem>
+                    <TimelineItem key={index}>
                         <TimelineOppositeContent>
                             <Paper elevation={0} className={classes.paper}>
                                 <Typography
@@ -1554,7 +1572,7 @@ function CustomizedTimeline(props) {
                                     component="h1"
                                     style={{ color: "#05AD88" }}>
                                     <span className={"text-caps"}>
-                                        
+
                                         {item.org.name}
                                         {item.org.description && ", " + item.org.description}
                                     </span>

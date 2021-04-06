@@ -42,7 +42,6 @@ axios.interceptors.response.use(response => response,
             const {status} = error.response;
             if (status === UNAUTHORIZED) {
 
-                console.log("logout user")
 
                 store.dispatch(
                     { type: "LOGOUT", value: null }

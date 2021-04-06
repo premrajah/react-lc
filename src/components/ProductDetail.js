@@ -133,8 +133,7 @@ class ProductDetail extends Component {
     };
 
     companyDetails = (detail) => {
-        // alert(detail)
-        // console.log(detail)
+
 
         if (detail.org) {
             this.setState({
@@ -151,7 +150,7 @@ class ProductDetail extends Component {
                         org_id: responseAll._key,
                     });
 
-                    // console.log(responseAll._key)
+
                 },
                 (error) => {}
             );
@@ -1171,6 +1170,7 @@ class ProductDetail extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="documents" title="Documents">
+                                                <p className="mt-1 mb-3 text-gray-light">If documents added please find links to download below</p>
                                                 {this.state.item.artifacts.length > 0 ? (
                                                     this.state.item.artifacts.map(
                                                         (artifact, index) => {
@@ -1180,13 +1180,15 @@ class ProductDetail extends Component {
                                                                 artifact.mime_type ===
                                                                     "application/rtf" ||
                                                                 artifact.mime_type ===
-                                                                    "application/msword"
+                                                                    "application/msword" ||
+                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml"
                                                             ) {
                                                                 return (
                                                                     <div
                                                                         key={index}
                                                                         className="mt-1 mb-2">
                                                                         <a
+                                                                            className="btn-link"
                                                                             href={artifact.blob_url}
                                                                             target="_blank">
                                                                             {artifact.blob_name}

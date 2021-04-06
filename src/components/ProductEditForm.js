@@ -1904,7 +1904,7 @@ class ProductEditForm extends Component {
                                                                         </label>
                                                                         <input
                                                                             accept={
-                                                                                "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf"
+                                                                                "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml"
                                                                             }
                                                                             style={{
                                                                                 display: "none",

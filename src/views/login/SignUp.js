@@ -71,8 +71,7 @@ class SignUp extends Component {
     companyDetails=(detail)=>{
 
 
-        // alert(detail)
-        // console.log(detail)
+
 
 
         if (detail.org){
@@ -102,7 +101,7 @@ class SignUp extends Component {
                         })
 
 
-                    // console.log(responseAll._key)
+
 
 
                     },

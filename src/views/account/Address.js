@@ -5,9 +5,11 @@ import HeaderDark from '../header/HeaderDark'
 import Sidebar from '../menu/Sidebar'
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import {TextField} from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
-import SiteItem from "../../components/SiteItem";
+import SiteItem from "../../components/SiteItem"
+import AddSite from "../../components/AddSite";
+import * as actionCreator from "../../store/actions/actions";
+import {Alert} from 'react-bootstrap';
 
 
 class PaymentMethod extends Component {
@@ -27,19 +29,16 @@ class PaymentMethod extends Component {
             showCreateSite: false,
             fieldsSite: {},
             errorsSite: {},
+            submitSuccess:false
 
 
         }
 
 
-        this.getResources = this.getResources.bind(this)
         this.getSites = this.getSites.bind(this)
         this.getSite = this.getSite.bind(this)
         this.toggleSite = this.toggleSite.bind(this)
-        this.handleValidationSite = this.handleValidationSite.bind(this)
-        this.handleChangeSite = this.handleChangeSite.bind(this)
         this.handleSubmitSite = this.handleSubmitSite.bind(this)
-        this.phonenumber = this.phonenumber.bind(this)
 
 
 
@@ -48,122 +47,12 @@ class PaymentMethod extends Component {
 
 
 
-    handleValidationSite() {
-
-
-        let fields = this.state.fieldsSite;
-        let errors = {};
-        let formIsValid = true;
-
-        //Name
-        if (!fields["name"]) {
-            formIsValid = false;
-            errors["name"] = "Required";
-        }
-
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
-
-
-        if (!fields["address"]) {
-            formIsValid = false;
-            errors["address"] = "Required";
-        }
-        // if(!fields["agree"]){
-        //     formIsValid = false;
-        //     errors["agree"] = "Required";
-        // }
-
-        //
-        // if (!fields["name"]) {
-        //     formIsValid = false;
-        //     errors["name"] = "Required";
-        // }
-        if (!fields["contact"]) {
-            formIsValid = false;
-            errors["contact"] = "Required";
-        }
 
 
 
 
 
-        // if (!fields["phone"]) {
-        //     formIsValid = false;
-        //     errors["phone"] = "Required";
-        // }
 
-
-
-        if ((!fields["phone"])) {
-            formIsValid = false;
-            errors["phone"] = "Required";
-        }
-
-        if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
-
-            formIsValid = false;
-            errors["phone"] = "Invalid Phone Number!";
-        }
-
-
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsSite: errors });
-        return formIsValid;
-    }
-
-
-     phonenumber(inputtxt) {
-
-
-
-        var phoneNoWithCode= /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
-
-
-         var phoneWithZero= /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
-
-
-         if(inputtxt.match(phoneNoWithCode)) {
-            return true;
-        }
-        else if (inputtxt.match(phoneWithZero)) {
-            return true
-
-        }
-        
-        else {
-            return false;
-        }
-
-
-    }
-
-
-
-    handleChangeSite(field, e) {
-
-        let fields = this.state.fieldsSite;
-        fields[field] = e.target.value;
-        this.setState({ fields: fields });
-
-    }
 
 
     handleSubmitSite = event => {
@@ -174,9 +63,6 @@ class PaymentMethod extends Component {
         if(this.handleValidationSite()) {
 
             const form = event.currentTarget;
-
-
-
 
 
             this.setState({
@@ -312,57 +198,28 @@ class PaymentMethod extends Component {
 
     toggleSite() {
 
+
+        // this.props.showSiteModal(!this.props.showSitePopUp)
+
+
         this.setState({
             showCreateSite: !this.state.showCreateSite
         })
     }
 
 
-    getResources() {
-
-
-        axios.get(baseUrl + "resource",
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-                    var response = response.data;
-
-
-
-
-                },
-                (error) => {
-                    var status = error.response.status
-
-
-
-
-
-
-
-
-                }
-            );
-
-    }
-
-
-
-
-    interval
-
-
     componentWillMount() {
 
     }
 
+
+
     componentDidMount() {
 
-     this.getSites()
+        window.scrollTo(0, 0)
+
+
+        this.props.loadSites()
 
     }
 
@@ -391,6 +248,11 @@ class PaymentMethod extends Component {
                             </div>
                         </div>
 
+
+                        {this.state.submitSuccess &&  <Alert key={"alert"} variant={"success"}>
+                            {"New address created successfully"}
+                        </Alert>}
+
                         <div className="row mb-3">
                             <div className="col-12">
                                 <div className="list-group main-menu accountpage-list">
@@ -403,7 +265,7 @@ class PaymentMethod extends Component {
                         <div className="row mb-5">
                             <div className="col-12">
                                 <div className="list-group">
-                                    {this.state.sites.map((site) =>
+                                    {this.props.siteList.map((site) =>
                                         <SiteItem key={site._key}
                                                   name={site.name}
                                                   address={site.address}
@@ -444,65 +306,17 @@ class PaymentMethod extends Component {
                             </div>
 
 
+
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <form onSubmit={this.handleSubmitSite}>
-                                        <div className="row no-gutters justify-content-center ">
+                                    <AddSite  triggerCallback={()=>  {
+                                        this.toggleSite()
 
-                                            <div className="col-12 mt-4">
+                                        this.setState({
 
-                                                <TextField id="outlined-basic" label="Site name" variant="outlined" fullWidth={true} name={"name"} onChange={this.handleChangeSite.bind(this, "name")} />
-
-                                                {this.state.errorsSite["name"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["name"]}</span>}
-
-                                            </div>
-
-                                            <div className="col-12 mt-4">
-
-                                                <TextField id="outlined-basic" label="Contact person" variant="outlined" fullWidth={true} name={"contact"} onChange={this.handleChangeSite.bind(this, "contact")} />
-
-                                                {this.state.errorsSite["contact"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["contact"]}</span>}
-
-                                            </div>
-
-                                            <div className="col-12 mt-4">
-
-                                                <TextField id="outlined-basic" label="Address" variant="outlined" fullWidth={true} name={"address"} type={"text"} onChange={this.handleChangeSite.bind(this, "address")} />
-
-                                                {this.state.errorsSite["address"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["address"]}</span>}
-
-                                            </div>
-                                            <div className="col-12 mt-4">
-
-                                                <TextField id="outlined-basic" type={"text"} name={"phone"}  onChange={this.handleChangeSite.bind(this, "phone")} label="Phone" variant="outlined" fullWidth={true} />
-
-                                                {this.state.errorsSite["phone"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["phone"]}</span>}
-
-                                            </div>
-
-                                            <div className="col-12 mt-4">
-
-                                                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth={true} name={"email"} type={"email"} onChange={this.handleChangeSite.bind(this, "email")} />
-
-                                                {this.state.errorsSite["email"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["email"]}</span>}
-
-                                            </div>
-                                            <div className="col-12 mt-4">
-
-                                                <TextField onChange={this.handleChangeSite.bind(this, "others")} name={"others"} id="outlined-basic" label="Other information" variant="outlined" fullWidth={true} type={"others"} />
-
-                                                {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-
-                                            </div>
-
-                                            <div className="col-12 mt-4">
-
-                                                <button type={"submit"} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Add Site</button>
-                                            </div>
-
-
-                                        </div>
-                                    </form>
+                                            submitSuccess:true
+                                        })
+                                    }}/>
                                 </div>
                             </div>
 
@@ -526,10 +340,8 @@ const mapStateToProps = state => {
 
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
-
-
-
-
+        siteList: state.siteList,
+        showSitePopUp:state.showSitePopUp
 
     };
 };
@@ -538,7 +350,8 @@ const mapDispachToProps = dispatch => {
     return {
 
 
-
+        showSiteModal: (data) => dispatch(actionCreator.showSiteModal(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
 
     };

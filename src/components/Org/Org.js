@@ -54,7 +54,7 @@ const Org = ({
                     style={{
                         textTransform: "capitalize",
                         fontWeight: "700",
-                        color: textColor ? textColor : "#07AD88",
+                        color: textColor ? textColor : "#444",
                     }}>
                     {orgNameSub}
                 </div>
@@ -63,7 +63,7 @@ const Org = ({
                     placement={placement ? placement : "right"}
                     overlay={orgPopover}>
                     <Info
-                        style={{ cursor: "pointer", color: infoColor ? infoColor : "#27245C" }}
+                        style={{ cursor: "pointer", color: infoColor ? infoColor : "#cccccc" }}
                         fontSize={infoSize ? infoSize : "small"}
                     />
                 </OverlayTrigger>

@@ -19,7 +19,7 @@ class AutocompleteCustom extends Component {
             (response) => {
                 var responseAll = response.data.data;
 
-                // console.log(response.data.data)
+
 
                 this.setState({
                     orgs: responseAll.companies,

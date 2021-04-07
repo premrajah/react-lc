@@ -239,7 +239,7 @@ class ComponentsNavbar extends React.Component {
                                         <MenuOutline
                                             className="white-text"
                                             style={{ fontSize: 24 }}></MenuOutline>
-                                        <span className="new-notification"></span>
+                                        <span className="new-notification d-none"></span>
                                     </Link>
                                 </button>
                             </NavItem>
@@ -326,10 +326,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account
                                         </Link>
-                                        <Link className={"dropdown-item"} to="">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Help
-                                        </Link>
+                                        {/*<Link className={"dropdown-item"} to="">*/}
+                                        {/*    <i className="tim-icons icon-bullet-list-67" />*/}
+                                        {/*    Help*/}
+                                        {/*</Link>*/}
 
                                         <DropdownItem onClick={this.logOut}>
                                             <i className="tim-icons icon-bullet-list-67" />

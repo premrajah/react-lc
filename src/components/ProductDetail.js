@@ -1181,7 +1181,8 @@ class ProductDetail extends Component {
                                                                     "application/rtf" ||
                                                                 artifact.mime_type ===
                                                                     "application/msword" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml"
+                                                                artifact.mime_type === "text/rtf" ||
+                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                                             ) {
                                                                 return (
                                                                     <div

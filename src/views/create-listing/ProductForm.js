@@ -1644,7 +1644,7 @@ class ProductForm extends Component {
                                                                     </label>
                                                                     <input
                                                                         accept={
-                                                                            "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml"
+                                                                            "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf"
                                                                         }
                                                                         style={{ display: "none" }}
                                                                         id="fileInput"

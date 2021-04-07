@@ -13,6 +13,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
 import ProductDetailCycle from "../../components/ProductDetailCycle";
+import PageHeader from "../../components/PageHeader";
 
 class ItemCycleDetail extends Component {
     slug;
@@ -219,11 +220,7 @@ class ItemCycleDetail extends Component {
 
                     <div className="container ">
                         <div>
-                            <div className={"row"}>
-                                <div className="col-12 mt-2 mb-2">
-                                    <h3 className={"blue-text text-heading"}>Product Details</h3>
-                                </div>
-                            </div>
+                            <PageHeader pageTitle="Product Details" subTitle="See product details and Provenance." />
 
                             {this.state.item && (
                                 <>

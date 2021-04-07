@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles/index";
 import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT} from "../Util/Constants";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import _ from "lodash";
 import { Spinner } from "react-bootstrap";
@@ -1901,9 +1901,7 @@ class ProductEditForm extends Component {
                                                                             />
                                                                         </label>
                                                                         <input
-                                                                            accept={
-                                                                                "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf"
-                                                                            }
+                                                                            accept={MIME_TYPES_ACCEPT}
                                                                             style={{
                                                                                 display: "none",
                                                                             }}

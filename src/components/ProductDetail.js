@@ -1182,7 +1182,9 @@ class ProductDetail extends Component {
                                                                 artifact.mime_type ===
                                                                     "application/msword" ||
                                                                 artifact.mime_type === "text/rtf" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                                                                artifact.mime_type === "application/vnd.ms-excel"
                                                             ) {
                                                                 return (
                                                                     <div

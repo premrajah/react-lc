@@ -1651,7 +1651,7 @@ class ProductEditForm extends Component {
                                                             name: "manufacturedDate",
                                                             id: "outlined-age-native-simple",
                                                         }}>
-                                                        <option value={""}>Select</option>
+                                                        <option >Select</option>
 
                                                         {this.state.yearsList.map((item) => (
                                                             <option

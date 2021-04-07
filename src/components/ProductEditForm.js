@@ -1002,7 +1002,7 @@ class ProductEditForm extends Component {
                     type: type,
                     units: units,
                     state: state,
-                    volume: volume,
+                    volume: Number(volume),
                     stage: "certified",
                     is_listable: this.state.is_listable,
                     sku: {
@@ -1014,9 +1014,10 @@ class ProductEditForm extends Component {
                         part_no: part_no,
                     },
 
-                    year_of_making: data.get("manufacturedDate"),
+                    year_of_making: Number(data.get("manufacturedDate")),
                 },
             };
+
 
             axios
                 .post(

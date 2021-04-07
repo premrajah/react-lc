@@ -1170,7 +1170,7 @@ class ProductDetail extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="documents" title="Documents">
-                                                <p className="mt-1 mb-3 text-gray-light">If documents added please find links to download below</p>
+                                                <p className="mt-1 mb-3 text-gray-light">If documents have been added, please find the links to download below</p>
                                                 {this.state.item.artifacts.length > 0 ? (
                                                     this.state.item.artifacts.map(
                                                         (artifact, index) => {

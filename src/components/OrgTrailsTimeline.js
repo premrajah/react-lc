@@ -9,7 +9,7 @@ import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import moment from "moment";
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -57,10 +57,10 @@ function OrgTrailsTimeline(props) {
                                         variant="h6"
                                         component="h1"
                                         style={{ color: "#05AD88" }}>
-                                    <span className={"text-caps"}>
-                                        {item.org.name}
-                                        {item.org.description && ", " + item.org.description}
-                                    </span>
+                                        <span className={"text-caps"}>
+                                            {item.org.name}
+                                            {item.org.description && ", " + item.org.description}
+                                        </span>
                                     </Typography>
                                 </Paper>
                             </TimelineOppositeContent>
@@ -103,11 +103,10 @@ function OrgTrailsTimeline(props) {
                                         variant="h6"
                                         component="h1"
                                         style={{ color: "#05AD88" }}>
-                                    <span className={"text-caps"}>
-
-                                        {item.org.name}
-                                        {item.org.description && ", " + item.org.description}
-                                    </span>
+                                        <span className={"text-caps"}>
+                                            {item.org.name}
+                                            {item.org.description && ", " + item.org.description}
+                                        </span>
                                     </Typography>
                                 </Paper>
                             </TimelineOppositeContent>
@@ -124,7 +123,7 @@ function OrgTrailsTimeline(props) {
 
                                 {props.orgTrails.filter((item) => item._relation === "past_owner")
                                     .length >
-                                index + 1 && (
+                                    index + 1 && (
                                     <TimelineConnector
                                         style={{ backgroundColor: "#05AD88", height: "100px" }}
                                     />
@@ -139,8 +138,6 @@ function OrgTrailsTimeline(props) {
                             </TimelineContent>
                         </TimelineItem>
                     ))}
-
-
             </Timeline>
         </div>
     );

@@ -57,10 +57,11 @@ function SiteTrailsTimeline(props) {
                                         variant="h6"
                                         component="h1"
                                         style={{ color: "#05AD88" }}>
-                                    <span className={"text-caps"}>
-                                        {item.site.org.name}
-                                        {item.site.org.description && ", " + item.site.org.description}
-                                    </span>
+                                        <span className={"text-caps"}>
+                                            {item.site.org.name}
+                                            {item.site.org.description &&
+                                                ", " + item.site.org.description}
+                                        </span>
                                     </Typography>
                                 </Paper>
                             </TimelineOppositeContent>
@@ -89,8 +90,15 @@ function SiteTrailsTimeline(props) {
                                         {moment(item.site.org._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
-                                <Typography variant="caption" component="div">Currently is located at</Typography>
-                                <Typography className="blue-text" variant="subtitle1" component="div">{item.site.site.address}</Typography>
+                                <Typography variant="caption" component="div">
+                                    Currently is located at
+                                </Typography>
+                                <Typography
+                                    className="blue-text"
+                                    variant="subtitle1"
+                                    component="div">
+                                    {item.site.site.address}
+                                </Typography>
                             </TimelineContent>
                         </TimelineItem>
                     ))}
@@ -105,11 +113,11 @@ function SiteTrailsTimeline(props) {
                                         variant="h6"
                                         component="h1"
                                         style={{ color: "#05AD88" }}>
-                                    <span className={"text-caps"}>
-
-                                        {item.site.org.name}
-                                        {item.site.org.description && ", " + item.site.org.description}
-                                    </span>
+                                        <span className={"text-caps"}>
+                                            {item.site.org.name}
+                                            {item.site.org.description &&
+                                                ", " + item.site.org.description}
+                                        </span>
                                     </Typography>
                                 </Paper>
                             </TimelineOppositeContent>
@@ -124,9 +132,10 @@ function SiteTrailsTimeline(props) {
                                     {/*<BusinessIcon />*/}
                                 </TimelineDot>
 
-                                {props.siteTrails.filter((item) => item._relation === "was_located_at")
-                                    .length >
-                                index + 1 && (
+                                {props.siteTrails.filter(
+                                    (item) => item._relation === "was_located_at"
+                                ).length >
+                                    index + 1 && (
                                     <TimelineConnector
                                         style={{ backgroundColor: "#05AD88", height: "100px" }}
                                     />
@@ -138,13 +147,18 @@ function SiteTrailsTimeline(props) {
                                         {moment(item.site.org._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
-                                <Typography variant="caption" component="div">Previously was located at</Typography>
-                                <Typography className="blue-text" variant="subtitle1" component="div">{item.site.site.address}</Typography>
+                                <Typography variant="caption" component="div">
+                                    Previously was located at
+                                </Typography>
+                                <Typography
+                                    className="blue-text"
+                                    variant="subtitle1"
+                                    component="div">
+                                    {item.site.site.address}
+                                </Typography>
                             </TimelineContent>
                         </TimelineItem>
                     ))}
-
-
             </Timeline>
         </div>
     );

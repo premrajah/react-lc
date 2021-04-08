@@ -1,19 +1,19 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {makeStyles} from "@material-ui/core/styles";
-import {baseUrl, frontEndUrl} from "../Util/Constants";
+import { makeStyles } from "@material-ui/core/styles";
+import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
+import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
+import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from "./ProductItemNew";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
@@ -36,6 +36,9 @@ import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import AutocompleteCustom from "./AutocompleteCustom";
+import OrgTrailsTimeline from "./OrgTrailsTimeline";
+import SiteTrailsTimeline from "./SiteTrailsTimeline";
+import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -74,6 +77,7 @@ class ProductDetailCycle extends Component {
             approveReleaseId: null,
             orgTrails: null,
             siteTrails: null,
+            timelineDisplay: "org",
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -294,7 +298,6 @@ class ProductDetailCycle extends Component {
             });
     };
     companyDetails = (detail) => {
-
         if (detail.org) {
             this.setState({
                 orgIdAuth: detail.org,
@@ -320,7 +323,6 @@ class ProductDetailCycle extends Component {
         axios
             .get(baseUrl + "release/no-auth?p=" + this.props.item.product._key + "&o=" + orgId)
             .then((res) => {
-
                 var response = res.data.data;
 
                 for (var i = 0; i < response.length; i++) {
@@ -522,25 +524,28 @@ class ProductDetailCycle extends Component {
     componentDidMount() {
         this.getQrCode();
 
-        if (this.props.showRegister && this.props.isLoggedIn && this.props.userDetail)
-        {
+        if (this.props.showRegister && this.props.isLoggedIn && this.props.userDetail) {
             this.getSites();
         }
 
         this.getProductTrails(this.props.item.product._key);
-
     }
 
     getProductTrails(productKey) {
-        axios.get(`${baseUrl}code/${productKey}/trail`)
-            .then(response => {
+        axios
+            .get(`${baseUrl}code/${productKey}/trail`)
+            .then((response) => {
                 const data = response.data.data;
-                this.setState({orgTrails: data.org_trails, siteTrails: data.site_trails});
+                this.setState({ orgTrails: data.org_trails, siteTrails: data.site_trails });
             })
-            .catch(error => {
-                console.log('trail error ', error);
-            })
+            .catch((error) => {
+                console.log("trail error ", error);
+            });
     }
+
+    handleTimelineOptions = (event) => {
+        this.setState({ timelineDisplay: event.target.value });
+    };
 
     render() {
         const classes = withStyles();
@@ -691,7 +696,6 @@ class ProductDetailCycle extends Component {
                                 <div className="row">
                                     <div className="col-7">
                                         <p>
-                                            
                                             <Org orgId={this.props.item.org._id} />
                                         </p>
                                     </div>
@@ -751,7 +755,6 @@ class ProductDetailCycle extends Component {
                                                     <p
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
-                                                        
                                                         {this.props.item.product.year_of_making}
                                                     </p>
                                                 </div>
@@ -825,14 +828,23 @@ class ProductDetailCycle extends Component {
                                             </div>
                                         </div>
 
-                                        {this.props.item.site && <div className="row justify-content-start search-container pb-2">
-                                            <div className={"col-auto"}>
-                                                <p style={{fontSize: "18px"}}
-                                                   className="text-mute text-bold text-blue mb-1">Located At</p>
-                                                <p style={{fontSize: "18px"}}
-                                                   className="  mb-1">{this.props.item.site.name}, {this.props.item.site.address} </p>
+                                        {this.props.item.site && (
+                                            <div className="row justify-content-start search-container pb-2">
+                                                <div className={"col-auto"}>
+                                                    <p
+                                                        style={{ fontSize: "18px" }}
+                                                        className="text-mute text-bold text-blue mb-1">
+                                                        Located At
+                                                    </p>
+                                                    <p
+                                                        style={{ fontSize: "18px" }}
+                                                        className="  mb-1">
+                                                        {this.props.item.site.name},
+                                                        {this.props.item.site.address}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>}
+                                        )}
 
                                         <div className="row  justify-content-start search-container  pb-2 ">
                                             <div className={"col-auto"}>
@@ -893,8 +905,49 @@ class ProductDetailCycle extends Component {
                                 </p>
                             </div>
                         </div>
-                        {console.log('OrgTrails ', this.state.orgTrails)}
-                        {this.state.orgTrails && <CustomizedTimeline item={this.props.item} orgTrails={this.state.orgTrails} />}
+
+                        <div className="row">
+                            <div className="col">
+                                <FormControl component="fieldset">
+                                    <RadioGroup
+                                        row
+                                        name="timeline-options"
+                                        value={this.state.timelineDisplay}
+                                        onChange={(e) => this.handleTimelineOptions(e)}>
+                                        <FormControlLabel
+                                            control={<Radio />}
+                                            label="Organisations"
+                                            value="org"
+                                        />
+                                        <FormControlLabel
+                                            control={<Radio />}
+                                            label="Locations"
+                                            value="site"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </div>
+                        </div>
+
+                        {this.state.timelineDisplay === "org" ? (
+                            <div className="row">
+                                <div className="col">
+                                    {this.state.orgTrails && (
+                                        <OrgTrailsTimeline orgTrails={this.state.orgTrails} />
+                                    )}
+                                </div>
+                            </div>
+                        ) : null}
+
+                        {this.state.timelineDisplay === "site" ? (
+                            <div className="row">
+                                <div className="col">
+                                    {this.state.siteTrails && (
+                                        <SiteTrailsTimeline siteTrails={this.state.siteTrails} />
+                                    )}
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
 
@@ -990,7 +1043,6 @@ class ProductDetailCycle extends Component {
                                                 <p
                                                     className={"text-left"}
                                                     style={{ margin: "10px 0" }}>
-                                                    
                                                     Don’t see it on here?
                                                     <span
                                                         onClick={this.showSubmitSite}
@@ -1507,135 +1559,6 @@ function BottomAppBar(props) {
                 </Toolbar>
             </AppBar>
         </React.Fragment>
-    );
-}
-
-function CustomizedTimeline(props) {
-    const classes = useStyles();
-
-    return (
-        <Timeline>
-            {props.orgTrails
-                .filter((item) => item._relation === "belongs_to")
-                .map((item, index) => (
-                    <TimelineItem key={index}>
-                        <TimelineOppositeContent>
-                            <Paper elevation={0} className={classes.paper}>
-                                <Typography
-                                    variant="h6"
-                                    component="h1"
-                                    style={{ color: "#05AD88" }}>
-                                    <span className={"text-caps"}>
-                                        {item.org.name}
-                                        {item.org.description && ", " + item.org.description}
-                                    </span>
-                                </Typography>
-                            </Paper>
-                        </TimelineOppositeContent>
-
-                        <TimelineSeparator>
-                            <TimelineDot
-                                style={{
-                                    backgroundColor: "#27245C",
-                                    width: "25px",
-                                    height: "25px",
-                                }}>
-                                {/*<BusinessIcon />*/}
-                            </TimelineDot>
-
-                            {props.item.transitions.filter((item) => item.relation === "past_owner")
-                                .length > 0 && (
-                                <TimelineConnector
-                                    style={{ backgroundColor: "#05AD88", height: "100px" }}
-                                />
-                            )}
-                        </TimelineSeparator>
-
-                        <TimelineContent>
-                            <Typography>
-                                <p className={"text-blue"}>
-                                    {moment(item.trans_ts_epoch_ms).format("DD MMM YYYY")}
-                                </p>
-                            </Typography>
-                        </TimelineContent>
-                    </TimelineItem>
-                ))}
-
-            {props.item.transitions
-                .filter((item) => item.relation === "past_owner")
-                .map((item, index) => (
-                    <TimelineItem>
-                        <TimelineOppositeContent>
-                            <Paper elevation={0} className={classes.paper}>
-                                <Typography
-                                    variant="h6"
-                                    component="h1"
-                                    style={{ color: "#05AD88" }}>
-                                    <span className={"text-caps"}>
-
-                                        {item.org.name}
-                                        {item.org.description && ", " + item.org.description}
-                                    </span>
-                                </Typography>
-                            </Paper>
-                        </TimelineOppositeContent>
-
-                        <TimelineSeparator>
-                            <TimelineDot
-                                style={{
-                                    backgroundColor: "#05AD88",
-                                    width: "25px",
-                                    height: "25px",
-                                }}>
-                                {/*<BusinessIcon />*/}
-                            </TimelineDot>
-
-                            {props.item.transitions.filter((item) => item.relation === "past_owner")
-                                .length >
-                                index + 1 && (
-                                <TimelineConnector
-                                    style={{ backgroundColor: "#05AD88", height: "100px" }}
-                                />
-                            )}
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            <Typography>
-                                <p className={"text-blue"}>
-                                    {moment(item.trans_ts_epoch_ms).format("DD MMM YYYY")}
-                                </p>
-                            </Typography>
-                        </TimelineContent>
-                    </TimelineItem>
-                ))}
-
-            {/*{props.item.transitions.filter((item)=>  item.relation==="service_agent_for").map((item,index)=>*/}
-
-            {/*<TimelineItem>*/}
-            {/*<TimelineOppositeContent>*/}
-            {/*<Paper elevation={0} className={classes.paper}>*/}
-            {/*<Typography variant="h6" component="h1" style={{ color:"#05AD88"}}>*/}
-            {/*<span className={"text-caps"}>   {item.org.name}{item.org.description&&", "+item.org.description}</span>*/}
-            {/*</Typography>*/}
-
-            {/*</Paper>*/}
-
-            {/*</TimelineOppositeContent>*/}
-
-            {/*<TimelineSeparator>*/}
-            {/*<TimelineDot style={{ backgroundColor:"#05AD88", width:"25px",height:"25px"}}>*/}
-            {/*/!*<BusinessIcon />*!/*/}
-            {/*</TimelineDot>*/}
-
-            {/*</TimelineSeparator>*/}
-            {/*<TimelineContent>*/}
-            {/*<Typography>*/}
-            {/*<p className={"text-blue"}>{moment(item._ts_epoch_ms).format("DD MMM YYYY")}</p>*/}
-            {/*</Typography>*/}
-            {/*</TimelineContent>*/}
-            {/*</TimelineItem>*/}
-
-            {/*)}*/}
-        </Timeline>
     );
 }
 

@@ -326,10 +326,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account
                                         </Link>
-                                        <Link className={"dropdown-item"} to="">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Help
-                                        </Link>
+                                        {/*<Link className={"dropdown-item"} to="">*/}
+                                        {/*    <i className="tim-icons icon-bullet-list-67" />*/}
+                                        {/*    Help*/}
+                                        {/*</Link>*/}
 
                                         <DropdownItem onClick={this.logOut}>
                                             <i className="tim-icons icon-bullet-list-67" />

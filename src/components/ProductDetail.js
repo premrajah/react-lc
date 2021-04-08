@@ -1170,7 +1170,7 @@ class ProductDetail extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="documents" title="Documents">
-                                                <p className="mt-1 mb-3 text-gray-light">If documents added please find links to download below</p>
+                                                <p className="mt-1 mb-3 text-gray-light">If documents have been added, please find the links to download below</p>
                                                 {this.state.item.artifacts.length > 0 ? (
                                                     this.state.item.artifacts.map(
                                                         (artifact, index) => {
@@ -1181,7 +1181,10 @@ class ProductDetail extends Component {
                                                                     "application/rtf" ||
                                                                 artifact.mime_type ===
                                                                     "application/msword" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml"
+                                                                artifact.mime_type === "text/rtf" ||
+                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                                                                artifact.mime_type === "application/vnd.ms-excel"
                                                             ) {
                                                                 return (
                                                                     <div

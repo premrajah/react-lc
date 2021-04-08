@@ -1,31 +1,27 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import HeaderDark from '../header/HeaderDark'
-import Sidebar from '../menu/Sidebar'
+import { connect } from "react-redux";
+import HeaderDark from "../header/HeaderDark";
+import Sidebar from "../menu/Sidebar";
 
-import {Alert, Spinner} from 'react-bootstrap';
+import { Alert, Spinner } from "react-bootstrap";
 
+import { makeStyles } from "@material-ui/core/styles";
 
-import {makeStyles} from '@material-ui/core/styles';
-
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import TextField from '@material-ui/core/TextField';
-import ProductDetailCycle from '../../components/ProductDetailCycle'
-
+import TextField from "@material-ui/core/TextField";
+import ProductDetailCycle from "../../components/ProductDetailCycle";
+import PageHeader from "../../components/PageHeader";
 
 class ItemCycleDetail extends Component {
-
     slug;
 
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
@@ -35,41 +31,31 @@ class ItemCycleDetail extends Component {
             fields: {},
             errors: {},
             active: 0, //0 logn. 1- sign up , 3 -search,
-            formValid: false
-        }
+            formValid: false,
+        };
 
-        this.slug = props.match.params.slug
+        this.slug = props.match.params.slug;
 
-        this.getResources = this.getResources.bind(this)
-        this.getQrCode = this.getQrCode.bind(this)
-        this.loadSearches = this.loadSearches.bind(this)
-        this.showSignUpPopUp = this.showSignUpPopUp.bind(this)
-
-
-
+        this.getResources = this.getResources.bind(this);
+        this.getQrCode = this.getQrCode.bind(this);
+        this.loadSearches = this.loadSearches.bind(this);
+        this.showSignUpPopUp = this.showSignUpPopUp.bind(this);
     }
-
 
     showSignUpPopUp = (event) => {
         this.props.setLoginPopUpStatus(1);
         this.props.showLoginPopUp(true);
     };
 
-
     handleBack = () => {
-        this.props.history.goBack()
-    }
+        this.props.history.goBack();
+    };
 
     handleForward = () => {
-
-        this.props.history.go(+1)
-    }
-
-
-
+        this.props.history.go(+1);
+    };
 
     handleValidationSubmitGreen() {
-
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -80,33 +66,33 @@ class ItemCycleDetail extends Component {
             // errors["password"] = "Required";
         }
 
-
         if (!fields["email"]) {
             formIsValid = false;
             // errors["email"] = "Required";
         }
 
         if (typeof fields["email"] !== "undefined") {
+            let lastAtPos = fields["email"].lastIndexOf("@");
+            let lastDotPos = fields["email"].lastIndexOf(".");
 
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (
+                !(
+                    lastAtPos < lastDotPos &&
+                    lastAtPos > 0 &&
+                    fields["email"].indexOf("@@") === -1 &&
+                    lastDotPos > 2 &&
+                    fields["email"].length - lastDotPos > 2
+                )
+            ) {
                 formIsValid = false;
                 // errors["email"] = "Invalid email address";
             }
         }
 
-
         this.setState({ formValid: formIsValid });
-
-
     }
 
-
-
     handleValidation() {
-
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -117,18 +103,24 @@ class ItemCycleDetail extends Component {
             errors["password"] = "Required";
         }
 
-
         if (!fields["email"]) {
             formIsValid = false;
             errors["email"] = "Required";
         }
 
         if (typeof fields["email"] !== "undefined") {
+            let lastAtPos = fields["email"].lastIndexOf("@");
+            let lastDotPos = fields["email"].lastIndexOf(".");
 
-            let lastAtPos = fields["email"].lastIndexOf('@');
-            let lastDotPos = fields["email"].lastIndexOf('.');
-
-            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            if (
+                !(
+                    lastAtPos < lastDotPos &&
+                    lastAtPos > 0 &&
+                    fields["email"].indexOf("@@") === -1 &&
+                    lastDotPos > 2 &&
+                    fields["email"].length - lastDotPos > 2
+                )
+            ) {
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
@@ -138,202 +130,124 @@ class ItemCycleDetail extends Component {
         return formIsValid;
     }
 
-
-
     handleChange(field, e) {
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({ fields });
 
-        this.handleValidationSubmitGreen()
+        this.handleValidationSubmitGreen();
     }
 
-
-    handleSubmit = event => {
-
+    handleSubmit = (event) => {
         event.preventDefault();
-
 
         const form = event.currentTarget;
 
         if (this.handleValidation()) {
             this.setState({
-                btnLoading: true
-            })
+                btnLoading: true,
+            });
 
             const data = new FormData(event.target);
 
-            const username = data.get("email")
-            const password = data.get("password")
+            const username = data.get("email");
+            const password = data.get("password");
 
-
-            this.props.logIn({ "email": username, "password": password })
-
+            this.props.logIn({ email: username, password: password });
         } else {
-
         }
+    };
 
-    }
-
-
-
-    loadSearches() {
-
-
-    }
+    loadSearches() {}
 
     getQrCode() {
-
-
-
-        axios.get(baseUrl + "product/" + this.slug + "/code")
-            .then((response) => {
-
+        axios.get(baseUrl + "product/" + this.slug + "/code").then(
+            (response) => {
                 var response = response.data;
 
-
-
                 this.setState({
-
-                    codeImg: response
-                })
-
+                    codeImg: response,
+                });
             },
-                (error) => {
-
-                    var status = error.response.status
-
-
-
-
-                }
-            );
-
-
+            (error) => {
+                var status = error.response.status;
+            }
+        );
     }
-
-
 
     getResources() {
+        var url = baseUrl + "code/" + this.slug + "/expand";
 
+        axios
+            .get(
+                url
+                // {
+                //     headers: {
+                //         "Authorization" : "Bearer "+this.props.userDetail.token
+                //     }
+                // }
+            )
+            .then(
+                (response) => {
+                    var responseData = response.data.data;
 
+                    this.setState({
+                        item: responseData,
+                    });
 
-        var url = baseUrl + "code/" + this.slug+"/expand";
-
-
-
-
-        axios.get(url
-            // {
-            //     headers: {
-            //         "Authorization" : "Bearer "+this.props.userDetail.token
-            //     }
-            // }
-        )
-            .then((response) => {
-
-                var responseData = response.data.data;
-
-
-
-                this.setState({
-
-                    item: responseData
-                })
-
-                //
-                // this.loadSearches()
-                // this.getQrCode()
-
-            },
-                (error) => {
-
-
-
-
-                }
+                    //
+                    // this.loadSearches()
+                    // this.getQrCode()
+                },
+                (error) => {}
             );
-
     }
-
 
     componentWillMount() {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     }
-
 
     componentDidMount() {
-
-        this.getResources()
-
+        this.getResources();
     }
 
-
-
     render() {
-
-
-
         return (
             <div>
-
                 <Sidebar />
                 <div className="accountpage">
-
                     <HeaderDark />
 
                     <div className="container ">
-
                         <div>
+                            <PageHeader pageTitle="Product Details" subTitle="See product details and Provenance." />
 
-                            <div className={"row"}>
-                            <div className="col-12 mt-2 mb-2" >
-
-                                <h3 className={"blue-text text-heading"}>Product Details
-                                </h3>
-
-                            </div>
-                            </div>
-
-
-                            {this.state.item &&
-                            <>
-                                <ProductDetailCycle showRegister={true} item={this.state.item} />
-
-                            </>
-                            }
-
-
-
+                            {this.state.item && (
+                                <>
+                                    <ProductDetailCycle
+                                        showRegister={true}
+                                        item={this.state.item}
+                                    />
+                                </>
+                            )}
                         </div>
-
                     </div>
-
-
                 </div>
-
-
-
             </div>
         );
     }
 }
 
-
-
 const useStyles = makeStyles((theme) => ({
     paper: {
-        padding: '6px 16px',
+        padding: "6px 16px",
     },
     secondaryTail: {
         backgroundColor: theme.palette.secondary.main,
     },
 }));
 
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         // cartItems: state.cartItems,
@@ -346,23 +260,15 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(ItemCycleDetail);
+export default connect(mapStateToProps, mapDispachToProps)(ItemCycleDetail);

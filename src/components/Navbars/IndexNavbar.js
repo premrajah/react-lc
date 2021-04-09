@@ -1,8 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-// reactstrap components
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
-
 import {Nav, Navbar, NavbarBrand, NavItem} from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
@@ -12,9 +10,8 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import {makeStyles} from '@material-ui/core/styles';
-
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {makeStyles} from "@material-ui/core/styles";
 
 class ComponentsNavbar extends React.Component {
     constructor(props) {
@@ -32,17 +29,12 @@ class ComponentsNavbar extends React.Component {
         this.showLoginPopUp = this.showLoginPopUp.bind(this);
         this.logOut = this.logOut.bind(this);
         this.showSignUpPopUp = this.showSignUpPopUp.bind(this);
-        this.showProductSelection=this.showProductSelection.bind(this)
-
+        this.showProductSelection = this.showProductSelection.bind(this);
     }
-
 
     showProductSelection() {
-
-        this.props.showProductPopUp({type:"create_product",show:true})
-
+        this.props.showProductPopUp({ type: "create_product", show: true });
     }
-
 
     toggleMenu = (event) => {
         document.body.classList.add("sidemenu-open");
@@ -72,7 +64,7 @@ class ComponentsNavbar extends React.Component {
 
     componentDidMount() {
         window.addEventListener("scroll", this.changeColor);
-        if(this.props.isLoggedIn) {
+        if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
         }
     }
@@ -118,29 +110,26 @@ class ComponentsNavbar extends React.Component {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    if(response.data.data.length > 0) {
-                        this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
+                    if (response.data.data.length > 0) {
+                        this.setState({
+                            orgImage: `${
+                                response.data.data[response.data.data.length - 1].blob_url
+                            }&v=${Date.now()}`,
+                        });
 
-                        this.props.setOrgImage(response.data.data[response.data.data.length -1].blob_url)
+                        this.props.setOrgImage(
+                            response.data.data[response.data.data.length - 1].blob_url
+                        );
                     }
                 }
             })
-            .catch((error) => {
-
-            });
+            .catch((error) => {});
     };
 
     render() {
         return (
-
-
             <>
-
-
-
-                    <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
-
-
+                <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
                     <Nav className={"justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
                             <div className="row no-gutters">
@@ -187,8 +176,7 @@ class ComponentsNavbar extends React.Component {
                                         onClick={this.showProductSelection}
                                         to={"/my-products"}
                                         className="nav-link d-none d-lg-block wl-link-white"
-                                        color="default"
-                                        >
+                                        color="default">
                                         Add Product
                                     </Link>
                                 </NavItem>
@@ -256,12 +244,16 @@ class ComponentsNavbar extends React.Component {
                                         nav
                                         onClick={(e) => e.preventDefault()}
                                         className={"wl-link-white "}>
-                                        <figure
-                                            className="avatar avatar-60 border-0">
+                                        <figure className="avatar avatar-60 border-0">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
-                                                    this.props.orgImage  ? (
-                                                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                                    this.props.orgImage ? (
+                                                        <div
+                                                            style={{
+                                                                display: "flex",
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                            }}>
                                                             <img
                                                                 src={this.props.orgImage}
                                                                 alt=""
@@ -269,18 +261,20 @@ class ComponentsNavbar extends React.Component {
                                                                     maxHeight: "30px",
                                                                     maxWidth: "30px",
                                                                     objectFit: "contain",
-                                                                    width: '30px',
-                                                                    height: '30px'
+                                                                    width: "30px",
+                                                                    height: "30px",
                                                                 }}
                                                             />
                                                         </div>
                                                     ) : this.props.userDetail.firstName ? (
                                                         this.props.userDetail.firstName.substr(0, 2)
                                                     ) : (
-                                                        this.props.userDetail.orgId && this.props.userDetail.orgId.substr(4, 2)
+                                                        this.props.userDetail.orgId &&
+                                                        this.props.userDetail.orgId.substr(4, 2)
                                                     )
                                                 ) : (
-                                                    this.props.userDetail.orgId && this.props.userDetail.orgId.substr(4, 2)
+                                                    this.props.userDetail.orgId &&
+                                                    this.props.userDetail.orgId.substr(4, 2)
                                                 )}
                                             </span>
                                         </figure>
@@ -321,7 +315,6 @@ class ComponentsNavbar extends React.Component {
                                             Statistics
                                         </Link>
 
-
                                         <Link className={"dropdown-item"} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account
@@ -348,39 +341,30 @@ class ComponentsNavbar extends React.Component {
                             </button>
                         </NavItem>
                     </Nav>
-                        {this.props.loading && <LinearIndeterminate/>}
-
-
-                    </Navbar>
-
-
-                </>
+                    {this.props.loading && <LinearIndeterminate />}
+                </Navbar>
+            </>
         );
     }
 }
-
-
 
 function LinearIndeterminate() {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-
-            <LinearProgress   style={{backgroundColor:"#212529"}}  />
-
+            <LinearProgress style={{ backgroundColor: "#212529" }} />
         </div>
     );
 }
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
-        right:0,
+        right: 0,
         position: "absolute",
-        top:"100%",
-        width: '100%',
-        '& > * + *': {
+        top: "100%",
+        width: "100%",
+        "& > * + *": {
             marginTop: theme.spacing(2),
         },
     },
@@ -407,8 +391,6 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
-
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);

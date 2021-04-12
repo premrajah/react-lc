@@ -25,6 +25,7 @@ import ProductEditForm from "./ProductEditForm";
 import MoreMenu from "./MoreMenu";
 import AutocompleteCustom from "./AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
+import AddImagesToProduct from "./UploadImages/AddImagesToProduct";
 
 class ProductDetail extends Component {
     slug;
@@ -65,6 +66,7 @@ class ProductDetail extends Component {
             org_id: null,
             currentReleaseId: null,
             cancelReleaseSuccess: false,
+            imagesUploadStatusFromDocumentsTab: '',
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -622,15 +624,15 @@ class ProductDetail extends Component {
     }
 
     getQrCode() {
-        this.interval = setInterval(() => {
-            this.setState({
-                productQrCode: null,
-            });
+        // this.interval = setInterval(() => {
+        //     this.setState({
+        //         productQrCode: null,
+        //     });
 
             this.setState({
                 productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`,
             });
-        }, 2000);
+        // }, 2000);
     }
 
     getListing() {
@@ -761,6 +763,10 @@ class ProductDetail extends Component {
             if (this.state.showRegister && this.state.isLoggedIn && this.state.userDetail)
                 this.getSites();
         }
+    }
+
+    handleCallBackImagesUploadStatus = (status) => {
+        this.setState({imagesUploadStatusFromDocumentsTab: status});
     }
 
     render() {
@@ -1170,6 +1176,13 @@ class ProductDetail extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="documents" title="Documents">
+
+                                                <AddImagesToProduct productKey={this.state.item.product._key} handleCallBackImagesUploadStatus={(status) => this.handleCallBackImagesUploadStatus(status)}  />
+
+                                                <div className="row">
+                                                    <div className="col">{this.state.imagesUploadStatusFromDocumentsTab}</div>
+                                                </div>
+
                                                 <p className="mt-1 mb-3 text-gray-light">If documents have been added, please find the links to download below</p>
                                                 {this.state.item.artifacts.length > 0 ? (
                                                     this.state.item.artifacts.map(

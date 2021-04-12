@@ -91,7 +91,7 @@ function SiteTrailsTimeline(props) {
                                     </p>
                                 </Typography>
                                 <Typography variant="caption" component="div">
-                                    Currently is located at
+                                    Currently located at
                                 </Typography>
                                 <Typography
                                     className="blue-text"

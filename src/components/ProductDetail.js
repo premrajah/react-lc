@@ -979,23 +979,14 @@ class ProductDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {this.state.item.product.category},
-                                                            {this.state.item.product.type},
-                                                            {this.state.item.product.state}
-                                                            {this.state.item.product.volume}
-                                                            {this.state.item.product.units}
+                                                            <span className="mr-1">{this.state.item.product.category},</span>
+                                                            <span className="mr-1">{this.state.item.product.type},</span>
+                                                            <span className="mr-1">{this.state.item.product.state},</span>
+                                                            <span >{this.state.item.product.volume}</span>
+                                                            <span >{this.state.item.product.units}</span>
                                                         </p>
                                                     </div>
                                                 </div>
-
-                                                {/*<div className="row  justify-content-start search-container  pb-2">*/}
-
-                                                {/*<div className={"col-auto"}>*/}
-
-                                                {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
-                                                {/*<p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>*/}
-                                                {/*</div>*/}
-                                                {/*</div>*/}
 
                                                 {this.state.item &&
                                                     this.state.item.product.year_of_making && (
@@ -1084,27 +1075,13 @@ class ProductDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="text-mute text-bold text-blue mb-1">
-                                                            State
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            {this.state.item.product.state}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="row  justify-content-start search-container  pb-2 ">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
                                                             Located At
                                                         </p>
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {this.state.item.site.name},
-                                                            {this.state.item.site.address}
+                                                            <span className="mr-1">{this.state.item.site.name},</span>
+                                                            <span>{this.state.item.site.address}</span>
                                                         </p>
                                                     </div>
                                                 </div>

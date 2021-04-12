@@ -129,8 +129,8 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.map((item) => (
-                            <>
+                        {this.props.productWithoutParentList.map((item, index) => (
+                            <div key={index}>
                                 <ProductItem
                                     goToLink={true}
                                     delete={false}
@@ -139,7 +139,7 @@ class Products extends Component {
                                     duplicate={true}
                                     item={item}
                                 />
-                            </>
+                            </div>
                         ))}
                     </div>
 

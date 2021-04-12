@@ -1115,7 +1115,7 @@ class ProductDetail extends Component {
                                                             className="text-mute text-bold text-blue mb-1">
                                                             Service Agent
                                                         </p>
-                                                        <p
+                                                        <div
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
                                                             <Org
@@ -1124,7 +1124,7 @@ class ProductDetail extends Component {
                                                                         ._id
                                                                 }
                                                             />
-                                                        </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </Tab>

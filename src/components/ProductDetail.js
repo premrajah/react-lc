@@ -1129,7 +1129,7 @@ class ProductDetail extends Component {
                                                 </div>
                                             </Tab>
 
-                                            <Tab eventKey="subproducts" title="Subproducts">
+                                            <Tab eventKey="subproducts" title="Sub Products">
                                                 <p
                                                     style={{ margin: "10px 0px" }}
                                                     className={

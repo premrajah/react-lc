@@ -26,6 +26,7 @@ import MoreMenu from "./MoreMenu";
 import AutocompleteCustom from "./AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
 import AddImagesToProduct from "./UploadImages/AddImagesToProduct";
+import AddedDocumentsDisplay from "./UploadImages/AddedDocumentsDisplay";
 
 class ProductDetail extends Component {
     slug;
@@ -1179,44 +1180,12 @@ class ProductDetail extends Component {
 
                                                 <AddImagesToProduct productKey={this.state.item.product._key} handleCallBackImagesUploadStatus={(status) => this.handleCallBackImagesUploadStatus(status)}  />
 
-                                                <div className="row">
+                                                <div className="row mb-3">
                                                     <div className="col">{this.state.imagesUploadStatusFromDocumentsTab}</div>
                                                 </div>
 
-                                                <p className="mt-1 mb-3 text-gray-light">If documents have been added, please find the links to download below</p>
-                                                {this.state.item.artifacts.length > 0 ? (
-                                                    this.state.item.artifacts.map(
-                                                        (artifact, index) => {
-                                                            if (
-                                                                artifact.mime_type ===
-                                                                    "application/pdf" ||
-                                                                artifact.mime_type ===
-                                                                    "application/rtf" ||
-                                                                artifact.mime_type ===
-                                                                    "application/msword" ||
-                                                                artifact.mime_type === "text/rtf" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                                                                artifact.mime_type === "application/vnd.ms-excel"
-                                                            ) {
-                                                                return (
-                                                                    <div
-                                                                        key={index}
-                                                                        className="mt-1 mb-2">
-                                                                        <a
-                                                                            className="btn-link"
-                                                                            href={artifact.blob_url}
-                                                                            target="_blank">
-                                                                            {artifact.blob_name}
-                                                                        </a>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        }
-                                                    )
-                                                ) : (
-                                                    <div>No documents added.</div>
-                                                )}
+                                                <AddedDocumentsDisplay artifacts={this.state.item.artifacts} />
+
                                             </Tab>
                                         </Tabs>
                                     </div>

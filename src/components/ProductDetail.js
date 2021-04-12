@@ -767,7 +767,13 @@ class ProductDetail extends Component {
     }
 
     handleCallBackImagesUploadStatus = (status) => {
+        if(!status) return;
         this.setState({imagesUploadStatusFromDocumentsTab: status});
+    }
+
+    handleProductReloadFromDocumentTab = (productKey) => {
+        if(!productKey) return;
+        this.loadProduct(productKey);
     }
 
     render() {
@@ -1178,7 +1184,10 @@ class ProductDetail extends Component {
                                             )}
                                             <Tab eventKey="documents" title="Documents">
 
-                                                <AddImagesToProduct productKey={this.state.item.product._key} handleCallBackImagesUploadStatus={(status) => this.handleCallBackImagesUploadStatus(status)}  />
+                                                <AddImagesToProduct
+                                                    handleCallBackImagesUploadStatus={(status) => this.handleCallBackImagesUploadStatus(status)}
+                                                    handleProductReload={(productKey) => this.handleProductReloadFromDocumentTab(productKey)}
+                                                />
 
                                                 <div className="row mb-3">
                                                     <div className="col">{this.state.imagesUploadStatusFromDocumentsTab}</div>

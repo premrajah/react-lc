@@ -5,6 +5,7 @@ import { Spinner } from "react-bootstrap";
 import { Cancel, Check, Error } from "@material-ui/icons";
 import axios from "axios";
 import { connect } from "react-redux";
+import {withRouter} from 'react-router-dom'
 
 class AddImagesToProduct extends Component {
     state = {
@@ -13,8 +14,13 @@ class AddImagesToProduct extends Component {
         productKey: null,
     };
 
-    componentDidMount() {
-        this.setState({ productKey: this.props.productKey });
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let pathMatch = this.props.match.params.slug;
+
+        if(prevProps.match.params.slug !== this.props.match.params.slug) {
+            this.setState({productKey: pathMatch});
+        }
     }
 
     handleChangeFile = (event) => {
@@ -55,6 +61,7 @@ class AddImagesToProduct extends Component {
     handleUploadImagesToServer = () => {
         this.handleCallbackImagesUploadStatus('');
         this.addArtifactsToProduct(this.state.productKey, this.state.images);
+        this.handleProductReload(this.state.productKey);
     };
 
     getBase64(file) {
@@ -70,6 +77,10 @@ class AddImagesToProduct extends Component {
     handleCallbackImagesUploadStatus = (imageUploadStatus) => {
         this.props.handleCallBackImagesUploadStatus(imageUploadStatus);
     };
+
+    handleProductReload = (productKey) => {
+        this.props.handleProductReload(productKey);
+    }
 
     addArtifactsToProduct = (productKey, images) => {
         if (!productKey || !images.length > 0) return;
@@ -117,11 +128,6 @@ class AddImagesToProduct extends Component {
                                 },
                                 data_as_base64_string: btoa(data),
                             }
-                            // {
-                            //     headers: {
-                            //         Authorization: `Bearer ${this.props.userDetail.token}`,
-                            //     },
-                            // }
                         )
                         .then((res) => {
                             //
@@ -307,4 +313,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(AddImagesToProduct);
+export default withRouter(connect(mapStateToProps)(AddImagesToProduct));

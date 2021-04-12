@@ -1129,7 +1129,7 @@ class ProductDetail extends Component {
                                                 </div>
                                             </Tab>
 
-                                            <Tab eventKey="subproducts" title="Sub Products">
+                                            <Tab eventKey="subproducts" title="Subproducts">
                                                 <p
                                                     style={{ margin: "10px 0px" }}
                                                     className={
@@ -1138,7 +1138,7 @@ class ProductDetail extends Component {
                                                     <span
                                                         data-parent={this.state.item.product._key}
                                                         onClick={this.showProductSelection}>
-                                                        Link Sub Product
+                                                        Link Subproducts
                                                     </span>
                                                 </p>
 

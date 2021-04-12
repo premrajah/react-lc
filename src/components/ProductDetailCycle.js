@@ -863,7 +863,7 @@ class ProductDetailCycle extends Component {
                                     </Tab>
 
                                     {this.state.subProducts.length > 0 && (
-                                        <Tab eventKey="subproducts" title="Sub Products">
+                                        <Tab eventKey="subproducts" title="Subproducts">
                                             {this.state.subProducts.map((item) => (
                                                 <ProductItemNew
                                                     hideMore={true}

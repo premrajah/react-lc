@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import {connect} from "react-redux";
+import { baseUrl } from "../Util/Constants";
+import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import {Modal} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import moment from "moment/moment";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import MoreMenu from "./MoreMenu";
 import ProductEditForm from "./ProductEditForm";
 import ProductDetail from "./ProductDetail";
@@ -196,18 +196,16 @@ class ProductItemNew extends Component {
                     ? baseUrl + "product/" + this.props.item.product._key + "/artifact"
                     : baseUrl + "product/" + this.props.item._key + "/artifact";
 
-            axios.get(url).then(
-                (response) => {
-                    var responseAll = response.data.data;
+            axios
+                .get(url)
+                .then((response) => {
+                    let responseAll = response.data.data;
 
                     this.setState({
                         images: responseAll,
                     });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
+                })
+                .catch((error) => {});
         }
     }
 
@@ -239,11 +237,11 @@ class ProductItemNew extends Component {
                                         {this.props.item.product.purpose}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                        {this.props.item.product.category},{" "}
-                                        {this.props.item.product.type},{" "}
-                                        {this.props.item.product.state}{" "}
-                                        {this.props.item.product.volume}{" "}
-                                        {this.props.item.product.units}
+                                        <span className="mr-1">{this.props.item.product.category},</span>
+                                        <span className="mr-1">{this.props.item.product.type},</span>
+                                        <span className="mr-1">{this.props.item.product.state},</span>
+                                        <span >{this.props.item.product.volume}</span>
+                                        <span>{this.props.item.product.units}</span>
                                     </p>
                                     {this.props.item.search_ids && (
                                         <p
@@ -264,10 +262,10 @@ class ProductItemNew extends Component {
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
                                     <p className={"text-gray-light small"}>
-                                        {" "}
+
                                         {moment(this.props.item.product._ts_epoch_ms).format(
                                             "DD MMM YYYY"
-                                        )}{" "}
+                                        )}
                                     </p>
 
                                     {!this.props.hideMore && (
@@ -308,9 +306,11 @@ class ProductItemNew extends Component {
                                         {this.props.item.purpose}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                        {this.props.item.category}, {this.props.item.type},{" "}
-                                        {this.props.item.state} {this.props.item.volume}{" "}
-                                        {this.props.item.units}
+                                        <span className="mr-1">{this.props.item.category},</span>
+                                        <span className="mr-1">{this.props.item.type},</span>
+                                        <span className="mr-1">{this.props.item.state},</span>
+                                        <span>{this.props.item.volume}</span>
+                                        <span>{this.props.item.units}</span>
                                     </p>
                                     {this.props.item.search_ids && (
                                         <p
@@ -331,10 +331,10 @@ class ProductItemNew extends Component {
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
                                     <p className={"text-gray-light small"}>
-                                        {" "}
+
                                         {moment(this.props.item._ts_epoch_ms).format(
                                             "DD MMM YYYY"
-                                        )}{" "}
+                                        )}
                                     </p>
                                     <MoreMenu
                                         triggerCallback={(action) => this.callBackResult(action)}

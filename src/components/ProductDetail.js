@@ -1122,7 +1122,7 @@ class ProductDetail extends Component {
                                                 {this.state.item.sub_products.length > 0 && (
                                                     <>
                                                         {this.state.item.sub_products.map(
-                                                            (item) => (
+                                                            (item, index) => (
                                                                 <ProductItemNew
                                                                     goToLink={true}
                                                                     history={this.props.history}
@@ -1134,6 +1134,7 @@ class ProductDetail extends Component {
                                                                     remove={true}
                                                                     edit={false}
                                                                     item={item}
+                                                                    key={index}
                                                                 />
                                                             )
                                                         )}

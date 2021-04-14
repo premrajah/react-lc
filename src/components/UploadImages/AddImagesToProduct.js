@@ -14,6 +14,10 @@ class AddImagesToProduct extends Component {
         productKey: null,
     };
 
+    componentDidMount() {
+        this.setState({productKey: this.props.match.params.slug});
+    }
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let pathMatch = this.props.match.params.slug;

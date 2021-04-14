@@ -222,7 +222,7 @@ class ProductItemNew extends Component {
                                     {this.state.images.length > 0 ? (
                                         <img
                                             className={"img-fluid img-list"}
-                                            src={this.state.images[0].blob_url}
+                                            src={((this.state.images.find(item => (item.mime_type === 'image/jpeg' || item.mime_type === 'image/png')) || {}).blob_url) || ''}
                                             alt=""
                                         />
                                     ) : (

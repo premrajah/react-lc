@@ -1,18 +1,18 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {makeStyles} from "@material-ui/core/styles";
-import {baseUrl, frontEndUrl} from "../Util/Constants";
+import { makeStyles } from "@material-ui/core/styles";
+import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
+import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
+import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from "./ProductItemNew";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
@@ -67,7 +67,7 @@ class ProductDetail extends Component {
             org_id: null,
             currentReleaseId: null,
             cancelReleaseSuccess: false,
-            imagesUploadStatusFromDocumentsTab: '',
+            imagesUploadStatusFromDocumentsTab: "",
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -136,8 +136,6 @@ class ProductDetail extends Component {
     };
 
     companyDetails = (detail) => {
-
-
         if (detail.org) {
             this.setState({
                 org_id: detail.org,
@@ -152,8 +150,6 @@ class ProductDetail extends Component {
                     this.setState({
                         org_id: responseAll._key,
                     });
-
-
                 },
                 (error) => {}
             );
@@ -218,6 +214,7 @@ class ProductDetail extends Component {
             (error) => {}
         );
     }
+
     handleSubmitOrg() {
         var email = this.state.email;
 
@@ -251,6 +248,7 @@ class ProductDetail extends Component {
             showOrgForm: !this.state.showOrgForm,
         });
     }
+
     showReleaseProduct() {
         this.setState({
             errorRelease: false,
@@ -630,9 +628,9 @@ class ProductDetail extends Component {
         //         productQrCode: null,
         //     });
 
-            this.setState({
-                productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`,
-            });
+        this.setState({
+            productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`,
+        });
         // }, 2000);
     }
 
@@ -767,14 +765,14 @@ class ProductDetail extends Component {
     }
 
     handleCallBackImagesUploadStatus = (status) => {
-        if(!status) return;
-        this.setState({imagesUploadStatusFromDocumentsTab: status});
-    }
+        if (!status) return;
+        this.setState({ imagesUploadStatusFromDocumentsTab: status });
+    };
 
     handleProductReloadFromDocumentTab = (productKey) => {
-        if(!productKey) return;
+        if (!productKey) return;
         this.loadProduct(productKey);
-    }
+    };
 
     render() {
         const classes = withStyles();
@@ -979,11 +977,21 @@ class ProductDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            <span className="mr-1">{this.state.item.product.category},</span>
-                                                            <span className="mr-1">{this.state.item.product.type},</span>
-                                                            <span className="mr-1">{this.state.item.product.state},</span>
-                                                            <span >{this.state.item.product.volume}</span>
-                                                            <span >{this.state.item.product.units}</span>
+                                                            <span className="mr-1">
+                                                                {this.state.item.product.category},
+                                                            </span>
+                                                            <span className="mr-1">
+                                                                {this.state.item.product.type},
+                                                            </span>
+                                                            <span className="mr-1">
+                                                                {this.state.item.product.state},
+                                                            </span>
+                                                            <span>
+                                                                {this.state.item.product.volume}
+                                                            </span>
+                                                            <span>
+                                                                {this.state.item.product.units}
+                                                            </span>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1000,7 +1008,6 @@ class ProductDetail extends Component {
                                                                 <p
                                                                     style={{ fontSize: "18px" }}
                                                                     className="  mb-1">
-
                                                                     {
                                                                         this.state.item.product
                                                                             .year_of_making
@@ -1080,8 +1087,12 @@ class ProductDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            <span className="mr-1">{this.state.item.site.name},</span>
-                                                            <span>{this.state.item.site.address}</span>
+                                                            <span className="mr-1">
+                                                                {this.state.item.site.name},
+                                                            </span>
+                                                            <span>
+                                                                {this.state.item.site.address}
+                                                            </span>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1161,18 +1172,31 @@ class ProductDetail extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="documents" title="Documents">
-
                                                 <AddImagesToProduct
-                                                    handleCallBackImagesUploadStatus={(status) => this.handleCallBackImagesUploadStatus(status)}
-                                                    handleProductReload={(productKey) => this.handleProductReloadFromDocumentTab(productKey)}
+                                                    handleCallBackImagesUploadStatus={(status) =>
+                                                        this.handleCallBackImagesUploadStatus(
+                                                            status
+                                                        )
+                                                    }
+                                                    handleProductReload={(productKey) =>
+                                                        this.handleProductReloadFromDocumentTab(
+                                                            productKey
+                                                        )
+                                                    }
                                                 />
 
                                                 <div className="row mb-3">
-                                                    <div className="col">{this.state.imagesUploadStatusFromDocumentsTab}</div>
+                                                    <div className="col">
+                                                        {
+                                                            this.state
+                                                                .imagesUploadStatusFromDocumentsTab
+                                                        }
+                                                    </div>
                                                 </div>
 
-                                                <AddedDocumentsDisplay artifacts={this.state.item.artifacts} />
-
+                                                <AddedDocumentsDisplay
+                                                    artifacts={this.state.item.artifacts}
+                                                />
                                             </Tab>
                                         </Tabs>
                                     </div>

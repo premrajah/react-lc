@@ -1,10 +1,10 @@
-import React from 'react';
-import {connect} from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import InfoIcon from '@material-ui/icons/Info';
-import {makeStyles} from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
+import InfoIcon from "@material-ui/icons/Info";
+import { makeStyles } from "@material-ui/core/styles";
+import Popover from "@material-ui/core/Popover";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -12,8 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
- function CompanyInfo(props) {
+function CompanyInfo(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -30,19 +29,13 @@ const useStyles = makeStyles((theme) => ({
     return (
         <>
             <span
-                aria-owns={open ? 'mouse-over-popover' : undefined}
+                aria-owns={open ? "mouse-over-popover" : undefined}
                 aria-haspopup="true"
                 // onMouseEnter={handlePopoverOpen}
                 // onMouseLeave={handlePopoverClose}
 
-                onClick={handlePopoverOpen}
-            >
-
-                <InfoIcon
-                    style={{color:"#27245C", backgroundColor:"white"}}
-
-                />
-
+                onClick={handlePopoverOpen}>
+                <InfoIcon style={{ color: "#27245C", backgroundColor: "white" }} />
             </span>
             <Popover
                 id="mouse-over-popover"
@@ -53,38 +46,29 @@ const useStyles = makeStyles((theme) => ({
                 open={open}
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: "bottom",
+                    horizontal: "left",
                 }}
                 transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
+                    vertical: "top",
+                    horizontal: "left",
                 }}
                 onClose={handlePopoverClose}
-                disableRestoreFocus
-            >
+                disableRestoreFocus>
                 <Typography>
-
                     <div className="row no-gutters justify-content-center p-2  ">
                         <div className={"col-12 "}>
                             <h6>{props.item.name}</h6>
                         </div>
-                        <div className={"col-12 "}>
-                             {props.item.description}
-                        </div>
-
+                        <div className={"col-12 "}>{props.item.description}</div>
                     </div>
-
                 </Typography>
             </Popover>
         </>
     );
 }
 
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         // cartItems: state.cartItems,
@@ -97,28 +81,15 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
-
-
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(CompanyInfo);
-
+export default connect(mapStateToProps, mapDispachToProps)(CompanyInfo);

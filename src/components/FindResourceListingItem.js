@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Image} from "react-bootstrap";
+import { Card, Image } from "react-bootstrap";
 import moment from "moment/moment";
 import PlaceHolderImage from "../img/place-holder-lc.png";
 import Org from "./Org/Org";
@@ -24,12 +24,13 @@ const FindResourceListingItem = ({ item }) => {
                         <Card.Subtitle>{listing.description}</Card.Subtitle>
                     ) : null}
                     {org ? (
-                            <span>Seller: <Org orgId={org._id} orgDescription={org.description} /></span>
+                        <span>
+                            Seller: <Org orgId={org._id} orgDescription={org.description} />
+                        </span>
                     ) : null}
                 </Card>
             </div>
             <div className="col-lg-4 col-sm-12">
-
                 {listing.price ? (
                     <p align="right" style={{ fontWeight: "bold" }}>
                         <span className="green-text">
@@ -45,8 +46,19 @@ const FindResourceListingItem = ({ item }) => {
                     </p>
                 ) : null}
 
-                {listing ? <div align="right">Created: {moment(listing._ts_epoch_ms).format('DD/MM/YY')}</div> : null}
-                {listing ? <div align="right">Available {moment(listing.available_from_epoch_ms).format('DD/MM/YY') +' - '+ moment(listing.expire_after_epoch_ms).format('DD/MM/YY')}</div> : null}
+                {listing ? (
+                    <div align="right">
+                        Created: {moment(listing._ts_epoch_ms).format("DD/MM/YY")}
+                    </div>
+                ) : null}
+                {listing ? (
+                    <div align="right">
+                        Available{" "}
+                        {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
+                            " - " +
+                            moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}
+                    </div>
+                ) : null}
             </div>
         </div>
     );

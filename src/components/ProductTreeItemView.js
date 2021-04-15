@@ -1,296 +1,242 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import PropTypes from 'prop-types';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import {makeStyles, withStyles,} from '@material-ui/core/styles';
-import TreeItem from '@material-ui/lab/TreeItem';
-import Typography from '@material-ui/core/Typography';
-
+import { baseUrl } from "../Util/Constants";
+import PropTypes from "prop-types";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import TreeItem from "@material-ui/lab/TreeItem";
+import Typography from "@material-ui/core/Typography";
 
 class ProductTreeItemView extends Component {
-
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
             fields: {},
             errors: {},
-            products:[],
-            currentSubProducts:[],
-            tree:[],
-            open:false,
-            selected: false
+            products: [],
+            currentSubProducts: [],
+            tree: [],
+            open: false,
+            selected: false,
+        };
 
-        }
-
-        this.getSubProducts=this.getSubProducts.bind(this)
-        this.setTree=this.setTree.bind(this)
-        this.setSelected=this.setSelected.bind(this)
-
-
-
+        this.getSubProducts = this.getSubProducts.bind(this);
+        this.setTree = this.setTree.bind(this);
+        this.setSelected = this.setSelected.bind(this);
     }
 
+    setSelected(event) {
+        var currentProductId = event.currentTarget.dataset.id;
 
-
-    setSelected(event){
-
-
-        var currentProductId = event.currentTarget.dataset.id
-
-        this.props.triggerCallback(currentProductId)
+        this.props.triggerCallback(currentProductId);
 
         // this.setState({
         //     selected:! this.state.selected
         // })
     }
 
-    setOpen(){
-
-
+    setOpen() {
         this.setState({
-            open:! this.state.open
-        })
+            open: !this.state.open,
+        });
     }
 
+    componentWillMount() {}
 
-
-
-    componentWillMount() {
-    }
-
-
-    setTree(){
-
-
-
+    setTree() {
         this.setState({
+            tree: [],
+        });
 
-            tree:[]
-        })
+        let list = this.state.products;
 
-        let list= this.state.products
+        let tree = this.state.tree;
 
-        let tree= this.state.tree
-
-        for (let i=0;i<list.length;i++) {
-
-
+        for (let i = 0; i < list.length; i++) {
             if (list[i].product.is_listable) {
-
-
                 var treeItem;
 
                 // treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
 
-
                 treeItem = {
                     id: list[i].product._key,
                     // name: list[i].listing ? list[i].product.name + "(NA)" : list[i].product.name,
-                    name: list[i].listing ? list[i].product.name  : list[i].product.name,
+                    name: list[i].listing ? list[i].product.name : list[i].product.name,
 
                     sub_products: [],
-                    canSelect: list[i].listing ? false : true
-                }
-
+                    canSelect: list[i].listing ? false : true,
+                };
 
                 if (list[i].sub_products.length > 0) {
-
-                    var sub_products = []
+                    var sub_products = [];
 
                     for (let k = 0; k < list[i].sub_products.length; k++) {
-
-                        sub_products.push({ id: list[i].sub_products[k]._key, name: list[i].sub_products[k].name })
-
+                        sub_products.push({
+                            id: list[i].sub_products[k]._key,
+                            name: list[i].sub_products[k].name,
+                        });
                     }
 
-                    treeItem.sub_products = sub_products
-
+                    treeItem.sub_products = sub_products;
                 }
 
-
-                tree.push(treeItem)
-
+                tree.push(treeItem);
             }
 
-
             this.setState({
-
-                tree: tree
-            })
+                tree: tree,
+            });
         }
-
-
-
-
-    }
-    componentDidMount() {
-
-
-
     }
 
+    componentDidMount() {}
 
+    getSubProducts(event) {
+        event.stopPropagation();
 
-    getSubProducts(event){
-
-
-     event.stopPropagation()
-
-      this.setOpen()
+        this.setOpen();
 
         if (!this.state.open) {
+            var currentProductId = event.currentTarget.dataset.id;
 
-            var currentProductId = event.currentTarget.dataset.id
-
-
-
-            axios.get(baseUrl + "product/" + currentProductId + "/sub-product/expand",
-                {
+            axios
+                .get(baseUrl + "product/" + currentProductId + "/sub-product/expand", {
                     headers: {
-                        "Authorization": "Bearer " + this.props.token
-                    }
-                }
-            )
-                .then((response) => {
-
+                        Authorization: "Bearer " + this.props.token,
+                    },
+                })
+                .then(
+                    (response) => {
                         var responseAll = response.data.data;
 
                         this.setState({
+                            products: responseAll,
+                        });
 
-                            products: responseAll
-                        })
-
-
-                        this.setTree()
-
-
+                        this.setTree();
                     },
                     (error) => {
-
                         // var status = error.response.status
-
-
-
-
                     }
                 );
-
         }
-
     }
 
     render() {
-
         // const classes = useStyles();
         const classes = withStyles();
         const classesBottom = withStyles();
 
-
         return (
-
             <>
-                <div className={"tree-item-container"} style={{ "padding": "5px"}} >
-
-                    <p> {this.props.item.sub_products.length>0 ?
-                        (this.state.open?<MinusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"}/>:<PlusSquare data-id={this.props.item.id} onClick={this.getSubProducts.bind(this)} className={"mr-2"} />):<span className={"mr-4"}></span>}
-
-                        <span data-id={this.props.item.id} onClick={this.props.item.canSelect&&this.setSelected} className={this.props.item.canSelect?(this.props.selected===this.props.item.id?"tree-view-item-selected tree-view-item":"tree-view-item"):"tree-view-item text-mute"}>{this.props.item.name} - {this.props.item.sub_products.length+" Sub Products"}</span></p>
-                    {this.state.open &&this.state.tree.map((item) =>
-                        <>
-                        <div  style={{"marginLeft": "25px", "padding": "5px",marginBottom:"5px"}} >
-
-                        <ProductTreeItemView selected={this.props.selected} triggerCallback={(productId)=>this.props.triggerCallback(productId)}  item={item}  token={this.props.token}  />
-
-                        </div>
-                        </>
-                    )}
-                 </div>
-
+                <div className={"tree-item-container"} style={{ padding: "5px" }}>
+                    <p>
+                        {" "}
+                        {this.props.item.sub_products.length > 0 ? (
+                            this.state.open ? (
+                                <MinusSquare
+                                    data-id={this.props.item.id}
+                                    onClick={this.getSubProducts.bind(this)}
+                                    className={"mr-2"}
+                                />
+                            ) : (
+                                <PlusSquare
+                                    data-id={this.props.item.id}
+                                    onClick={this.getSubProducts.bind(this)}
+                                    className={"mr-2"}
+                                />
+                            )
+                        ) : (
+                            <span className={"mr-4"}></span>
+                        )}
+                        <span
+                            data-id={this.props.item.id}
+                            onClick={this.props.item.canSelect && this.setSelected}
+                            className={
+                                this.props.item.canSelect
+                                    ? this.props.selected === this.props.item.id
+                                        ? "tree-view-item-selected tree-view-item"
+                                        : "tree-view-item"
+                                    : "tree-view-item text-mute"
+                            }>
+                            {this.props.item.name} -{" "}
+                            {this.props.item.sub_products.length + " Sub Products"}
+                        </span>
+                    </p>
+                    {this.state.open &&
+                        this.state.tree.map((item) => (
+                            <>
+                                <div
+                                    style={{
+                                        marginLeft: "25px",
+                                        padding: "5px",
+                                        marginBottom: "5px",
+                                    }}>
+                                    <ProductTreeItemView
+                                        selected={this.props.selected}
+                                        triggerCallback={(productId) =>
+                                            this.props.triggerCallback(productId)
+                                        }
+                                        item={item}
+                                        token={this.props.token}
+                                    />
+                                </div>
+                            </>
+                        ))}
+                </div>
             </>
-
-
-
         );
     }
 }
 
-
-
-
-
 function GetTreeItem({ comment }) {
-
-
-    const nestedComments = (comment.children || []).map(comment => {
-        return <GetTreeItem key={comment.id} comment={comment} type="child" />
-    })
+    const nestedComments = (comment.children || []).map((comment) => {
+        return <GetTreeItem key={comment.id} comment={comment} type="child" />;
+    });
 
     return (
-
         <StyledTreeItem
             nodeId="5"
             labelText={"Nothing "}
             labelInfo="90"
             color="#1a73e8"
-            bgColor="#e8f0fe"
-        >
+            bgColor="#e8f0fe">
             <div>{comment.text}</div>
             {nestedComments}
-
         </StyledTreeItem>
-    )
+    );
 }
-
 
 function Comment({ comment }) {
-
-    const nestedComments = (comment.children || []).map(comment => {
-        return <Comment key={comment.id} comment={comment} type="child" />
-    })
+    const nestedComments = (comment.children || []).map((comment) => {
+        return <Comment key={comment.id} comment={comment} type="child" />;
+    });
 
     return (
-
-        <div style={{"marginLeft": "25px", "marginTop": "10px"}}>
-
+        <div style={{ marginLeft: "25px", marginTop: "10px" }}>
             <div>{comment.text}</div>
             {nestedComments}
-
         </div>
-    )
+    );
 }
-
 
 function GetSubItems(props) {
-
     return (
-
         <>
-
-        {props.show&&
-     <StyledTreeItem
-        nodeId="5"
-        labelText={"Nothing "}
-        labelInfo="90"
-        color="#1a73e8"
-        bgColor="#e8f0fe"
-    >
-    </StyledTreeItem>
-}
-
-</>
+            {props.show && (
+                <StyledTreeItem
+                    nodeId="5"
+                    labelText={"Nothing "}
+                    labelInfo="90"
+                    color="#1a73e8"
+                    bgColor="#e8f0fe"></StyledTreeItem>
+            )}
+        </>
     );
-
-
-
-
 }
-
-
 
 function MinusSquare(props) {
     return (
@@ -319,20 +265,18 @@ function CloseSquare(props) {
     );
 }
 
-
-
 const useTreeItemStyles = makeStyles((theme) => ({
     root: {
         color: theme.palette.text.secondary,
-        '&:hover > $content': {
+        "&:hover > $content": {
             backgroundColor: theme.palette.action.hover,
         },
-        '&:focus > $content, &$selected > $content': {
+        "&:focus > $content, &$selected > $content": {
             backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
-            color: 'var(--tree-view-color)',
+            color: "var(--tree-view-color)",
         },
-        '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label': {
-            backgroundColor: 'transparent',
+        "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label": {
+            backgroundColor: "transparent",
         },
     },
     content: {
@@ -341,32 +285,32 @@ const useTreeItemStyles = makeStyles((theme) => ({
         borderBottomRightRadius: theme.spacing(2),
         paddingRight: theme.spacing(1),
         fontWeight: theme.typography.fontWeightMedium,
-        '$expanded > &': {
+        "$expanded > &": {
             fontWeight: theme.typography.fontWeightRegular,
         },
     },
     group: {
         marginLeft: 0,
-        '& $content': {
+        "& $content": {
             paddingLeft: theme.spacing(2),
         },
     },
     expanded: {},
     selected: {},
     label: {
-        fontWeight: 'inherit',
-        color: 'inherit',
+        fontWeight: "inherit",
+        color: "inherit",
     },
     labelRoot: {
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
         padding: theme.spacing(0.5, 0),
     },
     labelIcon: {
         marginRight: theme.spacing(1),
     },
     labelText: {
-        fontWeight: 'inherit',
+        fontWeight: "inherit",
         flexGrow: 1,
     },
 }));
@@ -379,7 +323,6 @@ function StyledTreeItem(props) {
         <TreeItem
             label={
                 <div className={classes.labelRoot}>
-
                     <Typography variant="body2" className={classes.labelText}>
                         {labelText}
                     </Typography>
@@ -389,8 +332,8 @@ function StyledTreeItem(props) {
                 </div>
             }
             style={{
-                '--tree-view-color': color,
-                '--tree-view-bg-color': bgColor,
+                "--tree-view-color": color,
+                "--tree-view-bg-color": bgColor,
             }}
             classes={{
                 root: classes.root,
@@ -421,19 +364,11 @@ const useStyles = makeStyles({
     },
 });
 
- function GmailTreeView() {
-
-    return (
-        <></>
-    );
+function GmailTreeView() {
+    return <></>;
 }
 
-
-
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         loading: state.loading,
@@ -448,15 +383,11 @@ const mapStateToProps = state => {
         showProductView: state.loginPopUpStatus,
         productList: state.productList,
         siteList: state.siteList,
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
@@ -464,11 +395,6 @@ const mapDispachToProps = dispatch => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(ProductTreeItemView);
+export default connect(mapStateToProps, mapDispachToProps)(ProductTreeItemView);

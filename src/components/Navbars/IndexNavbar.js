@@ -1,17 +1,17 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
-import {Nav, Navbar, NavbarBrand, NavItem} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
+import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
 import LogoNew from "../../img/logo-cropped.png";
 import LogoText from "../../img/logo-text.png";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 class ComponentsNavbar extends React.Component {
     constructor(props) {
@@ -68,9 +68,11 @@ class ComponentsNavbar extends React.Component {
             this.getArtifactForOrg();
         }
     }
+
     componentWillUnmount() {
         window.removeEventListener("scroll", this.changeColor);
     }
+
     changeColor = () => {
         if (document.documentElement.scrollTop > 99 || document.body.scrollTop > 99) {
             this.setState({
@@ -203,7 +205,10 @@ class ComponentsNavbar extends React.Component {
 
                         {!this.props.isLoggedIn && (
                             <NavItem className="mr-5">
-                                <a  className="nav-link  d-lg-block" color="default" style={{color: '#fff', cursor: 'pointer'}}>
+                                <a
+                                    className="nav-link  d-lg-block"
+                                    color="default"
+                                    style={{ color: "#fff", cursor: "pointer" }}>
                                     Join Demo
                                 </a>
                             </NavItem>

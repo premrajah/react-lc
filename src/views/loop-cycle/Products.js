@@ -1,21 +1,21 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import clsx from "clsx";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import AppBar from "@material-ui/core/AppBar";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from "@material-ui/core/TextField";
 import SearchGray from "@material-ui/icons/Search";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
 
@@ -38,6 +38,7 @@ class Products extends Component {
     showProductSelection() {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
+
     getProducts() {
         this.props.showLoading(true);
         axios.get(baseUrl + "product").then(

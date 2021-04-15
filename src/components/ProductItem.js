@@ -1,308 +1,183 @@
-import React, {Component} from 'react';
-import Paper from '../img/place-holder-lc.png';
+import React, { Component } from "react";
+import Paper from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import {connect} from "react-redux";
+import { baseUrl } from "../Util/Constants";
+import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 
-
 class ProductItem extends Component {
-
-
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            offers:[]
-        }
+            offers: [],
+        };
 
-        this.acceptMatch=this.acceptMatch.bind(this)
-        this.rejectMatch=this.rejectMatch.bind(this)
-        this.makeOfferMatch=this.makeOfferMatch.bind(this)
-        this.showPopUp=this.showPopUp.bind(this)
-        this.getOffer=this.getOffer.bind(this)
-
-
-
+        this.acceptMatch = this.acceptMatch.bind(this);
+        this.rejectMatch = this.rejectMatch.bind(this);
+        this.makeOfferMatch = this.makeOfferMatch.bind(this);
+        this.showPopUp = this.showPopUp.bind(this);
+        this.getOffer = this.getOffer.bind(this);
     }
-
-
 
     showPopUp() {
-
         this.setState({
-            showPopUp: !this.state.showPopUp
-        })
-
+            showPopUp: !this.state.showPopUp,
+        });
     }
-
-
 
     getOffer() {
+        axios.get(baseUrl + "offer/match/" + this.props.item.match._key).then(
+            (response) => {
+                var responseAll = response.data;
 
-
-        axios.get(baseUrl + "offer/match/" + this.props.item.match._key
-        )
-            .then((response) => {
-
-                    var responseAll = response.data;
-
-
-
-
-                    this.setState({
-
-                        offers: responseAll.data
-
-                    })
-
-                },
-                (error) => {
-
-                }
-            );
-
+                this.setState({
+                    offers: responseAll.data,
+                });
+            },
+            (error) => {}
+        );
     }
 
-    acceptMatch(){
-
-            axios.post(baseUrl + "match/stage/accept",
-                {
-                    match_id:this.props.item.match._key,
-                    note:"Accepted"
-
-                }
-            )
-                .then(res => {
-
-
-
-                    this.setState({
-
-                        showPopUp: true
-                    })
-
-
-
-
-
-                }).catch(error => {
-
-
-
-
-
-
+    acceptMatch() {
+        axios
+            .post(baseUrl + "match/stage/accept", {
+                match_id: this.props.item.match._key,
+                note: "Accepted",
+            })
+            .then((res) => {
+                this.setState({
+                    showPopUp: true,
+                });
+            })
+            .catch((error) => {
                 // this.setState({
                 //
                 //     showPopUp: true,
                 //     loopError: error.response.data.content.message
                 // })
-
             });
-
     }
 
-    acceptOffer(event){
-
-        axios.post(baseUrl + "offer/stage",
-            {
+    acceptOffer(event) {
+        axios
+            .post(baseUrl + "offer/stage", {
                 // match_id:this.props.item.match._key,
                 // note:"Accepted"
 
-                "offer_id": event.currentTarget.dataset.id,
-                "new_stage": "accepted"
-
-            },
-        )
-            .then(res => {
-
-
-
+                offer_id: event.currentTarget.dataset.id,
+                new_stage: "accepted",
+            })
+            .then((res) => {
                 this.setState({
-
-                    showPopUp: true
-                })
-
-
-
-
-
-            }).catch(error => {
-
-
-
-
-
-
-            // this.setState({
-            //
-            //     showPopUp: true,
-            //     loopError: error.response.data.content.message
-            // })
-
-        });
-
+                    showPopUp: true,
+                });
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     showPopUp: true,
+                //     loopError: error.response.data.content.message
+                // })
+            });
     }
 
-        makeOfferMatch = event => {
+    makeOfferMatch = (event) => {
+        event.preventDefault();
 
-            event.preventDefault();
+        const form = event.currentTarget;
+        //
+        // if (this.handleValidation()){
+        //     this.setState({
+        //         btnLoading: true
+        //     })
 
+        const data = new FormData(event.target);
 
-            const form = event.currentTarget;
-            //
-            // if (this.handleValidation()){
-            //     this.setState({
-            //         btnLoading: true
-            //     })
+        const username = data.get("price");
 
-            const data = new FormData(event.target);
+        axios
+            .put(baseUrl + "offer", {
+                match_id: this.props.item.match._key,
 
-            const username = data.get("price")
-
-        axios.put(baseUrl + "offer",
-            {
-                match_id:this.props.item.match._key,
-
-            "offer": {
-            "amount": {
-                "value": 0.0,
-                    "currency": "gbp"
-            }
-
-        }
-
-            }
-        )
-            .then(res => {
-
-
-
+                offer: {
+                    amount: {
+                        value: 0.0,
+                        currency: "gbp",
+                    },
+                },
+            })
+            .then((res) => {
                 this.setState({
+                    showPopUp: false,
+                });
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     showPopUp: true,
+                //     loopError: error.response.data.content.message
+                // })
+            });
+    };
 
-                    showPopUp: false
-                })
-
-
-
-
-
-            }).catch(error => {
-
-
-
-
-
-
-            // this.setState({
-            //
-            //     showPopUp: true,
-            //     loopError: error.response.data.content.message
-            // })
-
-        });
-
-    }
-
-    rejectMatch(){
-
-
-
-
-        axios.post(baseUrl + "match/stage/decline",
-            {
-                match_id:this.props.item.match._key,
-                note:"Accepted"
-
-            },
-        )
-            .then(res => {
-
-
-
+    rejectMatch() {
+        axios
+            .post(baseUrl + "match/stage/decline", {
+                match_id: this.props.item.match._key,
+                note: "Accepted",
+            })
+            .then((res) => {
                 this.setState({
-
-                    showPopUp: true
-                })
-
-
-
-
-
-            }).catch(error => {
-
-
-
-
-
-
-
-            // this.setState({
-            //
-            //     showPopUp: true,
-            //     loopError: error.response.data.content.message
-            // })
-
-        });
-
-
-
+                    showPopUp: true,
+                });
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     showPopUp: true,
+                //     loopError: error.response.data.content.message
+                // })
+            });
     }
 
-    componentWillMount() {
-
-    }
+    componentWillMount() {}
 
     componentDidMount() {
-        this.getOffer()
+        this.getOffer();
     }
 
-
-
-
-
     render() {
-
-
         return (
-
-
-
             <div className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4">
-
-
                 <div className={"col-2"}>
-
-
-                        {this.props.item.images ? <img className={"resource-item-img img-list img-fluid"}
-                                                       src={this.props.item.images[0]} alt="" />
-                            : <img className={"img-fluid"} src={Paper} alt="" />}
-
-
+                    {this.props.item.images ? (
+                        <img
+                            className={"resource-item-img img-list img-fluid"}
+                            src={this.props.item.images[0]}
+                            alt=""
+                        />
+                    ) : (
+                        <img className={"img-fluid"} src={Paper} alt="" />
+                    )}
                 </div>
                 <div className={"col-5 pl-3 content-box-listing"}>
-
-                        <p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>
-                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.match.stage}</p>
-
+                    <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
+                        {this.props.item.listing.listing.name}
+                    </p>
+                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                        {this.props.item.match.stage}
+                    </p>
                 </div>
-
-
             </div>
-
         );
     }
 }
 
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         // cartItems: state.cartItems,
@@ -315,28 +190,15 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
-
-
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(ProductItem);
-
+export default connect(mapStateToProps, mapDispachToProps)(ProductItem);

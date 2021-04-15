@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import MessageItem from "./MessageItem";
 import _ from "lodash";
 import SendMessage from "./SendMessage";
-import {Modal} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 class Messages extends Component {
     state = {
@@ -41,21 +41,20 @@ class Messages extends Component {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((response) => {
-                this.setState({allOrgs: response.data})
+                this.setState({ allOrgs: response.data });
             })
             .catch((error) => {});
     };
 
-    handleHideMessageModal = () => this.setState({sendMessageModal: false});
-    handleShowMessageModal = () => this.setState({sendMessageModal: true});
-
-
+    handleHideMessageModal = () => this.setState({ sendMessageModal: false });
+    handleShowMessageModal = () => this.setState({ sendMessageModal: true });
 
     handleDeleteMessage = (key) => {
         // console.log("[Messages.js] ", key);
     };
 
     interval;
+
     updateMessages() {
         this.interval = setInterval(() => {
             this.getMessages(this.props.userDetail);
@@ -78,12 +77,14 @@ class Messages extends Component {
                 <div className="row">
                     <div className="col">
                         <div className="d-flex justify-content-center">
-                            <button className="btn btn-green" onClick={this.handleShowMessageModal}>Send Messages</button>
+                            <button className="btn btn-green" onClick={this.handleShowMessageModal}>
+                                Send Messages
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <hr/>
+                <hr />
 
                 <div className="row">
                     <div className="col">
@@ -115,7 +116,10 @@ class Messages extends Component {
                     </div>
                 </div>
 
-                <Modal show={this.state.sendMessageModal} onHide={this.handleHideMessageModal} backdrop="static">
+                <Modal
+                    show={this.state.sendMessageModal}
+                    onHide={this.handleHideMessageModal}
+                    backdrop="static">
                     <Modal.Header closeButton>
                         <Modal.Title>Send Message</Modal.Title>
                     </Modal.Header>
@@ -124,7 +128,6 @@ class Messages extends Component {
                     </Modal.Body>
                 </Modal>
             </>
-
         );
     }
 }

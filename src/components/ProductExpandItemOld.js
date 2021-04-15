@@ -1,216 +1,141 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import {connect} from "react-redux";
+import { baseUrl } from "../Util/Constants";
+import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import ProductItemNew from './ProductItemNew'
-
+import ProductItemNew from "./ProductItemNew";
 
 class ProductExpandItem extends Component {
-
-
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            subProducts:[],
-            product:null
-        }
+            subProducts: [],
+            product: null,
+        };
 
-        this.showPopUp=this.showPopUp.bind(this)
-        this.showProductSelection=this.showProductSelection.bind(this)
-
+        this.showPopUp = this.showPopUp.bind(this);
+        this.showProductSelection = this.showProductSelection.bind(this);
     }
-
-
 
     componentDidUpdate(prevProps) {
-
-
-        if(prevProps.productId !== this.props.productId) {
-
+        if (prevProps.productId !== this.props.productId) {
             this.setState({
+                product: null,
+            });
 
-                product:null
-            })
-
-          this.loadProduct(this.props.productId)
-
+            this.loadProduct(this.props.productId);
         }
     }
-
 
     showProductSelection() {
+        this.props.setProduct(this.state.product);
+        this.props.setParentProduct(this.state.product);
 
-
-        this.props.setProduct(this.state.product)
-        this.props.setParentProduct(this.state.product)
-        
-        this.props.showProductPopUp({type:"create_sub_product",show:true})
-
+        this.props.showProductPopUp({ type: "create_sub_product", show: true });
     }
 
-    loadProduct(productKey){
-
-
-        axios.get(baseUrl + "product/" + productKey,
-            {
+    loadProduct(productKey) {
+        axios
+            .get(baseUrl + "product/" + productKey, {
                 headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
                     var responseAll = response.data;
 
-
-
+                    this.setState({
+                        product: responseAll.data,
+                    });
 
                     this.setState({
-
-                        product: responseAll.data
-                    })
-
-
-                    this.setState({
-
-                        subProducts:[]
-                    })
+                        subProducts: [],
+                    });
 
                     if (responseAll.data.sub_product_ids.length > 0) {
-                        this.getSubProducts()
+                        this.getSubProducts();
                     }
-
-
                 },
-                (error) => {
-
-                }
+                (error) => {}
             );
-
-
-
     }
-
 
     showPopUp() {
-
         this.setState({
-            showPopUp: !this.state.showPopUp
-        })
-
+            showPopUp: !this.state.showPopUp,
+        });
     }
 
-
-
-    componentWillMount() {
-
-    }
+    componentWillMount() {}
 
     componentDidMount() {
-
-        this.loadProduct(this.props.productId)
-
+        this.loadProduct(this.props.productId);
     }
 
-
-
-
     getSubProducts() {
-
-
-        var subProductIds = this.state.product.sub_product_ids
+        var subProductIds = this.state.product.sub_product_ids;
 
         for (var i = 0; i < subProductIds.length; i++) {
-
-
-
-            axios.get(baseUrl + "product/" + subProductIds[i].replace('Product/',''),
-                {
+            axios
+                .get(baseUrl + "product/" + subProductIds[i].replace("Product/", ""), {
                     headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
+                        Authorization: "Bearer " + this.props.userDetail.token,
+                    },
+                })
+                .then(
+                    (response) => {
                         var responseAll = response.data;
 
+                        var subProducts = this.state.subProducts;
 
-
-
-                        var subProducts = this.state.subProducts
-
-                        subProducts.push(responseAll.data)
+                        subProducts.push(responseAll.data);
 
                         this.setState({
-
-                            subProducts: subProducts
-                        })
-
-                    
-
-
+                            subProducts: subProducts,
+                        });
                     },
-                    (error) => {
-
-                    }
+                    (error) => {}
                 );
-
         }
     }
 
-
     render() {
-
-
         return (
+            <>
+                {this.state.product && <ProductItemNew item={this.state.product} />}
 
-                <>
-                    {this.state.product &&
-                   <ProductItemNew item={this.state.product}/>}
-
-                    {(this.state.subProducts.length> 0) &&
-                     <div className="row no-gutters  justify-content-left">
-
-                         <div className="col-12">
-
-                        <h6 className={"blue-text text-heading"}>Sub Products</h6>
-
+                {this.state.subProducts.length > 0 && (
+                    <div className="row no-gutters  justify-content-left">
+                        <div className="col-12">
+                            <h6 className={"blue-text text-heading"}>Sub Products</h6>
+                        </div>
                     </div>
-                    </div>}
+                )}
 
-
-                    {!this.props.hideAddAll &&   <div className="row no-gutters justify-content-left">
-
-                        <p style={{ margin: "10px 0px" }} className={"green-text forgot-password-link text-mute small"}>
-
-                            <span onClick={this.showProductSelection} >Add Sub Product</span>
-
+                {!this.props.hideAddAll && (
+                    <div className="row no-gutters justify-content-left">
+                        <p
+                            style={{ margin: "10px 0px" }}
+                            className={"green-text forgot-password-link text-mute small"}>
+                            <span onClick={this.showProductSelection}>Add Sub Product</span>
                         </p>
-                    </div>}
+                    </div>
+                )}
 
-                    {this.state.subProducts.map((item)=>
-
-                    <ProductItemNew item={item}/>
-
-                    )}
-
-                </>
-
+                {this.state.subProducts.map((item) => (
+                    <ProductItemNew item={item} />
+                ))}
+            </>
         );
     }
 }
 
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         // cartthis.props.items: state.cartthis.props.items,
@@ -221,17 +146,13 @@ const mapStateToProps = state => {
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
-        parentProduct:state.parentProduct,
-        product:state.product,
-
-
+        parentProduct: state.parentProduct,
+        product: state.product,
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
@@ -239,14 +160,6 @@ const mapDispachToProps = dispatch => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
-
-
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(ProductExpandItem);
-
+export default connect(mapStateToProps, mapDispachToProps)(ProductExpandItem);

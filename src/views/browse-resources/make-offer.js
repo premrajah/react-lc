@@ -1,132 +1,86 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import {Link} from "react-router-dom";
-import HeaderWhiteBack from '../header/HeaderWhiteBack'
-import {makeStyles} from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import {baseUrl} from "../../Util/Constants";
+import { connect } from "react-redux";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
+import { Link } from "react-router-dom";
+import HeaderWhiteBack from "../header/HeaderWhiteBack";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import ResourceItem from '../item/ResourceItem'
-
+import ResourceItem from "../item/ResourceItem";
 
 class MakeOffer extends Component {
-
     slug;
 
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: null
-        }
+            item: null,
+        };
 
-
-        this.slug = props.match.params.slug
-        this.getResource = this.getResource.bind(this)
-
-
-
+        this.slug = props.match.params.slug;
+        this.getResource = this.getResource.bind(this);
     }
-
-
-
 
     getResource() {
-
-
-        axios.get(baseUrl + "resource/" + this.slug,
-            {
+        axios
+            .get(baseUrl + "resource/" + this.slug, {
                 headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    var response = response.data;
 
-                var response = response.data;
-
-
-
-
-                this.setState({
-
-                    item: response.content
-                })
-
-            },
+                    this.setState({
+                        item: response.content,
+                    });
+                },
                 (error) => {
-
-                    var status = error.response.status
-
-
-
-
-
-
+                    var status = error.response.status;
                 }
             );
-
     }
-
-
 
     handleBack = () => {
-        this.props.history.goBack()
-    }
+        this.props.history.goBack();
+    };
 
     handleForward = () => {
+        this.props.history.go(+1);
+    };
 
-        this.props.history.go(+1)
-    }
-
-
-
-    componentWillMount() {
-
-    }
+    componentWillMount() {}
 
     componentDidMount() {
-
-        this.getResource()
-
+        this.getResource();
     }
 
-
-
-
-
     render() {
-
         return (
             <div>
-
-                <HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />
-
+                <HeaderWhiteBack
+                    history={this.props.history}
+                    heading={this.state.item && this.state.item.name}
+                />
 
                 <div className="container   pb-4 ">
-
                     <div className="row mt-5  ">
                         <div className={" col-12"}>
                             <h4 className={"text-bold"}>Make an offer</h4>
-                            <p>Please contact the seller to arrange for a delivery provider.  </p>
-
+                            <p>Please contact the seller to arrange for a delivery provider. </p>
                         </div>
-
-
                     </div>
                     {this.state.item && <ResourceItem item={this.state.item} />}
-
-
 
                     <div className="row mt-2 justify-content-center ">
                         <div className={" col-12"}>
@@ -138,18 +92,12 @@ class MakeOffer extends Component {
                                     <TextField id="input-with-icon-grid" variant="outlined" />
                                 </Grid>
                             </Grid>
-
                         </div>
                     </div>
 
-
                     <div>
-
                         <BottomAppBar />
-
                     </div>
-
-
                 </div>
             </div>
         );
@@ -170,22 +118,21 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     appBar: {
-        top: 'auto',
+        top: "auto",
         bottom: 0,
     },
     grow: {
         flexGrow: 1,
     },
     fabButton: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: 1,
         top: -30,
         left: 0,
         right: 0,
-        margin: '0 auto',
+        margin: "0 auto",
     },
 }));
-
 
 function BottomAppBar(props) {
     const classes = useStyles();
@@ -196,34 +143,26 @@ function BottomAppBar(props) {
 
             <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
                 <Toolbar>
-                    <div className="row  justify-content-center search-container " style={{ margin: "auto", width: "100%" }}>
-
+                    <div
+                        className="row  justify-content-center search-container "
+                        style={{ margin: "auto", width: "100%" }}>
                         <div className="col-12">
-
-                            <Link style={{ margin: "auto", width: "100%" }} to={""} type="button"
+                            <Link
+                                style={{ margin: "auto", width: "100%" }}
+                                to={""}
+                                type="button"
                                 className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
                                 Make Offer
-
                             </Link>
                         </div>
                     </div>
-
                 </Toolbar>
             </AppBar>
         </React.Fragment>
     );
-
-
 }
 
-
-
-
-
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         // cartItems: state.cartItems,
@@ -236,28 +175,15 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-
-
     };
 };
 
-
-
-
-
-
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(MakeOffer);
+export default connect(mapStateToProps, mapDispachToProps)(MakeOffer);

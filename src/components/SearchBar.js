@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {InputAdornment, TextField} from "@material-ui/core";
+import React, { Component } from "react";
+import { InputAdornment, TextField } from "@material-ui/core";
 import SearchGray from "@material-ui/icons/Search";
 
 class SearchBar extends Component {
@@ -21,7 +21,7 @@ class SearchBar extends Component {
                         <InputAdornment position="end">
                             <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
                         </InputAdornment>
-                    )
+                    ),
                 }}
             />
         );

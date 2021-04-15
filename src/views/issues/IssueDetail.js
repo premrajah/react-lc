@@ -1,17 +1,17 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import axios from "axios/index";
-import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { baseUrl } from "../../Util/Constants";
 import ImagesSlider from "../../components/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";
-import {Link} from "react-router-dom";
-import {Badge, Modal} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
-import {FormControl, FormHelperText, MenuItem, Select} from "@material-ui/core";
+import { FormControl, FormHelperText, MenuItem, Select } from "@material-ui/core";
 
 class IssueDetail extends Component {
     state = {
@@ -41,7 +41,6 @@ class IssueDetail extends Component {
                 if (response.status === 200) {
                     this.setState({ stageSelectedValue: this.state.issue.issue.stage });
                 }
-
             })
             .catch((error) => {});
     };
@@ -322,7 +321,9 @@ class IssueDetail extends Component {
                                                         defaultValue="open"
                                                         onChange={(e) => this.handleStageSelect(e)}>
                                                         <MenuItem value="open">open</MenuItem>
-                                                        <MenuItem value="progress">progress</MenuItem>
+                                                        <MenuItem value="progress">
+                                                            progress
+                                                        </MenuItem>
                                                     </Select>
                                                 </FormControl>
                                             ) : (
@@ -335,7 +336,9 @@ class IssueDetail extends Component {
                                                         onChange={(e) => this.handleStageSelect(e)}>
                                                         <MenuItem value="open">open</MenuItem>
                                                         <MenuItem value="closed">closed</MenuItem>
-                                                        <MenuItem value="progress">progress</MenuItem>
+                                                        <MenuItem value="progress">
+                                                            progress
+                                                        </MenuItem>
                                                     </Select>
                                                 </FormControl>
                                             )}

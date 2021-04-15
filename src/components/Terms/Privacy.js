@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Footer from "../../views/Footer/Footer";
 import HeaderDark from "../../views/header/HeaderDark";
 
 const Privacy = ({ title, header, footer }) => {
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -13,7 +13,7 @@ const Privacy = ({ title, header, footer }) => {
             <div className="container mb-5" style={{ marginTop: "100px" }}>
                 <div className="row mt-5 mb-5">
                     <div className="col">
-                        <h3 className="blue-text">{title ? title : 'Privacy Policy'}</h3>
+                        <h3 className="blue-text">{title ? title : "Privacy Policy"}</h3>
                     </div>
                 </div>
 
@@ -194,7 +194,9 @@ const Privacy = ({ title, header, footer }) => {
                             </li>
                             <li>
                                 <p>
-                                    <strong className="mr-1">Marketing and Communications Data</strong>
+                                    <strong className="mr-1">
+                                        Marketing and Communications Data
+                                    </strong>
                                     includes your preferences in receiving marketing from us and our
                                     third parties and your communication preferences.
                                 </p>
@@ -1036,8 +1038,6 @@ const Privacy = ({ title, header, footer }) => {
                         </p>
                     </div>
                 </div>
-
-
             </div>
             {footer ? footer : <Footer />}
         </div>

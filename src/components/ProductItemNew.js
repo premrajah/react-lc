@@ -222,7 +222,15 @@ class ProductItemNew extends Component {
                                     {this.state.images.length > 0 ? (
                                         <img
                                             className={"img-fluid img-list"}
-                                            src={((this.state.images.find(item => (item.mime_type === 'image/jpeg' || item.mime_type === 'image/png')) || {}).blob_url) || ''}
+                                            src={
+                                                (
+                                                    this.state.images.find(
+                                                        (item) =>
+                                                            item.mime_type === "image/jpeg" ||
+                                                            item.mime_type === "image/png"
+                                                    ) || {}
+                                                ).blob_url || ""
+                                            }
                                             alt=""
                                         />
                                     ) : (
@@ -237,10 +245,16 @@ class ProductItemNew extends Component {
                                         {this.props.item.product.purpose}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                        <span className="mr-1">{this.props.item.product.category},</span>
-                                        <span className="mr-1">{this.props.item.product.type},</span>
-                                        <span className="mr-1">{this.props.item.product.state},</span>
-                                        <span >{this.props.item.product.volume}</span>
+                                        <span className="mr-1">
+                                            {this.props.item.product.category},
+                                        </span>
+                                        <span className="mr-1">
+                                            {this.props.item.product.type},
+                                        </span>
+                                        <span className="mr-1">
+                                            {this.props.item.product.state},
+                                        </span>
+                                        <span>{this.props.item.product.volume}</span>
                                         <span>{this.props.item.product.units}</span>
                                     </p>
                                     {this.props.item.search_ids && (
@@ -262,7 +276,6 @@ class ProductItemNew extends Component {
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
                                     <p className={"text-gray-light small"}>
-
                                         {moment(this.props.item.product._ts_epoch_ms).format(
                                             "DD MMM YYYY"
                                         )}
@@ -331,10 +344,7 @@ class ProductItemNew extends Component {
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
                                     <p className={"text-gray-light small"}>
-
-                                        {moment(this.props.item._ts_epoch_ms).format(
-                                            "DD MMM YYYY"
-                                        )}
+                                        {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                     <MoreMenu
                                         triggerCallback={(action) => this.callBackResult(action)}

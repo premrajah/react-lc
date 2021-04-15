@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import {connect} from "react-redux";
+import { baseUrl } from "../Util/Constants";
+import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import {TextField} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 
 class AddSite extends Component {
     constructor(props) {

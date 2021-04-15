@@ -1,10 +1,10 @@
-import React, {Component, Fragment} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'animate.css'
-import './css/style.css';
+import React, { Component, Fragment } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "animate.css";
+import "./css/style.css";
 // import './css/style-2.scss';
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch, withRouter,  BrowserRouter } from "react-router-dom";
+import { Router, Route, Switch, withRouter, BrowserRouter } from "react-router-dom";
 
 import Home from "./views/LoopHome/Home";
 import Inbox from "./views/inbox/index";
@@ -43,15 +43,15 @@ import ItemDetailMatched from "./views/create-search/ItemDetailMatched";
 import Search from "./views/browse-resources/Search";
 import Filter from "./views/browse-resources/Filter";
 import LoggedInRoute from "./Util/LoggedInRoute";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as actionCreator from "./store/actions/actions";
 import EditAccount from "./views/account/EditAccount";
 import CompanyInfo from "./views/account/CompanyInfo";
 import Address from "./views/account/Address";
 import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
-import ProductPopUp from './views/create-product/create-product-popup'
-import NotFound from "./views/NotFound/index"
+import ProductPopUp from "./views/create-product/create-product-popup";
+import NotFound from "./views/NotFound/index";
 import TermsAndConditions from "./components/Terms/TermsAndConditions";
 import Cookie from "./components/Terms/Cookie";
 import Privacy from "./components/Terms/Privacy";
@@ -64,36 +64,22 @@ import Approvals from "./views/approvals/Approvals";
 import Issues from "./views/issues/Issues";
 import IssueDetail from "./views/issues/IssueDetail";
 
-
-
 var hist = createBrowserHistory();
 
-class App extends Component{
-
+class App extends Component {
     constructor(props) {
-        super(props)
-
+        super(props);
     }
 
-
-    componentWillMount(){
-
-        this.props.loadUserDetail()
+    componentWillMount() {
+        this.props.loadUserDetail();
     }
-
-
-
-
-
 
     render() {
-
-
         return (
             <>
                 <BrowserRouter>
                     <Switch>
-
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/terms" component={TermsAndConditions} />
                         <Route exact path="/service" component={TermsAndService} />
@@ -122,7 +108,11 @@ class App extends Component{
                         <LoggedInRoute exact path="/product-form" component={ProductForm} />
                         <LoggedInRoute exact path="/product-form/:slug" component={ProductForm} />
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
-                        <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
+                        <LoggedInRoute
+                            exact
+                            path="/delivery-resource"
+                            component={DeliveryResource}
+                        />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
@@ -136,34 +126,42 @@ class App extends Component{
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductView} />
-                        <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
+                        <LoggedInRoute
+                            exact
+                            path="/sub-product-view/:slug"
+                            component={SubProductView}
+                        />
                         <LoggedInRoute exact path="/product-view/:slug" component={ProductView} />
-                        <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
+                        <LoggedInRoute
+                            exact
+                            path="/message-seller/:slug"
+                            component={MessageSeller}
+                        />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
-                        <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />
+                        <LoggedInRoute
+                            exact
+                            path="/match/:search/:listing"
+                            component={ItemDetailMatch}
+                        />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
-                        <Route  component={NotFound} />
-
-
+                        <Route component={NotFound} />
                     </Switch>
 
-                    {(this.props.showLoginPopUp) && <LoginPopUp/>}
-                    {(this.props.showProductPopUp) && <ProductPopUp />}
-
+                    {this.props.showLoginPopUp && <LoginPopUp />}
+                    {this.props.showProductPopUp && <ProductPopUp />}
                 </BrowserRouter>
             </>
         );
-
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         // age: state.age,
         // cartItems: state.cartItems,
@@ -176,15 +174,11 @@ const mapStateToProps = state => {
         showCreateProduct: state.showCreateProduct,
         showCreateSubProduct: state.showCreateSubProduct,
         showProductView: state.loginPopUpStatus,
-        showProductPopUp:state.showProductPopUp
-
-
-
+        showProductPopUp: state.showProductPopUp,
     };
 };
 
-
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -192,7 +186,4 @@ const mapDispachToProps = dispatch => {
         logOut: (data) => dispatch(actionCreator.logOut(data)),
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(App);
+export default connect(mapStateToProps, mapDispachToProps)(App);

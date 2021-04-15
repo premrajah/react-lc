@@ -1,7 +1,7 @@
-import {getKey, saveKey, saveUserData, saveUserToken} from "../../LocalStorage/user";
+import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage/user";
 import axios from "axios/index";
 
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 
 export const enableCartLoading = () => {
     return {

@@ -220,7 +220,10 @@ class ItemCycleDetail extends Component {
 
                     <div className="container ">
                         <div>
-                            <PageHeader pageTitle="Product Details" subTitle="See product details and Provenance." />
+                            <PageHeader
+                                pageTitle="Product Details"
+                                subTitle="See product details and Provenance."
+                            />
 
                             {this.state.item && (
                                 <>

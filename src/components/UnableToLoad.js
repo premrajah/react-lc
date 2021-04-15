@@ -1,5 +1,5 @@
-import React from 'react'
-import {Link} from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const UnableToLoad = () => {
     return (
@@ -9,14 +9,18 @@ const UnableToLoad = () => {
                     <div className="col-lg-8">
                         <h5>404</h5>
                         <p>Oops! Something went wrong, unable to load</p>
-                        <p>Sorry but the information you are looking for does not exist, has been moved, name changed or is temporarily unavailable</p>
-                        <Link to="/" className="mt-1 btn-link blue-btn">HOME</Link>
+                        <p>
+                            Sorry but the information you are looking for does not exist, has been
+                            moved, name changed or is temporarily unavailable
+                        </p>
+                        <Link to="/" className="mt-1 btn-link blue-btn">
+                            HOME
+                        </Link>
                     </div>
-
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
 export default UnableToLoad;

@@ -1,12 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import HeaderDark from "../../views/header/HeaderDark";
 import Footer from "../../views/Footer/Footer";
 
-const Cookie = ({title,  header, footer }) => {
-
+const Cookie = ({ title, header, footer }) => {
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -97,8 +96,6 @@ const Cookie = ({title,  header, footer }) => {
                         </p>
                     </div>
                 </div>
-
-
             </div>
             {footer ? footer : <Footer />}
         </div>

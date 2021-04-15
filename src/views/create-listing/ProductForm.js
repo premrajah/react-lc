@@ -1,23 +1,23 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Error} from "@material-ui/icons";
-import {makeStyles} from "@material-ui/core/styles";
+import { Cancel, Check, Error } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import TextField from "@material-ui/core/TextField";
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import _ from "lodash";
-import {Spinner} from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "../../components/AddSite";
@@ -1313,7 +1313,6 @@ class ProductForm extends Component {
                                             )}
 
                                             <p style={{ margin: "10px 0" }}>
-
                                                 Don’t see it on here?
                                                 <span
                                                     onClick={this.showSubmitSite}
@@ -1385,7 +1384,6 @@ class ProductForm extends Component {
                                 </div>
                                 <div className="col-12 text-left">
                                     <span style={{ margin: "10px 0", float: "left" }}>
-
                                         <span
                                             onClick={this.showMoreDetails}
                                             className={
@@ -1900,6 +1898,7 @@ function UnitSelect(props) {
         </div>
     );
 }
+
 function SiteSelect(props) {
     const classes = useStylesSelect();
     const [state, setState] = React.useState({

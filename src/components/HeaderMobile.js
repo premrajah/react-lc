@@ -1,73 +1,39 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import history from "../../History/history";
 import IndexNavbar from "../../components/Navbars/IndexNavbar";
 
-
 class HeaderMobile extends Component {
-
-
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
-            nextIntervalFlag: false
-        }
-        this.goToInbox = this.goToInbox.bind(this)
-        this.toggleMenu = this.toggleMenu.bind(this)
-
+            nextIntervalFlag: false,
+        };
+        this.goToInbox = this.goToInbox.bind(this);
+        this.toggleMenu = this.toggleMenu.bind(this);
     }
-
 
     goToInbox() {
-
-        history.push("/inbox")
-
+        history.push("/inbox");
     }
-
 
     toggleMenu = (event) => {
+        document.body.classList.add("sidemenu-open");
+    };
 
+    componentWillMount() {}
 
-        document.body.classList.add('sidemenu-open');
+    componentDidMount() {}
 
-    }
-
-
-
-
-    componentWillMount() {
-
-    }
-
-    componentDidMount() {
-
-
-
-
-
-
-    }
-
-    intervalJasmineAnim
-
-
-
-
+    intervalJasmineAnim;
 
     render() {
-
         return (
-
-
             <>
                 <IndexNavbar />
-
-
 
                 {/*<div className="container container-black p-2">*/}
                 {/*</div>*/}
@@ -82,7 +48,6 @@ class HeaderMobile extends Component {
                 {/*</div>*/}
 
                 {/*<div className="col text-right ">*/}
-
 
                 {/*{!this.props.isLoggedIn && <button  type="button" className="mt-1 btn topBtn btn-outline-primary"><Link to={"/login"}>LOG IN</Link></button>}*/}
                 {/*{this.props.isLoggedIn &&*/}
@@ -104,24 +69,14 @@ class HeaderMobile extends Component {
                 {/*</button>*/}
                 {/*</div>*/}
 
-
                 {/*</div>*/}
                 {/*</div>*/}
-
             </>
-
-
-
-
-
         );
     }
 }
 
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         // age: state.age,
         // cartItems: state.cartItems,
@@ -133,23 +88,10 @@ const mapStateToProps = state => {
         userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
-
-
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
-    return {
-
-
-
-
-
-    };
+const mapDispachToProps = (dispatch) => {
+    return {};
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(HeaderMobile);
+export default connect(mapStateToProps, mapDispachToProps)(HeaderMobile);

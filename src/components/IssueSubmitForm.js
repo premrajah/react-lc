@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {FormControl, FormHelperText, MenuItem, Select, TextField} from "@material-ui/core";
+import React, { Component } from "react";
+import { FormControl, FormHelperText, MenuItem, Select, TextField } from "@material-ui/core";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import {connect} from "react-redux";
+import { baseUrl } from "../Util/Constants";
+import { connect } from "react-redux";
 
 class IssueSubmitForm extends Component {
     state = {
@@ -22,8 +22,12 @@ class IssueSubmitForm extends Component {
     };
 
     componentDidMount() {
-        if(this.props.edit) {
-            this.setState({titleSelectedValue: this.state.editForm.title, descriptionSelectedValue: this.state.editForm.description, prioritySelectedValue: this.state.editForm.priority})
+        if (this.props.edit) {
+            this.setState({
+                titleSelectedValue: this.state.editForm.title,
+                descriptionSelectedValue: this.state.editForm.description,
+                prioritySelectedValue: this.state.editForm.priority,
+            });
         }
     }
 
@@ -31,7 +35,6 @@ class IssueSubmitForm extends Component {
         if (!e) return;
         this.setState({ prioritySelectedValue: e.target.value, status: "" });
     };
-
 
     handleTitleValue = (e) => {
         if (!e) return;
@@ -43,9 +46,7 @@ class IssueSubmitForm extends Component {
         this.setState({ descriptionSelectedValue: e.target.value, status: "" });
     };
 
-    handleValidation = (value) => {
-
-    }
+    handleValidation = (value) => {};
 
     handleIssueFormSubmit = (e) => {
         if (!e) return;
@@ -63,8 +64,7 @@ class IssueSubmitForm extends Component {
             };
 
             this.handleUpdateOrCreateIssue(payload);
-
-        } else if(!this.state.edit && this.state.productId) {
+        } else if (!this.state.edit && this.state.productId) {
             let payload = {
                 // new
                 issue: {
@@ -169,13 +169,14 @@ class IssueSubmitForm extends Component {
                         </FormControl>
 
                         <div className="mt-3 mb-3 d-flex justify-content-center">
-                            <button className="btn btn-green" disabled={this.state.titleSelectedValue ? false : true}>Submit</button>
+                            <button
+                                className="btn btn-green"
+                                disabled={this.state.titleSelectedValue ? false : true}>
+                                Submit
+                            </button>
                         </div>
-
                     </form>
-                        <div>
-                            {this.state.status}
-                        </div>
+                    <div>{this.state.status}</div>
                 </div>
             </div>
         );

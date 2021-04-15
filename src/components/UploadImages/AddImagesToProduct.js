@@ -5,7 +5,7 @@ import { Spinner } from "react-bootstrap";
 import { Cancel, Check, Error } from "@material-ui/icons";
 import axios from "axios";
 import { connect } from "react-redux";
-import {withRouter} from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
 class AddImagesToProduct extends Component {
     state = {
@@ -15,21 +15,20 @@ class AddImagesToProduct extends Component {
     };
 
     componentDidMount() {
-        this.setState({productKey: this.props.match.params.slug});
+        this.setState({ productKey: this.props.match.params.slug });
     }
-
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let pathMatch = this.props.match.params.slug;
 
-        if(prevProps.match.params.slug !== this.props.match.params.slug) {
-            this.setState({productKey: pathMatch});
+        if (prevProps.match.params.slug !== this.props.match.params.slug) {
+            this.setState({ productKey: pathMatch });
         }
     }
 
     handleChangeFile = (event) => {
         if (!event) return;
-        this.handleCallbackImagesUploadStatus('');
+        this.handleCallbackImagesUploadStatus("");
 
         let files = this.state.files;
         let newFiles = [];
@@ -44,7 +43,7 @@ class AddImagesToProduct extends Component {
 
     handleCancel = (e) => {
         e.preventDefault();
-        this.handleCallbackImagesUploadStatus('');
+        this.handleCallbackImagesUploadStatus("");
 
         let index = e.currentTarget.dataset.index;
         let name = e.currentTarget.dataset.name;
@@ -63,7 +62,7 @@ class AddImagesToProduct extends Component {
     };
 
     handleUploadImagesToServer = () => {
-        this.handleCallbackImagesUploadStatus('');
+        this.handleCallbackImagesUploadStatus("");
         this.addArtifactsToProduct(this.state.productKey, this.state.images);
         this.handleProductReload(this.state.productKey);
     };
@@ -84,17 +83,16 @@ class AddImagesToProduct extends Component {
 
     handleProductReload = (productKey) => {
         this.props.handleProductReload(productKey);
-    }
+    };
 
     addArtifactsToProduct = (productKey, images) => {
         if (!productKey || !images.length > 0) return;
-        this.handleCallbackImagesUploadStatus('');
+        this.handleCallbackImagesUploadStatus("");
 
         const payload = {
             product_id: productKey,
             artifact_ids: images,
         };
-
 
         axios
             .post(`${baseUrl}product/artifact`, payload)
@@ -109,7 +107,9 @@ class AddImagesToProduct extends Component {
             })
             .catch((error) => {
                 console.log("upload artifact to product error ", error);
-                this.handleCallbackImagesUploadStatus("Sorry, Unable to upload images at this time");
+                this.handleCallbackImagesUploadStatus(
+                    "Sorry, Unable to upload images at this time"
+                );
             });
     };
 
@@ -122,17 +122,14 @@ class AddImagesToProduct extends Component {
 
                 this.getBase64(imgFile.file).then((data) => {
                     axios
-                        .post(
-                            `${baseUrl}artifact`,
-                            {
-                                metadata: {
-                                    name: imgFile.file.name,
-                                    mime_type: imgFile.file.type,
-                                    context: "",
-                                },
-                                data_as_base64_string: btoa(data),
-                            }
-                        )
+                        .post(`${baseUrl}artifact`, {
+                            metadata: {
+                                name: imgFile.file.name,
+                                mime_type: imgFile.file.type,
+                                context: "",
+                            },
+                            data_as_base64_string: btoa(data),
+                        })
                         .then((res) => {
                             //
 

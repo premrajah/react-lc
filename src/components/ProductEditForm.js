@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles/index";
 import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../Util/Constants";
+import { baseUrl, MIME_TYPES_ACCEPT } from "../Util/Constants";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import _ from "lodash";
 import { Spinner } from "react-bootstrap";
@@ -1018,7 +1018,6 @@ class ProductEditForm extends Component {
                 },
             };
 
-
             axios
                 .post(
                     baseUrl + "product",
@@ -1902,7 +1901,9 @@ class ProductEditForm extends Component {
                                                                             />
                                                                         </label>
                                                                         <input
-                                                                            accept={MIME_TYPES_ACCEPT}
+                                                                            accept={
+                                                                                MIME_TYPES_ACCEPT
+                                                                            }
                                                                             style={{
                                                                                 display: "none",
                                                                             }}
@@ -2171,6 +2172,7 @@ function UnitSelect(props) {
         </div>
     );
 }
+
 function SiteSelect(props) {
     const classes = useStylesSelect();
     const [state, setState] = React.useState({

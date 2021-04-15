@@ -70,8 +70,8 @@ class FindResourcePage extends Component {
                           return item;
                       }
                   })
-                  .map((item) => (
-                      <ErrorBoundary>
+                  .map((item, index) => (
+                      <ErrorBoundary key={index}>
                           <FindResourceListingItem key={item.listing._id} item={item} />
                       </ErrorBoundary>
                   ))

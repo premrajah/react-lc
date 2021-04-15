@@ -1534,9 +1534,7 @@ class ProductEditForm extends Component {
                                                     Don’t see it on here?
                                                     <span
                                                         onClick={this.showSubmitSite}
-                                                        className={
-                                                            "green-text forgot-password-link text-mute small"
-                                                        }>
+                                                        className="green-text forgot-password-link text-mute small ml-1">
                                                         {this.state.showSubmitSite
                                                             ? "Hide add site"
                                                             : "Add a site"}

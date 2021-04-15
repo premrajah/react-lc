@@ -73,7 +73,6 @@ class ProductTreeView extends Component {
         }
     }
 
-    componentWillMount() {}
 
     setTree() {
         let list = this.state.products;

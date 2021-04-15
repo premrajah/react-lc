@@ -44,8 +44,6 @@ class ProductTreeItemView extends Component {
         });
     }
 
-    componentWillMount() {}
-
     setTree() {
         this.setState({
             tree: [],

@@ -28,11 +28,10 @@ class DuplicateItem extends Component {
         });
     }
 
-    componentWillMount() {
+
+    componentDidMount() {
         window.scrollTo(0, 0);
     }
-
-    componentDidMount() {}
 
     deleteItem() {
         axios

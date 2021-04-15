@@ -24,9 +24,6 @@ class HeaderDesktop extends Component {
         document.body.classList.add("sidemenu-open");
     };
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     intervalJasmineAnim;
 

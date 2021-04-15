@@ -11,10 +11,6 @@ class SelectItem extends Component {
         };
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
-
     render() {
         return (
             <>

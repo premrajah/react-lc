@@ -957,11 +957,9 @@ class ListEditForm extends Component {
         });
     }
 
-    componentWillMount() {
-        window.scrollTo(0, 0);
-    }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.loadProducts(this.props.userDetail.token);
         this.getSites();
         this.getFiltersCategories();

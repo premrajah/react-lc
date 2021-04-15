@@ -144,8 +144,6 @@ class ProductItem extends Component {
             });
     }
 
-    componentWillMount() {}
-
     componentDidMount() {
         this.getOffer();
     }

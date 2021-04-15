@@ -185,7 +185,6 @@ class CycleItem extends Component {
             });
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getOffer();

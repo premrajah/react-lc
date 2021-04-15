@@ -516,7 +516,7 @@ class ProductDetailCycle extends Component {
         );
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.item.sub_products && this.props.item.sub_products.length > 0)
             this.getSubProducts();
     }

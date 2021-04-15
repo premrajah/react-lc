@@ -171,9 +171,6 @@ class AddSite extends Component {
         }
     };
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     render() {
         return (

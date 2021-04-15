@@ -279,8 +279,6 @@ class RequestServiceAgentItem extends Component {
             });
     }
 
-    componentWillMount() {}
-
     componentDidMount() {
         this.getSites();
     }

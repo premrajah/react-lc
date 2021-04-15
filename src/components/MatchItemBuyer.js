@@ -381,7 +381,6 @@ class MatchItemBuyer extends Component {
             });
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getOffer();

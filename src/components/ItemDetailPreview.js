@@ -24,9 +24,6 @@ class ItemDetailPreview extends Component {
         };
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     render() {
         const classes = withStyles();

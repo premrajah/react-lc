@@ -214,7 +214,6 @@ class ProductExpandItem extends Component {
             });
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.loadProduct(this.props.productId);

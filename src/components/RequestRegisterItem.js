@@ -281,8 +281,6 @@ class RequestRegisterItem extends Component {
             });
     }
 
-    componentWillMount() {}
-
     componentDidMount() {
         this.getSites();
     }

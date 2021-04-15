@@ -179,8 +179,6 @@ class ProductItemNew extends Component {
         });
     }
 
-    componentWillMount() {}
-
     componentDidMount() {
         this.fetchImage();
     }

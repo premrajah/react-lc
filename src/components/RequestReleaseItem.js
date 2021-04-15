@@ -287,8 +287,6 @@ class RequestReleaseItem extends Component {
             });
     }
 
-    componentWillMount() {}
-
     componentDidMount() {
         this.getSites();
     }

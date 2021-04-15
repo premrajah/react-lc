@@ -292,7 +292,6 @@ class MatchItemOld extends Component {
             });
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getOffer();

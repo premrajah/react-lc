@@ -1,11 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import VisaIcon from "../../img/visa.png";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { baseUrl } from "../../Util/Constants";
-import axios from "axios/index";
 
 class PaymentMethod extends Component {
     constructor(props) {

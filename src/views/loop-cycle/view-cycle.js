@@ -1548,15 +1548,15 @@ class ViewCycle extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold text-caps"}>
-                                    {this.state.action == "delivered"
+                                    {this.state.action === "delivered"
                                         ? "Deliver"
-                                        : this.state.action == "received"
+                                        : this.state.action === "received"
                                         ? "Receive"
-                                        : this.state.action == "closed"
+                                        : this.state.action === "closed"
                                         ? "Close"
-                                        : this.state.action == "counter"
+                                        : this.state.action === "counter"
                                         ? "Counter"
-                                        : this.state.action == "withdraw"
+                                        : this.state.action === "withdraw"
                                         ? "Widthdraw"
                                         : ""}{" "}
                                     Action

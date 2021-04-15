@@ -548,15 +548,15 @@ class MatchItemBuyer extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>
-                                    {this.state.action == "accepted"
+                                    {this.state.action === "accepted"
                                         ? "Accept"
-                                        : this.state.action == "cancelled"
+                                        : this.state.action === "cancelled"
                                         ? "Cancel"
-                                        : this.state.action == "declined"
+                                        : this.state.action === "declined"
                                         ? "Decline"
-                                        : this.state.action == "counter"
+                                        : this.state.action === "counter"
                                         ? "Counter"
-                                        : this.state.action == "widthdraw"
+                                        : this.state.action === "widthdraw"
                                         ? "Widthdraw"
                                         : ""}{" "}
                                     Offer

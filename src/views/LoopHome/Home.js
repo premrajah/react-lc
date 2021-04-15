@@ -33,9 +33,6 @@ class Home extends Component {
 
     interval;
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     goToResources() {
         if (!this.props.isLoggedIn) {
@@ -344,28 +341,6 @@ class Home extends Component {
             </div>
         );
     }
-}
-
-function VoiceOver() {
-    return <></>;
-}
-
-function PlayAudio() {
-    // let audio = new Audio("http://www.ekrisi.com/jasmine/jasmine-voice.mp3")
-
-    const audioEl = document.getElementsByClassName("jasmine-audio")[0];
-
-    const start = () => {
-        // audio.play()
-
-        audioEl.play();
-    };
-
-    return (
-        <div className={"audio-box"}>
-            <button onClick={start}>Play</button>
-        </div>
-    );
 }
 
 const mapStateToProps = (state) => {

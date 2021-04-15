@@ -75,6 +75,7 @@ class App extends Component {
         this.props.loadUserDetail();
     }
 
+
     render() {
         return (
             <>

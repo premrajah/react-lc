@@ -50,11 +50,6 @@ class LoginPopUp extends Component {
     //
     //
 
-    componentWillMount() {}
-
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     goToSignIn() {
         this.setState({

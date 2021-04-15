@@ -34,9 +34,7 @@ class DummyListItem extends Component {
         };
     }
 
-    componentWillMount() {}
 
-    componentDidMount() {}
 
     render() {
         const classes = withStyles();

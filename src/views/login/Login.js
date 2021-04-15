@@ -197,11 +197,7 @@ class Login extends Component {
         // })
     }
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     goToSignIn() {
         this.setState({

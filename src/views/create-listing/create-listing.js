@@ -936,11 +936,10 @@ class CreateListing extends Component {
 
     interval;
 
-    componentWillMount() {
-        window.scrollTo(0, 0);
-    }
+
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.getFiltersCategories();
 
         this.setUpYearList();

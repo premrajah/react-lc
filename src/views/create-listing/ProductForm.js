@@ -983,13 +983,9 @@ class ProductForm extends Component {
         });
     }
 
-    handleDateChange() {}
-
-    UNSAFE_componentWillMount() {
-        window.scrollTo(0, 0);
-    }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.getFiltersCategories();
 
         this.setUpYearList();

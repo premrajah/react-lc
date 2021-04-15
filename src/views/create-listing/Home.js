@@ -11,7 +11,6 @@ import SearchGray from "@material-ui/icons/Search";
 
 class Home extends Component {
     interval;
-    intervalJasmineAnim;
 
     constructor(props) {
         super(props);
@@ -23,9 +22,7 @@ class Home extends Component {
         };
     }
 
-    componentWillMount() {}
 
-    componentDidMount() {}
 
     render() {
         return (

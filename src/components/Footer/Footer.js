@@ -145,7 +145,8 @@ class Footer extends React.Component {
                                     color="default"
                                     href="https://www.linkedin.com/company/loopcycle"
                                     id="tooltip230450809"
-                                    target="_blank">
+                                    target="_blank"
+                                    rel="noopener noreferrer">
                                     <i className="fab fa-linkedin" />
                                 </Button>
                                 <UncontrolledTooltip delay={0} target="tooltip230450809">
@@ -157,7 +158,8 @@ class Footer extends React.Component {
                                     color="default"
                                     href="https://twitter.com/Loopcycle"
                                     id="tooltip622135962"
-                                    target="_blank">
+                                    target="_blank"
+                                    rel="noopener noreferrer">
                                     <i className="fab fa-twitter" />
                                 </Button>
                                 <UncontrolledTooltip delay={0} target="tooltip622135962">
@@ -168,7 +170,8 @@ class Footer extends React.Component {
                                     color="default"
                                     href="https://www.instagram.com/loopcycle_io"
                                     id="tooltip230450801"
-                                    target="_blank">
+                                    target="_blank"
+                                    rel="noopener noreferrer">
                                     <i className="fab fa-instagram" />
                                 </Button>
                                 <UncontrolledTooltip delay={0} target="tooltip230450801">

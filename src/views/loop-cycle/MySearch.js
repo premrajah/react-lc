@@ -71,7 +71,6 @@ class MySearch extends Component {
             );
     }
 
-    componentWillMount() {}
 
     render() {
         const classes = withStyles();

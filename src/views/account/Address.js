@@ -127,7 +127,6 @@ class PaymentMethod extends Component {
         });
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         window.scrollTo(0, 0);

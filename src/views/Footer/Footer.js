@@ -7,7 +7,7 @@ import * as actionCreator from "../../store/actions/actions";
 
 class Footer extends Component {
     interval;
-    intervalJasmineAnim;
+
 
     constructor(props) {
         super(props);
@@ -29,9 +29,6 @@ class Footer extends Component {
         document.body.classList.add("sidemenu-open");
     };
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     render() {
         return (

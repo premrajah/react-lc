@@ -791,11 +791,10 @@ class SearchForm extends Component {
 
     interval;
 
-    componentWillMount() {
-        window.scrollTo(0, 0);
-    }
+
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.loadProducts(this.props.userDetail.token);
 
         this.getFiltersCategories();

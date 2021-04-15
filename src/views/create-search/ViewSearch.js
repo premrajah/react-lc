@@ -445,11 +445,9 @@ class ViewSearch extends Component {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
 
-    componentWillMount() {
-        window.scrollTo(0, 0);
-    }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.getSearch();
         this.getListingForSearch();
         this.loadMatches();

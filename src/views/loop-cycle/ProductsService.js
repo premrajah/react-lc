@@ -62,7 +62,6 @@ class ProductsService extends Component {
             );
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getProducts();

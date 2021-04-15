@@ -208,7 +208,6 @@ class ItemDetailMatch extends Component {
             );
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.checkMatch();

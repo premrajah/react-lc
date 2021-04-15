@@ -25,7 +25,6 @@ class HeaderDesktop extends Component {
     };
 
 
-    intervalJasmineAnim;
 
     render() {
         return (

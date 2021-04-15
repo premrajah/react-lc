@@ -51,11 +51,7 @@ class Cycles extends Component {
 
     interval;
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     render() {
         return (

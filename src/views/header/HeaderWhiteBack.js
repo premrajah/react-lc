@@ -35,9 +35,6 @@ class HeaderWhiteBack extends Component {
 
     interval;
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     render() {
         return (

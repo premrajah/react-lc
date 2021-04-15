@@ -54,7 +54,6 @@ class MessageSeller extends Component {
         this.props.history.go(+1);
     };
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getResource();

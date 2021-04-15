@@ -30,9 +30,6 @@ class LoopDetail extends Component {
         };
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     render() {
         const classes = withStyles();

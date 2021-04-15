@@ -23,7 +23,7 @@ class CycleDetail extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.loop.cycle.stage === "progress") {
             this.setState({
                 percentage: 20,

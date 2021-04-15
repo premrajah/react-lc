@@ -87,7 +87,7 @@ class SearchItem extends Component {
             );
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.item.product) this.getPreviewImage(this.props.item.product._id);
     }
 

@@ -618,11 +618,9 @@ class ListForm extends Component {
         return formIsValid;
     }
 
-    componentWillMount() {
-        window.scrollTo(0, 0);
-    }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.loadSites(this.props.userDetail.token);
         // this.props.loadProducts(this.props.userDetail.token)
     }

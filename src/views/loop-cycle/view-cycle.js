@@ -634,7 +634,6 @@ class ViewCycle extends Component {
             );
     }
 
-    componentWillMount() {}
 
     interval;
 

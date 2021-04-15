@@ -127,7 +127,6 @@ class SubProductView extends Component {
         }
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.setProduct();

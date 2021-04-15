@@ -61,7 +61,6 @@ class Products extends Component {
 
     interval;
 
-    componentWillMount() {}
 
     componentDidMount() {
         // this.getProducts()

@@ -126,11 +126,7 @@ class AddDetail extends Component {
 
     interval;
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     goToSignIn() {
         this.setState({

@@ -48,11 +48,7 @@ class Filter extends Component {
 
     interval;
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     render() {
         const classes = withStyles();

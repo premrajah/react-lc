@@ -153,11 +153,7 @@ class RecoverPassword extends Component {
 
     interval;
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     goToSignIn() {
         this.props.setLoginPopUpStatus(0);

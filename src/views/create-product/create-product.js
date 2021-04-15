@@ -152,7 +152,6 @@ class CreateProduct extends Component {
         }
     };
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getFiltersCategories();

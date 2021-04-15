@@ -125,13 +125,12 @@ class ProductDetail extends Component {
             );
     }
 
-    componentWillMount() {}
+
 
     componentDidMount() {
         this.getResources();
     }
 
-    intervalJasmineAnim;
 
     render() {
         return (

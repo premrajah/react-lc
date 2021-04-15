@@ -42,11 +42,6 @@ class MyListingsOld extends Component {
 
     interval;
 
-    componentWillMount() {}
-
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     render() {
         return (

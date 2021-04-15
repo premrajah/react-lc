@@ -24,9 +24,6 @@ class ResourceItem extends Component {
         this.goToPage = this.goToPage.bind(this);
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     goToPage(event) {
         event.stopPropagation();

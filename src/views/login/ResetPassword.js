@@ -149,11 +149,7 @@ class ResetPassword extends Component {
 
     interval;
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     goToSignIn() {
         this.setState({

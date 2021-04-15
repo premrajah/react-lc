@@ -16,9 +16,6 @@ class ResourceItem extends Component {
         };
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     render() {
         return (

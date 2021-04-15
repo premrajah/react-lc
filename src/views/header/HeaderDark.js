@@ -32,11 +32,7 @@ class HeaderDark extends Component {
 
     interval;
 
-    componentWillMount() {}
 
-    componentDidMount() {}
-
-    intervalJasmineAnim;
 
     render() {
         return (

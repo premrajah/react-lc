@@ -27,7 +27,8 @@ const AddedDocumentsDisplay = (props) => {
                                     <a
                                         className="btn-link"
                                         href={artifact.blob_url}
-                                        target="_blank">
+                                        target="_blank"
+                                        rel="noopener noreferrer">
                                         {artifact.blob_name}
                                     </a>
                                 </div>

@@ -120,7 +120,6 @@ class SearchMatches extends Component {
             );
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.loadMatches();

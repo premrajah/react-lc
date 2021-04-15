@@ -25,7 +25,6 @@ class HeaderMobile extends Component {
     };
 
 
-    intervalJasmineAnim;
 
     render() {
         return (

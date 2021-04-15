@@ -137,7 +137,6 @@ class FindResources extends Component {
         this.toggleFilter();
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getResources();

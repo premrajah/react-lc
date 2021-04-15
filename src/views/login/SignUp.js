@@ -117,9 +117,6 @@ class SignUp extends Component {
         });
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
 
     goToSignIn() {
         this.props.setLoginPopUpStatus(0);

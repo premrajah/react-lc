@@ -48,8 +48,6 @@ class Loops extends Component {
             );
     }
 
-    componentWillMount() {}
-
     componentDidMount() {
         this.getLoops();
     }

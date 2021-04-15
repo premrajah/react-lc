@@ -55,7 +55,6 @@ class MyCycles extends Component {
             );
     }
 
-    componentWillMount() {}
 
     componentDidMount() {
         this.getCycles();

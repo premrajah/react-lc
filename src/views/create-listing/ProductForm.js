@@ -5,14 +5,13 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import "../../Util/upload-file.css";
-import { Cancel, Check, Error } from "@material-ui/icons";
+import {Cancel, Check, Error, Publish} from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles/index";
-import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import axios from "axios/index";
 import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -1627,7 +1626,7 @@ class ProductForm extends Component {
                                                                             "label-file-input"
                                                                         }
                                                                         htmlFor="fileInput">
-                                                                        <AddPhotoIcon
+                                                                        <Publish
                                                                             style={{
                                                                                 fontSize: 32,
                                                                                 color: "#a8a8a8",

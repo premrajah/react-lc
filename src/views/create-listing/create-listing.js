@@ -10,7 +10,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Close from "@material-ui/icons/Close";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
 import "../../Util/upload-file.css";
-import { Cancel } from "@material-ui/icons";
+import {Cancel, Publish} from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -21,7 +21,6 @@ import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles/index";
 import MarkerIcon from "../../img/icons/marker.png";
 import CalenderIcon from "../../img/icons/calender.png";
-import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import ListIcon from "../../img/icons/list.png";
 import AmountIcon from "../../img/icons/amount.png";
 import StateIcon from "../../img/icons/state.png";
@@ -1283,7 +1282,7 @@ class CreateListing extends Component {
                                                                             "label-file-input"
                                                                         }
                                                                         htmlFor="fileInput">
-                                                                        <AddPhotoIcon
+                                                                        <Publish
                                                                             style={{
                                                                                 fontSize: 32,
                                                                                 color: "#a8a8a8",

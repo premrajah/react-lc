@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import { Spinner } from "react-bootstrap";
-import { Cancel, Check, Error } from "@material-ui/icons";
+import {Cancel, Check, Error, Publish} from "@material-ui/icons";
 import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -192,7 +191,7 @@ class AddImagesToProduct extends Component {
                                                     <label
                                                         className={"label-file-input"}
                                                         htmlFor="fileInput">
-                                                        <AddPhotoIcon
+                                                        <Publish
                                                             style={{
                                                                 fontSize: 32,
                                                                 color: "#a8a8a8",

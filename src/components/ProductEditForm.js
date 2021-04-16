@@ -158,9 +158,9 @@ class ProductEditForm extends Component {
         }
     }
 
-    checkListable() {
+    checkListable(checkedValue) {
         this.setState({
-            is_listable: !this.state.is_listable,
+            is_listable: checkedValue,
         });
     }
 
@@ -193,11 +193,7 @@ class ProductEditForm extends Component {
         }
 
         this.setState({
-            files: currentFiles,
-        });
-
-        this.setState({
-            images: images,
+            files: currentFiles, images: images
         });
     }
 
@@ -246,9 +242,8 @@ class ProductEditForm extends Component {
             .then(
                 (response) => {
                     var responseAll = response.data;
-
                     this.setState({
-                        item: responseAll.data,
+                        item: responseAll.data, is_listable: responseAll.data.product.is_listable
                     });
 
                     this.loadSelection();
@@ -962,14 +957,17 @@ class ProductEditForm extends Component {
 
         const data = new FormData(event.target);
 
+
+
         if (this.handleValidationProduct(data)) {
-            const form = event.currentTarget;
 
             this.setState({
                 btnLoading: true,
             });
 
             const data = new FormData(event.target);
+
+
 
             const title = data.get("title");
             const purpose = data.get("purpose");
@@ -990,7 +988,7 @@ class ProductEditForm extends Component {
 
             const site = data.get("deliver");
 
-            var productData = {
+            const productData = {
                 id: this.state.item.product._key,
                 update: {
                     artifacts: this.state.images,
@@ -1017,6 +1015,7 @@ class ProductEditForm extends Component {
                     year_of_making: Number(data.get("manufacturedDate")),
                 },
             };
+            
 
             axios
                 .post(
@@ -1192,16 +1191,11 @@ class ProductEditForm extends Component {
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
-                                                    // checked={this.state.is_listable}
-                                                    checked={
-                                                        this.state.is_listable
-                                                            ? this.state.is_listable
-                                                            : this.state.item.product.is_listable
-                                                    }
-                                                    onChange={this.checkListable}
-                                                    // onChange={this.handleChangeProduct.bind(this, "description")}/>
+                                                    checked={this.state.is_listable}
+                                                    onChange={(e) => this.checkListable(e.target.checked)}
                                                     name="is_listable"
                                                     color="primary"
+                                                    value={this.state.is_listable}
                                                 />
                                             }
                                             label="Tick box to allow product to be listed for sale"

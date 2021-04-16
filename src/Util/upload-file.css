@@ -11,7 +11,8 @@
 
 .file-uploader-thumbnail-container {
 
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
 
 
 }

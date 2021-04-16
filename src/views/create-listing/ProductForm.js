@@ -117,7 +117,6 @@ class ProductForm extends Component {
 
         this.getProducts = this.getProducts.bind(this);
         this.selectProduct = this.selectProduct.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
         this.showProductSelection = this.showProductSelection.bind(this);

@@ -295,10 +295,16 @@ class ComponentsNavbar extends React.Component {
                                         <i className="fa fa-cogs d-lg-none d-xl-none" />
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-with-icons">
+                                        <Link className={"dropdown-item"} to="/account">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Account
+                                        </Link>
+
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
                                             My Searches
                                         </Link>
+
                                         <Link className={"dropdown-item"} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Listings
@@ -328,10 +334,7 @@ class ComponentsNavbar extends React.Component {
                                             Statistics
                                         </Link>
 
-                                        <Link className={"dropdown-item"} to="/account">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Account
-                                        </Link>
+
                                         {/*<Link className={"dropdown-item"} to="">*/}
                                         {/*    <i className="tim-icons icon-bullet-list-67" />*/}
                                         {/*    Help*/}

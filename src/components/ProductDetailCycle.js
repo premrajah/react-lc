@@ -735,14 +735,12 @@ class ProductDetailCycle extends Component {
                                             </div>
                                         </div>
 
-                                        {/*<div className="row  justify-content-start search-container  pb-2">*/}
-
-                                        {/*<div className={"col-auto"}>*/}
-
-                                        {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
-                                        {/*<p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>*/}
-                                        {/*</div>*/}
-                                        {/*</div>*/}
+                                        {(this.props.item && this.props.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
+                                            <div className="col-auto">
+                                                <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
+                                                <p style={{fontSize: "18px"}}>{this.props.item.product.condition}</p>
+                                            </div>
+                                        </div> }
 
                                         {this.props.item && this.props.item.product.year_of_making && (
                                             <div className="row  justify-content-start search-container  pb-2">

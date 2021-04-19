@@ -996,6 +996,13 @@ class ProductDetail extends Component {
                                                     </div>
                                                 </div>
 
+                                                {(this.state.item && this.state.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
+                                                    <div className="col-auto">
+                                                        <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
+                                                        <p style={{fontSize: "18px"}}>{this.state.item.product.condition}</p>
+                                                    </div>
+                                                </div> }
+
                                                 {this.state.item &&
                                                     this.state.item.product.year_of_making && (
                                                         <div className="row  justify-content-start search-container  pb-2">

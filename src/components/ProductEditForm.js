@@ -5,7 +5,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import "../Util/upload-file.css";
-import {Cancel, Check, Error, Publish} from "@material-ui/icons";
+import { Cancel, Check, Error, Publish } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -99,7 +99,9 @@ class ProductEditForm extends Component {
             currentUploadingImages: [],
             yearsList: [],
             purposeList: ["defined", "prototype", "aggregate"],
+            conditionList: ["new", "used", "salvage"],
             purpose: null,
+            condition: null,
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -192,7 +194,8 @@ class ProductEditForm extends Component {
         }
 
         this.setState({
-            files: currentFiles, images: images
+            files: currentFiles,
+            images: images,
         });
     }
 
@@ -242,7 +245,8 @@ class ProductEditForm extends Component {
                 (response) => {
                     var responseAll = response.data;
                     this.setState({
-                        item: responseAll.data, is_listable: responseAll.data.product.is_listable
+                        item: responseAll.data,
+                        is_listable: responseAll.data.product.is_listable,
                     });
 
                     this.loadSelection();
@@ -737,11 +741,6 @@ class ProductEditForm extends Component {
         let errors = {};
         let formIsValid = true;
 
-        //Name
-        // if (!data.get("purpose")) {
-        //     formIsValid = false;
-        //     errors["purpose"] = "Required";
-        // }
         if (!data.get("title")) {
             formIsValid = false;
             errors["title"] = "Required";
@@ -956,20 +955,16 @@ class ProductEditForm extends Component {
 
         const data = new FormData(event.target);
 
-
-
         if (this.handleValidationProduct(data)) {
-
             this.setState({
                 btnLoading: true,
             });
 
             const data = new FormData(event.target);
 
-
-
             const title = data.get("title");
             const purpose = data.get("purpose");
+            const condition = data.get("condition");
             const description = data.get("description");
             const category = data.get("category");
             const type = data.get("type");
@@ -993,6 +988,7 @@ class ProductEditForm extends Component {
                     artifacts: this.state.images,
 
                     purpose: purpose,
+                    condition: condition,
                     name: title,
                     description: description,
                     category: category,
@@ -1014,7 +1010,6 @@ class ProductEditForm extends Component {
                     year_of_making: Number(data.get("manufacturedDate")),
                 },
             };
-            
 
             axios
                 .post(
@@ -1187,18 +1182,66 @@ class ProductEditForm extends Component {
                                         )}
                                     </div>
                                     <div className="col-12 mt-4">
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={this.state.is_listable}
-                                                    onChange={(e) => this.checkListable(e.target.checked)}
-                                                    name="is_listable"
-                                                    color="primary"
-                                                    value={this.state.is_listable}
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.is_listable}
+                                                            onChange={(e) =>
+                                                                this.checkListable(e.target.checked)
+                                                            }
+                                                            name="is_listable"
+                                                            color="primary"
+                                                            value={this.state.is_listable}
+                                                        />
+                                                    }
+                                                    label="Tick box to allow product to be listed for sale"
                                                 />
-                                            }
-                                            label="Tick box to allow product to be listed for sale"
-                                        />
+                                            </div>
+                                            <div className="col-md-6">
+                                                    <div
+                                                        className={
+                                                            "custom-label text-bold text-blue mb-3"
+                                                        }>
+                                                        Condition
+                                                    </div>
+                                                    <FormControl
+                                                        variant="outlined"
+                                                        className={classes.formControl}>
+                                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                        <Select
+                                                            native
+                                                            onChange={this.handleChangeProduct.bind(
+                                                                this,
+                                                                "condition"
+                                                            )}
+                                                            inputProps={{
+                                                                name: "condition",
+                                                                id: "outlined-age-native-simple",
+                                                            }}>
+                                                            {this.state.item.product.condition
+                                                                ? this.state.conditionList.map(
+                                                                      (item) => (
+                                                                          <option
+                                                                              selected={
+                                                                                  this.state.item
+                                                                                      .product
+                                                                                      .condition ===
+                                                                                  item
+                                                                                      ? true
+                                                                                      : false
+                                                                              }
+                                                                              value={item}>
+                                                                              {item}
+                                                                          </option>
+                                                                      )
+                                                                  )
+                                                                : null}
+                                                        </Select>
+                                                    </FormControl>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div className="col-12 mb-3">

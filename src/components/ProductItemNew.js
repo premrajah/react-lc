@@ -240,7 +240,8 @@ class ProductItemNew extends Component {
                                         {this.props.item.product.name}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                        {this.props.item.product.purpose}
+                                        <span>{this.props.item.product.purpose}</span>
+                                        {this.props.item.product.condition && <span>, <b>{this.props.item.product.condition}</b></span>}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                         <span className="mr-1">

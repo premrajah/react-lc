@@ -2,96 +2,124 @@ import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage
 import axios from "axios/index";
 
 import { baseUrl } from "../../Util/Constants";
+import {
+    IS_CART_LOADING,
+    LOAD_USER_DETAIL,
+    LOADING,
+    LOADING_SPINNER,
+    LOGIN,
+    LOGIN_ERROR,
+    LOGIN_FAILED,
+    LOGIN_POPUP,
+    LOGIN_POPUP_STATUS,
+    LOGOUT,
+    PARENT_PRODUCT_ID,
+    PRODUCT_ID,
+    PRODUCT_LIST,
+    PRODUCT_NPARENT_LIST,
+    PRODUCT_POPUP,
+    SET_CATEGORIES,
+    SET_CITY,
+    SET_ORG_IMG,
+    SET_USER_DETAIL,
+    SHOW_LOADING,
+    SIGN_UP,
+    SIGN_UP_FAILED,
+    SITE_LIST,
+    SITE_POPUP,
+    STOP_LOADING,
+    USER_DETAIL,
+} from "../types";
 
 export const enableCartLoading = () => {
     return {
-        type: "IS_CART_LOADING",
+        type: IS_CART_LOADING,
     };
 };
 
 export const loadingSpinner = () => {
     return {
-        type: "LOADING_SPINNER",
+        type: LOADING_SPINNER,
     };
 };
 
 export const loading = () => {
     return {
-        type: "LOADING",
+        type: LOADING,
     };
 };
 
 export const showSiteModal = (data) => {
     return {
-        type: "SITE_POPUP",
+        type: SITE_POPUP,
         value: data,
     };
 };
 
 export const setOrgImage = (val) => {
     return {
-        type: "SET_ORG_IMG",
+        type: SET_ORG_IMG,
         value: val,
     };
 };
 
 export const showLoading = (val) => {
     return {
-        type: "SHOW_LOADING",
+        type: SHOW_LOADING,
         value: val,
     };
 };
 
 export const loginFailed = (val) => {
     return {
-        type: "LOGIN_FAILED",
+        type: LOGIN_FAILED,
         value: val,
     };
 };
 
 export const signUpFailed = (val) => {
     return {
-        type: "SIGN_UP_FAILED",
+        type: SIGN_UP_FAILED,
         value: val,
     };
 };
 
 export const stopLoading = () => {
     return {
-        type: "STOP-LOADING",
+        type: STOP_LOADING,
     };
 };
 
 export const setCategories = (val) => {
-    return { type: "SET_CATEGORIES", value: val };
+    return { type: SET_CATEGORIES, value: val };
 };
 
 export const loginPopUp = (val) => {
-    return { type: "LOGIN_POPUP", value: val };
+    return { type: LOGIN_POPUP, value: val };
 };
 
 export const setProduct = (val) => {
-    return { type: "PRODUCT_ID", value: val };
+    return { type: PRODUCT_ID, value: val };
 };
 
 export const setParentProduct = (val) => {
-    return { type: "PARENT_PRODUCT_ID", value: val };
+    return { type: PARENT_PRODUCT_ID, value: val };
 };
 
 export const showProductPopUp = (val) => {
-    return { type: "PRODUCT_POPUP", value: val };
+    return { type: PRODUCT_POPUP, value: val };
 };
 
 export const showLoginPopUp = (val) => {
-    return { type: "LOGIN_POPUP", value: val };
+    return { type: LOGIN_POPUP, value: val };
 };
 
 export const setLoginPopUpStatus = (val) => {
-    return { type: "LOGIN_POPUP_STATUS", value: val };
+    return { type: LOGIN_POPUP_STATUS, value: val };
 };
 
 export const setCity = (val) => {
-    return { type: "SET_CITY", value: val };
+    return { type: SET_CITY, value: val };
 };
 
 export const loadProducts = (data) => {
@@ -126,7 +154,7 @@ export const loadSitesSync = (data) => (dispatch) => {
         (response) => {
             var responseAll = response.data.data;
 
-            dispatch({ type: "SITE_LIST", value: responseAll });
+            dispatch({ type: SITE_LIST, value: responseAll });
 
             // dispatch()
         },
@@ -150,13 +178,13 @@ export const loadProductsSync = (data) => (dispatch) => {
             (response) => {
                 var responseAll = response.data.data;
 
-                dispatch({ type: "PRODUCT_LIST", value: responseAll });
+                dispatch({ type: PRODUCT_LIST, value: responseAll });
                 // dispatch()
             },
             (error) => {
                 // var status = error.response.status
 
-                dispatch({ type: "PRODUCT_LIST", value: [] });
+                dispatch({ type: PRODUCT_LIST, value: [] });
             }
         );
 
@@ -174,13 +202,13 @@ export const loadProductsWithoutParentSync = (data) => (dispatch) => {
             (response) => {
                 var responseAll = response.data.data;
 
-                dispatch({ type: "PRODUCT_NPARENT_LIST", value: responseAll });
+                dispatch({ type: PRODUCT_NPARENT_LIST, value: responseAll });
                 // dispatch()
             },
             (error) => {
                 // var status = error.response.status
 
-                dispatch({ type: "PRODUCT_NPARENT_LIST", value: [] });
+                dispatch({ type: PRODUCT_NPARENT_LIST, value: [] });
             }
         );
 
@@ -191,7 +219,7 @@ export const loadProductsWithoutParentSync = (data) => (dispatch) => {
 
 export function loadProductsSync2(data) {
     return (dispatch) => {
-        dispatch({ type: "Product_List", value: [] });
+        dispatch({ type: PRODUCT_LIST, value: [] });
 
         axios
             .get(baseUrl + "product", {
@@ -203,17 +231,17 @@ export function loadProductsSync2(data) {
                 (response) => {
                     var responseAll = response.data.data;
 
-                    dispatch({ type: "Product_List", value: responseAll });
+                    dispatch({ type: PRODUCT_LIST, value: responseAll });
                     // dispatch()
                 },
                 (error) => {
                     // var status = error.response.status
 
-                    dispatch({ type: "Product_List", value: [] });
+                    dispatch({ type: PRODUCT_LIST, value: [] });
                 }
             );
 
-        dispatch({ type: "Product_List", value: [] });
+        dispatch({ type: PRODUCT_LIST, value: [] });
     };
 }
 
@@ -237,14 +265,14 @@ export const logInSync = (data) => (dispatch) => {
                 saveUserToken(res.data.data);
 
                 saveKey("user", res.data.data);
-                dispatch({ type: "LOGIN", value: res.data.data });
+                dispatch({ type: LOGIN, value: res.data.data });
             } else {
                 //
                 // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
             }
         })
         .catch((error) => {
-            dispatch({ type: "LOGIN_ERROR", value: error.response.data.errors[0].message });
+            dispatch({ type: LOGIN_ERROR, value: error.response.data.errors[0].message });
         });
 };
 
@@ -278,7 +306,7 @@ export const signUpHostSync = (data) => (dispatch) => {
         )
         .then((res) => {
             dispatch(getUserDetail({ username: res.data.email }));
-            dispatch({ type: "SIGN_UP", value: res.data });
+            dispatch({ type: SIGN_UP, value: res.data });
         })
         .catch((error) => {
             // dispatch(stopLoading())
@@ -298,7 +326,7 @@ export const signUpSync = (data) => (dispatch) => {
             data
         )
         .then((res) => {
-            dispatch({ type: "SIGN_UP", value: res.data });
+            dispatch({ type: SIGN_UP, value: res.data });
         })
         .catch((error) => {
             // dispatch(stopLoading())
@@ -312,12 +340,12 @@ export const signUpSync = (data) => (dispatch) => {
 
 export const setRememberUserDetail = (data) => {
     return (dispatch) => {
-        dispatch({ type: "USER_DETAIL", value: data });
+        dispatch({ type: USER_DETAIL, value: data });
     };
 };
 
 export const setUserDetail = (data) => {
-    return { type: "SET_USER_DETAIL", value: data };
+    return { type: SET_USER_DETAIL, value: data };
 };
 
 export const loadUserDetail = (data) => {
@@ -325,7 +353,7 @@ export const loadUserDetail = (data) => {
 
     //
     //
-    return { type: "LOAD_USER_DETAIL", value: userDetials };
+    return { type: LOAD_USER_DETAIL, value: userDetials };
 };
 
 export const getUserDetail = (data) => {
@@ -341,7 +369,7 @@ export const getUserDetailSync = (data) => (dispatch) => {
     axios
         .get(url)
         .then((res) => {
-            dispatch({ type: "USER_DETAIL", value: res.data[0] });
+            dispatch({ type: USER_DETAIL, value: res.data[0] });
             saveUserData(res.data[0]);
         })
         .catch((error) => {
@@ -367,5 +395,5 @@ export const logOut = (val) => {
 export const logOutSync = (val) => {
     document.body.classList.remove("search-body");
 
-    return { type: "LOGOUT", value: val };
+    return { type: LOGOUT, value: val };
 };

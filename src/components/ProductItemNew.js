@@ -183,7 +183,15 @@ class ProductItemNew extends Component {
         this.fetchImage();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevState.images !== this.state.images) {
+            this.fetchImage();
+        }
+    }
+
     fetchImage() {
+        console.log("running...")
+
         if (this.props.item.artifacts) {
             this.setState({
                 images: this.props.item.artifacts,

@@ -1220,24 +1220,18 @@ class ProductEditForm extends Component {
                                                                 name: "condition",
                                                                 id: "outlined-age-native-simple",
                                                             }}>
-                                                            {this.state.item.product.condition
-                                                                ? this.state.conditionList.map(
-                                                                      (item) => (
+                                                            {this.state.conditionList.map(
+                                                                      (item, index) => (
                                                                           <option
-                                                                              selected={
-                                                                                  this.state.item
-                                                                                      .product
-                                                                                      .condition ===
-                                                                                  item
-                                                                                      ? true
-                                                                                      : false
-                                                                              }
+                                                                              key={index}
+                                                                              selected={this.state.item.product.condition === item}
+                                                                              defaultValue={this.state.item.product.condition === item}
                                                                               value={item}>
                                                                               {item}
                                                                           </option>
                                                                       )
                                                                   )
-                                                                : null}
+                                                                }
                                                         </Select>
                                                     </FormControl>
                                             </div>
@@ -1269,8 +1263,9 @@ class ProductEditForm extends Component {
                                                         }}>
                                                         {/*<option value={null}>Select</option>*/}
 
-                                                        {this.state.categories.map((item) => (
+                                                        {this.state.categories.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.product
                                                                         .category === item.name
@@ -1494,8 +1489,9 @@ class ProductEditForm extends Component {
                                                         }}>
                                                         {/*<option value={null}>Select</option>*/}
 
-                                                        {this.state.purposeList.map((item) => (
+                                                        {this.state.purposeList.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.product
                                                                         .purpose === item
@@ -1538,8 +1534,9 @@ class ProductEditForm extends Component {
                                                             name: "deliver",
                                                             id: "outlined-age-native-simple",
                                                         }}>
-                                                        {this.props.siteList.map((item) => (
+                                                        {this.props.siteList.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.site._key ===
                                                                     item._key
@@ -1682,8 +1679,9 @@ class ProductEditForm extends Component {
                                                         }}>
                                                         <option>Select</option>
 
-                                                        {this.state.yearsList.map((item) => (
+                                                        {this.state.yearsList.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.product
                                                                         .year_of_making === item
@@ -1952,6 +1950,7 @@ class ProductEditForm extends Component {
                                                                         this.state.files.map(
                                                                             (item, index) => (
                                                                                 <div
+                                                                                    key={index}
                                                                                     className={
                                                                                         "file-uploader-thumbnail-container"
                                                                                     }>

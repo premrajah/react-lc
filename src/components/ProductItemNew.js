@@ -166,9 +166,6 @@ class ProductItemNew extends Component {
     showSubmitSite() {
         this.setState({
             errorRegister: null,
-        });
-
-        this.setState({
             showSubmitSite: !this.state.showSubmitSite,
         });
     }
@@ -183,11 +180,6 @@ class ProductItemNew extends Component {
         this.fetchImage();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // if(prevState.images !== this.state.images) {
-        //     this.fetchImage();
-        // }
-    }
 
     fetchImage() {
 
@@ -227,15 +219,12 @@ class ProductItemNew extends Component {
                                     {this.state.images.length > 0 ? (
                                         <img
                                             className={"img-fluid img-list"}
-                                            src={
-                                                (
-                                                    this.state.images.find(
+                                            src={(this.state.images.find(
                                                         (item) =>
                                                             item.mime_type === "image/jpeg" ||
                                                             item.mime_type === "image/png"
                                                     ) || {}
-                                                ).blob_url || ""
-                                            }
+                                                ).blob_url || "" }
                                             alt=""
                                         />
                                     ) : (

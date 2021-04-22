@@ -32,9 +32,9 @@ const NotificationItem = ({ item, editText, onClose }) => {
                             {moment(message._ts_epoch_ms).fromNow()}
                         </span>
 
-                        <span style={{ float: "right" }}>
-                            <MoreMenu delete={true} />
-                        </span>
+                        {/*<span style={{ float: "right" }}>*/}
+                        {/*    <MoreMenu delete={true} />*/}
+                        {/*</span>*/}
                     </div>
                 </div>
             </CardContent>

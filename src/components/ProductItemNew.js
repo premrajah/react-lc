@@ -76,7 +76,7 @@ class ProductItemNew extends Component {
     getSites() {
         axios.get(baseUrl + "site").then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     sites: responseAll,
@@ -119,7 +119,7 @@ class ProductItemNew extends Component {
     }
 
     removeItem() {
-        var data = {
+        let data = {
             product_id: this.props.parentId,
             sub_products_ids: [
                 this.props.item && this.props.item.product
@@ -130,7 +130,7 @@ class ProductItemNew extends Component {
 
         axios.post(baseUrl + "product/sub-product/remove", data).then(
             (response) => {
-                // var responseAll = response.data.data;
+                // let responseAll = response.data.data;
                 // this.props.history.push("/my-products")
                 // this.props.loadProducts()
             },
@@ -141,7 +141,7 @@ class ProductItemNew extends Component {
     deleteItem() {
         axios.delete(baseUrl + "listing/" + this.props.item.listing._key).then(
             (response) => {
-                // var responseAll = response.data.data;
+                // let responseAll = response.data.data;
                 // this.props.history.push("/my-products")
                 // this.props.loadProducts()
             },
@@ -184,20 +184,19 @@ class ProductItemNew extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevState.images !== this.state.images) {
-            this.fetchImage();
-        }
+        // if(prevState.images !== this.state.images) {
+        //     this.fetchImage();
+        // }
     }
 
     fetchImage() {
-        console.log("running...")
 
         if (this.props.item.artifacts) {
             this.setState({
                 images: this.props.item.artifacts,
             });
         } else {
-            var url =
+            let url =
                 this.props.item && this.props.item.product
                     ? baseUrl + "product/" + this.props.item.product._key + "/artifact"
                     : baseUrl + "product/" + this.props.item._key + "/artifact";

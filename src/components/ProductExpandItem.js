@@ -277,7 +277,7 @@ class ProductExpandItem extends Component {
             <>
                 {this.state.product && (
                     <ProductItemNew
-                        hideMore={this.props.hideMore ? this.props.hideMore : false}
+                        hideMore={true}
                         item={this.state.product}
                     />
                 )}

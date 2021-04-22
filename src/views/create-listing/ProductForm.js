@@ -994,7 +994,7 @@ class ProductForm extends Component {
                                 <div className="col-md-6 col-sm-12">
                                     <div
                                         className={"custom-label text-bold text-blue mb-3"}>
-                                        Purpose
+                                        Condition
                                     </div>
                                     <FormControl
                                         variant="outlined"

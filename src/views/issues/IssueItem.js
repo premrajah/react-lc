@@ -6,6 +6,7 @@ import MoreMenu from "../../components/MoreMenu";
 import { Badge, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
+import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 
 const IssueItem = ({ item, onSubmitted }) => {
     const { artifacts, creator, issue, product, service_agent } = item;
@@ -49,11 +50,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                     <div className="row">
                                         <div className="col-md-2 col-sm-12">
                                             {product.artifacts && product.artifacts.length > 0 ? (
-                                                <img
-                                                    className="img-fluid img-list"
-                                                    src={product.artifacts[0].blob_url}
-                                                    alt=""
-                                                />
+                                                <ImageOnlyThumbnail images={product.artifacts} />
                                             ) : (
                                                 <img
                                                     className="img-fluid"

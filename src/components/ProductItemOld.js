@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 import moment from "moment/moment";
 import { Link } from "react-router-dom";
+import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -68,11 +69,7 @@ class ProductItemNew extends Component {
                 <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
                     <div className={"col-2 "}>
                         {this.state.images.length > 0 ? (
-                            <img
-                                className={"img-fluid img-list"}
-                                src={this.state.images[0].blob_url}
-                                alt=""
-                            />
+                            <ImageOnlyThumbnail images={this.state.images} />
                         ) : (
                             <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                         )}

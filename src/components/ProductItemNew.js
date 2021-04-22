@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import MoreMenu from "./MoreMenu";
 import ProductEditForm from "./ProductEditForm";
 import ProductDetail from "./ProductDetail";
+import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -217,16 +218,7 @@ class ProductItemNew extends Component {
                             <div className="row no-gutters justify-content-center mt-4 mb-4 ">
                                 <div className={"col-2 "}>
                                     {this.state.images.length > 0 ? (
-                                        <img
-                                            className={"img-fluid img-list"}
-                                            src={(this.state.images.find(
-                                                        (item) =>
-                                                            item.mime_type === "image/jpeg" ||
-                                                            item.mime_type === "image/png"
-                                                    ) || {}
-                                                ).blob_url || "" }
-                                            alt=""
-                                        />
+                                        <ImageOnlyThumbnail images={this.state.images} />
                                     ) : (
                                         <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                     )}
@@ -297,11 +289,7 @@ class ProductItemNew extends Component {
                             <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
                                 <div className={"col-2 "}>
                                     {this.state.images.length > 0 ? (
-                                        <img
-                                            className={"img-fluid img-list"}
-                                            src={this.state.images[0].blob_url}
-                                            alt=""
-                                        />
+                                        <ImageOnlyThumbnail images={this.state.images} />
                                     ) : (
                                         <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                     )}

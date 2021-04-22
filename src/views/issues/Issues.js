@@ -46,10 +46,10 @@ class Issues extends Component {
                         <div className="row">
                             <div className="col">
                                 {this.state.allIssues.length > 0
-                                    ? this.state.allIssues.map((issue) => {
+                                    ? this.state.allIssues.map((issue, index) => {
                                           return (
                                               <IssueItem
-                                                  key={`${issue._id}_${Math.random() * 10}`}
+                                                  key={index}
                                                   item={issue}
                                                   onSubmitted={this.handleOnSubmittedIssue}
                                               />

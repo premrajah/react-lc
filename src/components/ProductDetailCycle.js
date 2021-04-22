@@ -862,10 +862,10 @@ class ProductDetailCycle extends Component {
 
                                     {this.state.subProducts.length > 0 && (
                                         <Tab eventKey="subproducts" title="Subproducts">
-                                            {this.state.subProducts.map((item) => (
+                                            {this.state.subProducts.map((item, index) => (
                                                 <ProductItemNew
                                                     hideMore={true}
-                                                    key={Math.random() * 100}
+                                                    key={index}
                                                     item={item}
                                                 />
                                             ))}
@@ -874,8 +874,8 @@ class ProductDetailCycle extends Component {
 
                                     {this.state.searches.length > 0 && (
                                         <Tab eventKey="search" title="Searches">
-                                            {this.state.searches.map((item) => (
-                                                <SearchItem key={Math.random() * 100} item={item} />
+                                            {this.state.searches.map((item, index) => (
+                                                <SearchItem key={index} item={item} />
                                             ))}
                                         </Tab>
                                     )}
@@ -1025,9 +1025,9 @@ class ProductDetailCycle extends Component {
                                                         }}>
                                                         <option value={null}>Select</option>
 
-                                                        {this.state.sites.map((item) => (
+                                                        {this.state.sites.map((item, index) => (
                                                             <option
-                                                                key={Math.random() * 100}
+                                                                key={index}
                                                                 value={item._key}>
                                                                 {item.name +
                                                                     "(" +

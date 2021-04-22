@@ -282,16 +282,6 @@ class ProductExpandItem extends Component {
                     />
                 )}
 
-                {/*{(this.state.subProducts.length> 0) &&*/}
-                {/*<div className="row no-gutters  justify-content-left">*/}
-
-                {/*<div className="col-12">*/}
-
-                {/*<h6 className={"blue-text text-heading"}>Sub Products</h6>*/}
-
-                {/*</div>*/}
-                {/*</div>}*/}
-
                 <div className="row no-gutters  justify-content-left">
                     <div className="col-12">
                         {this.state.product && (

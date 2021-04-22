@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
 import { FormControl, FormHelperText, MenuItem, Select } from "@material-ui/core";
+import ProductItemNew from "../../components/ProductItemNew";
 
 class IssueDetail extends Component {
     state = {
@@ -256,9 +257,22 @@ class IssueDetail extends Component {
 
                                                 <div className="row mt-2 mb-2">
                                                     <div className="col">
-                                                        <div
-                                                            className={"listing-row-border "}></div>
+                                                        <div className={"listing-row-border "}></div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {this.state.issue && (
+                                            <div className="row">
+                                                <div className="col">
+                                                        <ProductItemNew
+                                                            item={this.state.issue.product}
+                                                            hideMore
+                                                            goToLink
+                                                            parentId={this.state.issue.product._key}
+                                                            history={this.props.history}
+                                                        />
                                                 </div>
                                             </div>
                                         )}

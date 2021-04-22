@@ -12,6 +12,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { withStyles } from "@material-ui/core/styles/index";
 import Org from "./Org/Org";
+import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class RequestReleaseItem extends Component {
     constructor(props) {
@@ -320,11 +321,7 @@ class RequestReleaseItem extends Component {
                         <div className="row no-gutters justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
-                                    <img
-                                        className={"img-fluid img-list"}
-                                        src={this.state.item.product.artifacts[0].blob_url}
-                                        alt=""
-                                    />
+                                    <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}

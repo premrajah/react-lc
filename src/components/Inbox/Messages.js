@@ -102,11 +102,11 @@ class Messages extends Component {
                     <div className="col">
                         <div className="messages-content">
                             {this.state.allMessages.length > 0
-                                ? this.state.allMessages.map((item) => {
+                                ? this.state.allMessages.map((item, index) => {
                                       return (
                                           <MessageItem
                                               item={item}
-                                              key={item.message._ts_epoch_ms + Math.random()}
+                                              key={index}
                                               onDelete={this.handleDeleteMessage}
                                           />
                                       );

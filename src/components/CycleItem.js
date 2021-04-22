@@ -7,6 +7,7 @@ import * as actionCreator from "../store/actions/actions";
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
 import Org from "./Org/Org";
+import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class CycleItem extends Component {
     constructor(props) {
@@ -197,11 +198,7 @@ class CycleItem extends Component {
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {this.props.item.product.artifacts.length > 0 ? (
-                                <img
-                                    className={"resource-item-img img-list img-fluid"}
-                                    src={this.props.item.product.artifacts[0].blob_url}
-                                    alt=""
-                                />
+                                <ImageOnlyThumbnail images={this.props.item.product.artifacts} />
                             ) : (
                                 <img className={"img-fluid"} src={Paper} alt="" />
                             )}

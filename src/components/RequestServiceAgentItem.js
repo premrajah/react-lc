@@ -8,6 +8,7 @@ import { Modal, ModalBody } from "react-bootstrap";
 import moment from "moment/moment";
 import { withStyles } from "@material-ui/core/styles/index";
 import Org from "./Org/Org";
+import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class RequestServiceAgentItem extends Component {
     constructor(props) {
@@ -312,11 +313,7 @@ class RequestServiceAgentItem extends Component {
                         <div className="row no-gutters justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
-                                    <img
-                                        className={"img-fluid img-list"}
-                                        src={this.state.item.product.artifacts[0].blob_url}
-                                        alt=""
-                                    />
+                                    <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}

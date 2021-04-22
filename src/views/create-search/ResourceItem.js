@@ -6,6 +6,7 @@ import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import moment from "moment";
 import MoreMenu from "../../components/MoreMenu";
+import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 
 class ResourceItem extends Component {
     constructor(props) {
@@ -80,11 +81,7 @@ class ResourceItem extends Component {
                             <div className={"col-2"}>
                                 {this.props.item.listing.artifacts &&
                                 this.props.item.listing.artifacts.length > 0 ? (
-                                    <img
-                                        className={" resource-item-img img-fluid"}
-                                        src={this.props.item.listing.artifacts[0].blob_url}
-                                        alt=""
-                                    />
+                                    <ImageOnlyThumbnail images={this.props.item.listing.artifacts} />
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}
@@ -150,11 +147,7 @@ class ResourceItem extends Component {
                             <div className={"col-2"}>
                                 {this.props.item.artifacts &&
                                 this.props.item.artifacts.length > 0 ? (
-                                    <img
-                                        className={"img-fluid img-list resource-item-img"}
-                                        src={this.props.item.artifacts[0].blob_url}
-                                        alt=""
-                                    />
+                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}

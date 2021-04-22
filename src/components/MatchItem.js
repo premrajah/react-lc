@@ -4,6 +4,7 @@ import axios from "axios/index";
 import { baseUrl } from "../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
+import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class MatchItem extends Component {
     constructor(props) {
@@ -295,7 +296,7 @@ class MatchItem extends Component {
                         className={"resource-item-img img-list img-fluid"}
                         src={
                             this.props.item.listing.artifacts.length > 0
-                                ? this.props.item.listing.artifacts[0].blob_url
+                                ? <ImageOnlyThumbnail images={this.props.item.listing.artifacts} />
                                 : Paper
                         }
                         alt=""

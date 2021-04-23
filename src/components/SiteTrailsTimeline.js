@@ -87,7 +87,7 @@ function SiteTrailsTimeline(props) {
                             <TimelineContent>
                                 <Typography>
                                     <p className={"text-blue"}>
-                                        {moment(item.site.org._ts_epoch_ms).format("DD MMM YYYY")}
+                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
                                 <Typography variant="caption" component="div">
@@ -144,7 +144,7 @@ function SiteTrailsTimeline(props) {
                             <TimelineContent>
                                 <Typography>
                                     <p className={"text-blue"}>
-                                        {moment(item.site.org._ts_epoch_ms).format("DD MMM YYYY")}
+                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
                                 <Typography variant="caption" component="div">

@@ -145,7 +145,7 @@ class PaymentMethod extends Component {
                         <div className="row mb-3 justify-content-center ">
                             <div className="col-12  justify-content-center">
                                 <p className={"blue-text"}>
-                                    <Link to={"/account"}> Account </Link> > Addresses/Sites{" "}
+                                    <Link to={"/account"}> Account </Link> > Addresses/Sites
                                 </p>
 
                                 <h4 className={"text-blue text-bold"}>Addresses/Sites</h4>

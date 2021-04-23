@@ -51,7 +51,7 @@ class ResourceItem extends Component {
                             <p className={"green-text"}>
                                 {this.props.item.price ? (
                                     <>
-                                        {this.props.item.price.currency}{" "}
+                                        {this.props.item.price.currency}
                                         {this.props.item.price.value}
                                     </>
                                 ) : (

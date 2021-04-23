@@ -1624,7 +1624,7 @@ class ListEditForm extends Component {
                                                             {this.state.errors["price"] && (
                                                                 <span className={"text-mute small"}>
                                                                     <span style={{ color: "red" }}>
-                                                                        *{" "}
+                                                                        *
                                                                     </span>
                                                                     {this.state.errors["price"]}
                                                                 </span>

@@ -37,7 +37,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                                     www.loopcycle.io
                                 </a>
                             </strong>
-                            is a site operated by Loop Infinity Ltd ("<strong>We</strong>" or “{" "}
+                            is a site operated by Loop Infinity Ltd ("<strong>We</strong>" or “
                             <strong>Loopcycle</strong>”). We are registered in England and Wales
                             under company number 11456617 and have our registered office and main
                             trading address.
@@ -49,7 +49,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             parties.
                         </p>
                         <p>
-                            To contact us, please email{" "}
+                            To contact us, please email
                             <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
                         <h4>
@@ -73,7 +73,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         <ul>
                             <li>
                                 <p>
-                                    Our{" "}
+                                    Our
                                     <Link to="/privacy">
                                         <u>Privacy Policy</u>
                                     </Link>
@@ -82,12 +82,12 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             </li>
                             <li>
                                 <p>
-                                    Our{" "}
+                                    Our
                                     <Link to="/acceptable">
                                         <u>Acceptable Use Policy</u>
                                     </Link>
                                     , which sets out the permitted uses and prohibited uses of our
-                                    site. When using our site, you must comply with this{" "}
+                                    site. When using our site, you must comply with this
                                     <Link to="/acceptable">
                                         <u>Acceptable Use Policy</u>
                                     </Link>
@@ -96,7 +96,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             </li>
                             <li>
                                 <p>
-                                    Our{" "}
+                                    Our
                                     <Link to="/cookie">
                                         <u>Cookie Policy</u>
                                     </Link>
@@ -440,7 +440,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </p>
                         <p>
                             If you wish to link to or make any use of content on our site other than
-                            that set out above, please contact{" "}
+                            that set out above, please contact
                             <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
                         <h4>

@@ -1146,7 +1146,7 @@ class SearchForm extends Component {
                                     className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
                                     onClick={this.selectSubCatType.bind(this)}>
                                     <div className="col-10">
-                                        <p className={" "} style={{ fontSize: "16px" }}>
+                                        <p className= style={{ fontSize: "16px" }}>
                                             {item.name}
                                         </p>
                                     </div>
@@ -1183,7 +1183,7 @@ class SearchForm extends Component {
                                 className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectState.bind(this)}>
                                 <div className="col-10">
-                                    <p className={" "} style={{ fontSize: "16px" }}>
+                                    <p className= style={{ fontSize: "16px" }}>
                                         {item}
                                     </p>
                                 </div>
@@ -1252,7 +1252,7 @@ class SearchForm extends Component {
                                             className={
                                                 "green-text forgot-password-link text-mute "
                                             }>
-                                            {" "}
+
                                             Create a new product
                                         </span>
                                     </FormHelperText>
@@ -1302,8 +1302,8 @@ class SearchForm extends Component {
                                 )}
 
                                 <p style={{ margin: "10px 0" }}>
-                                    {" "}
-                                    Don’t see it on here?{" "}
+
+                                    Don’t see it on here?
                                     <span
                                         onClick={this.toggleSite}
                                         className={
@@ -1510,7 +1510,7 @@ class SearchForm extends Component {
                                             Amount
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
-                                            {this.state.createSearchData.volume}{" "}
+                                            {this.state.createSearchData.volume}
                                             {this.state.createSearchData.units}
                                         </p>
                                     </div>
@@ -1540,7 +1540,7 @@ class SearchForm extends Component {
                                         <p
                                             style={{ fontSize: "18px" }}
                                             className="text-mute text-gray-light mb-1">
-                                            Required From{" "}
+                                            Required From
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
                                             {moment(
@@ -1558,7 +1558,7 @@ class SearchForm extends Component {
                                         <p
                                             style={{ fontSize: "18px" }}
                                             className="text-mute text-gray-light mb-1">
-                                            Required by{" "}
+                                            Required by
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
                                             {moment(
@@ -1575,7 +1575,7 @@ class SearchForm extends Component {
                                         <p
                                             style={{ fontSize: "18px" }}
                                             className="text-mute text-gray-light mb-1">
-                                            Location{" "}
+                                            Location
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
                                             {this.state.site.name},{this.state.site.contact}

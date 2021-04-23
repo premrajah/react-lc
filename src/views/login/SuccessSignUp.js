@@ -182,10 +182,10 @@ class RecoverPassword extends Component {
                     <div className="row no-gutters justify-content-center mt-5">
                         <div className="col-12 ">
                             <p className={"text-mute "} style={{ textAlign: "center" }}>
-                                {" "}
+
                                 A verification link has been sent to
                                 <br />
-                                your email account.{" "}
+                                your email account.
                             </p>
                         </div>
 
@@ -201,7 +201,7 @@ class RecoverPassword extends Component {
 
                         <div className="col-12 mt-4 mb-4">
                             <p style={{ textAlign: "center" }} className={"text-mute small"}>
-                                Didn’t get a link?{" "}
+                                Didn’t get a link?
                                 <span className={"forgot-password-link"}> Resend Verification</span>
                             </p>
                         </div>

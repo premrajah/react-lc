@@ -368,7 +368,7 @@ class MatchItemOld extends Component {
                     <div className={"row"}>
                         {this.state.offers.map((item, index) => (
                             <div className="col-12">
-                                {index + 1}.{" "}
+                                {index + 1}.
                                 <span
                                     style={{ fontSize: "18px" }}
                                     className=" mb-1 list-title text-bold text-blue">
@@ -408,7 +408,7 @@ class MatchItemOld extends Component {
                     <div className={"row"}>
                         {this.state.offers.map((item, index) => (
                             <div className="col-12">
-                                {index + 1}.{" "}
+                                {index + 1}.
                                 <span
                                     style={{ fontSize: "18px" }}
                                     className=" mb-1 list-title text-bold text-blue">

@@ -74,7 +74,7 @@ class Sidebar extends Component {
                                 <div className="col">
                                     <div className="list-group main-menu">
                                         <Link className="list-group-item list-group-item-action green-text">
-                                            Hello, {this.props.userDetail.firstName}{" "}
+                                            Hello, {this.props.userDetail.firstName}
                                         </Link>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-listings"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Listings{" "}
+                                                My Listings
                                             </Link>
 
 
@@ -153,7 +153,7 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-searches"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Searches{" "}
+                                                My Searches
                                             </Link>
 
 
@@ -161,21 +161,21 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-products"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Products{" "}
+                                                My Products
                                             </Link>
 
                                             <Link
                                                 onClick={this.toggleMenu}
                                                 to={"/approve"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                Approvals{" "}
+                                                Approvals
                                             </Link>
 
                                             <Link
                                                 onClick={this.toggleMenu}
                                                 to={"/issues"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                Issues{" "}
+                                                Issues
                                             </Link>
 
                                             <Link
@@ -206,14 +206,14 @@ class Sidebar extends Component {
                                                 onClick={this.showLoginPopUp}
                                                 to={""}
                                                 className="list-group-item list-group-item-action green-text">
-                                                Log in{" "}
+                                                Log in
                                             </Link>
 
                                             <Link
                                                 onClick={this.showSignUpPopUp}
                                                 to={""}
                                                 className="list-group-item list-group-item-action green-text">
-                                                Sign Up{" "}
+                                                Sign Up
                                             </Link>
                                         </>
                                     )}
@@ -223,14 +223,14 @@ class Sidebar extends Component {
                                             onClick={this.logOut}
                                             to={""}
                                             className="list-group-item list-group-item-action green-text">
-                                            Log out{" "}
+                                            Log out
                                         </Link>
                                     )}
                                     <Link
                                         onClick={this.toggleMenu}
                                         to={"/account"}
                                         className="list-group-item list-group-item-action green-text">
-                                        My Loopcycle{" "}
+                                        My Loopcycle
                                     </Link>
                                 </div>
                             </div>

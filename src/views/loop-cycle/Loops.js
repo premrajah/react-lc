@@ -75,7 +75,7 @@ class Loops extends Component {
                             <div className="col-auto">
                                 <p className={"text-gray-light "}>
                                     Cycles are transactions in progress. Keep track of cycles in
-                                    progress as well as{" "}
+                                    progress as well as
                                 </p>
                             </div>
                         </div>
@@ -116,7 +116,7 @@ class Loops extends Component {
                                             <p
                                                 style={{ fontSize: "16px" }}
                                                 className="text-mute mb-1">
-                                                {item.resource.state} / {item.search.volume}{" "}
+                                                {item.resource.state} / {item.search.volume}
                                                 {item.search.units}
                                             </p>
                                         </>

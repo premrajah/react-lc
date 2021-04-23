@@ -316,7 +316,7 @@ class MatchItem extends Component {
 
                 <div className={"col-2 text-right"}>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
-                        {" "}
+
                         {this.props.item.listing.listing.price
                             ? "GBP " + this.props.item.listing.listing.price.value
                             : "Free"}
@@ -325,7 +325,7 @@ class MatchItem extends Component {
 
                 <div className={"col-2 text-right"}>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
-                        {" "}
+
                         {this.props.item.match.stage}
                     </p>
                 </div>

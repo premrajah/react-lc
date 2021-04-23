@@ -571,11 +571,11 @@ class ViewSearch extends Component {
                                                                     this.state.createSearchData
                                                                         .search.category
                                                                 }
-                                                                ,{" "}
+                                                                ,
                                                                 {
                                                                     this.state.createSearchData
                                                                         .search.type
-                                                                }{" "}
+                                                                }
                                                             </p>
                                                             {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.type}</p>*/}
                                                         </div>
@@ -593,7 +593,7 @@ class ViewSearch extends Component {
                                                                 {
                                                                     this.state.createSearchData
                                                                         .search.volume
-                                                                }{" "}
+                                                                }
                                                                 {
                                                                     this.state.createSearchData
                                                                         .search.units
@@ -625,7 +625,7 @@ class ViewSearch extends Component {
                                                             <p
                                                                 style={{ fontSize: "18px" }}
                                                                 className="text-mute text-bold text-blue mb-1">
-                                                                Required From{" "}
+                                                                Required From
                                                             </p>
                                                             <p
                                                                 style={{ fontSize: "18px" }}
@@ -644,7 +644,7 @@ class ViewSearch extends Component {
                                                             <p
                                                                 style={{ fontSize: "18px" }}
                                                                 className="text-mute text-bold text-blue mb-1">
-                                                                Required by{" "}
+                                                                Required by
                                                             </p>
                                                             <p
                                                                 style={{ fontSize: "18px" }}
@@ -662,7 +662,7 @@ class ViewSearch extends Component {
                                                             <p
                                                                 style={{ fontSize: "18px" }}
                                                                 className="text-mute text-bold text-blue mb-1">
-                                                                Location{" "}
+                                                                Location
                                                             </p>
                                                             <p
                                                                 style={{ fontSize: "18px" }}

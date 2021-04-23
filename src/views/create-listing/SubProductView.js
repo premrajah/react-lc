@@ -168,7 +168,7 @@ class SubProductView extends Component {
                                             <div className="row">
                                                 <div className="col-7">
                                                     <p>
-                                                        Sold By{" "}
+                                                        Sold By
                                                         <span className={"green-text"}>
                                                             @{/*{this.state.item.org_id}*/}
                                                         </span>
@@ -205,7 +205,7 @@ class SubProductView extends Component {
                                     style={{ margin: "10px 0" }}
                                     className={"green-text forgot-password-link text-mute small"}>
                                     <span onClick={this.showProductSelection}>
-                                        Add Sub Product{" "}
+                                        Add Sub Product
                                     </span>
                                 </p>
                             </div>
@@ -230,7 +230,7 @@ class SubProductView extends Component {
                                                 <p
                                                     style={{ fontSize: "16px" }}
                                                     className="text-mute mb-1">
-                                                    {item.product.state} / {item.product.volume}{" "}
+                                                    {item.product.state} / {item.product.volume}
                                                     {item.product.units}
                                                 </p>
                                                 {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">@{this.props.item.tags}</p>*/}

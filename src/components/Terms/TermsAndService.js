@@ -41,7 +41,7 @@ const TermsAndService = ({ title, header, footer }) => {
                                             Services to you, how you and we may change or end the
                                             contract, what to do if there is a problem and other
                                             important information. If you think that there is a
-                                            mistake in these terms, please contact us via email at{" "}
+                                            mistake in these terms, please contact us via email at
                                             <a href="mailto:hello@loopcycle.io">
                                                 hello@loopcycle.io
                                             </a>
@@ -68,14 +68,14 @@ const TermsAndService = ({ title, header, footer }) => {
                                             We operate a business-to-business marketplace which uses
                                             artificial intelligence to trace the circulation of
                                             products between end users and product manufacturers,
-                                            based on the information submitted by both parties{" "}
+                                            based on the information submitted by both parties
                                             <strong> (“Services”). </strong>
                                         </p>
                                     </li>
                                     <li>
                                         <p>
                                             <strong>How to contact us</strong>. You can contact us
-                                            by writing to us at{" "}
+                                            by writing to us at
                                             <a href="mailto:hello@loopcycle.io">
                                                 hello@loopcycle.io
                                             </a>

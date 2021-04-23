@@ -386,10 +386,10 @@ class MatchItemSeller extends Component {
                         <CompanyInfo item={this.props.item.search.org} />
                     </p>
                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                        {this.props.item.search.search.name}{" "}
+                        {this.props.item.search.search.name}
                     </p>
                     <p style={{ fontSize: "16px" }} className=" mb-1">
-                        Stage: {this.props.item.match.stage}{" "}
+                        Stage: {this.props.item.match.stage}
                     </p>
                     {this.state.cycle && (
                         <p>
@@ -542,7 +542,7 @@ class MatchItemSeller extends Component {
                                         ? "col-12 listing-row-border mb-2 "
                                         : "col-12  mb-2 pb-2"
                                 }>
-                                {index + 1}.{" "}
+                                {index + 1}.
                                 <span
                                     style={{ fontSize: "18px" }}
                                     className=" mb-1 list-title text-bold text-blue">
@@ -581,7 +581,7 @@ class MatchItemSeller extends Component {
                                         ? "Counter"
                                         : this.state.action === "widthdraw"
                                         ? "Widthdraw"
-                                        : ""}{" "}
+                                        : ""}
                                     Offer
                                 </p>
                                 <p>Are you sure you want to proceed ?</p>

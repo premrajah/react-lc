@@ -334,7 +334,7 @@ class ListingForm extends Component {
                                 className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  "
                                 onClick={this.selectCreateSearch}>
                                 <div className="col-10">
-                                    <p className={" "} style={{ fontSize: "16px" }}>
+                                    <p style={{ fontSize: "16px" }}>
                                         Disposable Food Boxes
                                     </p>
                                 </div>
@@ -347,7 +347,7 @@ class ListingForm extends Component {
                                 className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectCreateSearch}>
                                 <div className="col-10">
-                                    <p className={" "} style={{ fontSize: "16px" }}>
+                                    <p style={{ fontSize: "16px" }}>
                                         Disposable Food Boxes
                                     </p>
                                 </div>
@@ -382,7 +382,7 @@ class ListingForm extends Component {
                                 className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectState}>
                                 <div className="col-10">
-                                    <p className={" "} style={{ fontSize: "16px" }}>
+                                    <p style={{ fontSize: "16px" }}>
                                         Bailed
                                     </p>
                                 </div>
@@ -395,7 +395,7 @@ class ListingForm extends Component {
                                 className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  "
                                 onClick={this.selectState}>
                                 <div className="col-10">
-                                    <p className={" "} style={{ fontSize: "16px" }}>
+                                    <p style={{ fontSize: "16px" }}>
                                         Disposable Food Boxes
                                     </p>
                                 </div>
@@ -805,10 +805,10 @@ class ListingForm extends Component {
                                     <p
                                         style={{ fontSize: "18px" }}
                                         className="text-mute text-gray-light mb-1">
-                                        Required by{" "}
+                                        Required by
                                     </p>
                                     <p style={{ fontSize: "18px" }} className="  mb-1">
-                                        June 1, 2020{" "}
+                                        June 1, 2020
                                     </p>
                                 </div>
                             </div>
@@ -820,7 +820,7 @@ class ListingForm extends Component {
                                     <p
                                         style={{ fontSize: "18px" }}
                                         className="text-mute text-gray-light mb-1">
-                                        Location{" "}
+                                        Location
                                     </p>
                                     <p style={{ fontSize: "18px" }} className="  mb-1">
                                         Mapledown, Which Hill Lane,

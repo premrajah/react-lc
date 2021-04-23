@@ -1177,13 +1177,13 @@ class SearchForm extends Component {
 
                                                             <FormHelperText>
                                                                 What resources do you need to make
-                                                                this product?{" "}
+                                                                this product?
                                                             </FormHelperText>
                                                         </FormControl>
                                                         {this.state.errors["category"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errors["category"]}
                                                             </span>
@@ -1231,7 +1231,7 @@ class SearchForm extends Component {
                                                         {this.state.errors["type"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errors["type"]}
                                                             </span>
@@ -1277,7 +1277,7 @@ class SearchForm extends Component {
                                                         {this.state.errors["state"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errors["state"]}
                                                             </span>
@@ -1413,7 +1413,7 @@ class SearchForm extends Component {
                                                 )}
 
                                                 <FormHelperText>
-                                                    Please select the product you wish to sell.{" "}
+                                                    Please select the product you wish to sell.
                                                     <br />
                                                     Don’t see it on here?
                                                     <span
@@ -1423,7 +1423,7 @@ class SearchForm extends Component {
                                                         className={
                                                             "green-text forgot-password-link text-mute "
                                                         }>
-                                                        {" "}
+
                                                         Create a new product
                                                     </span>
                                                 </FormHelperText>
@@ -1480,8 +1480,8 @@ class SearchForm extends Component {
                                             )}
 
                                             <p style={{ margin: "10px 0" }}>
-                                                {" "}
-                                                Don’t see it on here?{" "}
+
+                                                Don’t see it on here?
                                                 <span
                                                     onClick={this.toggleSite}
                                                     className={
@@ -1705,7 +1705,7 @@ class SearchForm extends Component {
                                                     Amount
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.state.createSearchData.volume}{" "}
+                                                    {this.state.createSearchData.volume}
                                                     {this.state.createSearchData.units}
                                                 </p>
                                             </div>
@@ -1743,7 +1743,7 @@ class SearchForm extends Component {
                                                 <p
                                                     style={{ fontSize: "18px" }}
                                                     className="text-mute text-gray-light mb-1">
-                                                    Required From{" "}
+                                                    Required From
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     {moment(
@@ -1766,7 +1766,7 @@ class SearchForm extends Component {
                                                 <p
                                                     style={{ fontSize: "18px" }}
                                                     className="text-mute text-gray-light mb-1">
-                                                    Required by{" "}
+                                                    Required by
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     {moment(
@@ -1787,7 +1787,7 @@ class SearchForm extends Component {
                                                 <p
                                                     style={{ fontSize: "18px" }}
                                                     className="text-mute text-gray-light mb-1">
-                                                    Location{" "}
+                                                    Location
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     {this.state.site.name},{this.state.site.contact}
@@ -1856,7 +1856,7 @@ class SearchForm extends Component {
                                                     className="col-auto"
                                                     style={{ margin: "auto" }}>
                                                     <p className={"blue-text"}>
-                                                        {" "}
+
                                                         Page {this.state.page}/2
                                                     </p>
                                                 </div>

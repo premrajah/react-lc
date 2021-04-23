@@ -184,7 +184,7 @@ class Footer extends React.Component {
                         <div className="col-auto copright-text">
                             <ul>
                                 <li>
-                                    <p className={" "}>
+                                    <p>
                                         &copy; {new Date().getFullYear()} Loopcycle
                                     </p>
                                 </li>

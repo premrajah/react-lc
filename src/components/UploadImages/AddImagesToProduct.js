@@ -262,7 +262,6 @@ class AddImagesToProduct extends Component {
                                                                             style={{
                                                                                 color: "red",
                                                                             }}
-                                                                            className={" "}
                                                                         />
                                                                         <p>Error!</p>
                                                                     </span>

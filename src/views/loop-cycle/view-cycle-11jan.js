@@ -619,7 +619,7 @@ class ViewCycle extends Component {
                                                             onClick={this.showStep}
                                                             type="button"
                                                             className="shadow-sm mr-2 btn blue-btn-border">
-                                                            <AddIcon style={{ color: "#27245C" }} />{" "}
+                                                            <AddIcon style={{ color: "#27245C" }} />
                                                             Add Step
                                                         </button>
                                                     </div>
@@ -645,7 +645,7 @@ class ViewCycle extends Component {
                                                             className={
                                                                 "text-bold text-left text-blue"
                                                             }>
-                                                            {item.step.name},{" "}
+                                                            {item.step.name},
                                                             {item.step.description}
                                                         </span>
                                                         <br />
@@ -658,7 +658,7 @@ class ViewCycle extends Component {
                                                         </span>
                                                         <br />
                                                         <span className={" text-left "}>
-                                                            {" "}
+
                                                             Owner: {item.owner_org_id}
                                                         </span>
                                                     </div>
@@ -831,7 +831,7 @@ class ViewCycle extends Component {
                                                         {this.state.logisticsError && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.logisticsErrorMsg}
                                                             </span>

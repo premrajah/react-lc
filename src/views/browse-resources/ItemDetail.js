@@ -365,7 +365,7 @@ class ItemDetail extends Component {
                                                             <div className="col-5 green-text text-heading text-right">
                                                                 {this.state.item.listing.price ? (
                                                                     <>
-                                                                        GBP{" "}
+                                                                        GBP
                                                                         {
                                                                             this.state.item.listing
                                                                                 .price.value
@@ -407,8 +407,8 @@ class ItemDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {this.state.item.listing.category},{" "}
-                                                            {this.state.item.listing.type},{" "}
+                                                            {this.state.item.listing.category},
+                                                            {this.state.item.listing.type},
                                                             {this.state.item.listing.state}
                                                         </p>
                                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
@@ -439,7 +439,7 @@ class ItemDetail extends Component {
                                                                 this.state.item &&
                                                                     this.state.item.listing
                                                                         .available_from_epoch_ms
-                                                            ).format("DD MMM YYYY")}{" "}
+                                                            ).format("DD MMM YYYY")}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -454,7 +454,7 @@ class ItemDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {" "}
+
                                                             {this.state.item &&
                                                                 moment(
                                                                     this.state.item.listing
@@ -614,7 +614,7 @@ class ItemDetail extends Component {
                                                                 Start a match
                                                             </p>
                                                             <p>
-                                                                {" "}
+
                                                                 We’ll let the seller know that your
                                                                 interested in this product. Do you
                                                                 want to send a message?

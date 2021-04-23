@@ -101,7 +101,7 @@ class MyListings extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-2">
                             <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.state.items.length} Listings{" "}
+                                    {this.state.items.length} Listings
                                 </p>
                             </div>
 
@@ -145,8 +145,8 @@ class MyListings extends Component {
                                     <div className="col-auto">
                                         <Link to={"/list-form"}>
                                             <p className={"green-text bottom-bar-text"}>
-                                                {" "}
-                                                Create New Listing{" "}
+
+                                                Create New Listing
                                             </p>
                                         </Link>
                                     </div>

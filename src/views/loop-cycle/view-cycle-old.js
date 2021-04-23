@@ -484,7 +484,7 @@ class ViewCycleOld extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className=" mb-1">
-                                                            {this.state.item.from.org_id} →{" "}
+                                                            {this.state.item.from.org_id} →
                                                             {this.state.item.to.org_id}
                                                         </p>
                                                         <p
@@ -495,8 +495,8 @@ class ViewCycleOld extends Component {
                                                         <p
                                                             style={{ fontSize: "16px" }}
                                                             className="text-mute mb-1">
-                                                            {this.state.item.resource.state} /{" "}
-                                                            {this.state.item.resource.volume}{" "}
+                                                            {this.state.item.resource.state} /
+                                                            {this.state.item.resource.volume}
                                                             {this.state.item.resource.units}
                                                         </p>
                                                     </>
@@ -547,8 +547,8 @@ class ViewCycleOld extends Component {
                                                     Amount
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {" "}
-                                                    {this.state.item.search.volume}{" "}
+
+                                                    {this.state.item.search.volume}
                                                     {this.state.item.search.units}
                                                 </p>
                                             </div>
@@ -569,7 +569,7 @@ class ViewCycleOld extends Component {
                                                     State
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.state.item.state}{" "}
+                                                    {this.state.item.state}
                                                 </p>
                                             </div>
                                         </div>
@@ -586,7 +586,7 @@ class ViewCycleOld extends Component {
                                                 <p
                                                     style={{ fontSize: "18px" }}
                                                     className="text-mute text-gray-light mb-1">
-                                                    Required From{" "}
+                                                    Required From
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     {moment(
@@ -608,7 +608,7 @@ class ViewCycleOld extends Component {
                                                 <p
                                                     style={{ fontSize: "18px" }}
                                                     className="text-mute text-gray-light mb-1">
-                                                    Required by{" "}
+                                                    Required by
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     {moment(

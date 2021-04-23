@@ -230,11 +230,11 @@ function NavTabs() {
                     <div className="row  justify-content-center filter-row listing-row-border  mb-4 pt-4 pb-4">
                         <div className="col">
                             <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                5 out of 5 Listings{" "}
+                                5 out of 5 Listings
                             </p>
                         </div>
                         <div className="text-mute col-auto pl-0">
-                            <span style={{ fontSize: "18px" }}>Filter</span>{" "}
+                            <span style={{ fontSize: "18px" }}>Filter</span>
                             <img src={FilterImg} className={"filter-icon"} alt="" />
                         </div>
                     </div>

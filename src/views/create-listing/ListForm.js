@@ -939,7 +939,7 @@ class ListForm extends Component {
                                                         {this.state.errors["deliver"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errors["deliver"]}
                                                             </span>
@@ -990,7 +990,7 @@ class ListForm extends Component {
                                                         {this.state.errors["startDate"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errors["startDate"]}
                                                             </span>
@@ -1029,7 +1029,7 @@ class ListForm extends Component {
                                                         {this.state.errors["endDate"] && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.errors["endDate"]}
                                                             </span>
@@ -1110,7 +1110,7 @@ class ListForm extends Component {
                                                                                         color:
                                                                                             "red",
                                                                                     }}>
-                                                                                    *{" "}
+                                                                                    *
                                                                                 </span>
                                                                                 {
                                                                                     this.state

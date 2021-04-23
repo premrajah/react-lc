@@ -70,12 +70,12 @@ class LoginPopUp extends Component {
                     <div className={"modal-popup"}>
                         <div className=" text-right web-only">
                             <Link to={"/"}>
-                                {" "}
+
                                 <Close
                                     onClick={this.hideLoginPopUp}
                                     className="blue-text"
                                     style={{ fontSize: 32 }}
-                                />{" "}
+                                />
                             </Link>
                         </div>
                         <div className="container  p-2 mobile-only"></div>
@@ -88,12 +88,12 @@ class LoginPopUp extends Component {
 
                                 <div className="col text-right">
                                     <Link to={"/"}>
-                                        {" "}
+
                                         <Close
                                             onClick={this.hideLoginPopUp}
                                             className="blue-text"
                                             style={{ fontSize: 32 }}
-                                        />{" "}
+                                        />
                                     </Link>
                                 </div>
                             </div>

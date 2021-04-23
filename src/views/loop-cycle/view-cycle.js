@@ -683,12 +683,12 @@ class ViewCycle extends Component {
                                                 <div className="col-12 mt-2">
                                                     <p>
                                                         <span>
-                                                            Product:{" "}
+                                                            Product:
                                                             {this.state.item.product.product.name}
                                                         </span>
                                                     </p>
                                                     <p>
-                                                        Stage:{" "}
+                                                        Stage:
                                                         <span
                                                             className={
                                                                 "green-text text-heading text-caps"
@@ -724,7 +724,7 @@ class ViewCycle extends Component {
                                                         <div className="col-3 green-text text-heading text-right">
                                                             {this.state.item.listing.price ? (
                                                                 <>
-                                                                    GBP{" "}
+                                                                    GBP
                                                                     {
                                                                         this.state.item.listing
                                                                             .price.value
@@ -766,10 +766,10 @@ class ViewCycle extends Component {
                                                     <p
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
-                                                        {this.state.item.listing.category},{" "}
-                                                        {this.state.item.listing.type},{" "}
-                                                        {this.state.item.listing.state}{" "}
-                                                        {this.state.item.listing.volume}{" "}
+                                                        {this.state.item.listing.category},
+                                                        {this.state.item.listing.type},
+                                                        {this.state.item.listing.state}
+                                                        {this.state.item.listing.volume}
                                                         {this.state.item.listing.units}
                                                     </p>
                                                     {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
@@ -800,7 +800,7 @@ class ViewCycle extends Component {
                                                             this.state.item &&
                                                                 this.state.item.listing
                                                                     .available_from_epoch_ms
-                                                        ).format("DD MMM YYYY")}{" "}
+                                                        ).format("DD MMM YYYY")}
                                                     </p>
                                                 </div>
                                             </div>
@@ -815,7 +815,7 @@ class ViewCycle extends Component {
                                                     <p
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
-                                                        {" "}
+
                                                         {this.state.item &&
                                                             moment(
                                                                 this.state.item.listing
@@ -917,7 +917,7 @@ class ViewCycle extends Component {
                                                                                     color:
                                                                                         "#27245C",
                                                                                 }}
-                                                                            />{" "}
+                                                                            />
                                                                             Add Step
                                                                         </button>
                                                                     </div>
@@ -950,7 +950,7 @@ class ViewCycle extends Component {
                                                                                 className={
                                                                                     "text-bold text-left text-blue"
                                                                                 }>
-                                                                                {item.step.name},{" "}
+                                                                                {item.step.name},
                                                                                 {
                                                                                     item.step
                                                                                         .description
@@ -961,7 +961,7 @@ class ViewCycle extends Component {
                                                                                 className={
                                                                                     " text-left "
                                                                                 }>
-                                                                                Type:{" "}
+                                                                                Type:
                                                                                 {item.step.type}
                                                                             </span>
                                                                             <br />
@@ -969,7 +969,7 @@ class ViewCycle extends Component {
                                                                                 className={
                                                                                     " text-left "
                                                                                 }>
-                                                                                Creator:{" "}
+                                                                                Creator:
                                                                                 {
                                                                                     item.creator_org_id
                                                                                 }
@@ -979,8 +979,8 @@ class ViewCycle extends Component {
                                                                                 className={
                                                                                     " text-left "
                                                                                 }>
-                                                                                {" "}
-                                                                                Owner:{" "}
+
+                                                                                Owner:
                                                                                 {item.owner_org_id}
                                                                             </span>
                                                                         </div>
@@ -1181,7 +1181,7 @@ class ViewCycle extends Component {
                                                         {this.state.logisticsError && (
                                                             <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
-                                                                    *{" "}
+                                                                    *
                                                                 </span>
                                                                 {this.state.logisticsErrorMsg}
                                                             </span>
@@ -1411,7 +1411,7 @@ class ViewCycle extends Component {
 
                                                     <p>
                                                         Is the company you are looking for doesn't
-                                                        exist?{" "}
+                                                        exist?
                                                         <span
                                                             className={"green-link-url "}
                                                             onClick={this.showOrgForm}>
@@ -1557,7 +1557,7 @@ class ViewCycle extends Component {
                                         ? "Counter"
                                         : this.state.action === "withdraw"
                                         ? "Widthdraw"
-                                        : ""}{" "}
+                                        : ""}
                                     Action
                                 </p>
                                 <p>Are you sure you want to proceed ?</p>

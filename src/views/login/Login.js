@@ -278,7 +278,7 @@ class Login extends Component {
                                 <p
                                     onClick={this.forGotPass}
                                     className={"forgot-password-link text-mute small"}>
-                                    Forgot your password?{" "}
+                                    Forgot your password?
                                 </p>
                             </div>
 

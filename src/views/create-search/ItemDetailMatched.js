@@ -223,7 +223,7 @@ class ItemDetailMatch extends Component {
                                                     <div className="col-3 green-text text-heading text-right">
                                                         {this.state.item.listing.listing.price ? (
                                                             <>
-                                                                GBP{" "}
+                                                                GBP
                                                                 {
                                                                     this.state.item.listing.listing
                                                                         .price.value
@@ -255,8 +255,8 @@ class ItemDetailMatch extends Component {
                                                     Category
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.state.item.listing.listing.category},{" "}
-                                                    {this.state.item.listing.listing.type},{" "}
+                                                    {this.state.item.listing.listing.category},
+                                                    {this.state.item.listing.listing.type},
                                                     {this.state.item.listing.listing.state}
                                                 </p>
                                             </div>
@@ -283,7 +283,7 @@ class ItemDetailMatch extends Component {
                                                         this.state.item &&
                                                             this.state.item.listing.listing
                                                                 .available_from_epoch_ms
-                                                    ).format("DD MMM YYYY")}{" "}
+                                                    ).format("DD MMM YYYY")}
                                                 </p>
                                             </div>
                                         </div>
@@ -296,7 +296,7 @@ class ItemDetailMatch extends Component {
                                                     Available Until
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {" "}
+
                                                     {this.state.item &&
                                                         moment(
                                                             this.state.item.listing.listing

@@ -99,7 +99,7 @@ class MySearch extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col-6">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.state.items.length} Searches{" "}
+                                    {this.state.items.length} Searches
                                 </p>
                             </div>
                             <div className="col-4 text-mute text-right col-auto pl-0">
@@ -134,8 +134,8 @@ class MySearch extends Component {
                                     <div className="col-auto">
                                         <Link to={"/search-form"}>
                                             <p className={"green-text bottom-bar-text"}>
-                                                {" "}
-                                                Create New Search{" "}
+
+                                                Create New Search
                                             </p>
                                         </Link>
                                     </div>

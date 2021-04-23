@@ -50,7 +50,7 @@ const AcceptableUse = ({ title, header, footer }) => {
                         </p>
                         <p>We are a limited company.</p>
                         <p>
-                            To contact us, please email{" "}
+                            To contact us, please email
                             <strong>
                                 <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>
                             </strong>

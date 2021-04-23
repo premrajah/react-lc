@@ -114,7 +114,7 @@ class ProductsService extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.state.products.length} Products{" "}
+                                    {this.state.products.length} Products
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">

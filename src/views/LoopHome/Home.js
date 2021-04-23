@@ -83,7 +83,7 @@ class Home extends Component {
                                     <div className="row no-gutters">
                                         <div className="col-12">
                                             <h1 className={"white-text"}>
-                                                A Platform for the future{" "}
+                                                A Platform for the future
                                             </h1>
                                         </div>
 

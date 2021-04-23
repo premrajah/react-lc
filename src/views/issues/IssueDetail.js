@@ -207,7 +207,7 @@ class IssueDetail extends Component {
 
                                                     {this.state.issue.creator && (
                                                         <span className="mr-3">
-                                                            <span>Created by:</span>{" "}
+                                                            <span>Created by:</span>
                                                             <Org
                                                                 orgId={this.state.issue.creator._id}
                                                                 orgDescription={
@@ -220,7 +220,7 @@ class IssueDetail extends Component {
                                                     {this.state.issue.service_agent && (
                                                         <span>
                                                             <span>
-                                                                Service agent:{" "}
+                                                                Service agent:
                                                                 <Org
                                                                     orgId={
                                                                         this.state.issue

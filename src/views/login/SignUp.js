@@ -453,7 +453,7 @@ class SignUp extends Component {
                                         }}
                                         inputProps={{ "aria-label": "secondary checkbox" }}
                                     />
-                                    I agree to the{" "}
+                                    I agree to the
                                     <span className={"forgot-password-link"}>
                                         <a href="/terms" target="_blank" rel="noopener noreferrer">
                                             Terms and Conditions

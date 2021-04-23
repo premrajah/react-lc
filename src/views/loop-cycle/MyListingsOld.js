@@ -79,7 +79,7 @@ class MyListingsOld extends Component {
                         <div className="row  justify-content-center filter-row listing-row-border  mb-3 pt-3 pb-4">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    2 Searches{" "}
+                                    2 Searches
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">

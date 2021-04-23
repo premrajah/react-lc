@@ -33,7 +33,7 @@ class PaymentMethod extends Component {
                         <div className="row mb-3 justify-content-center ">
                             <div className="col-12  justify-content-center">
                                 <p className={"blue-text"}>
-                                    <Link to={"/account"}> Account </Link> > Payment Method{" "}
+                                    <Link to={"/account"}> Account </Link> > Payment Method
                                 </p>
                                 <h4 className={"text-blue text-bold"}>Payment Method</h4>
                             </div>

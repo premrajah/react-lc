@@ -1434,7 +1434,7 @@ class CreateListing extends Component {
                                     className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
                                     onClick={this.selectSubCatType.bind(this)}>
                                     <div className="col-10">
-                                        <p className={" "} style={{ fontSize: "16px" }}>
+                                        <p style={{ fontSize: "16px" }}>
                                             {item.name}
                                         </p>
                                     </div>
@@ -1471,7 +1471,7 @@ class CreateListing extends Component {
                                 className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectState.bind(this)}>
                                 <div className="col-10">
-                                    <p className={" "} style={{ fontSize: "16px" }}>
+                                    <p style={{ fontSize: "16px" }}>
                                         {item}
                                     </p>
                                 </div>
@@ -1886,7 +1886,7 @@ class CreateListing extends Component {
                                             Amount
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
-                                            {this.state.listResourceData.volume}{" "}
+                                            {this.state.listResourceData.volume}
                                             {this.state.listResourceData.units}
                                         </p>
                                     </div>
@@ -1916,12 +1916,12 @@ class CreateListing extends Component {
                                         <p
                                             style={{ fontSize: "18px" }}
                                             className="text-mute text-gray-light mb-1">
-                                            Required by{" "}
+                                            Required by
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
                                             {moment(
                                                 this.state.listResourceData.expiry.value
-                                            ).format("DD MMM YYYY")}{" "}
+                                            ).format("DD MMM YYYY")}
                                         </p>
                                     </div>
                                 </div>
@@ -1933,7 +1933,7 @@ class CreateListing extends Component {
                                         <p
                                             style={{ fontSize: "18px" }}
                                             className="text-mute text-gray-light mb-1">
-                                            Location{" "}
+                                            Location
                                         </p>
                                         <p style={{ fontSize: "18px" }} className="  mb-1">
                                             Mapledown, Which Hill Lane,
@@ -1987,7 +1987,7 @@ class CreateListing extends Component {
                                                     "green-text forgot-password-link text-mute small"
                                                 }>
                                                 <Link to={"/create-product"}>
-                                                    Create New Product{" "}
+                                                    Create New Product
                                                 </Link>
                                             </p>
                                         </div>

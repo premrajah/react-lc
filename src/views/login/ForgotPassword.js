@@ -188,9 +188,9 @@ class ForgotPassword extends Component {
                         <div className="row no-gutters justify-content-center ">
                             <div className="col-12 ">
                                 <p className={"text-mute small fgt-password-text"}>
-                                    {" "}
+
                                     We’ll send a verification code to your email address. Click on
-                                    the link in the email to reset your password.{" "}
+                                    the link in the email to reset your password.
                                 </p>
                             </div>
 

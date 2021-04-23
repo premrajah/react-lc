@@ -1399,7 +1399,7 @@ class SearchEditForm extends Component {
                                                 className={
                                                     "green-text forgot-password-link text-mute "
                                                 }>
-                                                {" "}
+
                                                 Create a new product
                                             </span>
                                         </FormHelperText>
@@ -1456,8 +1456,8 @@ class SearchEditForm extends Component {
                                     )}
 
                                     <p style={{ margin: "10px 0" }}>
-                                        {" "}
-                                        Don’t see it on here?{" "}
+
+                                        Don’t see it on here?
                                         <span
                                             onClick={this.toggleSite}
                                             className={

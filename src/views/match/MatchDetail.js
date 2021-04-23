@@ -148,10 +148,10 @@ class MatchDetail extends Component {
                                 <p
                                     style={{ fontSize: "18px" }}
                                     className="text-mute text-gray-light mb-1">
-                                    Required by{" "}
+                                    Required by
                                 </p>
                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                    June 1, 2020{" "}
+                                    June 1, 2020
                                 </p>
                             </div>
                         </div>
@@ -163,7 +163,7 @@ class MatchDetail extends Component {
                                 <p
                                     style={{ fontSize: "18px" }}
                                     className="text-mute text-gray-light mb-1">
-                                    Location{" "}
+                                    Location
                                 </p>
                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                     Mapledown, Which Hill Lane,

@@ -267,7 +267,7 @@ class FindResources extends Component {
 
                             <div className="col-12">
                                 <p className={""}>
-                                    Simply want to browse products?{" "}
+                                    Simply want to browse products?
                                     <span className={"forgot-password-link"}>Browse All</span>
                                 </p>
                             </div>

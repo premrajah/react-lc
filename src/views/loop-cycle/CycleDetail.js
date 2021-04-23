@@ -125,10 +125,10 @@ function LoopAccordion(props) {
                                 </p>
 
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    GBP {props.loop.offer.amount.value}{" "}
+                                    GBP {props.loop.offer.amount.value}
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {" "}
+
                                     {props.loop.product.volume} {props.loop.product.units}
                                 </p>
                             </div>
@@ -233,7 +233,7 @@ function FromContent(props) {
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
                     <p>
-                        Category: {props.loop.listing.category} > {props.loop.listing.type} >{" "}
+                        Category: {props.loop.listing.category} > {props.loop.listing.type} >
                         {props.loop.listing.state}
                     </p>
                 </div>
@@ -250,9 +250,9 @@ function FromContent(props) {
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
                     <p>
-                        Delivery From: {props.loop.from_site.name}, {props.loop.from_site.contact},{" "}
-                        {props.loop.from_site.address}, {props.loop.from_site.email},{" "}
-                        {props.loop.from_site.phone}{" "}
+                        Delivery From: {props.loop.from_site.name}, {props.loop.from_site.contact},
+                        {props.loop.from_site.address}, {props.loop.from_site.email},
+                        {props.loop.from_site.phone}
                     </p>
                 </div>
             </div>
@@ -287,7 +287,7 @@ function ToContent(props) {
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
                     <p>
-                        Category: {props.loop.search.category} > {props.loop.search.type} >{" "}
+                        Category: {props.loop.search.category} > {props.loop.search.type} >
                         {props.loop.search.state}
                     </p>
                 </div>
@@ -304,9 +304,9 @@ function ToContent(props) {
             <div className="row justify-content-start pb-4 pt-3 ">
                 <div className="col-auto">
                     <p>
-                        Delivery To: {props.loop.to_site.name}, {props.loop.to_site.contact},{" "}
-                        {props.loop.to_site.address}, {props.loop.to_site.email},{" "}
-                        {props.loop.to_site.phone}{" "}
+                        Delivery To: {props.loop.to_site.name}, {props.loop.to_site.contact},
+                        {props.loop.to_site.address}, {props.loop.to_site.email},
+                        {props.loop.to_site.phone}
                     </p>
                 </div>
             </div>

@@ -153,7 +153,7 @@ class Message extends Component {
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Filter</span>{" "}
+                                <span style={{ fontSize: "18px" }}>Filter</span>
                                 <img
                                     onClick={this.toggleFilter}
                                     src={FilterImg}

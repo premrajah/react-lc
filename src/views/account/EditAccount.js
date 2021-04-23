@@ -172,7 +172,7 @@ class EditAccount extends Component {
                         <div className="row mb-3 justify-content-center ">
                             <div className="col-12  justify-content-center">
                                 <p className={"blue-text"}>
-                                    <Link to={"/account"}>Account </Link> > Personal Info{" "}
+                                    <Link to={"/account"}>Account </Link> > Personal Info
                                 </p>
                                 <h4 className={"text-blue text-bold"}>Personal Info</h4>
                             </div>

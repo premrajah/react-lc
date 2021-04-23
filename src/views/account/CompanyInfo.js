@@ -274,7 +274,7 @@ class CompanyInfo extends Component {
                         <div className="row mb-3 justify-content-center ">
                             <div className="col-12  justify-content-center">
                                 <p className={"blue-text"}>
-                                    <Link to={"/account"}>Account </Link> > Company Info{" "}
+                                    <Link to={"/account"}>Account </Link> > Company Info
                                 </p>
                                 <h4 className={"text-blue text-bold"}>Company Info</h4>
                             </div>
@@ -309,13 +309,13 @@ class CompanyInfo extends Component {
                                             </span>
                                             <br />
                                             <span className={""}>
-                                                Company Number:{" "}
+                                                Company Number:
                                                 {this.state.org.company.company_number}
                                             </span>
 
                                             <br />
                                             <span className={""}>
-                                                Registered Address:{" "}
+                                                Registered Address:
                                                 {
                                                     this.state.org.company.registered_office_address
                                                         .address_line_1
@@ -329,7 +329,7 @@ class CompanyInfo extends Component {
 
                                             <br />
                                             <span className={""}>
-                                                Locality:{" "}
+                                                Locality:
                                                 {
                                                     this.state.org.company.registered_office_address
                                                         .locality

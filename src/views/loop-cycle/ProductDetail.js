@@ -161,9 +161,9 @@ class ProductDetail extends Component {
 
                                     <div className="col-12  pb-3 listing-row-border">
                                         <p>
-                                            Made By{" "}
+                                            Made By
                                             <span className={"green-text"}>
-                                                {" "}
+
                                                 Info Missing
                                                 {/*{this.state.item.org_id}*/}
                                             </span>
@@ -248,7 +248,7 @@ class ProductDetail extends Component {
                                         />
 
                                         <Link to={"/p/" + this.state.item.product._key}>
-                                            {" "}
+
                                             Go To Preview Page
                                         </Link>
                                     </div>

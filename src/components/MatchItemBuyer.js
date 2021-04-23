@@ -403,7 +403,7 @@ class MatchItemBuyer extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4  border-light p-2">
                 <div style={{ textAlign: "center" }} className={"col-12"}>
                     <p>
-                        Match Stage:{" "}
+                        Match Stage:
                         <span className={"text-blue img-list text-bold text-caps"}>
                             {this.props.item.match.stage}
                         </span>
@@ -448,7 +448,7 @@ class MatchItemBuyer extends Component {
                                 }>
                                 <div className={"row text-left mb-2 mt-2"}>
                                     <div className="col-12 ">
-                                        Stage:{" "}
+                                        Stage:
                                         <span className={"text-caps"}>{item.offer.stage}</span>
                                         <br />
                                         <span
@@ -524,13 +524,13 @@ class MatchItemBuyer extends Component {
                     <div className={"row"}>
                         {this.state.offers.map((item, index) => (
                             <div className="col-12">
-                                {index + 1}.{" "}
+                                {index + 1}.
                                 <span
                                     style={{ fontSize: "18px" }}
                                     className=" mb-1 list-title text-bold text-blue">
                                     GBP {item.offer.amount.value}
                                 </span>
-                                , Offer Stage:{" "}
+                                , Offer Stage:
                                 <span className={"text-caps"}>{item.offer.stage}</span>
                             </div>
                         ))}
@@ -558,7 +558,7 @@ class MatchItemBuyer extends Component {
                                         ? "Counter"
                                         : this.state.action === "widthdraw"
                                         ? "Widthdraw"
-                                        : ""}{" "}
+                                        : ""}
                                     Offer
                                 </p>
                                 <p>Are you sure you want to proceed ?</p>

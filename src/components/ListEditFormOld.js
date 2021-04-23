@@ -1201,7 +1201,7 @@ class ListEditFormOld extends Component {
                                                 </Select>
 
                                                 <FormHelperText>
-                                                    What resources do you need to make this product?{" "}
+                                                    What resources do you need to make this product?
                                                 </FormHelperText>
                                             </FormControl>
                                             {this.state.errors["category"] && (
@@ -1418,7 +1418,7 @@ class ListEditFormOld extends Component {
                                                 className={
                                                     "green-text forgot-password-link text-mute "
                                                 }>
-                                                {" "}
+
                                                 Create a new product
                                             </span>
                                         </FormHelperText>
@@ -1475,8 +1475,8 @@ class ListEditFormOld extends Component {
                                     )}
 
                                     <p style={{ margin: "10px 0" }}>
-                                        {" "}
-                                        Don’t see it on here?{" "}
+
+                                        Don’t see it on here?
                                         <span
                                             onClick={this.toggleSite}
                                             className={
@@ -1622,7 +1622,7 @@ class ListEditFormOld extends Component {
                                                             {this.state.errors["price"] && (
                                                                 <span className={"text-mute small"}>
                                                                     <span style={{ color: "red" }}>
-                                                                        *{" "}
+                                                                        *
                                                                     </span>
                                                                     {this.state.errors["price"]}
                                                                 </span>

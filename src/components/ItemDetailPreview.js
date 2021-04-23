@@ -70,7 +70,7 @@ class ItemDetailPreview extends Component {
                                     <div className="row">
                                         <div className="col-7">
                                             <p>
-                                                Sold By{" "}
+                                                Sold By
                                                 <span className={"green-text"}>
                                                     @{this.props.userDetail.orgId}
                                                 </span>
@@ -113,7 +113,7 @@ class ItemDetailPreview extends Component {
                                         Available From
                                     </p>
                                     <p style={{ fontSize: "18px" }} className="  mb-1">
-                                        {" "}
+
                                         {moment(this.props.fields["startDate"]).format(
                                             "DD MMM YYYY"
                                         )}
@@ -129,7 +129,7 @@ class ItemDetailPreview extends Component {
                                         Available Until
                                     </p>
                                     <p style={{ fontSize: "18px" }} className="  mb-1">
-                                        {" "}
+
                                         {moment(this.props.fields["endDate"]).format("DD MMM YYYY")}
                                     </p>
                                 </div>

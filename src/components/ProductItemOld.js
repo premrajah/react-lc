@@ -82,8 +82,8 @@ class ProductItemNew extends Component {
                             {this.props.item.product.purpose}
                         </p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                            {this.props.item.product.category}, {this.props.item.product.type},{" "}
-                            {this.props.item.product.state} {this.props.item.product.volume}{" "}
+                            {this.props.item.product.category}, {this.props.item.product.type},}
+                            {this.props.item.product.state} {this.props.item.product.volume}}
                             {this.props.item.product.units}
                         </p>
                         {this.props.item.search_ids && (
@@ -100,10 +100,10 @@ class ProductItemNew extends Component {
                     </div>
                     <div style={{ textAlign: "right" }} className={"col-3"}>
                         <p className={"text-gray-light small"}>
-                            {" "}
+                            }
                             {moment(this.props.item.product._ts_epoch_ms).format(
                                 "DD MMM YYYY"
-                            )}{" "}
+                            )}}
                         </p>
                     </div>
                 </div>

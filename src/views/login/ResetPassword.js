@@ -175,9 +175,9 @@ class ResetPassword extends Component {
                     <div className="row no-gutters justify-content-center ">
                         <div className="col-12 ">
                             <p className={"text-mute small"}>
-                                {" "}
+                                }
                                 Please enter and confirm your new password below to access your
-                                account.{" "}
+                                account.}
                             </p>
                         </div>
 

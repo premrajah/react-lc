@@ -132,7 +132,7 @@ class ProductTreeItemView extends Component {
             <>
                 <div className={"tree-item-container"} style={{ padding: "5px" }}>
                     <p>
-                        {" "}
+                        }
                         {this.props.item.sub_products.length > 0 ? (
                             this.state.open ? (
                                 <MinusSquare
@@ -160,7 +160,7 @@ class ProductTreeItemView extends Component {
                                         : "tree-view-item"
                                     : "tree-view-item text-mute"
                             }>
-                            {this.props.item.name} -{" "}
+                            {this.props.item.name} -}
                             {this.props.item.sub_products.length + " Sub Products"}
                         </span>
                     </p>

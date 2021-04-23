@@ -1182,7 +1182,7 @@ class SearchEditForm extends Component {
                                                 </Select>
 
                                                 <FormHelperText>
-                                                    What resources do you need to make this product?{" "}
+                                                    What resources do you need to make this product?}
                                                 </FormHelperText>
                                             </FormControl>
                                             {this.state.errors["category"] && (

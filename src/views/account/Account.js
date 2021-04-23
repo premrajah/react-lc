@@ -78,7 +78,7 @@ class Account extends Component {
                                             className={"account-icons truck-icon "}
                                             alt=""
                                         />
-                                        Account <NavigateNextIcon />{" "}
+                                        Account <NavigateNextIcon />
                                     </Link>
                                     <Link
                                         to={"my-search"}

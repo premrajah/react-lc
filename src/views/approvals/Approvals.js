@@ -19,6 +19,8 @@ import { baseUrl } from "../../Util/Constants";
 import RequestReleaseItem from "../../components/RequestReleaseItem";
 import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
+import {Link} from "react-router-dom";
+
 
 class Approvals extends Component {
     constructor(props) {
@@ -239,13 +241,24 @@ class Approvals extends Component {
 
                                 <TabPanel value={this.state.value} index={0}>
                                     <div className={"container"}>
-                                        {this.state.releaseRequests.map((item) => (
-                                            <>
-                                                <RequestReleaseItem
-                                                    history={this.props.history}
-                                                    item={item}
-                                                />
-                                            </>
+
+                                        <div className="row mb-3">
+                                            <div className="col d-flex justify-content-end">
+                                                <Link to="/approved" className="btn btn-sm blue-btn" style={{color: "#fff"}}>
+                                                    Release Request Record
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        {this.state.releaseRequests.filter((item) => /*console.log(item)*/ item.Release.stage === "requested" ).map((item, index) => (
+                                            <div className="row" key={index}>
+                                                <div className="col">
+                                                    <RequestReleaseItem
+                                                        history={this.props.history}
+                                                        item={item}
+                                                    />
+                                                </div>
+                                            </div>
                                         ))}
 
                                         {this.state.releaseRequests.length === 0 && (

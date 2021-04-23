@@ -399,7 +399,7 @@ class ProductExpandItem extends Component {
                                                             .map((item) => (
                                                                 <option value={item.product._key}>
                                                                     {item.product.name} (
-                                                                    {item.sub_product_ids.length}{" "}
+                                                                    {item.sub_product_ids.length}
                                                                     Sub Products)
                                                                 </option>
                                                             ))}

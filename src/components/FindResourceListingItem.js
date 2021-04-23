@@ -36,7 +36,7 @@ const FindResourceListingItem = ({ item }) => {
                     <p align="right" style={{ fontWeight: "bold" }}>
                         <span className="green-text">
                             {listing.price.value === 0 ? "" : listing.price.currency.toUpperCase()}
-                        </span>{" "}
+                        </span>
                         <span>
                             {listing.price.value === 0 ? (
                                 <span className="green-text">FREE</span>
@@ -54,7 +54,7 @@ const FindResourceListingItem = ({ item }) => {
                 ) : null}
                 {listing ? (
                     <div align="right">
-                        Available{" "}
+                        Available
                         {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                             " - " +
                             moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}

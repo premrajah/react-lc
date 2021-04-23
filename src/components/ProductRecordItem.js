@@ -4,6 +4,7 @@ import moment from "moment/moment";
 import PlaceHolderImage from "../img/place-holder-lc.png";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
+import PlaceholderImg from "../img/place-holder-lc.png";
 
 const ProductRecordItem = ({ item }) => {
     const { listing, product, site, org, artifacts } = item;
@@ -12,7 +13,8 @@ const ProductRecordItem = ({ item }) => {
             <div className="col-lg-2 col-sm-12">
                 <Image
                     className="mr-2"
-                    src={artifacts.length > 0 ? <ImageOnlyThumbnail images={artifacts} /> : PlaceHolderImage}
+                    // src={artifacts.length > 0 ? <ImageOnlyThumbnail images={artifacts} /> : PlaceHolderImage}
+                    src={artifacts.length > 0 ? (artifacts.find((item) => (item.mime_type === "image/jpeg" || item.mime_type === "image/png")).blob_url || PlaceholderImg) : PlaceHolderImage}
                     thumbnail
                     width={120}
                     height={60}
@@ -49,7 +51,7 @@ const ProductRecordItem = ({ item }) => {
                                 {listing.price.value === 0
                                     ? ""
                                     : listing.price.currency.toUpperCase()}
-                            </span>{" "}
+                            </span>}
                             <span>
                                 {listing.price.value === 0 ? (
                                     <span className="green-text">FREE</span>
@@ -67,7 +69,7 @@ const ProductRecordItem = ({ item }) => {
                     ) : null}
                     {listing ? (
                         <div align="right">
-                            Available{" "}
+                            Available}
                             {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                                 " - " +
                                 moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}

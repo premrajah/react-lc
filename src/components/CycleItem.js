@@ -222,7 +222,7 @@ class CycleItem extends Component {
                     </Link>
 
                     <p style={{ fontSize: "16px" }} className=" mb-1">
-                        <Org orgId={this.props.item.sender._id} /> →{" "}
+                        <Org orgId={this.props.item.sender._id} /> →
                         <Org orgId={this.props.item.receiver._id} />
                     </p>
 
@@ -232,8 +232,8 @@ class CycleItem extends Component {
                 <div style={{ textAlign: "right" }} className={"col-2"}>
                     <p className="text-mute mb-1 small">
                         <span className={"text-bold"}>
-                            {" "}
-                            GBP {this.props.item.offer.amount.value}{" "}
+
+                            GBP {this.props.item.offer.amount.value}
                         </span>
                     </p>
                 </div>

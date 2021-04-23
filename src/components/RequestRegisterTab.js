@@ -82,13 +82,13 @@ class RequestRegisterItem extends Component {
                                     {this.state.item.product.product.purpose}
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.category},{" "}
-                                    {this.state.item.product.product.type},{" "}
-                                    {this.state.item.product.product.state}{" "}
+                                    {this.state.item.product.product.category},}
+                                    {this.state.item.product.product.type},}
+                                    {this.state.item.product.product.state}}
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {" "}
-                                    {this.state.item.product.product.volume}{" "}
+                                    }
+                                    {this.state.item.product.product.volume}}
                                     {this.state.item.product.product.units}
                                 </p>
 
@@ -108,10 +108,10 @@ class RequestRegisterItem extends Component {
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
                                 <p className={"text-gray-light small"}>
-                                    {" "}
+                                    }
                                     {moment(this.state.item.product.product._ts_epoch_ms).format(
                                         "DD MMM YYYY"
-                                    )}{" "}
+                                    )}}
                                 </p>
 
                                 <div className="row  pb-4 pb-4 mb-4">
@@ -175,11 +175,11 @@ class RequestRegisterItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            {" "}
+                                            }
                                             {this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?{" "}
+                                            Are you sure you want to {this.state.initiateAction} ?}
                                         </p>
                                     </div>
                                 </div>

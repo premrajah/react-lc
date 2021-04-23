@@ -1,15 +1,12 @@
-import React, { Component, Fragment } from "react";
+import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./css/style.css";
-// import './css/style-2.scss';
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch, withRouter, BrowserRouter } from "react-router-dom";
-
+import {createBrowserHistory} from "history";
+import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
 import Home from "./views/LoopHome/Home";
 import Inbox from "./views/inbox/index";
 import LoginPopUp from "./views/login/LoginPopUp";
-import Account from "./views/account/Account";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
 import MyListingsOld from "./views/loop-cycle/MyListings";
@@ -43,7 +40,7 @@ import ItemDetailMatched from "./views/create-search/ItemDetailMatched";
 import Search from "./views/browse-resources/Search";
 import Filter from "./views/browse-resources/Filter";
 import LoggedInRoute from "./Util/LoggedInRoute";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
 import EditAccount from "./views/account/EditAccount";
 import CompanyInfo from "./views/account/CompanyInfo";
@@ -67,14 +64,10 @@ import IssueDetail from "./views/issues/IssueDetail";
 var hist = createBrowserHistory();
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentWillMount() {
         this.props.loadUserDetail();
     }
-
 
     render() {
         return (

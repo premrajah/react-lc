@@ -199,7 +199,7 @@ class Approvals extends Component {
                                             label={
                                                 this.state.releaseRequests.length > 0
                                                     ? "Product Release Requests (" +
-                                                      this.state.releaseRequests.length +
+                                                      this.state.releaseRequests.filter((item) => item.Release.stage === "requested" ).length +
                                                       ")"
                                                     : "Product Release Requests"
                                             }
@@ -250,7 +250,7 @@ class Approvals extends Component {
                                             </div>
                                         </div>
 
-                                        {this.state.releaseRequests.filter((item) => /*console.log(item)*/ item.Release.stage === "requested" ).map((item, index) => (
+                                        {this.state.releaseRequests.filter((item) => item.Release.stage === "requested" ).map((item, index) => (
                                             <div className="row" key={index}>
                                                 <div className="col">
                                                     <RequestReleaseItem

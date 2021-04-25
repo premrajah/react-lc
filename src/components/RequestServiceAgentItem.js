@@ -323,7 +323,7 @@ class RequestServiceAgentItem extends Component {
                                     {this.state.item.product.product.name}
                                 </p>
                                 <p style={{ margin: "0" }}>
-                                    <Org orgId={this.state.item.originator._id} /> →}
+                                    <Org orgId={this.state.item.originator._id} /> →
                                     <Org orgId={this.state.item.responder._id} />
                                 </p>
 
@@ -335,13 +335,12 @@ class RequestServiceAgentItem extends Component {
                                     {this.state.item.product.product.purpose}
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.category},}
-                                    {this.state.item.product.product.type},}
-                                    {this.state.item.product.product.state}}
+                                    <span className="mr-1">{this.state.item.product.product.category},</span>
+                                    <span className="mr-1">{this.state.item.product.product.type},</span>
+                                    <span>{this.state.item.product.product.state}</span>
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    }
-                                    {this.state.item.product.product.volume}}
+                                    {this.state.item.product.product.volume}
                                     {this.state.item.product.product.units}
                                 </p>
 
@@ -361,10 +360,9 @@ class RequestServiceAgentItem extends Component {
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
                                 <p className={"text-gray-light small"}>
-                                    }
                                     {moment(this.state.item.product.product._ts_epoch_ms).format(
                                         "DD MMM YYYY"
-                                    )}}
+                                    )}
                                 </p>
 
                                 <div className="row  pb-4 pb-4 mb-4">
@@ -372,7 +370,7 @@ class RequestServiceAgentItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <>
+                                                    <div key={index}>
                                                         <button
                                                             data-id={this.state.item.Release}
                                                             data-action={actionName}
@@ -405,7 +403,7 @@ class RequestServiceAgentItem extends Component {
                                                                 "Complete"}
                                                         </button>
                                                         {/*}*/}
-                                                    </>
+                                                    </div>
                                                 )
                                             )}
                                     </div>
@@ -426,11 +424,10 @@ class RequestServiceAgentItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            }
                                             {this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?}
+                                            Are you sure you want to {this.state.initiateAction} ?
                                         </p>
                                     </div>
                                 </div>

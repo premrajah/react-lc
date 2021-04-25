@@ -50,7 +50,7 @@ class RequestReleaseItem extends Component {
     getSites() {
         axios.get(baseUrl + "site").then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     sites: responseAll,
@@ -171,10 +171,7 @@ class RequestReleaseItem extends Component {
             const phone = data.get("phone");
 
             axios
-                .put(
-                    baseUrl + "site",
-
-                    {
+                .put(baseUrl + "site", {
                         site: {
                             name: name,
                             email: email,
@@ -182,11 +179,6 @@ class RequestReleaseItem extends Component {
                             address: address,
                             phone: phone,
                             others: others,
-                        },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
                         },
                     }
                 )
@@ -222,17 +214,10 @@ class RequestReleaseItem extends Component {
         const site = data.get("site");
 
         axios
-            .post(
-                baseUrl + "register",
-
+            .post(baseUrl + "register",
                 {
                     site_id: site,
                     product_id: this.props.item.product._key,
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
                 }
             )
             .then((res) => {
@@ -251,35 +236,20 @@ class RequestReleaseItem extends Component {
     };
 
     actionSubmit() {
-        var data = {
+        let data = {
             id: this.state.item.Release._key,
             new_stage: this.state.initiateAction,
             site_id: this.state.site,
         };
 
         axios
-            .post(
-                baseUrl + "release/stage",
-                data,
-
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
+            .post(baseUrl + "release/stage", data)
             .then((res) => {
                 this.getDetails();
 
                 this.showPopUpInitiateAction();
             })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-            });
+            .catch((error) => {});
     }
 
     componentDidMount() {
@@ -288,21 +258,16 @@ class RequestReleaseItem extends Component {
 
     getDetails() {
         axios
-            .get(baseUrl + "release/" + this.state.item.Release._key, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "release/" + this.state.item.Release._key)
             .then(
                 (response) => {
-                    var responseData = response.data;
-
+                    let responseAll = response.data.data;
                     this.setState({
-                        item: responseData.data,
+                        item: responseAll.data,
                     });
-                },
-                (error) => {}
-            );
+                }
+            )
+            .catch(error => {});
     }
 
     render() {
@@ -315,7 +280,9 @@ class RequestReleaseItem extends Component {
                         <div className="row no-gutters justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
+                                    <ImageOnlyThumbnail
+                                        images={this.state.item.product.artifacts}
+                                    />
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}
@@ -326,7 +293,7 @@ class RequestReleaseItem extends Component {
                                 </p>
 
                                 <p style={{ margin: "0" }}>
-                                    <Org orgId={this.state.item.originator._id} /> →}
+                                    <Org orgId={this.state.item.originator._id} />
                                     <Org orgId={this.state.item.responder._id} />
                                 </p>
 
@@ -338,14 +305,13 @@ class RequestReleaseItem extends Component {
                                     {this.state.item.product.product.purpose}
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.category},}
-                                    {this.state.item.product.product.type},}
-                                    {this.state.item.product.product.state}}
+                                    <span className="mr-1">{this.state.item.product.product.category},</span>
+                                    <span className="mr-1">{this.state.item.product.product.type},</span>
+                                    <span>{this.state.item.product.product.state}</span>
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    }
-                                    {this.state.item.product.product.volume}}
-                                    {this.state.item.product.product.units}
+                                    <span>{this.state.item.product.product.volume}</span>
+                                    <span>{this.state.item.product.product.units}</span>
                                 </p>
 
                                 {this.state.item.search_ids && (
@@ -364,10 +330,9 @@ class RequestReleaseItem extends Component {
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
                                 <p className={"text-gray-light small"}>
-                                    }
                                     {moment(this.state.item.product.product._ts_epoch_ms).format(
                                         "DD MMM YYYY"
-                                    )}}
+                                    )}
                                 </p>
 
                                 <div className="row  pb-4 pb-4 mb-4">
@@ -375,7 +340,7 @@ class RequestReleaseItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <>
+                                                    <div key={index}>
                                                         <button
                                                             data-id={this.state.item.Release_key}
                                                             data-action={actionName}
@@ -407,8 +372,7 @@ class RequestReleaseItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                        {/*}*/}
-                                                    </>
+                                                    </div>
                                                 )
                                             )}
                                     </div>
@@ -429,11 +393,10 @@ class RequestReleaseItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            }
                                             {this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?}
+                                            Are you sure you want to {this.state.initiateAction} ?
                                         </p>
                                     </div>
                                 </div>
@@ -466,13 +429,11 @@ class RequestReleaseItem extends Component {
                                             </Select>
                                         </FormControl>
 
-                                        <p className={"text-left"} style={{ margin: "10px 0" }}>
-                                            Don’t see it on here?}
+                                        <p className="text-left" style={{ margin: "10px 0" }}>
+                                            Don’t see it on here?
                                             <span
                                                 onClick={this.showSubmitSite}
-                                                className={
-                                                    "green-text forgot-password-link text-mute small"
-                                                }>
+                                                className={"green-text forgot-password-link text-mute small"}>
                                                 Add a site
                                             </span>
                                         </p>
@@ -543,12 +504,7 @@ class RequestReleaseItem extends Component {
                                                                         className={
                                                                             "text-mute small"
                                                                         }>
-                                                                        <span
-                                                                            style={{
-                                                                                color: "red",
-                                                                            }}>
-                                                                            *}
-                                                                        </span>
+                                                                        <span style={{color: "red"}}>*</span>
                                                                         {
                                                                             this.state.errorsSite[
                                                                                 "name"
@@ -578,12 +534,7 @@ class RequestReleaseItem extends Component {
                                                                         className={
                                                                             "text-mute small"
                                                                         }>
-                                                                        <span
-                                                                            style={{
-                                                                                color: "red",
-                                                                            }}>
-                                                                            *}
-                                                                        </span>
+                                                                        <span style={{color: "red",}}>*</span>
                                                                         {
                                                                             this.state.errorsSite[
                                                                                 "contact"
@@ -614,12 +565,7 @@ class RequestReleaseItem extends Component {
                                                                         className={
                                                                             "text-mute small"
                                                                         }>
-                                                                        <span
-                                                                            style={{
-                                                                                color: "red",
-                                                                            }}>
-                                                                            *}
-                                                                        </span>
+                                                                        <span style={{color: "red",}}>*</span>
                                                                         {
                                                                             this.state.errorsSite[
                                                                                 "address"
@@ -647,12 +593,7 @@ class RequestReleaseItem extends Component {
                                                                         className={
                                                                             "text-mute small"
                                                                         }>
-                                                                        <span
-                                                                            style={{
-                                                                                color: "red",
-                                                                            }}>
-                                                                            *}
-                                                                        </span>
+                                                                        <span style={{color: "red"}}>*</span>
                                                                         {
                                                                             this.state.errorsSite[
                                                                                 "phone"
@@ -681,12 +622,7 @@ class RequestReleaseItem extends Component {
                                                                         className={
                                                                             "text-mute small"
                                                                         }>
-                                                                        <span
-                                                                            style={{
-                                                                                color: "red",
-                                                                            }}>
-                                                                            *}
-                                                                        </span>
+                                                                        <span style={{color: "red"}}>*</span>
                                                                         {
                                                                             this.state.errorsSite[
                                                                                 "email"
@@ -708,13 +644,11 @@ class RequestReleaseItem extends Component {
                                                                     fullWidth={true}
                                                                     type={"others"}
                                                                 />
-
-                                                                {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
                                                             </div>
 
                                                             <div className="col-12 mt-4">
                                                                 <button
-                                                                    type={"submit"}
+                                                                    type="submit"
                                                                     className={
                                                                         "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                                                     }>

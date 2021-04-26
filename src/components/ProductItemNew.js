@@ -82,12 +82,13 @@ class ProductItemNew extends Component {
                 this.setState({
                     sites: responseAll,
                 });
-            },
-            (error) => {}
-        );
+            }
+        ).catch(error => {});
     }
 
     callBackResult(action) {
+        if(!action) return;
+
         if (action === "edit") {
             this.showProductEdit();
         } else if (action === "delete") {
@@ -108,10 +109,6 @@ class ProductItemNew extends Component {
                 this.props.loadProductsWithoutParent(this.props.userDetail.token);
             })
             .catch((error) => {
-                // this.setState({
-                //
-                //     errorRegister:error.response.data.errors[0].message
-                // })
             });
     };
 
@@ -134,9 +131,10 @@ class ProductItemNew extends Component {
                 // let responseAll = response.data.data;
                 // this.props.history.push("/my-products")
                 // this.props.loadProducts()
-            },
-            (error) => {}
-        );
+            }
+        ).catch(error => {
+
+        });
     }
 
     deleteItem() {
@@ -145,9 +143,8 @@ class ProductItemNew extends Component {
                 // let responseAll = response.data.data;
                 // this.props.history.push("/my-products")
                 // this.props.loadProducts()
-            },
-            (error) => {}
-        );
+            }
+        ).catch(error => {});
     }
 
     showProductEdit() {

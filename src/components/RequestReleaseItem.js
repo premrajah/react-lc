@@ -55,12 +55,15 @@ class RequestReleaseItem extends Component {
                 this.setState({
                     sites: responseAll,
                 });
-            },
-            (error) => {}
-        );
+            }
+        ).catch(error => {
+
+        });
     }
 
     showPopUpInitiateAction(event) {
+        if(!event) return;
+
         this.setState({
             showPopUpInitiateAction: !this.state.showPopUpInitiateAction,
             initiateAction: event.currentTarget.dataset.action,
@@ -148,6 +151,8 @@ class RequestReleaseItem extends Component {
     }
 
     handleSubmitSite = (event) => {
+        if(!event) return;
+
         this.setState({
             errorRegister: null,
         });
@@ -170,43 +175,43 @@ class RequestReleaseItem extends Component {
             const address = data.get("address");
             const phone = data.get("phone");
 
-            axios
-                .put(baseUrl + "site", {
-                        site: {
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            address: address,
-                            phone: phone,
-                            others: others,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // this.toggleSite()
-                    this.getSites();
+            const payload = {
+                site: {
+                    name: name,
+                    email: email,
+                    contact: contact,
+                    address: address,
+                    phone: phone,
+                    others: others,
+                }
+            }
 
-                    this.showSubmitSite();
+            this.addNewSite(payload);
 
-                    this.setState({
-                        siteSelected: res.data.data,
-                    });
-                })
-                .catch((error) => {});
         }
     };
 
+    addNewSite = (payload) => {
+        axios
+            .put(`${baseUrl}site`, payload)
+            .then((res) => {
+                this.getSites();
+                this.showSubmitSite();
+                this.setState({
+                    siteSelected: res.data.data,
+                });
+            })
+            .catch((error) => {});
+    }
+
     submitRegisterProduct = (event) => {
-        this.setState({
-            errorRegister: null,
-        });
-
+        console.log('submitRegisterProduct');
         event.preventDefault();
-
         const form = event.currentTarget;
 
         this.setState({
             btnLoading: true,
+            errorRegister: null,
         });
 
         const data = new FormData(event.target);
@@ -243,11 +248,11 @@ class RequestReleaseItem extends Component {
         };
 
         axios
-            .post(baseUrl + "release/stage", data)
+            .post(`${baseUrl}release/stage`, data)
             .then((res) => {
                 this.getDetails();
-
                 this.showPopUpInitiateAction();
+                this.props.refreshPageCallback();
             })
             .catch((error) => {});
     }
@@ -292,10 +297,10 @@ class RequestReleaseItem extends Component {
                                     {this.state.item.product.product.name}
                                 </p>
 
-                                <p style={{ margin: "0" }}>
+                                <div style={{ margin: "0" }}>
                                     <Org orgId={this.state.item.originator._id} />
                                     <Org orgId={this.state.item.responder._id} />
-                                </p>
+                                </div>
 
                                 <p style={{ fontSize: "16px" }} className=" mb-1 text-caps">
                                     {this.state.item.Release.stage}
@@ -421,8 +426,8 @@ class RequestReleaseItem extends Component {
                                                 }}>
                                                 <option value={null}>Select</option>
 
-                                                {this.state.sites.map((item) => (
-                                                    <option value={item._key}>
+                                                {this.state.sites.map((item, index) => (
+                                                    <option value={item._key} key={index}>
                                                         {item.name + "(" + item.address + ")"}
                                                     </option>
                                                 ))}

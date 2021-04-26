@@ -1,13 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
+import React, {Component, useEffect, useState} from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
-import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles/index";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
-import clsx from "clsx";
+import {connect} from "react-redux";
+import {makeStyles} from "@material-ui/core/styles/index";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
@@ -15,7 +11,7 @@ import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import RequestReleaseItem from "../../components/RequestReleaseItem";
 import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
@@ -45,9 +41,6 @@ class Approvals extends Component {
     handleChange = (event, newValue) => {
         this.setState({
             loading: true,
-        });
-
-        this.setState({
             value: newValue,
         });
 
@@ -73,94 +66,72 @@ class Approvals extends Component {
     };
 
     fetchReleaseRequest() {
+        console.log('>> rr >> ')
         axios
-            .get(baseUrl + "release", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var responseAll = response.data.data;
+            .get(baseUrl + "release")
+            .then((response) => {
+                    let responseAll = response.data.data;
 
                     this.setState({
                         releaseRequests: responseAll,
-                    });
-
-                    this.setState({
-                        loading: false,
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        loading: false,
+                        loading: false
                     });
                 }
-            );
+            ).catch(error =>{
+                this.setState({
+                    loading: false,
+                });
+        });
     }
 
     fetchRegisterRequest() {
+        console.log('>> fr >> ');
         axios
-            .get(baseUrl + "register", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "register")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
-
+                    let responseAll = response.data.data;
                     this.setState({
                         loading: false,
-                    });
-
-                    this.setState({
                         registerRequests: responseAll,
                     });
-                },
-                (error) => {
-                    this.setState({
-                        loading: false,
-                    });
                 }
-            );
+            ).catch(error => {
+            this.setState({
+                loading: false,
+            });
+        });
     }
 
     fetchServiceAgentRequest() {
+        console.log('>> sa >> ')
         axios
-            .get(baseUrl + "service-agent", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "service-agent")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         loading: false,
-                    });
-
-                    this.setState({
                         serviceAgentRequests: responseAll,
                     });
-                },
-                (error) => {
-                    this.setState({
-                        loading: false,
-                    });
                 }
-            );
+            ).catch(error => {
+            this.setState({
+                loading: false,
+            });
+        });
     }
 
     componentDidMount() {
         this.fetchReleaseRequest();
-        // this.fetchRegisterRequest()
-        // this.fetchServiceAgentRequest()
+    }
+
+    refreshProductReleaseCallback = () => {
+        this.fetchReleaseRequest()
     }
 
     render() {
-        // const classes = useStylesTabs();
 
         return (
             <div>
@@ -172,12 +143,6 @@ class Approvals extends Component {
                         <PageHeader pageTitle="Approvals" subTitle="Approve" />
 
                         <div className={"tab-content-listing col-12"}>
-                            {/*<NavTabs token={this.props.userDetail.token}*/}
-                            {/*releases={this.state.releaseRequests}*/}
-                            {/*registers={this.state.registerRequests}*/}
-                            {/*serviceAgents={this.state.serviceAgentRequests}*/}
-                            {/*/>*/}
-
                             <div>
                                 <AppBar
                                     position="static"
@@ -194,7 +159,6 @@ class Approvals extends Component {
                                         value={this.state.value}
                                         onChange={this.handleChange.bind(this)}
                                         aria-label="nav tabs example">
-                                        {/*{props.releases.length>0 &&*/}
                                         <LinkTab
                                             label={
                                                 this.state.releaseRequests.length > 0
@@ -205,11 +169,6 @@ class Approvals extends Component {
                                             }
                                             {...a11yProps(0)}
                                         />
-                                        {/*}*/}
-
-                                        {/*{props.suggesstions.length > 0 &&*/}
-
-                                        {/*{props.registers.length>0 &&*/}
                                         <LinkTab
                                             label={
                                                 this.state.registerRequests.length > 0
@@ -220,9 +179,6 @@ class Approvals extends Component {
                                             }
                                             {...a11yProps(1)}
                                         />
-                                        {/*}*/}
-
-                                        {/*{props.serviceAgents.length>0 &&*/}
                                         <LinkTab
                                             label={
                                                 this.state.serviceAgentRequests.length > 0
@@ -233,9 +189,6 @@ class Approvals extends Component {
                                             }
                                             {...a11yProps(2)}
                                         />
-                                        {/*}*/}
-
-                                        {/*}*/}
                                     </Tabs>
                                 </AppBar>
 
@@ -256,12 +209,12 @@ class Approvals extends Component {
                                                     <RequestReleaseItem
                                                         history={this.props.history}
                                                         item={item}
+                                                        refreshPageCallback={this.refreshProductReleaseCallback}
                                                     />
                                                 </div>
                                             </div>
                                         ))}
-
-                                        {this.state.releaseRequests.length === 0 && (
+                                        {this.state.releaseRequests.filter((item) => item.Release.stage === "requested" ).length === 0 && (
                                             <div className={" column-empty-message"}>
                                                 <p>
                                                     {this.state.loading
@@ -340,68 +293,37 @@ function NavTabs(props) {
 
     const getReleases = () => {
         axios
-            .get(baseUrl + "release", {
-                headers: {
-                    Authorization: "Bearer " + props.token,
-                },
-            })
+            .get(baseUrl + "release")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
-
-                    // this.setState({
-                    //
-                    //     releaseRequests: responseAll
-                    // })
-
+                    let responseAll = response.data.data;
                     setReleases(responseAll);
-                },
-                (error) => {}
-            );
+                }
+            ).catch(error => {});
     };
 
     const getRegisters = () => {
         axios
-            .get(baseUrl + "register", {
-                headers: {
-                    Authorization: "Bearer " + props.token,
-                },
-            })
+            .get(baseUrl + "register")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
-
-                    // this.setState({
-                    //
-                    //     releaseRequests: responseAll
-                    // })
-
+                    let responseAll = response.data.data;
                     setRegisters(responseAll);
-                },
-                (error) => {}
-            );
+                }
+            ).catch(error => {});
     };
 
     const getServiceAgents = () => {
         axios
-            .get(baseUrl + "service-agent", {
-                headers: {
-                    Authorization: "Bearer " + props.token,
-                },
-            })
+            .get(baseUrl + "service-agent")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
-
-                    // this.setState({
-                    //
-                    //     releaseRequests: responseAll
-                    // })
-
+                    let responseAll = response.data.data;
                     setRegisters(responseAll);
-                },
-                (error) => {}
-            );
+                }
+            ).catch(error => {
+
+        });
     };
 
     useEffect(() => {
@@ -424,30 +346,18 @@ function NavTabs(props) {
                     value={value}
                     onChange={handleChange}
                     aria-label="nav tabs example">
-                    {/*{props.releases.length>0 &&*/}
                     <LinkTab
                         label={"Product Release Requests (" + releases.length + ")"}
                         {...a11yProps(0)}
                     />
-                    {/*}*/}
-
-                    {/*{props.suggesstions.length > 0 &&*/}
-
-                    {/*{props.registers.length>0 &&*/}
                     <LinkTab
                         label={"Product Register Requests (" + registers.length + ")"}
                         {...a11yProps(1)}
                     />
-                    {/*}*/}
-
-                    {/*{props.serviceAgents.length>0 &&*/}
                     <LinkTab
                         label={"Change Service Agent Requests  (" + serviceAgents.length + ")"}
                         {...a11yProps(2)}
                     />
-                    {/*}*/}
-
-                    {/*}*/}
                 </Tabs>
             </AppBar>
 
@@ -501,24 +411,6 @@ function NavTabs(props) {
     );
 }
 
-function SearchField() {
-    const classes = useStylesTabs();
-
-    return (
-        <TextField
-            variant="outlined"
-            className={clsx(classes.margin, classes.textField) + " full-width-field"}
-            id="input-with-icon-textfield"
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                    </InputAdornment>
-                ),
-            }}
-        />
-    );
-}
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

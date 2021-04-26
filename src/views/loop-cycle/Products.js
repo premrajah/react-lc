@@ -134,10 +134,11 @@ class Products extends Component {
                                 <ProductItem
                                     goToLink={true}
                                     delete={false}
-                                    edit={true}
+                                    edit={false}
                                     remove={false}
-                                    duplicate={true}
+                                    duplicate={false}
                                     item={item}
+                                    hideMore
                                 />
                             </div>
                         ))}

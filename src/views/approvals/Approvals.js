@@ -66,7 +66,6 @@ class Approvals extends Component {
     };
 
     fetchReleaseRequest() {
-        console.log('>> rr >> ')
         axios
             .get(baseUrl + "release")
             .then((response) => {
@@ -85,7 +84,6 @@ class Approvals extends Component {
     }
 
     fetchRegisterRequest() {
-        console.log('>> fr >> ');
         axios
             .get(baseUrl + "register")
             .then(
@@ -104,7 +102,6 @@ class Approvals extends Component {
     }
 
     fetchServiceAgentRequest() {
-        console.log('>> sa >> ')
         axios
             .get(baseUrl + "service-agent")
             .then(

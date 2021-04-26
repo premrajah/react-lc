@@ -205,7 +205,6 @@ class RequestReleaseItem extends Component {
     }
 
     submitRegisterProduct = (event) => {
-        console.log('submitRegisterProduct');
         event.preventDefault();
         const form = event.currentTarget;
 

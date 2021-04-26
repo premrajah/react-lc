@@ -6,22 +6,18 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import reducer from "./store/reducers/reducer";
 import { Router } from "react-router-dom";
-import { createStore, applyMiddleware } from "redux";
+import {createStore, applyMiddleware, compose} from "redux";
 import thunk from "redux-thunk";
 import history from "./History/history";
 import axios from "axios";
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 const UNAUTHORIZED = 406;
 
 axios.interceptors.request.use((request) => {
-    // console.log("request intercepter")
-    // console.log(request)
-    //
-    // console.log(store.getState())
     if (store.getState().isLoggedIn) {
-        // alert("isLogged in")
 
         request.headers = { Authorization: "Bearer " + store.getState().userDetail.token };
     }

@@ -56,3 +56,7 @@ export const REVIEW_SUCCESS = "REVIEW_SUCCESS";
 export const REVIEW_SUBMIT = "REVIEW_SUBMIT";
 export const ERROR_REQUEST = "ERROR_REQUEST";
 export const SET_LOCATION = "SET_LOCATION";
+//Notifications and Messages
+export const GET_MESSAGES = "GET_MESSAGES";
+export const SEND_MESSAGE = "SEND_MESSAGE";
+export const GET_NOTIFICATIONS = "GET_NOTIFICATIONS";

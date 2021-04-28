@@ -406,9 +406,7 @@ export const logOutSync = (val) => {
 
 
 export const getMessages = data => {
-    console.log('getMessages');
     return dispatch => {
-        dispatch(loading());
         dispatch(getMessagesSync(data))
     }
 }
@@ -424,7 +422,6 @@ export const getMessagesSync = (data) => dispatch => {
 }
 
 export const getNotifications = data => {
-    console.log('get notifications ')
     return dispatch => {
         dispatch(getNotificationsSync(data))
     }

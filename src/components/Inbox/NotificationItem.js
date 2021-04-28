@@ -4,18 +4,15 @@ import NotIcon from "@material-ui/icons/Notifications";
 import { Card, CardContent } from "@material-ui/core";
 import MoreMenu from "../MoreMenu";
 
-const NotificationItem = ({ item, editText, onClose }) => {
+const NotificationItem = ({ item, editText }) => {
     const { message, orgs } = item;
 
-    const handleOnClose = (key) => {
-        onClose(key);
-    };
 
     return (
         <Card variant="outlined" className="mb-2">
             <CardContent>
                 <div className="row">
-                    <div className={"col-12"}>
+                    <div className="col-12">
                         <NotIcon
                             style={{
                                 color: "#eee",
@@ -32,9 +29,6 @@ const NotificationItem = ({ item, editText, onClose }) => {
                             {moment(message._ts_epoch_ms).fromNow()}
                         </span>
 
-                        {/*<span style={{ float: "right" }}>*/}
-                        {/*    <MoreMenu delete={true} />*/}
-                        {/*</span>*/}
                     </div>
                 </div>
             </CardContent>

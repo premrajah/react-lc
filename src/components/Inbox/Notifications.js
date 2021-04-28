@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
 import NotificationItem from "./NotificationItem";
 import _ from "lodash";
+import * as actionCreator from "../../store/actions/actions";
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 
@@ -12,42 +13,8 @@ class Notifications extends Component {
         allNotifications: [],
     };
 
-    getNotifications = (userDetails) => {
-        if (!userDetails) return;
-        const { token, orgId } = userDetails;
 
-        axios
-            .get(`${baseUrl}message/notif`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((response) => {
-                this.setState({
-                    allNotifications: _.orderBy(
-                        response.data.data,
-                        ["message._ts_epoch_ms"],
-                        ["desc"]
-                    ),
-                });
-            })
-            .catch((error) => {});
-    };
-
-    deleteNotificationCall = (key) => {
-        if (!key) return;
-
-        axios
-            .delete(`${baseUrl}message/${key}`, {
-                headers: { Authorization: `Bearer ${this.props.userDetail.token}` },
-            })
-            .then((response) => {
-                if (response.status === 200) {
-                    this.getNotifications(this.props.userDetail);
-                }
-            })
-            .catch((error) => {});
-    };
-
-    checkNotifications = (item) => {
+    checkNotifications = (item, index) => {
         if (!item) return;
 
         const { message } = item;
@@ -70,31 +37,23 @@ class Notifications extends Component {
         return (
             // <div key={message._ts_epoch_ms} dangerouslySetInnerHTML={{ __html: text }} />
 
-            <div key={message._ts_epoch_ms}>
+            <div key={index}>
                 <NotificationItem
                     item={item}
                     editText={text}
-                    onClose={this.deleteNotificationCall}
                 />
             </div>
         );
     };
 
     componentDidMount() {
-        this.getNotifications(this.props.userDetail);
-        this.updateNotifications();
-    }
-
-    interval;
-
-    updateNotifications() {
-        this.interval = setInterval(() => {
-            this.getNotifications(this.props.userDetail);
-        }, 10000);
+        this.props.getNotifications();
+        this.timer = setInterval(this.props.getNotifications, 10000);
+        this.setState({allNotifications: this.props.notifications})
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval);
+        clearInterval(this.timer);
     }
 
     render() {
@@ -109,8 +68,8 @@ class Notifications extends Component {
                 </h5>
                 <div className="notification-content">
                     {this.state.allNotifications.length > 0
-                        ? this.state.allNotifications.map((item) => {
-                              return this.checkNotifications(item);
+                        ? this.state.allNotifications.map((item, index) => {
+                              return this.checkNotifications(item, index);
                           })
                         : "No notifications... "}
                 </div>
@@ -123,12 +82,13 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
+        notifications: state.notifications,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
+        getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
     };
 };
 

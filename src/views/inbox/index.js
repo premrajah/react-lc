@@ -6,11 +6,29 @@ import Notifications from "../../components/Inbox/Notifications";
 import Messages from "../../components/Inbox/Messages";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import PropTypes from "prop-types";
+import * as actionCreator from "../../store/actions/actions";
 
 class Inbox extends Component {
     state = {
         tabValue: 0,
     };
+
+    componentDidMount() {
+        this.setState({tabValue: this.props.location.state ? this.props.location.state : 0});
+        this.props.getNotifications();
+        this.props.getMessages();
+    }
+
+
+    handleChange = (event, newValue) => {
+        this.setState({ tabValue: newValue });
+        if(newValue === 0) {
+            this.props.getNotifications();
+        } else if(newValue === 1) {
+            this.props.getMessages();
+        }
+    };
+
 
     render() {
         const TabPanel = (props) => {
@@ -45,9 +63,7 @@ class Inbox extends Component {
             };
         };
 
-        const handleChange = (event, newValue) => {
-            this.setState({ tabValue: newValue });
-        };
+
 
         return (
             <div>
@@ -60,17 +76,17 @@ class Inbox extends Component {
                             <div className="col">
                                 <div className="">
                                     <Tabs
-                                        value={this.state.tabValue}
-                                        onChange={handleChange}
+                                        value={this.props.location.state ? this.props.location.state : this.state.tabValue}
+                                        onChange={this.handleChange}
                                         aria-label="message-tabs"
                                         variant="fullWidth">
-                                        <Tab label="Notifications" {...a11yProps(0)} />
-                                        <Tab label="Messages" {...a11yProps(1)} />
+                                        <Tab label="Notifications" {...a11yProps(this.props.location.state ? this.props.location.state : this.state.tabValue)} />
+                                        <Tab label="Messages" {...a11yProps(this.props.location.state ? this.props.location.state :this.state.tabValue)} />
                                     </Tabs>
-                                    <TabPanel value={this.state.tabValue} index={0}>
+                                    <TabPanel value={this.props.location.state ? this.props.location.state : this.state.tabValue} index={0}>
                                         <Notifications />
                                     </TabPanel>
-                                    <TabPanel value={this.state.tabValue} index={1}>
+                                    <TabPanel value={this.props.location.state ? this.props.location.state :this.state.tabValue} index={1}>
                                         <Messages />
                                     </TabPanel>
                                 </div>
@@ -91,7 +107,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        getMessages: (data) => dispatch(actionCreator.getMessages(data)),
+        getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
+    };
 };
 
-export default connect(mapStateToProps)(Inbox);
+export default connect(mapStateToProps, mapDispatchToProps)(Inbox);

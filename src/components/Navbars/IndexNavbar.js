@@ -4,6 +4,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import LogoNew from "../../img/logo-cropped.png";
 import LogoText from "../../img/logo-text.png";
 import { connect } from "react-redux";
@@ -12,6 +13,8 @@ import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import {Badge} from "@material-ui/core";
+
 
 class ComponentsNavbar extends React.Component {
     constructor(props) {
@@ -23,6 +26,8 @@ class ComponentsNavbar extends React.Component {
             count: 0,
             nextIntervalFlag: false,
             orgImage: "",
+            notificationLength: this.props.notifications.length,
+            messagesLength: this.props.messages.length,
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -59,19 +64,27 @@ class ComponentsNavbar extends React.Component {
 
     logOut = (event) => {
         document.body.classList.remove("sidemenu-open");
+        this.props.getMessages([]);
+        this.props.getNotifications([]);
         this.props.logOut();
     };
 
     componentDidMount() {
+        window.removeEventListener("scroll", this.changeColor);
         window.addEventListener("scroll", this.changeColor);
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
+            this.props.getMessages()
+            this.props.getNotifications();
+            this.setState({
+                notificationsLength: this.props.notifications.length,
+                messagesLength: this.props.messages.length
+            })
         }
+
     }
 
-    componentWillUnmount() {
-        window.removeEventListener("scroll", this.changeColor);
-    }
+
 
     changeColor = () => {
         if (document.documentElement.scrollTop > 99 || document.body.scrollTop > 99) {
@@ -234,16 +247,27 @@ class ComponentsNavbar extends React.Component {
                         </NavItem>
 
                         {this.props.isLoggedIn && (
-                            <NavItem>
-                                <button className="btn  btn-link text-dark btn-inbox">
-                                    <Link style={{ position: "relative" }} to={"/inbox"}>
-                                        <MenuOutline
-                                            className="white-text"
-                                            style={{ fontSize: 24 }}></MenuOutline>
-                                        <span className="new-notification d-none"></span>
-                                    </Link>
-                                </button>
-                            </NavItem>
+                            <>
+                                <NavItem>
+                                    <button className="btn btn-link text-dark btn-inbox">
+                                        <Link to={{pathname: "/inbox", state: 1}}>
+                                            <Badge color="primary" badgeContent={this.state.messagesLength} showZero max={999}>
+                                                <MenuOutline className="white-text" style={{ fontSize: 24 }} />
+                                            </Badge>
+                                        </Link>
+                                    </button>
+                                </NavItem>
+
+                                <NavItem>
+                                    <button className="btn btn-link text-dark btn-inbox">
+                                        <Link to={{pathname: "/inbox", state: 0}}>
+                                            <Badge color="primary" badgeContent={this.state.notificationsLength} showZero max={999}>
+                                                <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
+                                            </Badge>
+                                        </Link>
+                                    </button>
+                                </NavItem>
+                            </>
                         )}
 
                         {this.props.isLoggedIn && (
@@ -394,6 +418,8 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
         orgImage: state.orgImage,
+        messages: state.messages,
+        notifications: state.notifications,
     };
 };
 
@@ -407,6 +433,8 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+        getMessages: (data) => dispatch(actionCreator.getMessages(data)),
+        getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);

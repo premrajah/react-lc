@@ -6,28 +6,14 @@ import MessageItem from "./MessageItem";
 import _ from "lodash";
 import SendMessage from "./SendMessage";
 import { Modal } from "react-bootstrap";
+import * as actionCreator from "../../store/actions/actions";
+
 
 class Messages extends Component {
     state = {
         allMessages: [],
         allOrgs: [],
         sendMessageModal: false,
-    };
-
-    getMessages = (userDetails) => {
-        if (!userDetails) return;
-        const { token, orgId } = userDetails;
-
-        axios
-            .get(`${baseUrl}message`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((response) => {
-                this.setState({
-                    allMessages: _.orderBy(response.data.data, ["message._ts_epoch_ms"], ["desc"]),
-                });
-            })
-            .catch((error) => {});
     };
 
     getAllOrgs = (userDetails) => {
@@ -53,23 +39,18 @@ class Messages extends Component {
         // console.log("[Messages.js] ", key);
     };
 
-    interval;
-
-    updateMessages() {
-        this.interval = setInterval(() => {
-            this.getMessages(this.props.userDetail);
-        }, 10000);
-    }
 
     componentDidMount() {
-        this.getMessages(this.props.userDetail);
+        this.props.getMessages();
+        this.timer = setInterval(this.props.getMessages, 10000);
         this.getAllOrgs(this.props.userDetail);
-        this.updateMessages();
+        this.setState({allMessages: this.props.messages})
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval);
+        clearInterval(this.timer);
     }
+
 
     render() {
         return (
@@ -136,12 +117,13 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
+        messages: state.messages,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
+        getMessages: (data) => dispatch(actionCreator.getMessages(data)),
     };
 };
 

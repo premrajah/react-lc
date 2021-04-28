@@ -13,6 +13,7 @@ import {
     Select,
 } from "@material-ui/core";
 import { Form } from "react-bootstrap";
+import * as actionCreator from "../../store/actions/actions";
 
 class SendMessage extends Component {
     state = {
@@ -50,6 +51,7 @@ class SendMessage extends Component {
                         messageStatus: <p className="text-success">Message sent successfully!</p>,
                     });
                     this.getALlOrgs();
+                    this.props.getMessages();
                 }
             })
             .catch((error) => {
@@ -180,7 +182,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
+        getMessages: (data) => dispatch(actionCreator.getMessages(data)),
     };
 };
 

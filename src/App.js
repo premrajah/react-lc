@@ -66,7 +66,7 @@ var hist = createBrowserHistory();
 
 class App extends Component {
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.loadUserDetail();
     }
 

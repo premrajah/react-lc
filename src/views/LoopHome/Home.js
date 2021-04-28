@@ -72,11 +72,6 @@ class Home extends Component {
                 <div className="wrapper homepage">
                     <div className="container-fluid container-light-blue pt-5">
                         <div className="container   pt-5 pb-5">
-                            <div className="row no-gutters">
-                                <div className="col-lg-12">
-                                    <img src={LogoText} alt="" className="text-logo-home" />
-                                </div>
-                            </div>
 
                             <div className="row no-gutters">
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">

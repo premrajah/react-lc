@@ -18,7 +18,6 @@ const MessageItem = ({ item, onDelete }) => {
                 <div className="row">
                     <div className="col">
                         <div className="d-flex">
-                            {type ? <span className="w-100">{type.toUpperCase()}</span> : null}
                             <span className="float-right">
                                 {_neverDelete ? (
                                     <MoreMenu

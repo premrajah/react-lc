@@ -18,10 +18,8 @@ const UNAUTHORIZED = 406;
 
 axios.interceptors.request.use((request) => {
     if (store.getState().isLoggedIn) {
-
         request.headers = { Authorization: "Bearer " + store.getState().userDetail.token };
     }
-
     return request;
 });
 

@@ -35,6 +35,8 @@ import {
     STOP_LOADING,
     TRENDING_LOAD,
     USER_DETAIL,
+    GET_MESSAGES,
+    GET_NOTIFICATIONS,
 } from "../types";
 
 export const initialState = {
@@ -62,8 +64,9 @@ export const initialState = {
     productWithoutParentList: [],
     siteList: [],
     showSitePopUp: false,
-
     orgImage: null,
+    messages: [],
+    notifications: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -72,27 +75,22 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER_DETAIL:
             newState.userDetail = action.value;
-
             break;
 
         case SET_ORG_IMG:
             newState.orgImage = action.value;
-
             break;
 
         case LOADING_SPINNER:
             newState.reviewLoading = true;
-
             break;
 
         case SITE_POPUP:
             newState.showSitePopUp = action.value;
-
             break;
 
         case REVIEW_BOX_OPEN:
             newState.reviewBoxOpen = action.value;
-
             break;
 
         case LOAD_USER_DETAIL:
@@ -157,30 +155,24 @@ const reducer = (state = initialState, action) => {
         case PRODUCT_LIST:
             newState.productList = action.value;
             newState.loading = false;
-
             break;
+
         case PRODUCT_NPARENT_LIST:
             newState.productWithoutParentList = action.value;
-
             newState.loading = false;
-
             break;
 
         case SITE_LIST:
             newState.siteList = action.value;
-
             newState.loading = false;
-
             break;
 
         case PARENT_PRODUCT_ID:
             newState.parentProduct = action.value;
-
             break;
 
         case PRODUCT_ID:
             newState.product = action.value;
-
             break;
 
         case PRODUCT_POPUP:
@@ -191,7 +183,7 @@ const reducer = (state = initialState, action) => {
             newState.showProductView = false;
             newState.showProductPopUp = action.value.show;
 
-            var type = action.value.type;
+            let type = action.value.type;
 
             if (type === "create_product") {
                 newState.showCreateProduct = true;
@@ -216,12 +208,10 @@ const reducer = (state = initialState, action) => {
         case LOGIN_POPUP:
             newState.loginFailed = false;
             newState.showLoginPopUp = action.value;
-
             break;
 
         case LOGIN_POPUP_STATUS:
             newState.loginPopUpStatus = action.value;
-
             break;
 
         case SOCIAL_LOGIN_POPUP:
@@ -229,7 +219,6 @@ const reducer = (state = initialState, action) => {
             newState.showSocialLoginPopUp = action.value;
             newState.showLoginPopUp = action.value;
             //
-
             break;
 
         case SOCIAL_USER_INFO:
@@ -250,13 +239,11 @@ const reducer = (state = initialState, action) => {
 
         case IS_GUEST:
             newState.isGuest = true;
-
             break;
 
         case LOADING_COUPON:
             newState.couponCheckloading = true;
             newState.couponError = false;
-
             break;
 
         case SLIDES_LOAD:
@@ -265,12 +252,10 @@ const reducer = (state = initialState, action) => {
 
         case TRENDING_LOAD:
             newState.trendingItems = action.value;
-
             break;
 
         case REVIEW_SUCCESS:
             newState.reviewSuccessMessage = false;
-
             break;
 
         case REVIEW_SUBMIT:
@@ -278,12 +263,10 @@ const reducer = (state = initialState, action) => {
             newState.reviewLoading = false;
             newState.reviewBoxOpen = false;
             newState.reviewSuccessMessage = true;
-
             break;
 
         case ERROR_REQUEST:
             newState.loading = false;
-
             break;
 
         case SET_CATEGORIES:
@@ -349,7 +332,14 @@ const reducer = (state = initialState, action) => {
 
             newState.loginPopUpStatus = 5;
             newState.loading = false;
+            break;
 
+        case GET_MESSAGES:
+            newState.messages = action.value;
+            break;
+
+        case GET_NOTIFICATIONS:
+            newState.notifications = action.value;
             break;
     }
 

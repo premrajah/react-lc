@@ -29,6 +29,8 @@ import {
     SITE_POPUP,
     STOP_LOADING,
     USER_DETAIL,
+    GET_MESSAGES,
+    GET_NOTIFICATIONS,
 } from "../types";
 
 export const enableCartLoading = () => {
@@ -152,17 +154,18 @@ export const loadSites = (data) => {
 export const loadSitesSync = (data) => (dispatch) => {
     axios.get(baseUrl + "site").then(
         (response) => {
-            var responseAll = response.data.data;
+            let responseAll = response.data.data;
 
             dispatch({ type: SITE_LIST, value: responseAll });
 
             // dispatch()
         },
         (error) => {
-            // var status = error.response.status
+            // let status = error.response.status
             // dispatch({ type: "PRODUCT_LIST", value: [] })
         }
-    );
+    )
+    .catch(error => {});
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -176,17 +179,18 @@ export const loadProductsSync = (data) => (dispatch) => {
         })
         .then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 dispatch({ type: PRODUCT_LIST, value: responseAll });
                 // dispatch()
             },
             (error) => {
-                // var status = error.response.status
+                // let status = error.response.status
 
                 dispatch({ type: PRODUCT_LIST, value: [] });
             }
-        );
+        )
+        .catch(error => {});
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -200,17 +204,18 @@ export const loadProductsWithoutParentSync = (data) => (dispatch) => {
         })
         .then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: responseAll });
                 // dispatch()
             },
             (error) => {
-                // var status = error.response.status
+                // let status = error.response.status
 
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: [] });
             }
-        );
+        )
+        .catch(error => {});
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -229,17 +234,18 @@ export function loadProductsSync2(data) {
             })
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     dispatch({ type: PRODUCT_LIST, value: responseAll });
                     // dispatch()
                 },
                 (error) => {
-                    // var status = error.response.status
+                    // let status = error.response.status
 
                     dispatch({ type: PRODUCT_LIST, value: [] });
                 }
-            );
+            )
+            .catch(error => {});
 
         dispatch({ type: PRODUCT_LIST, value: [] });
     };
@@ -349,7 +355,7 @@ export const setUserDetail = (data) => {
 };
 
 export const loadUserDetail = (data) => {
-    var userDetials = getKey("user");
+    let userDetials = getKey("user");
 
     //
     //
@@ -364,7 +370,7 @@ export const getUserDetail = (data) => {
 };
 
 export const getUserDetailSync = (data) => (dispatch) => {
-    var url = baseUrl + "customers.json?groups[]=customer&email=" + data.username;
+    let url = baseUrl + "customers.json?groups[]=customer&email=" + data.username;
 
     axios
         .get(url)
@@ -397,3 +403,41 @@ export const logOutSync = (val) => {
 
     return { type: LOGOUT, value: val };
 };
+
+
+export const getMessages = data => {
+    console.log('getMessages');
+    return dispatch => {
+        dispatch(loading());
+        dispatch(getMessagesSync(data))
+    }
+}
+
+export const getMessagesSync = (data) => dispatch => {
+    axios.get(`${baseUrl}message`)
+        .then(response => {
+            dispatch({type: GET_MESSAGES, value: response.data.data})
+        })
+        .catch(error => {
+            dispatch({type: GET_MESSAGES, value: []})
+        })
+}
+
+export const getNotifications = data => {
+    console.log('get notifications ')
+    return dispatch => {
+        dispatch(getNotificationsSync(data))
+    }
+}
+
+export const getNotificationsSync = data => dispatch => {
+    axios.get(`${baseUrl}message/notif`)
+        .then(response => {
+            dispatch({type: GET_NOTIFICATIONS, value: response.data.data})
+        })
+        .catch(error => {
+            dispatch({type: GET_NOTIFICATIONS, value: []})
+        })
+}
+
+

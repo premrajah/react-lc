@@ -68,6 +68,7 @@ class ProductDetail extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             imagesUploadStatusFromDocumentsTab: "",
+            deleteDocumentStatus: "",
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -150,9 +151,8 @@ class ProductDetail extends Component {
                     this.setState({
                         org_id: responseAll._key,
                     });
-                },
-                (error) => {}
-            );
+                }
+            ).catch(error => {});
         }
     };
 
@@ -765,14 +765,39 @@ class ProductDetail extends Component {
     }
 
     handleCallBackImagesUploadStatus = (status) => {
-        if (!status) return;
-        this.setState({ imagesUploadStatusFromDocumentsTab: status });
+        this.setState({deleteDocumentStatus: ""})
+        this.setState({imagesUploadStatusFromDocumentsTab: ""});
+
+        if(status === "success") {
+            this.setState({imagesUploadStatusFromDocumentsTab: <span className="text-success">Images or documents uploaded successfully</span>});
+        } else if(status === "fail") {
+            this.setState({imagesUploadStatusFromDocumentsTab: <span className="text-danger">Unable to upload Images or documents</span>});
+        } else {
+            this.setState({imagesUploadStatusFromDocumentsTab: ""});
+        }
     };
 
     handleProductReloadFromDocumentTab = (productKey) => {
         if (!productKey) return;
         this.loadProduct(productKey);
     };
+
+    handleAddDocumentPageRefreshCallback = (status, productKey) => {
+        if(!productKey) return;
+
+        this.setState({ imagesUploadStatusFromDocumentsTab: "" });
+        this.setState({deleteDocumentStatus: ""})
+
+        if(status === "success") {
+            this.setState({deleteDocumentStatus: <span className='text-success'>Document deleted successfully</span>})
+        } else if (status === "fail") {
+            this.setState({deleteDocumentStatus: <span className='text-danger'>Document delete failed</span>})
+        } else {
+            this.setState({deleteDocumentStatus: ""})
+        }
+
+        this.loadProduct(productKey)
+    }
 
     render() {
         const classes = withStyles();
@@ -1194,15 +1219,19 @@ class ProductDetail extends Component {
 
                                                 <div className="row mb-3">
                                                     <div className="col">
-                                                        {
-                                                            this.state
-                                                                .imagesUploadStatusFromDocumentsTab
-                                                        }
+                                                        {this.state.imagesUploadStatusFromDocumentsTab}
+                                                    </div>
+                                                </div>
+
+                                                <div className="row mb-3">
+                                                    <div className="col">
+                                                        {this.state.deleteDocumentStatus}
                                                     </div>
                                                 </div>
 
                                                 <AddedDocumentsDisplay
                                                     artifacts={this.state.item.artifacts}
+                                                    pageRefreshCallback={(status, productKey) => this.handleAddDocumentPageRefreshCallback(status, productKey)}
                                                 />
                                             </Tab>
                                         </Tabs>

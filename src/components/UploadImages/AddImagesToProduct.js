@@ -101,14 +101,12 @@ class AddImagesToProduct extends Component {
                         images: [],
                         files: [],
                     });
-                    this.handleCallbackImagesUploadStatus("Images uploaded successfully!");
+                    this.handleCallbackImagesUploadStatus("success");
                 }
             })
             .catch((error) => {
                 console.log("upload artifact to product error ", error);
-                this.handleCallbackImagesUploadStatus(
-                    "Sorry, Unable to upload images at this time"
-                );
+                this.handleCallbackImagesUploadStatus("fail");
             });
     };
 

@@ -34,9 +34,9 @@ const MessageItem = ({ item, onDelete }) => {
                 <div className="row">
                     <div className="col">
                         <div>
-                            {orgs.map((org, i) => {
+                            {orgs.map((org, index) => {
                                 return (
-                                    <span key={org.org._ts_epoch_ms_i}>
+                                    <span key={index}>
                                         {org.actor === "message_from" && (
                                             <span>
                                                 <span>From: </span>

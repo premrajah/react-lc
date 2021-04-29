@@ -85,9 +85,6 @@ class ComponentsNavbar extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log('mp ', this.props.messages.length , ' mpp ', prevProps.messages.length)
-        console.log('np ', this.props.notifications.length , ' npp ', prevProps.notifications.length)
-
         if(this.props.messages.length > prevProps.messages.length && (prevProps.messages.length > 0 && this.props.messages.length > 0)) {
              this.props.dispatchMessageAlert(true);
         }

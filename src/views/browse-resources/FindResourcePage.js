@@ -20,7 +20,7 @@ class FindResourcePage extends Component {
         allListings: [],
         search: "",
     };
-    
+
 
     componentDidMount() {
         this.getAllListings();

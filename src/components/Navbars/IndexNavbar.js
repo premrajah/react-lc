@@ -13,7 +13,10 @@ import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import {Badge} from "@material-ui/core";
+import {Badge, Snackbar} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+
+
 
 
 class ComponentsNavbar extends React.Component {
@@ -80,6 +83,21 @@ class ComponentsNavbar extends React.Component {
     }
 
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        console.log('mp ', this.props.messages.length , ' mpp ', prevProps.messages.length)
+        console.log('np ', this.props.notifications.length , ' npp ', prevProps.notifications.length)
+
+        if(this.props.messages.length > prevProps.messages.length && (prevProps.messages.length > 0 && this.props.messages.length > 0)) {
+             this.props.dispatchMessageAlert(true);
+        }
+
+        if(this.props.notifications.length > prevProps.notifications.length && (prevProps.notifications.length > 0 && this.props.notifications.length > 0)) {
+            this.props.dispatchNotificationAlert(true);
+        }
+    }
+
+
     dispatchMessagesAndNotifications =  () => {
         this.props.getMessages()
         this.props.getNotifications();
@@ -141,6 +159,13 @@ class ComponentsNavbar extends React.Component {
     render() {
         return (
             <>
+                <Snackbar open={this.props.messageAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
+                    <Alert  severity="success">You have new messages.</Alert>
+                </Snackbar>
+                <Snackbar open={this.props.notificationAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchNotificationAlert(false)} onClose={() => this.props.dispatchNotificationAlert(false)}>
+                    <Alert  severity="success">You have new notifications.</Alert>
+                </Snackbar>
+
                 <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
                     <Nav className={"justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
@@ -417,6 +442,8 @@ const mapStateToProps = (state) => {
         orgImage: state.orgImage,
         messages: state.messages,
         notifications: state.notifications,
+        messageAlert: state.messageAlert,
+        notificationAlert: state.notificationAlert,
     };
 };
 
@@ -432,6 +459,8 @@ const mapDispachToProps = (dispatch) => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         getMessages: (data) => dispatch(actionCreator.getMessages(data)),
         getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
+        dispatchMessageAlert: (data) => dispatch(actionCreator.messageAlert(data)),
+        dispatchNotificationAlert: (data) => dispatch(actionCreator.notificationAlert(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);

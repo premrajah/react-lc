@@ -37,6 +37,8 @@ import {
     USER_DETAIL,
     GET_MESSAGES,
     GET_NOTIFICATIONS,
+    MESSAGE_ALERT,
+    NOTIFICATION_ALERT,
 } from "../types";
 
 export const initialState = {
@@ -67,6 +69,8 @@ export const initialState = {
     orgImage: null,
     messages: [],
     notifications: [],
+    messageAlert: false,
+    notificationAlert: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -340,6 +344,14 @@ const reducer = (state = initialState, action) => {
 
         case GET_NOTIFICATIONS:
             newState.notifications = action.value;
+            break;
+
+        case MESSAGE_ALERT:
+            newState.messageAlert = action.value;
+            break;
+
+        case NOTIFICATION_ALERT:
+            newState.notificationAlert = action.value;
             break;
     }
 

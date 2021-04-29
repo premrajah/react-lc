@@ -31,6 +31,8 @@ import {
     USER_DETAIL,
     GET_MESSAGES,
     GET_NOTIFICATIONS,
+    MESSAGE_ALERT,
+    NOTIFICATION_ALERT,
 } from "../types";
 
 export const enableCartLoading = () => {
@@ -438,5 +440,15 @@ export const getNotificationsSync = data => dispatch => {
             dispatch({type: GET_NOTIFICATIONS, value: []})
         })
 }
+
+export const messageAlert = val =>  {
+    return {type: MESSAGE_ALERT, value: val}
+}
+
+export const notificationAlert = val => {
+    return {type: NOTIFICATION_ALERT, value: val}
+}
+
+
 
 

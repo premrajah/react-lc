@@ -26,8 +26,6 @@ class ComponentsNavbar extends React.Component {
             count: 0,
             nextIntervalFlag: false,
             orgImage: "",
-            notificationLength: 0,
-            messagesLength: 0,
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -78,12 +76,7 @@ class ComponentsNavbar extends React.Component {
 
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
-            this.setState({
-                notificationsLength: this.props.notifications.length,
-                messagesLength: this.props.messages.length
-            })
         }
-
     }
 
 
@@ -128,16 +121,12 @@ class ComponentsNavbar extends React.Component {
     getArtifactForOrg = () => {
         let url = `${baseUrl}org/${encodeURIComponent(this.props.userDetail.orgId)}/artifact`;
         axios
-            .get(url, {
-                headers: { Authorization: "Bearer " + this.props.userDetail.token },
-            })
-            .then((response) => {
+            .get(url)
+            .then(response => {
                 if (response.status === 200) {
                     if (response.data.data.length > 0) {
                         this.setState({
-                            orgImage: `${
-                                response.data.data[response.data.data.length - 1].blob_url
-                            }&v=${Date.now()}`,
+                            orgImage: `${response.data.data[response.data.data.length - 1].blob_url}&v=${Date.now()}`,
                         });
 
                         this.props.setOrgImage(
@@ -259,7 +248,7 @@ class ComponentsNavbar extends React.Component {
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
                                         <Link to="/messages">
-                                            <Badge color="primary" badgeContent={this.state.messagesLength} showZero max={999}>
+                                            <Badge color="primary" badgeContent={this.props.messages.length} showZero max={999}>
                                                 <MenuOutline className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>
@@ -269,7 +258,7 @@ class ComponentsNavbar extends React.Component {
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
                                         <Link to="/notifications">
-                                            <Badge color="primary" badgeContent={this.state.notificationsLength} showZero max={999}>
+                                            <Badge color="primary" badgeContent={this.props.notifications.length} showZero max={999}>
                                                 <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>

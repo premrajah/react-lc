@@ -9,10 +9,6 @@ import * as actionCreator from "../../store/actions/actions";
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 
 class Notifications extends Component {
-    state = {
-        allNotifications: [],
-    };
-
 
     checkNotifications = (item, index) => {
         if (!item) return;
@@ -49,7 +45,6 @@ class Notifications extends Component {
     componentDidMount() {
         this.props.getNotifications();
         this.timer = setInterval(this.props.getNotifications, 10000);
-        this.setState({allNotifications: this.props.notifications})
     }
 
     componentWillUnmount() {
@@ -61,14 +56,14 @@ class Notifications extends Component {
             <div>
                 <h5 className="blue-text mb-4">
                     Notifications (
-                    {this.state.allNotifications.length <= 0
+                    {this.props.notifications.length <= 0
                         ? "..."
-                        : this.state.allNotifications.length}
+                        : this.props.notifications.length}
                     )
                 </h5>
                 <div className="notification-content">
-                    {this.state.allNotifications.length > 0
-                        ? this.state.allNotifications.map((item, index) => {
+                    {this.props.notifications.length > 0
+                        ? this.props.notifications.map((item, index) => {
                               return this.checkNotifications(item, index);
                           })
                         : "No notifications... "}

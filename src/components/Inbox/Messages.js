@@ -11,7 +11,6 @@ import * as actionCreator from "../../store/actions/actions";
 
 class Messages extends Component {
     state = {
-        allMessages: [],
         allOrgs: [],
         sendMessageModal: false,
     };
@@ -38,7 +37,6 @@ class Messages extends Component {
         this.props.getMessages();
         this.timer = setInterval(this.props.getMessages, 10000);
         this.getAllOrgs();
-        this.setState({allMessages: this.props.messages})
     }
 
     componentWillUnmount() {
@@ -65,9 +63,9 @@ class Messages extends Component {
                     <div className="col">
                         <h5 className="blue-text mb-4">
                             Messages (
-                            {this.state.allMessages.length <= 0
+                            {this.props.messages.length <= 0
                                 ? "..."
-                                : this.state.allMessages.length}
+                                : this.props.messages.length }
                             )
                         </h5>
                     </div>
@@ -76,8 +74,8 @@ class Messages extends Component {
                 <div className="row">
                     <div className="col">
                         <div className="messages-content">
-                            {this.state.allMessages.length > 0
-                                ? this.state.allMessages.map((item, index) => {
+                            {this.props.messages.length > 0
+                                ? this.props.messages.map((item, index) => {
                                       return (
                                           <MessageItem
                                               item={item}

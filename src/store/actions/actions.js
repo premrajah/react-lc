@@ -272,6 +272,8 @@ export const logInSync = (data) => (dispatch) => {
 
                 saveKey("user", res.data.data);
                 dispatch({ type: LOGIN, value: res.data.data });
+                getMessages();
+                getNotifications();
             } else {
                 //
                 // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })

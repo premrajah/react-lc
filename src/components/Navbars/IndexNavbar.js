@@ -250,7 +250,7 @@ class ComponentsNavbar extends React.Component {
                             <>
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
-                                        <Link to={{pathname: "/inbox", state: 1}}>
+                                        <Link to="/messages">
                                             <Badge color="primary" badgeContent={this.state.messagesLength} showZero max={999}>
                                                 <MenuOutline className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
@@ -260,7 +260,7 @@ class ComponentsNavbar extends React.Component {
 
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
-                                        <Link to={{pathname: "/inbox", state: 0}}>
+                                        <Link to="/notifications">
                                             <Badge color="primary" badgeContent={this.state.notificationsLength} showZero max={999}>
                                                 <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>

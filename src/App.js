@@ -61,6 +61,8 @@ import Approvals from "./views/approvals/Approvals";
 import Issues from "./views/issues/Issues";
 import IssueDetail from "./views/issues/IssueDetail";
 import ApprovedReleases from "./views/approvals/ApprovedReleases";
+import NotificationPage from "./components/Inbox/NotificationPage";
+import MessagePage from "./components/Inbox/MessagePage";
 
 var hist = createBrowserHistory();
 
@@ -81,7 +83,8 @@ class App extends Component {
                         <Route exact path="/cookie" component={Cookie} />
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
-                        <LoggedInRoute exact path="/inbox" component={Inbox} />
+                        <LoggedInRoute exact path="/notifications" component={NotificationPage} />
+                        <LoggedInRoute exact path="/messages" component={MessagePage} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />

@@ -778,12 +778,12 @@ class ProductDetail extends Component {
     };
 
     handleProductReloadFromDocumentTab = (productKey) => {
-        if (!productKey) return;
+        if (!productKey || productKey.length === 0) return;
         this.loadProduct(productKey);
     };
 
     handleAddDocumentPageRefreshCallback = (status, productKey) => {
-        if(!productKey) return;
+        if(!productKey || productKey.length === 0) return;
 
         this.setState({ imagesUploadStatusFromDocumentsTab: "" });
         this.setState({deleteDocumentStatus: ""})

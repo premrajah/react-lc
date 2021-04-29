@@ -26,8 +26,8 @@ class ComponentsNavbar extends React.Component {
             count: 0,
             nextIntervalFlag: false,
             orgImage: "",
-            notificationLength: this.props.notifications.length,
-            messagesLength: this.props.messages.length,
+            notificationLength: 0,
+            messagesLength: 0,
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -35,6 +35,7 @@ class ComponentsNavbar extends React.Component {
         this.logOut = this.logOut.bind(this);
         this.showSignUpPopUp = this.showSignUpPopUp.bind(this);
         this.showProductSelection = this.showProductSelection.bind(this);
+
     }
 
     showProductSelection() {
@@ -70,18 +71,25 @@ class ComponentsNavbar extends React.Component {
     };
 
     componentDidMount() {
+
         window.removeEventListener("scroll", this.changeColor);
         window.addEventListener("scroll", this.changeColor);
+        this.dispatchMessagesAndNotifications();
+
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
-            this.props.getMessages()
-            this.props.getNotifications();
             this.setState({
                 notificationsLength: this.props.notifications.length,
                 messagesLength: this.props.messages.length
             })
         }
 
+    }
+
+
+    dispatchMessagesAndNotifications =  () => {
+        this.props.getMessages()
+        this.props.getNotifications();
     }
 
 

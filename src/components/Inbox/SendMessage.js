@@ -25,9 +25,7 @@ class SendMessage extends Component {
 
     getALlOrgs = () => {
         axios
-            .get(`${baseUrl}org/all`, {
-                headers: { Authorization: "Bearer " + this.props.userDetail.token },
-            })
+            .get(`${baseUrl}org/all`)
             .then((response) => {
                 this.setState({ allOrgs: _.orderBy(response.data.data, ["name"], ["desc"]) });
             })
@@ -38,13 +36,7 @@ class SendMessage extends Component {
         if (!payload) return;
 
         axios
-            .post(
-                `${baseUrl}message/${this.props.apiPath ? this.props.apiPath : "chat"}`,
-                payload,
-                {
-                    headers: { Authorization: "Bearer " + this.props.userDetail.token },
-                }
-            )
+            .post(`${baseUrl}message/${this.props.apiPath ? this.props.apiPath : "chat"}`, payload)
             .then((response) => {
                 if (response.status === 200) {
                     this.setState({
@@ -93,6 +85,7 @@ class SendMessage extends Component {
 
     componentDidMount() {
         this.getALlOrgs();
+        this.props.getMessages()
     }
 
     render() {

@@ -520,13 +520,8 @@ class ProductDetail extends Component {
                 }
             )
             .then((res) => {
-                console.log(res);
-
                 this.setState({
                     currentReleaseId: res.data.data._key,
-                });
-
-                this.setState({
                     showReleaseSuccess: true,
                 });
             })

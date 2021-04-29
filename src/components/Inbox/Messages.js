@@ -16,16 +16,10 @@ class Messages extends Component {
         sendMessageModal: false,
     };
 
-    getAllOrgs = (userDetails) => {
-        if (!userDetails) {
-            return;
-        }
-        const { token } = userDetails;
+    getAllOrgs = () => {
 
         axios
-            .get(`${baseUrl}org/all`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
+            .get(`${baseUrl}org/all`)
             .then((response) => {
                 this.setState({ allOrgs: response.data });
             })
@@ -43,7 +37,7 @@ class Messages extends Component {
     componentDidMount() {
         this.props.getMessages();
         this.timer = setInterval(this.props.getMessages, 10000);
-        this.getAllOrgs(this.props.userDetail);
+        this.getAllOrgs();
         this.setState({allMessages: this.props.messages})
     }
 

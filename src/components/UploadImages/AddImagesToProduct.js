@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import { Spinner } from "react-bootstrap";
-import {Cancel, Check, Error, Publish} from "@material-ui/icons";
+import { Cancel, Check, Error, Publish } from "@material-ui/icons";
 import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import docs from '../../img/icons/docs.png';
 
 class AddImagesToProduct extends Component {
     state = {
@@ -220,12 +221,7 @@ class AddImagesToProduct extends Component {
                                                                     "file-uploader-thumbnail"
                                                                 }
                                                                 style={{
-                                                                    backgroundImage:
-                                                                        "url(" +
-                                                                        URL.createObjectURL(
-                                                                            item.file
-                                                                        ) +
-                                                                        ")",
+                                                                    backgroundImage: `url(${URL.createObjectURL(item.file)}), url(${docs})`
                                                                 }}>
                                                                 {item.status === 0 && (
                                                                     <Spinner

@@ -83,17 +83,6 @@ class ComponentsNavbar extends React.Component {
     }
 
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-        if(this.props.messages.length > prevProps.messages.length && (prevProps.messages.length > 0 && this.props.messages.length > 0)) {
-             this.props.dispatchMessageAlert(true);
-        }
-
-        if(this.props.notifications.length > prevProps.notifications.length && (prevProps.notifications.length > 0 && this.props.notifications.length > 0)) {
-            this.props.dispatchNotificationAlert(true);
-        }
-    }
-
 
     dispatchMessagesAndNotifications =  () => {
         this.props.getMessages()
@@ -269,8 +258,8 @@ class ComponentsNavbar extends React.Component {
                             <>
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
-                                        <Link to="/messages">
-                                            <Badge color="primary" badgeContent={this.props.messages.length} showZero max={999}>
+                                        <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
+                                            <Badge color={this.props.unreadMessages ? "secondary" : ""} variant="dot" >
                                                 <MenuOutline className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>
@@ -279,8 +268,8 @@ class ComponentsNavbar extends React.Component {
 
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
-                                        <Link to="/notifications">
-                                            <Badge color="primary" badgeContent={this.props.notifications.length} showZero max={999}>
+                                        <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
+                                            <Badge color={this.props.unreadNotifications ? "secondary" : ""} variant="dot" >
                                                 <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>
@@ -441,6 +430,8 @@ const mapStateToProps = (state) => {
         notifications: state.notifications,
         messageAlert: state.messageAlert,
         notificationAlert: state.notificationAlert,
+        unreadMessages: state.unreadMessages,
+        unreadNotifications: state.unreadNotifications,
     };
 };
 
@@ -458,6 +449,8 @@ const mapDispachToProps = (dispatch) => {
         getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
         dispatchMessageAlert: (data) => dispatch(actionCreator.messageAlert(data)),
         dispatchNotificationAlert: (data) => dispatch(actionCreator.notificationAlert(data)),
+        dispatchUnreadMessages: (data) => dispatch(actionCreator.unreadMessages(data)),
+        dispatchUnreadNotifications: (data) => dispatch(actionCreator.unreadNotifications(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);

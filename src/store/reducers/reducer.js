@@ -39,6 +39,8 @@ import {
     GET_NOTIFICATIONS,
     MESSAGE_ALERT,
     NOTIFICATION_ALERT,
+    UNREAD_MESSAGES,
+    UNREAD_NOTIFICATIONS,
 } from "../types";
 
 export const initialState = {
@@ -71,6 +73,8 @@ export const initialState = {
     notifications: [],
     messageAlert: false,
     notificationAlert: false,
+    unreadMessages: false,
+    unreadNotifications: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -352,6 +356,12 @@ const reducer = (state = initialState, action) => {
 
         case NOTIFICATION_ALERT:
             newState.notificationAlert = action.value;
+            break;
+        case UNREAD_MESSAGES:
+            newState.unreadMessages = action.value;
+            break;
+        case UNREAD_NOTIFICATIONS:
+            newState.unreadNotifications = action.value;
             break;
     }
 

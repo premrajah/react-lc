@@ -33,6 +33,8 @@ import {
     GET_NOTIFICATIONS,
     MESSAGE_ALERT,
     NOTIFICATION_ALERT,
+    UNREAD_MESSAGES,
+    UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
 } from "../types";
 
 export const enableCartLoading = () => {
@@ -398,6 +400,8 @@ export const logOut = (val) => {
 
         setTimeout(() => {
             dispatch(logOutSync(val));
+            sessionStorage.clear();
+            localStorage.clear();
         }, 2000);
     };
 };
@@ -418,10 +422,35 @@ export const getMessages = data => {
 export const getMessagesSync = (data) => dispatch => {
     axios.get(`${baseUrl}message`)
         .then(response => {
-            dispatch({type: GET_MESSAGES, value: response.data.data})
+            let data = response.data.data;
+
+            if(data.length > 0) {
+                let timeFromLocalStorage = sessionStorage.getItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP);
+
+                if(timeFromLocalStorage !== null) {
+
+                    if(data[0].message._ts_epoch_ms > timeFromLocalStorage) {
+                        dispatch(unreadMessages(true));
+                        dispatch(messageAlert(true));
+                        dispatch({type: GET_MESSAGES, value: response.data.data});
+                        sessionStorage.setItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP, data[0].message._ts_epoch_ms);
+                    } else {
+                        sessionStorage.setItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP, data[0].message._ts_epoch_ms);
+                    }
+
+                } else {
+                    sessionStorage.setItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP, data[0].message._ts_epoch_ms);
+                }
+
+                dispatch({type: GET_MESSAGES, value: response.data.data})
+
+            }
+
+        }, error => {
+            console.log('message (inside) ', error)
         })
         .catch(error => {
-            dispatch({type: GET_MESSAGES, value: []})
+            console.log('message (outside)', error)
         })
 }
 
@@ -434,10 +463,34 @@ export const getNotifications = data => {
 export const getNotificationsSync = data => dispatch => {
     axios.get(`${baseUrl}message/notif`)
         .then(response => {
-            dispatch({type: GET_NOTIFICATIONS, value: response.data.data})
+
+            let data = response.data.data;
+
+            if(data.length > 0) {
+                let timeFromLocalStorage = sessionStorage.getItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP);
+
+                if(timeFromLocalStorage !== null) {
+
+                    if(data[0].message._ts_epoch_ms > timeFromLocalStorage) {
+                        dispatch(unreadNotifications(true));
+                        dispatch(notificationAlert(true));
+                        dispatch({type: GET_NOTIFICATIONS, value: response.data.data})
+                        sessionStorage.setItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP, data[0].message._ts_epoch_ms);
+                    } else {
+                        sessionStorage.setItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP, data[0].message._ts_epoch_ms);
+                    }
+
+                } else {
+                    sessionStorage.setItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP, data[0].message._ts_epoch_ms);
+                }
+
+                dispatch({type: GET_NOTIFICATIONS, value: response.data.data})
+
+            }
+
         })
         .catch(error => {
-            dispatch({type: GET_NOTIFICATIONS, value: []})
+            console.log('notif error ', error)
         })
 }
 
@@ -447,6 +500,14 @@ export const messageAlert = val =>  {
 
 export const notificationAlert = val => {
     return {type: NOTIFICATION_ALERT, value: val}
+}
+
+export const unreadMessages = val => {
+    return {type: UNREAD_MESSAGES, value: val}
+}
+
+export const unreadNotifications = val => {
+    return { type: UNREAD_NOTIFICATIONS, value: val}
 }
 
 

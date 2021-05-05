@@ -432,7 +432,7 @@ export const getMessagesSync = (data) => dispatch => {
                     if(data[0].message._ts_epoch_ms > timeFromLocalStorage) {
                         dispatch(unreadMessages(true));
                         dispatch(messageAlert(true));
-                        dispatch({type: GET_MESSAGES, value: response.data.data});
+                        dispatch(getMessages());
                         sessionStorage.setItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP, data[0].message._ts_epoch_ms);
                     } else {
                         sessionStorage.setItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP, data[0].message._ts_epoch_ms);
@@ -474,7 +474,7 @@ export const getNotificationsSync = data => dispatch => {
                     if(data[0].message._ts_epoch_ms > timeFromLocalStorage) {
                         dispatch(unreadNotifications(true));
                         dispatch(notificationAlert(true));
-                        dispatch({type: GET_NOTIFICATIONS, value: response.data.data})
+                        dispatch(getNotifications())
                         sessionStorage.setItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP, data[0].message._ts_epoch_ms);
                     } else {
                         sessionStorage.setItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP, data[0].message._ts_epoch_ms);

@@ -1,23 +1,17 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import clsx from "clsx";
+import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import AppBar from "@material-ui/core/AppBar";
-import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
-import { baseUrl } from "../../Util/Constants";
-import axios from "axios/index";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
+import SearchBar from "../../components/SearchBar";
 
 class Products extends Component {
     constructor(props) {
@@ -30,6 +24,10 @@ class Products extends Component {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
+    handleSearch = (searchValue) => {
+        if(!searchValue) return;
+        console.log('SV ', searchValue)
+    }
 
     componentDidMount() {
 
@@ -45,7 +43,6 @@ class Products extends Component {
     }
 
     render() {
-        const classes = withStyles();
         const classesBottom = withStyles();
 
         return (
@@ -75,7 +72,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchField />
+                                <SearchBar onSearch={(searchValue) => this.handleSearch(searchValue)} />
                             </div>
                         </div>
                         <div className={"listing-row-border "}></div>
@@ -140,31 +137,6 @@ class Products extends Component {
     }
 }
 
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
-
-function SearchField() {
-    const classes = useStylesTabs();
-
-    return (
-        <TextField
-            variant="outlined"
-            className={clsx(classes.margin, classes.textField) + " full-width-field"}
-            id="input-with-icon-textfield"
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                    </InputAdornment>
-                ),
-            }}
-        />
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

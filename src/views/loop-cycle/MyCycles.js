@@ -101,8 +101,8 @@ class MyCycles extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.loops.map((item) => (
-                            <CycleItem item={item} />
+                        {this.state.loops.map((item, index) => (
+                            <CycleItem item={item} key={index} />
                         ))}
                     </div>
                 </div>

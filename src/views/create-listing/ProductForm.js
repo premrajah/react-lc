@@ -1244,8 +1244,8 @@ class ProductForm extends Component {
                                                     }}>
                                                     <option value={null}>Select</option>
 
-                                                    {this.props.siteList.map((item) => (
-                                                        <option value={item._key}>
+                                                    {this.props.siteList.map((item, index) => (
+                                                        <option key={index} value={item._key}>
                                                             {item.name + "(" + item.address + ")"}
                                                         </option>
                                                     ))}

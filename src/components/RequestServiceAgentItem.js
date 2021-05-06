@@ -322,10 +322,10 @@ class RequestServiceAgentItem extends Component {
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     {this.state.item.product.product.name}
                                 </p>
-                                <p style={{ margin: "0" }}>
+                                <div style={{ margin: "0" }}>
                                     <Org orgId={this.state.item.originator._id} /> →
                                     <Org orgId={this.state.item.responder._id} />
-                                </p>
+                                </div>
 
                                 <p style={{ fontSize: "16px" }} className=" mb-1 text-caps">
                                     {this.state.item.Release.stage}

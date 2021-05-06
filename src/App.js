@@ -64,7 +64,7 @@ import ApprovedReleases from "./views/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
 
-var hist = createBrowserHistory();
+let hist = createBrowserHistory();
 
 class App extends Component {
 
@@ -177,7 +177,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -185,4 +185,4 @@ const mapDispachToProps = (dispatch) => {
         logOut: (data) => dispatch(actionCreator.logOut(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

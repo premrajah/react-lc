@@ -353,13 +353,13 @@ class ItemDetail extends Component {
                                                     <div className="col-12 ">
                                                         <div className="row">
                                                             <div className="col-7">
-                                                                <p>
+                                                                <div>
                                                                     <Org
                                                                         orgId={
                                                                             this.state.item.org_id
                                                                         }
                                                                     />
-                                                                </p>
+                                                                </div>
                                                             </div>
 
                                                             <div className="col-5 green-text text-heading text-right">

@@ -119,13 +119,14 @@ class MyListings extends Component {
 
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.items.map((item) => (
+                        {this.state.items.map((item, index) => (
                             <>
                                 <ResourceItem
                                     triggerCallback={() => this.callBackResult()}
                                     history={this.props.history}
                                     link={"/" + item.listing._key}
                                     item={item}
+                                    key={index}
                                 />
                             </>
                         ))}
@@ -136,7 +137,7 @@ class MyListings extends Component {
 
                         <AppBar
                             position="fixed"
-                            color="#ffffff"
+                            style={{backgroundColor: "#ffffff"}}
                             className={classesBottom.appBar + "  custom-bottom-appbar"}>
                             <Toolbar>
                                 <div
@@ -146,7 +147,7 @@ class MyListings extends Component {
                                         <Link to={"/list-form"}>
                                             <p className={"green-text bottom-bar-text"}>
 
-                                                Create New Listing
+                                                <b>Create New Listing</b>
                                             </p>
                                         </Link>
                                     </div>

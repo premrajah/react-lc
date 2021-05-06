@@ -59,7 +59,7 @@ class Sidebar extends Component {
                     <div className="sidebar-container">
                         <div className="row mt-3">
                             <div className="col">
-                                <a href="javascript:void(0)" className="closesidemenu">
+                                <a href="#!" className="closesidemenu">
                                     <Close
                                         onClick={this.toggleMenu}
                                         className="white-text"
@@ -73,7 +73,7 @@ class Sidebar extends Component {
                             <div className="row mt-2">
                                 <div className="col">
                                     <div className="list-group main-menu">
-                                        <Link className="list-group-item list-group-item-action green-text">
+                                        <Link to="#!" className="list-group-item list-group-item-action green-text">
                                             Hello, {this.props.userDetail.firstName}
                                         </Link>
                                     </div>

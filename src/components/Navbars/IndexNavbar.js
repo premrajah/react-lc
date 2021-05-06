@@ -435,7 +435,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -453,4 +453,4 @@ const mapDispachToProps = (dispatch) => {
         dispatchUnreadNotifications: (data) => dispatch(actionCreator.unreadNotifications(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(ComponentsNavbar);

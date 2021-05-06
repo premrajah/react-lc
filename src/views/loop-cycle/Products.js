@@ -23,15 +23,6 @@ class Products extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            timerEnd: false,
-            count: 0,
-            nextIntervalFlag: false,
-            products: [],
-        };
-
-        this.getProducts = this.getProducts.bind(this);
-
         this.showProductSelection = this.showProductSelection.bind(this);
     }
 
@@ -39,31 +30,8 @@ class Products extends Component {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
-    getProducts() {
-        this.props.showLoading(true);
-        axios.get(baseUrl + "product").then(
-            (response) => {
-                this.props.showLoading(false);
-
-                var responseAll = response.data.data;
-
-                this.setState({
-                    products: responseAll,
-                });
-            },
-            (error) => {
-                // var status = error.response.status
-
-                this.props.showLoading(false);
-            }
-        );
-    }
-
-    interval;
-
 
     componentDidMount() {
-        // this.getProducts()
 
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
 
@@ -116,11 +84,11 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.productWithoutParentList.filter(
+                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
                                             (item) => item.product.is_listable === true
-                                        ).length
+                                        ).length : "... "
                                     }
-                                    Products
+                                    <span className="ml-1">Products</span>
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">
@@ -212,7 +180,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -225,4 +193,4 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

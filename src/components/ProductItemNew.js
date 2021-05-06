@@ -31,7 +31,6 @@ class ProductItemNew extends Component {
         };
 
         this.showPopUp = this.showPopUp.bind(this);
-        this.fetchImage = this.fetchImage.bind(this);
         this.getSites = this.getSites.bind(this);
         this.showSubmitSite = this.showSubmitSite.bind(this);
         this.showProductEdit = this.showProductEdit.bind(this);
@@ -75,13 +74,9 @@ class ProductItemNew extends Component {
     }
 
     getSites() {
-        axios.get(baseUrl + "site").then(
+        axios.get(`${baseUrl}site`).then(
             (response) => {
-                let responseAll = response.data.data;
-
-                this.setState({
-                    sites: responseAll,
-                });
+                this.setState({sites: response.data.data});
             }
         ).catch(error => {});
     }
@@ -174,36 +169,6 @@ class ProductItemNew extends Component {
         });
     }
 
-    componentDidMount() {
-        this.fetchImage();
-    }
-
-
-    fetchImage() {
-
-        if (this.props.item.artifacts) {
-            this.setState({
-                images: this.props.item.artifacts,
-            });
-        } else {
-            let url =
-                this.props.item && this.props.item.product
-                    ? baseUrl + "product/" + this.props.item.product._key + "/artifact"
-                    : baseUrl + "product/" + this.props.item._key + "/artifact";
-
-            axios
-                .get(url)
-                .then((response) => {
-                    let responseAll = response.data.data;
-
-                    this.setState({
-                        images: responseAll,
-                    });
-                })
-                .catch((error) => {});
-        }
-    }
-
     render() {
         return (
             <>
@@ -214,8 +179,8 @@ class ProductItemNew extends Component {
                             to={"/product/" + this.props.item.product._key}>
                             <div className="row no-gutters justify-content-center mt-4 mb-4 ">
                                 <div className={"col-2 "}>
-                                    {this.state.images.length > 0 ? (
-                                        <ImageOnlyThumbnail images={this.state.images} />
+                                    {this.props.item.artifacts.length > 0 ? (
+                                        <ImageOnlyThumbnail images={this.props.item.artifacts} />
                                     ) : (
                                         <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                     )}
@@ -350,7 +315,7 @@ class ProductItemNew extends Component {
                             className="btn-close close"
                             data-dismiss="modal"
                             aria-label="Close">
-                            <i className="fas fa-times"></i>
+                            <i className="fas fa-times" />
                         </button>
                     </div>
 
@@ -374,7 +339,7 @@ class ProductItemNew extends Component {
                                     className="btn-close close"
                                     data-dismiss="modal"
                                     aria-label="Close">
-                                    <i className="fas fa-times"></i>
+                                    <i className="fas fa-times" />
                                 </button>
                             </div>
                         </div>
@@ -414,7 +379,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -424,4 +389,4 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ProductItemNew);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductItemNew);

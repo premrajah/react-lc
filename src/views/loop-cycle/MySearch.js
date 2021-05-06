@@ -111,11 +111,12 @@ class MySearch extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.items.map((item) => (
+                        {this.state.items.map((item, index) => (
                             <SearchItem
                                 showMoreMenu={true}
                                 triggerCallback={() => this.callBackResult()}
                                 item={item}
+                                key={index}
                             />
                         ))}
                     </div>
@@ -125,7 +126,7 @@ class MySearch extends Component {
 
                         <AppBar
                             position="fixed"
-                            color="#ffffff"
+                            style={{backgroundColor: "#ffffff"}}
                             className={classesBottom.appBar + "  custom-bottom-appbar"}>
                             <Toolbar>
                                 <div
@@ -135,7 +136,7 @@ class MySearch extends Component {
                                         <Link to={"/search-form"}>
                                             <p className={"green-text bottom-bar-text"}>
 
-                                                Create New Search
+                                                <b>Create New Search</b>
                                             </p>
                                         </Link>
                                     </div>

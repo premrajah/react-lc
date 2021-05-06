@@ -56,7 +56,7 @@ class Notifications extends Component {
         ));
 
         return (
-            <Card variant="outlined" className="mb-2">
+            <Card key={index} variant="outlined" className="mb-2">
                 <CardContent>
                     <div className="row">
                         <div className="col-12">

@@ -225,13 +225,13 @@ class Approvals extends Component {
 
                                 <TabPanel value={this.state.value} index={1}>
                                     <div className={"container"}>
-                                        {this.state.registerRequests.map((item) => (
-                                            <>
+                                        {this.state.registerRequests.map((item, index) => (
+                                            <React.Fragment key={index}>
                                                 <RequestRegisterItem
                                                     history={this.props.history}
                                                     item={item}
                                                 />
-                                            </>
+                                            </React.Fragment>
                                         ))}
 
                                         {this.state.registerRequests.length === 0 && (
@@ -247,13 +247,13 @@ class Approvals extends Component {
                                 </TabPanel>
                                 <TabPanel value={this.state.value} index={2}>
                                     <div className={"container"}>
-                                        {this.state.serviceAgentRequests.map((item) => (
-                                            <>
+                                        {this.state.serviceAgentRequests.map((item, index) => (
+                                            <React.Fragment key={index}>
                                                 <RequestServiceAgentItem
                                                     history={this.props.history}
                                                     item={item}
                                                 />
-                                            </>
+                                            </React.Fragment>
                                         ))}
 
                                         {this.state.serviceAgentRequests.length === 0 && (
@@ -360,10 +360,10 @@ function NavTabs(props) {
 
             <TabPanel value={value} index={0}>
                 <div className={"container"}>
-                    {releases.map((item) => (
-                        <>
+                    {releases.map((item, index) => (
+                        <React.Fragment key={index}>
                             <RequestReleaseItem history={props.history} item={item} />
-                        </>
+                        </React.Fragment>
                     ))}
 
                     {releases.length === 0 && (
@@ -376,10 +376,10 @@ function NavTabs(props) {
 
             <TabPanel value={value} index={1}>
                 <div className={"container"}>
-                    {registers.map((item) => (
-                        <>
+                    {registers.map((item, index) => (
+                        <React.Fragment key={index}>
                             <RequestRegisterItem history={props.history} item={item} />
-                        </>
+                        </React.Fragment>
                     ))}
 
                     {releases.length === 0 && (
@@ -391,10 +391,10 @@ function NavTabs(props) {
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <div className={"container"}>
-                    {serviceAgents.map((item) => (
-                        <>
+                    {serviceAgents.map((item, index) => (
+                        <React.Fragment key={index}>
                             <RequestServiceAgentItem history={props.history} item={item} />
-                        </>
+                        </React.Fragment>
                     ))}
 
                     {serviceAgents.length === 0 && (
@@ -421,7 +421,7 @@ function TabPanel(props) {
             {...other}>
             {value === index && (
                 <Box p={3}>
-                    <Typography>{children}</Typography>
+                    <Typography component="div">{children}</Typography>
                 </Box>
             )}
         </div>

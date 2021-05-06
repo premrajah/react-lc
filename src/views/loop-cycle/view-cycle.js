@@ -712,13 +712,13 @@ class ViewCycle extends Component {
                                                     <div className="row">
                                                         <div className="col-7">
                                                             {/*<p> <span className={"green-text"}>{this.state.item.sender.name}</span></p>*/}
-                                                            <p>
+                                                            <div>
                                                                 <Org
                                                                     orgId={
                                                                         this.state.item.sender._id
                                                                     }
                                                                 />
-                                                            </p>
+                                                            </div>
                                                         </div>
 
                                                         <div className="col-3 green-text text-heading text-right">

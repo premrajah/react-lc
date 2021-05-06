@@ -201,27 +201,17 @@ export const loadProductsSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentSync = (data) => (dispatch) => {
     axios
-        .get(baseUrl + "product/no-parent", {
-            headers: {
-                Authorization: "Bearer " + data,
-            },
-        })
+        .get(`${baseUrl}product/no-parent/expand`)
         .then(
             (response) => {
-                let responseAll = response.data.data;
-
-                dispatch({ type: PRODUCT_NPARENT_LIST, value: responseAll });
-                // dispatch()
+                dispatch({ type: PRODUCT_NPARENT_LIST, value: response.data.data });
             },
             (error) => {
-                // let status = error.response.status
-
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: [] });
             }
         )
         .catch(error => {});
 
-    // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
 // export const loadProductsSync2 = (data) => dispatch => {

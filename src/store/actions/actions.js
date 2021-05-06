@@ -204,6 +204,9 @@ export const loadProductsWithoutParentSync = (data) => (dispatch) => {
         .get(`${baseUrl}product/no-parent/expand`)
         .then(
             (response) => {
+                if(response.status === 200) {
+                    dispatch(loading(false));
+                }
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: response.data.data });
             },
             (error) => {

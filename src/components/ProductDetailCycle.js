@@ -423,15 +423,15 @@ class ProductDetailCycle extends Component {
     }
 
     getQrCode() {
-        this.setState({
-            productQrCode:
-                baseUrl +
-                "product/" +
-                this.props.item.product._key +
-                "/code?u=" +
-                frontEndUrl +
-                "p",
-        });
+        if(!this.props.item.product._key) return;
+
+        axios.get(`${baseUrl}product/${this.props.item.product._key}/code-artifact?u=${frontEndUrl}p`)
+            .then(response => {
+                this.setState({productQrCode: response.data.data})
+            })
+            .catch(error => {
+
+            })
     }
 
     getListing() {
@@ -603,13 +603,13 @@ class ProductDetailCycle extends Component {
                                 <div className="row justify-content-center ">
                                     <div className="col-12 border-box">
                                         <div className="d-flex flex-column justify-content-center align-items-center">
-                                            <img
+                                            {this.state.productQrCode && (<img
                                                 className=""
-                                                src={this.state.productQrCode}
+                                                src={this.state.productQrCode.blob_url}
                                                 alt={this.props.item.product.name}
                                                 title={this.props.item.product.name}
                                                 style={{ width: "90%" }}
-                                            />
+                                            />)}
 
                                             <div className="d-flex justify-content-center w-100">
                                                 {this.props.hideRegister && (
@@ -625,7 +625,7 @@ class ProductDetailCycle extends Component {
                                                             onClick={() =>
                                                                 this.handlePrintPdf(
                                                                     this.props.item.product,
-                                                                    this.state.productQrCode,
+                                                                    this.state.productQrCode.blob_url,
                                                                     QrCodeBg,
                                                                     LoopcycleLogo
                                                                 )

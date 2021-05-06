@@ -95,7 +95,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {};
 };
-export default connect(mapStateToProps, mapDispachToProps)(HeaderDark);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderDark);

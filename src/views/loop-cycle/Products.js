@@ -155,10 +155,10 @@ class Products extends Component {
                                 <div
                                     className="row  justify-content-center search-container "
                                     style={{ margin: "auto" }}>
-                                    <div className="col-auto">
+                                    <div className="col-auto" style={{cursor: 'pointer' }}>
                                         <a onClick={this.showProductSelection}>
                                             <p className={"green-text bottom-bar-text"}>
-                                                Create New Product
+                                                <b>Create New Product</b>
                                             </p>
                                         </a>
                                     </div>

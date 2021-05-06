@@ -618,16 +618,18 @@ class ProductDetail extends Component {
     }
 
     getQrCode() {
-        // this.interval = setInterval(() => {
-        //     this.setState({
-        //         productQrCode: null,
-        //     });
+        if(!this.state.item.product._key) return;
 
-        this.setState({
-            productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`,
-        });
-        // }, 2000);
+        axios.get(`${baseUrl}product/${this.state.item.product._key}/code-artifact?u=${frontEndUrl}p`)
+            .then(response => {
+                this.setState({productQrCode: response.data.data})
+            })
+            .catch(error => {
+
+            })
     }
+
+
 
     getListing() {
         // var siteKey = (this.props.item.site_id).replace("Site/","")
@@ -876,7 +878,7 @@ class ProductDetail extends Component {
                                                     {this.state.productQrCode && (
                                                         <img
                                                             className=""
-                                                            src={this.state.productQrCode}
+                                                            src={this.state.productQrCode.blob_url}
                                                             alt={this.state.item.product.name}
                                                             title={this.state.item.product.name}
                                                             style={{ width: "90%" }}
@@ -899,7 +901,7 @@ class ProductDetail extends Component {
                                                                         this.handlePrintPdf(
                                                                             this.state.item.product,
                                                                             this.state
-                                                                                .productQrCode,
+                                                                                .productQrCode.blob_url,
                                                                             QrCodeBg,
                                                                             LoopcycleLogo
                                                                         )

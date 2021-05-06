@@ -259,7 +259,7 @@ class ComponentsNavbar extends React.Component {
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
                                         <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
-                                            <Badge color={this.props.unreadMessages ? "secondary" : ""} variant="dot" >
+                                            <Badge color={this.props.unreadMessages ? "secondary" : "default"} variant="dot" >
                                                 <MenuOutline className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>
@@ -269,7 +269,7 @@ class ComponentsNavbar extends React.Component {
                                 <NavItem>
                                     <button className="btn btn-link text-dark btn-inbox">
                                         <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
-                                            <Badge color={this.props.unreadNotifications ? "secondary" : ""} variant="dot" >
+                                            <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
                                                 <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>

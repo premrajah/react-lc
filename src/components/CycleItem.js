@@ -221,10 +221,10 @@ class CycleItem extends Component {
                         </>
                     </Link>
 
-                    <p style={{ fontSize: "16px" }} className=" mb-1">
+                    <div style={{ fontSize: "16px" }} className=" mb-1">
                         <Org orgId={this.props.item.sender._id} /> →
                         <Org orgId={this.props.item.receiver._id} />
-                    </p>
+                    </div>
 
                     {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}
                 </div>

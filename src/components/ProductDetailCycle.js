@@ -695,9 +695,9 @@ class ProductDetailCycle extends Component {
                             <div className="col-12">
                                 <div className="row">
                                     <div className="col-7">
-                                        <p>
+                                        <div>
                                             <Org orgId={this.props.item.org._id} />
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -851,11 +851,11 @@ class ProductDetailCycle extends Component {
                                                     className="text-mute text-bold text-blue mb-1">
                                                     Service Agent
                                                 </p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">
+                                                <div style={{ fontSize: "18px" }} className="  mb-1">
                                                     <Org
                                                         orgId={this.props.item.service_agent._id}
                                                     />
-                                                </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </Tab>

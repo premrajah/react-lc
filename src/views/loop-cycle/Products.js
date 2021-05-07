@@ -14,8 +14,15 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 
 class Products extends Component {
+
+
     constructor(props) {
         super(props);
+        this.state = {
+            searchValue: '',
+            filterValue: '',
+            filteredContent: props.productWithoutParentList.length > 0 ? props.productWithoutParentList : [],
+        }
 
         this.showProductSelection = this.showProductSelection.bind(this);
     }
@@ -25,17 +32,20 @@ class Products extends Component {
     }
 
     handleSearch = (searchValue) => {
-        if(!searchValue) return;
-        console.log('SV ', searchValue)
+        this.setState({searchValue: searchValue});
+    }
+
+    handleSearchFilter = (filterValue) => {
+        this.setState({filterValue: filterValue});
     }
 
     componentDidMount() {
 
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
 
-        this.interval = setInterval(() => {
-            this.props.loadProductsWithoutParent(this.props.userDetail.token);
-        }, 15000);
+        // this.interval = setInterval(() => {
+        //     this.props.loadProductsWithoutParent(this.props.userDetail.token);
+        // }, 15000);
     }
 
     componentWillUnmount() {
@@ -44,6 +54,8 @@ class Products extends Component {
 
     render() {
         const classesBottom = withStyles();
+        const filterArray = ["name", "description", "condition", "purpose", "category"];
+
 
         return (
             <div>
@@ -72,7 +84,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchBar onSearch={(searchValue) => this.handleSearch(searchValue)} />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)} /* onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={filterArray}*/ />
                             </div>
                         </div>
                         <div className={"listing-row-border "}></div>
@@ -81,7 +93,7 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
+                                        this.state.filteredContent.length > 0 ? this.state.filteredContent.filter(
                                             (item) => item.product.is_listable === true
                                         ).length : "... "
                                     }
@@ -94,7 +106,9 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.map((item, index) => (
+                        {this.state.filteredContent.length > 0 ? this.state.filteredContent.filter((filterV) => {
+                            return filterV.product.name.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
+                        }).map((item, index) => (
                             <div key={index}>
                                 <ProductItem
                                     goToLink={true}
@@ -106,7 +120,7 @@ class Products extends Component {
                                     hideMore
                                 />
                             </div>
-                        ))}
+                        )): null}
                     </div>
 
                     <React.Fragment>
@@ -114,7 +128,7 @@ class Products extends Component {
 
                         <AppBar
                             position="fixed"
-                            color="#ffffff"
+                            style={{backgroundColor: "#ffffff"}}
                             className={classesBottom.appBar + "  custom-bottom-appbar"}>
                             <Toolbar>
                                 <div

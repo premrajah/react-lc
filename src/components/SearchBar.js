@@ -46,8 +46,8 @@ class SearchBar extends Component {
                             <InputLabel id="filterLabel">Select Filter</InputLabel>
                             <Select labelId="filterLabel" label="Select Filter" value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <MenuItem value="">None</MenuItem>
-                                {dropDownValues.length > 0 ? dropDownValues.map(drop => {
-                                    return <MenuItem value={drop}>{drop}</MenuItem>
+                                {dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
+                                    return <MenuItem key={index} value={drop}>{drop}</MenuItem>
                                 }) : null}
                             </Select>
                         </FormControl>

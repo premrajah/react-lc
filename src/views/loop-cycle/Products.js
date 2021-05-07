@@ -20,7 +20,7 @@ class Products extends Component {
         super(props);
         this.state = {
             searchValue: '',
-            filterValue: '',
+            filterValue: 'name',
             filteredContent: props.productWithoutParentList.length > 0 ? props.productWithoutParentList : [],
         }
 
@@ -54,7 +54,7 @@ class Products extends Component {
 
     render() {
         const classesBottom = withStyles();
-        const filterArray = ["name", "description", "condition", "purpose", "category"];
+        const filterArray = ["name", "description", "purpose", "category"];
 
 
         return (
@@ -84,7 +84,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)} /* onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={filterArray}*/ />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={filterArray} />
                             </div>
                         </div>
                         <div className={"listing-row-border "}></div>
@@ -107,7 +107,7 @@ class Products extends Component {
                         <div className={"listing-row-border mb-3"}></div>
 
                         {this.state.filteredContent.length > 0 ? this.state.filteredContent.filter((filterV) => {
-                            return filterV.product.name.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
+                            return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         }).map((item, index) => (
                             <div key={index}>
                                 <ProductItem

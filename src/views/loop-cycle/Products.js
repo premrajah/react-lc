@@ -43,9 +43,9 @@ class Products extends Component {
 
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
 
-        // this.interval = setInterval(() => {
-        //     this.props.loadProductsWithoutParent(this.props.userDetail.token);
-        // }, 15000);
+        this.interval = setInterval(() => {
+            this.props.loadProductsWithoutParent(this.props.userDetail.token);
+        }, 15000);
     }
 
     componentWillUnmount() {

@@ -12,6 +12,7 @@ import {withStyles} from "@material-ui/core/styles/index";
 import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
+import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 
 class Products extends Component {
 
@@ -57,7 +58,7 @@ class Products extends Component {
 
     render() {
         const classesBottom = withStyles();
-        const filterArray = ["name", "description", "purpose", "category"];
+
 
 
         return (
@@ -87,7 +88,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={filterArray} />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
                             </div>
                         </div>
                         <div className={"listing-row-border "}></div>

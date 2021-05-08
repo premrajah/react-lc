@@ -34,3 +34,5 @@ console.log("frontEndUrl" + frontEndUrl);
 
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+export const PRODUCTS_FILTER_VALUES = ["name", "description", "purpose", "category"];

@@ -440,10 +440,10 @@ export const getMessagesSync = (data) => dispatch => {
             }
 
         }, error => {
-            console.log('message (inside) ', error)
+
         })
         .catch(error => {
-            console.log('message (outside)', error)
+
         })
 }
 
@@ -483,7 +483,7 @@ export const getNotificationsSync = data => dispatch => {
 
         })
         .catch(error => {
-            console.log('notif error ', error)
+
         })
 }
 

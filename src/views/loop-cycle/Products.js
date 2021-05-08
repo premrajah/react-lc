@@ -21,7 +21,6 @@ class Products extends Component {
         this.state = {
             searchValue: '',
             filterValue: 'name',
-            filteredContent: props.productWithoutParentList.length > 0 ? props.productWithoutParentList : [],
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -41,12 +40,16 @@ class Products extends Component {
 
     componentDidMount() {
 
-        this.props.loadProductsWithoutParent(this.props.userDetail.token);
+        this.props.dispatchLoadProductsWithoutParent();
 
         this.interval = setInterval(() => {
-            this.props.loadProductsWithoutParent(this.props.userDetail.token);
+            this.props.dispatchLoadProductsWithoutParent();
         }, 15000);
+
+
     }
+
+
 
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -93,7 +96,7 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.state.filteredContent.length > 0 ? this.state.filteredContent.filter(
+                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
                                             (item) => item.product.is_listable === true
                                         ).length : "... "
                                     }
@@ -106,7 +109,7 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.filteredContent.length > 0 ? this.state.filteredContent.filter((filterV) => {
+                        {this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter((filterV) => {
                             return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         }).map((item, index) => (
                             <div key={index}>
@@ -175,7 +178,7 @@ const mapDispatchToProps = (dispatch) => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
-        loadProductsWithoutParent: (data) =>
+        dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
     };
 };

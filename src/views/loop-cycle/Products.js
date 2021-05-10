@@ -13,6 +13,9 @@ import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import RemoveIcon from '@material-ui/icons/Remove';
+import {CSVLink} from "react-csv";
+
 
 class Products extends Component {
 
@@ -22,6 +25,7 @@ class Products extends Component {
         this.state = {
             searchValue: '',
             filterValue: 'name',
+            selectedProducts: [],
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -50,6 +54,45 @@ class Products extends Component {
 
     }
 
+    handleAddToProductsExportList = (returnedItem) => {
+        // check if already exists
+        let filteredProduct = this.state.selectedProducts.filter(product => product.product._key !== returnedItem.product._key);
+        this.setState({selectedProducts: [...filteredProduct, returnedItem]});
+    }
+
+    removeFromSelectedProducts = (i) => {
+        this.setState(state => {
+            const selectedProducts = state.selectedProducts.filter((product, j) => i !== j);
+            return {
+                selectedProducts,
+            }
+        })
+    }
+
+    handleSaveCSV = () => {
+
+        const csvData = [];
+        this.state.selectedProducts.forEach(item => {
+            const {product, site, service_agent, qr_artifact} = item;
+            return csvData.push([
+                product.name,
+                product.description,
+                product.category,
+                product.condition,
+                product.purpose,
+                product.units,
+                product.volume,
+                site.name,
+                site.address,
+                service_agent.name,
+                qr_artifact.name,
+                qr_artifact.blob_url
+            ])
+        })
+
+        return csvData;
+    }
+
 
 
     componentWillUnmount() {
@@ -58,7 +101,7 @@ class Products extends Component {
 
     render() {
         const classesBottom = withStyles();
-
+        const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
 
 
         return (
@@ -66,6 +109,28 @@ class Products extends Component {
                 <Sidebar />
                 <div className="wrapper">
                     <HeaderDark />
+
+                    {this.state.selectedProducts.length > 0 ?  <div className="sticky-top" style={{top: '68px'}}>
+                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: '208px', overflow: 'scroll',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
+                            <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
+                                <div className="col d-flex justify-content-end">
+                                    <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>
+                                    <button className="btn btn-sm btn-warning ml-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
+                                </div>
+                            </div>
+                            <div className="row mb-1">
+                                <div className="col blue-text">Selected Products</div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col">
+                                    {this.state.selectedProducts.map((product, index) => (
+                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.product.name}</div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div> : null }
 
                     <div className="container  pb-4 pt-4">
                         <PageHeader
@@ -122,6 +187,7 @@ class Products extends Component {
                                     duplicate={false}
                                     item={item}
                                     hideMore
+                                    listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
                                 />
                             </div>
                         )): null}

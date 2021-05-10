@@ -1680,7 +1680,7 @@ class SearchForm extends Component {
                                         <div className="col-12 mb-2">
                                             <div
                                                 className={"custom-label text-bold text-blue mb-1"}>
-                                                What resources do you need to make this product?
+                                                Which category is your product located within?
                                             </div>
                                             <FormControl
                                                 variant="outlined"

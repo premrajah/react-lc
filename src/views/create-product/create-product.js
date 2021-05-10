@@ -246,7 +246,7 @@ class CreateProduct extends Component {
 
                                 <div className="col-12 mb-3">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
-                                        What resources do you need to make this product?
+                                        Which category is your product located within?
                                     </div>
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>

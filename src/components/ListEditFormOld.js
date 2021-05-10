@@ -1201,7 +1201,7 @@ class ListEditFormOld extends Component {
                                                 </Select>
 
                                                 <FormHelperText>
-                                                    What resources do you need to make this product?
+                                                    Which category is your product located within?
                                                 </FormHelperText>
                                             </FormControl>
                                             {this.state.errors["category"] && (

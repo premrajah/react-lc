@@ -166,7 +166,7 @@ class Products extends Component {
                                             (item) => item.product.is_listable === true
                                         ).length : "... "
                                     }
-                                    <span className="ml-1">Products</span>
+                                    <span className="ml-1">Listable Products</span>
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">

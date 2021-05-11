@@ -190,7 +190,7 @@ class Products extends Component {
                                     listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
                                 />
                             </div>
-                        )): null}
+                        )): <div>Loading products please wait ...</div>}
                     </div>
 
                     <React.Fragment>

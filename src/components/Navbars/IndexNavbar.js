@@ -8,6 +8,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import LogoNew from "../../img/logo-cropped.png";
 import LogoText from "../../img/logo-text.png";
 import HeaderLogo from '../../img/loopcycle_header_logo_321x52.png';
+import HeaderLogoSvg from '../../img/loopcycle_header_logo.svg';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
@@ -163,7 +164,7 @@ class ComponentsNavbar extends React.Component {
                                             <img className="header-logo mobile-only" src={LogoNew} alt="" />
                                             <img
                                                 className={"text-logo-home web-only"}
-                                                src={HeaderLogo}
+                                                src={HeaderLogoSvg}
                                                 alt=""
                                             />
                                         </>

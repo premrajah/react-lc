@@ -53,10 +53,11 @@ class Notifications extends Component {
 
         const { message, orgs } = item;
         let text;
-
-        const flags = orgs.length > 0 && orgs.filter(org => org.read_flag).map(org => org.read_flag).map(f => f.flag)[0];
-        const readTime = orgs.length > 0 && orgs.filter(org => org.read_flag).map(org => org.read_flag)[0] /*.map(t => t.ts_epoch_ms)[0];*/
+        
+        const flags = orgs.length > 0 && orgs.filter(org => org.read_flag).filter(org => org.org._id === this.props.userDetail.orgId).map(org => org.read_flag).map(f => f.flag)[0];
+        const readTime = orgs.length > 0 && orgs.filter(org => org.read_flag).filter(org => org.org._id === this.props.userDetail.orgId).map(org => org.read_flag)[0];
         const messageId = item.message._id;
+
 
 
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (

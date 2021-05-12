@@ -18,6 +18,7 @@ const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
 const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
 const MATCH_REGEX = /Match\/([\w\d]+)/g;
 const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
+const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const BRACKETS_REGEX = /[(\[)(\])]/g;
 
 class Notifications extends Component {
@@ -33,7 +34,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
             <Link key={i + Math.random() * 101} to={`product/${match}`}>
-                <u className="blue-text">Product</u>
+                <u className="blue-text">Link</u>
             </Link>
         ));
 
@@ -51,7 +52,13 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
             <Link key={i + Math.random() * 104} to="/approve">
-                <u className="blue-text">Approvals</u>
+                <u className="blue-text">To Approvals Page</u>
+            </Link>
+        ));
+
+        text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
+            <Link key={i + Math.random() * 105} to="/approve">
+                <u className="blue-text">To Approvals Page</u>
             </Link>
         ));
 

@@ -7,6 +7,7 @@ import MenuOutline from "@material-ui/icons/MailOutline";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import LogoNew from "../../img/logo-cropped.png";
 import LogoText from "../../img/logo-text.png";
+import HeaderLogo from '../../img/loopcycle_header_logo_321x52.png';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
@@ -159,10 +160,10 @@ class ComponentsNavbar extends React.Component {
                                 <div className="col-auto">
                                     <Link className={"logo-link"} to={"/"}>
                                         <>
-                                            <img className="header-logo" src={LogoNew} alt="" />
+                                            <img className="header-logo mobile-only" src={LogoNew} alt="" />
                                             <img
                                                 className={"text-logo-home web-only"}
-                                                src={LogoText}
+                                                src={HeaderLogo}
                                                 alt=""
                                             />
                                         </>

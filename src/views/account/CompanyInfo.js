@@ -1,16 +1,15 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
-import {Spinner} from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
-import {Alert} from 'react-bootstrap';
-
+import { Alert } from "react-bootstrap";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -30,9 +29,8 @@ class CompanyInfo extends Component {
             base64Data: null,
             uploadedImgName: "",
             uploadedImgType: "",
-            companyNumber:null,
-            submitSuccess:false
-
+            companyNumber: null,
+            submitSuccess: false,
         };
 
         this.companyInfo = this.companyInfo.bind(this);
@@ -46,79 +44,54 @@ class CompanyInfo extends Component {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    if(response.data.data.length > 0) {
-                        this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
-                        this.props.setOrgImage(response.data.data[response.data.data.length -1].blob_url)
-
+                    if (response.data.data.length > 0) {
+                        this.setState({
+                            orgImage: `${
+                                response.data.data[response.data.data.length - 1].blob_url
+                            }&v=${Date.now()}`,
+                        });
+                        this.props.setOrgImage(
+                            response.data.data[response.data.data.length - 1].blob_url
+                        );
                     }
-
                 }
             })
-            .catch((error) => {
-
-            });
+            .catch((error) => {});
     };
 
-
-    companyDetails=(detail)=>{
-
-
-
+    companyDetails = (detail) => {
         this.setState({
+            companyNumber: detail.company,
+        });
+    };
 
-            companyNumber:detail.company
-        })
-
-
-
-
-    }
-
-
-    submitCompanyNumber=()=>{
-
-
+    submitCompanyNumber = () => {
         this.setState({
             loading: true,
         });
 
-        axios.post(baseUrl + "org/company",{
-
-            company_number:this.state.companyNumber
-        })
-            .then((response) => {
-
-
-
+        axios
+            .post(baseUrl + "org/company", {
+                company_number: this.state.companyNumber,
+            })
+            .then(
+                (response) => {
                     this.setState({
                         loading: false,
-                        submitSuccess:true
-
+                        submitSuccess: true,
                     });
 
                     var responseAll = response.data.data;
 
-
-                    this.companyInfo()
-
-
+                    this.companyInfo();
                 },
                 (error) => {
-
-
-
                     this.setState({
                         loading: false,
                     });
-
                 }
             );
-
-
-
-
-    }
-
+    };
 
     companyInfo() {
         axios
@@ -130,7 +103,6 @@ class CompanyInfo extends Component {
             .then((response) => {
                 var responseOrg = response.data;
 
-
                 this.setState({
                     org: responseOrg.data,
                     companyName: responseOrg.data.name,
@@ -139,9 +111,7 @@ class CompanyInfo extends Component {
 
                 this.getArtifactForOrg();
             })
-            .catch((error) => {
-
-            });
+            .catch((error) => {});
     }
 
     handleValidationSite() {
@@ -234,18 +204,14 @@ class CompanyInfo extends Component {
                 .then((res) => {
                     this.setState({
                         loading: false,
-                        submitSuccess:true
-
+                        submitSuccess: true,
                     });
                 })
                 .catch((error) => {
-
                     this.setState({
                         loading: false,
                     });
                 });
-
-
 
             if (this.state.base64Data) {
                 const imageData = {
@@ -277,13 +243,8 @@ class CompanyInfo extends Component {
                                 })
                                 .then((resposne) => {
                                     this.companyInfo(); // get company info
-
-
-
                                 })
-                                .catch((error) => {
-
-                                });
+                                .catch((error) => {});
 
                             this.setState({
                                 loading: false,
@@ -291,7 +252,6 @@ class CompanyInfo extends Component {
                         }
                     })
                     .catch((error) => {
-
                         this.setState({ loading: false });
                     });
             }
@@ -299,8 +259,7 @@ class CompanyInfo extends Component {
     };
 
     componentDidMount() {
-
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
         this.companyInfo();
     }
 
@@ -315,16 +274,17 @@ class CompanyInfo extends Component {
                         <div className="row mb-3 justify-content-center ">
                             <div className="col-12  justify-content-center">
                                 <p className={"blue-text"}>
-                                    <Link to={"/account"}>Account </Link> > Company Info{" "}
+                                    <Link to={"/account"}>Account </Link> > Company Info
                                 </p>
                                 <h4 className={"text-blue text-bold"}>Company Info</h4>
                             </div>
                         </div>
 
-
-                        {this.state.submitSuccess &&  <Alert key={"alert"} variant={"success"}>
-                            {"Company information updated successfully"}
-                        </Alert>}
+                        {this.state.submitSuccess && (
+                            <Alert key={"alert"} variant={"success"}>
+                                {"Company information updated successfully"}
+                            </Alert>
+                        )}
 
                         <div className="row">
                             <div className="col-3">
@@ -338,34 +298,51 @@ class CompanyInfo extends Component {
                             </div>
 
                             <div className="col-9">
-                                {this.state.org && this.state.org.company &&
+                                {this.state.org && this.state.org.company && (
+                                    <>
+                                        <h5 className={"text-bold"}>
+                                            Company Registration Details
+                                        </h5>
+                                        <div>
+                                            <div className="text-bold text-blue">
+                                                <span className="mr-1">Name:</span>
+                                                <span>{this.state.org.company.company_name}</span>
+                                            </div>
 
-                                <>
-                                    <h5 className={"text-bold"}>Company Registration Details</h5>
-                                    <p className={""}>
-                                        <span className={"text-bold text-blue"}>Name: {this.state.org.company.company_name}</span>
-                                        <br/>
-                                        <span className={""}>Company Number: {this.state.org.company.company_number}</span>
-
-                                        <br/>
-                                        <span className={""}>Registered Address: {this.state.org.company.registered_office_address.address_line_1},
-                                            {this.state.org.company.registered_office_address.address_line_2}</span>
-
-                                        <br/>
-                                        <span className={""}>Locality: {this.state.org.company.registered_office_address.locality},
-                                            {this.state.org.company.registered_office_address.country}</span>
-
-                                    </p>
+                                            <div>
+                                                <span className="mr-1">Company Number:</span>
+                                                <span>{this.state.org.company.company_number}</span>
+                                            </div>
 
 
+                                            <div>
+                                                <span className="mr-1">Registered Address:</span>
+                                                <span className="mr-1">{
+                                                    this.state.org.company.registered_office_address
+                                                        .address_line_1
+                                                },</span>
+                                                <span>{
+                                                    this.state.org.company.registered_office_address
+                                                        .address_line_2
+                                                }</span>
+                                            </div>
 
-                                </>
 
-                                }
-
-
-
-                                    </div>
+                                            <div>
+                                                <span className="mr-1">Locality:</span>
+                                                <span className="mr-1">{
+                                                    this.state.org.company.registered_office_address
+                                                        .locality
+                                                },</span>
+                                                <span>{
+                                                    this.state.org.company.registered_office_address
+                                                        .country
+                                                }</span>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
 
                         {this.state.org && (
@@ -430,9 +407,6 @@ class CompanyInfo extends Component {
                                                 />
                                             </div>
 
-
-
-
                                             <div className="col-12 mt-4">
                                                 <button
                                                     type={"submit"}
@@ -458,55 +432,41 @@ class CompanyInfo extends Component {
                             </div>
                         )}
 
-
-
-
-                        {this.state.org && !this.state.org.company &&
-
-                        <>
-                        <div className="row mb-5 pb-5">
-
-                            <div className="col-12 mt-4">
-
-
-
-                                <AutocompleteCustom
-
-                                    companies={true}
-                                    suggestions={this.state.orgNames}
-                                    selectedCompany={(action) => this.companyDetails(action)}
-                                />
-                            </div>
-
-
-                            <div className="col-12 mt-4">
-                                <button
-                                    onClick={this.submitCompanyNumber}
-
-
-                                    className={
-                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                    }>
-                                    {this.state.loading && (
-                                        <Spinner
-                                            as="span"
-                                            animation="border"
-                                            size="sm"
-                                            role="status"
-                                            aria-hidden="true"
+                        {this.state.org && !this.state.org.company && (
+                            <>
+                                <div className="row mb-5 pb-5">
+                                    <div className="col-12 mt-4">
+                                        <AutocompleteCustom
+                                            companies={true}
+                                            suggestions={this.state.orgNames}
+                                            selectedCompany={(action) =>
+                                                this.companyDetails(action)
+                                            }
                                         />
-                                    )}
+                                    </div>
 
-                                    {this.state.loading ? "Wait.." : "Submit Company"}
-                                </button>
-                            </div>
-                        </div>
+                                    <div className="col-12 mt-4">
+                                        <button
+                                            onClick={this.submitCompanyNumber}
+                                            className={
+                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                            }>
+                                            {this.state.loading && (
+                                                <Spinner
+                                                    as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
 
-                        </>}
-
-
-
-
+                                            {this.state.loading ? "Wait.." : "Submit Company"}
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -519,16 +479,12 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
         orgImage: state.orgImage,
-
     };
 };
 
 const mapDispachToProps = (dispatch) => {
     return {
-
-
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
-
     };
 };
 

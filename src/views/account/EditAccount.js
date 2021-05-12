@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import {Alert, Spinner} from "react-bootstrap";
-import {TextField, Typography} from "@material-ui/core";
+import { Alert, Spinner } from "react-bootstrap";
+import { TextField, Typography } from "@material-ui/core";
 
 class EditAccount extends Component {
     constructor(props) {
@@ -172,7 +172,7 @@ class EditAccount extends Component {
                         <div className="row mb-3 justify-content-center ">
                             <div className="col-12  justify-content-center">
                                 <p className={"blue-text"}>
-                                    <Link to={"/account"}>Account </Link> > Personal Info{" "}
+                                    <Link to={"/account"}>Account </Link> > Personal Info
                                 </p>
                                 <h4 className={"text-blue text-bold"}>Personal Info</h4>
                             </div>

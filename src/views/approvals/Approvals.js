@@ -1,242 +1,134 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useState} from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
 import {makeStyles} from "@material-ui/core/styles/index";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import SearchGray from '@material-ui/icons/Search';
-import clsx from 'clsx';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import PropTypes from "prop-types";
+import AppBar from "@material-ui/core/AppBar";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import RequestReleaseItem from '../../components/RequestReleaseItem'
-import RequestRegisterItem from '../../components/RequestRegisterItem'
-import RequestServiceAgentItem from '../../components/RequestServiceAgentItem'
+import RequestReleaseItem from "../../components/RequestReleaseItem";
+import RequestRegisterItem from "../../components/RequestRegisterItem";
+import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
+import {Link} from "react-router-dom";
 
 
 class Approvals extends Component {
-
-
-
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
             releaseRequests: [],
             registerRequests: [],
             serviceAgentRequests: [],
-            value:0,
-            loading:false
-        }
+            value: 0,
+            loading: false,
+        };
 
-
-        this.fetchReleaseRequest = this.fetchReleaseRequest.bind(this)
-        this.fetchServiceAgentRequest = this.fetchServiceAgentRequest.bind(this)
-        this.fetchRegisterRequest = this.fetchRegisterRequest.bind(this)
-
-
-
+        this.fetchReleaseRequest = this.fetchReleaseRequest.bind(this);
+        this.fetchServiceAgentRequest = this.fetchServiceAgentRequest.bind(this);
+        this.fetchRegisterRequest = this.fetchRegisterRequest.bind(this);
     }
 
-
-
-    handleChange = (event, newValue)=>{
-
-
+    handleChange = (event, newValue) => {
         this.setState({
-            loading:true
-        })
+            loading: true,
+            value: newValue,
+        });
 
-        this.setState({
-
-            value:newValue
-        })
-        
-        if (newValue===0){
-
-
+        if (newValue === 0) {
             this.setState({
+                releaseRequests: [],
+            });
 
-                releaseRequests: []
-            })
-
-            this.fetchReleaseRequest()
-
-        }
-       else  if(newValue===1){
-
-
+            this.fetchReleaseRequest();
+        } else if (newValue === 1) {
             this.setState({
+                registerRequests: [],
+            });
 
-                registerRequests: []
-            })
-
-            this.fetchRegisterRequest()
-        }
-
-
-        else  if(newValue===2){
-
+            this.fetchRegisterRequest();
+        } else if (newValue === 2) {
             this.setState({
+                serviceAgentRequests: [],
+            });
 
-                serviceAgentRequests: []
-            })
-
-            this.fetchServiceAgentRequest()
+            this.fetchServiceAgentRequest();
         }
+    };
 
-    }
-
-    fetchReleaseRequest(){
-
-        axios.get(baseUrl + "release" ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
+    fetchReleaseRequest() {
+        axios
+            .get(baseUrl + "release")
             .then((response) => {
-
-                    var responseAll = response.data.data;
-
-
-
+                    let responseAll = response.data.data;
 
                     this.setState({
-
-                        releaseRequests: responseAll
-                    })
-
-                    this.setState({
-                        loading:false
-                    })
-
-
-                },
-                (error) => {
-
-
-                    this.setState({
-                        loading:false
-                    })
-
-
-
+                        releaseRequests: responseAll,
+                        loading: false
+                    });
                 }
-            );
-
+            ).catch(error =>{
+                this.setState({
+                    loading: false,
+                });
+        });
     }
 
-    fetchRegisterRequest(){
-
-        axios.get(baseUrl + "register" ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
+    fetchRegisterRequest() {
+        axios
+            .get(baseUrl + "register")
+            .then(
+                (response) => {
+                    let responseAll = response.data.data;
+                    this.setState({
+                        loading: false,
+                        registerRequests: responseAll,
+                    });
                 }
-            }
-        )
-            .then((response) => {
-
-                    var responseAll = response.data.data;
-
-
-                    this.setState({
-                        loading:false
-                    })
-
-                    this.setState({
-
-                        registerRequests: responseAll
-                    })
-
-
-
-                },
-                (error) => {
-
-
-
-                    this.setState({
-                        loading:false
-                    })
-
-                }
-            );
-
+            ).catch(error => {
+            this.setState({
+                loading: false,
+            });
+        });
     }
 
-    fetchServiceAgentRequest(){
+    fetchServiceAgentRequest() {
+        axios
+            .get(baseUrl + "service-agent")
+            .then(
+                (response) => {
+                    let responseAll = response.data.data;
 
-        axios.get(baseUrl + "service-agent" ,
-            {
-                headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
+                    this.setState({
+                        loading: false,
+                        serviceAgentRequests: responseAll,
+                    });
                 }
-            }
-        )
-            .then((response) => {
-
-                    var responseAll = response.data.data;
-
-
-
-                    this.setState({
-                        loading:false
-                    })
-
-
-
-                    this.setState({
-
-                        serviceAgentRequests: responseAll
-                    })
-
-
-
-                },
-                (error) => {
-
-
-
-                    this.setState({
-                        loading:false
-                    })
-
-                }
-            );
-
+            ).catch(error => {
+            this.setState({
+                loading: false,
+            });
+        });
     }
 
+    componentDidMount() {
+        this.fetchReleaseRequest();
+    }
 
-    componentDidMount(){
-
+    refreshProductReleaseCallback = () => {
         this.fetchReleaseRequest()
-        // this.fetchRegisterRequest()
-        // this.fetchServiceAgentRequest()
     }
 
-
-
-
-    render(){
-
-
-        // const classes = useStylesTabs();
-
+    render() {
 
         return (
             <div>
@@ -244,391 +136,277 @@ class Approvals extends Component {
                 <div className="wrapper">
                     <HeaderDark />
 
-
                     <div className="container  pb-4 pt-4">
-
-                        <PageHeader  pageTitle="Approvals" subTitle="Approve" />
+                        <PageHeader pageTitle="Approvals" subTitle="Approve" />
 
                         <div className={"tab-content-listing col-12"}>
-
-                            {/*<NavTabs token={this.props.userDetail.token}*/}
-                                      {/*releases={this.state.releaseRequests}*/}
-                                      {/*registers={this.state.registerRequests}*/}
-                                      {/*serviceAgents={this.state.serviceAgentRequests}*/}
-                            {/*/>*/}
-
-
-                            <div >
-                                <AppBar position="static" style={{boxShadhow:"none"}} elevation={0}>
+                            <div>
+                                <AppBar
+                                    position="static"
+                                    style={{ boxShadhow: "none" }}
+                                    elevation={0}>
                                     <Tabs
-                                        style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadow:"none"}}
+                                        style={{
+                                            backgroundColor: "#ffffff",
+                                            color: "#07AD88!important",
+                                            boxShadow: "none",
+                                        }}
                                         indicatorColor="secondary"
                                         variant="fullWidth"
                                         value={this.state.value}
-
                                         onChange={this.handleChange.bind(this)}
-                                        aria-label="nav tabs example"
-
-                                    >
-
-                                        {/*{props.releases.length>0 &&*/}
-                                        <LinkTab label={this.state.releaseRequests.length>0?"Product Release Requests ("+this.state.releaseRequests.length+")":"Product Release Requests"}  {...a11yProps(0)} />
-                                        {/*}*/}
-
-                                        {/*{props.suggesstions.length > 0 &&*/}
-
-                                        {/*{props.registers.length>0 &&*/}
-                                        <LinkTab label={this.state.registerRequests.length>0?"Product Register Requests ("+this.state.registerRequests.length+")":"Product Register Requests"}  {...a11yProps(1)} />
-                                        {/*}*/}
-
-
-                                        {/*{props.serviceAgents.length>0 &&*/}
-                                        <LinkTab label={this.state.serviceAgentRequests.length>0?"Change Service Agent Requests  ("+this.state.serviceAgentRequests.length+")":"Change Service Agent Requests"}  {...a11yProps(2)} />
-                                        {/*}*/}
-
-                                        {/*}*/}
-
-
+                                        aria-label="nav tabs example">
+                                        <LinkTab
+                                            label={
+                                                this.state.releaseRequests.length > 0
+                                                    ? "Product Release Requests (" +
+                                                      this.state.releaseRequests.filter((item) => item.Release.stage === "requested" ).length +
+                                                      ")"
+                                                    : "Product Release Requests"
+                                            }
+                                            {...a11yProps(0)}
+                                        />
+                                        <LinkTab
+                                            label={
+                                                this.state.registerRequests.length > 0
+                                                    ? "Product Register Requests (" +
+                                                      this.state.registerRequests.length +
+                                                      ")"
+                                                    : "Product Register Requests"
+                                            }
+                                            {...a11yProps(1)}
+                                        />
+                                        <LinkTab
+                                            label={
+                                                this.state.serviceAgentRequests.length > 0
+                                                    ? "Change Service Agent Requests  (" +
+                                                      this.state.serviceAgentRequests.length +
+                                                      ")"
+                                                    : "Change Service Agent Requests"
+                                            }
+                                            {...a11yProps(2)}
+                                        />
                                     </Tabs>
                                 </AppBar>
-
 
                                 <TabPanel value={this.state.value} index={0}>
                                     <div className={"container"}>
 
-                                        {this.state.releaseRequests.map((item) =>
-                                            <>
-
-                                                <RequestReleaseItem  history={this.props.history}  item={item}  />
-
-                                            </>
-
-                                        )}
-
-                                        { this.state.releaseRequests.length === 0 &&
-                                        <div className={" column-empty-message"}>
-                                            <p>{this.state.loading?"Loading...":"This search currently has no results"}</p>
+                                        <div className="row mb-3">
+                                            <div className="col d-flex justify-content-end">
+                                                <Link to="/approved" className="btn btn-sm blue-btn" style={{color: "#fff"}}>
+                                                    Release Request Record
+                                                </Link>
+                                            </div>
                                         </div>
-                                        }
 
-
+                                        {this.state.releaseRequests.filter((item) => item.Release.stage === "requested" ).map((item, index) => (
+                                            <div className="row" key={index}>
+                                                <div className="col">
+                                                    <RequestReleaseItem
+                                                        history={this.props.history}
+                                                        item={item}
+                                                        refreshPageCallback={this.refreshProductReleaseCallback}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {this.state.releaseRequests.filter((item) => item.Release.stage === "requested" ).length === 0 && (
+                                            <div className={" column-empty-message"}>
+                                                <p>
+                                                    {this.state.loading
+                                                        ? "Loading..."
+                                                        : "This search currently has no results"}
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 </TabPanel>
 
-
                                 <TabPanel value={this.state.value} index={1}>
                                     <div className={"container"}>
+                                        {this.state.registerRequests.map((item, index) => (
+                                            <React.Fragment key={index}>
+                                                <RequestRegisterItem
+                                                    history={this.props.history}
+                                                    item={item}
+                                                />
+                                            </React.Fragment>
+                                        ))}
 
-                                        {this.state.registerRequests.map((item) =>
-                                            <>
-
-                                                <RequestRegisterItem  history={this.props.history}  item={item}  />
-
-                                            </>
-
+                                        {this.state.registerRequests.length === 0 && (
+                                            <div className={" column-empty-message"}>
+                                                <p>
+                                                    {this.state.loading
+                                                        ? "Loading..."
+                                                        : "This search currently has no results"}
+                                                </p>
+                                            </div>
                                         )}
-
-                                        { this.state.registerRequests.length === 0 &&
-                                        <div className={" column-empty-message"}>
-                                            <p>{this.state.loading?"Loading...":"This search currently has no results"}</p>
-                                        </div>
-                                        }
-
-
                                     </div>
                                 </TabPanel>
                                 <TabPanel value={this.state.value} index={2}>
                                     <div className={"container"}>
+                                        {this.state.serviceAgentRequests.map((item, index) => (
+                                            <React.Fragment key={index}>
+                                                <RequestServiceAgentItem
+                                                    history={this.props.history}
+                                                    item={item}
+                                                />
+                                            </React.Fragment>
+                                        ))}
 
-                                        {this.state.serviceAgentRequests.map((item) =>
-                                            <>
-                                                <RequestServiceAgentItem  history={this.props.history}  item={item}  />
-
-                                            </>
-
+                                        {this.state.serviceAgentRequests.length === 0 && (
+                                            <div className={" column-empty-message"}>
+                                                <p>
+                                                    {this.state.loading
+                                                        ? "Loading..."
+                                                        : "This search currently has no results"}
+                                                </p>
+                                            </div>
                                         )}
-
-                                        { this.state.serviceAgentRequests.length === 0 &&
-                                        <div className={" column-empty-message"}>
-                                            <p>{this.state.loading?"Loading...":"This search currently has no results"}</p>
-                                        </div>
-                                        }
-
-
                                     </div>
                                 </TabPanel>
-
                             </div>
-
-
                         </div>
-
                     </div>
-
-
                 </div>
             </div>
-        )
+        );
     }
 }
 
-
-
 function NavTabs(props) {
-
-
-
     const classes = useStylesTabs();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-
-
     };
 
-
-    const  [releases,setReleases]=useState([])
-    const  [registers,setRegisters]=useState([])
-    const  [serviceAgents,setServiceAgents]=useState([])
-
-
+    const [releases, setReleases] = useState([]);
+    const [registers, setRegisters] = useState([]);
+    const [serviceAgents, setServiceAgents] = useState([]);
 
     const getReleases = () => {
-    axios.get(baseUrl + "release",
-        {
-            headers: {
-                "Authorization": "Bearer " + props.token
-            }
-        }
-    )
-        .then((response) => {
-
-                var responseAll = response.data.data;
-
-
-                // this.setState({
-                //
-                //     releaseRequests: responseAll
-                // })
-
-
-            setReleases(responseAll)
-
-
-            },
-            (error) => {
-
-
-            }
-        );
-
-
-}
+        axios
+            .get(baseUrl + "release")
+            .then(
+                (response) => {
+                    let responseAll = response.data.data;
+                    setReleases(responseAll);
+                }
+            ).catch(error => {});
+    };
 
     const getRegisters = () => {
-        axios.get(baseUrl + "register",
-            {
-                headers: {
-                    "Authorization": "Bearer " + props.token
+        axios
+            .get(baseUrl + "register")
+            .then(
+                (response) => {
+                    let responseAll = response.data.data;
+                    setRegisters(responseAll);
                 }
-            }
-        )
-            .then((response) => {
-
-                    var responseAll = response.data.data;
-
-
-                    // this.setState({
-                    //
-                    //     releaseRequests: responseAll
-                    // })
-
-
-                    setRegisters(responseAll)
-
-
-                },
-                (error) => {
-
-
-                }
-            );
-
-
-    }
+            ).catch(error => {});
+    };
 
     const getServiceAgents = () => {
-        axios.get(baseUrl + "service-agent",
-            {
-                headers: {
-                    "Authorization": "Bearer " + props.token
+        axios
+            .get(baseUrl + "service-agent")
+            .then(
+                (response) => {
+                    let responseAll = response.data.data;
+                    setRegisters(responseAll);
                 }
-            }
-        )
-            .then((response) => {
+            ).catch(error => {
 
-                    var responseAll = response.data.data;
+        });
+    };
 
-
-                    // this.setState({
-                    //
-                    //     releaseRequests: responseAll
-                    // })
-
-
-                    setRegisters(responseAll)
-
-
-                },
-                (error) => {
-
-
-                }
-            );
-
-
-    }
-
-
-
-
-useEffect(()=> {
-
-    getReleases()
-    getRegisters()
-    getServiceAgents()
-
-})
-
+    useEffect(() => {
+        getReleases();
+        getRegisters();
+        getServiceAgents();
+    });
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" style={{boxShadhow:"none"}} elevation={0}>
+            <AppBar position="static" style={{ boxShadhow: "none" }} elevation={0}>
                 <Tabs
-                    style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadow:"none"}}
+                    style={{
+                        backgroundColor: "#ffffff",
+                        color: "#07AD88!important",
+                        boxShadow: "none",
+                    }}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
                     onChange={handleChange}
-                    aria-label="nav tabs example"
-
-                >
-
-                    {/*{props.releases.length>0 &&*/}
-                    <LinkTab label={"Product Release Requests ("+releases.length+")"}  {...a11yProps(0)} />
-                    {/*}*/}
-
-                    {/*{props.suggesstions.length > 0 &&*/}
-
-                    {/*{props.registers.length>0 &&*/}
-                    <LinkTab label={"Product Register Requests ("+registers.length+")"}  {...a11yProps(1)} />
-                    {/*}*/}
-
-
-                    {/*{props.serviceAgents.length>0 &&*/}
-                    <LinkTab label={"Change Service Agent Requests  ("+serviceAgents.length+")"}  {...a11yProps(2)} />
-                    {/*}*/}
-
-                    {/*}*/}
-
-
+                    aria-label="nav tabs example">
+                    <LinkTab
+                        label={"Product Release Requests (" + releases.length + ")"}
+                        {...a11yProps(0)}
+                    />
+                    <LinkTab
+                        label={"Product Register Requests (" + registers.length + ")"}
+                        {...a11yProps(1)}
+                    />
+                    <LinkTab
+                        label={"Change Service Agent Requests  (" + serviceAgents.length + ")"}
+                        {...a11yProps(2)}
+                    />
                 </Tabs>
             </AppBar>
 
-
             <TabPanel value={value} index={0}>
                 <div className={"container"}>
+                    {releases.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <RequestReleaseItem history={props.history} item={item} />
+                        </React.Fragment>
+                    ))}
 
-                    {releases.map((item) =>
-                        <>
-
-                            <RequestReleaseItem history={props.history}  item={item}  />
-
-                        </>
-
+                    {releases.length === 0 && (
+                        <div className={" column-empty-message"}>
+                            <p>This search currently has no results</p>
+                        </div>
                     )}
-
-                    { releases.length === 0 &&
-                    <div className={" column-empty-message"}>
-                        <p>This search currently has no results</p>
-                    </div>
-                    }
-
-
                 </div>
             </TabPanel>
 
-
             <TabPanel value={value} index={1}>
                 <div className={"container"}>
+                    {registers.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <RequestRegisterItem history={props.history} item={item} />
+                        </React.Fragment>
+                    ))}
 
-                    {registers.map((item) =>
-                        <>
-
-                            <RequestRegisterItem history={props.history}  item={item}  />
-
-                        </>
-
+                    {releases.length === 0 && (
+                        <div className={" column-empty-message"}>
+                            <p>This search currently has no results</p>
+                        </div>
                     )}
-
-                    { releases.length === 0 &&
-                    <div className={" column-empty-message"}>
-                        <p>This search currently has no results</p>
-                    </div>
-                    }
-
-
                 </div>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <div className={"container"}>
+                    {serviceAgents.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <RequestServiceAgentItem history={props.history} item={item} />
+                        </React.Fragment>
+                    ))}
 
-                    {serviceAgents.map((item) =>
-                        <>
-                            <RequestServiceAgentItem history={props.history}  item={item}  />
-
-                        </>
-
+                    {serviceAgents.length === 0 && (
+                        <div className={" column-empty-message"}>
+                            <p>This search currently has no results</p>
+                        </div>
                     )}
-
-                    { serviceAgents.length === 0 &&
-                    <div className={" column-empty-message"}>
-                        <p>This search currently has no results</p>
-                    </div>
-                    }
-
-
                 </div>
             </TabPanel>
-
         </div>
     );
 }
-
-
-function SearchField() {
-
-    const classes = useStylesTabs();
-
-    return (
-        <TextField
-            variant="outlined"
-            className={clsx(classes.margin, classes.textField) + " full-width-field"}
-            id="input-with-icon-textfield"
-
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                    </InputAdornment>
-                ),
-            }}
-        />
-
-    );
-}
-
 
 
 function TabPanel(props) {
@@ -640,11 +418,10 @@ function TabPanel(props) {
             hidden={value !== index}
             id={`nav-tabpanel-${index}`}
             aria-labelledby={`nav-tab-${index}`}
-            {...other}
-        >
+            {...other}>
             {value === index && (
                 <Box p={3}>
-                    <Typography>{children}</Typography>
+                    <Typography component="div">{children}</Typography>
                 </Box>
             )}
         </div>
@@ -660,7 +437,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
     return {
         id: `nav-tab-${index}`,
-        'aria-controls': `nav-tabpanel-${index}`,
+        "aria-controls": `nav-tabpanel-${index}`,
     };
 }
 
@@ -679,10 +456,9 @@ function LinkTab(props) {
 const useStylesTabs = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        paddingRight:"0",
-        paddingLight:"0",
+        paddingRight: "0",
+        paddingLight: "0",
         backgroundColor: theme.palette.background.paper,
-
     },
 }));
 
@@ -690,13 +466,13 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        test: null
-    }
-}
+        test: null,
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Approvals);

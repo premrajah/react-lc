@@ -1,424 +1,267 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import PropTypes from 'prop-types';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import {makeStyles, withStyles,} from '@material-ui/core/styles';
-import TreeItem from '@material-ui/lab/TreeItem';
-import Typography from '@material-ui/core/Typography';
-import ProductTreeItemView from './ProductTreeItemView'
-import TextField from '@material-ui/core/TextField';
-
+import { baseUrl } from "../Util/Constants";
+import PropTypes from "prop-types";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import TreeItem from "@material-ui/lab/TreeItem";
+import Typography from "@material-ui/core/Typography";
+import ProductTreeItemView from "./ProductTreeItemView";
+import TextField from "@material-ui/core/TextField";
 
 class ProductTreeView extends Component {
-
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
             fields: {},
             errors: {},
-            products:[],
-            currentSubProducts:[],
-            tree:[],
-            filteredList:[],
-            selectedProductId:null
+            products: [],
+            currentSubProducts: [],
+            tree: [],
+            filteredList: [],
+            selectedProductId: null,
+        };
 
-        }
-
-        this.getItems=this.getItems.bind(this)
-        this.getSubProducts=this.getSubProducts.bind(this)
-        this.setTree=this.setTree.bind(this)
-        this.handleSearch=this.handleSearch.bind(this)
-
+        this.getItems = this.getItems.bind(this);
+        this.getSubProducts = this.getSubProducts.bind(this);
+        this.setTree = this.setTree.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
-    
-    
-    productSelected(productId){
 
+    productSelected(productId) {
         this.setState({
-            selectedProductId:productId
+            selectedProductId: productId,
+        });
 
-        })
-
-
-        this.props.triggerCallback(productId)
-
+        this.props.triggerCallback(productId);
     }
 
     handleChange(field, e) {
-
-
-
         let fields = this.state.fields;
 
         fields[field] = e.target.value;
 
-
         this.setState({ fields });
 
-
         this.setState({
+            price: fields["price"],
+        });
 
-            price: fields["price"]
-        })
-
-
-
-        if (field === "product"){
-
-
+        if (field === "product") {
             this.setState({
+                productSelected: e.target.value,
+            });
 
-                productSelected: e.target.value
-
-            })
-
-
-            this.getPreviewImage(e.target.value)
+            this.getPreviewImage(e.target.value);
         }
 
-
-        if (field === "deliver"){
-
+        if (field === "deliver") {
             this.setState({
-
-                siteSelected: this.state.sites.filter((item)=> item._key===e.target.value)[0]
-
-            })
-
-
-
+                siteSelected: this.state.sites.filter((item) => item._key === e.target.value)[0],
+            });
         }
 
-
-
-        if (this.state.page===1) {
-
-            this.handleValidateOne()
+        if (this.state.page === 1) {
+            this.handleValidateOne();
         }
 
-        if (this.state.page===2) {
-
-            this.handleValidateTwo()
+        if (this.state.page === 2) {
+            this.handleValidateTwo();
         }
-
-
-
-
-
     }
 
 
-    componentWillMount() {
-    }
+    setTree() {
+        let list = this.state.products;
 
+        let tree = this.state.tree;
 
-
-
-
-
-    setTree(){
-
-
-        let list= this.state.products
-
-        let tree= this.state.tree
-
-        for (let i=0;i<list.length;i++){
-
-
+        for (let i = 0; i < list.length; i++) {
             // if (!list[i].parent_product&&!list[i].listing) {
-            if (!list[i].parent_product&&list[i].product.is_listable) {
-
+            if (!list[i].parent_product && list[i].product.is_listable) {
                 var treeItem;
 
                 // treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
-                treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name :list[i].product.name,
+                treeItem = {
+                    id: list[i].product._key,
+                    name: list[i].listing ? list[i].product.name : list[i].product.name,
 
-                    sub_products: [] , canSelect:list[i].listing?false:true}
-
+                    sub_products: [],
+                    canSelect: list[i].listing ? false : true,
+                };
 
                 if (list[i].sub_products.length > 0) {
-
-                    var sub_products = []
+                    var sub_products = [];
 
                     for (let k = 0; k < list[i].sub_products.length; k++) {
-
-                        sub_products.push({ id: list[i].sub_products[k]._key, name: list[i].sub_products[k].name })
-
+                        sub_products.push({
+                            id: list[i].sub_products[k]._key,
+                            name: list[i].sub_products[k].name,
+                        });
                     }
 
-                    treeItem.sub_products = sub_products
-
+                    treeItem.sub_products = sub_products;
                 }
 
-
-                tree.push(treeItem)
+                tree.push(treeItem);
             }
-
-
         }
 
-
         this.setState({
-
-            tree:tree,
-            filteredList:tree
-        })
-
-
-
-
+            tree: tree,
+            filteredList: tree,
+        });
     }
+
     componentDidMount() {
-
-
-        this.getItems()
-
-
+        this.getItems();
     }
 
-
-    getItems(){
-
-    axios.get(baseUrl + "product/expand"
-    )
-        .then((response) => {
-
+    getItems() {
+        axios.get(baseUrl + "product/expand").then(
+            (response) => {
                 var responseAll = response.data.data;
 
-
-
-
-            this.setState({
-
-                products:responseAll
-            })
-            this.setTree()
-
-
+                this.setState({
+                    products: responseAll,
+                });
+                this.setTree();
             },
             (error) => {
-
                 // var status = error.response.status
-
-
-
-
-
             }
         );
-
-}
-
-
+    }
 
     handleSearch(field, e) {
-
         // let fields = this.state.fieldsSite;
         // fields[field] = e.target.value;
         // this.setState({ fields: fields });
 
-
-        var products = this.state.tree.filter(
-            (item)=>
-
-        {
+        var products = this.state.tree.filter((item) => {
             if (e.target.value.length === 0) {
                 return item;
-            } else if (
-                item.name
-                    .toLowerCase()
-                    .includes(e.target.value.toLowerCase())
-            ) {
+            } else if (item.name.toLowerCase().includes(e.target.value.toLowerCase())) {
                 return item;
             }
-        }
-
-
-        )
-
+        });
 
         this.setState({
-            filteredList: products
-        })
-
+            filteredList: products,
+        });
     }
 
+    getSubProducts() {
+        var currentProductId = "j2D6JU2oIU";
 
+        axios.get(baseUrl + "product/" + currentProductId + "/sub-product/expand").then(
+            (response) => {
+                var responseAll = response.data.data;
 
-    getSubProducts(){
-
-
-        var currentProductId= "j2D6JU2oIU"
-
-        axios.get(baseUrl + "product/"+currentProductId+"/sub-product/expand")
-            .then((response) => {
-
-                    var responseAll = response.data.data;
-
-
-
-
-                    this.setState({
-
-                        products:responseAll
-                    })
-
-
-
-
-
-                },
-                (error) => {
-
-                    // var status = error.response.status
-
-
-
-
-
-                }
-            );
-
+                this.setState({
+                    products: responseAll,
+                });
+            },
+            (error) => {
+                // var status = error.response.status
+            }
+        );
     }
 
     render() {
-
         // const classes = useStyles();
         const classes = withStyles();
         const classesBottom = withStyles();
 
-
         return (
-
             <>
-                 
-
                 <div className="row  mb-4">
-
                     <div className="col-md-12 col-sm-6 col-xs-12 ">
-
-                        <div  className={"row tree-menu-container "}>
-
-                            <div  className={"col-12"}>
-
-                                <TextField id="outlined-basic" label="Search products here .... "
-                                           variant="outlined" fullWidth={true}
-                                           name={"name"}
-                                           onChange={this.handleSearch.bind(this, "name")}/>
+                        <div className={"row tree-menu-container "}>
+                            <div className={"col-12"}>
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Search products here .... "
+                                    variant="outlined"
+                                    fullWidth={true}
+                                    name={"name"}
+                                    onChange={this.handleSearch.bind(this, "name")}
+                                />
                             </div>
-                            <div  className={"col-12"}>
-
-
-                            <div  className={"row tree-view-menu"}>
-
-
-                                {this.state.filteredList.map((item) =>
-                                    <>
-                                        <div  className={"col-12"}>
-                                            <ProductTreeItemView selected={this.state.selectedProductId} triggerCallback={(productId)=>this.productSelected(productId)} item={item}  token={this.props.userDetail.token}  />
-                                        </div>
-
-                                    </>
-                                )}
+                            <div className={"col-12"}>
+                                <div className={"row tree-view-menu"}>
+                                    {this.state.filteredList.map((item) => (
+                                        <>
+                                            <div className={"col-12"}>
+                                                <ProductTreeItemView
+                                                    selected={this.state.selectedProductId}
+                                                    triggerCallback={(productId) =>
+                                                        this.productSelected(productId)
+                                                    }
+                                                    item={item}
+                                                    token={this.props.userDetail.token}
+                                                />
+                                            </div>
+                                        </>
+                                    ))}
+                                </div>
                             </div>
-                            </div>
-
-
                         </div>
-
-
-
-
-
                     </div>
                 </div>
-
             </>
-
-
-
         );
     }
 }
 
-
-
-
-
 function GetTreeItem({ comment }) {
-
-
-    const nestedComments = (comment.children || []).map(comment => {
-        return <GetTreeItem key={comment.id} comment={comment} type="child" />
-    })
+    const nestedComments = (comment.children || []).map((comment) => {
+        return <GetTreeItem key={comment.id} comment={comment} type="child" />;
+    });
 
     return (
-
         <StyledTreeItem
             nodeId="5"
             labelText={"Nothing "}
             labelInfo="90"
             color="#1a73e8"
-            bgColor="#e8f0fe"
-        >
+            bgColor="#e8f0fe">
             <div>{comment.text}</div>
             {nestedComments}
-
         </StyledTreeItem>
-    )
+    );
 }
-
 
 function Comment({ comment }) {
-
-    const nestedComments = (comment.children || []).map(comment => {
-        return <Comment key={comment.id} comment={comment} type="child" />
-    })
+    const nestedComments = (comment.children || []).map((comment) => {
+        return <Comment key={comment.id} comment={comment} type="child" />;
+    });
 
     return (
-
-        <div style={{"marginLeft": "25px", "marginTop": "10px"}}>
-
+        <div style={{ marginLeft: "25px", marginTop: "10px" }}>
             <div>{comment.text}</div>
             {nestedComments}
-
         </div>
-    )
+    );
 }
-
 
 function GetSubItems(props) {
-
     return (
-
         <>
-
-        {props.show&&
-     <StyledTreeItem
-        nodeId="5"
-        labelText={"Nothing "}
-        labelInfo="90"
-        color="#1a73e8"
-        bgColor="#e8f0fe"
-    >
-    </StyledTreeItem>
-}
-
-</>
+            {props.show && (
+                <StyledTreeItem
+                    nodeId="5"
+                    labelText={"Nothing "}
+                    labelInfo="90"
+                    color="#1a73e8"
+                    bgColor="#e8f0fe"></StyledTreeItem>
+            )}
+        </>
     );
-
-
-
-
 }
-
-
 
 function MinusSquare(props) {
     return (
@@ -447,20 +290,18 @@ function CloseSquare(props) {
     );
 }
 
-
-
 const useTreeItemStyles = makeStyles((theme) => ({
     root: {
         color: theme.palette.text.secondary,
-        '&:hover > $content': {
+        "&:hover > $content": {
             backgroundColor: theme.palette.action.hover,
         },
-        '&:focus > $content, &$selected > $content': {
+        "&:focus > $content, &$selected > $content": {
             backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
-            color: 'var(--tree-view-color)',
+            color: "var(--tree-view-color)",
         },
-        '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label': {
-            backgroundColor: 'transparent',
+        "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label": {
+            backgroundColor: "transparent",
         },
     },
     content: {
@@ -469,32 +310,32 @@ const useTreeItemStyles = makeStyles((theme) => ({
         borderBottomRightRadius: theme.spacing(2),
         paddingRight: theme.spacing(1),
         fontWeight: theme.typography.fontWeightMedium,
-        '$expanded > &': {
+        "$expanded > &": {
             fontWeight: theme.typography.fontWeightRegular,
         },
     },
     group: {
         marginLeft: 0,
-        '& $content': {
+        "& $content": {
             paddingLeft: theme.spacing(2),
         },
     },
     expanded: {},
     selected: {},
     label: {
-        fontWeight: 'inherit',
-        color: 'inherit',
+        fontWeight: "inherit",
+        color: "inherit",
     },
     labelRoot: {
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
         padding: theme.spacing(0.5, 0),
     },
     labelIcon: {
         marginRight: theme.spacing(1),
     },
     labelText: {
-        fontWeight: 'inherit',
+        fontWeight: "inherit",
         flexGrow: 1,
     },
 }));
@@ -507,7 +348,6 @@ function StyledTreeItem(props) {
         <TreeItem
             label={
                 <div className={classes.labelRoot}>
-
                     <Typography variant="body2" className={classes.labelText}>
                         {labelText}
                     </Typography>
@@ -517,8 +357,8 @@ function StyledTreeItem(props) {
                 </div>
             }
             style={{
-                '--tree-view-color': color,
-                '--tree-view-bg-color': bgColor,
+                "--tree-view-color": color,
+                "--tree-view-bg-color": bgColor,
             }}
             classes={{
                 root: classes.root,
@@ -549,19 +389,11 @@ const useStyles = makeStyles({
     },
 });
 
- function GmailTreeView() {
-
-    return (
-        <></>
-    );
+function GmailTreeView() {
+    return <></>;
 }
 
-
-
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         loading: state.loading,
@@ -576,15 +408,11 @@ const mapStateToProps = state => {
         showProductView: state.loginPopUpStatus,
         productList: state.productList,
         siteList: state.siteList,
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
@@ -592,11 +420,6 @@ const mapDispachToProps = dispatch => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(ProductTreeView);
+export default connect(mapStateToProps, mapDispachToProps)(ProductTreeView);

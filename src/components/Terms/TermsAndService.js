@@ -1,12 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import HeaderDark from "../../views/header/HeaderDark";
 import Footer from "../../views/Footer/Footer";
 
 const TermsAndService = ({ title, header, footer }) => {
-
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -14,7 +13,7 @@ const TermsAndService = ({ title, header, footer }) => {
             <div className="container mb-5" style={{ marginTop: "100px" }}>
                 <div className="row mt-5 mb-5">
                     <div className="col">
-                        <h3 className="blue-text">{title ? title : 'Terms and Service'}</h3>
+                        <h3 className="blue-text">{title ? title : "Terms and Service"}</h3>
                     </div>
                 </div>
 
@@ -25,14 +24,10 @@ const TermsAndService = ({ title, header, footer }) => {
                         </h3>
                         <ol>
                             <li>
-                                <p>
-
-                                    These terms
-                                </p>
+                                <p>These terms</p>
                                 <ol>
                                     <li>
                                         <p>
-
                                             <strong>What these terms cover</strong>. These are the
                                             terms and conditions on which we supply our Services and
                                             digital content to you.
@@ -40,14 +35,13 @@ const TermsAndService = ({ title, header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-
                                             <strong>Why you should read them</strong>. Please read
                                             these terms carefully before you use our Services. These
                                             terms tell you who we are, how we will provide our
                                             Services to you, how you and we may change or end the
                                             contract, what to do if there is a problem and other
                                             important information. If you think that there is a
-                                            mistake in these terms, please contact us via email at{" "}
+                                            mistake in these terms, please contact us via email at
                                             <a href="mailto:hello@loopcycle.io">
                                                 hello@loopcycle.io
                                             </a>
@@ -57,14 +51,10 @@ const TermsAndService = ({ title, header, footer }) => {
                                 </ol>
                             </li>
                             <li>
-                                <p>
-
-                                    Information about us and how to contact us
-                                </p>
+                                <p>Information about us and how to contact us</p>
                                 <ol>
                                     <li>
                                         <p>
-
                                             <strong>Who we are</strong>. We are Loop Infinity Ltd, a
                                             company registered in England and Wales. Our company
                                             registration number is 11456617 and our registered
@@ -74,19 +64,18 @@ const TermsAndService = ({ title, header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-
                                             <strong>What we do: </strong>
                                             We operate a business-to-business marketplace which uses
                                             artificial intelligence to trace the circulation of
                                             products between end users and product manufacturers,
-                                            based on the information submitted by both parties{" "}
+                                            based on the information submitted by both parties
                                             <strong> (“Services”). </strong>
                                         </p>
                                     </li>
                                     <li>
                                         <p>
                                             <strong>How to contact us</strong>. You can contact us
-                                            by writing to us at{" "}
+                                            by writing to us at
                                             <a href="mailto:hello@loopcycle.io">
                                                 hello@loopcycle.io
                                             </a>
@@ -95,7 +84,6 @@ const TermsAndService = ({ title, header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-
                                             <strong>How we may contact you</strong>. If we have to
                                             contact you we will do so by telephone or by writing to
                                             you at the email address or postal address you provided
@@ -104,7 +92,6 @@ const TermsAndService = ({ title, header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-
                                             <strong>"Writing" includes emails</strong>. When we use
                                             the words "writing" or "written" in these terms, this
                                             includes emails.
@@ -113,14 +100,10 @@ const TermsAndService = ({ title, header, footer }) => {
                                 </ol>
                             </li>
                             <li>
-                                <p>
-
-                                    Our contract with you
-                                </p>
+                                <p>Our contract with you</p>
                                 <ol>
                                     <li>
                                         <p>
-
                                             <strong>How we will accept your business</strong>. By
                                             setting up an account with us and/or using and accessing
                                             the Service, you agree to and accept these terms in
@@ -130,7 +113,6 @@ const TermsAndService = ({ title, header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-
                                             <strong>We only promote to the United Kingdom</strong>.
                                             Our website is solely for the promotion of our Services
                                             in the UK.
@@ -139,14 +121,10 @@ const TermsAndService = ({ title, header, footer }) => {
                                 </ol>
                             </li>
                             <li>
-                                <p>
-
-                                    Our Services
-                                </p>
+                                <p>Our Services</p>
                                 <ol>
                                     <li>
                                         <p>
-
                                             <strong>Setting up an account</strong>. To access our
                                             Service, you must register with us and set up an account
                                             with an email and password (“ <strong>Account</strong>
@@ -163,7 +141,6 @@ const TermsAndService = ({ title, header, footer }) => {
                                     </li>
                                     <li>
                                         <p>
-
                                             <strong>Loopcycle Marketplace.</strong>
                                             Our Service is an online marketplace that allows you to
                                             connect with other buyers and sellers in an easy and fun
@@ -412,10 +389,7 @@ const TermsAndService = ({ title, header, footer }) => {
                         <p>(d) any indirect or consequential loss.</p>
                         <ol start="9">
                             <li>
-                                <p>
-                                    
-                                    ending our relationship
-                                </p>
+                                <p>ending our relationship</p>
                                 <ol>
                                     <li>
                                         <p>
@@ -526,7 +500,6 @@ const TermsAndService = ({ title, header, footer }) => {
                         </ol>
                     </div>
                 </div>
-
             </div>
             {footer ? footer : <Footer />}
         </div>

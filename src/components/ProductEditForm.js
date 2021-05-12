@@ -5,16 +5,15 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import "../Util/upload-file.css";
-import { Cancel, Check, Error } from "@material-ui/icons";
+import { Cancel, Check, Error, Publish } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles/index";
-import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../Util/Constants";
+import { baseUrl, MIME_TYPES_ACCEPT } from "../Util/Constants";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import _ from "lodash";
 import { Spinner } from "react-bootstrap";
@@ -100,7 +99,9 @@ class ProductEditForm extends Component {
             currentUploadingImages: [],
             yearsList: [],
             purposeList: ["defined", "prototype", "aggregate"],
+            conditionList: ["new", "used", "salvage"],
             purpose: null,
+            condition: null,
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -158,9 +159,9 @@ class ProductEditForm extends Component {
         }
     }
 
-    checkListable() {
+    checkListable(checkedValue) {
         this.setState({
-            is_listable: !this.state.is_listable,
+            is_listable: checkedValue,
         });
     }
 
@@ -194,9 +195,6 @@ class ProductEditForm extends Component {
 
         this.setState({
             files: currentFiles,
-        });
-
-        this.setState({
             images: images,
         });
     }
@@ -246,9 +244,9 @@ class ProductEditForm extends Component {
             .then(
                 (response) => {
                     var responseAll = response.data;
-
                     this.setState({
                         item: responseAll.data,
+                        is_listable: responseAll.data.product.is_listable,
                     });
 
                     this.loadSelection();
@@ -743,11 +741,6 @@ class ProductEditForm extends Component {
         let errors = {};
         let formIsValid = true;
 
-        //Name
-        // if (!data.get("purpose")) {
-        //     formIsValid = false;
-        //     errors["purpose"] = "Required";
-        // }
         if (!data.get("title")) {
             formIsValid = false;
             errors["title"] = "Required";
@@ -963,8 +956,6 @@ class ProductEditForm extends Component {
         const data = new FormData(event.target);
 
         if (this.handleValidationProduct(data)) {
-            const form = event.currentTarget;
-
             this.setState({
                 btnLoading: true,
             });
@@ -973,6 +964,7 @@ class ProductEditForm extends Component {
 
             const title = data.get("title");
             const purpose = data.get("purpose");
+            const condition = data.get("condition");
             const description = data.get("description");
             const category = data.get("category");
             const type = data.get("type");
@@ -990,12 +982,13 @@ class ProductEditForm extends Component {
 
             const site = data.get("deliver");
 
-            var productData = {
+            const productData = {
                 id: this.state.item.product._key,
                 update: {
                     artifacts: this.state.images,
 
                     purpose: purpose,
+                    condition: condition,
                     name: title,
                     description: description,
                     category: category,
@@ -1017,7 +1010,6 @@ class ProductEditForm extends Component {
                     year_of_making: Number(data.get("manufacturedDate")),
                 },
             };
-
 
             axios
                 .post(
@@ -1127,11 +1119,8 @@ class ProductEditForm extends Component {
 
     handleDateChange() {}
 
-    UNSAFE_componentWillMount() {
-        window.scrollTo(0, 0);
-    }
-
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.getFiltersCategories();
         this.setUpYearList();
         this.props.loadSites(this.props.userDetail.token);
@@ -1193,23 +1182,60 @@ class ProductEditForm extends Component {
                                         )}
                                     </div>
                                     <div className="col-12 mt-4">
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    // checked={this.state.is_listable}
-                                                    checked={
-                                                        this.state.is_listable
-                                                            ? this.state.is_listable
-                                                            : this.state.item.product.is_listable
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.is_listable}
+                                                            onChange={(e) =>
+                                                                this.checkListable(e.target.checked)
+                                                            }
+                                                            name="is_listable"
+                                                            color="primary"
+                                                            value={this.state.is_listable}
+                                                        />
                                                     }
-                                                    onChange={this.checkListable}
-                                                    // onChange={this.handleChangeProduct.bind(this, "description")}/>
-                                                    name="is_listable"
-                                                    color="primary"
+                                                    label="Tick box to allow product to be listed for sale"
                                                 />
-                                            }
-                                            label="Tick box to allow product to be listed for sale"
-                                        />
+                                            </div>
+                                            <div className="col-md-6">
+                                                    <div
+                                                        className={
+                                                            "custom-label text-bold text-blue mb-3"
+                                                        }>
+                                                        Condition
+                                                    </div>
+                                                    <FormControl
+                                                        variant="outlined"
+                                                        className={classes.formControl}>
+                                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                                        <Select
+                                                            native
+                                                            onChange={this.handleChangeProduct.bind(
+                                                                this,
+                                                                "condition"
+                                                            )}
+                                                            inputProps={{
+                                                                name: "condition",
+                                                                id: "outlined-age-native-simple",
+                                                            }}>
+                                                            {this.state.conditionList.map(
+                                                                      (item, index) => (
+                                                                          <option
+                                                                              key={index}
+                                                                              selected={this.state.item.product.condition === item}
+                                                                              defaultValue={this.state.item.product.condition === item}
+                                                                              value={item}>
+                                                                              {item}
+                                                                          </option>
+                                                                      )
+                                                                  )
+                                                                }
+                                                        </Select>
+                                                    </FormControl>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div className="col-12 mb-3">
@@ -1237,8 +1263,9 @@ class ProductEditForm extends Component {
                                                         }}>
                                                         {/*<option value={null}>Select</option>*/}
 
-                                                        {this.state.categories.map((item) => (
+                                                        {this.state.categories.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.product
                                                                         .category === item.name
@@ -1252,8 +1279,7 @@ class ProductEditForm extends Component {
                                                     </Select>
 
                                                     <FormHelperText>
-                                                        What resources do you need to make this
-                                                        product?
+                                                        Which category is your product located within?
                                                     </FormHelperText>
                                                 </FormControl>
                                                 {this.state.errorsProduct["category"] && (
@@ -1462,8 +1488,9 @@ class ProductEditForm extends Component {
                                                         }}>
                                                         {/*<option value={null}>Select</option>*/}
 
-                                                        {this.state.purposeList.map((item) => (
+                                                        {this.state.purposeList.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.product
                                                                         .purpose === item
@@ -1506,8 +1533,9 @@ class ProductEditForm extends Component {
                                                             name: "deliver",
                                                             id: "outlined-age-native-simple",
                                                         }}>
-                                                        {this.props.siteList.map((item) => (
+                                                        {this.props.siteList.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.site._key ===
                                                                     item._key
@@ -1535,9 +1563,7 @@ class ProductEditForm extends Component {
                                                     Don’t see it on here?
                                                     <span
                                                         onClick={this.showSubmitSite}
-                                                        className={
-                                                            "green-text forgot-password-link text-mute small"
-                                                        }>
+                                                        className="green-text forgot-password-link text-mute small ml-1">
                                                         {this.state.showSubmitSite
                                                             ? "Hide add site"
                                                             : "Add a site"}
@@ -1652,8 +1678,9 @@ class ProductEditForm extends Component {
                                                         }}>
                                                         <option>Select</option>
 
-                                                        {this.state.yearsList.map((item) => (
+                                                        {this.state.yearsList.map((item, index) => (
                                                             <option
+                                                                key={index}
                                                                 selected={
                                                                     this.state.item.product
                                                                         .year_of_making === item
@@ -1892,7 +1919,7 @@ class ProductEditForm extends Component {
                                                                                 "label-file-input"
                                                                             }
                                                                             htmlFor="fileInput">
-                                                                            <AddPhotoIcon
+                                                                            <Publish
                                                                                 style={{
                                                                                     fontSize: 32,
                                                                                     color:
@@ -1902,7 +1929,9 @@ class ProductEditForm extends Component {
                                                                             />
                                                                         </label>
                                                                         <input
-                                                                            accept={MIME_TYPES_ACCEPT}
+                                                                            accept={
+                                                                                MIME_TYPES_ACCEPT
+                                                                            }
                                                                             style={{
                                                                                 display: "none",
                                                                             }}
@@ -1920,6 +1949,7 @@ class ProductEditForm extends Component {
                                                                         this.state.files.map(
                                                                             (item, index) => (
                                                                                 <div
+                                                                                    key={index}
                                                                                     className={
                                                                                         "file-uploader-thumbnail-container"
                                                                                     }>
@@ -2171,6 +2201,7 @@ function UnitSelect(props) {
         </div>
     );
 }
+
 function SiteSelect(props) {
     const classes = useStylesSelect();
     const [state, setState] = React.useState({

@@ -1,13 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import {makeStyles} from "@material-ui/core/styles";
-import {baseUrl} from "../../Util/Constants";
+import { makeStyles } from "@material-ui/core/styles";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import ProductDetail from "../../components/ProductDetail";
 import NotFound from "../NotFound/index";
 

@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Image} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
-import Sidebar from '../menu/Sidebar'
+import Sidebar from "../menu/Sidebar";
 import Footer from "../../components/Footer/Footer";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 
 import SearchIcon from "../../img/resource_icons/icon_search_bottle.png";
 import BottleDollarIcon from "../../img/resource_icons/icon_bottle_dollar.png";
@@ -21,28 +21,21 @@ class FindResourcePage extends Component {
         search: "",
     };
 
-    interval
 
     componentDidMount() {
         this.getAllListings();
-        this.updateNotifications()
+        this.updateNotifications();
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval)
+        clearInterval(this.interval);
     }
 
-
-    updateNotifications(){
+    updateNotifications() {
         this.interval = setInterval(() => {
-            this.getAllListings()
+            this.getAllListings();
         }, 10000);
-
     }
-
-
-
-
 
     getAllListings = () => {
         axios
@@ -54,9 +47,7 @@ class FindResourcePage extends Component {
             .then((response) => {
                 this.setState({ allListings: response.data.data });
             })
-            .catch((error) => {
-
-            });
+            .catch((error) => {});
     };
 
     handleSearch = (searchValue) => {
@@ -77,10 +68,9 @@ class FindResourcePage extends Component {
                       ) {
                           return item;
                       }
-                  }
-                  )
-                  .map((item) => (
-                      <ErrorBoundary>
+                  })
+                  .map((item, index) => (
+                      <ErrorBoundary key={index}>
                           <FindResourceListingItem key={item.listing._id} item={item} />
                       </ErrorBoundary>
                   ))

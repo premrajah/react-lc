@@ -1,76 +1,42 @@
-import store from 'store';
-
-
 export const loadUserData = () => {
-
-    if (sessionStorage.getItem('user')) {
-
-
+    if (sessionStorage.getItem("user")) {
         //
         //
         //
 
-
-
-        return sessionStorage.getItem("user")
-
-
+        return sessionStorage.getItem("user");
     } else {
-
         //
 
-        return null
-
+        return null;
     }
-
-}
-
+};
 
 export const getUserToken = () => {
-
-    sessionStorage.getItem('token')
-
-}
+    sessionStorage.getItem("token");
+};
 
 export const saveUserToken = (token) => {
-
-    sessionStorage.setItem('token', token)
-
-}
-
+    sessionStorage.setItem("token", token);
+};
 
 export const saveKey = (key, value) => {
-
-    sessionStorage.setItem(key, value)
-
-}
+    sessionStorage.setItem(key, value);
+};
 
 export const removeKey = (key) => {
-
-    sessionStorage.removeItem(key)
-
-}
+    sessionStorage.removeItem(key);
+};
 
 export const getKey = (key) => {
-
-    return sessionStorage.getItem(key)
-
-}
-
+    return sessionStorage.getItem(key);
+};
 
 export const saveUserData = (user) => {
-
-    sessionStorage.setItem('user', user)
-
-}
-
+    sessionStorage.setItem("user", user);
+};
 
 export const logOutUser = () => {
-
-    sessionStorage.removeItem('user')
-    sessionStorage.removeItem('token')
-
-
-}
-
-
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+};

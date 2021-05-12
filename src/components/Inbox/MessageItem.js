@@ -1,7 +1,7 @@
 import React from "react";
 import Org from "../Org/Org";
 import moment from "moment/moment";
-import {Card, CardContent} from "@material-ui/core";
+import { Card, CardContent } from "@material-ui/core";
 import MoreMenu from "../MoreMenu";
 
 const MessageItem = ({ item, onDelete }) => {
@@ -18,7 +18,6 @@ const MessageItem = ({ item, onDelete }) => {
                 <div className="row">
                     <div className="col">
                         <div className="d-flex">
-                            {type ? <span className="w-100">{type.toUpperCase()}</span> : null}{" "}
                             <span className="float-right">
                                 {_neverDelete ? (
                                     <MoreMenu
@@ -34,9 +33,9 @@ const MessageItem = ({ item, onDelete }) => {
                 <div className="row">
                     <div className="col">
                         <div>
-                            {orgs.map((org, i) => {
+                            {orgs.map((org, index) => {
                                 return (
-                                    <span key={org.org._ts_epoch_ms_i}>
+                                    <span key={index}>
                                         {org.actor === "message_from" && (
                                             <span>
                                                 <span>From: </span>
@@ -58,6 +57,6 @@ const MessageItem = ({ item, onDelete }) => {
             </CardContent>
         </Card>
     );
-}
+};
 
 export default MessageItem;

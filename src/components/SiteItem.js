@@ -12,7 +12,7 @@ const SiteItem = ({ name, address, email, contact, phone, others, itemKey }) => 
                     <br />
                     {email ? email : ""}
                     {phone ? `, ${phone}` : ""}
-                    {others ? `, ${others}`: ""}
+                    {others ? `, ${others}` : ""}
                 </p>
             </div>
         </>

@@ -1,13 +1,12 @@
-import React, {useEffect} from "react";
-import {Link} from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import HeaderDark from "../../views/header/HeaderDark";
 import Footer from "../../views/Footer/Footer";
 
 const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
-
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -18,7 +17,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         {acceptBtn ? (
                             acceptBtn
                         ) : (
-                            <h3 className="blue-text">{title ? title : 'Terms and Conditions'}</h3>
+                            <h3 className="blue-text">{title ? title : "Terms and Conditions"}</h3>
                         )}
                     </div>
                 </div>
@@ -30,8 +29,15 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </h3>
 
                         <p>
-                            <strong className="mr-1"><a href="http://www.loopcycle.io" target="_blank" rel="noopener noreferrer">www.loopcycle.io</a></strong>
-                             is a site operated by Loop Infinity Ltd ("<strong>We</strong>" or “{" "}
+                            <strong className="mr-1">
+                                <a
+                                    href="http://www.loopcycle.io"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    www.loopcycle.io
+                                </a>
+                            </strong>
+                            is a site operated by Loop Infinity Ltd ("<strong>We</strong>" or “
                             <strong>Loopcycle</strong>”). We are registered in England and Wales
                             under company number 11456617 and have our registered office and main
                             trading address.
@@ -42,7 +48,10 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             product manufacturers, based on the information submitted by both
                             parties.
                         </p>
-                        <p>To contact us, please email <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.</p>
+                        <p>
+                            To contact us, please email
+                            <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
+                        </p>
                         <h4>
                             <strong>BY USING OUR SITE YOU ACCEPT THESE TERMS</strong>
                         </h4>
@@ -63,19 +72,35 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </p>
                         <ul>
                             <li>
-                                <p>Our <Link to="/privacy"><u>Privacy Policy</u></Link>.</p>
-                            </li>
-                            <li>
                                 <p>
-                                    Our <Link to="/acceptable"><u>Acceptable Use Policy</u></Link>, which sets out the permitted uses and
-                                    prohibited uses of our site. When using our site, you must
-                                    comply with this <Link to="/acceptable"><u>Acceptable Use Policy</u></Link>.
+                                    Our
+                                    <Link to="/privacy">
+                                        <u>Privacy Policy</u>
+                                    </Link>
+                                    .
                                 </p>
                             </li>
                             <li>
                                 <p>
-                                    Our <Link to="/cookie"><u>Cookie Policy</u></Link>, which sets out information about the cookies
-                                    on our site.
+                                    Our
+                                    <Link to="/acceptable">
+                                        <u>Acceptable Use Policy</u>
+                                    </Link>
+                                    , which sets out the permitted uses and prohibited uses of our
+                                    site. When using our site, you must comply with this
+                                    <Link to="/acceptable">
+                                        <u>Acceptable Use Policy</u>
+                                    </Link>
+                                    .
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Our
+                                    <Link to="/cookie">
+                                        <u>Cookie Policy</u>
+                                    </Link>
+                                    , which sets out information about the cookies on our site.
                                 </p>
                             </li>
                         </ul>
@@ -226,7 +251,8 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </h4>
                         <p>
                             If you wish to complain about content uploaded by other users, please
-                            contact us on <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
+                            contact us on <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>
+                            .
                         </p>
                         <h4>
                             <strong>OUR RESPONSIBILITY FOR LOSS OR DAMAGE SUFFERED BY YOU</strong>
@@ -414,7 +440,8 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </p>
                         <p>
                             If you wish to link to or make any use of content on our site other than
-                            that set out above, please contact <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
+                            that set out above, please contact
+                            <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
                         <h4>
                             <strong>WHICH COUNTRY'S LAWS APPLY TO ANY DISPUTES?</strong>
@@ -444,8 +471,6 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </p>
                     </div>
                 </div>
-
-
             </div>
             {footer ? footer : <Footer />}
         </div>

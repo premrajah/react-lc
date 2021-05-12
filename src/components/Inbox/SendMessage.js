@@ -1,10 +1,19 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import _ from "lodash";
-import {Card, CardContent, FormControl, Input, InputLabel, MenuItem, Select} from "@material-ui/core";
-import {Form} from "react-bootstrap";
+import {
+    Card,
+    CardContent,
+    FormControl,
+    Input,
+    InputLabel,
+    MenuItem,
+    Select,
+} from "@material-ui/core";
+import { Form } from "react-bootstrap";
+import * as actionCreator from "../../store/actions/actions";
 
 class SendMessage extends Component {
     state = {
@@ -16,9 +25,7 @@ class SendMessage extends Component {
 
     getALlOrgs = () => {
         axios
-            .get(`${baseUrl}org/all`, {
-                headers: { Authorization: "Bearer " + this.props.userDetail.token },
-            })
+            .get(`${baseUrl}org/all`)
             .then((response) => {
                 this.setState({ allOrgs: _.orderBy(response.data.data, ["name"], ["desc"]) });
             })
@@ -29,15 +36,14 @@ class SendMessage extends Component {
         if (!payload) return;
 
         axios
-            .post(`${baseUrl}message/${this.props.apiPath ? this.props.apiPath : 'chat'}`, payload, {
-                headers: { Authorization: "Bearer " + this.props.userDetail.token },
-            })
+            .post(`${baseUrl}message/${this.props.apiPath ? this.props.apiPath : "chat"}`, payload)
             .then((response) => {
                 if (response.status === 200) {
                     this.setState({
                         messageStatus: <p className="text-success">Message sent successfully!</p>,
                     });
                     this.getALlOrgs();
+                    this.props.getMessages();
                 }
             })
             .catch((error) => {
@@ -50,14 +56,13 @@ class SendMessage extends Component {
             });
     };
 
-
     handleMultiSelect = (e) => {
-        this.setState({selectedOrgs: e.target.value, messageStatus: ""});
-    }
+        this.setState({ selectedOrgs: e.target.value, messageStatus: "" });
+    };
 
-    handleClearMultiSelect= () => {
-        this.setState({selectedOrgs: [], messageStatus: ""});
-    }
+    handleClearMultiSelect = () => {
+        this.setState({ selectedOrgs: [], messageStatus: "" });
+    };
 
     handleMessageSubmission = (e) => {
         e.preventDefault();
@@ -80,6 +85,7 @@ class SendMessage extends Component {
 
     componentDidMount() {
         this.getALlOrgs();
+        this.props.getMessages()
     }
 
     render() {
@@ -93,14 +99,15 @@ class SendMessage extends Component {
                                     <Form onSubmit={this.handleMessageSubmission}>
                                         <Form.Group>
                                             <FormControl>
-                                                <InputLabel id="multi-select">Select organisations to message</InputLabel>
+                                                <InputLabel id="multi-select">
+                                                    Select organisations to message
+                                                </InputLabel>
                                                 <Select
                                                     labelId="multi-select"
                                                     multiple
                                                     value={this.state.selectedOrgs}
                                                     onChange={this.handleMultiSelect}
-                                                    input={<Input />}
-                                                >
+                                                    input={<Input />}>
                                                     {this.state.allOrgs.map((org) => {
                                                         return (
                                                             <MenuItem key={org._id} value={org._id}>
@@ -111,8 +118,13 @@ class SendMessage extends Component {
                                                 </Select>
                                             </FormControl>
                                             <Form.Text className="text-muted">
-                                                {this.state.selectedOrgs.length > 0 ? <button className="btn btn-link float-right"
-                                                         onClick={this.handleClearMultiSelect}>clear</button> : null}
+                                                {this.state.selectedOrgs.length > 0 ? (
+                                                    <button
+                                                        className="btn btn-link float-right"
+                                                        onClick={this.handleClearMultiSelect}>
+                                                        clear
+                                                    </button>
+                                                ) : null}
                                             </Form.Text>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -163,7 +175,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
+        getMessages: (data) => dispatch(actionCreator.getMessages(data)),
     };
 };
 

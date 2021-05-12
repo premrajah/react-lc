@@ -1,19 +1,24 @@
 import React from "react";
-import {Link} from "react-router-dom";
-// reactstrap components
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
-
-import {Nav, Navbar, NavbarBrand, NavItem} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
+import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import LogoNew from "../../img/logo-cropped.png";
 import LogoText from "../../img/logo-text.png";
-import {connect} from "react-redux";
+import HeaderLogo from '../../img/loopcycle_header_logo_321x52.png';
+import HeaderLogoSvg from '../../img/loopcycle_header_logo.svg';
+import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import {makeStyles} from '@material-ui/core/styles';
+import { baseUrl } from "../../Util/Constants";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { makeStyles } from "@material-ui/core/styles";
+import {Badge, Snackbar} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+
+
 
 
 class ComponentsNavbar extends React.Component {
@@ -32,17 +37,13 @@ class ComponentsNavbar extends React.Component {
         this.showLoginPopUp = this.showLoginPopUp.bind(this);
         this.logOut = this.logOut.bind(this);
         this.showSignUpPopUp = this.showSignUpPopUp.bind(this);
-        this.showProductSelection=this.showProductSelection.bind(this)
+        this.showProductSelection = this.showProductSelection.bind(this);
 
     }
-
 
     showProductSelection() {
-
-        this.props.showProductPopUp({type:"create_product",show:true})
-
+        this.props.showProductPopUp({ type: "create_product", show: true });
     }
-
 
     toggleMenu = (event) => {
         document.body.classList.add("sidemenu-open");
@@ -67,18 +68,31 @@ class ComponentsNavbar extends React.Component {
 
     logOut = (event) => {
         document.body.classList.remove("sidemenu-open");
+        this.props.getMessages([]);
+        this.props.getNotifications([]);
         this.props.logOut();
     };
 
     componentDidMount() {
+
+        window.removeEventListener("scroll", this.changeColor);
         window.addEventListener("scroll", this.changeColor);
-        if(this.props.isLoggedIn) {
+        this.dispatchMessagesAndNotifications();
+
+        if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
         }
     }
-    componentWillUnmount() {
-        window.removeEventListener("scroll", this.changeColor);
+
+
+
+    dispatchMessagesAndNotifications =  () => {
+        this.props.getMessages()
+        this.props.getNotifications();
     }
+
+
+
     changeColor = () => {
         if (document.documentElement.scrollTop > 99 || document.body.scrollTop > 99) {
             this.setState({
@@ -113,44 +127,44 @@ class ComponentsNavbar extends React.Component {
     getArtifactForOrg = () => {
         let url = `${baseUrl}org/${encodeURIComponent(this.props.userDetail.orgId)}/artifact`;
         axios
-            .get(url, {
-                headers: { Authorization: "Bearer " + this.props.userDetail.token },
-            })
-            .then((response) => {
+            .get(url)
+            .then(response => {
                 if (response.status === 200) {
-                    if(response.data.data.length > 0) {
-                        this.setState({orgImage: `${response.data.data[response.data.data.length -1].blob_url}&v=${Date.now()}`})
+                    if (response.data.data.length > 0) {
+                        this.setState({
+                            orgImage: `${response.data.data[response.data.data.length - 1].blob_url}&v=${Date.now()}`,
+                        });
 
-                        this.props.setOrgImage(response.data.data[response.data.data.length -1].blob_url)
+                        this.props.setOrgImage(
+                            response.data.data[response.data.data.length - 1].blob_url
+                        );
                     }
                 }
             })
-            .catch((error) => {
-
-            });
+            .catch((error) => {});
     };
 
     render() {
         return (
-
-
             <>
+                <Snackbar open={this.props.messageAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
+                    <Alert  severity="success">You have new messages.</Alert>
+                </Snackbar>
+                <Snackbar open={this.props.notificationAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchNotificationAlert(false)} onClose={() => this.props.dispatchNotificationAlert(false)}>
+                    <Alert  severity="success">You have new notifications.</Alert>
+                </Snackbar>
 
-
-
-                    <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
-
-
+                <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
                     <Nav className={"justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
                             <div className="row no-gutters">
                                 <div className="col-auto">
                                     <Link className={"logo-link"} to={"/"}>
                                         <>
-                                            <img className="header-logo" src={LogoNew} alt="" />
+                                            <img className="header-logo mobile-only" src={LogoNew} alt="" />
                                             <img
                                                 className={"text-logo-home web-only"}
-                                                src={LogoText}
+                                                src={HeaderLogoSvg}
                                                 alt=""
                                             />
                                         </>
@@ -187,8 +201,7 @@ class ComponentsNavbar extends React.Component {
                                         onClick={this.showProductSelection}
                                         to={"/my-products"}
                                         className="nav-link d-none d-lg-block wl-link-white"
-                                        color="default"
-                                        >
+                                        color="default">
                                         Add Product
                                     </Link>
                                 </NavItem>
@@ -214,6 +227,17 @@ class ComponentsNavbar extends React.Component {
                         )}
 
                         {!this.props.isLoggedIn && (
+                            <NavItem className="mr-5">
+                                <a
+                                    className="nav-link  d-lg-block"
+                                    color="default"
+                                    style={{ color: "#fff", cursor: "pointer" }}>
+                                    Join Demo
+                                </a>
+                            </NavItem>
+                        )}
+
+                        {!this.props.isLoggedIn && (
                             <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
                                 <Link className="nav-link  d-lg-block  green-text " color="default">
                                     Sign Up
@@ -233,16 +257,27 @@ class ComponentsNavbar extends React.Component {
                         </NavItem>
 
                         {this.props.isLoggedIn && (
-                            <NavItem>
-                                <button className="btn  btn-link text-dark btn-inbox">
-                                    <Link style={{ position: "relative" }} to={"/inbox"}>
-                                        <MenuOutline
-                                            className="white-text"
-                                            style={{ fontSize: 24 }}></MenuOutline>
-                                        <span className="new-notification d-none"></span>
-                                    </Link>
-                                </button>
-                            </NavItem>
+                            <>
+                                <NavItem>
+                                    <button className="btn btn-link text-dark btn-inbox">
+                                        <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
+                                            <Badge color={this.props.unreadMessages ? "secondary" : "default"} variant="dot" >
+                                                <MenuOutline className="white-text" style={{ fontSize: 24 }} />
+                                            </Badge>
+                                        </Link>
+                                    </button>
+                                </NavItem>
+
+                                <NavItem>
+                                    <button className="btn btn-link text-dark btn-inbox">
+                                        <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
+                                            <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
+                                                <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
+                                            </Badge>
+                                        </Link>
+                                    </button>
+                                </NavItem>
+                            </>
                         )}
 
                         {this.props.isLoggedIn && (
@@ -256,12 +291,16 @@ class ComponentsNavbar extends React.Component {
                                         nav
                                         onClick={(e) => e.preventDefault()}
                                         className={"wl-link-white "}>
-                                        <figure
-                                            className="avatar avatar-60 border-0">
+                                        <figure className="avatar avatar-60 border-0">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
-                                                    this.props.orgImage  ? (
-                                                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                                    this.props.orgImage ? (
+                                                        <div
+                                                            style={{
+                                                                display: "flex",
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                            }}>
                                                             <img
                                                                 src={this.props.orgImage}
                                                                 alt=""
@@ -269,18 +308,20 @@ class ComponentsNavbar extends React.Component {
                                                                     maxHeight: "30px",
                                                                     maxWidth: "30px",
                                                                     objectFit: "contain",
-                                                                    width: '30px',
-                                                                    height: '30px'
+                                                                    width: "30px",
+                                                                    height: "30px",
                                                                 }}
                                                             />
                                                         </div>
                                                     ) : this.props.userDetail.firstName ? (
                                                         this.props.userDetail.firstName.substr(0, 2)
                                                     ) : (
-                                                        this.props.userDetail.orgId && this.props.userDetail.orgId.substr(4, 2)
+                                                        this.props.userDetail.orgId &&
+                                                        this.props.userDetail.orgId.substr(4, 2)
                                                     )
                                                 ) : (
-                                                    this.props.userDetail.orgId && this.props.userDetail.orgId.substr(4, 2)
+                                                    this.props.userDetail.orgId &&
+                                                    this.props.userDetail.orgId.substr(4, 2)
                                                 )}
                                             </span>
                                         </figure>
@@ -288,10 +329,16 @@ class ComponentsNavbar extends React.Component {
                                         <i className="fa fa-cogs d-lg-none d-xl-none" />
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-with-icons">
+                                        <Link className={"dropdown-item"} to="/account">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Account
+                                        </Link>
+
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
                                             My Searches
                                         </Link>
+
                                         <Link className={"dropdown-item"} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Listings
@@ -322,10 +369,6 @@ class ComponentsNavbar extends React.Component {
                                         </Link>
 
 
-                                        <Link className={"dropdown-item"} to="/account">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Account
-                                        </Link>
                                         {/*<Link className={"dropdown-item"} to="">*/}
                                         {/*    <i className="tim-icons icon-bullet-list-67" />*/}
                                         {/*    Help*/}
@@ -348,39 +391,30 @@ class ComponentsNavbar extends React.Component {
                             </button>
                         </NavItem>
                     </Nav>
-                        {this.props.loading && <LinearIndeterminate/>}
-
-
-                    </Navbar>
-
-
-                </>
+                    {this.props.loading && <LinearIndeterminate />}
+                </Navbar>
+            </>
         );
     }
 }
-
-
 
 function LinearIndeterminate() {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-
-            <LinearProgress   style={{backgroundColor:"#212529"}}  />
-
+            <LinearProgress style={{ backgroundColor: "#212529" }} />
         </div>
     );
 }
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
-        right:0,
+        right: 0,
         position: "absolute",
-        top:"100%",
-        width: '100%',
-        '& > * + *': {
+        top: "100%",
+        width: "100%",
+        "& > * + *": {
             marginTop: theme.spacing(2),
         },
     },
@@ -394,10 +428,16 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
         orgImage: state.orgImage,
+        messages: state.messages,
+        notifications: state.notifications,
+        messageAlert: state.messageAlert,
+        notificationAlert: state.notificationAlert,
+        unreadMessages: state.unreadMessages,
+        unreadNotifications: state.unreadNotifications,
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -407,8 +447,12 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
-
+        getMessages: (data) => dispatch(actionCreator.getMessages(data)),
+        getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
+        dispatchMessageAlert: (data) => dispatch(actionCreator.messageAlert(data)),
+        dispatchNotificationAlert: (data) => dispatch(actionCreator.notificationAlert(data)),
+        dispatchUnreadMessages: (data) => dispatch(actionCreator.unreadMessages(data)),
+        dispatchUnreadNotifications: (data) => dispatch(actionCreator.unreadNotifications(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ComponentsNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(ComponentsNavbar);

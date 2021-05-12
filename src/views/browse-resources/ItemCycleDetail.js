@@ -203,11 +203,10 @@ class ItemCycleDetail extends Component {
             );
     }
 
-    componentWillMount() {
-        window.scrollTo(0, 0);
-    }
+
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.getResources();
     }
 
@@ -220,7 +219,10 @@ class ItemCycleDetail extends Component {
 
                     <div className="container ">
                         <div>
-                            <PageHeader pageTitle="Product Details" subTitle="See product details and Provenance." />
+                            <PageHeader
+                                pageTitle="Product Details"
+                                subTitle="See product details and Provenance."
+                            />
 
                             {this.state.item && (
                                 <>

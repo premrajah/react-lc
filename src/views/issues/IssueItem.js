@@ -1,11 +1,12 @@
-import React, {useState} from "react";
-import {Card, CardContent} from "@material-ui/core";
+import React, { useState } from "react";
+import { Card, CardContent } from "@material-ui/core";
 import PlaceHolderImg from "../../img/place-holder-lc.png";
 import moment from "moment/moment";
 import MoreMenu from "../../components/MoreMenu";
-import {Badge, Modal} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Badge, Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
+import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 
 const IssueItem = ({ item, onSubmitted }) => {
     const { artifacts, creator, issue, product, service_agent } = item;
@@ -46,15 +47,10 @@ const IssueItem = ({ item, onSubmitted }) => {
                         <div className="col">
                             <Card variant="outlined">
                                 <CardContent>
-
                                     <div className="row">
                                         <div className="col-md-2 col-sm-12">
                                             {product.artifacts && product.artifacts.length > 0 ? (
-                                                <img
-                                                    className="img-fluid img-list"
-                                                    src={product.artifacts[0].blob_url}
-                                                    alt=""
-                                                />
+                                                <ImageOnlyThumbnail images={product.artifacts} />
                                             ) : (
                                                 <img
                                                     className="img-fluid"
@@ -132,7 +128,6 @@ const IssueItem = ({ item, onSubmitted }) => {
                                             </div>
                                         )}
                                     </div>
-
                                 </CardContent>
                             </Card>
                         </div>

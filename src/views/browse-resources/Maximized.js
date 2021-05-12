@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 import {
     AgentBar,
     Avatar,
@@ -25,17 +25,18 @@ import {
     TextInput,
     Title,
     TitleBar,
-} from '@livechat/ui-kit'
+} from "@livechat/ui-kit";
 
 const getAvatarForUser = (userId, users) => {
-    const foundUser = users[userId]
+    const foundUser = users[userId];
     if (foundUser && foundUser.avatarUrl) {
-        return foundUser.avatarUrl
+        return foundUser.avatarUrl;
     }
-    return null
-}
+    return null;
+};
 
-const parseUrl = (url) => url && 'https://' + url.replace(/^(http(s)?\:\/\/)/, '').replace(/^\/\//, '')
+const parseUrl = (url) =>
+    url && "https://" + url.replace(/^(http(s)?\:\/\/)/, "").replace(/^\/\//, "");
 
 const Maximized = ({
     chatState,
@@ -54,11 +55,10 @@ const Maximized = ({
     return (
         <div
             style={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-            }}
-        >
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+            }}>
             <TitleBar
                 rightIcons={[
                     <IconButton key="close" onClick={minimize}>
@@ -78,20 +78,24 @@ const Maximized = ({
                             <Subtitle>Support hero</Subtitle>
                         </Column>
                         <Column flexFit>
-                            {chatState === 'CHATTING' &&
+                            {chatState === "CHATTING" && (
                                 <Row>
                                     <IconButton onClick={rateGood}>
-                                        <RateGoodIcon style={{
-                                            opacity: rate === 'good' ? '1' : '0.5'
-                                        }} />
+                                        <RateGoodIcon
+                                            style={{
+                                                opacity: rate === "good" ? "1" : "0.5",
+                                            }}
+                                        />
                                     </IconButton>
                                     <IconButton onClick={rateBad}>
-                                        <RateBadIcon style={{
-                                            opacity: rate === 'bad' ? '1' : '0.5'
-                                        }} />
+                                        <RateBadIcon
+                                            style={{
+                                                opacity: rate === "bad" ? "1" : "0.5",
+                                            }}
+                                        />
                                     </IconButton>
                                 </Row>
-                            }
+                            )}
                         </Column>
                     </Row>
                 </AgentBar>
@@ -100,20 +104,19 @@ const Maximized = ({
                 style={{
                     flexGrow: 1,
                     minHeight: 0,
-                    height: '100%',
-                }}
-            >
+                    height: "100%",
+                }}>
                 <MessageList active containScrollInSubtree>
                     {events.map((messageGroup, index) => (
                         <MessageGroup key={index} onlyFirstWithMeta>
-                            {messageGroup.map(message => (
+                            {messageGroup.map((message) => (
                                 <Message
                                     avatarUrl={parseUrl(getAvatarForUser(message.authorId, users))}
                                     date={message.parsedDate}
                                     isOwn={message.authorId === ownId || message.own === true}
-                                    key={message.id}
-                                >
-                                    <Bubble isOwn={message.authorId === ownId || message.own === true}>
+                                    key={message.id}>
+                                    <Bubble
+                                        isOwn={message.authorId === ownId || message.own === true}>
                                         {message.title && <MessageTitle title={message.title} />}
                                         {message.text && <MessageText>{message.text}</MessageText>}
                                         {message.imageUrl && (
@@ -121,20 +124,19 @@ const Maximized = ({
                                                 <img src={message.imageUrl} alt="" />
                                             </MessageMedia>
                                         )}
-                                        {message.buttons &&
-                                            message.buttons.length !== 0 && (
-                                                <MessageButtons>
-                                                    {message.buttons.map((button, buttonIndex) => (
-                                                        <MessageButton
-                                                            key={buttonIndex}
-                                                            label={button.title}
-                                                            onClick={() => {
-                                                                sendMessage(button.postback)
-                                                            }}
-                                                        />
-                                                    ))}
-                                                </MessageButtons>
-                                            )}
+                                        {message.buttons && message.buttons.length !== 0 && (
+                                            <MessageButtons>
+                                                {message.buttons.map((button, buttonIndex) => (
+                                                    <MessageButton
+                                                        key={buttonIndex}
+                                                        label={button.title}
+                                                        onClick={() => {
+                                                            sendMessage(button.postback);
+                                                        }}
+                                                    />
+                                                ))}
+                                            </MessageButtons>
+                                        )}
                                     </Bubble>
                                 </Message>
                             ))}
@@ -154,17 +156,16 @@ const Maximized = ({
             </TextComposer>
             <div
                 style={{
-                    textAlign: 'center',
-                    fontSize: '.6em',
-                    padding: '.4em',
-                    background: '#fff',
-                    color: '#888',
-                }}
-            >
-                {'Powered by LiveChat'}
+                    textAlign: "center",
+                    fontSize: ".6em",
+                    padding: ".4em",
+                    background: "#fff",
+                    color: "#888",
+                }}>
+                {"Powered by LiveChat"}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Maximized
+export default Maximized;

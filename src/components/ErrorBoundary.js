@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import UnableToLoad from "./UnableToLoad";
 
 class ErrorBoundary extends Component {
@@ -8,14 +8,11 @@ class ErrorBoundary extends Component {
 
     static getDerivedStateFromError(error) {
         return {
-            hasError: true
-        }
+            hasError: true,
+        };
     }
 
-    componentDidCatch(error, info) {
-
-
-    }
+    componentDidCatch(error, info) {}
 
     render() {
         if (this.state.hasError) {

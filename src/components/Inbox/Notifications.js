@@ -1,115 +1,157 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
-import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { baseUrl } from "../../Util/Constants";
 import NotificationItem from "./NotificationItem";
 import _ from "lodash";
+import * as actionCreator from "../../store/actions/actions";
+import reactStringReplace from "react-string-replace";
+import {Card, CardContent, Snackbar} from "@material-ui/core";
+import NotIcon from "@material-ui/icons/Notifications";
+import moment from "moment/moment";
+import Org from "../Org/Org";
+import { Link } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
+const ORG_REGEX = /(Org\/[\w\d-]+)/g;
+const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
+const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
+const MATCH_REGEX = /Match\/([\w\d]+)/g;
+const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
+const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
+const BRACKETS_REGEX = /[(\[)(\])]/g;
 
 class Notifications extends Component {
+
     state = {
-        allNotifications: [],
-    };
+        readNotificationAlert: false,
+    }
 
-    getNotifications = (userDetails) => {
-        if (!userDetails) return;
-        const { token, orgId } = userDetails;
+    messageRead = (messageId) => {
+        if(!messageId) return;
 
-        axios
-            .get(`${baseUrl}message/notif`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((response) => {
-                this.setState({
-                    allNotifications: _.orderBy(
-                        response.data.data,
-                        ["message._ts_epoch_ms"],
-                        ["desc"]
-                    ),
-                });
-            })
-            .catch((error) => {});
-    };
+        const payload = {
+            "msg_id": messageId
+        }
 
-    deleteNotificationCall = (key) => {
-        if (!key) return;
-
-        axios
-            .delete(`${baseUrl}message/${key}`, {
-                headers: { Authorization: `Bearer ${this.props.userDetail.token}` },
-            })
-            .then((response) => {
-                if (response.status === 200) {
-                    this.getNotifications(this.props.userDetail);
+        axios.post(`${baseUrl}message/read`, payload)
+            .then(response => {
+                if(response.status === 200) {
+                    this.setState({readNotificationAlert: true});
                 }
+            }, (error) => {})
+            .catch(error => {
+                this.setState({readNotificationAlert: false});
             })
-            .catch((error) => {});
-    };
+    }
 
-    checkNotifications = (item) => {
+
+
+    checkNotifications = (item, index) => {
         if (!item) return;
 
-        const { message } = item;
+        const { message, orgs } = item;
         let text;
+        
+        const flags = orgs.length > 0 && orgs.filter(org => org.read_flag).filter(org => org.org._id === this.props.userDetail.orgId).map(org => org.read_flag).map(f => f.flag)[0];
+        const readTime = orgs.length > 0 && orgs.filter(org => org.read_flag).filter(org => org.org._id === this.props.userDetail.orgId).map(org => org.read_flag)[0];
+        const messageId = item.message._id;
 
-        text = message.text.replaceAll(REGEX_ID_ARRAY, (match) => {
-            if (match.startsWith("Product/")) {
-                return `<a href="/${match}" class="green-link-url" style={{color: 'red'}}>Product</a>`;
-            } else if (match.startsWith("Org/")) {
-                return `<span class="blue-text"><b>${match.substr(4)}</b></span>`;
-            } else if (match.startsWith("Cycle/")) {
-                return `<a href="/${match}" class="green-link-url">Cycle</a>`;
-            } else if (match.startsWith("Match/")) {
-                return `<a href="/${match}" class="green-link-url">Match</a>`;
-            } else {
-                return match;
-            }
-        });
+
+
+        text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
+            <Org key={i + Math.random() * 100} orgId={match} />
+        ));
+
+        text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
+            <>
+                <span>Product </span>
+                <Link key={i + Math.random() * 101} to={`product/${match}`} onClick={() => this.messageRead(messageId)}>
+                    <u className="blue-text">Link</u>
+                </Link>
+            </>
+        ));
+
+        text = reactStringReplace(text, CYCLE_REGEX, (match, i) => (
+            <Link key={i + Math.random() * 102} to={`cycle/${match}`} onClick={() => this.messageRead(messageId)}>
+                <u className="blue-text">Cycle</u>
+            </Link>
+        ));
+
+        text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
+            <Link key={i + Math.random() * 103} to={`match/${match}`} onClick={() => this.messageRead(messageId)}>
+                <u className="blue-text">Match</u>
+            </Link>
+        ));
+
+        text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
+            <Link key={i + Math.random() * 104} to="/approve" onClick={() => this.messageRead(messageId)}>
+                <u className="blue-text">To Approvals Page</u>
+            </Link>
+        ));
+
+        text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
+            <Link key={i + Math.random() * 105} to="/approve" onClick={() => this.messageRead(messageId)}>
+                <u className="blue-text">To Approvals Page</u>
+            </Link>
+        ));
+
+
 
         return (
-            // <div key={message._ts_epoch_ms} dangerouslySetInnerHTML={{ __html: text }} />
+            <Card key={index} variant="outlined" className="mb-2" style={{opacity: `${flags ? '0.5' : '1'}` }}>
+                <CardContent>
+                    <div className="row">
+                        <div className="col-12">
+                            <NotIcon
+                                style={{
+                                    color: "#eee",
+                                    float: "left",
+                                    marginRight: "15px",
+                                    marginTop: "3px",
+                                }}
+                            />
+                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>
 
-            <div key={message._ts_epoch_ms}>
-                <NotificationItem
-                    item={item}
-                    editText={text}
-                    onClose={this.deleteNotificationCall}
-                />
-            </div>
+                            <span className="text-mute time-text">
+                                <span className="mr-4">{moment(message._ts_epoch_ms).fromNow()}</span>
+                                <span className="">{readTime ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}` : ''}</span>
+                                {!readTime ? <span onClick={() => this.messageRead(messageId)} style={{cursor: 'pointer'}}>Mark as read</span> : null}
+                            </span>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
         );
     };
 
     componentDidMount() {
-        this.getNotifications(this.props.userDetail);
-        this.updateNotifications();
-    }
-
-    interval;
-    updateNotifications() {
-        this.interval = setInterval(() => {
-            this.getNotifications(this.props.userDetail);
-        }, 10000);
+        this.props.getNotifications();
+        this.timer = setInterval(this.props.getNotifications, 10000);
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval);
+        clearInterval(this.timer);
     }
 
     render() {
         return (
+
             <div>
+                <Snackbar open={this.state.readNotificationAlert} autoHideDuration={6000} onClick={() => this.setState({readNotificationAlert: false})} onClose={() => this.setState({readNotificationAlert: false})}>
+                    <Alert  severity="success">Notification marked as read.</Alert>
+                </Snackbar>
+
                 <h5 className="blue-text mb-4">
                     Notifications (
-                    {this.state.allNotifications.length <= 0
-                        ? "..."
-                        : this.state.allNotifications.length}
+                    {this.props.notifications.length <= 0 ? "..." : this.props.notifications.length}
                     )
                 </h5>
                 <div className="notification-content">
-                    {this.state.allNotifications.length > 0
-                        ? this.state.allNotifications.map((item) => {
-                              return this.checkNotifications(item);
+                    {this.props.notifications.length > 0
+                        ? this.props.notifications.map((item, index) => {
+                              return this.checkNotifications(item, index);
                           })
                         : "No notifications... "}
                 </div>
@@ -122,12 +164,13 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
+        notifications: state.notifications,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
+        getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
     };
 };
 

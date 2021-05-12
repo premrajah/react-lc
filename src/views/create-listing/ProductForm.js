@@ -1,23 +1,22 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Error} from "@material-ui/icons";
-import {makeStyles} from "@material-ui/core/styles";
+import { Cancel, Check, Error, Publish } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import TextField from "@material-ui/core/TextField";
-import {withStyles} from "@material-ui/core/styles/index";
-import AddPhotoIcon from "@material-ui/icons/AddAPhoto";
+import { withStyles } from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import _ from "lodash";
-import {Spinner} from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "../../components/AddSite";
@@ -97,6 +96,7 @@ class ProductForm extends Component {
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["defined", "prototype", "aggregate"],
+            condition: ["new", "used", "salvage"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -117,7 +117,6 @@ class ProductForm extends Component {
 
         this.getProducts = this.getProducts.bind(this);
         this.selectProduct = this.selectProduct.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -194,49 +193,6 @@ class ProductForm extends Component {
         });
     }
 
-    uploadImageOld(files) {
-        if (files && files.length > 0) {
-            for (var i = 0; i < files.length; i++) {
-                let imgFile = files[i];
-
-                this.getBase64(files[i]).then((data) => {
-                    axios
-                        .post(
-                            baseUrl + "artifact",
-                            {
-                                metadata: {
-                                    name: imgFile.name,
-                                    mime_type: imgFile.type,
-                                    context: "",
-                                },
-
-                                data_as_base64_string: btoa(data),
-                            },
-
-                            {
-                                headers: {
-                                    Authorization: "Bearer " + this.props.userDetail.token,
-                                },
-                            }
-                        )
-                        .then((res) => {
-                            //
-
-                            var images = this.state.images;
-
-                            images.push(res.data.data._key);
-
-                            this.setState({
-                                images: images,
-                            });
-                        })
-                        .catch((error) => {
-                            //
-                        });
-                });
-            }
-        }
-    }
 
     uploadImage(files) {
         if (files.length > 0) {
@@ -538,6 +494,7 @@ class ProductForm extends Component {
         let errors = {};
         let formIsValid = true;
 
+
         //Name
         if (!fields["purpose"]) {
             formIsValid = false;
@@ -605,21 +562,6 @@ class ProductForm extends Component {
                     fields["email"].length - lastDotPos > 2
                 )
             ) {
-                // =======
-                //         if (typeof fields["email"] !== "undefined") {
-                //             let lastAtPos = fields["email"].lastIndexOf("@");
-                //             let lastDotPos = fields["email"].lastIndexOf(".");
-
-                //             if (
-                //                 !(
-                //                     lastAtPos < lastDotPos &&
-                //                     lastAtPos > 0 &&
-                //                     fields["email"].indexOf("@@") === -1 &&
-                //                     lastDotPos > 2 &&
-                //                     fields["email"].length - lastDotPos > 2
-                //                 )
-                //             ) {
-                // >>>>>>> fe600133a7e564c485adc4f520a1e7468cb147f3
                 formIsValid = false;
                 errors["email"] = "Invalid email address";
             }
@@ -635,11 +577,7 @@ class ProductForm extends Component {
         let errors = {};
         let formIsValid = true;
 
-        //Name
-        // if (!fields["purpose"]) {
-        //     formIsValid = false;
-        //     errors["purpose"] = "Required";
-        // }
+
         if (!fields["title"]) {
             formIsValid = false;
             errors["title"] = "Required";
@@ -788,6 +726,7 @@ class ProductForm extends Component {
 
             const title = data.get("title");
             const purpose = data.get("purpose");
+            const condition = data.get("condition");
             const description = data.get("description");
             const category = data.get("category");
             const type = data.get("type");
@@ -805,8 +744,9 @@ class ProductForm extends Component {
 
             // const site=data.get("deliver")
 
-            var productData = {
+            const productData = {
                 purpose: purpose,
+                condition: condition,
                 name: title,
                 description: description,
                 category: category,
@@ -983,13 +923,8 @@ class ProductForm extends Component {
         });
     }
 
-    handleDateChange() {}
-
-    UNSAFE_componentWillMount() {
-        window.scrollTo(0, 0);
-    }
-
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.getFiltersCategories();
 
         this.setUpYearList();
@@ -1016,7 +951,7 @@ class ProductForm extends Component {
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
                         <form onSubmit={this.handleSubmitProduct}>
-                            <div className="row no-gutters justify-content-center ">
+                            <div className="row no-gutters">
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
                                         Give your product a title
@@ -1039,7 +974,10 @@ class ProductForm extends Component {
                                         </span>
                                     )}
                                 </div>
-                                <div className="col-12 mt-4">
+                            </div>
+
+                            <div className="row no-gutters mt-4">
+                                <div className="col-md-6 col-sm-12 d-flex justify-content-start align-items-center">
                                     <FormControlLabel
                                         control={
                                             <Checkbox
@@ -1053,129 +991,136 @@ class ProductForm extends Component {
                                     />
                                 </div>
 
-                                <div className="col-12 mb-3">
-                                    <div className={"row"}>
-                                        <div className={"col-md-4 col-sm-12 col-xs-12"}>
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-3"}>
-                                                Resource Category
-                                            </div>
-                                            <FormControl
-                                                variant="outlined"
-                                                className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.handleChangeProduct.bind(
-                                                        this,
-                                                        "category"
-                                                    )}
-                                                    inputProps={{
-                                                        name: "category",
-                                                        id: "outlined-age-native-simple",
-                                                    }}>
-                                                    <option value={null}>Select</option>
-
-                                                    {this.state.categories.map((item) => (
-                                                        <option value={item.name}>
-                                                            {item.name}
-                                                        </option>
-                                                    ))}
-                                                </Select>
-
-                                                <FormHelperText>
-                                                    What resources do you need to make this product?
-                                                </FormHelperText>
-                                            </FormControl>
-                                            {this.state.errorsProduct["category"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errorsProduct["category"]}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <div className={"col-md-4 col-sm-12 col-xs-12"}>
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-3"}>
-                                                Type
-                                            </div>
-                                            <FormControl
-                                                disabled={
-                                                    this.state.subCategories.length > 0
-                                                        ? false
-                                                        : true
-                                                }
-                                                variant="outlined"
-                                                className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.handleChangeProduct.bind(
-                                                        this,
-                                                        "type"
-                                                    )}
-                                                    inputProps={{
-                                                        name: "type",
-                                                        id: "outlined-age-native-simple",
-                                                    }}>
-                                                    <option value={null}>Select</option>
-
-                                                    {this.state.subCategories.map((item) => (
-                                                        <option value={item.name}>
-                                                            {item.name}
-                                                        </option>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
-                                            {this.state.errorsProduct["type"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errorsProduct["type"]}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <div className={"col-md-4 col-sm-12 col-xs-12"}>
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-3"}>
-                                                State
-                                            </div>
-                                            <FormControl
-                                                disabled={
-                                                    this.state.states.length > 0 ? false : true
-                                                }
-                                                variant="outlined"
-                                                className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={this.handleChangeProduct.bind(
-                                                        this,
-                                                        "state"
-                                                    )}
-                                                    inputProps={{
-                                                        name: "state",
-                                                        id: "outlined-age-native-simple",
-                                                    }}>
-                                                    <option value={null}>Select</option>
-
-                                                    {this.state.states.map((item) => (
-                                                        <option value={item}>{item}</option>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
-                                            {this.state.errorsProduct["type"] && (
-                                                <span className={"text-mute small"}>
-                                                    <span style={{ color: "red" }}>* </span>
-                                                    {this.state.errorsProduct["type"]}
-                                                </span>
-                                            )}
-                                        </div>
+                                <div className="col-md-6 col-sm-12">
+                                    <div
+                                        className={"custom-label text-bold text-blue mb-3"}>
+                                        Condition
                                     </div>
+                                    <FormControl
+                                        variant="outlined"
+                                        className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
+                                            native
+                                            onChange={this.handleChangeProduct.bind(
+                                                this,
+                                                "condition"
+                                            )}
+                                            inputProps={{
+                                                name: "condition",
+                                                id: "outlined-age-native-simple",
+                                            }}>
+                                            {this.state.condition.map((item, i) => (
+                                                <option key={i} value={item}>{item}</option>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </div>
+
+                            <div className="row mt-4">
+                                <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                    <div className={"custom-label text-bold text-blue mb-3"}>
+                                        Resource Category
+                                    </div>
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
+                                            native
+                                            onChange={this.handleChangeProduct.bind(
+                                                this,
+                                                "category"
+                                            )}
+                                            inputProps={{
+                                                name: "category",
+                                                id: "outlined-age-native-simple",
+                                            }}>
+                                            <option value={null}>Select</option>
+
+                                            {this.state.categories.map((item, i) => (
+                                                <option key={i} value={item.name}>{item.name}</option>
+                                            ))}
+                                        </Select>
+
+                                        <FormHelperText>
+                                            Which category is your product located within?
+                                        </FormHelperText>
+                                    </FormControl>
+                                    {this.state.errorsProduct["category"] && (
+                                        <span className={"text-mute small"}>
+                                            <span style={{ color: "red" }}>* </span>
+                                            {this.state.errorsProduct["category"]}
+                                        </span>
+                                    )}
                                 </div>
 
-                                <div className="col-12 mt-4">
+                                <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                    <div className={"custom-label text-bold text-blue mb-3"}>
+                                        Type
+                                    </div>
+                                    <FormControl
+                                        disabled={
+                                            this.state.subCategories.length > 0 ? false : true
+                                        }
+                                        variant="outlined"
+                                        className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
+                                            native
+                                            onChange={this.handleChangeProduct.bind(this, "type")}
+                                            inputProps={{
+                                                name: "type",
+                                                id: "outlined-age-native-simple",
+                                            }}>
+                                            <option value={null}>Select</option>
+
+                                            {this.state.subCategories.map((item, i) => (
+                                                <option key={i} value={item.name}>{item.name}</option>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    {this.state.errorsProduct["type"] && (
+                                        <span className={"text-mute small"}>
+                                            <span style={{ color: "red" }}>* </span>
+                                            {this.state.errorsProduct["type"]}
+                                        </span>
+                                    )}
+                                </div>
+
+                                <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                    <div className={"custom-label text-bold text-blue mb-3"}>
+                                        State
+                                    </div>
+                                    <FormControl
+                                        disabled={this.state.states.length > 0 ? false : true}
+                                        variant="outlined"
+                                        className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
+                                        <Select
+                                            native
+                                            onChange={this.handleChangeProduct.bind(this, "state")}
+                                            inputProps={{
+                                                name: "state",
+                                                id: "outlined-age-native-simple",
+                                            }}>
+                                            <option value={null}>Select</option>
+
+                                            {this.state.states.map((item, i) => (
+                                                <option key={i} value={item}>{item}</option>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    {this.state.errorsProduct["type"] && (
+                                        <span className={"text-mute small"}>
+                                            <span style={{ color: "red" }}>* </span>
+                                            {this.state.errorsProduct["type"]}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="row no-gutters mt-4">
+                                <div className="col-12">
                                     <div className="row no-gutters justify-content-center ">
                                         <div className="col-12 ">
                                             <div
@@ -1205,8 +1150,8 @@ class ProductForm extends Component {
                                                     }}>
                                                     <option value={null}>Select</option>
 
-                                                    {this.state.units.map((item) => (
-                                                        <option value={item}>{item}</option>
+                                                    {this.state.units.map((item, i) => (
+                                                        <option key={i} value={item}>{item}</option>
                                                     ))}
                                                 </Select>
                                             </FormControl>
@@ -1240,8 +1185,10 @@ class ProductForm extends Component {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="col-12  mt-4">
+                            <div className="row no-gutters mt-4">
+                                <div className="col-12">
                                     <div className="row camera-grids   no-gutters   ">
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
                                             <div
@@ -1262,8 +1209,8 @@ class ProductForm extends Component {
                                                         name: "purpose",
                                                         id: "outlined-age-native-simple",
                                                     }}>
-                                                    {this.state.purpose.map((item) => (
-                                                        <option value={item}>{item}</option>
+                                                    {this.state.purpose.map((item, i) => (
+                                                        <option key={i} value={item}>{item}</option>
                                                     ))}
                                                 </Select>
                                             </FormControl>
@@ -1297,8 +1244,8 @@ class ProductForm extends Component {
                                                     }}>
                                                     <option value={null}>Select</option>
 
-                                                    {this.props.siteList.map((item) => (
-                                                        <option value={item._key}>
+                                                    {this.props.siteList.map((item, index) => (
+                                                        <option key={index} value={item._key}>
                                                             {item.name + "(" + item.address + ")"}
                                                         </option>
                                                     ))}
@@ -1313,8 +1260,7 @@ class ProductForm extends Component {
                                             )}
 
                                             <p style={{ margin: "10px 0" }}>
-
-                                                Don’t see it on here?
+                                                <span className="mr-1">Don’t see it on here?</span>
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
@@ -1355,8 +1301,10 @@ class ProductForm extends Component {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="col-12 mt-4">
+                            <div className="row no-gutters mt-4">
+                                <div className="col-12">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
                                         Give it a description
                                     </div>
@@ -1383,9 +1331,11 @@ class ProductForm extends Component {
                                         </span>
                                     )}
                                 </div>
+                            </div>
+
+                            <div className="row no-gutters mt-2">
                                 <div className="col-12 text-left">
                                     <span style={{ margin: "10px 0", float: "left" }}>
-
                                         <span
                                             onClick={this.showMoreDetails}
                                             className={
@@ -1397,360 +1347,353 @@ class ProductForm extends Component {
                                         </span>
                                     </span>
                                 </div>
+                            </div>
 
-                                {this.state.moreDetail && (
-                                    <>
-                                        <div className="col-12 mt-4">
-                                            <div className="row">
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        Year Of Manufacture
-                                                    </div>
+                            {this.state.moreDetail && (
+                                <>
+                                    <div className="col-12 mt-4">
+                                        <div className="row">
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    Year Of Manufacture
+                                                </div>
 
-                                                    <FormControl
-                                                        variant="outlined"
-                                                        className={classes.formControl}>
-                                                        {/*<InputLabel htmlFor="outlined-age-native-simple">Year Of Manufacture</InputLabel>*/}
-                                                        <Select
-                                                            native
-                                                            name={"manufacturedDate"}
-                                                            onChange={this.handleChangeProduct.bind(
-                                                                this,
+                                                <FormControl
+                                                    variant="outlined"
+                                                    className={classes.formControl}>
+                                                    {/*<InputLabel htmlFor="outlined-age-native-simple">Year Of Manufacture</InputLabel>*/}
+                                                    <Select
+                                                        native
+                                                        name={"manufacturedDate"}
+                                                        onChange={this.handleChangeProduct.bind(
+                                                            this,
+                                                            "manufacturedDate"
+                                                        )}
+                                                        // label="Year Of Manufacture"
+                                                        inputProps={{
+                                                            name: "manufacturedDate",
+                                                            id: "outlined-age-native-simple",
+                                                        }}>
+                                                        <option value={null}>Select</option>
+
+                                                        {this.state.yearsList.map((item, i) => (
+                                                            <option key={i} value={item}>{item}</option>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
+
+                                                {this.state.errorsProduct["manufacturedDate"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {
+                                                            this.state.errorsProduct[
                                                                 "manufacturedDate"
-                                                            )}
-                                                            // label="Year Of Manufacture"
-                                                            inputProps={{
-                                                                name: "manufacturedDate",
-                                                                id: "outlined-age-native-simple",
-                                                            }}>
-                                                            <option value={null}>Select</option>
+                                                            ]
+                                                        }
+                                                    </span>
+                                                )}
+                                            </div>
 
-                                                            {this.state.yearsList.map((item) => (
-                                                                <option value={item}>{item}</option>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
-
-                                                    {this.state.errorsProduct[
-                                                        "manufacturedDate"
-                                                    ] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {
-                                                                this.state.errorsProduct[
-                                                                    "manufacturedDate"
-                                                                ]
-                                                            }
-                                                        </span>
-                                                    )}
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    Brand
                                                 </div>
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        Brand
-                                                    </div>
-
-                                                    <TextField
-                                                        onChange={this.handleChangeProduct.bind(
-                                                            this,
-                                                            "brand"
-                                                        )}
-                                                        name={"brand"}
-                                                        id="outlined-basic"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                    {this.state.errorsProduct["brand"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsProduct["brand"]}
-                                                        </span>
+                                                <TextField
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "brand"
                                                     )}
+                                                    name={"brand"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["brand"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["brand"]}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    Model Number
                                                 </div>
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        Model Number
-                                                    </div>
-
-                                                    <TextField
-                                                        onChange={this.handleChangeProduct.bind(
-                                                            this,
-                                                            "model"
-                                                        )}
-                                                        name={"model"}
-                                                        id="outlined-basic"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                    {this.state.errorsProduct["model"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsProduct["model"]}
-                                                        </span>
+                                                <TextField
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "model"
                                                     )}
+                                                    name={"model"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["model"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["model"]}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    Serial Number
                                                 </div>
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        Serial Number
-                                                    </div>
-
-                                                    <TextField
-                                                        onChange={this.handleChangeProduct.bind(
-                                                            this,
-                                                            "serial"
-                                                        )}
-                                                        name={"serial"}
-                                                        id="outlined-basic"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                    {this.state.errorsProduct["serial"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsProduct["serial"]}
-                                                        </span>
+                                                <TextField
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "serial"
                                                     )}
+                                                    name={"serial"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["serial"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["serial"]}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    SKU
                                                 </div>
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        SKU
-                                                    </div>
-
-                                                    <TextField
-                                                        onChange={this.handleChangeProduct.bind(
-                                                            this,
-                                                            "sku"
-                                                        )}
-                                                        name={"sku"}
-                                                        id="outlined-basic"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                    {this.state.errorsProduct["sku"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsProduct["sku"]}
-                                                        </span>
+                                                <TextField
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "sku"
                                                     )}
+                                                    name={"sku"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["sku"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["sku"]}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    UPC
                                                 </div>
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        UPC
-                                                    </div>
-
-                                                    <TextField
-                                                        onChange={this.handleChangeProduct.bind(
-                                                            this,
-                                                            "upc"
-                                                        )}
-                                                        name={"upc"}
-                                                        id="outlined-basic"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                    {this.state.errorsProduct["upc"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsProduct["upc"]}
-                                                        </span>
+                                                <TextField
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "upc"
                                                     )}
+                                                    name={"upc"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["upc"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["upc"]}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-1"
+                                                    }>
+                                                    Part No.
                                                 </div>
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue mb-1"
-                                                        }>
-                                                        Part No.
-                                                    </div>
-
-                                                    <TextField
-                                                        onChange={this.handleChangeProduct.bind(
-                                                            this,
-                                                            "part_no"
-                                                        )}
-                                                        name={"part_no"}
-                                                        id="outlined-basic"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                    {this.state.errorsProduct["part_no"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsProduct["part_no"]}
-                                                        </span>
+                                                <TextField
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "part_no"
                                                     )}
-                                                </div>
+                                                    name={"part_no"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["part_no"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["part_no"]}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
-                                    </>
-                                )}
-
-                                <div className="col-12 mt-4">
-                                    <div className={"custom-label text-bold text-blue mb-3"}>
-                                        Add Photos or Documents
                                     </div>
+                                </>
+                            )}
 
-                                    <div className="container-fluid  pb-5 ">
-                                        <div className="row camera-grids   no-gutters   ">
-                                            <div className="col-12  text-left ">
-                                                <div className="">
-                                                    <div className={""}>
-                                                        {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+                            <div className="col-12 mt-4">
+                                <div className={"custom-label text-bold text-blue mb-3"}>
+                                    Add Photos or Documents
+                                </div>
 
-                                                        <div className={"file-uploader-box"}>
+                                <div className="container-fluid  pb-5 ">
+                                    <div className="row camera-grids   no-gutters   ">
+                                        <div className="col-12  text-left ">
+                                            <div className="">
+                                                <div className={""}>
+                                                    {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+
+                                                    <div className={"file-uploader-box"}>
+                                                        <div
+                                                            className={
+                                                                "file-uploader-thumbnail-container"
+                                                            }>
                                                             <div
                                                                 className={
                                                                     "file-uploader-thumbnail-container"
                                                                 }>
-                                                                <div
-                                                                    className={
-                                                                        "file-uploader-thumbnail-container"
-                                                                    }>
-                                                                    <label
-                                                                        className={
-                                                                            "label-file-input"
-                                                                        }
-                                                                        htmlFor="fileInput">
-                                                                        <AddPhotoIcon
-                                                                            style={{
-                                                                                fontSize: 32,
-                                                                                color: "#a8a8a8",
-                                                                                margin: "auto",
-                                                                            }}
-                                                                        />
-                                                                    </label>
-                                                                    <input
-                                                                        accept={MIME_TYPES_ACCEPT}
-                                                                        style={{ display: "none" }}
-                                                                        id="fileInput"
-                                                                        className={""}
-                                                                        multiple
-                                                                        type="file"
-                                                                        onChange={this.handleChangeFile.bind(
-                                                                            this
-                                                                        )}
+                                                                <label
+                                                                    className={"label-file-input"}
+                                                                    htmlFor="fileInput">
+                                                                    <Publish
+                                                                        style={{
+                                                                            fontSize: 32,
+                                                                            color: "#a8a8a8",
+                                                                            margin: "auto",
+                                                                        }}
                                                                     />
-                                                                </div>
+                                                                </label>
+                                                                <input
+                                                                    accept={MIME_TYPES_ACCEPT}
+                                                                    style={{ display: "none" }}
+                                                                    id="fileInput"
+                                                                    className={""}
+                                                                    multiple
+                                                                    type="file"
+                                                                    onChange={this.handleChangeFile.bind(
+                                                                        this
+                                                                    )}
+                                                                />
+                                                            </div>
 
-                                                                {this.state.files &&
-                                                                    this.state.files.map(
-                                                                        (item, index) => (
+                                                            {this.state.files &&
+                                                                this.state.files.map(
+                                                                    (item, index) => (
+                                                                        <div key={index}
+                                                                            className={
+                                                                                "file-uploader-thumbnail-container"
+                                                                            }>
+                                                                            {/*<img src={URL.createObjectURL(item)}/>*/}
                                                                             <div
+                                                                                data-index={index}
+                                                                                // data-url={URL.createObjectURL(item.file)}
+
                                                                                 className={
-                                                                                    "file-uploader-thumbnail-container"
-                                                                                }>
-                                                                                {/*<img src={URL.createObjectURL(item)}/>*/}
-                                                                                <div
-                                                                                    data-index={
-                                                                                        index
-                                                                                    }
-                                                                                    // data-url={URL.createObjectURL(item.file)}
-
-                                                                                    className={
-                                                                                        "file-uploader-thumbnail"
-                                                                                    }
-                                                                                    style={{
-                                                                                        backgroundImage:
-                                                                                            "url(" +
-                                                                                            URL.createObjectURL(
-                                                                                                item.file
-                                                                                            ) +
-                                                                                            ")",
-                                                                                    }}>
-                                                                                    {item.status ===
-                                                                                        0 && (
-                                                                                        <Spinner
-                                                                                            as="span"
-                                                                                            animation="border"
-                                                                                            size="sm"
-                                                                                            role="status"
-                                                                                            aria-hidden="true"
-                                                                                            style={{
-                                                                                                color:
-                                                                                                    "#cccccc",
-                                                                                            }}
-                                                                                            className={
-                                                                                                "center-spinner"
-                                                                                            }
-                                                                                        />
-                                                                                    )}
-
-                                                                                    {item.status ===
-                                                                                        1 && (
-                                                                                        <Check
-                                                                                            style={{
-                                                                                                color:
-                                                                                                    "#cccccc",
-                                                                                            }}
-                                                                                            className={
-                                                                                                " file-upload-img-thumbnail-check"
-                                                                                            }
-                                                                                        />
-                                                                                    )}
-                                                                                    {item.status ===
-                                                                                        2 && (
-                                                                                        <span
-                                                                                            className={
-                                                                                                "file-upload-img-thumbnail-error"
-                                                                                            }>
-                                                                                            <Error
-                                                                                                style={{
-                                                                                                    color:
-                                                                                                        "red",
-                                                                                                }}
-                                                                                                className={
-                                                                                                    " "
-                                                                                                }
-                                                                                            />
-                                                                                            <p>
-                                                                                                Error!
-                                                                                            </p>
-                                                                                        </span>
-                                                                                    )}
-                                                                                    <Cancel
-                                                                                        data-name={
-                                                                                            item
-                                                                                                .file
-                                                                                                .name
-                                                                                        }
-                                                                                        data-index={
-                                                                                            item.id
-                                                                                        }
-                                                                                        onClick={this.handleCancel.bind(
-                                                                                            this
-                                                                                        )}
+                                                                                    "file-uploader-thumbnail"
+                                                                                }
+                                                                                style={{
+                                                                                    backgroundImage:
+                                                                                        "url(" +
+                                                                                        URL.createObjectURL(
+                                                                                            item.file
+                                                                                        ) +
+                                                                                        ")",
+                                                                                }}>
+                                                                                {item.status ===
+                                                                                    0 && (
+                                                                                    <Spinner
+                                                                                        as="span"
+                                                                                        animation="border"
+                                                                                        size="sm"
+                                                                                        role="status"
+                                                                                        aria-hidden="true"
+                                                                                        style={{
+                                                                                            color:
+                                                                                                "#cccccc",
+                                                                                        }}
                                                                                         className={
-                                                                                            "file-upload-img-thumbnail-cancel"
+                                                                                            "center-spinner"
                                                                                         }
                                                                                     />
-                                                                                </div>
+                                                                                )}
+
+                                                                                {item.status ===
+                                                                                    1 && (
+                                                                                    <Check
+                                                                                        style={{
+                                                                                            color:
+                                                                                                "#cccccc",
+                                                                                        }}
+                                                                                        className={
+                                                                                            " file-upload-img-thumbnail-check"
+                                                                                        }
+                                                                                    />
+                                                                                )}
+                                                                                {item.status ===
+                                                                                    2 && (
+                                                                                    <span
+                                                                                        className={
+                                                                                            "file-upload-img-thumbnail-error"
+                                                                                        }>
+                                                                                        <Error
+                                                                                            style={{
+                                                                                                color:
+                                                                                                    "red",
+                                                                                            }}
+                                                                                            className={
+                                                                                                " "
+                                                                                            }
+                                                                                        />
+                                                                                        <p>
+                                                                                            Error!
+                                                                                        </p>
+                                                                                    </span>
+                                                                                )}
+                                                                                <Cancel
+                                                                                    data-name={
+                                                                                        item.file
+                                                                                            .name
+                                                                                    }
+                                                                                    data-index={
+                                                                                        item.id
+                                                                                    }
+                                                                                    onClick={this.handleCancel.bind(
+                                                                                        this
+                                                                                    )}
+                                                                                    className={
+                                                                                        "file-upload-img-thumbnail-cancel"
+                                                                                    }
+                                                                                />
                                                                             </div>
-                                                                        )
-                                                                    )}
-                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                )}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1758,26 +1701,18 @@ class ProductForm extends Component {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="col-12 mt-4 mb-5">
-                                    {this.state.files.length > 0 ? (
-                                        this.state.files.filter((item) => item.status === 0)
-                                            .length > 0 ? (
-                                            <button
-                                                className={
-                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
-                                                }>
-                                                Upload in progress ....
-                                            </button>
-                                        ) : (
-                                            <button
-                                                type={"submit"}
-                                                className={
-                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                }>
-                                                Create A Product
-                                            </button>
-                                        )
+                            <div className="col-12 mt-4 mb-5">
+                                {this.state.files.length > 0 ? (
+                                    this.state.files.filter((item) => item.status === 0).length >
+                                    0 ? (
+                                        <button
+                                            className={
+                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
+                                            }>
+                                            Upload in progress ....
+                                        </button>
                                     ) : (
                                         <button
                                             type={"submit"}
@@ -1786,8 +1721,16 @@ class ProductForm extends Component {
                                             }>
                                             Create A Product
                                         </button>
-                                    )}
-                                </div>
+                                    )
+                                ) : (
+                                    <button
+                                        type={"submit"}
+                                        className={
+                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                        }>
+                                        Create A Product
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </div>
@@ -1892,14 +1835,15 @@ function UnitSelect(props) {
                         name: "unit",
                         id: "outlined-age-native-simple",
                     }}>
-                    {props.units.map((item) => (
-                        <option value={"Kg"}>{item}</option>
+                    {props.units.map((item, i) => (
+                        <option key={i} value={"Kg"}>{item}</option>
                     ))}
                 </Select>
             </FormControl>
         </div>
     );
 }
+
 function SiteSelect(props) {
     const classes = useStylesSelect();
     const [state, setState] = React.useState({
@@ -1931,8 +1875,8 @@ function SiteSelect(props) {
                     }}>
                     <option value={null}>Select</option>
 
-                    {props.sites.map((item) => (
-                        <option value={item.id}>{item.name + "(" + item.address + ")"}</option>
+                    {props.sites.map((item, i) => (
+                        <option key={i} value={item.id}>{item.name + "(" + item.address + ")"}</option>
                     ))}
                 </Select>
             </FormControl>

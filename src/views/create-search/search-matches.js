@@ -1,28 +1,27 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import {makeStyles} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import {withStyles} from "@material-ui/core/styles/index";
+import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import { withStyles } from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
-import ResourceItem from './ResourceItem'
-import HeaderDark from '../header/HeaderDark'
-import Sidebar from '../menu/Sidebar'
-import {Link} from "react-router-dom";
-import MatchItem from '../../components/MatchItem'
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
-
+import { baseUrl } from "../../Util/Constants";
+import ResourceItem from "./ResourceItem";
+import HeaderDark from "../header/HeaderDark";
+import Sidebar from "../menu/Sidebar";
+import { Link } from "react-router-dom";
+import MatchItem from "../../components/MatchItem";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        '& > *': {
+        "& > *": {
             margin: theme.spacing(1),
-            width: '25ch',
+            width: "25ch",
         },
     },
 }));
@@ -31,26 +30,20 @@ const useStylesTabs = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
-
     },
 }));
 
-
 class SearchMatches extends Component {
+    slug;
 
-
-
-    slug
     constructor(props) {
-
-        super(props)
+        super(props);
 
         this.state = {
-
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            active: 0,  //0 logn. 1- sign up , 3 -search,
+            active: 0, //0 logn. 1- sign up , 3 -search,
             categories: [],
             subCategories: [],
             catSelected: {},
@@ -75,192 +68,117 @@ class SearchMatches extends Component {
             createSearchData: null,
             matches: [],
             listingsForSearch: [],
+        };
 
-        }
+        this.slug = props.match.params.slug;
 
-        this.slug = props.match.params.slug
-
-        this.loadMatches = this.loadMatches.bind(this)
-        this.getListingForSearch = this.getListingForSearch.bind(this)
-
+        this.loadMatches = this.loadMatches.bind(this);
+        this.getListingForSearch = this.getListingForSearch.bind(this);
     }
 
     loadMatches() {
-
-            axios.get(baseUrl + "match/search/" + this.slug,
-                {
-                    headers: {
-                        "Authorization": "Bearer " + this.props.userDetail.token
-                    }
-                }
-            )
-                .then((response) => {
-
-                    var responseAll = response.data.data;
-
-
-
-
-                    this.setState({
-
-                        matches: responseAll
-                    })
-
-
-
-
-                },
-                    (error) => {
-
-
-
-
-                    }
-                );
-
-
-    }
-    getListingForSearch() {
-
-
-
-        axios.get(baseUrl + "search/" + this.slug+"/listing",
-            {
+        axios
+            .get(baseUrl + "match/search/" + this.slug, {
                 headers: {
-                    "Authorization": "Bearer " + this.props.userDetail.token
-                }
-            }
-        )
-            .then((response) => {
-
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
                     var responseAll = response.data.data;
 
+                    this.setState({
+                        matches: responseAll,
+                    });
+                },
+                (error) => {}
+            );
+    }
 
+    getListingForSearch() {
+        axios
+            .get(baseUrl + "search/" + this.slug + "/listing", {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    var responseAll = response.data.data;
 
+                    var matches = this.state.listingsForSearch;
 
-                    var matches = this.state.listingsForSearch
-
-
-                    for (var i =0 ; i<responseAll.length;i++ ){
-
-
-                        matches.push({listing:responseAll[i]})
+                    for (var i = 0; i < responseAll.length; i++) {
+                        matches.push({ listing: responseAll[i] });
                     }
 
                     this.setState({
-
-                        listingsForSearch: matches
-
-                    })
-
+                        listingsForSearch: matches,
+                    });
                 },
-                (error) => {
-
-
-
-
-                }
+                (error) => {}
             );
-
     }
 
-
-    componentWillMount() {
-
-    }
 
     componentDidMount() {
-
-        this.loadMatches()
-        this.getListingForSearch()
+        this.loadMatches();
+        this.getListingForSearch();
     }
 
-
-
-
-
-
     goToSignIn() {
-
-
         this.setState({
-
-            active: 0
-        })
+            active: 0,
+        });
     }
 
     goToSignUp() {
-
-
         this.setState({
-
-            active: 1
-        })
+            active: 1,
+        });
     }
 
     classes = useStylesSelect;
 
-
-
     render() {
-
         const classes = withStyles();
         const classesBottom = withStyles();
 
-
         return (
-
             <>
-
-
                 <Sidebar />
 
                 <HeaderDark />
 
-
-
                 <div className="container  p-2">
-
                     <div className="row  pb-2 pt-5 ">
-
                         {/*<div className="col-auto">*/}
-                            {/*<h3 className={"blue-text text-heading"}>Matches*/}
-                            {/*</h3>*/}
+                        {/*<h3 className={"blue-text text-heading"}>Matches*/}
+                        {/*</h3>*/}
 
                         {/*</div>*/}
                     </div>
-
                 </div>
                 <div className="container  p-2">
-
                     <div className="row  pb-2 pt-2 ">
-
                         <div className="col-12 text-center">
-                            <h3  className={"blue-text text-heading text-center"}>Matches
-                            </h3>
-
+                            <h3 className={"blue-text text-heading text-center"}>Matches</h3>
                         </div>
                     </div>
-
                 </div>
                 <div className="container  p-2">
-
                     <div className="row  pb-2 pt-2 ">
-
-
-                <div className={"tab-content-listing col-12"}>
-
-                    <NavTabs history={this.props.history} matches={this.state.matches} slug={this.slug}  suggesstions={this.state.listingsForSearch} />
-
-                </div>
+                        <div className={"tab-content-listing col-12"}>
+                            <NavTabs
+                                history={this.props.history}
+                                matches={this.state.matches}
+                                slug={this.slug}
+                                suggesstions={this.state.listingsForSearch}
+                            />
+                        </div>
                     </div>
                 </div>
-
-
-
-
             </>
-
         );
     }
 }
@@ -279,36 +197,32 @@ const useStylesBottomBar = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     appBar: {
-        top: 'auto',
+        top: "auto",
         bottom: 0,
     },
     grow: {
         flexGrow: 1,
     },
     fabButton: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: 1,
         top: -30,
         left: 0,
         right: 0,
-        margin: '0 auto',
+        margin: "0 auto",
     },
 }));
-
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(0),
-        width: "100%"
+        width: "100%",
         // minWidth: auto,
     },
     selectEmpty: {
         marginTop: theme.spacing(0),
     },
 }));
-
-
-
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -319,8 +233,7 @@ function TabPanel(props) {
             hidden={value !== index}
             id={`nav-tabpanel-${index}`}
             aria-labelledby={`nav-tab-${index}`}
-            {...other}
-        >
+            {...other}>
             {value === index && (
                 <Box p={3}>
                     <Typography>{children}</Typography>
@@ -339,7 +252,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
     return {
         id: `nav-tab-${index}`,
-        'aria-controls': `nav-tabpanel-${index}`,
+        "aria-controls": `nav-tabpanel-${index}`,
     };
 }
 
@@ -355,8 +268,6 @@ function LinkTab(props) {
     );
 }
 
-
-
 function NavTabs(props) {
     const classes = useStylesTabs();
     const [value, setValue] = React.useState(0);
@@ -367,102 +278,90 @@ function NavTabs(props) {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" style={{boxShadhow:"none"}} elevation={0}>
+            <AppBar position="static" style={{ boxShadhow: "none" }} elevation={0}>
                 <Tabs
-                    style={{ backgroundColor: "#ffffff", color: "#07AD88!important" ,boxShadow:"none"}}
+                    style={{
+                        backgroundColor: "#ffffff",
+                        color: "#07AD88!important",
+                        boxShadow: "none",
+                    }}
                     indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
                     onChange={handleChange}
-                    aria-label="nav tabs example"
-
-                >
-
+                    aria-label="nav tabs example">
                     {/*{props.matches.length>0 &&*/}
-                     <LinkTab label={"Confirmed ("+props.matches.length+")"} href="/drafts" {...a11yProps(0)} />
+                    <LinkTab
+                        label={"Confirmed (" + props.matches.length + ")"}
+                        href="/drafts"
+                        {...a11yProps(0)}
+                    />
                     {/*}*/}
 
                     {/*{props.suggesstions.length > 0 &&*/}
 
-                    <LinkTab label={"Suggested (" + props.suggesstions.length + ")"} href="/drafts" {...a11yProps(1)} />
+                    <LinkTab
+                        label={"Suggested (" + props.suggesstions.length + ")"}
+                        href="/drafts"
+                        {...a11yProps(1)}
+                    />
 
                     {/*}*/}
-
-
                 </Tabs>
             </AppBar>
 
             {/*{props.suggesstions.length>0 &&*/}
             <TabPanel value={value} index={1}>
                 <div className={"container"}>
+                    {props.suggesstions.map((item) => (
+                        <>
+                            {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
 
-                    {props.suggesstions.map((item) =>
-<>
+                            <ResourceItem
+                                history={props.history}
+                                link={"/match/" + props.slug + "/" + item.listing.listing._key}
+                                searchId={props.slug}
+                                item={item}
+                            />
 
-                        {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
-
-
-                            <ResourceItem history={props.history} link={"/match/"+props.slug+"/"+item.listing.listing._key }  searchId={props.slug} item={item}  />
-
-                        {/* </Link>*/}
-
+                            {/* </Link>*/}
                         </>
+                    ))}
 
+                    {props.suggesstions.length === 0 && (
+                        <div className={" column-empty-message"}>
+                            <p>This search currently has no suggestions</p>
+                        </div>
                     )}
-
-                    { props.suggesstions.length === 0 &&
-                    <div className={" column-empty-message"}>
-                        <p>This search currently has no suggestions</p>
-                    </div>}
-
-
                 </div>
             </TabPanel>
             {/*}*/}
             {/*{props.matches.length>0 &&*/}
 
             <TabPanel value={value} index={0}>
-
                 <div className={"container"}>
-
-                    {props.matches.map((item) =>
-
+                    {props.matches.map((item) => (
                         <>
-                        <Link to={"/matched/"+ item.match._key }>
-
-                            <MatchItem item={item}  />
-
-                        </Link>
-
+                            <Link to={"/matched/" + item.match._key}>
+                                <MatchItem item={item} />
+                            </Link>
                         </>
+                    ))}
 
+                    {props.matches.length === 0 && (
+                        <div className={" column-empty-message"}>
+                            <p>This search currently has no matches</p>
+                        </div>
                     )}
-
-                    { props.matches.length === 0 &&
-                    <div className={" column-empty-message"}>
-                        <p>This search currently has no matches</p>
-                    </div>}
-
-
                 </div>
-
-
-
-
             </TabPanel>
 
             {/*}*/}
-
-
         </div>
     );
 }
 
-
-
-
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
         // cartItems: state.cartItems,
@@ -475,23 +374,15 @@ const mapStateToProps = state => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-
-
     };
 };
 
-const mapDispachToProps = dispatch => {
+const mapDispachToProps = (dispatch) => {
     return {
-
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-
-
     };
 };
-export default connect(
-    mapStateToProps,
-    mapDispachToProps
-)(SearchMatches);
+export default connect(mapStateToProps, mapDispachToProps)(SearchMatches);

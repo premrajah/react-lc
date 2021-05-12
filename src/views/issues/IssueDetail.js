@@ -1,17 +1,18 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import axios from "axios/index";
-import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { baseUrl } from "../../Util/Constants";
 import ImagesSlider from "../../components/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";
-import {Link} from "react-router-dom";
-import {Badge, Modal} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
-import {FormControl, FormHelperText, MenuItem, Select} from "@material-ui/core";
+import { FormControl, FormHelperText, MenuItem, Select } from "@material-ui/core";
+import ProductItemNew from "../../components/ProductItemNew";
 
 class IssueDetail extends Component {
     state = {
@@ -41,7 +42,6 @@ class IssueDetail extends Component {
                 if (response.status === 200) {
                     this.setState({ stageSelectedValue: this.state.issue.issue.stage });
                 }
-
             })
             .catch((error) => {});
     };
@@ -207,7 +207,7 @@ class IssueDetail extends Component {
 
                                                     {this.state.issue.creator && (
                                                         <span className="mr-3">
-                                                            <span>Created by:</span>{" "}
+                                                            <span>Created by:</span>
                                                             <Org
                                                                 orgId={this.state.issue.creator._id}
                                                                 orgDescription={
@@ -220,7 +220,7 @@ class IssueDetail extends Component {
                                                     {this.state.issue.service_agent && (
                                                         <span>
                                                             <span>
-                                                                Service agent:{" "}
+                                                                Service agent:
                                                                 <Org
                                                                     orgId={
                                                                         this.state.issue
@@ -257,9 +257,22 @@ class IssueDetail extends Component {
 
                                                 <div className="row mt-2 mb-2">
                                                     <div className="col">
-                                                        <div
-                                                            className={"listing-row-border "}></div>
+                                                        <div className={"listing-row-border "}></div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {this.state.issue && (
+                                            <div className="row">
+                                                <div className="col">
+                                                        <ProductItemNew
+                                                            item={this.state.issue.product}
+                                                            hideMore
+                                                            goToLink
+                                                            parentId={this.state.issue.product._key}
+                                                            history={this.props.history}
+                                                        />
                                                 </div>
                                             </div>
                                         )}
@@ -322,7 +335,9 @@ class IssueDetail extends Component {
                                                         defaultValue="open"
                                                         onChange={(e) => this.handleStageSelect(e)}>
                                                         <MenuItem value="open">open</MenuItem>
-                                                        <MenuItem value="progress">progress</MenuItem>
+                                                        <MenuItem value="progress">
+                                                            progress
+                                                        </MenuItem>
                                                     </Select>
                                                 </FormControl>
                                             ) : (
@@ -335,7 +350,9 @@ class IssueDetail extends Component {
                                                         onChange={(e) => this.handleStageSelect(e)}>
                                                         <MenuItem value="open">open</MenuItem>
                                                         <MenuItem value="closed">closed</MenuItem>
-                                                        <MenuItem value="progress">progress</MenuItem>
+                                                        <MenuItem value="progress">
+                                                            progress
+                                                        </MenuItem>
                                                     </Select>
                                                 </FormControl>
                                             )}

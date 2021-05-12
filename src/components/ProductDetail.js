@@ -1,18 +1,18 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {makeStyles} from "@material-ui/core/styles";
-import {baseUrl, frontEndUrl} from "../Util/Constants";
+import { makeStyles } from "@material-ui/core/styles";
+import { baseUrl, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
+import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
+import { withStyles } from "@material-ui/core/styles/index";
 import ProductItemNew from "./ProductItemNew";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
@@ -25,6 +25,8 @@ import ProductEditForm from "./ProductEditForm";
 import MoreMenu from "./MoreMenu";
 import AutocompleteCustom from "./AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
+import AddImagesToProduct from "./UploadImages/AddImagesToProduct";
+import AddedDocumentsDisplay from "./UploadImages/AddedDocumentsDisplay";
 
 class ProductDetail extends Component {
     slug;
@@ -65,6 +67,8 @@ class ProductDetail extends Component {
             org_id: null,
             currentReleaseId: null,
             cancelReleaseSuccess: false,
+            imagesUploadStatusFromDocumentsTab: "",
+            deleteDocumentStatus: "",
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -133,8 +137,6 @@ class ProductDetail extends Component {
     };
 
     companyDetails = (detail) => {
-
-
         if (detail.org) {
             this.setState({
                 org_id: detail.org,
@@ -149,11 +151,8 @@ class ProductDetail extends Component {
                     this.setState({
                         org_id: responseAll._key,
                     });
-
-
-                },
-                (error) => {}
-            );
+                }
+            ).catch(error => {});
         }
     };
 
@@ -215,6 +214,7 @@ class ProductDetail extends Component {
             (error) => {}
         );
     }
+
     handleSubmitOrg() {
         var email = this.state.email;
 
@@ -248,6 +248,7 @@ class ProductDetail extends Component {
             showOrgForm: !this.state.showOrgForm,
         });
     }
+
     showReleaseProduct() {
         this.setState({
             errorRelease: false,
@@ -519,13 +520,8 @@ class ProductDetail extends Component {
                 }
             )
             .then((res) => {
-                console.log(res);
-
                 this.setState({
                     currentReleaseId: res.data.data._key,
-                });
-
-                this.setState({
                     showReleaseSuccess: true,
                 });
             })
@@ -622,16 +618,18 @@ class ProductDetail extends Component {
     }
 
     getQrCode() {
-        this.interval = setInterval(() => {
-            this.setState({
-                productQrCode: null,
-            });
+        if(!this.state.item.product._key) return;
 
-            this.setState({
-                productQrCode: `${baseUrl}product/${this.state.item.product._key}/code?u=${frontEndUrl}p`,
-            });
-        }, 2000);
+        axios.get(`${baseUrl}product/${this.state.item.product._key}/code-artifact?u=${frontEndUrl}p`)
+            .then(response => {
+                this.setState({productQrCode: response.data.data})
+            })
+            .catch(error => {
+
+            })
     }
+
+
 
     getListing() {
         // var siteKey = (this.props.item.site_id).replace("Site/","")
@@ -763,6 +761,41 @@ class ProductDetail extends Component {
         }
     }
 
+    handleCallBackImagesUploadStatus = (status) => {
+        this.setState({deleteDocumentStatus: ""})
+        this.setState({imagesUploadStatusFromDocumentsTab: ""});
+
+        if(status === "success") {
+            this.setState({imagesUploadStatusFromDocumentsTab: <span className="text-success">Images or documents uploaded successfully</span>});
+        } else if(status === "fail") {
+            this.setState({imagesUploadStatusFromDocumentsTab: <span className="text-danger">Unable to upload Images or documents</span>});
+        } else {
+            this.setState({imagesUploadStatusFromDocumentsTab: ""});
+        }
+    };
+
+    handleProductReloadFromDocumentTab = (productKey) => {
+        if (!productKey || productKey.length === 0) return;
+        this.loadProduct(productKey);
+    };
+
+    handleAddDocumentPageRefreshCallback = (status, productKey) => {
+        if(!productKey || productKey.length === 0) return;
+
+        this.setState({ imagesUploadStatusFromDocumentsTab: "" });
+        this.setState({deleteDocumentStatus: ""})
+
+        if(status === "success") {
+            this.setState({deleteDocumentStatus: <span className='text-success'>Document deleted successfully</span>})
+        } else if (status === "fail") {
+            this.setState({deleteDocumentStatus: <span className='text-danger'>Document delete failed</span>})
+        } else {
+            this.setState({deleteDocumentStatus: ""})
+        }
+
+        this.loadProduct(productKey)
+    }
+
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -845,7 +878,7 @@ class ProductDetail extends Component {
                                                     {this.state.productQrCode && (
                                                         <img
                                                             className=""
-                                                            src={this.state.productQrCode}
+                                                            src={this.state.productQrCode.blob_url}
                                                             alt={this.state.item.product.name}
                                                             title={this.state.item.product.name}
                                                             style={{ width: "90%" }}
@@ -868,7 +901,7 @@ class ProductDetail extends Component {
                                                                         this.handlePrintPdf(
                                                                             this.state.item.product,
                                                                             this.state
-                                                                                .productQrCode,
+                                                                                .productQrCode.blob_url,
                                                                             QrCodeBg,
                                                                             LoopcycleLogo
                                                                         )
@@ -966,23 +999,31 @@ class ProductDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {this.state.item.product.category},
-                                                            {this.state.item.product.type},
-                                                            {this.state.item.product.state}
-                                                            {this.state.item.product.volume}
-                                                            {this.state.item.product.units}
+                                                            <span className="mr-1">
+                                                                {this.state.item.product.category},
+                                                            </span>
+                                                            <span className="mr-1">
+                                                                {this.state.item.product.type},
+                                                            </span>
+                                                            <span className="mr-1">
+                                                                {this.state.item.product.state},
+                                                            </span>
+                                                            <span>
+                                                                {this.state.item.product.volume}
+                                                            </span>
+                                                            <span>
+                                                                {this.state.item.product.units}
+                                                            </span>
                                                         </p>
                                                     </div>
                                                 </div>
 
-                                                {/*<div className="row  justify-content-start search-container  pb-2">*/}
-
-                                                {/*<div className={"col-auto"}>*/}
-
-                                                {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
-                                                {/*<p style={{ fontSize: "18px" }} className="text-caps  mb-1">{this.props.item.org.name} </p>*/}
-                                                {/*</div>*/}
-                                                {/*</div>*/}
+                                                {(this.state.item && this.state.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
+                                                    <div className="col-auto">
+                                                        <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
+                                                        <p style={{fontSize: "18px"}}>{this.state.item.product.condition}</p>
+                                                    </div>
+                                                </div> }
 
                                                 {this.state.item &&
                                                     this.state.item.product.year_of_making && (
@@ -996,7 +1037,6 @@ class ProductDetail extends Component {
                                                                 <p
                                                                     style={{ fontSize: "18px" }}
                                                                     className="  mb-1">
-
                                                                     {
                                                                         this.state.item.product
                                                                             .year_of_making
@@ -1071,27 +1111,17 @@ class ProductDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="text-mute text-bold text-blue mb-1">
-                                                            State
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            {this.state.item.product.state}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="row  justify-content-start search-container  pb-2 ">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
                                                             Located At
                                                         </p>
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {this.state.item.site.name},
-                                                            {this.state.item.site.address}
+                                                            <span className="mr-1">
+                                                                {this.state.item.site.name},
+                                                            </span>
+                                                            <span>
+                                                                {this.state.item.site.address}
+                                                            </span>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1102,7 +1132,7 @@ class ProductDetail extends Component {
                                                             className="text-mute text-bold text-blue mb-1">
                                                             Service Agent
                                                         </p>
-                                                        <p
+                                                        <div
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
                                                             <Org
@@ -1111,7 +1141,7 @@ class ProductDetail extends Component {
                                                                         ._id
                                                                 }
                                                             />
-                                                        </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </Tab>
@@ -1125,14 +1155,14 @@ class ProductDetail extends Component {
                                                     <span
                                                         data-parent={this.state.item.product._key}
                                                         onClick={this.showProductSelection}>
-                                                        Link Sub Product
+                                                        Link Subproducts
                                                     </span>
                                                 </p>
 
                                                 {this.state.item.sub_products.length > 0 && (
                                                     <>
                                                         {this.state.item.sub_products.map(
-                                                            (item) => (
+                                                            (item, index) => (
                                                                 <ProductItemNew
                                                                     goToLink={true}
                                                                     history={this.props.history}
@@ -1144,6 +1174,7 @@ class ProductDetail extends Component {
                                                                     remove={true}
                                                                     edit={false}
                                                                     item={item}
+                                                                    key={index}
                                                                 />
                                                             )
                                                         )}
@@ -1170,40 +1201,35 @@ class ProductDetail extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="documents" title="Documents">
-                                                <p className="mt-1 mb-3 text-gray-light">If documents have been added, please find the links to download below</p>
-                                                {this.state.item.artifacts.length > 0 ? (
-                                                    this.state.item.artifacts.map(
-                                                        (artifact, index) => {
-                                                            if (
-                                                                artifact.mime_type ===
-                                                                    "application/pdf" ||
-                                                                artifact.mime_type ===
-                                                                    "application/rtf" ||
-                                                                artifact.mime_type ===
-                                                                    "application/msword" ||
-                                                                artifact.mime_type === "text/rtf" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-                                                                artifact.mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                                                                artifact.mime_type === "application/vnd.ms-excel"
-                                                            ) {
-                                                                return (
-                                                                    <div
-                                                                        key={index}
-                                                                        className="mt-1 mb-2">
-                                                                        <a
-                                                                            className="btn-link"
-                                                                            href={artifact.blob_url}
-                                                                            target="_blank">
-                                                                            {artifact.blob_name}
-                                                                        </a>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        }
-                                                    )
-                                                ) : (
-                                                    <div>No documents added.</div>
-                                                )}
+                                                <AddImagesToProduct
+                                                    handleCallBackImagesUploadStatus={(status) =>
+                                                        this.handleCallBackImagesUploadStatus(
+                                                            status
+                                                        )
+                                                    }
+                                                    handleProductReload={(productKey) =>
+                                                        this.handleProductReloadFromDocumentTab(
+                                                            productKey
+                                                        )
+                                                    }
+                                                />
+
+                                                <div className="row mb-3">
+                                                    <div className="col">
+                                                        {this.state.imagesUploadStatusFromDocumentsTab}
+                                                    </div>
+                                                </div>
+
+                                                <div className="row mb-3">
+                                                    <div className="col">
+                                                        {this.state.deleteDocumentStatus}
+                                                    </div>
+                                                </div>
+
+                                                <AddedDocumentsDisplay
+                                                    artifacts={this.state.item.artifacts}
+                                                    pageRefreshCallback={(status, productKey) => this.handleAddDocumentPageRefreshCallback(status, productKey)}
+                                                />
                                             </Tab>
                                         </Tabs>
                                     </div>

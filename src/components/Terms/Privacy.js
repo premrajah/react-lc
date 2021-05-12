@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Footer from "../../views/Footer/Footer";
 import HeaderDark from "../../views/header/HeaderDark";
 
 const Privacy = ({ title, header, footer }) => {
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -13,7 +13,7 @@ const Privacy = ({ title, header, footer }) => {
             <div className="container mb-5" style={{ marginTop: "100px" }}>
                 <div className="row mt-5 mb-5">
                     <div className="col">
-                        <h3 className="blue-text">{title ? title : 'Privacy Policy'}</h3>
+                        <h3 className="blue-text">{title ? title : "Privacy Policy"}</h3>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@ const Privacy = ({ title, header, footer }) => {
                         <p>
                             We have appointed a Product Manager who is responsible for overseeing
                             questions in relation to this privacy policy. If you have any questions
-                            about this privacy policy, including any requests to exercise{" "}
+                            about this privacy policy, including any requests to exercise
                             <em>your legal rights</em>, please contact the Product Manager using the
                             details set out below.
                         </p>
@@ -93,7 +93,7 @@ const Privacy = ({ title, header, footer }) => {
                             Policy
                         </p>
                         <p>
-                            Email address:{" "}
+                            Email address:
                             <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>
                         </p>
                         <p>Postal address: Camden Collective, 5-7 Buck Street, London NW1 8NJ</p>
@@ -194,7 +194,9 @@ const Privacy = ({ title, header, footer }) => {
                             </li>
                             <li>
                                 <p>
-                                    <strong className="mr-1">Marketing and Communications Data</strong>
+                                    <strong className="mr-1">
+                                        Marketing and Communications Data
+                                    </strong>
                                     includes your preferences in receiving marketing from us and our
                                     third parties and your communication preferences.
                                 </p>
@@ -213,7 +215,7 @@ const Privacy = ({ title, header, footer }) => {
                             this privacy policy.
                         </p>
                         <p>
-                            We do not collect any{" "}
+                            We do not collect any
                             <strong>Special Categories of Personal Data</strong>
                             about you (this includes details about your race or ethnicity, religious
                             or philosophical beliefs, sex life, sexual orientation, political
@@ -300,14 +302,14 @@ const Privacy = ({ title, header, footer }) => {
                             EU; and
                         </p>
                         <p>
-                            (c) search information providers based inside <strong>OR</strong>{" "}
+                            (c) search information providers based inside <strong>OR</strong>
                             outside the EU.
                         </p>
                         <ul>
                             <li>
                                 <p>
                                     Contact, Financial and Transaction Data from providers of
-                                    technical, payment and delivery services based inside{" "}
+                                    technical, payment and delivery services based inside
                                     <strong>OR</strong> outside the EU.
                                 </p>
                             </li>
@@ -617,8 +619,8 @@ const Privacy = ({ title, header, footer }) => {
                         <p>
                             You can ask us or third parties to stop sending you marketing messages
                             at any time by logging into the website and checking or unchecking
-                            relevant boxes to adjust your marketing preferences <strong>OR</strong>{" "}
-                            by following the opt-out links on any marketing message sent to you{" "}
+                            relevant boxes to adjust your marketing preferences <strong>OR</strong>
+                            by following the opt-out links on any marketing message sent to you
                             <strong>OR</strong>
                             by contacting us at any time.
                         </p>
@@ -663,7 +665,7 @@ const Privacy = ({ title, header, footer }) => {
                         </ol>
                         <p>
                             We may share your personal data with the parties set out below for the
-                            purposes set out in the table{" "}
+                            purposes set out in the table
                             <em>Purposes for which we will use your personal data</em> above.
                         </p>
                         <ul>
@@ -742,7 +744,7 @@ const Privacy = ({ title, header, footer }) => {
                                     Where we use providers based in the US, we may transfer data to
                                     them if they are part of the Privacy Shield which requires them
                                     to provide similar protection to personal data shared between
-                                    Europe and the US. For further details, see{" "}
+                                    Europe and the US. For further details, see
                                     <em>European Commission: EU-US Privacy Shield</em>.
                                 </p>
                             </li>
@@ -796,7 +798,7 @@ const Privacy = ({ title, header, footer }) => {
                             applicable legal, regulatory, tax, accounting or other requirements.
                         </p>
                         <p>
-                            In some circumstances you can ask us to delete your data: see{" "}
+                            In some circumstances you can ask us to delete your data: see
                             <em>your legal rights</em> below for further information.
                         </p>
                         <p>
@@ -1036,8 +1038,6 @@ const Privacy = ({ title, header, footer }) => {
                         </p>
                     </div>
                 </div>
-
-
             </div>
             {footer ? footer : <Footer />}
         </div>

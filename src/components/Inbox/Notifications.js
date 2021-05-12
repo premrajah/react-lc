@@ -22,48 +22,70 @@ const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const BRACKETS_REGEX = /[(\[)(\])]/g;
 
 class Notifications extends Component {
+
+    messageRead = (messageId) => {
+        if(!messageId) return;
+
+        const payload = {
+            "msg_id": messageId
+        }
+
+        axios.post(`${baseUrl}message/read`, payload)
+            .then(response => {}, (error) => {})
+            .catch(error => {
+                
+            })
+    }
+
+
     checkNotifications = (item, index) => {
         if (!item) return;
 
-        const { message } = item;
+        const { message, orgs } = item;
         let text;
+
+        const messageFrom = orgs.filter(org => org.actor === "message_from")[0];
+        const readFlag = messageFrom.read_flag ? messageFrom.read_flag.flag : null
+        const messageId = item.message._id;
 
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
             <Org key={i + Math.random() * 100} orgId={match} />
         ));
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 101} to={`product/${match}`}>
+            <Link key={i + Math.random() * 101} to={`product/${match}`} onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">Link</u>
             </Link>
         ));
 
         text = reactStringReplace(text, CYCLE_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 102} to={`cycle/${match}`}>
+            <Link key={i + Math.random() * 102} to={`cycle/${match}`} onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">Cycle</u>
             </Link>
         ));
 
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 103} to={`match/${match}`}>
+            <Link key={i + Math.random() * 103} to={`match/${match}`} onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">Match</u>
             </Link>
         ));
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 104} to="/approve">
+            <Link key={i + Math.random() * 104} to="/approve" onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">To Approvals Page</u>
             </Link>
         ));
 
         text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 105} to="/approve">
+            <Link key={i + Math.random() * 105} to="/approve" onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">To Approvals Page</u>
             </Link>
         ));
 
+
+
         return (
-            <Card key={index} variant="outlined" className="mb-2">
+            <Card key={index} variant="outlined" className="mb-2" style={{opacity: `${readFlag ? "0.5" : "1"}`}}>
                 <CardContent>
                     <div className="row">
                         <div className="col-12">

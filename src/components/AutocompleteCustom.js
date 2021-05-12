@@ -4,6 +4,7 @@ import "./autocomplete-custom.css";
 import { baseUrl } from "../Util/Constants";
 import axios from "axios/index";
 import CompaniesHouseLogo from "../img/icons/companies_house_logo_18px.png";
+import LoopcycleLogo from '../img/loopcycle_logo_31x31.png';
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -183,7 +184,9 @@ class AutocompleteCustom extends Component {
                                                 <img src={CompaniesHouseLogo} alt="" />
                                             </div>
                                         ) : (
-                                            ""
+                                            <div className="mr-1">
+                                                <img src={LoopcycleLogo} alt="" />
+                                            </div>
                                         )}
                                         <div>
                                             {suggestion.name}

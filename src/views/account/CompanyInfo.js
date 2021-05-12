@@ -303,44 +303,43 @@ class CompanyInfo extends Component {
                                         <h5 className={"text-bold"}>
                                             Company Registration Details
                                         </h5>
-                                        <p className={""}>
-                                            <span className={"text-bold text-blue"}>
-                                                Name: {this.state.org.company.company_name}
-                                            </span>
-                                            <br />
-                                            <span className={""}>
-                                                Company Number:
-                                                {this.state.org.company.company_number}
-                                            </span>
+                                        <div>
+                                            <div className="text-bold text-blue">
+                                                <span className="mr-1">Name:</span>
+                                                <span>{this.state.org.company.company_name}</span>
+                                            </div>
 
-                                            <br />
-                                            <span className={""}>
-                                                Registered Address:
-                                                {
+                                            <div>
+                                                <span className="mr-1">Company Number:</span>
+                                                <span>{this.state.org.company.company_number}</span>
+                                            </div>
+
+
+                                            <div>
+                                                <span className="mr-1">Registered Address:</span>
+                                                <span className="mr-1">{
                                                     this.state.org.company.registered_office_address
                                                         .address_line_1
-                                                }
-                                                ,
-                                                {
+                                                },</span>
+                                                <span>{
                                                     this.state.org.company.registered_office_address
                                                         .address_line_2
-                                                }
-                                            </span>
+                                                }</span>
+                                            </div>
 
-                                            <br />
-                                            <span className={""}>
-                                                Locality:
-                                                {
+
+                                            <div>
+                                                <span className="mr-1">Locality:</span>
+                                                <span className="mr-1">{
                                                     this.state.org.company.registered_office_address
                                                         .locality
-                                                }
-                                                ,
-                                                {
+                                                },</span>
+                                                <span>{
                                                     this.state.org.company.registered_office_address
                                                         .country
-                                                }
-                                            </span>
-                                        </p>
+                                                }</span>
+                                            </div>
+                                        </div>
                                     </>
                                 )}
                             </div>

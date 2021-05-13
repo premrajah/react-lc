@@ -10,6 +10,19 @@ import {createStore, applyMiddleware, compose} from "redux";
 import thunk from "redux-thunk";
 import history from "./History/history";
 import axios from "axios";
+import { REACT_APP_BRANCH_ENV } from "./Util/Constants";
+
+const StackdriverErrorReporter = require('stackdriver-errors-js/dist/stackdriver-errors-concat.min.js');
+
+export const errorHandler = new StackdriverErrorReporter();
+errorHandler.start({
+    key: "lcp-dev-01",
+    projectId: "AIzaSyA1cl1-HcYggd-xkPA5ZKXm6UqodYu48WE",
+    // Other optional arguments can be supplied, see above.
+    service: "loop-react-ui-" + REACT_APP_BRANCH_ENV,
+});
+
+// errorHandler.report("Error Handler Started");
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({

@@ -60,10 +60,12 @@ class ApprovedReleases extends Component {
                                         {this.state.approvedRequests.map((item, index) => (
                                             <div className="row" key={index}>
                                                 <div className="col">
-                                                    <RequestReleaseItem
-                                                        history={this.props.history}
-                                                        item={item}
-                                                    />
+                                                    <Link to={`/product/${item.product.product._key}`}>
+                                                        <RequestReleaseItem
+                                                            history={this.props.history}
+                                                            item={item}
+                                                        />
+                                                    </Link>
                                                 </div>
                                             </div>
                                         ))}

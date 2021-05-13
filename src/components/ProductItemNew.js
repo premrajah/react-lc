@@ -235,9 +235,10 @@ class ProductItemNew extends Component {
                                     )}
                                 </p>
 
-                                <div>
-                                    <Add onClick={() => this.handleAddToProductList(this.props.item)} style={{cursor: 'pointer'}} />
-                                </div>
+                                {this.props.showAddToListButton && <div>
+                                    <Add onClick={() => this.handleAddToProductList(this.props.item)}
+                                         style={{cursor: 'pointer'}}/>
+                                </div>}
 
                                 {!this.props.hideMore && (
                                     <MoreMenu

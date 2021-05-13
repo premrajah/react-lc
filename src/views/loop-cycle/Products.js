@@ -188,6 +188,7 @@ class Products extends Component {
                                     item={item}
                                     hideMore
                                     listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
+                                    showAddToListButton
                                 />
                             </div>
                         )): <div>Loading products please wait ...</div>}

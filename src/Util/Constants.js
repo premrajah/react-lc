@@ -1,4 +1,4 @@
-const { REACT_APP_BRANCH_ENV } = process.env;
+export const { REACT_APP_BRANCH_ENV } = process.env;
 
 export const baseUrl =
     REACT_APP_BRANCH_ENV === "master"

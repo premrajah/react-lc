@@ -619,7 +619,7 @@ class ProductDetailCycle extends Component {
                                                             to={
                                                                 "/p/" + this.props.item.product._key
                                                             }>
-                                                            [Product Provenance]
+                                                            [Provenance]
                                                         </Link>
                                                         <Link
                                                             onClick={() =>
@@ -630,8 +630,18 @@ class ProductDetailCycle extends Component {
                                                                     LoopcycleLogo
                                                                 )
                                                             }>
-                                                            [Print PDF]
+                                                            [PDF]
                                                         </Link>
+                                                        <a
+                                                            className={"mr-3"}
+                                                            href={
+                                                                baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Mono]</a>
+                                                        <a
+                                                            className={"mr-3"}
+                                                            href={
+                                                                baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=jpg&u=" + frontEndUrl + "p"
+                                                            } type="image/jpg" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".jpg" }>[JPG]</a>
                                                     </p>
                                                 )}
                                             </div>

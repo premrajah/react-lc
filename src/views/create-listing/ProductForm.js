@@ -96,7 +96,7 @@ class ProductForm extends Component {
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["defined", "prototype", "aggregate"],
-            condition: ["new", "used", "salvage"],
+            condition: ["New", "Used", "Salvage"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -746,7 +746,7 @@ class ProductForm extends Component {
 
             const productData = {
                 purpose: purpose,
-                condition: condition,
+                condition: condition.toLowerCase(),
                 name: title,
                 description: description,
                 category: category,

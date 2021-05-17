@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl, capitalizeFirstLetter} from "../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 import { Modal } from "react-bootstrap";
@@ -201,7 +201,7 @@ class ProductItemNew extends Component {
                                     <span>{this.props.item.product.purpose}</span>
                                     {this.props.item.product.condition && (
                                         <span>
-                                            , <b>{this.props.item.product.condition}</b>
+                                            , <b>{capitalizeFirstLetter(this.props.item.product.condition)}</b>
                                         </span>
                                     )}
                                 </p>

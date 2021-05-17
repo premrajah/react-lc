@@ -43,7 +43,7 @@ axios.interceptors.request.use((request) => {
 axios.interceptors.response.use(
     (response) => response,
     (error) => {
-        const { status } = error.response;
+        const { status } = error.response ? error.response : '';
         if (status === UNAUTHORIZED) {
             store.dispatch({ type: "LOGOUT", value: null });
 

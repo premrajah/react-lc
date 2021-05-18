@@ -635,13 +635,13 @@ class ProductDetailCycle extends Component {
                                                         <a
                                                             className={"mr-3"}
                                                             href={
-                                                                baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Mono]</a>
+                                                                baseUrl + "product/" + this.props.item.product._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
+                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Alt]</a>
                                                         <a
                                                             className={"mr-3"}
                                                             href={
-                                                                baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=jpg&u=" + frontEndUrl + "p"
-                                                            } type="image/jpg" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".jpg" }>[JPG]</a>
+                                                                baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Mono]</a>
                                                     </p>
                                                 )}
                                             </div>

@@ -112,7 +112,6 @@ class AddImagesToProduct extends Component {
     };
 
     uploadImage(files) {
-        if (!files) return;
 
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {

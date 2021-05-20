@@ -199,30 +199,17 @@ class ProductForm extends Component {
             for (let i = 0; i < files.length; i++) {
                 let imgFile = files[i];
 
-                this.getBase64(imgFile.file).then((data) => {
-                    axios
-                        .post(
-                            baseUrl + "artifact",
-                            {
-                                metadata: {
-                                    name: imgFile.file.name,
-                                    mime_type: imgFile.file.type,
-                                    context: "",
-                                },
+                let payload = new FormData();
+                payload.append('file', imgFile.file);
 
-                                data_as_base64_string: btoa(data),
-                            },
-                            {
-                                headers: {
-                                    Authorization: "Bearer " + this.props.userDetail.token,
-                                },
-                            }
-                        )
-                        .then((res) => {
-                            //
+                let config = { headers: {"Content-Type": "multipart/form-data"}};
 
-                            let images = this.state.images;
+                try {
 
+                    axios.post(`${baseUrl}artifact/upload`, payload, config)
+                        .then(res => {
+
+                            let images = [...this.state.images];
                             images.push(res.data.data._key);
 
                             this.setState({
@@ -242,11 +229,9 @@ class ProductForm extends Component {
                                 files: currentFiles,
                             });
                         })
-                        .catch((error) => {
-                            //
+                        .catch(error => {
 
-                            let currentFiles = this.state.files;
-
+                            let currentFiles = [...this.state.files];
                             for (let k = 0; k < currentFiles.length; k++) {
                                 if (currentFiles[k].file.name === imgFile.file.name) {
                                     currentFiles[k].status = 2; //failed
@@ -256,8 +241,12 @@ class ProductForm extends Component {
                             this.setState({
                                 files: currentFiles,
                             });
-                        });
-                });
+                        })
+
+                } catch (e) {
+                    console.log('catch Error ', e);
+                }
+
             }
         }
     }

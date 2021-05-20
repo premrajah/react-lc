@@ -800,33 +800,11 @@ class ProductForm extends Component {
                     this.showProductSelection();
 
                     this.props.loadProducts(this.props.userDetail.token);
-
-                    // if (this.slug) {
-                    //     this.props.history.push("/sub-product-view/" + this.slug)
-                    //
-                    //
-                    // }else{
-                    //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
-                    //
-                    //
-                    // }
-
-                    // this.showProductSelection()
-
-                    // this.getProducts()
+                    this.props.loadProductsWithoutParent();
                 })
                 .catch((error) => {
-                    // dispatch(stopLoading())
-                    // dispatch(signUpFailed(error.response.data.message))
-                    // dispatch({ type: AUTH_FAILED });
-                    // dispatch({ type: ERROR, payload: error.data.error.message });
                 });
 
-            // } else {
-            //
-            //
-            //
-            // }
         }
     };
 

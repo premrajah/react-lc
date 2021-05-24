@@ -8,6 +8,7 @@ import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
 import ProductRecordItem from "../../components/ProductRecordItem";
 import { Link } from "react-router-dom";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 class ProductArchive extends Component {
     state = {
@@ -27,10 +28,12 @@ class ProductArchive extends Component {
 
     displayArchivedProducts = () => {
         if (this.state.allArchivedProducts !== null && this.state.allArchivedProducts.length > 0) {
-            return this.state.allArchivedProducts.map((item) => {
+            return this.state.allArchivedProducts.map((item, index) => {
                 return (
-                    <Link to={`/p/${item.product._key}`} key={item.product._id}>
-                        <ProductRecordItem item={item} />
+                    <Link to={`/p/${item.product._key}`} key={index}>
+                        <ErrorBoundary>
+                            <ProductRecordItem item={item} />
+                        </ErrorBoundary>
                     </Link>
                 );
             });

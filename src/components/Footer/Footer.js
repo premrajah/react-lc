@@ -17,6 +17,7 @@ import LogoText from "../../img/logo-text.png";
 import styles from "./Footer.module.css";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
+import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
 
 class Footer extends React.Component {
     constructor(props) {
@@ -39,12 +40,13 @@ class Footer extends React.Component {
                         <Col md="3">
                             <div className="row no-gutters mb-5">
                                 <div className="col-auto">
-                                    <img className="header-logo" src={LogoNew} alt="logo" />
-                                    <img
-                                        className={"text-logo-home"}
-                                        src={LogoText}
-                                        alt="logo-text"
-                                    />
+                                    <>
+                                        <img
+                                            className={"text-logo-home web-only"}
+                                            src={HeaderLogoSvg}
+                                            alt=""
+                                        />
+                                    </>
                                 </div>
                             </div>
                         </Col>

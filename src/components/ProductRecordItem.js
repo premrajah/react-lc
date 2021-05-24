@@ -8,16 +8,23 @@ import PlaceholderImg from "../img/place-holder-lc.png";
 
 const ProductRecordItem = ({ item }) => {
     const { listing, product, site, org, artifacts } = item;
+
+    const onError = (ev) => (
+        ev.target.src = PlaceholderImg
+    )
+
     return (
         <div className="row mb-5 pb-2 border-bottom">
             <div className="col-lg-2 col-sm-12">
                 <Image
                     className="mr-2"
                     // src={artifacts.length > 0 ? <ImageOnlyThumbnail images={artifacts} /> : PlaceHolderImage}
-                    src={artifacts.length > 0 ? (artifacts.find((item) => (item.mime_type === "image/jpeg" || item.mime_type === "image/png")).blob_url || PlaceholderImg) : PlaceHolderImage}
+                    src={artifacts.length > 0 ? (artifacts.find((item) => (item.mime_type === "image/jpeg" || item.mime_type === "image/png") || {}).blob_url || PlaceholderImg) : PlaceHolderImage}
                     thumbnail
                     width={120}
                     height={60}
+                    alt=""
+                    onError={onError}
                 />
             </div>
             <div className="col-lg-6 col-sm-12">

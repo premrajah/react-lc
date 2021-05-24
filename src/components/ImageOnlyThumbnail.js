@@ -4,6 +4,10 @@ import PlaceholderImg from "../img/place-holder-lc.png";
 function ImageOnlyThumbnail(props) {
     const { images } = props;
 
+    const onError = (ev) => (
+        ev.target.src = PlaceholderImg
+    )
+
     return (
         images && (
             <img
@@ -17,6 +21,7 @@ function ImageOnlyThumbnail(props) {
                     ).blob_url || PlaceholderImg
                 }
                 alt=""
+                onError={onError}
             />
         )
     );

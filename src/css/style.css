@@ -2272,6 +2272,12 @@ pre {
 
 }
 
+.btn-pink {
+    background: #D31169;
+    color: white;
+    border: 2px solid #D31169;
+}
+
 .or-text-divider {
     width: 100%;
     text-align: center;

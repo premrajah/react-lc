@@ -20,6 +20,7 @@ import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "./AddSite";
+import EditSite from "./Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1586,11 +1587,7 @@ class ProductEditForm extends Component {
                                                         <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                             <div className={"row"}>
                                                                 <div className={"col-12"}>
-                                                                    <AddSite
-                                                                        triggerCallback={() =>
-                                                                            this.showSubmitSite()
-                                                                        }
-                                                                    />
+                                                                    <EditSite site={{}} submitCallback={() => this.showSubmitSite()} />
                                                                 </div>
                                                             </div>
                                                         </div>

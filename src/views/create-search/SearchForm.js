@@ -34,6 +34,7 @@ import _ from "lodash";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import PageHeader from "../../components/PageHeader";
 import AddSite from "../../components/AddSite";
+import EditSite from "../../components/Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1947,7 +1948,7 @@ class SearchForm extends Component {
 
                                     <div className={"row"}>
                                         <div className={"col-12"}>
-                                            <AddSite triggerCallback={() => this.toggleSite()} />
+                                            <EditSite site={{}} submitCallback={() => this.toggleSite()} />
                                         </div>
                                     </div>
                                 </div>

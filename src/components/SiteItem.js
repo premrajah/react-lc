@@ -59,7 +59,7 @@ const SiteItem = ({site}) => {
 
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <EditSite site={site} submitCallback={(errMsg) => handleSubmitCallback(errMsg)} />
+                                    <EditSite editable site={site} submitCallback={(errMsg) => handleSubmitCallback(errMsg)} />
                                 </div>
                             </div>
                         </div>

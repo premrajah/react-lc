@@ -26,6 +26,7 @@ import AddSite from "../../components/AddSite";
 
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import PageHeader from "../../components/PageHeader";
+import EditSite from "../../components/Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1264,7 +1265,7 @@ class ListForm extends Component {
 
                                     <div className={"row"}>
                                         <div className={"col-12"}>
-                                            <AddSite triggerCallback={() => this.toggleSite()} />
+                                            <EditSite site={{}} submitCallback={() => this.toggleSite()} />
                                         </div>
                                     </div>
                                 </div>

@@ -10,6 +10,7 @@ import SiteItem from "../../components/SiteItem";
 import AddSite from "../../components/AddSite";
 import * as actionCreator from "../../store/actions/actions";
 import { Alert } from "react-bootstrap";
+import EditSite from "../../components/Sites/EditSite";
 
 class PaymentMethod extends Component {
     constructor(props) {
@@ -203,15 +204,10 @@ class PaymentMethod extends Component {
 
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        <AddSite
-                                            triggerCallback={() => {
-                                                this.toggleSite();
-
-                                                this.setState({
-                                                    submitSuccess: true,
-                                                });
-                                            }}
-                                        />
+                                        <EditSite site={{}} submitCallback={() => {
+                                            this.toggleSite();
+                                            this.setState({submitSuccess: true,})
+                                        }} />
                                     </div>
                                 </div>
                             </div>

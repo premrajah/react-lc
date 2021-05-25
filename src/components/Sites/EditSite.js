@@ -9,16 +9,16 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 
 
-const EditSite = ({loadSites, site, submitCallback}) => {
+const EditSite = ({editable, loadSites, site, submitCallback}) => {
     const { key, name, address, email, contact, phone, others } = site;
 
     const INITIAL_VALUES = {
-        name,
-        contact,
-        address,
-        phone,
-        email,
-        others
+        name: editable ? name : '',
+        contact: editable ? contact : '',
+        address: editable ? address : '',
+        phone: editable ? phone : '',
+        email: editable ? email : '',
+        others: editable ? others : ''
     }
 
     const VALIDATION_SCHEMA = Yup.object().shape({
@@ -32,26 +32,52 @@ const EditSite = ({loadSites, site, submitCallback}) => {
 
     const handleSubmitForm = (values) => {
         if(!values) return;
-
-        const payload = {
-            id: site._key,
-            update: values
+        let payload;
+        if(editable) {
+            payload = {
+                id: site._key,
+                update: values
+            }
+        } else {
+            payload = {
+                site: {
+                    name: values.name,
+                    contact: values.contact,
+                    address: values.address,
+                    phone: values.phone,
+                    email: values.email,
+                    others: values.others
+                }
+            }
         }
+
 
         handleAxiosPostSite(payload);
     }
 
     const handleAxiosPostSite = (payload) => {
-        axios.post(`${baseUrl}site`, payload)
+        editable
+            ? axios.post(`${baseUrl}site`, payload)
             .then(res => {
                 if(res.status === 200) {
-                    handleCallback(<span className="text-success">Updated successfully.</span>);
+                    handleCallback(<span className="text-success">Updated successfully.}</span>);
                     loadSites();
                 }
             })
             .catch(error => {
                 handleCallback(<span className="text-warning">Sorry. Unable to update at this time</span>);
             })
+
+            : axios.put(`${baseUrl}site`, payload)
+                .then(res => {
+                    if(res.status === 200) {
+                        handleCallback(<span className="text-success">Added successfully.</span>);
+                        loadSites();
+                    }
+                })
+                .catch(error => {
+                    handleCallback(<span className="text-warning">Sorry. Unable to add at this time</span>);
+                })
     }
 
     const handleCallback = useCallback((errMsg) => {
@@ -61,7 +87,7 @@ const EditSite = ({loadSites, site, submitCallback}) => {
     return  <div>
         <div className="row mb-3">
             <div className="col">
-                <h4 className="text-center green-text">Edit Site</h4>
+                <h4 className="text-center green-text">{editable ? 'Edit Site' : 'Add New Site'}</h4>
             </div>
         </div>
         <div className="row">

@@ -1561,7 +1561,7 @@ class ProductEditForm extends Component {
                                                 )}
 
                                                 <p style={{ margin: "10px 0" }}>
-                                                    Don’t see it on here?
+                                                    Do not see your address?
                                                     <span
                                                         onClick={this.showSubmitSite}
                                                         className="green-text forgot-password-link text-mute small ml-1">

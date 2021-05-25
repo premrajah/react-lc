@@ -1228,7 +1228,7 @@ class ProductForm extends Component {
                                             )}
 
                                             <p style={{ margin: "10px 0" }}>
-                                                <span className="mr-1">Don’t see it on here?</span>
+                                                <span className="mr-1">Do not see your address?</span>
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={

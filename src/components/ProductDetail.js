@@ -859,7 +859,7 @@ class ProductDetail extends Component {
                                         <div className="row justify-content-start pb-3 pt-3 ">
                                             <div className="col-12 ">
                                                 <h5 className={"text-bold blue-text"}>
-                                                    Cycle Code
+                                                    Cyclecode
                                                 </h5>
                                             </div>
 

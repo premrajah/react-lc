@@ -165,7 +165,7 @@ class PaymentMethod extends Component {
                                         onClick={this.toggleSite}
                                         className="green-link-url"
                                         style={{ cursor: "pointer" }}>
-                                        Add New Address
+                                        Add New Site
                                     </p>
                                 </div>
                             </div>
@@ -176,14 +176,7 @@ class PaymentMethod extends Component {
                                 <div className="list-group">
                                     {this.props.siteList.map((site) => (
                                         <SiteItem
-                                            key={site._key}
-                                            name={site.name}
-                                            address={site.address}
-                                            email={site.email}
-                                            contact={site.contact}
-                                            phone={site.phone}
-                                            others={site.others}
-                                            itemKey={site._key}
+                                            site={site}
                                         />
                                     ))}
                                 </div>

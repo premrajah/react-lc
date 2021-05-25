@@ -132,19 +132,18 @@ class ProductTreeItemView extends Component {
             <>
                 <div className={"tree-item-container"} style={{ padding: "5px" }}>
                     <p>
-                        }
                         {this.props.item.sub_products.length > 0 ? (
                             this.state.open ? (
                                 <MinusSquare
                                     data-id={this.props.item.id}
                                     onClick={this.getSubProducts.bind(this)}
-                                    className={"mr-2"}
+                                    className="mr-2"
                                 />
                             ) : (
                                 <PlusSquare
                                     data-id={this.props.item.id}
                                     onClick={this.getSubProducts.bind(this)}
-                                    className={"mr-2"}
+                                    className="mr-2"
                                 />
                             )
                         ) : (
@@ -160,8 +159,9 @@ class ProductTreeItemView extends Component {
                                         : "tree-view-item"
                                     : "tree-view-item text-mute"
                             }>
-                            {this.props.item.name} -}
-                            {this.props.item.sub_products.length + " Sub Products"}
+                            <span className="mr-1">{this.props.item.name}</span>
+                            <span className="mr-1">-</span>
+                            <span>{this.props.item.sub_products.length + " Sub Products"}</span>
                         </span>
                     </p>
                     {this.state.open &&

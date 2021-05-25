@@ -99,8 +99,8 @@ class ProductEditForm extends Component {
             images: [],
             currentUploadingImages: [],
             yearsList: [],
-            purposeList: ["defined", "prototype", "aggregate"],
-            conditionList: ["new", "used", "salvage"],
+            purposeList: ["Defined", "Prototype", "Aggregate"],
+            conditionList: ["New", "Used", "Salvage"],
             purpose: null,
             condition: null,
             product: null,
@@ -988,8 +988,8 @@ class ProductEditForm extends Component {
                 update: {
                     artifacts: this.state.images,
 
-                    purpose: purpose,
-                    condition: condition,
+                    purpose: purpose.toLowerCase(),
+                    condition: condition.toLowerCase(),
                     name: title,
                     description: description,
                     category: category,

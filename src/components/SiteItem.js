@@ -28,7 +28,7 @@ const SiteItem = ({site}) => {
                 <div>
                     <div className="d-flex">
                         <div className="blue-text text-bold flex-grow-1">{name}</div>
-                        {is_head_office && <div className="mr-2">HQ</div>}
+                        {is_head_office && <div className="mr-2"><small>Head Office</small></div>}
                         <div><EditIcon fontSize="small" onClick={() => handleOpenModal()} /></div>
 
                     </div>

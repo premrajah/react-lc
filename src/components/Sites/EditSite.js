@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useCallback} from 'react'
 import {Formik, Form} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "../FormsUI/TextField";
@@ -7,10 +7,13 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
+import CheckboxWrapper from "../FormsUI/Checkbox";
 
 
 const EditSite = ({editable, loadSites, site, submitCallback}) => {
-    const { key, name, address, email, contact, phone, others } = site;
+    const { key, name, address, email, contact, phone, others, is_head_office } = site;
+
+    console.log('is head office ',is_head_office)
 
     const INITIAL_VALUES = {
         name: editable ? name : '',
@@ -18,7 +21,8 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
         address: editable ? address : '',
         phone: editable ? phone : '',
         email: editable ? email : '',
-        others: editable ? others : ''
+        others: editable ? others : '',
+        is_head_office: editable ? is_head_office ? is_head_office : false : false
     }
 
     const VALIDATION_SCHEMA = Yup.object().shape({
@@ -27,11 +31,13 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
         address: Yup.string().required('Required'),
         phone: Yup.number().integer().typeError('Please enter a valid phone number').required('Required'),
         email: Yup.string().email('Invalid email').required('Required'),
-        others: Yup.string()
+        others: Yup.string(),
+        is_head_office: Yup.boolean()
     })
 
     const handleSubmitForm = (values) => {
         if(!values) return;
+
         let payload;
         if(editable) {
             payload = {
@@ -40,19 +46,13 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
             }
         } else {
             payload = {
-                site: {
-                    name: values.name,
-                    contact: values.contact,
-                    address: values.address,
-                    phone: values.phone,
-                    email: values.email,
-                    others: values.others
-                }
+                site: values
             }
         }
 
-
+        console.log('payload ', payload)
         handleAxiosPostSite(payload);
+
     }
 
     const handleAxiosPostSite = (payload) => {
@@ -129,7 +129,12 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <button type="submit" className="btn btn-block btn-green">Submit</button>
+                                <CheckboxWrapper name="is_head_office"  label="Is head office" checked={is_head_office ? is_head_office : false} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <ButtonWrapper type="submit" style={{backgroundColor: '#07AD88'}} >Submit</ButtonWrapper>
                             </div>
                         </div>
                     </Form>

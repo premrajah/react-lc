@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react'
-import {Formik, Form} from 'formik'
+import {Formik, Form, Field} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "../FormsUI/TextField";
 import ButtonWrapper from "../FormsUI/Button";
@@ -7,13 +7,11 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import CheckboxWrapper from "../FormsUI/Checkbox";
+import {Checkbox, FormLabel} from '@material-ui/core';
 
 
 const EditSite = ({editable, loadSites, site, submitCallback}) => {
     const { key, name, address, email, contact, phone, others, is_head_office } = site;
-
-    console.log('is head office ',is_head_office)
 
     const INITIAL_VALUES = {
         name: editable ? name : '',
@@ -50,7 +48,6 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
             }
         }
 
-        console.log('payload ', payload)
         handleAxiosPostSite(payload);
 
     }
@@ -129,7 +126,8 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <CheckboxWrapper name="is_head_office"  label="Is head office" checked={is_head_office ? is_head_office : false} />
+                                <FormLabel>Is head Office</FormLabel>
+                                <Field name="is_head_office" type="checkbox" as={Checkbox}  />
                             </div>
                         </div>
                         <div className="row">

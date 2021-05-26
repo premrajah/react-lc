@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {Formik, Form, Field} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "../FormsUI/TextField";
@@ -57,7 +57,7 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
             ? axios.post(`${baseUrl}site`, payload)
             .then(res => {
                 if(res.status === 200) {
-                    handleCallback(<span className="text-success">Updated successfully.}</span>);
+                    handleCallback(<span className="text-success">Updated successfully.</span>);
                     loadSites();
                 }
             })
@@ -132,7 +132,7 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <ButtonWrapper type="submit" style={{backgroundColor: '#07AD88'}} >Submit</ButtonWrapper>
+                                <button className="btn btn-block btn-green" type="submit" style={{backgroundColor: '#07AD88'}} >Submit</button>
                             </div>
                         </div>
                     </Form>

@@ -104,6 +104,7 @@ class ProductForm extends Component {
             showSubmitSite: false,
             is_listable: false,
             moreDetail: false,
+            isSubmitButtonPressed: false,
         };
 
         // this.slug = props.match.params.slug
@@ -779,6 +780,8 @@ class ProductForm extends Component {
                 };
             }
 
+            this.setState({isSubmitButtonPressed: true})
+
             axios
                 .put(
                     baseUrl + "product",
@@ -804,6 +807,7 @@ class ProductForm extends Component {
                     this.props.loadProductsWithoutParent();
                 })
                 .catch((error) => {
+                    this.setState({isSubmitButtonPressed: false})
                 });
 
         }
@@ -1682,7 +1686,8 @@ class ProductForm extends Component {
                                             type={"submit"}
                                             className={
                                                 "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                            }>
+                                            }
+                                        disabled={this.state.isSubmitButtonPressed}>
                                             Create A Product
                                         </button>
                                     )
@@ -1691,7 +1696,8 @@ class ProductForm extends Component {
                                         type={"submit"}
                                         className={
                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }>
+                                        }
+                                        disabled={this.state.isSubmitButtonPressed}>
                                         Create A Product
                                     </button>
                                 )}

@@ -20,6 +20,7 @@ import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "../../components/AddSite";
+import EditSite from "../../components/Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -95,7 +96,7 @@ class ProductForm extends Component {
             images: [],
             currentUploadingImages: [],
             yearsList: [],
-            purpose: ["defined", "prototype", "aggregate"],
+            purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
             product: null,
             parentProduct: null,
@@ -103,6 +104,7 @@ class ProductForm extends Component {
             showSubmitSite: false,
             is_listable: false,
             moreDetail: false,
+            isSubmitButtonPressed: false,
         };
 
         // this.slug = props.match.params.slug
@@ -734,7 +736,7 @@ class ProductForm extends Component {
             // const site=data.get("deliver")
 
             const productData = {
-                purpose: purpose,
+                purpose: purpose.toLowerCase(),
                 condition: condition.toLowerCase(),
                 name: title,
                 description: description,
@@ -778,6 +780,8 @@ class ProductForm extends Component {
                 };
             }
 
+            this.setState({isSubmitButtonPressed: true})
+
             axios
                 .put(
                     baseUrl + "product",
@@ -803,6 +807,7 @@ class ProductForm extends Component {
                     this.props.loadProductsWithoutParent();
                 })
                 .catch((error) => {
+                    this.setState({isSubmitButtonPressed: false})
                 });
 
         }
@@ -1227,7 +1232,7 @@ class ProductForm extends Component {
                                             )}
 
                                             <p style={{ margin: "10px 0" }}>
-                                                <span className="mr-1">Don’t see it on here?</span>
+                                                <span className="mr-1">Do not see your address?</span>
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
@@ -1255,11 +1260,7 @@ class ProductForm extends Component {
                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                         <div className={"row"}>
                                                             <div className={"col-12"}>
-                                                                <AddSite
-                                                                    triggerCallback={() =>
-                                                                        this.showSubmitSite()
-                                                                    }
-                                                                />
+                                                                <EditSite site={{}} submitCallback={() => this.showSubmitSite()} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1685,7 +1686,8 @@ class ProductForm extends Component {
                                             type={"submit"}
                                             className={
                                                 "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                            }>
+                                            }
+                                        disabled={this.state.isSubmitButtonPressed}>
                                             Create A Product
                                         </button>
                                     )
@@ -1694,7 +1696,8 @@ class ProductForm extends Component {
                                         type={"submit"}
                                         className={
                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }>
+                                        }
+                                        disabled={this.state.isSubmitButtonPressed}>
                                         Create A Product
                                     </button>
                                 )}

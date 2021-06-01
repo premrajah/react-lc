@@ -20,6 +20,7 @@ import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "./AddSite";
+import EditSite from "./Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -98,8 +99,8 @@ class ProductEditForm extends Component {
             images: [],
             currentUploadingImages: [],
             yearsList: [],
-            purposeList: ["defined", "prototype", "aggregate"],
-            conditionList: ["new", "used", "salvage"],
+            purposeList: ["Defined", "Prototype", "Aggregate"],
+            conditionList: ["New", "Used", "Salvage"],
             purpose: null,
             condition: null,
             product: null,
@@ -987,8 +988,8 @@ class ProductEditForm extends Component {
                 update: {
                     artifacts: this.state.images,
 
-                    purpose: purpose,
-                    condition: condition,
+                    purpose: purpose.toLowerCase(),
+                    condition: condition.toLowerCase(),
                     name: title,
                     description: description,
                     category: category,
@@ -1560,7 +1561,7 @@ class ProductEditForm extends Component {
                                                 )}
 
                                                 <p style={{ margin: "10px 0" }}>
-                                                    Don’t see it on here?
+                                                    Do not see your address?
                                                     <span
                                                         onClick={this.showSubmitSite}
                                                         className="green-text forgot-password-link text-mute small ml-1">
@@ -1586,11 +1587,7 @@ class ProductEditForm extends Component {
                                                         <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                             <div className={"row"}>
                                                                 <div className={"col-12"}>
-                                                                    <AddSite
-                                                                        triggerCallback={() =>
-                                                                            this.showSubmitSite()
-                                                                        }
-                                                                    />
+                                                                    <EditSite site={{}} submitCallback={() => this.showSubmitSite()} />
                                                                 </div>
                                                             </div>
                                                         </div>

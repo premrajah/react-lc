@@ -6,8 +6,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import LogoNew from "../../img/logo-cropped.png";
-import LogoText from "../../img/logo-text.png";
-import HeaderLogo from '../../img/loopcycle_header_logo_321x52.png';
 import HeaderLogoSvg from '../../img/loopcycle_header_logo.svg';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
@@ -362,12 +360,6 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Issues
                                         </Link>
-
-                                        <Link className={"dropdown-item"} to="/statistics">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Statistics
-                                        </Link>
-
 
                                         {/*<Link className={"dropdown-item"} to="">*/}
                                         {/*    <i className="tim-icons icon-bullet-list-67" />*/}

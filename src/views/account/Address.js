@@ -10,6 +10,7 @@ import SiteItem from "../../components/SiteItem";
 import AddSite from "../../components/AddSite";
 import * as actionCreator from "../../store/actions/actions";
 import { Alert } from "react-bootstrap";
+import EditSite from "../../components/Sites/EditSite";
 
 class PaymentMethod extends Component {
     constructor(props) {
@@ -120,7 +121,6 @@ class PaymentMethod extends Component {
     }
 
     toggleSite() {
-        // this.props.showSiteModal(!this.props.showSitePopUp)
 
         this.setState({
             showCreateSite: !this.state.showCreateSite,
@@ -174,10 +174,10 @@ class PaymentMethod extends Component {
                         <div className="row mb-5">
                             <div className="col-12">
                                 <div className="list-group">
-                                    {this.props.siteList.map((site) => (
-                                        <SiteItem
-                                            site={site}
-                                        />
+                                    {this.props.siteList.map((site, index) => (
+                                        <React.Fragment key={index}>
+                                            <SiteItem site={site}/>
+                                        </React.Fragment>
                                     ))}
                                 </div>
                             </div>
@@ -203,15 +203,10 @@ class PaymentMethod extends Component {
 
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        <AddSite
-                                            triggerCallback={() => {
-                                                this.toggleSite();
-
-                                                this.setState({
-                                                    submitSuccess: true,
-                                                });
-                                            }}
-                                        />
+                                        <EditSite site={{}} submitCallback={() => {
+                                            this.toggleSite();
+                                            this.setState({submitSuccess: true,})
+                                        }} />
                                     </div>
                                 </div>
                             </div>

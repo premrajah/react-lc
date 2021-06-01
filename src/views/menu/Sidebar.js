@@ -178,12 +178,6 @@ class Sidebar extends Component {
                                                 Issues
                                             </Link>
 
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/statistics"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Statistics
-                                            </Link>
 
                                     </div>
                                 </div>

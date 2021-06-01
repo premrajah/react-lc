@@ -41,6 +41,10 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS,
+    PRODUCT_RELEASE,
+    PRODUCT_REGISTER,
+    SERVICE_AGENT_REQUEST
+
 } from "../types";
 
 export const initialState = {
@@ -75,6 +79,9 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
+    serviceAgentRequests: [],
+    productReleaseRequests: [],
+    productRegisterRequests: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -96,6 +103,22 @@ const reducer = (state = initialState, action) => {
         case SITE_POPUP:
             newState.showSitePopUp = action.value;
             break;
+
+
+        case PRODUCT_RELEASE:
+            newState.productReleaseRequests = action.value;
+            break;
+
+
+        case PRODUCT_REGISTER:
+            newState.productRegisterRequests = action.value;
+            break;
+
+        case SERVICE_AGENT_REQUEST:
+            newState.serviceAgentRequests = action.value;
+            break;
+
+
 
         case REVIEW_BOX_OPEN:
             newState.reviewBoxOpen = action.value;

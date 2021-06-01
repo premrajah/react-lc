@@ -136,7 +136,7 @@ class Products extends Component {
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="My Products"
-                            subTitle="Products created can be assigned to resource searches"
+                            subTitle="All products created can be found here"
                         />
 
                         <div className="row">

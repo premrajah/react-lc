@@ -52,13 +52,13 @@ class MyAccount extends Component {
                             <div className="col-md-12">
                                 <div className="list-group main-menu accountpage-list">
                                     <Link
-                                        to={"/edit-account"}
+                                        to="/edit-account"
                                         className="list-group-item list-group-item-action ">
                                         Personal Info <NavigateNextIcon />
                                     </Link>
 
                                     <Link
-                                        to={"/company-info"}
+                                        to="/company-info"
                                         className="list-group-item list-group-item-action ">
                                         Company Info <NavigateNextIcon />
                                     </Link>
@@ -67,9 +67,16 @@ class MyAccount extends Component {
                                     {/*Payment Methods <NavigateNextIcon /></Link>*/}
 
                                     <Link
-                                        to={"/addresses"}
+                                        to="/addresses"
                                         className="list-group-item list-group-item-action ">
                                         Address/Sites <NavigateNextIcon />
+                                    </Link>
+
+                                    <Link
+                                        to="/statistics"
+                                        className="list-group-item list-group-item-action "
+                                    >
+                                        Statistics <NavigateNextIcon />
                                     </Link>
                                 </div>
 

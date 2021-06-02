@@ -1345,7 +1345,7 @@ class ProductForm extends Component {
                                                             name: "manufacturedDate",
                                                             id: "outlined-age-native-simple",
                                                         }}>
-                                                        <option value={null}>Select</option>
+                                                        <option value="0">Select</option>
 
                                                         {this.state.yearsList.map((item, i) => (
                                                             <option key={i} value={item}>{item}</option>

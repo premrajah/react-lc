@@ -125,6 +125,8 @@ class Approvals extends Component {
     componentDidMount() {
 
 
+        this.refreshItems()
+
     }
 
     refreshProductReleaseCallback = () => {

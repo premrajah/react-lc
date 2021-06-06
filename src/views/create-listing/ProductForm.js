@@ -608,6 +608,11 @@ class ProductForm extends Component {
             errors["volume"] = "Required";
         }
 
+        if (!fields["brand"]) {
+            formIsValid = false;
+            errors["brand"] = "Required";
+        }
+
         // if (!fields["manufacturedDate"]) {
         //     formIsValid = false;
         //     errors["manufacturedDate"] = "Required";
@@ -912,8 +917,6 @@ class ProductForm extends Component {
 
         return (
             <>
-                {/*<HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />*/}
-
                 <div className="row   pt-2 ">
                     <div className="col-12  ">
                         <h3 className={"blue-text text-heading"}>{this.props.heading}</h3>
@@ -948,8 +951,8 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-4">
-                                <div className="col-md-6 col-sm-12 d-flex justify-content-start align-items-center">
+                            <div className="row  mt-4">
+                                <div className="col-md-4 col-sm-12 d-flex justify-content-start align-items-center">
                                     <FormControlLabel
                                         control={
                                             <Checkbox
@@ -959,11 +962,11 @@ class ProductForm extends Component {
                                                 color="primary"
                                             />
                                         }
-                                        label="Tick box to allow product to be listed for sale"
+                                        label="Allow product to be listed for sale"
                                     />
                                 </div>
 
-                                <div className="col-md-6 col-sm-12">
+                                <div className="col-md-4 col-sm-12">
                                     <div
                                         className={"custom-label text-bold text-blue mb-3"}>
                                         Condition
@@ -987,6 +990,29 @@ class ProductForm extends Component {
                                             ))}
                                         </Select>
                                     </FormControl>
+                                </div>
+
+                                <div className="col-md-4 col-sm-12">
+                                        <div className="custom-label text-bold text-blue mb-3">
+                                            Brand
+                                        </div>
+
+                                        <TextField
+                                            onChange={this.handleChangeProduct.bind(
+                                                this,
+                                                "brand"
+                                            )}
+                                            name={"brand"}
+                                            id="outlined-basic"
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                        {this.state.errorsProduct["brand"] && (
+                                            <span className={"text-mute small"}>
+                                            <span style={{ color: "red" }}>* </span>
+                                                {this.state.errorsProduct["brand"]}
+                                                    </span>
+                                        )}
                                 </div>
                             </div>
 
@@ -1361,32 +1387,6 @@ class ProductForm extends Component {
                                                                 "manufacturedDate"
                                                             ]
                                                         }
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Brand
-                                                </div>
-
-                                                <TextField
-                                                    onChange={this.handleChangeProduct.bind(
-                                                        this,
-                                                        "brand"
-                                                    )}
-                                                    name={"brand"}
-                                                    id="outlined-basic"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                />
-                                                {this.state.errorsProduct["brand"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errorsProduct["brand"]}
                                                     </span>
                                                 )}
                                             </div>

@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
-import { baseUrl, frontEndUrl } from "../Util/Constants";
+import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
@@ -1034,7 +1034,7 @@ class ProductDetail extends Component {
                                                 {(this.state.item && this.state.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
                                                     <div className="col-auto">
                                                         <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                        <p style={{fontSize: "18px"}}>{this.state.item.product.condition}</p>
+                                                        <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.state.item.product.condition)}</p>
                                                     </div>
                                                 </div> }
 

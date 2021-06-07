@@ -115,7 +115,7 @@ class Products extends Component {
                             <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
                                 <div className="col d-flex justify-content-end">
                                     <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>
-                                    <button className="btn btn-sm btn-warning ml-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
+                                    <button className="btn btn-sm btn-pink ml-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
                                 </div>
                             </div>
                             <div className="row mb-1">
@@ -136,7 +136,7 @@ class Products extends Component {
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="My Products"
-                            subTitle="Products created can be assigned to resource searches"
+                            subTitle="All products created can be found here"
                         />
 
                         <div className="row">

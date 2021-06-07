@@ -19,14 +19,14 @@ class AddSite extends Component {
         };
     }
 
-    phonenumber = (inputtxt) => {
-        var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
+    phoneNumber = (inputText) => {
+        let phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
-        var phoneWithZero = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
+        let phoneWithZero = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
 
-        if (inputtxt.match(phoneNoWithCode)) {
+        if (inputText.match(phoneNoWithCode)) {
             return true;
-        } else if (inputtxt.match(phoneWithZero)) {
+        } else if (inputText.match(phoneWithZero)) {
             return true;
         } else {
             return false;
@@ -78,7 +78,7 @@ class AddSite extends Component {
             errors["phone"] = "Required";
         }
 
-        if (fields["phone"] && !this.phonenumber(fields["phone"])) {
+        if (fields["phone"] && !this.phoneNumber(fields["phone"])) {
             formIsValid = false;
             errors["phone"] = "Invalid Phone Number!";
         }
@@ -139,32 +139,21 @@ class AddSite extends Component {
             const address = data.get("address");
             const phone = data.get("phone");
 
+            const payload = {
+                site: {
+                    name: name,
+                    email: email,
+                    contact: contact,
+                    address: address,
+                    phone: phone,
+                    others: others,
+                },
+            };
+
             axios
-                .put(
-                    baseUrl + "site",
-
-                    {
-                        site: {
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            address: address,
-                            phone: phone,
-                            others: others,
-                        },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    }
-                )
+                .put(baseUrl + "site",payload)
                 .then((res) => {
-                    // this.toggleSite()
-                    // this.getSites()
-
                     this.props.loadSites(this.props.userDetail.token);
-
                     this.props.triggerCallback();
                 })
                 .catch((error) => {});

@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
-import { baseUrl, frontEndUrl } from "../Util/Constants";
+import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
@@ -27,6 +27,7 @@ import AutocompleteCustom from "./AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
 import AddImagesToProduct from "./UploadImages/AddImagesToProduct";
 import AddedDocumentsDisplay from "./UploadImages/AddedDocumentsDisplay";
+import SubproductItem from "./Products/SubproductItem";
 
 class ProductDetail extends Component {
     slug;
@@ -859,7 +860,7 @@ class ProductDetail extends Component {
                                         <div className="row justify-content-start pb-3 pt-3 ">
                                             <div className="col-12 ">
                                                 <h5 className={"text-bold blue-text"}>
-                                                    Cycle Code
+                                                    Cyclecode
                                                 </h5>
                                             </div>
 
@@ -897,6 +898,7 @@ class ProductDetail extends Component {
                                                                     [Provenance]
                                                                 </Link>
                                                                 <Link
+                                                                    to={`/product/${this.state.item.product._key}`}
                                                                     className={"mr-3"}
                                                                     onClick={() =>
                                                                         this.handlePrintPdf(
@@ -1032,7 +1034,7 @@ class ProductDetail extends Component {
                                                 {(this.state.item && this.state.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
                                                     <div className="col-auto">
                                                         <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                        <p style={{fontSize: "18px"}}>{this.state.item.product.condition}</p>
+                                                        <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.state.item.product.condition)}</p>
                                                     </div>
                                                 </div> }
 
@@ -1174,18 +1176,11 @@ class ProductDetail extends Component {
                                                     <>
                                                         {this.state.item.sub_products.map(
                                                             (item, index) => (
-                                                                <ProductItemNew
-                                                                    goToLink={true}
-                                                                    history={this.props.history}
-                                                                    parentId={
-                                                                        this.state.item.product._key
-                                                                    }
-                                                                    delete={false}
-                                                                    duplicate={false}
-                                                                    remove={true}
-                                                                    edit={false}
-                                                                    item={item}
+                                                                <SubproductItem
                                                                     key={index}
+                                                                    item={item}
+                                                                    parentId={this.state.item.product._key}
+                                                                    remove={true}
                                                                 />
                                                             )
                                                         )}

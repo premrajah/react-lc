@@ -10,6 +10,8 @@ import SiteItem from "../../components/SiteItem";
 import AddSite from "../../components/AddSite";
 import * as actionCreator from "../../store/actions/actions";
 import { Alert } from "react-bootstrap";
+import EditSite from "../../components/Sites/EditSite";
+import PageHeader from "../../components/PageHeader";
 
 class PaymentMethod extends Component {
     constructor(props) {
@@ -120,7 +122,6 @@ class PaymentMethod extends Component {
     }
 
     toggleSite() {
-        // this.props.showSiteModal(!this.props.showSitePopUp)
 
         this.setState({
             showCreateSite: !this.state.showCreateSite,
@@ -141,16 +142,16 @@ class PaymentMethod extends Component {
                 <div className="wrapper  ">
                     <HeaderDark />
 
-                    <div className="container  pt-3">
-                        <div className="row mb-3 justify-content-center ">
-                            <div className="col-12  justify-content-center">
-                                <p className={"blue-text"}>
-                                    <Link to={"/account"}> Account </Link> > Addresses/Sites
-                                </p>
-
-                                <h4 className={"text-blue text-bold"}>Addresses/Sites</h4>
-                            </div>
+                    <div className="container pb-4 pt-4">
+                        <div>
+                            <Link to={"/account"}>Account </Link> > Addresses
                         </div>
+
+                        <PageHeader
+                            pageTitle="Addresses/Sites"
+                            subTitle="Add or edit addresses"
+                            bottomLine={<hr />}
+                        />
 
                         {this.state.submitSuccess && (
                             <Alert key={"alert"} variant={"success"}>
@@ -165,7 +166,7 @@ class PaymentMethod extends Component {
                                         onClick={this.toggleSite}
                                         className="green-link-url"
                                         style={{ cursor: "pointer" }}>
-                                        Add New Address
+                                        Add New Site
                                     </p>
                                 </div>
                             </div>
@@ -174,17 +175,10 @@ class PaymentMethod extends Component {
                         <div className="row mb-5">
                             <div className="col-12">
                                 <div className="list-group">
-                                    {this.props.siteList.map((site) => (
-                                        <SiteItem
-                                            key={site._key}
-                                            name={site.name}
-                                            address={site.address}
-                                            email={site.email}
-                                            contact={site.contact}
-                                            phone={site.phone}
-                                            others={site.others}
-                                            itemKey={site._key}
-                                        />
+                                    {this.props.siteList.map((site, index) => (
+                                        <React.Fragment key={index}>
+                                            <SiteItem site={site}/>
+                                        </React.Fragment>
                                     ))}
                                 </div>
                             </div>
@@ -210,15 +204,10 @@ class PaymentMethod extends Component {
 
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        <AddSite
-                                            triggerCallback={() => {
-                                                this.toggleSite();
-
-                                                this.setState({
-                                                    submitSuccess: true,
-                                                });
-                                            }}
-                                        />
+                                        <EditSite site={{}} submitCallback={() => {
+                                            this.toggleSite();
+                                            this.setState({submitSuccess: true,})
+                                        }} />
                                     </div>
                                 </div>
                             </div>

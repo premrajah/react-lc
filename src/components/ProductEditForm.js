@@ -20,6 +20,7 @@ import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "./AddSite";
+import EditSite from "./Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -98,8 +99,8 @@ class ProductEditForm extends Component {
             images: [],
             currentUploadingImages: [],
             yearsList: [],
-            purposeList: ["defined", "prototype", "aggregate"],
-            conditionList: ["new", "used", "salvage"],
+            purposeList: ["Defined", "Prototype", "Aggregate"],
+            conditionList: ["New", "Used", "Salvage"],
             purpose: null,
             condition: null,
             product: null,
@@ -780,22 +781,11 @@ class ProductEditForm extends Component {
             errors["volume"] = "Required";
         }
 
-        //
-        // if (!data.get("manufacturedDate")) {
-        //     formIsValid = false;
-        //     errors["manufacturedDate"] = "Required";
-        // }
+        if (!data.get("brand")) {
+            formIsValid = false;
+            errors["brand"] = "Required";
+        }
 
-        // if (typeof data.get("email") !== "undefined") {
-        //
-        //     let lastAtPos = fields["email"].lastIndexOf('@');
-        //     let lastDotPos = fields["email"].lastIndexOf('.');
-        //
-        //     if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') === -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-        //         formIsValid = false;
-        //         errors["email"] = "Invalid email address";
-        //     }
-        // }
 
         this.setState({ errorsProduct: errors });
         return formIsValid;
@@ -900,29 +890,9 @@ class ProductEditForm extends Component {
 
                 this.triggerCallback();
 
-                // this.showProductSelection()
-
-                // this.props.loadProducts(this.props.userDetail.token)
-
-                // if (this.slug) {
-                //     this.props.history.push("/sub-product-view/" + this.slug)
-                //
-                //
-                // }else{
-                //     this.props.history.push("/sub-product-view/" + res.data.data.product._key)
-                //
-                //
-                // }
-
-                // this.showProductSelection()
-
-                // this.getProducts()
             })
             .catch((error) => {
-                // dispatch(stopLoading())
-                // dispatch(signUpFailed(error.response.data.message))
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
+
             });
     }
 
@@ -943,10 +913,7 @@ class ProductEditForm extends Component {
             )
             .then((res) => {})
             .catch((error) => {
-                // dispatch(stopLoading())
-                // dispatch(signUpFailed(error.response.data.message))
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
+
             });
     }
 
@@ -987,8 +954,8 @@ class ProductEditForm extends Component {
                 update: {
                     artifacts: this.state.images,
 
-                    purpose: purpose,
-                    condition: condition,
+                    purpose: purpose.toLowerCase(),
+                    condition: condition.toLowerCase(),
                     name: title,
                     description: description,
                     category: category,
@@ -1134,8 +1101,6 @@ class ProductEditForm extends Component {
 
         return (
             <>
-                {/*<HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />*/}
-
                 <div className="row   justify-content-center create-product-row pb-2 pt-4 ">
                     <div className="col-11">
                         <h3 className={"blue-text text-heading"}>
@@ -1183,7 +1148,7 @@ class ProductEditForm extends Component {
                                     </div>
                                     <div className="col-12 mt-4">
                                         <div className="row">
-                                            <div className="col-md-6">
+                                            <div className="col-md-4">
                                                 <FormControlLabel
                                                     control={
                                                         <Checkbox
@@ -1196,10 +1161,10 @@ class ProductEditForm extends Component {
                                                             value={this.state.is_listable}
                                                         />
                                                     }
-                                                    label="Tick box to allow product to be listed for sale"
+                                                    label="Allow product to be listed for sale"
                                                 />
                                             </div>
-                                            <div className="col-md-6">
+                                            <div className="col-md-4">
                                                     <div
                                                         className={
                                                             "custom-label text-bold text-blue mb-3"
@@ -1235,6 +1200,38 @@ class ProductEditForm extends Component {
                                                         </Select>
                                                     </FormControl>
                                             </div>
+
+                                            <div className="col-md-4">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue mb-3"
+                                                    }>
+                                                    Brand
+                                                </div>
+
+                                                <TextField
+                                                    value={
+                                                        this.state.brand
+                                                            ? this.state.brand
+                                                            : this.state.item.product.sku.brand
+                                                    }
+                                                    onChange={this.handleChangeProduct.bind(
+                                                        this,
+                                                        "brand"
+                                                    )}
+                                                    name={"brand"}
+                                                    id="outlined-basic"
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                                {this.state.errorsProduct["brand"] && (
+                                                    <span className={"text-mute small"}>
+                                                        <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsProduct["brand"]}
+                                                    </span>
+                                                )}
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -1560,7 +1557,7 @@ class ProductEditForm extends Component {
                                                 )}
 
                                                 <p style={{ margin: "10px 0" }}>
-                                                    Don’t see it on here?
+                                                    Do not see your address?
                                                     <span
                                                         onClick={this.showSubmitSite}
                                                         className="green-text forgot-password-link text-mute small ml-1">
@@ -1586,11 +1583,7 @@ class ProductEditForm extends Component {
                                                         <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                             <div className={"row"}>
                                                                 <div className={"col-12"}>
-                                                                    <AddSite
-                                                                        triggerCallback={() =>
-                                                                            this.showSubmitSite()
-                                                                        }
-                                                                    />
+                                                                    <EditSite site={{}} submitCallback={() => this.showSubmitSite()} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1663,7 +1656,6 @@ class ProductEditForm extends Component {
                                                 <FormControl
                                                     variant="outlined"
                                                     className={classes.formControl}>
-                                                    {/*<InputLabel htmlFor="outlined-age-native-simple">Year Of Manufacture</InputLabel>*/}
                                                     <Select
                                                         native
                                                         name={"manufacturedDate"}
@@ -1676,7 +1668,7 @@ class ProductEditForm extends Component {
                                                             name: "manufacturedDate",
                                                             id: "outlined-age-native-simple",
                                                         }}>
-                                                        <option>Select</option>
+                                                        <option value="0">Select</option>
 
                                                         {this.state.yearsList.map((item, index) => (
                                                             <option
@@ -1702,36 +1694,6 @@ class ProductEditForm extends Component {
                                                                 "manufacturedDate"
                                                             ]
                                                         }
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Brand
-                                                </div>
-
-                                                <TextField
-                                                    value={
-                                                        this.state.brand
-                                                            ? this.state.brand
-                                                            : this.state.item.product.sku.brand
-                                                    }
-                                                    onChange={this.handleChangeProduct.bind(
-                                                        this,
-                                                        "brand"
-                                                    )}
-                                                    name={"brand"}
-                                                    id="outlined-basic"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                />
-                                                {this.state.errorsProduct["brand"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errorsProduct["brand"]}
                                                     </span>
                                                 )}
                                             </div>

@@ -20,6 +20,7 @@ import { Spinner } from "react-bootstrap";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AddSite from "../../components/AddSite";
+import EditSite from "../../components/Sites/EditSite";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -95,7 +96,7 @@ class ProductForm extends Component {
             images: [],
             currentUploadingImages: [],
             yearsList: [],
-            purpose: ["defined", "prototype", "aggregate"],
+            purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
             product: null,
             parentProduct: null,
@@ -103,6 +104,7 @@ class ProductForm extends Component {
             showSubmitSite: false,
             is_listable: false,
             moreDetail: false,
+            isSubmitButtonPressed: false,
         };
 
         // this.slug = props.match.params.slug
@@ -193,59 +195,76 @@ class ProductForm extends Component {
         });
     }
 
+    getImageAsBytes(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+
+            reader.onload = () => {
+                let arrayBuffer = reader.result;
+                let bytes = new Uint8Array(arrayBuffer);
+                resolve(bytes);
+            };
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
 
     uploadImage(files) {
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {
                 let imgFile = files[i];
 
-                let payload = new FormData();
-                payload.append('file', imgFile.file);
+                this.getImageAsBytes(imgFile.file)
+                    .then(data => {
+                        const payload = data;
 
-                let config = { headers: {"Content-Type": "multipart/form-data"}};
+                        try {
+                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
+                                .then(res => {
 
-                try {
+                                    let images = [...this.state.images];
+                                    images.push(res.data.data._key);
 
-                    axios.post(`${baseUrl}artifact/upload`, payload, config)
-                        .then(res => {
+                                    this.setState({
+                                        images: images,
+                                    });
 
-                            let images = [...this.state.images];
-                            images.push(res.data.data._key);
+                                    let currentFiles = this.state.files;
 
-                            this.setState({
-                                images: images,
-                            });
+                                    for (let k = 0; k < currentFiles.length; k++) {
+                                        if (currentFiles[k].file.name === imgFile.file.name) {
+                                            currentFiles[k].status = 1; //success
+                                            currentFiles[k].id = res.data.data._key; //success
+                                        }
+                                    }
 
-                            let currentFiles = this.state.files;
+                                    this.setState({
+                                        files: currentFiles,
+                                    });
+                                })
+                                .catch(error => {
 
-                            for (let k = 0; k < currentFiles.length; k++) {
-                                if (currentFiles[k].file.name === imgFile.file.name) {
-                                    currentFiles[k].status = 1; //success
-                                    currentFiles[k].id = res.data.data._key; //success
-                                }
-                            }
+                                    let currentFiles = [...this.state.files];
+                                    for (let k = 0; k < currentFiles.length; k++) {
+                                        if (currentFiles[k].file.name === imgFile.file.name) {
+                                            currentFiles[k].status = 2; //failed
+                                        }
+                                    }
 
-                            this.setState({
-                                files: currentFiles,
-                            });
-                        })
-                        .catch(error => {
+                                    this.setState({
+                                        files: currentFiles,
+                                    });
+                                })
 
-                            let currentFiles = [...this.state.files];
-                            for (let k = 0; k < currentFiles.length; k++) {
-                                if (currentFiles[k].file.name === imgFile.file.name) {
-                                    currentFiles[k].status = 2; //failed
-                                }
-                            }
+                        } catch (e) {
+                            console.log('catch Error ', e);
+                        }
 
-                            this.setState({
-                                files: currentFiles,
-                            });
-                        })
-
-                } catch (e) {
-                    console.log('catch Error ', e);
-                }
+                    })
+                    .catch(error => {
+                      console.log('image upload error ', error);
+                    })
 
             }
         }
@@ -606,6 +625,11 @@ class ProductForm extends Component {
             errors["volume"] = "Required";
         }
 
+        if (!fields["brand"]) {
+            formIsValid = false;
+            errors["brand"] = "Required";
+        }
+
         // if (!fields["manufacturedDate"]) {
         //     formIsValid = false;
         //     errors["manufacturedDate"] = "Required";
@@ -734,7 +758,7 @@ class ProductForm extends Component {
             // const site=data.get("deliver")
 
             const productData = {
-                purpose: purpose,
+                purpose: purpose.toLowerCase(),
                 condition: condition.toLowerCase(),
                 name: title,
                 description: description,
@@ -778,6 +802,8 @@ class ProductForm extends Component {
                 };
             }
 
+            this.setState({isSubmitButtonPressed: true})
+
             axios
                 .put(
                     baseUrl + "product",
@@ -803,6 +829,7 @@ class ProductForm extends Component {
                     this.props.loadProductsWithoutParent();
                 })
                 .catch((error) => {
+                    this.setState({isSubmitButtonPressed: false})
                 });
 
         }
@@ -907,8 +934,6 @@ class ProductForm extends Component {
 
         return (
             <>
-                {/*<HeaderWhiteBack history={this.props.history} heading={this.state.item && this.state.item.name} />*/}
-
                 <div className="row   pt-2 ">
                     <div className="col-12  ">
                         <h3 className={"blue-text text-heading"}>{this.props.heading}</h3>
@@ -943,8 +968,8 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-4">
-                                <div className="col-md-6 col-sm-12 d-flex justify-content-start align-items-center">
+                            <div className="row  mt-4">
+                                <div className="col-md-4 col-sm-12 d-flex justify-content-start align-items-center">
                                     <FormControlLabel
                                         control={
                                             <Checkbox
@@ -954,11 +979,11 @@ class ProductForm extends Component {
                                                 color="primary"
                                             />
                                         }
-                                        label="Tick box to allow product to be listed for sale"
+                                        label="Allow product to be listed for sale"
                                     />
                                 </div>
 
-                                <div className="col-md-6 col-sm-12">
+                                <div className="col-md-4 col-sm-12">
                                     <div
                                         className={"custom-label text-bold text-blue mb-3"}>
                                         Condition
@@ -982,6 +1007,29 @@ class ProductForm extends Component {
                                             ))}
                                         </Select>
                                     </FormControl>
+                                </div>
+
+                                <div className="col-md-4 col-sm-12">
+                                        <div className="custom-label text-bold text-blue mb-3">
+                                            Brand
+                                        </div>
+
+                                        <TextField
+                                            onChange={this.handleChangeProduct.bind(
+                                                this,
+                                                "brand"
+                                            )}
+                                            name={"brand"}
+                                            id="outlined-basic"
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                        {this.state.errorsProduct["brand"] && (
+                                            <span className={"text-mute small"}>
+                                            <span style={{ color: "red" }}>* </span>
+                                                {this.state.errorsProduct["brand"]}
+                                                    </span>
+                                        )}
                                 </div>
                             </div>
 
@@ -1227,7 +1275,7 @@ class ProductForm extends Component {
                                             )}
 
                                             <p style={{ margin: "10px 0" }}>
-                                                <span className="mr-1">Don’t see it on here?</span>
+                                                <span className="mr-1">Do not see your address?</span>
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
@@ -1255,11 +1303,7 @@ class ProductForm extends Component {
                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                         <div className={"row"}>
                                                             <div className={"col-12"}>
-                                                                <AddSite
-                                                                    triggerCallback={() =>
-                                                                        this.showSubmitSite()
-                                                                    }
-                                                                />
+                                                                <EditSite site={{}} submitCallback={() => this.showSubmitSite()} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1344,7 +1388,7 @@ class ProductForm extends Component {
                                                             name: "manufacturedDate",
                                                             id: "outlined-age-native-simple",
                                                         }}>
-                                                        <option value={null}>Select</option>
+                                                        <option value="0">Select</option>
 
                                                         {this.state.yearsList.map((item, i) => (
                                                             <option key={i} value={item}>{item}</option>
@@ -1360,32 +1404,6 @@ class ProductForm extends Component {
                                                                 "manufacturedDate"
                                                             ]
                                                         }
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Brand
-                                                </div>
-
-                                                <TextField
-                                                    onChange={this.handleChangeProduct.bind(
-                                                        this,
-                                                        "brand"
-                                                    )}
-                                                    name={"brand"}
-                                                    id="outlined-basic"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                />
-                                                {this.state.errorsProduct["brand"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errorsProduct["brand"]}
                                                     </span>
                                                 )}
                                             </div>
@@ -1685,7 +1703,8 @@ class ProductForm extends Component {
                                             type={"submit"}
                                             className={
                                                 "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                            }>
+                                            }
+                                        disabled={this.state.isSubmitButtonPressed}>
                                             Create A Product
                                         </button>
                                     )
@@ -1694,7 +1713,8 @@ class ProductForm extends Component {
                                         type={"submit"}
                                         className={
                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }>
+                                        }
+                                        disabled={this.state.isSubmitButtonPressed}>
                                         Create A Product
                                     </button>
                                 )}

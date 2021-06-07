@@ -7,6 +7,8 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import { Alert, Spinner } from "react-bootstrap";
 import { TextField, Typography } from "@material-ui/core";
+import PageHeader from "../../components/PageHeader";
+import StatBLue from "../../img/icons/stat-blue.png";
 
 class EditAccount extends Component {
     constructor(props) {
@@ -168,15 +170,16 @@ class EditAccount extends Component {
                 <div className="wrapper  ">
                     <HeaderDark />
 
-                    <div className="container  pt-3">
-                        <div className="row mb-3 justify-content-center ">
-                            <div className="col-12  justify-content-center">
-                                <p className={"blue-text"}>
-                                    <Link to={"/account"}>Account </Link> > Personal Info
-                                </p>
-                                <h4 className={"text-blue text-bold"}>Personal Info</h4>
-                            </div>
+                    <div className="container pb-4 pt-4">
+                        <div>
+                            <Link to={"/account"}>Account </Link> > Personal Information
                         </div>
+
+                        <PageHeader
+                            pageTitle="Personal Information"
+                            subTitle="Add your personal information on this page"
+                            bottomLine={<hr />}
+                        />
 
                         {this.state.submitSuccess && (
                             <Alert key={"alert"} variant={"success"}>

@@ -1039,7 +1039,7 @@ class ProductDetail extends Component {
                                                 </div> }
 
                                                 {this.state.item &&
-                                                    this.state.item.product.year_of_making && (
+                                                (this.state.item.product.year_of_making || this.state.item.product.year_of_making > 0) && (
                                                         <div className="row  justify-content-start search-container  pb-2">
                                                             <div className={"col-auto"}>
                                                                 <p

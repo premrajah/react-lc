@@ -1206,7 +1206,7 @@ class ProductDetail extends Component {
                                                     )}
                                                 </Tab>
                                             )}
-                                            <Tab eventKey="documents" title="Documents">
+                                            <Tab eventKey="artifacts" title="Artifacts">
                                                 <AddImagesToProduct
                                                     handleCallBackImagesUploadStatus={(status) =>
                                                         this.handleCallBackImagesUploadStatus(

@@ -46,7 +46,26 @@ class Notifications extends Component {
             })
     }
 
+    handleTrackProduct = (message) => {
+        if(!message) return;
 
+        if(message.entity_as_json) {
+            const payload = {
+                "product_id": message.entity_as_json._key
+            }
+            this.trackProduct(payload);
+        }
+    }
+
+    trackProduct = (payload) => {
+        axios.post(`${baseUrl}product/track`, payload)
+            .then(res => {
+                if(res.status === 200) {
+                }
+            })
+            .catch(error => {
+            })
+    }
 
     checkNotifications = (item, index) => {
         if (!item) return;
@@ -118,6 +137,7 @@ class Notifications extends Component {
                                 <span className="mr-4">{moment(message._ts_epoch_ms).fromNow()}</span>
                                 <span className="">{readTime ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}` : ''}</span>
                                 {!readTime ? <span onClick={() => this.messageRead(messageId)} style={{cursor: 'pointer'}}>Mark as read</span> : null}
+                                {message.text.match(PRODUCT_REGEX) && <span className="ml-4" style={{cursor: 'pointer'}} onClick={() => this.handleTrackProduct(message)}><b>Track</b></span>}
                             </span>
                         </div>
                     </div>

@@ -98,8 +98,12 @@ class ProductsService extends Component {
                                     My Products
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn">
-                                    Product Record
+                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
+                                    Records
+                                </Link>
+
+                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
+                                    Tracked
                                 </Link>
                             </div>
                         </div>

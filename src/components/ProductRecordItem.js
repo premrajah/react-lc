@@ -71,15 +71,18 @@ const ProductRecordItem = ({ item }) => {
 
                     {listing ? (
                         <div align="right">
-                            Created: {moment(listing._ts_epoch_ms).format("DD/MM/YY")}
+                            <span className="text-gray-light small">Listing created: {moment(listing._ts_epoch_ms).format("DD/MM/YY")}</span>
                         </div>
                     ) : null}
                     {listing ? (
                         <div align="right">
-                            Available}
+                            <span className="text-gray-light small">
+                                <span className="mr-2">Available</span>
+                                {console.log('listing ', listing)}
                             {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                                 " - " +
                                 moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}
+                            </span>
                         </div>
                     ) : null}
                 </div>

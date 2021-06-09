@@ -63,6 +63,7 @@ import IssueDetail from "./views/issues/IssueDetail";
 import ApprovedReleases from "./views/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
+import TrackedProducts from "./components/Products/TrackedProducts";
 
 let hist = createBrowserHistory();
 
@@ -97,6 +98,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
+                        <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />

@@ -928,7 +928,8 @@ class ProductDetail extends Component {
                                             </div>
 
                                             <div className="col-4 text-right">
-                                                <MoreMenu
+                                                { (this.state.item.org._id ===
+                                                this.props.userDetail.orgId) && <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
@@ -956,7 +957,7 @@ class ProductDetail extends Component {
                                                             ? true
                                                             : false
                                                     }
-                                                />
+                                                />}
                                             </div>
                                         </div>
                                     </div>

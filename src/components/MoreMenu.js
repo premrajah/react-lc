@@ -213,11 +213,6 @@ class MoreMenu extends Component {
                                     Select Company
                                 </MenuItem>
                             )}
-                            {this.props.track && (
-                                <MenuItem data-action="track" onClick={this.handleClose}>
-                                    Track
-                                </MenuItem>
-                            )}
                         </Menu>
                     </Button>
 

@@ -48,6 +48,7 @@ class Notifications extends Component {
 
     handleTrackProduct = (message) => {
         if(!message) return;
+        this.props.trackingCallback('')
 
         if(message.entity_as_json) {
             const payload = {
@@ -61,11 +62,14 @@ class Notifications extends Component {
         axios.post(`${baseUrl}product/track`, payload)
             .then(res => {
                 if(res.status === 200) {
+                    this.props.trackingCallback('success')
                 }
             })
             .catch(error => {
+                this.props.trackingCallback('fail')
             })
     }
+
 
     checkNotifications = (item, index) => {
         if (!item) return;

@@ -78,6 +78,7 @@ class ProductDetailCycle extends Component {
             orgTrails: null,
             siteTrails: null,
             timelineDisplay: "org",
+            productTrackStatus: '',
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -118,7 +119,25 @@ class ProductDetailCycle extends Component {
             this.showOrgInput();
         } else if (action === "approveRelease") {
             this.showApproveReleasePopUp();
+        } else if (action === "track") {
+            this.setState({productTrackStatus: ''})
+            this.postTrackProduct();
         }
+    }
+
+    postTrackProduct = () => {
+        const payload = {
+            "product_id": this.props.item.product._key
+        }
+        axios.post(`${baseUrl}product/track`, payload)
+            .then(res => {
+                if(res.status === 200) {
+                    this.setState({productTrackStatus: <span className="text-success">Added product to tracking successfully.</span>})
+                }
+            })
+            .catch(error => {
+                this.setState({productTrackStatus: <span className="text-warning">Unable to add product to tracking at this time.</span>})
+            })
     }
 
     showSubmitSite() {
@@ -323,9 +342,9 @@ class ProductDetailCycle extends Component {
         axios
             .get(baseUrl + "release/no-auth?p=" + this.props.item.product._key + "&o=" + orgId)
             .then((res) => {
-                var response = res.data.data;
+                let response = res.data.data;
 
-                for (var i = 0; i < response.length; i++) {
+                for (let i = 0; i < response.length; i++) {
                     if (response[i].stage === "requested") {
                         this.setState({
                             showApproveRelease: true,
@@ -373,7 +392,7 @@ class ProductDetailCycle extends Component {
     getSites() {
         axios.get(baseUrl + "site").then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     sites: responseAll,
@@ -657,6 +676,7 @@ class ProductDetailCycle extends Component {
                             <div className="col-12 mt-2">
                                 <div className="row">
                                     <div className="col-8">
+                                        <>{this.state.productTrackStatus}</>
                                         <h4 className={"blue-text text-heading"}>
                                             {this.props.item.product.name}
                                         </h4>
@@ -678,6 +698,7 @@ class ProductDetailCycle extends Component {
                                                     this.props.userDetail.orgId !==
                                                     this.props.item.org._id
                                                 }
+                                                track
                                             />
                                         )}
 

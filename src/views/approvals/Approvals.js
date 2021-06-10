@@ -148,7 +148,7 @@ class Approvals extends Component {
         this.props.fetchReleaseRequest();
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
-    }, 30000);
+    }, 10000);
 }
 
 componentWillUnmount() {

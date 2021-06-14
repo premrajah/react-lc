@@ -1189,10 +1189,12 @@ h5 {
 /*}*/
 
 /* Nav tabs  */
+
 .nav-tabs {
-    z-index: 0;
+    z-index: 17;
     border: 0;
-    margin-bottom: -7px;
+    margin-bottom: 0px;
+    position: relative;
 }
 
 
@@ -2600,7 +2602,7 @@ pre {
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0;
-  
+
 }
 
 @media only screen and (max-width: 991px) {
@@ -3366,6 +3368,8 @@ a.page-link:hover {
 .nav-tabs .nav-link.active {
     box-shadow: none;
     border: 1px solid #eee;
+    border-bottom: 0!important;
+
 }
 
 .fixed-top {
@@ -3562,4 +3566,16 @@ a.page-link:hover {
 .MuiPaper-root {
 
     padding: 0 !important;
+}
+
+.tabs-detail .tab-pane{
+
+    box-shadow: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-right: 1px #eee solid;
+    border-bottom: 1px #eee solid;
+    border-left: 1px #eee solid;
+    border-top: 1px solid #eee;
+
 }

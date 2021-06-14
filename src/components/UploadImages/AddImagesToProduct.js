@@ -296,7 +296,7 @@ class AddImagesToProduct extends Component {
                         </div>
 
                         <div className="row">
-                            <div className="col no-gutters d-flex justify-content-center">
+                            <div className="col no-gutters d-flex ">
                                 <button
                                     disabled={this.state.files.length > 0 ? false : true}
                                     onClick={() => this.handleUploadImagesToServer()}

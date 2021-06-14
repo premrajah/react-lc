@@ -996,7 +996,7 @@ class ProductDetail extends Component {
                                 </div>
                                 <div className={"listing-row-border "}></div>
 
-                                <div className="row justify-content-start pb-3 pt-3 ">
+                                <div className="row justify-content-start pb-3 pt-3 tabs-detail">
                                     <div className="col-12 mt-2">
                                         <Tabs
                                             defaultActiveKey="productinfo"

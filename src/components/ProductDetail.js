@@ -807,8 +807,8 @@ class ProductDetail extends Component {
                     <>
                         <div className="row no-gutters  justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
-                                <div className="row stick-left-box  ">
-                                    <div className="col-12 text-center ">
+                                <div className=" stick-left-box  ">
+                                    {/*<div className="col-12 text-center ">*/}
                                         {this.state.item &&
                                         this.state.item.artifacts &&
                                         this.state.item.artifacts.length > 0 ? (
@@ -820,7 +820,7 @@ class ProductDetail extends Component {
                                                 alt=""
                                             />
                                         )}
-                                    </div>
+                                    {/*</div>*/}
 
                                     {this.state.isLoggedIn &&
                                         !this.state.hideRegister &&
@@ -931,7 +931,7 @@ class ProductDetail extends Component {
                                 </div>
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left pt-3 "}>
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">

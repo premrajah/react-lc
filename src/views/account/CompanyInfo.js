@@ -40,19 +40,17 @@ class CompanyInfo extends Component {
     getArtifactForOrg = () => {
         let url = `${baseUrl}org/${encodeURIComponent(this.state.org._id)}/artifact`;
         axios
-            .get(url, {
-                headers: { Authorization: "Bearer " + this.props.userDetail.token },
-            })
+            .get(url)
             .then((response) => {
                 if (response.status === 200) {
                     if (response.data.data.length > 0) {
                         this.setState({
                             orgImage: `${
-                                response.data.data[response.data.data.length - 1].blob_url
+                                response.data.data[0].blob_url
                             }&v=${Date.now()}`,
                         });
                         this.props.setOrgImage(
-                            response.data.data[response.data.data.length - 1].blob_url
+                            response.data.data[0].blob_url
                         );
                     }
                 }
@@ -72,7 +70,7 @@ class CompanyInfo extends Component {
         });
 
         axios
-            .post(baseUrl + "org/company", {
+            .post(`${baseUrl}org/company`, {
                 company_number: this.state.companyNumber,
             })
             .then(
@@ -82,7 +80,7 @@ class CompanyInfo extends Component {
                         submitSuccess: true,
                     });
 
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.companyInfo();
                 },
@@ -96,13 +94,9 @@ class CompanyInfo extends Component {
 
     companyInfo() {
         axios
-            .get(baseUrl + "org", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(`${baseUrl}org`)
             .then((response) => {
-                var responseOrg = response.data;
+                let responseOrg = response.data;
 
                 this.setState({
                     org: responseOrg.data,
@@ -187,26 +181,23 @@ class CompanyInfo extends Component {
             const description = this.state.description;
 
             axios
-                .post(
-                    baseUrl + "org",
+                .post(`${baseUrl}org`,
                     {
                         id: this.state.org._key,
                         update: {
                             name: name,
                             description: description,
                         },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
                     }
                 )
                 .then((res) => {
-                    this.setState({
-                        loading: false,
-                        submitSuccess: true,
-                    });
+                    if(res.status === 200) {
+                        this.setState({
+                            loading: false,
+                            submitSuccess: true,
+                        });
+                        this.getArtifactForOrg();
+                    }
                 })
                 .catch((error) => {
                     this.setState({
@@ -225,23 +216,15 @@ class CompanyInfo extends Component {
                 };
 
                 axios
-                    .post(`${baseUrl}artifact`, imageData, {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    })
+                    .post(`${baseUrl}artifact`, imageData)
                     .then((response) => {
                         if (response.status === 200) {
-                            const artifiactData = {
+                            const artifactData = {
                                 org_id: this.state.org._id,
                                 artifact_ids: [response.data.data._key],
                             };
                             axios
-                                .post(`${baseUrl}org/artifact`, artifiactData, {
-                                    headers: {
-                                        Authorization: "Bearer " + this.props.userDetail.token,
-                                    },
-                                })
+                                .post(`${baseUrl}org/artifact`, artifactData)
                                 .then((resposne) => {
                                     this.companyInfo(); // get company info
                                 })
@@ -484,10 +467,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
     };
 };
 
-export default connect(mapStateToProps, mapDispachToProps)(CompanyInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyInfo);

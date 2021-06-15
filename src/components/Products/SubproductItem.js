@@ -89,7 +89,7 @@ const SubproductItem = ({item, parentId, remove}) => {
 
             <div className="col-sm-3 d-flex justify-content-end">
                 <div>
-                    <div className={"text-gray-light small"}>
+                    <div className={"text-gray-light small "}>
                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                     </div>
                     <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />

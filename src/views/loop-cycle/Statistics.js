@@ -9,6 +9,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from "@material-ui/core/TextField";
 import SearchGray from "@material-ui/icons/Search";
 import PageHeader from "../../components/PageHeader";
+import {Link} from "react-router-dom";
 
 class Statistics extends Component {
     constructor(props) {
@@ -33,6 +34,10 @@ class Statistics extends Component {
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
+                        <div>
+                            <Link to={"/account"}>Account </Link> > Statistics
+                        </div>
+
                         <PageHeader
                             pageIcon={StatBLue}
                             pageTitle="Statistics"

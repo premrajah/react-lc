@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
-import { baseUrl, frontEndUrl } from "../Util/Constants";
+import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
@@ -120,6 +120,7 @@ class ProductDetailCycle extends Component {
             this.showApproveReleasePopUp();
         }
     }
+
 
     showSubmitSite() {
         this.setState({
@@ -323,9 +324,9 @@ class ProductDetailCycle extends Component {
         axios
             .get(baseUrl + "release/no-auth?p=" + this.props.item.product._key + "&o=" + orgId)
             .then((res) => {
-                var response = res.data.data;
+                let response = res.data.data;
 
-                for (var i = 0; i < response.length; i++) {
+                for (let i = 0; i < response.length; i++) {
                     if (response[i].stage === "requested") {
                         this.setState({
                             showApproveRelease: true,
@@ -373,7 +374,7 @@ class ProductDetailCycle extends Component {
     getSites() {
         axios.get(baseUrl + "site").then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     sites: responseAll,
@@ -748,7 +749,7 @@ class ProductDetailCycle extends Component {
                                         {(this.props.item && this.props.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
                                             <div className="col-auto">
                                                 <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                <p style={{fontSize: "18px"}}>{this.props.item.product.condition}</p>
+                                                <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.props.item.product.condition)}</p>
                                             </div>
                                         </div> }
 

@@ -10,6 +10,7 @@ import { Spinner } from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
+import PageHeader from "../../components/PageHeader";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -270,15 +271,16 @@ class CompanyInfo extends Component {
                 <div className="wrapper  ">
                     <HeaderDark />
 
-                    <div className="container  pt-3">
-                        <div className="row mb-3 justify-content-center ">
-                            <div className="col-12  justify-content-center">
-                                <p className={"blue-text"}>
-                                    <Link to={"/account"}>Account </Link> > Company Info
-                                </p>
-                                <h4 className={"text-blue text-bold"}>Company Info</h4>
-                            </div>
+                    <div className="container pb-4 pt-4">
+                        <div>
+                            <Link to={"/account"}>Account </Link> > Company Information
                         </div>
+
+                        <PageHeader
+                            pageTitle="Company Information"
+                            subTitle="Add your company information on this page"
+                            bottomLine={<hr />}
+                        />
 
                         {this.state.submitSuccess && (
                             <Alert key={"alert"} variant={"success"}>

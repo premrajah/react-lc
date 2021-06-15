@@ -77,6 +77,20 @@ class AddImagesToProduct extends Component {
         });
     }
 
+    getImageAsBytes(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+
+            reader.onload = () => {
+                let arrayBuffer = reader.result;
+                let bytes = new Uint8Array(arrayBuffer);
+                resolve(bytes);
+            };
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
     handleCallbackImagesUploadStatus = (imageUploadStatus) => {
         this.props.handleCallBackImagesUploadStatus(imageUploadStatus);
     };
@@ -112,58 +126,60 @@ class AddImagesToProduct extends Component {
     };
 
     uploadImage(files) {
-
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {
                 let imgFile = files[i];
 
-                let payload = new FormData();
-                payload.append('file', imgFile.file);
+                this.getImageAsBytes(imgFile.file)
+                    .then(data => {
+                        const payload = data;
 
-                let config = { headers: {"Content-Type": "multipart/form-data"}};
+                        try {
+                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
+                                .then(res => {
 
-                try {
+                                    let images = [...this.state.images];
+                                    images.push(res.data.data._key);
 
-                    axios.post(`${baseUrl}artifact/upload`, payload, config)
-                        .then(res => {
+                                    this.setState({
+                                        images: images,
+                                    });
 
-                            let images = [...this.state.images];
-                            images.push(res.data.data._key);
+                                    let currentFiles = this.state.files;
 
-                            this.setState({
-                                images: images,
-                            });
+                                    for (let k = 0; k < currentFiles.length; k++) {
+                                        if (currentFiles[k].file.name === imgFile.file.name) {
+                                            currentFiles[k].status = 1; //success
+                                            currentFiles[k].id = res.data.data._key; //success
+                                        }
+                                    }
 
-                            let currentFiles = this.state.files;
+                                    this.setState({
+                                        files: currentFiles,
+                                    });
+                                })
+                                .catch(error => {
 
-                            for (let k = 0; k < currentFiles.length; k++) {
-                                if (currentFiles[k].file.name === imgFile.file.name) {
-                                    currentFiles[k].status = 1; //success
-                                    currentFiles[k].id = res.data.data._key; //success
-                                }
-                            }
+                                    let currentFiles = [...this.state.files];
+                                    for (let k = 0; k < currentFiles.length; k++) {
+                                        if (currentFiles[k].file.name === imgFile.file.name) {
+                                            currentFiles[k].status = 2; //failed
+                                        }
+                                    }
 
-                            this.setState({
-                                files: currentFiles,
-                            });
-                        })
-                        .catch(error => {
+                                    this.setState({
+                                        files: currentFiles,
+                                    });
+                                })
 
-                            let currentFiles = [...this.state.files];
-                            for (let k = 0; k < currentFiles.length; k++) {
-                                if (currentFiles[k].file.name === imgFile.file.name) {
-                                    currentFiles[k].status = 2; //failed
-                                }
-                            }
+                        } catch (e) {
+                            console.log('catch Error ', e);
+                        }
 
-                            this.setState({
-                                files: currentFiles,
-                            });
-                        })
-
-                } catch (e) {
-                    console.log('catch Error ', e);
-                }
+                    })
+                    .catch(error => {
+                        console.log('image upload error ', error);
+                    })
 
             }
         }
@@ -200,7 +216,7 @@ class AddImagesToProduct extends Component {
                                                     <input
                                                         accept={MIME_TYPES_ACCEPT}
                                                         style={{ display: "none" }}
-                                                        id="fileInput"
+                                                        id="fileInput-2"
                                                         multiple
                                                         type="file"
                                                         onChange={(e) => this.handleChangeFile(e)}
@@ -280,7 +296,7 @@ class AddImagesToProduct extends Component {
                         </div>
 
                         <div className="row">
-                            <div className="col no-gutters d-flex justify-content-center">
+                            <div className="col no-gutters d-flex ">
                                 <button
                                     disabled={this.state.files.length > 0 ? false : true}
                                     onClick={() => this.handleUploadImagesToServer()}

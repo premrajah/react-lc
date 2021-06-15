@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
-import { baseUrl, frontEndUrl } from "../Util/Constants";
+import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
@@ -807,8 +807,8 @@ class ProductDetail extends Component {
                     <>
                         <div className="row no-gutters  justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
-                                <div className="row stick-left-box  ">
-                                    <div className="col-12 text-center ">
+                                <div className=" stick-left-box  ">
+                                    {/*<div className="col-12 text-center ">*/}
                                         {this.state.item &&
                                         this.state.item.artifacts &&
                                         this.state.item.artifacts.length > 0 ? (
@@ -820,7 +820,7 @@ class ProductDetail extends Component {
                                                 alt=""
                                             />
                                         )}
-                                    </div>
+                                    {/*</div>*/}
 
                                     {this.state.isLoggedIn &&
                                         !this.state.hideRegister &&
@@ -842,20 +842,6 @@ class ProductDetail extends Component {
                                             </>
                                         )}
 
-                                    {/*{true&&*/}
-                                    {/*<>*/}
-                                    {/*<div className={"col-12 pb-5 mb-5 "}>*/}
-
-                                    {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
-
-                                    {/*<div className="col-12 ">*/}
-                                    {/*<button  onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Release this product</button>*/}
-                                    {/*</div>*/}
-                                    {/*</div>*/}
-
-                                    {/*</div>*/}
-                                    {/*</>*/}
-                                    {/*}*/}
                                     <div className={"col-12 pb-5 mb-5"}>
                                         <div className="row justify-content-start pb-3 pt-3 ">
                                             <div className="col-12 ">
@@ -931,7 +917,7 @@ class ProductDetail extends Component {
                                 </div>
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left pt-3 "}>
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
@@ -942,7 +928,8 @@ class ProductDetail extends Component {
                                             </div>
 
                                             <div className="col-4 text-right">
-                                                <MoreMenu
+                                                { (this.state.item.org._id ===
+                                                this.props.userDetail.orgId) && <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
@@ -970,7 +957,7 @@ class ProductDetail extends Component {
                                                             ? true
                                                             : false
                                                     }
-                                                />
+                                                />}
                                             </div>
                                         </div>
                                     </div>
@@ -996,7 +983,7 @@ class ProductDetail extends Component {
                                 </div>
                                 <div className={"listing-row-border "}></div>
 
-                                <div className="row justify-content-start pb-3 pt-3 ">
+                                <div className="row justify-content-start pb-3 pt-3 tabs-detail">
                                     <div className="col-12 mt-2">
                                         <Tabs
                                             defaultActiveKey="productinfo"
@@ -1034,12 +1021,12 @@ class ProductDetail extends Component {
                                                 {(this.state.item && this.state.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
                                                     <div className="col-auto">
                                                         <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                        <p style={{fontSize: "18px"}}>{this.state.item.product.condition}</p>
+                                                        <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.state.item.product.condition)}</p>
                                                     </div>
                                                 </div> }
 
                                                 {this.state.item &&
-                                                    this.state.item.product.year_of_making && (
+                                                (this.state.item.product.year_of_making || this.state.item.product.year_of_making > 0) && (
                                                         <div className="row  justify-content-start search-container  pb-2">
                                                             <div className={"col-auto"}>
                                                                 <p
@@ -1206,7 +1193,7 @@ class ProductDetail extends Component {
                                                     )}
                                                 </Tab>
                                             )}
-                                            <Tab eventKey="documents" title="Documents">
+                                            <Tab eventKey="artifacts" title="Artifacts">
                                                 <AddImagesToProduct
                                                     handleCallBackImagesUploadStatus={(status) =>
                                                         this.handleCallBackImagesUploadStatus(
@@ -1263,6 +1250,7 @@ class ProductDetail extends Component {
                                 isDuplicate={this.state.productDuplicate}
                                 productId={this.state.item.product._key}
                             />
+
                         </Modal>
 
                         <Modal

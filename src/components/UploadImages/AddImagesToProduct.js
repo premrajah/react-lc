@@ -216,7 +216,7 @@ class AddImagesToProduct extends Component {
                                                     <input
                                                         accept={MIME_TYPES_ACCEPT}
                                                         style={{ display: "none" }}
-                                                        id="fileInput"
+                                                        id="fileInput-2"
                                                         multiple
                                                         type="file"
                                                         onChange={(e) => this.handleChangeFile(e)}

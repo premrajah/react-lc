@@ -1250,6 +1250,7 @@ class ProductDetail extends Component {
                                 isDuplicate={this.state.productDuplicate}
                                 productId={this.state.item.product._key}
                             />
+
                         </Modal>
 
                         <Modal

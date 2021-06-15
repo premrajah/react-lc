@@ -842,20 +842,6 @@ class ProductDetail extends Component {
                                             </>
                                         )}
 
-                                    {/*{true&&*/}
-                                    {/*<>*/}
-                                    {/*<div className={"col-12 pb-5 mb-5 "}>*/}
-
-                                    {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
-
-                                    {/*<div className="col-12 ">*/}
-                                    {/*<button  onClick={this.showReleaseProduct} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"}  >Release this product</button>*/}
-                                    {/*</div>*/}
-                                    {/*</div>*/}
-
-                                    {/*</div>*/}
-                                    {/*</>*/}
-                                    {/*}*/}
                                     <div className={"col-12 pb-5 mb-5"}>
                                         <div className="row justify-content-start pb-3 pt-3 ">
                                             <div className="col-12 ">
@@ -942,7 +928,8 @@ class ProductDetail extends Component {
                                             </div>
 
                                             <div className="col-4 text-right">
-                                                <MoreMenu
+                                                { (this.state.item.org._id ===
+                                                this.props.userDetail.orgId) && <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
@@ -970,7 +957,7 @@ class ProductDetail extends Component {
                                                             ? true
                                                             : false
                                                     }
-                                                />
+                                                />}
                                             </div>
                                         </div>
                                     </div>

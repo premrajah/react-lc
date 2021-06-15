@@ -7,6 +7,7 @@ import moment from "moment/moment";
 import {Link} from "@material-ui/core";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
+import {Link as RouterLink} from 'react-router-dom'
 
 const TrackedProductItem = ({item, handleStatus}) => {
     const { listing, product, site, org, artifacts } = item;
@@ -49,7 +50,7 @@ const TrackedProductItem = ({item, handleStatus}) => {
            </div>
            <div className="col-sm-6">
                <Card>
-                   {product.name ? <Card.Title>{product.name}</Card.Title> : null}
+                   {product.name ? <RouterLink to={`/p/${product._key}`}><Card.Title>{product.name}</Card.Title></RouterLink> : null}
                    {product.description ? (
                        <Card.Subtitle>{product.description}</Card.Subtitle>
                    ) : null}

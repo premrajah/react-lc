@@ -121,6 +121,7 @@ class ProductDetailCycle extends Component {
         }
     }
 
+
     showSubmitSite() {
         this.setState({
             errorRegister: null,
@@ -323,9 +324,9 @@ class ProductDetailCycle extends Component {
         axios
             .get(baseUrl + "release/no-auth?p=" + this.props.item.product._key + "&o=" + orgId)
             .then((res) => {
-                var response = res.data.data;
+                let response = res.data.data;
 
-                for (var i = 0; i < response.length; i++) {
+                for (let i = 0; i < response.length; i++) {
                     if (response[i].stage === "requested") {
                         this.setState({
                             showApproveRelease: true,
@@ -373,7 +374,7 @@ class ProductDetailCycle extends Component {
     getSites() {
         axios.get(baseUrl + "site").then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     sites: responseAll,

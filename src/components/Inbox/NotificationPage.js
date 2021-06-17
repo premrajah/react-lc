@@ -1,10 +1,23 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Notifications from "./Notifications";
 import Sidebar from "../../views/menu/Sidebar";
 import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../PageHeader";
 
 function NotificationPage () {
+
+    const [trackingStatus, setTrackingStatus] = useState('');
+
+    const handleTrackCallback = (status) => {
+        if(status === 'success') {
+            setTrackingStatus(<span className="text-success">Tracked successfully</span>)
+        } else if (status === 'fail') {
+            setTrackingStatus(<span className="text-warning">unable to track at this time</span>)
+        } else {
+            setTrackingStatus('')
+        }
+    }
+
     return (
         <div>
             <Sidebar />
@@ -19,7 +32,8 @@ function NotificationPage () {
                     </div>
                     <div className="row no-gutters">
                         <div className="col">
-                            <Notifications />
+                            {trackingStatus}
+                            <Notifications trackingCallback={(status) => handleTrackCallback(status)} />
                         </div>
                     </div>
                 </div>

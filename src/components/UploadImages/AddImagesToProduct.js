@@ -204,7 +204,7 @@ class AddImagesToProduct extends Component {
                                                     className={"file-uploader-thumbnail-container"}>
                                                     <label
                                                         className={"label-file-input"}
-                                                        htmlFor="fileInput">
+                                                        htmlFor="fileInput-2">
                                                         <Publish
                                                             style={{
                                                                 fontSize: 32,
@@ -216,7 +216,7 @@ class AddImagesToProduct extends Component {
                                                     <input
                                                         accept={MIME_TYPES_ACCEPT}
                                                         style={{ display: "none" }}
-                                                        id="fileInput"
+                                                        id="fileInput-2"
                                                         multiple
                                                         type="file"
                                                         onChange={(e) => this.handleChangeFile(e)}
@@ -296,7 +296,7 @@ class AddImagesToProduct extends Component {
                         </div>
 
                         <div className="row">
-                            <div className="col no-gutters d-flex justify-content-center">
+                            <div className="col no-gutters d-flex ">
                                 <button
                                     disabled={this.state.files.length > 0 ? false : true}
                                     onClick={() => this.handleUploadImagesToServer()}

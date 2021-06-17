@@ -1189,10 +1189,12 @@ h5 {
 /*}*/
 
 /* Nav tabs  */
+
 .nav-tabs {
-    z-index: 0;
+    z-index: 17;
     border: 0;
-    margin-bottom: -7px;
+    margin-bottom: 0px;
+    position: relative;
 }
 
 
@@ -2594,7 +2596,19 @@ pre {
     padding: 2%;
 }
 
+.desktop-padding-left{
+
+    padding-left: 30px!important;
+}
+
+
 @media only screen and (max-width: 991px) {
+
+    .desktop-padding-left{
+
+        padding-left: 0px!important;
+    }
+
 
     .site-popup {
         padding: 5%;
@@ -3293,7 +3307,7 @@ a.page-link:hover {
 }
 
 .image-gallery-slide img {
-    height: 400px;
+    /*height: 400px;*/
     width: auto;
 }
 
@@ -3301,6 +3315,7 @@ a.page-link:hover {
     height: 80px !important;
     width: 80px !important;
 }
+
 
 
 .list-title {
@@ -3350,6 +3365,8 @@ a.page-link:hover {
 .nav-tabs .nav-link.active {
     box-shadow: none;
     border: 1px solid #eee;
+    border-bottom: 0!important;
+
 }
 
 .fixed-top {
@@ -3546,4 +3563,16 @@ a.page-link:hover {
 .MuiPaper-root {
 
     padding: 0 !important;
+}
+
+.tabs-detail .tab-pane{
+
+    box-shadow: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-right: 1px #eee solid;
+    border-bottom: 1px #eee solid;
+    border-left: 1px #eee solid;
+    border-top: 1px solid #eee;
+
 }

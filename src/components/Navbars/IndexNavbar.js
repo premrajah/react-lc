@@ -130,11 +130,11 @@ class ComponentsNavbar extends React.Component {
                 if (response.status === 200) {
                     if (response.data.data.length > 0) {
                         this.setState({
-                            orgImage: `${response.data.data[response.data.data.length - 1].blob_url}&v=${Date.now()}`,
+                            orgImage: `${response.data.data[0].blob_url}&v=${Date.now()}`,
                         });
 
                         this.props.setOrgImage(
-                            response.data.data[response.data.data.length - 1].blob_url
+                            response.data.data[0].blob_url
                         );
                     }
                 }
@@ -184,16 +184,6 @@ class ComponentsNavbar extends React.Component {
                                     </Link>
                                 </NavItem>
 
-                                {/*<NavItem className={"web-only"}>*/}
-                                {/*<Link*/}
-                                {/*to={"/create-listing"}*/}
-                                {/*className="nav-link d-none d-lg-block wl-link-white "*/}
-                                {/*color="default"*/}
-
-                                {/*>*/}
-                                {/*Sell Resources*/}
-                                {/*</Link>*/}
-                                {/*</NavItem>*/}
                                 <NavItem className={"web-only"}>
                                     <Link
                                         onClick={this.showProductSelection}

@@ -9,9 +9,10 @@ import Close from "@material-ui/icons/Close";
 import SiteItem from "../../components/SiteItem";
 import AddSite from "../../components/AddSite";
 import * as actionCreator from "../../store/actions/actions";
-import { Alert } from "react-bootstrap";
+import {Alert, Button, Modal} from "react-bootstrap";
 import EditSite from "../../components/Sites/EditSite";
 import PageHeader from "../../components/PageHeader";
+import UploadMultiSite from "../../components/UploadImages/UploadMultiSite";
 
 class PaymentMethod extends Component {
     constructor(props) {
@@ -222,23 +223,20 @@ class PaymentMethod extends Component {
 
                 {this.state.showMultiUpload && (
                     <>
-                        <div className={"body-overlay"}>
-                            <div className={"modal-popup site-popup"}>
-                                <div className=" text-right ">
-                                    <Close
-                                        onClick={() => this.toggleMultiSite()}
-                                        className="blue-text"
-                                        style={{ fontSize: 32 }}
-                                    />
-                                </div>
-
-                                <div className={"row"}>
-                                    <div className={"col-12"}>
-                                        upload goes here
+                        <Modal show={this.state.showMultiUpload} backdrop="static" onHide={() => this.toggleMultiSite()}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>
+                                    <div className="row">
+                                        <div className="col">
+                                            <h4 className="text-center green-text">Upload Multiple Sites</h4>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <UploadMultiSite />
+                            </Modal.Body>
+                        </Modal>
                     </>
                 )}
             </div>

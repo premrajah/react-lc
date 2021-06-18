@@ -11,8 +11,6 @@ import SelectArrayWrapper from "../FormsUI/Select";
 
 const UploadMultiSite = ({}) => {
 
-    const [artifactIds, setArtifactIds] = useState([]);
-
     const INITIAL_VALUES = {
         artifact: '',
         match_strategy: MATCH_STRATEGY_OPTIONS[0],

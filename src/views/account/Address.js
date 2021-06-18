@@ -27,6 +27,7 @@ class PaymentMethod extends Component {
             fieldsSite: {},
             errorsSite: {},
             submitSuccess: false,
+            showMultiUpload: false,
         };
 
         this.getSites = this.getSites.bind(this);
@@ -122,16 +123,16 @@ class PaymentMethod extends Component {
     }
 
     toggleSite() {
+        this.setState({showCreateSite: !this.state.showCreateSite,});
+    }
 
-        this.setState({
-            showCreateSite: !this.state.showCreateSite,
-        });
+    toggleMultiSite = () => {
+        this.setState({showMultiUpload: !this.state.showMultiUpload});
     }
 
 
     componentDidMount() {
         window.scrollTo(0, 0);
-
         this.props.loadSites();
     }
 
@@ -160,14 +161,21 @@ class PaymentMethod extends Component {
                         )}
 
                         <div className="row mb-3">
-                            <div className="col-12">
-                                <div className="list-group main-menu accountpage-list">
-                                    <p
-                                        onClick={this.toggleSite}
-                                        className="green-link-url"
-                                        style={{ cursor: "pointer" }}>
-                                        Add New Site
-                                    </p>
+                            <div className="col-md-2">
+                                <div
+                                    onClick={this.toggleSite}
+                                    className="green-link-url"
+                                    style={{ cursor: "pointer" }}>
+                                    Add New Site
+                                </div>
+                            </div>
+
+                            <div className="col-md-2">
+                                <div
+                                    onClick={() => this.toggleMultiSite()}
+                                    className="green-link-url"
+                                    style={{ cursor: "pointer" }}>
+                                    Upload Multiple Sites
                                 </div>
                             </div>
                         </div>
@@ -183,10 +191,6 @@ class PaymentMethod extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="container ">
-                        <div className="row"></div>
                     </div>
                 </div>
 
@@ -208,6 +212,29 @@ class PaymentMethod extends Component {
                                             this.toggleSite();
                                             this.setState({submitSuccess: true,})
                                         }} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+
+                {this.state.showMultiUpload && (
+                    <>
+                        <div className={"body-overlay"}>
+                            <div className={"modal-popup site-popup"}>
+                                <div className=" text-right ">
+                                    <Close
+                                        onClick={() => this.toggleMultiSite()}
+                                        className="blue-text"
+                                        style={{ fontSize: 32 }}
+                                    />
+                                </div>
+
+                                <div className={"row"}>
+                                    <div className={"col-12"}>
+                                        upload goes here
                                     </div>
                                 </div>
                             </div>

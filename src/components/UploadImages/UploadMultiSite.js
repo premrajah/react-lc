@@ -4,6 +4,8 @@ import {Input} from "reactstrap";
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
 import SelectArrayWrapper from "../FormsUI/Select";
+import Button from "@material-ui/core/Button";
+import {Publish} from "@material-ui/icons";
 
 
 
@@ -107,7 +109,22 @@ const UploadMultiSite = ({multiUploadCallback}) => {
 
                             <div className="row mb-2">
                                 <div className="col">
-                                    <Input type="file" name="artifact" onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))} />
+                                    {/*<Input type="file" name="artifact" onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))} />*/}
+                                    <Button
+                                        variant="contained"
+                                        component="label"
+                                        onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
+                                        name="artifact"
+                                    >
+                                        <Publish />
+                                        <input
+                                            type="file"
+                                            hidden
+                                            accept="text/csv"
+                                        />
+                                    </Button>
+                                    <div className="text-muted">Only CSV file</div>
+                                    <div>File name: <b>{formProps.values.artifact.name}</b></div>
                                 </div>
                             </div>
 

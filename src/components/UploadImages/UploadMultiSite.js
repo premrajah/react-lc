@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Formik, Form} from 'formik';
 import {Input} from "reactstrap";
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
@@ -9,7 +9,12 @@ import SelectArrayWrapper from "../FormsUI/Select";
 
 
 
-const UploadMultiSite = ({}) => {
+const UploadMultiSite = ({multiUploadCallback}) => {
+
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [uploadArtifactError, setUploadArtifactError] = useState('');
+    const [uploadSitesError, setUploadSitesError] = useState('');
+
 
     const INITIAL_VALUES = {
         artifact: '',
@@ -17,9 +22,14 @@ const UploadMultiSite = ({}) => {
         merge_strategy: MERGE_STRATEGY_OPTIONS[0],
     }
 
+    const handleMultiUploadCallback = useCallback(() => {
+        multiUploadCallback();
+    }, [])
+
     const handleFormSubmit = (values, {setSubmitting}) => {
         const {artifact, match_strategy, merge_strategy} = values;
-
+        setIsDisabled(true);
+        setUploadArtifactError(<span className="text-success"><b>Processing...</b></span>)
 
         getImageAsBytes(values.artifact)
             .then(data => {
@@ -28,11 +38,13 @@ const UploadMultiSite = ({}) => {
             })
             .catch(error => {
                 console.log('Convert as bytes error ', error);
+                setIsDisabled(false);
             });
 
     }
 
     const postArtifact = (payload, file, match_strategy, merge_strategy) => {
+        setUploadArtifactError(<span className="text-success"><b>Uploading ...</b></span>)
         axios.post(`${baseUrl}artifact/load?name=${file.name}`, payload)
             .then(res => {
                 const {_id, blob_url } = res.data.data;
@@ -44,23 +56,35 @@ const UploadMultiSite = ({}) => {
                         "artifact_ids" : [_id]
                     }
                 }
-                console.log('artifact upload res ', _id, blob_url)
-                postLoadSites(payload);
+                // console.log('artifact upload res ', _id, blob_url)
+                if(res.status === 200) {
+                    postLoadSites(payload);
+                }
             })
             .catch(error => {
                 console.log('artifact upload error ', error)
+                setUploadArtifactError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
+                setIsDisabled(false);
             })
     }
 
     const postLoadSites = (payload) => {
         axios.post(`${baseUrl}load/sites`, payload)
             .then(res => {
-                console.log('site load ', res.data.data);
+                if(res.status === 200) {
+                    setUploadSitesError(<span className="text-success"><b>Uploaded Sites Successfully!</b></span>);
+                    setUploadArtifactError('');
+                    setIsDisabled(false);
+                    handleMultiUploadCallback();
+                }
             })
             .catch(error => {
                 console.log("multi site upload error ", error);
+                setUploadSitesError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
+                setIsDisabled(false)
             })
     }
+
 
 
     return <>
@@ -74,6 +98,12 @@ const UploadMultiSite = ({}) => {
                 >
                     {(formProps) => (
                         <Form>
+                            <div className="row">
+                                <div className="col">
+                                    <div>{uploadArtifactError}</div>
+                                    <div>{uploadSitesError}</div>
+                                </div>
+                            </div>
 
                             <div className="row mb-2">
                                 <div className="col">
@@ -101,9 +131,9 @@ const UploadMultiSite = ({}) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row mt-4 mb-4">
                                 <div className="col">
-                                    <button disabled={formProps.isSubmitting} className="btn btn-block btn-green" onClick={formProps.submitForm} style={{backgroundColor: '#07AD88'}} >Submit</button>
+                                    <button disabled={isDisabled} className="btn btn-block btn-green" onClick={formProps.submitForm} style={{backgroundColor: '#07AD88'}} >Submit</button>
                                 </div>
                             </div>
                         </Form>

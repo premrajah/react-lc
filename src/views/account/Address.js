@@ -131,6 +131,10 @@ class PaymentMethod extends Component {
         this.setState({showMultiUpload: !this.state.showMultiUpload});
     }
 
+    handleMultiUploadCallback = () => {
+        this.props.loadSites();
+    }
+
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -223,7 +227,7 @@ class PaymentMethod extends Component {
 
                 {this.state.showMultiUpload && (
                     <>
-                        <Modal show={this.state.showMultiUpload} backdrop="static" onHide={() => this.toggleMultiSite()}>
+                        <Modal size="lg" show={this.state.showMultiUpload} backdrop="static" onHide={() => this.toggleMultiSite()}>
                             <Modal.Header closeButton>
                                 <Modal.Title>
                                     <div className="row">
@@ -234,7 +238,7 @@ class PaymentMethod extends Component {
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <UploadMultiSite />
+                                <UploadMultiSite multiUploadCallback={() => this.handleMultiUploadCallback()} />
                             </Modal.Body>
                         </Modal>
                     </>

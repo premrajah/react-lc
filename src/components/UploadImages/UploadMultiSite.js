@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {Formik, Form, ErrorMessage} from 'formik';
 import  * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
@@ -16,7 +16,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [uploadSitesError, setUploadSitesError] = useState('');
-
+    const formikRef = useRef();
 
     const INITIAL_VALUES = {
         artifact: '',
@@ -33,7 +33,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
     }, [])
 
     const handleReset = () => {
-
+        formikRef.current?.resetForm();
     }
 
     const handleFormSubmit = (values, {setSubmitting}) => {
@@ -86,6 +86,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                     setUploadArtifactError('');
                     setIsDisabled(false);
                     handleMultiUploadCallback();
+                    handleReset();
                 }
             })
             .catch(error => {
@@ -105,6 +106,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                     initialValues={INITIAL_VALUES}
                     validationSchema={VALIDATION_SCHEMA}
                     onSubmit={(values, {setSubmitting}) => handleFormSubmit(values, {setSubmitting})}
+                    innerRef={formikRef}
                 >
                     {(formProps) => (
                         <Form>

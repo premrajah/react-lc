@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
-import {Formik, Form} from 'formik';
-import {Input} from "reactstrap";
+import {Formik, Form, ErrorMessage} from 'formik';
+import  * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
 import SelectArrayWrapper from "../FormsUI/Select";
@@ -24,9 +24,17 @@ const UploadMultiSite = ({multiUploadCallback}) => {
         merge_strategy: MERGE_STRATEGY_OPTIONS[0],
     }
 
+    const VALIDATION_SCHEMA = Yup.object().shape({
+        artifact: Yup.mixed().required('A file is required')
+    })
+
     const handleMultiUploadCallback = useCallback(() => {
         multiUploadCallback();
     }, [])
+
+    const handleReset = () => {
+
+    }
 
     const handleFormSubmit = (values, {setSubmitting}) => {
         const {artifact, match_strategy, merge_strategy} = values;
@@ -95,8 +103,8 @@ const UploadMultiSite = ({multiUploadCallback}) => {
             <div className="col">
                 <Formik
                     initialValues={INITIAL_VALUES}
+                    validationSchema={VALIDATION_SCHEMA}
                     onSubmit={(values, {setSubmitting}) => handleFormSubmit(values, {setSubmitting})}
-                    validator={() => ({})}
                 >
                     {(formProps) => (
                         <Form>
@@ -114,7 +122,6 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                                         variant="contained"
                                         component="label"
                                         onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
-                                        name="artifact"
                                         onClick={() => { setUploadArtifactError(''); setUploadSitesError('');}}
                                     >
                                         <Publish />
@@ -122,8 +129,11 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                                             type="file"
                                             hidden
                                             accept="text/csv"
+                                            name="artifact"
                                         />
                                     </Button>
+                                    {formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-warning">{formProps.errors.artifact}</div>) : null}
+                                    <ErrorMessage name="artifact" />
                                     <div className="text-muted">Only CSV file</div>
                                     <div>File name: <b>{formProps.values.artifact.name}</b></div>
                                 </div>

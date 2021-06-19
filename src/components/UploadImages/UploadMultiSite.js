@@ -115,6 +115,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                                         component="label"
                                         onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
                                         name="artifact"
+                                        onClick={() => { setUploadArtifactError(''); setUploadSitesError('');}}
                                     >
                                         <Publish />
                                         <input

@@ -50,7 +50,6 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                 console.log('Convert as bytes error ', error);
                 setIsDisabled(false);
             });
-
     }
 
     const postArtifact = (payload, file, match_strategy, merge_strategy) => {
@@ -105,7 +104,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                 <Formik
                     initialValues={INITIAL_VALUES}
                     validationSchema={VALIDATION_SCHEMA}
-                    onSubmit={(values, {setSubmitting}) => handleFormSubmit(values, {setSubmitting})}
+                    onSubmit={async (values, {setSubmitting}) => handleFormSubmit(values, {setSubmitting})}
                     innerRef={formikRef}
                 >
                     {(formProps) => (
@@ -123,8 +122,6 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                                     <Button
                                         variant="contained"
                                         component="label"
-                                        onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
-                                        onClick={() => { setUploadArtifactError(''); setUploadSitesError('');}}
                                     >
                                         <Publish />
                                         <input
@@ -132,6 +129,8 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                                             hidden
                                             accept="text/csv"
                                             name="artifact"
+                                            onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
+                                            onClick={() => { setUploadArtifactError(''); setUploadSitesError('');}}
                                         />
                                     </Button>
                                     {formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-warning">{formProps.errors.artifact}</div>) : null}
@@ -163,7 +162,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
 
                             <div className="row mt-4 mb-4">
                                 <div className="col">
-                                    <button disabled={isDisabled} className="btn btn-block btn-green" onClick={formProps.submitForm} style={{backgroundColor: '#07AD88'}} >Submit</button>
+                                    <button disabled={isDisabled} type="button" className="btn btn-block btn-green" onClick={formProps.submitForm} style={{backgroundColor: '#07AD88'}} >Submit</button>
                                 </div>
                             </div>
                         </Form>

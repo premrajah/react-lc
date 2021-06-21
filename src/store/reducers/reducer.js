@@ -60,7 +60,6 @@ export const initialState = {
     isCustomer: false,
     token: {},
     userDetail: null,
-    favorites: [],
     showProductPopUp: false,
     showCreateProduct: false,
     showCreateSubProduct: false,
@@ -81,6 +80,7 @@ export const initialState = {
     unreadNotifications: false,
     serviceAgentRequests: [],
     productReleaseRequests: [],
+    productReleaseRequested: [],
     productRegisterRequests: [],
 };
 
@@ -106,7 +106,11 @@ const reducer = (state = initialState, action) => {
 
 
         case PRODUCT_RELEASE:
+
             newState.productReleaseRequests = action.value;
+            newState.productReleaseRequested=[]
+            newState.productReleaseRequested = action.value.filter((item) => item.Release.stage === "requested" );
+
             break;
 
 
@@ -164,18 +168,17 @@ const reducer = (state = initialState, action) => {
         case LOGOUT:
             newState.isLoggedIn = false;
             newState.loading = false;
+            newState.orgImage = null;
             newState.loginFailed = false;
             newState.couponError = false;
             newState.addressInput = false;
-            newState.cartItems = [];
-            newState.isGuest = false;
+            newState.productWithoutParentList = [];
+            newState.productList = [];
+            newState.productRegisterRequests = [];
+            newState.siteList=[]
             newState.showLoginPopUp = false;
-            newState.guestCartItems = [];
-            newState.couponError = false;
-            newState.showLoginCheckoutPopUp = false;
             newState.userDetail = null;
             newState.loading = false;
-            newState.favorites = [];
             saveKey("user", null);
             saveKey("token", null);
 

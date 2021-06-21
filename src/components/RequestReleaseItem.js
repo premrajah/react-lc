@@ -281,7 +281,7 @@ class RequestReleaseItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
+                        <div key={this.state.item.Release._id} id={this.state.item.Release._id} className="row no-gutters justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail
@@ -344,7 +344,7 @@ class RequestReleaseItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <div key={index}>
+                                                    <>
                                                         <button
                                                             data-id={this.state.item.Release_key}
                                                             data-action={actionName}
@@ -352,7 +352,7 @@ class RequestReleaseItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
@@ -360,10 +360,10 @@ class RequestReleaseItem extends Component {
                                                                     : actionName === "declined"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}
@@ -376,7 +376,7 @@ class RequestReleaseItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                    </div>
+                                                    </>
                                                 )
                                             )}
                                     </div>

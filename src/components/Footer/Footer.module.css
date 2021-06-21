@@ -3,7 +3,7 @@
     color: #ffffff;
     padding: 0 0 10px 0;
     font-size: 0.75rem;
-    text-transform: uppercase;
+    text-transform: capitalize;
     text-decoration: none;
     height: 46px;
     display: inline-block;

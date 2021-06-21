@@ -3582,3 +3582,20 @@ a.page-link:hover {
     border-top: 1px solid #eee;
 
 }
+
+.search-container .filter-box{position: absolute;
+    height: 100%;
+    z-index: 1000;
+    top: 15px;
+    left: 25px;
+
+}
+
+.search-container select,.search-container .search-filter:before{
+
+    background: transparent!important;
+    border: none!important;
+}
+
+#searchBar{padding-left: 130px;}
+

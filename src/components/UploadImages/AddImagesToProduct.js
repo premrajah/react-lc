@@ -204,7 +204,7 @@ class AddImagesToProduct extends Component {
                                                     className={"file-uploader-thumbnail-container"}>
                                                     <label
                                                         className={"label-file-input"}
-                                                        htmlFor="fileInput">
+                                                        htmlFor="fileInput-2">
                                                         <Publish
                                                             style={{
                                                                 fontSize: 32,

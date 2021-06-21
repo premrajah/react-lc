@@ -56,7 +56,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     background: white !important;
-    overflow: auto!important;
+    /*overflow: auto!important;*/
 }
 
 /*h1{*/

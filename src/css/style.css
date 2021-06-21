@@ -45,7 +45,6 @@ html {
 body {
     min-height: 100%;
     height: auto;
-    overflow-y: auto;
     font-family: 'Nunito', sans-serif !important;
     font-size: 16px;
     line-height: 30px;
@@ -57,6 +56,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     background: white !important;
+    overflow: auto!important;
 }
 
 /*h1{*/
@@ -2668,7 +2668,7 @@ pre {
     color: #ffffff;
     padding: 0 0 10px 0;
     font-size: 0.75rem;
-    text-transform: uppercase;
+    text-transform: capitalize;
     text-decoration: none;
 }
 
@@ -3406,7 +3406,10 @@ a.page-link:hover {
 
     text-transform: capitalize;
 }
+.text-camel {
 
+    text-transform: capitalize;
+}
 .nav-link {
     height: 46px;
     vertical-align: middle;
@@ -3576,3 +3579,20 @@ a.page-link:hover {
     border-top: 1px solid #eee;
 
 }
+
+.search-container .filter-box{position: absolute;
+    height: 100%;
+    z-index: 1000;
+    top: 15px;
+    left: 25px;
+
+}
+
+.search-container select,.search-container .search-filter:before{
+
+    background: transparent!important;
+    border: none!important;
+}
+
+#searchBar{padding-left: 130px;}
+

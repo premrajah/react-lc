@@ -110,8 +110,8 @@ class Products extends Component {
                 <div className="wrapper">
                     <HeaderDark />
 
-                    {this.state.selectedProducts.length > 0 ?  <div className="sticky-top" style={{top: '68px'}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: '208px', overflow: 'scroll',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
+                    {this.state.selectedProducts.length > 0 ?  <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
+                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
                             <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
                                 <div className="col d-flex justify-content-end">
                                     <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>

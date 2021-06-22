@@ -6,7 +6,7 @@ import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import Footer from "../../components/Footer/Footer";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 
 import SearchIcon from "../../img/resource_icons/icon_search_bottle.png";
 import BottleDollarIcon from "../../img/resource_icons/icon_bottle_dollar.png";
@@ -119,19 +119,20 @@ class FindResourcePage extends Component {
                         </div>
                     </div>
 
-                    <div className="row mt-3 mb-5">
-                        <div className="col">
+                    <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className={"col-12"}>
                             <SearchBar
-                                title="Search Listings"
+                                dropDown dropDownValues={PRODUCTS_FILTER_VALUES}
+
                                 onSearch={(e) => this.handleSearch(e)}
                             />
-                            <p className="mt-2">
-                                Available listings (
-                                {this.state.allListings.length > 0
-                                    ? this.state.allListings.length
-                                    : "..."}
-                                )
-                            </p>
+                            {/*<p className="mt-2">*/}
+                            {/*    Available listings (*/}
+                            {/*    {this.state.allListings.length > 0*/}
+                            {/*        ? this.state.allListings.length*/}
+                            {/*        : "..."}*/}
+                            {/*    )*/}
+                            {/*</p>*/}
                         </div>
                     </div>
 

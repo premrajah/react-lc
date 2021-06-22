@@ -25,12 +25,12 @@ class SearchBar extends Component {
                 <div className="col d-flex">
                     <div style={{width:  '100%'}} className={"search-container"}>
                         <FormControl className={"filter-box"} style={{width:  '10%'}}  component="div">
-                        {/*    <InputLabel id="filterLabel">Filter</InputLabel>*/}
+
                             <NativeSelect label={"Filter"} className={"search-filter"}  labelId="filterLabel"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" disabled>
                                     Filter By
                                 </option>
-                                {dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
+                                {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
                                     return <option  key={index} value={drop}>{drop}</option>
                                 }) : null}
                             </NativeSelect>

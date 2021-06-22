@@ -34,6 +34,7 @@ class RequestServiceAgentItem extends Component {
             siteSelected: null,
             fieldsSite: {},
             errorsSite: {},
+            isLoading:false
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -264,14 +265,24 @@ class RequestServiceAgentItem extends Component {
             site_id: this.state.site,
         };
 
+
+        this.setState({
+            isLoading:true
+        })
         axios
             .post(baseUrl + "service-agent/stage", data)
             .then((res) => {
+                this.setState({
+                    isLoading:false
+                })
                 this.getDetails();
 
                 this.showPopUpInitiateAction();
             })
             .catch((error) => {
+                this.setState({
+                    isLoading:false
+                })
                 // this.setState({
                 //
                 //     showPopUp: true,
@@ -439,6 +450,8 @@ class RequestServiceAgentItem extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <button
+
+                                                    disabled={this.state.isLoading?true:false}
                                                     onClick={this.actionSubmit}
                                                     style={{ minWidth: "120px" }}
                                                     className={

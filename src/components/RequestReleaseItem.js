@@ -38,6 +38,7 @@ class RequestReleaseItem extends Component {
             siteSelected: null,
             fieldsSite: {},
             errorsSite: {},
+            isLoading:false
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -247,14 +248,25 @@ class RequestReleaseItem extends Component {
             site_id: this.state.site,
         };
 
+
+        this.setState({
+            isLoading:true
+        })
         axios
             .post(`${baseUrl}release/stage`, data)
             .then((res) => {
+                this.setState({
+                    isLoading:false
+                })
                 this.getDetails();
                 this.showPopUpInitiateAction();
                 this.props.refreshPageCallback();
             })
-            .catch((error) => {});
+            .catch((error) => {
+                this.setState({
+                    isLoading:false
+                })
+            });
     }
 
     componentDidMount() {
@@ -425,7 +437,7 @@ class RequestReleaseItem extends Component {
                                                     name: "site",
                                                     id: "outlined-age-native-simple",
                                                 }}>
-                                                <option value={null}>Select</option>
+                                                <option value={""}>Select</option>
 
                                                 {this.props.siteList.map((item, index) => (
                                                     <option value={item._key} key={index}>
@@ -454,6 +466,8 @@ class RequestReleaseItem extends Component {
                                                     className={"col-6"}
                                                     style={{ textAlign: "center" }}>
                                                     <button
+
+                                                        disabled={this.state.isLoading?true:false}
                                                         onClick={this.actionSubmit}
                                                         style={{ minWidth: "120px" }}
                                                         className={

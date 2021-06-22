@@ -3599,3 +3599,7 @@ a.page-link:hover {
 
 #searchBar{padding-left: 130px;}
 
+.btn-link:disabled{
+
+    color: white!important;;
+}

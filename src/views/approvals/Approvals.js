@@ -167,7 +167,7 @@ render() {
         return (
             <div>
                 <Sidebar />
-                <div className="wrapper">
+                <div className="wrapper approval-page">
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">

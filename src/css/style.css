@@ -3482,7 +3482,7 @@ a.page-link:hover {
 .tree-view-menu {
 
     max-height: 250px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .tree-menu-container {

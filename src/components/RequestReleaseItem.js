@@ -195,8 +195,9 @@ class RequestReleaseItem extends Component {
         axios
             .put(`${baseUrl}site`, payload)
             .then((res) => {
-                this.getSites();
-                this.showSubmitSite();
+                this.props.loadSites();
+
+                    this.showSubmitSite();
                 this.setState({
                     siteSelected: res.data.data,
                 });
@@ -257,7 +258,7 @@ class RequestReleaseItem extends Component {
     }
 
     componentDidMount() {
-        this.getSites();
+        // this.getSites();
     }
 
     getDetails() {
@@ -416,6 +417,7 @@ class RequestReleaseItem extends Component {
                                             </div>
 
                                             <Select
+                                                required={true}
                                                 name={"site"}
                                                 native
                                                 onChange={this.handleChange.bind(this, "site")}
@@ -425,7 +427,7 @@ class RequestReleaseItem extends Component {
                                                 }}>
                                                 <option value={null}>Select</option>
 
-                                                {this.state.sites.map((item, index) => (
+                                                {this.props.siteList.map((item, index) => (
                                                     <option value={item._key} key={index}>
                                                         {item.name + "(" + item.address + ")"}
                                                     </option>
@@ -685,9 +687,11 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartthis.state.item : state.abondonCartthis.state.item,
+        // abondonCartathis.state.item : state.abondonCartthis.state.item,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        siteList: state.siteList,
+
     };
 };
 
@@ -697,6 +701,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
     };

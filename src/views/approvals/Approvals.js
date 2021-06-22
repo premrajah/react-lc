@@ -127,6 +127,7 @@ class Approvals extends Component {
 
 
         this.refreshItems()
+        this.props.loadSites()
 
     }
 
@@ -525,6 +526,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchReleaseRequest: () => dispatch(actionCreator.fetchReleaseRequest()),
         fetchServiceAgentRequest: () => dispatch(actionCreator.fetchServiceAgentRequest()),
         fetchRegisterRequest: () => dispatch(actionCreator.fetchRegisterRequest()),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
     };
 };

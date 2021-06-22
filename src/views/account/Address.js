@@ -224,7 +224,7 @@ class PaymentMethod extends Component {
                                 <Modal.Title>
                                     <div className="row">
                                         <div className="col">
-                                            <h4 className="text-center green-text">Upload Multiple Sites</h4>
+                                            <h4 className="text-center green-text">Upload Multiple</h4>
                                         </div>
                                     </div>
                                 </Modal.Title>

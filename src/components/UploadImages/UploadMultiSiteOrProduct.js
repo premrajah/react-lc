@@ -139,6 +139,12 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
 
     return <>
 
+        <div className="row mb-3">
+            <div className="col">
+                <h4>{isSite ? 'Sites Upload' : 'Products Upload'}</h4>
+            </div>
+        </div>
+
         <div className="row">
             <div className="col">
                 <Formik
@@ -176,7 +182,7 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
                                     </Button>
                                     {formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-warning">{formProps.errors.artifact}</div>) : null}
                                     <ErrorMessage name="artifact" />
-                                    <div className="text-muted">Only CSV file</div>
+                                    <div className="text-muted">Only CSV files</div>
                                     <div>File name: <b>{formProps.values.artifact.name}</b></div>
                                 </div>
                             </div>

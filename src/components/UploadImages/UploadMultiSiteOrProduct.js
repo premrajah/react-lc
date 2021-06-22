@@ -13,7 +13,7 @@ import {MenuItem} from "@material-ui/core";
 
 
 
-const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
+const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multiUploadCallback}) => {
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
@@ -22,9 +22,11 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
     const formikRef = useRef();
 
     useEffect(() => {
-        const sites = siteList;
-        setSites(sites);
+        if(isProduct) {
+            setSites(siteList);
+        }
     }, [])
+
 
     const INITIAL_VALUES = {
         artifact: '',
@@ -35,7 +37,7 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
 
     const VALIDATION_SCHEMA = Yup.object().shape({
         artifact: Yup.mixed().required('A file is required'),
-        siteId: !isSite && Yup.string().required('Site Required'),
+        siteId: isProduct && Yup.string().required('Site Required'),
 
     })
 
@@ -87,7 +89,7 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
                     if(res.status === 200) {
                         postLoadSitesOrProducts(url, payload);
                     }
-                } else {
+                } else if (isProduct) {
 
                     payload = {
                         "ref": `${file.name}_${new Date().getMilliseconds()}`,
@@ -141,7 +143,7 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
 
         <div className="row mb-3">
             <div className="col">
-                <h4>{isSite ? 'Sites Upload' : 'Products Upload'}</h4>
+                <h4>{isSite && 'Sites Upload'}{isProduct && 'Products Upload'}</h4>
             </div>
         </div>
 
@@ -156,7 +158,7 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
                 >
                     {(formProps) => (
                         <Form>
-                            <div className="row">
+                            <div className="row mb-2">
                                 <div className="col">
                                     <div>{uploadArtifactError}</div>
                                     <div>{uploadSitesError}</div>
@@ -187,7 +189,7 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
                                 </div>
                             </div>
 
-                            {!isSite && <div className="row mb-2">
+                            {isProduct && <div className="row mb-2">
                                 <div className="col">
                                     <Field
                                         component={TextField}
@@ -203,11 +205,11 @@ const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
                                         }}
                                     >
                                         <MenuItem value="">Pick a site</MenuItem>
-                                        {sites.length > 0 && sites.map((option) => (
+                                        {sites.length > 0 ? sites.map((option) => (
                                             <MenuItem key={option._id} value={option._id}>
                                                 {`${option.name} - (${option.address})`}
                                             </MenuItem>
-                                        ))}
+                                        )) : <MenuItem value="">Loading...</MenuItem> }
                                     </Field>
                                 </div>
                             </div>}

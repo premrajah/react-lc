@@ -32,7 +32,7 @@ const StyledTabs = withStyles({
 
 const StyledTab = withStyles((theme) => ({
     root: {
-        minWidth: 280,
+        minWidth: 290,
         textTransform: 'none',
         color: '#3C3972',
 

@@ -1,31 +1,42 @@
-import React, {useCallback, useRef, useState} from 'react';
-import {Formik, Form, ErrorMessage} from 'formik';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Formik, Form, ErrorMessage, Field} from 'formik';
 import  * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
 import SelectArrayWrapper from "../FormsUI/Select";
 import Button from "@material-ui/core/Button";
 import {Publish} from "@material-ui/icons";
+import {connect} from "react-redux";
+import * as actionCreator from "../../store/actions/actions";
+import {TextField} from "formik-material-ui";
+import {MenuItem} from "@material-ui/core";
 
 
 
-
-
-const UploadMultiSite = ({multiUploadCallback}) => {
+const UploadMultiSiteOrProduct = ({siteList, isSite, multiUploadCallback}) => {
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [uploadSitesError, setUploadSitesError] = useState('');
+    const [sites, setSites] = useState([]);
     const formikRef = useRef();
+
+    useEffect(() => {
+        const sites = siteList;
+        setSites(sites);
+    }, [])
 
     const INITIAL_VALUES = {
         artifact: '',
         match_strategy: MATCH_STRATEGY_OPTIONS[0],
         merge_strategy: MERGE_STRATEGY_OPTIONS[0],
+        siteId: '',
     }
 
     const VALIDATION_SCHEMA = Yup.object().shape({
-        artifact: Yup.mixed().required('A file is required')
+        artifact: Yup.mixed().required('A file is required'),
+        siteId: !isSite && Yup.string().required('Site Required'),
+
     })
 
     const handleMultiUploadCallback = useCallback(() => {
@@ -37,14 +48,15 @@ const UploadMultiSite = ({multiUploadCallback}) => {
     }
 
     const handleFormSubmit = (values, {setSubmitting}) => {
-        const {artifact, match_strategy, merge_strategy} = values;
+
+        const {artifact, match_strategy, merge_strategy, siteId} = values;
         setIsDisabled(true);
         setUploadArtifactError(<span className="text-success"><b>Processing...</b></span>)
 
         getImageAsBytes(values.artifact)
             .then(data => {
                 setSubmitting(false)
-                postArtifact(data, artifact, match_strategy, merge_strategy);
+                postArtifact(data, artifact, match_strategy, merge_strategy, siteId);
             })
             .catch(error => {
                 console.log('Convert as bytes error ', error);
@@ -52,23 +64,49 @@ const UploadMultiSite = ({multiUploadCallback}) => {
             });
     }
 
-    const postArtifact = (payload, file, match_strategy, merge_strategy) => {
+    const postArtifact = (payload, file, match_strategy, merge_strategy, siteId) => {
         setUploadArtifactError(<span className="text-success"><b>Uploading ...</b></span>)
         axios.post(`${baseUrl}artifact/load?name=${file.name}`, payload)
             .then(res => {
                 const {_id, blob_url } = res.data.data;
-                const payload = {
-                    "ref": `${file.name}_${new Date().getMilliseconds()}`,
-                    "config": {
-                        "match_strategy": match_strategy,
-                        "merge_strategy": merge_strategy,
-                        "artifact_ids" : [_id]
+                let payload;
+
+                if(isSite) {
+
+                    payload = {
+                        "ref": `${file.name}_${new Date().getMilliseconds()}`,
+                        "config": {
+                            "match_strategy": match_strategy,
+                            "merge_strategy": merge_strategy,
+                            "artifact_ids" : [_id]
+                        }
                     }
+
+                    const url = `${baseUrl}load/sites`;
+                    // console.log('artifact upload res ', _id, blob_url)
+                    if(res.status === 200) {
+                        postLoadSitesOrProducts(url, payload);
+                    }
+                } else {
+
+                    payload = {
+                        "ref": `${file.name}_${new Date().getMilliseconds()}`,
+                        "site_id": siteId,
+                        "config": {
+                            "match_strategy": match_strategy,
+                            "merge_strategy": merge_strategy,
+                            "artifact_ids" : [_id]
+                        }
+                    }
+
+                    const url = `${baseUrl}load/products`;
+
+                    if(res.status === 200) {
+                        postLoadSitesOrProducts(url, payload);
+                    }
+
                 }
-                // console.log('artifact upload res ', _id, blob_url)
-                if(res.status === 200) {
-                    postLoadSites(payload);
-                }
+
             })
             .catch(error => {
                 console.log('artifact upload error ', error)
@@ -77,8 +115,10 @@ const UploadMultiSite = ({multiUploadCallback}) => {
             })
     }
 
-    const postLoadSites = (payload) => {
-        axios.post(`${baseUrl}load/sites`, payload)
+
+
+    const postLoadSitesOrProducts = (url, payload) => {
+        axios.post(url, payload)
             .then(res => {
                 if(res.status === 200) {
                     setUploadSitesError(<span className="text-success"><b>Uploaded Sites Successfully!</b></span>);
@@ -106,6 +146,7 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                     validationSchema={VALIDATION_SCHEMA}
                     onSubmit={async (values, {setSubmitting}) => handleFormSubmit(values, {setSubmitting})}
                     innerRef={formikRef}
+                    enableReinitialize
                 >
                     {(formProps) => (
                         <Form>
@@ -140,6 +181,31 @@ const UploadMultiSite = ({multiUploadCallback}) => {
                                 </div>
                             </div>
 
+                            {!isSite && <div className="row mb-2">
+                                <div className="col">
+                                    <Field
+                                        component={TextField}
+                                        type="text"
+                                        name="siteId"
+                                        label="Pick a Site"
+                                        select
+                                        variant="outlined"
+                                        helperText="Please select a Site"
+                                        margin="normal"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    >
+                                        <MenuItem value="">Pick a site</MenuItem>
+                                        {sites.length > 0 && sites.map((option) => (
+                                            <MenuItem key={option._id} value={option._id}>
+                                                {`${option.name} - (${option.address})`}
+                                            </MenuItem>
+                                        ))}
+                                    </Field>
+                                </div>
+                            </div>}
+
                             <div className="row mb-2">
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
@@ -173,4 +239,20 @@ const UploadMultiSite = ({multiUploadCallback}) => {
     </>
 };
 
-export default UploadMultiSite;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+        userDetail: state.userDetail,
+        siteList: state.siteList,
+        showSitePopUp: state.showSitePopUp,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        showSiteModal: (data) => dispatch(actionCreator.showSiteModal(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadMultiSiteOrProduct);

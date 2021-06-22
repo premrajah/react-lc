@@ -21,7 +21,7 @@ const SelectArrayWrapper = (props) => {
                 }}
             >
                 {options.map((option, index) => (
-                    <MenuItem key={index} value={option}>
+                    <MenuItem key={option} value={option}>
                         {option}
                     </MenuItem>
                 ))}

@@ -12,7 +12,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {Alert, Button, Modal} from "react-bootstrap";
 import EditSite from "../../components/Sites/EditSite";
 import PageHeader from "../../components/PageHeader";
-import UploadMultiSite from "../../components/UploadImages/UploadMultiSite";
+import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 
 class PaymentMethod extends Component {
     constructor(props) {
@@ -87,14 +87,10 @@ class PaymentMethod extends Component {
 
     getSite() {
         axios
-            .get(baseUrl + "site/" + this.state.siteSelected, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "site/" + this.state.siteSelected)
             .then(
                 (response) => {
-                    var responseAll = response.data.content;
+                    let responseAll = response.data.content;
 
                     this.setState({
                         site: responseAll,
@@ -106,14 +102,10 @@ class PaymentMethod extends Component {
 
     getSites() {
         axios
-            .get(baseUrl + "site", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "site")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         sites: responseAll,
@@ -238,7 +230,7 @@ class PaymentMethod extends Component {
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <UploadMultiSite multiUploadCallback={() => this.handleMultiUploadCallback()} />
+                                <UploadMultiSiteOrProduct isSite multiUploadCallback={() => this.handleMultiUploadCallback()} />
                             </Modal.Body>
                         </Modal>
                     </>
@@ -257,10 +249,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         showSiteModal: (data) => dispatch(actionCreator.showSiteModal(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(PaymentMethod);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentMethod);

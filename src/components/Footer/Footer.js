@@ -34,7 +34,7 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <footer style={{padding: ".5rem 1rem"}} className="footer">
+            <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
                 {/*<Container>*/}
                     <Row className={""}>
                         <Col md="4">

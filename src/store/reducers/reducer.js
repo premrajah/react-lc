@@ -1,10 +1,8 @@
 import { getKey, saveKey } from "../../LocalStorage/user";
 import {
     ERROR_REQUEST,
-    IS_GUEST,
     LOAD_USER_DETAIL,
     LOADING,
-    LOADING_COUPON,
     LOADING_SPINNER,
     LOGIN,
     LOGIN_ERROR,
@@ -17,9 +15,6 @@ import {
     PRODUCT_LIST,
     PRODUCT_NPARENT_LIST,
     PRODUCT_POPUP,
-    REVIEW_BOX_OPEN,
-    REVIEW_SUBMIT,
-    REVIEW_SUCCESS,
     SET_CATEGORIES,
     SET_LOCATION,
     SET_ORG_IMG,
@@ -29,11 +24,7 @@ import {
     SIGN_UP_FAILED,
     SITE_LIST,
     SITE_POPUP,
-    SLIDES_LOAD,
-    SOCIAL_LOGIN_POPUP,
-    SOCIAL_USER_INFO,
     STOP_LOADING,
-    TRENDING_LOAD,
     USER_DETAIL,
     GET_MESSAGES,
     GET_NOTIFICATIONS,
@@ -95,9 +86,7 @@ const reducer = (state = initialState, action) => {
             newState.showSitePopUp = action.value;
             break;
 
-        case REVIEW_BOX_OPEN:
-            newState.reviewBoxOpen = action.value;
-            break;
+    
 
         case LOAD_USER_DETAIL:
             if (action.value) {
@@ -211,20 +200,6 @@ const reducer = (state = initialState, action) => {
             newState.loginPopUpStatus = action.value;
             break;
 
-        case SOCIAL_LOGIN_POPUP:
-            // newState.loginFailed= false
-            newState.showSocialLoginPopUp = action.value;
-            newState.showLoginPopUp = action.value;
-            //
-            break;
-
-        case SOCIAL_USER_INFO:
-            // newState.loginFailed= false
-            newState.socialUserInfo = action.value;
-            //
-
-            break;
-
         case SHOW_LOADING:
             newState.loading = action.value;
 
@@ -234,33 +209,6 @@ const reducer = (state = initialState, action) => {
             newState.loading = true;
             break;
 
-        case IS_GUEST:
-            newState.isGuest = true;
-            break;
-
-        case LOADING_COUPON:
-            newState.couponCheckloading = true;
-            newState.couponError = false;
-            break;
-
-        case SLIDES_LOAD:
-            newState.slides = action.value;
-            break;
-
-        case TRENDING_LOAD:
-            newState.trendingItems = action.value;
-            break;
-
-        case REVIEW_SUCCESS:
-            newState.reviewSuccessMessage = false;
-            break;
-
-        case REVIEW_SUBMIT:
-            newState.loading = false;
-            newState.reviewLoading = false;
-            newState.reviewBoxOpen = false;
-            newState.reviewSuccessMessage = true;
-            break;
 
         case ERROR_REQUEST:
             newState.loading = false;
@@ -307,25 +255,7 @@ const reducer = (state = initialState, action) => {
             break;
 
         case SIGN_UP:
-            // newState.showSocialLoginPopUp = false
-            //
-            // if (action.value.isGuest) {
-            //
-            //     newState.isGuest = true;
-            //     newState.isLoggedIn = false;
-            //
-            // }else {
-            //
-            //     newState.isLoggedIn = true;
-            //     newState.isGuest = false;
-            // }
-            //
-            //
-            //
-            //
-            // newState.showLoginPopUp = false
-            // newState.showLoginCheckoutPopUp = false
-            // newState.userDetail = action.value;
+
 
             newState.loginPopUpStatus = 5;
             newState.loading = false;

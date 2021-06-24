@@ -21,7 +21,6 @@ export const SUBMIT_COMMENT = "SUBMIT_COMMENT";
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const SET_USER_DETAIL = "SET_USER_DETAIL";
 export const LOADING = "LOADING";
-export const IS_CART_LOADING = "IS_CART_LOADING";
 export const LOADING_SPINNER = "LOADING_SPINNER";
 export const SITE_POPUP = "SITE_POPUP";
 export const SET_ORG_IMG = "SET_ORG_IMG";

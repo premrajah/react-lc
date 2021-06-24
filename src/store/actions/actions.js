@@ -3,7 +3,7 @@ import axios from "axios/index";
 
 import { baseUrl } from "../../Util/Constants";
 import {
-    IS_CART_LOADING,
+
     LOAD_USER_DETAIL,
     LOADING,
     LOADING_SPINNER,
@@ -37,11 +37,7 @@ import {
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
 } from "../types";
 
-export const enableCartLoading = () => {
-    return {
-        type: IS_CART_LOADING,
-    };
-};
+
 
 export const loadingSpinner = () => {
     return {

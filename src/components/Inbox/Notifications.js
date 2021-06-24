@@ -84,7 +84,6 @@ class Notifications extends Component {
     }
 
     unTrackProduct = (productKey) => {
-        console.log('>>> ', productKey);
         if(!productKey) return;
         axios.delete(`${baseUrl}product/track/${productKey}`)
             .then(res => {

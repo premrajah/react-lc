@@ -44,7 +44,6 @@ import {
 } from "../types";
 
 export const initialState = {
-    age: 20,
     loginPopUpStatus: 0,
     loading: false,
     isLoggedIn: false,
@@ -56,7 +55,6 @@ export const initialState = {
     isCustomer: false,
     token: {},
     userDetail: null,
-    favorites: [],
     showProductPopUp: false,
     showCreateProduct: false,
     showCreateSubProduct: false,
@@ -107,7 +105,6 @@ const reducer = (state = initialState, action) => {
                 newState.isLoggedIn = true;
                 newState.loading = false;
                 newState.token = action.value.token;
-
                 newState.userDetail = action.value;
 
                 //
@@ -142,17 +139,9 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = false;
             newState.loading = false;
             newState.loginFailed = false;
-            newState.couponError = false;
-            newState.addressInput = false;
-            newState.cartItems = [];
-            newState.isGuest = false;
             newState.showLoginPopUp = false;
-            newState.guestCartItems = [];
-            newState.couponError = false;
-            newState.showLoginCheckoutPopUp = false;
             newState.userDetail = null;
             newState.loading = false;
-            newState.favorites = [];
             saveKey("user", null);
             saveKey("token", null);
 

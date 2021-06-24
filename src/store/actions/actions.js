@@ -175,6 +175,9 @@ export const loadSitesSync = (data) => (dispatch) => {
 };
 
 export const loadProductsSync = (data) => (dispatch) => {
+
+
+
     axios
         .get(baseUrl + "product", {
             headers: {
@@ -201,7 +204,7 @@ export const loadProductsSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentSync = (data) => (dispatch) => {
     axios
-        .get(`${baseUrl}product/no-parent/expand`)
+        .get(`${baseUrl}product/no-parent/expand?offset=1&size=6`)
         .then(
             (response) => {
                 if(response.status === 200) {

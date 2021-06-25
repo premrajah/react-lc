@@ -64,6 +64,9 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
+    productPageOffset:1,
+    productPageSize:20,
+    lastPageReached:false
 };
 
 const reducer = (state = initialState, action) => {
@@ -86,7 +89,7 @@ const reducer = (state = initialState, action) => {
             newState.showSitePopUp = action.value;
             break;
 
-    
+
 
         case LOAD_USER_DETAIL:
             if (action.value) {
@@ -144,8 +147,30 @@ const reducer = (state = initialState, action) => {
             break;
 
         case PRODUCT_NPARENT_LIST:
-            newState.productWithoutParentList = action.value;
+
+
+            if (action.value.val.length<state.productPageSize){
+                newState.lastPageReached=true
+
+                console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
+
+
+
+            }else{
+
+                newState.lastPageReached=false
+            }
+
+
+            let prevList= state.productWithoutParentList
+            newState.productWithoutParentList= prevList.concat(action.value.val);
+
+
             newState.loading = false;
+
+            newState.productPageOffset=action.value.offset
+            newState.productPageSize=action.value.size
+
             break;
 
         case SITE_LIST:

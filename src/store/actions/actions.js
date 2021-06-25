@@ -199,14 +199,17 @@ export const loadProductsSync = (data) => (dispatch) => {
 };
 
 export const loadProductsWithoutParentSync = (data) => (dispatch) => {
+
+
+
     axios
-        .get(`${baseUrl}product/no-parent/expand?offset=1&size=6`)
+        .get(`${baseUrl}product/no-parent/expand?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
                 if(response.status === 200) {
                     dispatch(loading(false));
                 }
-                dispatch({ type: PRODUCT_NPARENT_LIST, value: response.data.data });
+                dispatch({ type: PRODUCT_NPARENT_LIST, value: {val:response.data.data,offset:data.offset, size:data.size}});
             },
             (error) => {
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: [] });

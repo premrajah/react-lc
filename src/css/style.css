@@ -3615,3 +3615,7 @@ a.page-link:hover {
 @keyframes slide {
     100% { right: 0; }
 }
+.mb-150{
+
+    margin-bottom: 150px;
+}

@@ -182,8 +182,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                             onClick={() => { setUploadArtifactError(''); setUploadSitesError('');}}
                                         />
                                     </Button>
-                                    {formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-warning">{formProps.errors.artifact}</div>) : null}
-                                    <ErrorMessage name="artifact" />
+                                    <div className="mt-1">{formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-danger">{formProps.errors.artifact}</div>) : null}</div>
                                     <div className="text-muted">Only CSV files</div>
                                     <div>File name: <b>{formProps.values.artifact.name}</b></div>
                                 </div>

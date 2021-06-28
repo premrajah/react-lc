@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import { withStyles } from "@material-ui/core/styles/index";
 import ProductDetail from "../../components/Products/ProductDetail";
-import NotFound from "../NotFound/index";
+import NotFound from "../../components/NotFound/index";
+import Layout from "../../components/Layout/Layout";
 
 class ProductView extends Component {
     slug;
@@ -92,11 +92,8 @@ class ProductView extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
-                <Sidebar />
+            <Layout>
                 <div className="accountpage">
-                    <HeaderDark />
-
                     {this.state.notFound ? (
                         <NotFound />
                     ) : (
@@ -114,7 +111,7 @@ class ProductView extends Component {
                         </div>
                     )}
                 </div>
-            </div>
+            </Layout>
         );
     }
 }

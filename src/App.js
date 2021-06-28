@@ -14,6 +14,7 @@ import ItemDetail from "./views/browse-resources/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
 import ProductsNew from "./pages/my-products/Products";
+import Product from "./pages/product-detail/Product";
 import ProductsService from "./views/loop-cycle/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -129,6 +130,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductView} />
+                        <LoggedInRoute exact path="/product-new/:slug" component={Product} />
                         <LoggedInRoute
                             exact
                             path="/sub-product-view/:slug"

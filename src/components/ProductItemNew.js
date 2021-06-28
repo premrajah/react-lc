@@ -9,7 +9,7 @@ import moment from "moment/moment";
 import { Link } from "react-router-dom";
 import MoreMenu from "./MoreMenu";
 import ProductEditForm from "./ProductEditForm";
-import ProductDetail from "./ProductDetail";
+import ProductDetail from "./Products/ProductDetail";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
 

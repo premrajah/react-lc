@@ -321,7 +321,7 @@ class RequestServiceAgentItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
+                        <div  className="row  justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
@@ -348,12 +348,11 @@ class RequestServiceAgentItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                     <span className="mr-1">{this.state.item.product.product.category},</span>
                                     <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>
+                                    <span>{this.state.item.product.product.state}</span>,
+                                    <span> {this.state.item.product.product.volume}
+                                        {this.state.item.product.product.units}</span>
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.volume}
-                                    {this.state.item.product.product.units}
-                                </p>
+
 
                                 {this.state.item.search_ids && (
                                     <p
@@ -435,10 +434,10 @@ class RequestServiceAgentItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            {this.state.initiateAction}
+                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?
+                                            Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
                                         </p>
                                     </div>
                                 </div>

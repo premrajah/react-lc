@@ -294,7 +294,7 @@ class RequestReleaseItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div key={this.state.item.Release._id} id={this.state.item.Release._id} className="row no-gutters justify-content-center mt-4 mb-4 ">
+                        <div key={this.state.item.Release._id} id={this.state.item.Release._id} className="row  justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail
@@ -324,12 +324,11 @@ class RequestReleaseItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                     <span className="mr-1">{this.state.item.product.product.category},</span>
                                     <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>
-                                </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span>{this.state.item.product.product.volume}</span>
+                                    <span>{this.state.item.product.product.state}</span>,
+                                    <span> {this.state.item.product.product.volume}</span>
                                     <span>{this.state.item.product.product.units}</span>
                                 </p>
+
 
                                 {this.state.item.search_ids && (
                                     <p
@@ -410,10 +409,11 @@ class RequestReleaseItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            {this.state.initiateAction}
+                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?
+                                            Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
+
                                         </p>
                                     </div>
                                 </div>
@@ -451,7 +451,7 @@ class RequestReleaseItem extends Component {
                                             Don’t see it on here?
                                             <span
                                                 onClick={this.showSubmitSite}
-                                                className={"green-text forgot-password-link text-mute small"}>
+                                                className="green-text forgot-password-link text-mute small ml-1">
                                                 Add a site
                                             </span>
                                         </p>

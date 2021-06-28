@@ -224,9 +224,9 @@ render() {
 
                                 {this.state.value == 0 &&
                                 <div className={"row"} value={this.state.value} index={0}>
-                                    <div className={"container"}>
 
-                                        <div className="row mt-3 mb-3">
+
+                                        <div className="col-12 mt-3 mb-3">
                                             <div className="col d-flex justify-content-end">
                                                 <Link to="/approved" className="btn btn-sm blue-btn"
                                                       style={{color: "#fff"}}>
@@ -236,17 +236,15 @@ render() {
                                         </div>
                                         <div className={"listing-row-border "}></div>
 
-
                                         {this.props.productReleaseRequested.map((item, index) => (
-                                            <div className="row" key={item.product.product._id} id={item.product.product._id}>
-                                                <div className="col" key={index}>
-                                                    <RequestReleaseItem
+                                            <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
 
+                                                    <RequestReleaseItem
                                                         history={this.props.history}
                                                         item={item}
                                                         // refreshPageCallback={this.refreshProductReleaseCallback}
                                                     />
-                                                </div>
+
                                             </div>
                                         ))}
                                         {this.props.productReleaseRequested.length === 0 && (
@@ -258,14 +256,14 @@ render() {
                                                 </p>
                                             </div>
                                         )}
-                                    </div>
+
                                 </div>
                                 }
                                 {this.state.value == 1 &&
                                 <div className={"row"} value={this.state.value} index={1}>
-                                    <div className={"container"}>
+
                                         {this.props.productRegisterRequests.map((item, index) => (
-                                            <div className={"row"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
+                                            <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
 
                                                 <RequestRegisterItem
                                                     history={this.props.history}
@@ -284,13 +282,13 @@ render() {
                                                 </p>
                                             </div>
                                         )}
-                                    </div>
+
                                 </div>}
                                 {this.state.value == 2 &&
                                 <div className={"row"} value={this.state.value} index={2}>
-                                    <div className={"container"}>
+
                                         {this.props.serviceAgentRequests.map((item, index) => (
-                                            <div key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
+                                            <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
                                                 <RequestServiceAgentItem
                                                     history={this.props.history}
                                                     item={item}
@@ -307,7 +305,7 @@ render() {
                                                 </p>
                                             </div>
                                         )}
-                                    </div>
+
                                 </div>}
 
 

@@ -9,10 +9,15 @@ function NotificationPage () {
     const [trackingStatus, setTrackingStatus] = useState('');
 
     const handleTrackCallback = (status) => {
+
         if(status === 'success') {
             setTrackingStatus(<span className="text-success">Tracked successfully</span>)
         } else if (status === 'fail') {
             setTrackingStatus(<span className="text-warning">unable to track at this time</span>)
+        } else if (status === 'un-track-success') {
+            setTrackingStatus(<span className="text-success">Un-Tracked successfully</span>)
+        } else if (status === 'un-track-fail') {
+            setTrackingStatus(<span className="text-warning">unable to un-track at this time</span>)
         } else {
             setTrackingStatus('')
         }

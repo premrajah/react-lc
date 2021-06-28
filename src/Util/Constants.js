@@ -37,6 +37,23 @@ export const MIME_TYPES_ACCEPT =
 
 export const PRODUCTS_FILTER_VALUES = ["name", "description", "purpose", "category"];
 
+export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];
+export const MERGE_STRATEGY_OPTIONS = ["always_new", "always_fail", "pick_first", "pick_any"];
+
 export const capitalizeFirstLetter = (string) => (
     string.charAt(0).toUpperCase() + string.slice(1)
 )
+
+export const getImageAsBytes = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+
+        reader.onload = () => {
+            let arrayBuffer = reader.result;
+            let bytes = new Uint8Array(arrayBuffer);
+            resolve(bytes);
+        };
+        reader.onerror = (error) => reject(error);
+    });
+}

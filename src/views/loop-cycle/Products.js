@@ -15,6 +15,8 @@ import SearchBar from "../../components/SearchBar";
 import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import RemoveIcon from '@material-ui/icons/Remove';
 import {CSVLink} from "react-csv";
+import {Modal} from "react-bootstrap";
+import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 
 
 class Products extends Component {
@@ -26,6 +28,7 @@ class Products extends Component {
             searchValue: '',
             filterValue: 'name',
             selectedProducts: [],
+            showMultiUpload: false,
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -45,6 +48,7 @@ class Products extends Component {
 
     componentDidMount() {
 
+        this.props.loadSites();
         this.props.dispatchLoadProductsWithoutParent();
 
         this.interval = setInterval(() => {
@@ -93,7 +97,13 @@ class Products extends Component {
         return csvData;
     }
 
+    toggleMultiSite = () => {
+        this.setState({showMultiUpload: !this.state.showMultiUpload});
+    }
 
+    handleMultiUploadCallback = () => {
+        this.props.dispatchLoadProductsWithoutParent();
+    }
 
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -110,8 +120,8 @@ class Products extends Component {
                 <div className="wrapper">
                     <HeaderDark />
 
-                    {this.state.selectedProducts.length > 0 ?  <div className="sticky-top" style={{top: '68px'}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: '208px', overflow: 'scroll',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
+                    {this.state.selectedProducts.length > 0 ?  <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
+                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
                             <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
                                 <div className="col d-flex justify-content-end">
                                     <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>
@@ -140,7 +150,7 @@ class Products extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-12 d-flex justify-content-end">
+                            <div className="col-md-9 d-flex justify-content-start">
                                 <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
                                     Product Service
                                 </Link>
@@ -152,6 +162,10 @@ class Products extends Component {
                                 <Link to="/product-tracked" className="btn btn-sm blue-btn">
                                     Tracked
                                 </Link>
+                            </div>
+
+                            <div className="col-md-3 d-flex justify-content-end">
+                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
                         </div>
 
@@ -221,6 +235,25 @@ class Products extends Component {
                         </AppBar>
                     </React.Fragment>
                 </div>
+
+                {this.state.showMultiUpload && (
+                    <>
+                        <Modal size="lg" show={this.state.showMultiUpload} backdrop="static" onHide={() => this.toggleMultiSite()}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>
+                                    <div className="row">
+                                        <div className="col">
+                                            <h4 className="text-center green-text">Upload Multiple</h4>
+                                        </div>
+                                    </div>
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <UploadMultiSiteOrProduct isProduct multiUploadCallback={() => this.handleMultiUploadCallback()} />
+                            </Modal.Body>
+                        </Modal>
+                    </>
+                )}
             </div>
         );
     }
@@ -252,6 +285,7 @@ const mapDispatchToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

@@ -9,9 +9,10 @@ import Close from "@material-ui/icons/Close";
 import SiteItem from "../../components/SiteItem";
 import AddSite from "../../components/AddSite";
 import * as actionCreator from "../../store/actions/actions";
-import { Alert } from "react-bootstrap";
+import {Alert, Button, Modal} from "react-bootstrap";
 import EditSite from "../../components/Sites/EditSite";
 import PageHeader from "../../components/PageHeader";
+import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 
 class PaymentMethod extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class PaymentMethod extends Component {
             fieldsSite: {},
             errorsSite: {},
             submitSuccess: false,
+            showMultiUpload: false,
         };
 
         this.getSites = this.getSites.bind(this);
@@ -85,14 +87,10 @@ class PaymentMethod extends Component {
 
     getSite() {
         axios
-            .get(baseUrl + "site/" + this.state.siteSelected, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "site/" + this.state.siteSelected)
             .then(
                 (response) => {
-                    var responseAll = response.data.content;
+                    let responseAll = response.data.content;
 
                     this.setState({
                         site: responseAll,
@@ -104,14 +102,10 @@ class PaymentMethod extends Component {
 
     getSites() {
         axios
-            .get(baseUrl + "site", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "site")
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         sites: responseAll,
@@ -122,16 +116,20 @@ class PaymentMethod extends Component {
     }
 
     toggleSite() {
+        this.setState({showCreateSite: !this.state.showCreateSite,});
+    }
 
-        this.setState({
-            showCreateSite: !this.state.showCreateSite,
-        });
+    toggleMultiSite = () => {
+        this.setState({showMultiUpload: !this.state.showMultiUpload});
+    }
+
+    handleMultiUploadCallback = () => {
+        this.props.loadSites();
     }
 
 
     componentDidMount() {
         window.scrollTo(0, 0);
-
         this.props.loadSites();
     }
 
@@ -160,14 +158,21 @@ class PaymentMethod extends Component {
                         )}
 
                         <div className="row mb-3">
-                            <div className="col-12">
-                                <div className="list-group main-menu accountpage-list">
-                                    <p
-                                        onClick={this.toggleSite}
-                                        className="green-link-url"
-                                        style={{ cursor: "pointer" }}>
-                                        Add New Site
-                                    </p>
+                            <div className="col-md-2">
+                                <div
+                                    onClick={this.toggleSite}
+                                    className="green-link-url"
+                                    style={{ cursor: "pointer" }}>
+                                    Add New Site
+                                </div>
+                            </div>
+
+                            <div className="col-md-2">
+                                <div
+                                    onClick={() => this.toggleMultiSite()}
+                                    className="green-link-url"
+                                    style={{ cursor: "pointer" }}>
+                                    Upload Multiple Sites
                                 </div>
                             </div>
                         </div>
@@ -183,10 +188,6 @@ class PaymentMethod extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="container ">
-                        <div className="row"></div>
                     </div>
                 </div>
 
@@ -214,6 +215,26 @@ class PaymentMethod extends Component {
                         </div>
                     </>
                 )}
+
+
+                {this.state.showMultiUpload && (
+                    <>
+                        <Modal size="lg" show={this.state.showMultiUpload} backdrop="static" onHide={() => this.toggleMultiSite()}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>
+                                    <div className="row">
+                                        <div className="col">
+                                            <h4 className="text-center green-text">Upload Multiple</h4>
+                                        </div>
+                                    </div>
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <UploadMultiSiteOrProduct isSite multiUploadCallback={() => this.handleMultiUploadCallback()} />
+                            </Modal.Body>
+                        </Modal>
+                    </>
+                )}
             </div>
         );
     }
@@ -228,10 +249,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         showSiteModal: (data) => dispatch(actionCreator.showSiteModal(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(PaymentMethod);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentMethod);

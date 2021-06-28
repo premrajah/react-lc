@@ -13,6 +13,7 @@ import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browse-resources/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
+import ProductsNew from "./pages/my-products/Products";
 import ProductsService from "./views/loop-cycle/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -92,6 +93,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         <LoggedInRoute exact path="/my-products" component={Products} />
+                        <LoggedInRoute exact path="/my-products-new" component={ProductsNew} />
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />

@@ -92,7 +92,7 @@ class ProductView extends Component {
         const classesBottom = withStyles();
 
         return (
-            <Layout>
+            <Layout hideFooter={true}>
                 <div className="accountpage">
                     {this.state.notFound ? (
                         <NotFound />

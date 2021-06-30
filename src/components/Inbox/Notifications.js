@@ -100,7 +100,6 @@ class Notifications extends Component {
     checkNotifications = (item, index) => {
         if (!item) return;
 
-
         const { message, orgs } = item;
         let text;
         
@@ -174,9 +173,17 @@ class Notifications extends Component {
                                 <span className="mr-4">{moment(message._ts_epoch_ms).fromNow()}</span>
                                 <span className="">{readTime ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}` : ''}</span>
                                 {!readTime ? <span onClick={() => this.messageRead(messageId)} style={{cursor: 'pointer'}}>Mark as read</span> : null}
-                                {(message.text.match(PRODUCT_REGEX) && !item.options.is_tracked)
-                                    ? <span className="ml-4 blue-text" style={{cursor: 'pointer'}} onClick={() => this.handleTrackProduct(message)}><b>Track</b></span>
-                                    : <span className="ml-4 text-danger" style={{cursor: 'pointer'}} onClick={() => this.handleUnTrackProduct(message)}><b>Un-track</b></span>}
+                                { !item.options.is_owned && <React.Fragment>
+                                    {
+                                        (message.text.match(PRODUCT_REGEX) && !item.options.is_tracked)
+                                        ? <span className="ml-4 blue-text" style={{cursor: 'pointer'}}
+                                                onClick={() => this.handleTrackProduct(message)}><b>Track</b></span>
+                                        : <span className="ml-4 text-danger" style={{cursor: 'pointer'}}
+                                                onClick={() => this.handleUnTrackProduct(message)}><b>Un-track</b></span>
+                                    }
+                                </React.Fragment>
+
+                                }
                             </span>
                         </div>
                     </div>

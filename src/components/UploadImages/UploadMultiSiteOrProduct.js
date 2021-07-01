@@ -123,7 +123,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
         axios.post(url, payload)
             .then(res => {
                 if(res.status === 200) {
-                    setUploadSitesError(<span className="text-success"><b>Uploaded Sites Successfully!</b></span>);
+                    setUploadSitesError(<span className="text-success"><b>Uploaded {isSite ? "Sites" : "Products"} Successfully!</b></span>);
                     setUploadArtifactError('');
                     setIsDisabled(false);
                     handleMultiUploadCallback();

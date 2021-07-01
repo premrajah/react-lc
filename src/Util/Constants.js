@@ -39,6 +39,7 @@ export const PRODUCTS_FILTER_VALUES = ["name", "description", "purpose", "catego
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];
 export const MERGE_STRATEGY_OPTIONS = ["always_new", "always_fail", "pick_first", "pick_any"];
+export const ISSUES_PRIORITY = ["low", "medium", "high"];
 
 export const capitalizeFirstLetter = (string) => (
     string.charAt(0).toUpperCase() + string.slice(1)

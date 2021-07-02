@@ -18,6 +18,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [uploadSitesError, setUploadSitesError] = useState('');
+    const [errorsArray, setErrorsArray] = useState([]);
     const [sites, setSites] = useState([]);
     const formikRef = useRef();
 
@@ -124,6 +125,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
             .then(res => {
                 if(res.status === 200) {
                     setUploadSitesError(<span className="text-success"><b>Uploaded {isSite ? "Sites" : "Products"} Successfully!</b></span>);
+                    setErrorsArray(res.data.errors)
                     setUploadArtifactError('');
                     setIsDisabled(false);
                     handleMultiUploadCallback();
@@ -162,6 +164,12 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                 <div className="col">
                                     <div>{uploadArtifactError}</div>
                                     <div>{uploadSitesError}</div>
+                                    {errorsArray.length > 0 && <div className="d-flex flex-column align-items-start">Partial upload with errors,
+                                        please check file: {errorsArray.map(
+                                            error => (
+                                                <span className="text-danger">Error {error.message}</span>
+                                            )
+                                        )}</div>}
                                 </div>
                             </div>
 
@@ -179,7 +187,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                             accept="text/csv"
                                             name="artifact"
                                             onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
-                                            onClick={() => { setUploadArtifactError(''); setUploadSitesError('');}}
+                                            onClick={() => { setUploadArtifactError(''); setUploadSitesError(''); setErrorsArray([])}}
                                         />
                                     </Button>
                                     <div className="mt-1">{formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-danger">{formProps.errors.artifact}</div>) : null}</div>

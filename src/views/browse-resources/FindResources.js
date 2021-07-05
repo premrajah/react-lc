@@ -224,7 +224,7 @@ class FindResources extends Component {
                                     to={"/list-form"}
                                     className="nav-link  d-lg-block green-link "
                                     color="default">
-                                    New Listing
+                                    Create a Listing
                                 </Link>
                             </div>
                         </div>

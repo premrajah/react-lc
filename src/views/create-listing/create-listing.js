@@ -1987,7 +1987,7 @@ class CreateListing extends Component {
                                                     "green-text forgot-password-link text-mute small"
                                                 }>
                                                 <Link to={"/create-product"}>
-                                                    Create New Product
+                                                    Add Product
                                                 </Link>
                                             </p>
                                         </div>

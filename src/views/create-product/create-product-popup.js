@@ -42,7 +42,7 @@ class ProductPopUp extends Component {
                     <div className="col mobile-menu">
                         <div className="form-col-left col-12">
                             {this.props.showCreateSubProduct && (
-                                <ProductForm heading={"Create A Sub Product"} />
+                                <ProductForm heading={"Create a Sub Product"} />
                             )}
 
                             {this.props.showCreateProduct && (

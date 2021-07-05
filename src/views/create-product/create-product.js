@@ -199,7 +199,7 @@ class CreateProduct extends Component {
                     {/*</div>*/}
                     <div className="row  pb-2 pt-4 ">
                         <div className="col-auto">
-                            <h3 className={"blue-text text-heading"}>Create A Product</h3>
+                            <h3 className={"blue-text text-heading"}>Add Product</h3>
                         </div>
                     </div>
 

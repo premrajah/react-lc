@@ -78,7 +78,6 @@ const ProductRecordItem = ({ item }) => {
                         <div align="right">
                             <span className="text-gray-light small">
                                 <span className="mr-2">Available</span>
-                                {console.log('listing ', listing)}
                             {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                                 " - " +
                                 moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}

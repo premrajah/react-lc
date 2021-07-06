@@ -174,11 +174,17 @@ const reducer = (state = initialState, action) => {
             newState.addressInput = false;
             newState.productWithoutParentList = [];
             newState.productList = [];
-            newState.productRegisterRequests = [];
             newState.siteList=[]
             newState.showLoginPopUp = false;
             newState.userDetail = null;
+            newState.token = {};
             newState.loading = false;
+            newState.notifications = [];
+            newState.messages = [];
+            newState.serviceAgentRequests = [];
+            newState.productReleaseRequests = [];
+            newState.productReleaseRequested = [];
+            newState.productRegisterRequests = [];
             saveKey("user", null);
             saveKey("token", null);
 

@@ -35,6 +35,7 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
+    PRODUCT_REGISTER,PRODUCT_RELEASE,SERVICE_AGENT_REQUEST
 } from "../types";
 
 export const enableCartLoading = () => {
@@ -504,5 +505,101 @@ export const unreadNotifications = val => {
 }
 
 
+
+
+
+export const fetchReleaseRequest = () => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(fetchReleaseRequestSync());
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+    };
+};
+
+export const fetchReleaseRequestSync = () => (dispatch) => {
+    axios.get(baseUrl + "release").then(
+        (response) => {
+
+            let responseAll = response.data.data;
+
+            dispatch({ type: PRODUCT_RELEASE, value: responseAll });
+
+            // dispatch()
+        },
+        (error) => {
+            // let status = error.response.status
+            // dispatch({ type: "PRODUCT_LIST", value: [] })
+        }
+    )
+        .catch(error => {});
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+};
+
+
+
+
+export const fetchServiceAgentRequest = () => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(fetchServiceAgentRequestSync());
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+    };
+};
+
+export const fetchServiceAgentRequestSync = () => (dispatch) => {
+    axios.get(baseUrl + "service-agent").then(
+        (response) => {
+            let responseAll = response.data.data;
+
+            dispatch({ type: SERVICE_AGENT_REQUEST, value: responseAll });
+
+            // dispatch()
+        },
+        (error) => {
+            // let status = error.response.status
+            // dispatch({ type: "PRODUCT_LIST", value: [] })
+        }
+    )
+        .catch(error => {});
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+};
+
+
+
+
+export const fetchRegisterRequest = () => {
+
+    return (dispatch) => {
+
+        dispatch(loading());
+        dispatch(fetchRegisterRequestSync());
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+    };
+};
+
+export const fetchRegisterRequestSync = () => (dispatch) => {
+    axios.get(baseUrl + "register").then(
+        (response) => {
+
+            let responseAll = response.data.data;
+
+            dispatch({ type: PRODUCT_REGISTER , value: responseAll });
+
+            // dispatch()
+        },
+        (error) => {
+            // let status = error.response.status
+            // dispatch({ type: "PRODUCT_LIST", value: [] })
+        }
+    )
+        .catch(error => {});
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+};
 
 

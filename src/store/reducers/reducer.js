@@ -41,6 +41,10 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS,
+    PRODUCT_RELEASE,
+    PRODUCT_REGISTER,
+    SERVICE_AGENT_REQUEST
+
 } from "../types";
 
 export const initialState = {
@@ -56,7 +60,6 @@ export const initialState = {
     isCustomer: false,
     token: {},
     userDetail: null,
-    favorites: [],
     showProductPopUp: false,
     showCreateProduct: false,
     showCreateSubProduct: false,
@@ -75,6 +78,10 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
+    serviceAgentRequests: [],
+    productReleaseRequests: [],
+    productReleaseRequested: [],
+    productRegisterRequests: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -96,6 +103,26 @@ const reducer = (state = initialState, action) => {
         case SITE_POPUP:
             newState.showSitePopUp = action.value;
             break;
+
+
+        case PRODUCT_RELEASE:
+
+            newState.productReleaseRequests = action.value;
+            newState.productReleaseRequested=[]
+            newState.productReleaseRequested = action.value.filter((item) => item.Release.stage === "requested" );
+
+            break;
+
+
+        case PRODUCT_REGISTER:
+            newState.productRegisterRequests = action.value;
+            break;
+
+        case SERVICE_AGENT_REQUEST:
+            newState.serviceAgentRequests = action.value;
+            break;
+
+
 
         case REVIEW_BOX_OPEN:
             newState.reviewBoxOpen = action.value;
@@ -141,18 +168,17 @@ const reducer = (state = initialState, action) => {
         case LOGOUT:
             newState.isLoggedIn = false;
             newState.loading = false;
+            newState.orgImage = null;
             newState.loginFailed = false;
             newState.couponError = false;
             newState.addressInput = false;
-            newState.cartItems = [];
-            newState.isGuest = false;
+            newState.productWithoutParentList = [];
+            newState.productList = [];
+            newState.productRegisterRequests = [];
+            newState.siteList=[]
             newState.showLoginPopUp = false;
-            newState.guestCartItems = [];
-            newState.couponError = false;
-            newState.showLoginCheckoutPopUp = false;
             newState.userDetail = null;
             newState.loading = false;
-            newState.favorites = [];
             saveKey("user", null);
             saveKey("token", null);
 

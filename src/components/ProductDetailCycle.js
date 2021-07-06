@@ -39,6 +39,7 @@ import AutocompleteCustom from "./AutocompleteCustom";
 import OrgTrailsTimeline from "./OrgTrailsTimeline";
 import SiteTrailsTimeline from "./SiteTrailsTimeline";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
+import LinkIcon from '@material-ui/icons/Link';
 
 class ProductDetailCycle extends Component {
     slug;
@@ -659,7 +660,10 @@ class ProductDetailCycle extends Component {
                                 <div className="row">
                                     <div className="col-8">
                                         <h4 className={"blue-text text-heading"}>
-                                            {this.props.item.product.name}
+                                            {this.props.isLoggedIn && <span className="mr-2">
+                                                <Link to={`/product/${this.props.item.product._key}`}><LinkIcon /></Link>
+                                            </span>}
+                                            <span>{this.props.item.product.name}</span>
                                         </h4>
                                     </div>
 

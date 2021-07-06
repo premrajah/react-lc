@@ -1619,7 +1619,7 @@ class SearchForm extends Component {
                             {/*</div>*/}
                             <div className="row  pb-2 pt-4 ">
                                 <div className="col-10">
-                                    <h3 className={"blue-text text-heading"}>Create A Product</h3>
+                                    <h3 className={"blue-text text-heading"}>Add Product</h3>
                                 </div>
                                 <div className="col-2 text-right">
                                     <Close

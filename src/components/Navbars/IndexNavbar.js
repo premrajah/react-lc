@@ -208,7 +208,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/list-form"}
                                         className="nav-link d-none d-lg-block green-link "
                                         color="default">
-                                        New Listing
+                                        Create a Listing
                                     </Link>
                                 </NavItem>
                             </>

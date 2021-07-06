@@ -34,27 +34,15 @@ class RequestRegisterItem extends Component {
             siteSelected: null,
             fieldsSite: {},
             errorsSite: {},
+            isLoading:false
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
         this.showPopUpInitiateAction = this.showPopUpInitiateAction.bind(this);
-        this.getSites = this.getSites.bind(this);
-        this.showSubmitSite = this.showSubmitSite.bind(this);
         this.getDetails = this.getDetails.bind(this);
     }
 
-    getSites() {
-        axios.get(baseUrl + "site").then(
-            (response) => {
-                var responseAll = response.data.data;
 
-                this.setState({
-                    sites: responseAll,
-                });
-            },
-            (error) => {}
-        );
-    }
 
     showPopUpInitiateAction(event) {
         this.setState({
@@ -66,77 +54,8 @@ class RequestRegisterItem extends Component {
         });
     }
 
-    showSubmitSite() {
-        this.setState({
-            errorRegister: null,
-        });
 
-        this.setState({
-            showSubmitSite: !this.state.showSubmitSite,
-        });
-    }
 
-    handleValidationSite() {
-        let fields = this.state.fieldsSite;
-        let errors = {};
-        let formIsValid = true;
-
-        //Name
-        if (!fields["name"]) {
-            formIsValid = false;
-            errors["name"] = "Required";
-        }
-
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
-
-        if (!fields["address"]) {
-            formIsValid = false;
-            errors["address"] = "Required";
-        }
-
-        if (!fields["contact"]) {
-            formIsValid = false;
-            errors["contact"] = "Required";
-        }
-
-        if (!fields["phone"]) {
-            formIsValid = false;
-            errors["phone"] = "Required";
-        }
-        if (fields["phone"] && !this.phonenumber(fields["phone"])) {
-            formIsValid = false;
-            errors["phone"] = "Invalid Phone Number!";
-        }
-
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsSite: errors });
-        return formIsValid;
-    }
 
     handleChangeSite(field, e) {
         let fields = this.state.fieldsSite;
@@ -148,62 +67,6 @@ class RequestRegisterItem extends Component {
         this.setState({ site: e.target.value });
     }
 
-    handleSubmitSite = (event) => {
-        this.setState({
-            errorRegister: null,
-        });
-
-        event.preventDefault();
-
-        if (this.handleValidationSite()) {
-            const form = event.currentTarget;
-
-            this.setState({
-                btnLoading: true,
-            });
-
-            const data = new FormData(event.target);
-
-            const email = data.get("email");
-            const others = data.get("others");
-            const name = data.get("name");
-            const contact = data.get("contact");
-            const address = data.get("address");
-            const phone = data.get("phone");
-
-            axios
-                .put(
-                    baseUrl + "site",
-
-                    {
-                        site: {
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            address: address,
-                            phone: phone,
-                            others: others,
-                        },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // this.toggleSite()
-                    this.getSites();
-
-                    this.showSubmitSite();
-
-                    this.setState({
-                        siteSelected: res.data.data,
-                    });
-                })
-                .catch((error) => {});
-        }
-    };
 
     submitRegisterProduct = (event) => {
         this.setState({
@@ -252,6 +115,12 @@ class RequestRegisterItem extends Component {
     };
 
     actionSubmit() {
+
+        this.setState({
+            isLoading:true
+        })
+
+
         var data = {
             id: this.state.item.registration._key,
             new_stage: this.state.initiateAction,
@@ -269,11 +138,18 @@ class RequestRegisterItem extends Component {
                 }
             )
             .then((res) => {
+                this.setState({
+                    isLoading:false
+                })
                 this.getDetails();
 
                 this.showPopUpInitiateAction();
             })
             .catch((error) => {
+
+                this.setState({
+                    isLoading:false
+                })
                 // this.setState({
                 //
                 //     showPopUp: true,
@@ -283,7 +159,7 @@ class RequestRegisterItem extends Component {
     }
 
     componentDidMount() {
-        this.getSites();
+
     }
 
     getDetails() {
@@ -312,7 +188,7 @@ class RequestRegisterItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
+                        <div className="row   mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
@@ -339,12 +215,11 @@ class RequestRegisterItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                     <span className="mr-1">{this.state.item.product.product.category},</span>
                                     <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>
+                                    <span>{this.state.item.product.product.state}</span>,
+                                 <span> {this.state.item.product.product.volume}
+                                    {this.state.item.product.product.units}</span>
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.volume}
-                                    {this.state.item.product.product.units}
-                                </p>
+
 
                                 {this.state.item.search_ids && (
                                     <p
@@ -365,13 +240,12 @@ class RequestRegisterItem extends Component {
                                     {moment(this.state.item.product.product._ts_epoch_ms).format("DD MMM YYYY")}
                                 </p>
 
-                                <div className="row  pb-4 pb-4 mb-4">
-                                    <div className="col-12 text-right pb-2 pt-2">
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <div key={index}>
+                                                    <>
                                                         <button
+
                                                             data-id={
                                                                 this.state.item.registration_key
                                                             }
@@ -380,7 +254,7 @@ class RequestRegisterItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
@@ -388,10 +262,10 @@ class RequestRegisterItem extends Component {
                                                                     : actionName === "declined"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}
@@ -405,11 +279,10 @@ class RequestRegisterItem extends Component {
                                                                 "Complete"}
                                                         </button>
                                                         {/*}*/}
-                                                    </div>
+                                                    </>
                                                 )
                                             )}
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
 
@@ -426,10 +299,10 @@ class RequestRegisterItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            {this.state.initiateAction}
+                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?
+                                            Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
                                         </p>
                                     </div>
                                 </div>
@@ -441,6 +314,7 @@ class RequestRegisterItem extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <button
+                                                    disabled={this.state.isLoading?true:false}
                                                     onClick={this.actionSubmit}
                                                     style={{ minWidth: "120px" }}
                                                     className={

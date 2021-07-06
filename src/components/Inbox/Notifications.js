@@ -19,6 +19,7 @@ const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
 const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
 const MATCH_REGEX = /Match\/([\w\d]+)/g;
 const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
+const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
 const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const BRACKETS_REGEX = /[(\[)(\])]/g;
 
@@ -58,6 +59,8 @@ class Notifications extends Component {
         }
     }
 
+
+
     trackProduct = (payload) => {
         axios.post(`${baseUrl}product/track`, payload)
             .then(res => {
@@ -67,6 +70,29 @@ class Notifications extends Component {
             })
             .catch(error => {
                 this.props.trackingCallback('fail')
+            })
+    }
+
+    handleUnTrackProduct = (message) => {
+        if(!message) return;
+        this.props.trackingCallback('');
+
+        if(message.entity_as_json) {
+            console.log('+++ ', message.entity_as_json._key)
+            this.unTrackProduct(message.entity_as_json._key);
+        }
+    }
+
+    unTrackProduct = (productKey) => {
+        if(!productKey) return;
+        axios.delete(`${baseUrl}product/track/${productKey}`)
+            .then(res => {
+                if(res.status === 200) {
+                    this.props.trackingCallback('un-track-success')
+                }
+            })
+            .catch(error => {
+                this.props.trackingCallback('un-track-fail')
             })
     }
 
@@ -120,10 +146,16 @@ class Notifications extends Component {
             </Link>
         ));
 
+        text = reactStringReplace(text, PRODUCT_REGISTRATION, (match, i) => (
+            <Link key={i + Math.random() * 106} to="/approve" onClick={() => this.messageRead(messageId)}>
+                <u className="blue-text">To Approvals Page</u>
+            </Link>
+        ));
+
 
 
         return (
-            <Card key={index} variant="outlined" className="mb-2" style={{opacity: `${flags ? '0.5' : '1'}` }}>
+            <Card key={message._ts_epoch_ms} variant="outlined" className="mb-2" style={{opacity: `${flags ? '0.5' : '1'}` }}>
                 <CardContent>
                     <div className="row">
                         <div className="col-12">
@@ -141,7 +173,17 @@ class Notifications extends Component {
                                 <span className="mr-4">{moment(message._ts_epoch_ms).fromNow()}</span>
                                 <span className="">{readTime ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}` : ''}</span>
                                 {!readTime ? <span onClick={() => this.messageRead(messageId)} style={{cursor: 'pointer'}}>Mark as read</span> : null}
-                                {message.text.match(PRODUCT_REGEX) && <span className="ml-4" style={{cursor: 'pointer'}} onClick={() => this.handleTrackProduct(message)}><b>Track</b></span>}
+                                { !item.options.is_owned && <React.Fragment>
+                                    {
+                                        (message.text.match(PRODUCT_REGEX) && !item.options.is_tracked)
+                                        ? <span className="ml-4 blue-text" style={{cursor: 'pointer'}}
+                                                onClick={() => this.handleTrackProduct(message)}><b>Track</b></span>
+                                        : <span className="ml-4 text-danger" style={{cursor: 'pointer'}}
+                                                onClick={() => this.handleUnTrackProduct(message)}><b>Un-track</b></span>
+                                    }
+                                </React.Fragment>
+
+                                }
                             </span>
                         </div>
                     </div>

@@ -34,6 +34,7 @@ class RequestServiceAgentItem extends Component {
             siteSelected: null,
             fieldsSite: {},
             errorsSite: {},
+            isLoading:false
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -264,14 +265,24 @@ class RequestServiceAgentItem extends Component {
             site_id: this.state.site,
         };
 
+
+        this.setState({
+            isLoading:true
+        })
         axios
             .post(baseUrl + "service-agent/stage", data)
             .then((res) => {
+                this.setState({
+                    isLoading:false
+                })
                 this.getDetails();
 
                 this.showPopUpInitiateAction();
             })
             .catch((error) => {
+                this.setState({
+                    isLoading:false
+                })
                 // this.setState({
                 //
                 //     showPopUp: true,
@@ -281,7 +292,7 @@ class RequestServiceAgentItem extends Component {
     }
 
     componentDidMount() {
-        this.getSites();
+        // this.getSites();
     }
 
     getDetails() {
@@ -310,7 +321,7 @@ class RequestServiceAgentItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
+                        <div  className="row  justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
@@ -337,12 +348,11 @@ class RequestServiceAgentItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                     <span className="mr-1">{this.state.item.product.product.category},</span>
                                     <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>
+                                    <span>{this.state.item.product.product.state}</span>,
+                                    <span> {this.state.item.product.product.volume}
+                                        {this.state.item.product.product.units}</span>
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.volume}
-                                    {this.state.item.product.product.units}
-                                </p>
+
 
                                 {this.state.item.search_ids && (
                                     <p
@@ -370,7 +380,7 @@ class RequestServiceAgentItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <div key={index}>
+                                                    <>
                                                         <button
                                                             data-id={this.state.item.Release}
                                                             data-action={actionName}
@@ -378,7 +388,7 @@ class RequestServiceAgentItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
@@ -386,10 +396,10 @@ class RequestServiceAgentItem extends Component {
                                                                     : actionName === "declined"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}
@@ -403,7 +413,7 @@ class RequestServiceAgentItem extends Component {
                                                                 "Complete"}
                                                         </button>
                                                         {/*}*/}
-                                                    </div>
+                                                    </>
                                                 )
                                             )}
                                     </div>
@@ -424,10 +434,10 @@ class RequestServiceAgentItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            {this.state.initiateAction}
+                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?
+                                            Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
                                         </p>
                                     </div>
                                 </div>
@@ -439,6 +449,8 @@ class RequestServiceAgentItem extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <button
+
+                                                    disabled={this.state.isLoading?true:false}
                                                     onClick={this.actionSubmit}
                                                     style={{ minWidth: "120px" }}
                                                     className={

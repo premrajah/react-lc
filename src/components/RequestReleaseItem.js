@@ -38,6 +38,7 @@ class RequestReleaseItem extends Component {
             siteSelected: null,
             fieldsSite: {},
             errorsSite: {},
+            isLoading:false
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -195,8 +196,9 @@ class RequestReleaseItem extends Component {
         axios
             .put(`${baseUrl}site`, payload)
             .then((res) => {
-                this.getSites();
-                this.showSubmitSite();
+                this.props.loadSites();
+
+                    this.showSubmitSite();
                 this.setState({
                     siteSelected: res.data.data,
                 });
@@ -246,18 +248,29 @@ class RequestReleaseItem extends Component {
             site_id: this.state.site,
         };
 
+
+        this.setState({
+            isLoading:true
+        })
         axios
             .post(`${baseUrl}release/stage`, data)
             .then((res) => {
+                this.setState({
+                    isLoading:false
+                })
                 this.getDetails();
                 this.showPopUpInitiateAction();
                 this.props.refreshPageCallback();
             })
-            .catch((error) => {});
+            .catch((error) => {
+                this.setState({
+                    isLoading:false
+                })
+            });
     }
 
     componentDidMount() {
-        this.getSites();
+        // this.getSites();
     }
 
     getDetails() {
@@ -281,7 +294,7 @@ class RequestReleaseItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
+                        <div key={this.state.item.Release._id} id={this.state.item.Release._id} className="row  justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail
@@ -311,12 +324,11 @@ class RequestReleaseItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                     <span className="mr-1">{this.state.item.product.product.category},</span>
                                     <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>
-                                </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span>{this.state.item.product.product.volume}</span>
+                                    <span>{this.state.item.product.product.state}</span>,
+                                    <span> {this.state.item.product.product.volume}</span>
                                     <span>{this.state.item.product.product.units}</span>
                                 </p>
+
 
                                 {this.state.item.search_ids && (
                                     <p
@@ -344,7 +356,7 @@ class RequestReleaseItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <div key={index}>
+                                                    <>
                                                         <button
                                                             data-id={this.state.item.Release_key}
                                                             data-action={actionName}
@@ -352,7 +364,7 @@ class RequestReleaseItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
@@ -360,10 +372,10 @@ class RequestReleaseItem extends Component {
                                                                     : actionName === "declined"
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}
@@ -376,7 +388,7 @@ class RequestReleaseItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                    </div>
+                                                    </>
                                                 )
                                             )}
                                     </div>
@@ -397,10 +409,11 @@ class RequestReleaseItem extends Component {
                                         <p
                                             style={{ textTransform: "uppercase" }}
                                             className={"text-bold"}>
-                                            {this.state.initiateAction}
+                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                                         </p>
                                         <p>
-                                            Are you sure you want to {this.state.initiateAction} ?
+                                            Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
+
                                         </p>
                                     </div>
                                 </div>
@@ -416,6 +429,7 @@ class RequestReleaseItem extends Component {
                                             </div>
 
                                             <Select
+                                                required={true}
                                                 name={"site"}
                                                 native
                                                 onChange={this.handleChange.bind(this, "site")}
@@ -423,9 +437,9 @@ class RequestReleaseItem extends Component {
                                                     name: "site",
                                                     id: "outlined-age-native-simple",
                                                 }}>
-                                                <option value={null}>Select</option>
+                                                <option value={""}>Select</option>
 
-                                                {this.state.sites.map((item, index) => (
+                                                {this.props.siteList.map((item, index) => (
                                                     <option value={item._key} key={index}>
                                                         {item.name + "(" + item.address + ")"}
                                                     </option>
@@ -437,7 +451,7 @@ class RequestReleaseItem extends Component {
                                             Don’t see it on here?
                                             <span
                                                 onClick={this.showSubmitSite}
-                                                className={"green-text forgot-password-link text-mute small"}>
+                                                className="green-text forgot-password-link text-mute small ml-1">
                                                 Add a site
                                             </span>
                                         </p>
@@ -452,6 +466,8 @@ class RequestReleaseItem extends Component {
                                                     className={"col-6"}
                                                     style={{ textAlign: "center" }}>
                                                     <button
+
+                                                        disabled={this.state.isLoading?true:false}
                                                         onClick={this.actionSubmit}
                                                         style={{ minWidth: "120px" }}
                                                         className={
@@ -685,9 +701,11 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartthis.state.item : state.abondonCartthis.state.item,
+        // abondonCartathis.state.item : state.abondonCartthis.state.item,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        siteList: state.siteList,
+
     };
 };
 
@@ -697,6 +715,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
     };

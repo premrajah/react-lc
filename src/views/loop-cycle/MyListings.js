@@ -147,7 +147,7 @@ class MyListings extends Component {
                                         <Link to={"/list-form"}>
                                             <p className={"green-text bottom-bar-text"}>
 
-                                                <b>Create New Listing</b>
+                                                <b>Create a Listing</b>
                                             </p>
                                         </Link>
                                     </div>

@@ -34,10 +34,10 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <footer className="footer">
-                <Container>
+            <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
+                {/*<Container>*/}
                     <Row className={""}>
-                        <Col md="3">
+                        <Col md="4">
                             <div className="row no-gutters mb-5">
                                 <div className="col-auto">
                                     <>
@@ -50,7 +50,7 @@ class Footer extends React.Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col md="3">
+                        <Col md="2">
                             <Nav>
                                 <NavItem>
                                     <a
@@ -102,7 +102,7 @@ class Footer extends React.Component {
                                 </NavItem>
                             </Nav>
                         </Col>
-                        <Col md="3">
+                        <Col md="2">
                             <Nav>
                                 <NavItem>
                                     <NavLink to="/" tag={Link}>
@@ -140,7 +140,7 @@ class Footer extends React.Component {
                                 {/*</NavItem>*/}
                             </Nav>
                         </Col>
-                        <Col md="3">
+                        <Col md="4">
                             <div className="btn-wrapper profile">
                                 <Button
                                     className="btn-icon btn-neutral btn-round btn-simple"
@@ -208,7 +208,7 @@ class Footer extends React.Component {
                             </ul>
                         </div>
                     </div>
-                </Container>
+                {/*</Container>*/}
             </footer>
         );
     }

@@ -124,13 +124,13 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/search-form"}
                                             className="white-text list-group-item list-group-item-action">
-                                            Create A Search
+                                            Create a Search
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/list-form"}
                                             className="white-text list-group-item list-group-item-action">
-                                            Create A Listing
+                                            Create a Listing
                                         </Link>
 
                                             <Link

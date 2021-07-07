@@ -66,6 +66,7 @@ class EditItem extends Component {
                     onHide={this.showDeletePopUp}
                     animation={false}>
                     <ModalBody>
+
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>Delete Product</p>

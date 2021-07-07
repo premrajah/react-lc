@@ -2,14 +2,11 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { baseUrl } from "../../Util/Constants";
-import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductDetail from "../../components/Products/ProductDetail";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
+import ProductDetailContent from "../../components/Products/ProductDetailContent";
 
 class ProductView extends Component {
     slug;
@@ -32,8 +29,6 @@ class ProductView extends Component {
         this.slug = props.match.params.slug;
         this.search = props.match.params.search;
 
-        this.getResources = this.getResources.bind(this);
-        this.callBackReload = this.callBackReload.bind(this);
     }
 
     UNSAFE_componentWillMount() {
@@ -43,14 +38,13 @@ class ProductView extends Component {
     UNSAFE_componentWillReceiveProps(newProps) {
         if (newProps.match.params.slug !== this.props.match.params.slug) {
             this.slug = newProps.match.params.slug;
+            window.scrollTo(0, 0);
+            this.props.loadCurrentProduct(encodeUrl(this.slug));
 
-            this.getResources();
         }
     }
 
-    callBackReload() {
-        this.getResources();
-    }
+
 
     handleBack = () => {
         this.props.history.goBack();
@@ -60,31 +54,10 @@ class ProductView extends Component {
         this.props.history.go(+1);
     };
 
-    getResources() {
-        axios
-            .get(baseUrl + "product/" + encodeUrl(this.slug) + "/expand", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var responseAll = response.data;
 
-                    this.setState({
-                        item: responseAll.data,
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        notFound: true,
-                    });
-                }
-            );
-    }
 
     componentDidMount() {
-        this.getResources();
+        this.props.loadCurrentProduct(encodeUrl(this.slug));
     }
 
     render() {
@@ -98,13 +71,13 @@ class ProductView extends Component {
                         <NotFound />
                     ) : (
                         <div className={"container pb-5 mb-5"}>
-                            {this.state.item && (
+                            {this.props.currentProduct && (
                                 <>
-                                    <ProductDetail
-                                        triggerCallback={() => this.callBackReload()}
+                                 <ProductDetailContent
                                         history={this.props.history}
                                         hideRegister={true}
-                                        item={this.state.item}
+                                        item={this.props.currentProduct}
+
                                     />
                                 </>
                             )}
@@ -116,35 +89,6 @@ class ProductView extends Component {
     }
 }
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
 const mapStateToProps = (state) => {
     return {
@@ -159,6 +103,7 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        currentProduct:state.currentProduct
     };
 };
 
@@ -168,6 +113,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductView);

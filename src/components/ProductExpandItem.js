@@ -51,7 +51,7 @@ class ProductExpandItem extends Component {
 
     removeItem(event) {
         var data = {
-            product_id: this.state.product.product._key,
+            product_id: this.props.currentProduct.product._key,
             sub_products_ids: [event.currentTarget.dataset.id],
         };
 
@@ -62,7 +62,7 @@ class ProductExpandItem extends Component {
                 // this.props.history.push("/my-products")
                 // this.props.loadProducts()
 
-                this.loadProduct(this.state.product.product._key);
+                this.loadProduct(this.props.currentProduct.product._key);
             },
             (error) => {}
         );
@@ -108,6 +108,9 @@ class ProductExpandItem extends Component {
             });
 
             this.loadProduct(this.props.productId);
+
+
+
         }
     }
 
@@ -130,8 +133,8 @@ class ProductExpandItem extends Component {
     }
 
     showProductSelection(event) {
-        // this.props.setProduct(this.state.product)
-        // this.props.setParentProduct(this.state.product)
+        // this.props.setProduct(this.props.currentProduct)
+        // this.props.setParentProduct(this.props.currentProduct)
 
         this.props.showProductPopUp({
             type: "create_sub_product",
@@ -141,25 +144,31 @@ class ProductExpandItem extends Component {
     }
 
     loadProduct(productKey) {
+
+
         if (productKey)
-            axios.get(baseUrl + "product/" + productKey + "/expand").then(
-                (response) => {
-                    var responseAll = response.data;
+        this.props.loadCurrentProduct(productKey)
 
-                    this.setState({
-                        product: responseAll.data,
-                    });
 
-                    this.setState({
-                        subProducts: [],
-                    });
-
-                    if (responseAll.data.sub_products.length > 0) {
-                        this.getSubProducts();
-                    }
-                },
-                (error) => {}
-            );
+        // if (productKey)
+        //     axios.get(baseUrl + "product/" + productKey + "/expand").then(
+        //         (response) => {
+        //             var responseAll = response.data;
+        //
+        //             this.setState({
+        //                 product: responseAll.data,
+        //             });
+        //
+        //             this.setState({
+        //                 subProducts: [],
+        //             });
+        //
+        //             if (responseAll.data.sub_products.length > 0) {
+        //                 this.getSubProducts();
+        //             }
+        //         },
+        //         (error) => {}
+        //     );
     }
 
     showPopUp() {
@@ -191,7 +200,7 @@ class ProductExpandItem extends Component {
         }
 
         var dataForm = {
-            product_id: this.state.product.product._key,
+            product_id: this.props.currentProduct.product._key,
             sub_products: array,
         };
 
@@ -204,7 +213,7 @@ class ProductExpandItem extends Component {
                     addCount: [],
                     count: 0,
                 });
-                this.loadProduct(this.state.product.product._key);
+                this.loadProduct(this.props.currentProduct.product._key);
             })
             .catch((error) => {
                 // dispatch(stopLoading())
@@ -228,7 +237,7 @@ class ProductExpandItem extends Component {
     }
 
     getSubProducts() {
-        // var subProductIds = this.state.product.sub_products?this.state.product.sub_products:[]
+        // var subProductIds = this.props.currentProduct.sub_products?this.props.currentProduct.sub_products:[]
         //
         // for (var i = 0; i < subProductIds.length; i++) {
         //
@@ -275,16 +284,16 @@ class ProductExpandItem extends Component {
 
         return (
             <>
-                {this.state.product && (
+                {this.props.currentProduct && (
                     <ProductItemNew
                         hideMore={true}
-                        item={this.state.product}
+                        item={this.props.currentProduct}
                     />
                 )}
 
                 <div className="row no-gutters  justify-content-left">
                     <div className="col-12">
-                        {this.state.product && (
+                        {this.props.currentProduct && (
                             <>
                                 {!this.props.hideAddAll && (
                                     <div className="row no-gutters justify-content-left">
@@ -294,8 +303,8 @@ class ProductExpandItem extends Component {
                                             </p>
 
                                             <ul>
-                                                {this.state.product &&
-                                                    this.state.product.sub_products.map(
+                                                {this.props.currentProduct &&this.props.currentProduct.sub_products&&
+                                                    this.props.currentProduct.sub_products.map(
                                                         (item, index) => (
                                                             <>
                                                                 <li className={""}>
@@ -332,7 +341,7 @@ class ProductExpandItem extends Component {
                                                     className={
                                                         "forgot-password-link green-text mr-2 "
                                                     }
-                                                    data-parent={this.state.product.product._key}
+                                                    data-parent={this.props.currentProduct.product._key}
                                                     onClick={this.showProductSelection}>
                                                     Create New
                                                 </span>
@@ -341,7 +350,7 @@ class ProductExpandItem extends Component {
                                                     className={
                                                         "forgot-password-link green-text ml-2"
                                                     }
-                                                    data-parent={this.state.product.product._key}
+                                                    data-parent={this.props.currentProduct.product._key}
                                                     onClick={this.showExisting}>
                                                     Add Existing
                                                 </span>
@@ -354,7 +363,7 @@ class ProductExpandItem extends Component {
                     </div>
                 </div>
 
-                {this.state.product && this.props.showLinkProducts && this.state.showExisting && (
+                {this.props.currentProduct && this.props.showLinkProducts && this.state.showExisting && (
                     <>
                         <div className="row   justify-content-left">
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
@@ -386,10 +395,10 @@ class ProductExpandItem extends Component {
                                                             .filter(
                                                                 (item) =>
                                                                     item.product._key !==
-                                                                        this.state.product.product
+                                                                        this.props.currentProduct.product
                                                                             ._key &&
                                                                     !(
-                                                                        this.state.product.sub_products.filter(
+                                                                        this.props.currentProduct.sub_products.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
                                                                                 item.product._key
@@ -523,6 +532,8 @@ const mapStateToProps = (state) => {
         product: state.product,
         productList: state.productList,
         productWithoutParentList: state.productWithoutParentList,
+        currentProduct:state.currentProduct
+
     };
 };
 
@@ -538,6 +549,9 @@ const mapDispachToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadCurrentProduct: (data) =>
+            dispatch(actionCreator.loadCurrentProduct(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductExpandItem);

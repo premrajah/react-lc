@@ -5,18 +5,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
-import PlaceholderImg from "../../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
 import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import ImagesSlider from "../ImagesSlider";
 import encodeUrl from "encodeurl";
 import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductItemNew from "../ProductItemNew";
-import jspdf from "jspdf";
-import QrCodeBg from "../../img/qr-code-bg.png";
-import LoopcycleLogo from "../../img/logo-text.png";
+
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
@@ -25,11 +20,16 @@ import ProductEditForm from "../ProductEditForm";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
-import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
-import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
-import SubproductItem from "./SubproductItem";
 
-class Product extends Component {
+import SubproductItem from "./SubproductItem";
+import ImageHeader from "../UIComponents/ImageHeader";
+import QrCode from "./QrCode";
+import InfoTabContent from "./InfoTabContent";
+import SubProductsTab from "./SubProductsTab";
+import CustomSnackbar from "../UIComponents/CustomSnackbar";
+import ArtifactProductsTab from "./ArtifactProductsTab";
+
+class ProductDetailContent extends Component {
     slug;
     search;
 
@@ -68,15 +68,13 @@ class Product extends Component {
             org_id: null,
             currentReleaseId: null,
             cancelReleaseSuccess: false,
-            imagesUploadStatusFromDocumentsTab: "",
-            deleteDocumentStatus: "",
+
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
         this.getMatches = this.getMatches.bind(this);
         this.getSearches = this.getSearches.bind(this);
         this.getListing = this.getListing.bind(this);
-        this.getQrCode = this.getQrCode.bind(this);
         this.showRegister = this.showRegister.bind(this);
         this.getSites = this.getSites.bind(this);
         this.showSubmitSite = this.showSubmitSite.bind(this);
@@ -86,7 +84,6 @@ class Product extends Component {
         this.callBackResult = this.callBackResult.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.showProductSelection = this.showProductSelection.bind(this);
-        this.submitDuplicateProduct = this.submitDuplicateProduct.bind(this);
         this.showReleaseProduct = this.showReleaseProduct.bind(this);
         this.showServiceAgent = this.showServiceAgent.bind(this);
         this.showOrgForm = this.showOrgForm.bind(this);
@@ -219,18 +216,6 @@ class Product extends Component {
     handleSubmitOrg() {
         var email = this.state.email;
 
-        // var dataStep= {
-        //     "step": {
-        //         "email": name,
-        //         "description": description,
-        //         "type":  type,
-        //         // "predecessor": null,
-        //         "notes": notes
-        //     },
-        //     "cycle_id": this.slug,
-        //     "org_id": data.get("org")
-        //
-        // }
 
         if (!this.state.emailError)
             axios
@@ -291,7 +276,6 @@ class Product extends Component {
                 item: newProps.item,
             });
 
-            this.getQrCode();
 
             this.getSubProducts();
 
@@ -321,19 +305,6 @@ class Product extends Component {
         }
     }
 
-    submitDuplicateProduct = (event) => {
-        axios
-            .post(baseUrl + "product/" + this.state.item.product._key + "/duplicate", {})
-            .then((res) => {
-                this.props.history.push("/my-products");
-            })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     errorRegister:error.response.data.errors[0].message
-                // })
-            });
-    };
 
     triggerCallback() {
         this.showProductEdit();
@@ -374,125 +345,25 @@ class Product extends Component {
             showSubmitSite: !this.state.showSubmitSite,
         });
     }
+    submitDuplicateProduct = (event) => {
+        axios
+            .post(baseUrl + "product/" + this.state.item.product._key + "/duplicate", {})
+            .then((res) => {
+                this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
 
-    handleValidationSite() {
-        let fields = this.state.fieldsSite;
-        let errors = {};
-        let formIsValid = true;
+                this.props.history.push("/my-products");
 
-        //Name
-        if (!fields["name"]) {
-            formIsValid = false;
-            errors["name"] = "Required";
-        }
 
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
-
-        if (!fields["address"]) {
-            formIsValid = false;
-            errors["address"] = "Required";
-        }
-
-        if (!fields["contact"]) {
-            formIsValid = false;
-            errors["contact"] = "Required";
-        }
-
-        if (!fields["phone"]) {
-            formIsValid = false;
-            errors["phone"] = "Required";
-        }
-        if (fields["phone"] && !this.phonenumber(fields["phone"])) {
-            formIsValid = false;
-            errors["phone"] = "Invalid Phone Number!";
-        }
-
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsSite: errors });
-        return formIsValid;
-    }
-
-    handleChangeSite(field, e) {
-        let fields = this.state.fieldsSite;
-        fields[field] = e.target.value;
-        this.setState({ fields: fields });
-    }
-
-    handleSubmitSite = (event) => {
-        this.setState({
-            errorRegister: null,
-        });
-
-        event.preventDefault();
-
-        if (this.handleValidationSite()) {
-            const form = event.currentTarget;
-
-            this.setState({
-                btnLoading: true,
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     errorRegister:error.response.data.errors[0].message
+                // })
             });
-
-            const data = new FormData(event.target);
-            const email = data.get("email");
-            const others = data.get("others");
-            const name = data.get("name");
-            const contact = data.get("contact");
-            const address = data.get("address");
-            const phone = data.get("phone");
-
-            axios
-                .put(
-                    baseUrl + "site",
-
-                    {
-                        site: {
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            address: address,
-                            phone: phone,
-                            others: others,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // this.toggleSite()
-                    this.getSites();
-
-                    this.showSubmitSite();
-
-                    this.setState({
-                        siteSelected: res.data.data,
-                    });
-                })
-                .catch((error) => {});
-        }
     };
+
+
 
     submitReleaseProduct = (event) => {
         this.setState({
@@ -584,33 +455,6 @@ class Product extends Component {
         );
     }
 
-    handlePrintPdf = (productItem, productQRCode, QRCodeOuterImage, LoopcycleLogo) => {
-        const { _key, name } = productItem;
-        if (!_key || !productQRCode) {
-            return;
-        }
-
-        const pdf = new jspdf();
-        pdf.setTextColor(39, 36, 92);
-        pdf.text(name, 10, 20);
-
-        pdf.setDrawColor(7, 173, 136);
-        pdf.line(0, 38, 1000, 38);
-
-        pdf.addImage(productQRCode, "PNG", 10, 40, 80, 80, "largeQR");
-        pdf.addImage(productQRCode, "PNG", 100, 57.5, 45, 45, "mediumQR");
-        pdf.addImage(productQRCode, "PNG", 160, 64.5, 30, 30, "smallQR");
-
-        pdf.setDrawColor(7, 173, 136);
-        pdf.line(0, 122, 1000, 122);
-
-        pdf.addImage(LoopcycleLogo, 9.2, 130, 50, 8, "Loopcycle");
-
-        pdf.setTextColor(39, 36, 92);
-        pdf.textWithLink("Loopcycle.io", 10, 146, { url: "https://loopcycle.io/" });
-
-        pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`);
-    };
 
     showRegister() {
         this.setState({
@@ -618,17 +462,7 @@ class Product extends Component {
         });
     }
 
-    getQrCode() {
-        if(!this.state.item.product._key) return;
 
-        axios.get(`${baseUrl}product/${this.state.item.product._key}/code-artifact?u=${frontEndUrl}p`)
-            .then(response => {
-                this.setState({productQrCode: response.data.data})
-            })
-            .catch(error => {
-
-            })
-    }
 
 
 
@@ -747,7 +581,6 @@ class Product extends Component {
     loadInfo() {
         if (this.state.item) {
             this.getOrgs();
-            this.getQrCode();
 
             if (this.state.item.listing && this.props.isLoggedIn) {
                 this.getListing();
@@ -762,40 +595,7 @@ class Product extends Component {
         }
     }
 
-    handleCallBackImagesUploadStatus = (status) => {
-        this.setState({deleteDocumentStatus: ""})
-        this.setState({imagesUploadStatusFromDocumentsTab: ""});
 
-        if(status === "success") {
-            this.setState({imagesUploadStatusFromDocumentsTab: <span className="text-success">Images or documents uploaded successfully</span>});
-        } else if(status === "fail") {
-            this.setState({imagesUploadStatusFromDocumentsTab: <span className="text-danger">Unable to upload Images or documents</span>});
-        } else {
-            this.setState({imagesUploadStatusFromDocumentsTab: ""});
-        }
-    };
-
-    handleProductReloadFromDocumentTab = (productKey) => {
-        if (!productKey || productKey.length === 0) return;
-        this.loadProduct(productKey);
-    };
-
-    handleAddDocumentPageRefreshCallback = (status, productKey) => {
-        if(!productKey || productKey.length === 0) return;
-
-        this.setState({ imagesUploadStatusFromDocumentsTab: "" });
-        this.setState({deleteDocumentStatus: ""})
-
-        if(status === "success") {
-            this.setState({deleteDocumentStatus: <span className='text-success'>Document deleted successfully</span>})
-        } else if (status === "fail") {
-            this.setState({deleteDocumentStatus: <span className='text-danger'>Document delete failed</span>})
-        } else {
-            this.setState({deleteDocumentStatus: ""})
-        }
-
-        this.loadProduct(productKey)
-    }
 
     render() {
         const classes = withStyles();
@@ -808,116 +608,36 @@ class Product extends Component {
                         <div className="row no-gutters  justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className=" stick-left-box  ">
-                                    {/*<div className="col-12 text-center ">*/}
-                                    {this.state.item &&
-                                    this.state.item.artifacts &&
-                                    this.state.item.artifacts.length > 0 ? (
-                                        <ImagesSlider images={this.state.item.artifacts} />
-                                    ) : (
-                                        <img
-                                            className={"img-fluid"}
-                                            src={PlaceholderImg}
-                                            alt=""
-                                        />
-                                    )}
-                                    {/*</div>*/}
 
-                                    {this.state.isLoggedIn &&
-                                    !this.state.hideRegister &&
-                                    this.state.userDetail.orgId !== this.state.item.org._id && (
-                                        <>
-                                            <div className={"col-12 pb-5 mb-5"}>
-                                                <div className="row justify-content-start pb-3 pt-3 ">
-                                                    <div className="col-12 ">
-                                                        <button
-                                                            onClick={this.showRegister}
-                                                            className={
-                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"
-                                                            }>
-                                                            Register this product
-                                                        </button>
+
+                                  <ImageHeader images={this.state.item.artifacts} />
+
+
+                                  {this.state.isLoggedIn &&
+                                        !this.state.hideRegister &&
+                                        this.state.userDetail.orgId !== this.state.item.org._id && (
+                                            <>
+                                                <div className={"col-12 pb-5 mb-5"}>
+                                                    <div className="row justify-content-start pb-3 pt-3 ">
+                                                        <div className="col-12 ">
+                                                            <button
+                                                                onClick={this.showRegister}
+                                                                className={
+                                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"
+                                                                }>
+                                                                Register this product
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </>
-                                    )}
-
-                                    <div className={"col-12 pb-5 mb-5"}>
-                                        <div className="row justify-content-start pb-3 pt-3 ">
-                                            <div className="col-12 ">
-                                                <h5 className={"text-bold blue-text"}>
-                                                    Cyclecode
-                                                </h5>
-                                            </div>
-
-                                            <div className="col-12">
-                                                <p
-                                                    style={{ fontSize: "16px" }}
-                                                    className={"text-gray-light "}>
-                                                    Scan the QR code below to view this product
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div className="row justify-content-center ">
-                                            <div className="col-12 border-box">
-                                                <div className="d-flex flex-column justify-content-center align-items-center">
-                                                    {this.state.productQrCode && (
-                                                        <img
-                                                            className=""
-                                                            src={this.state.productQrCode.blob_url}
-                                                            alt={this.state.item.product.name}
-                                                            title={this.state.item.product.name}
-                                                            style={{ width: "90%" }}
-                                                        />
-                                                    )}
-
-                                                    <div className="d-flex justify-content-center w-100">
-                                                        {this.props.hideRegister && (
-                                                            <p className={"green-text"}>
-                                                                <Link
-                                                                    className={"mr-3"}
-                                                                    to={
-                                                                        "/p/" +
-                                                                        this.state.item.product._key
-                                                                    }>
-                                                                    [Provenance]
-                                                                </Link>
-                                                                <Link
-                                                                    to={`/product/${this.state.item.product._key}`}
-                                                                    className={"mr-3"}
-                                                                    onClick={() =>
-                                                                        this.handlePrintPdf(
-                                                                            this.state.item.product,
-                                                                            this.state
-                                                                                .productQrCode.blob_url,
-                                                                            QrCodeBg,
-                                                                            LoopcycleLogo
-                                                                        )
-                                                                    }>
-                                                                    [PDF]
-                                                                </Link>
-                                                                <a
-                                                                    className={"mr-3"}
-                                                                    href={
-                                                                        baseUrl + "product/" + this.state.item.product._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
-                                                                    } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item.product._key + ".png" }>[Alt]</a>
-                                                                <a
-                                                                    className={"mr-3"}
-                                                                    href={
-                                                                        baseUrl + "product/" + this.state.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                                    } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item.product._key + ".png" }>[Mono]</a>
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            </>
+                                        )}
+                                    <QrCode hideRegister={this.props.hideRegister}  item={this.state.item}/>
                                 </div>
                             </div>
 
                             <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left pt-3 "}>
+
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
@@ -929,7 +649,7 @@ class Product extends Component {
 
                                             <div className="col-4 text-right">
                                                 { (this.state.item.org._id ===
-                                                    this.props.userDetail.orgId) && <MoreMenu
+                                                this.props.userDetail.orgId) && <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
@@ -989,190 +709,11 @@ class Product extends Component {
                                             defaultActiveKey="productinfo"
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title="Product Info">
-                                                <div className="row  justify-content-start search-container  pb-2">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Category
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            <span className="mr-1">
-                                                                {this.state.item.product.category},
-                                                            </span>
-                                                            <span className="mr-1">
-                                                                {this.state.item.product.type},
-                                                            </span>
-                                                            <span className="mr-1">
-                                                                {this.state.item.product.state},
-                                                            </span>
-                                                            <span>
-                                                                {this.state.item.product.volume}
-                                                            </span>
-                                                            <span>
-                                                                {this.state.item.product.units}
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                {(this.state.item && this.state.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
-                                                    <div className="col-auto">
-                                                        <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                        <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.state.item.product.condition)}</p>
-                                                    </div>
-                                                </div> }
-
-                                                {this.state.item &&
-                                                (this.state.item.product.year_of_making || this.state.item.product.year_of_making > 0) && (
-                                                    <div className="row  justify-content-start search-container  pb-2">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Year Of Manufacturer
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {
-                                                                    this.state.item.product
-                                                                        .year_of_making
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {this.state.item &&
-                                                this.state.item.product.sku.model && (
-                                                    <div className="row  justify-content-start search-container  pb-2">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Model Number
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {this.state.item &&
-                                                                this.state.item.product.sku
-                                                                    .model}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {this.state.item &&
-                                                this.state.item.product.sku.serial && (
-                                                    <div className="row  justify-content-start search-container  pb-2">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Serial Number
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {this.state.item &&
-                                                                this.state.item.product.sku
-                                                                    .serial}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {this.state.item &&
-                                                this.state.item.product.sku.brand && (
-                                                    <div className="row  justify-content-start search-container  pb-2 ">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Brand
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {this.state.item &&
-                                                                this.state.item.product.sku
-                                                                    .brand}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                <div className="row  justify-content-start search-container  pb-2 ">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Located At
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            <span className="mr-1">
-                                                                {this.state.item.site.name},
-                                                            </span>
-                                                            <span>
-                                                                {this.state.item.site.address}
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="row  justify-content-start search-container  pb-2 ">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Service Agent
-                                                        </p>
-                                                        <div
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            <Org
-                                                                orgId={
-                                                                    this.state.item.service_agent
-                                                                        ._id
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                               <InfoTabContent item={this.props.item} />
                                             </Tab>
 
                                             <Tab eventKey="subproducts" title="Subproducts">
-                                                <p
-                                                    style={{ margin: "10px 0px" }}
-                                                    className={
-                                                        "green-text forgot-password-link text-mute small"
-                                                    }>
-                                                    <span
-                                                        data-parent={this.state.item.product._key}
-                                                        onClick={this.showProductSelection}>
-                                                        Link Subproducts
-                                                    </span>
-                                                </p>
-
-                                                {this.state.item.sub_products.length > 0 && (
-                                                    <>
-                                                        {this.state.item.sub_products.map(
-                                                            (item, index) => (
-                                                                <SubproductItem
-                                                                    key={index}
-                                                                    item={item}
-                                                                    parentId={this.state.item.product._key}
-                                                                    remove={true}
-                                                                />
-                                                            )
-                                                        )}
-                                                    </>
-                                                )}
+                                              <SubProductsTab item={this.props.item} />
                                             </Tab>
 
                                             {this.state.searches.length > 0 && (
@@ -1194,35 +735,7 @@ class Product extends Component {
                                                 </Tab>
                                             )}
                                             <Tab eventKey="artifacts" title="Artifacts">
-                                                <AddImagesToProduct
-                                                    handleCallBackImagesUploadStatus={(status) =>
-                                                        this.handleCallBackImagesUploadStatus(
-                                                            status
-                                                        )
-                                                    }
-                                                    handleProductReload={(productKey) =>
-                                                        this.handleProductReloadFromDocumentTab(
-                                                            productKey
-                                                        )
-                                                    }
-                                                />
-
-                                                <div className="row mb-3">
-                                                    <div className="col">
-                                                        {this.state.imagesUploadStatusFromDocumentsTab}
-                                                    </div>
-                                                </div>
-
-                                                <div className="row mb-3">
-                                                    <div className="col">
-                                                        {this.state.deleteDocumentStatus}
-                                                    </div>
-                                                </div>
-
-                                                <AddedDocumentsDisplay
-                                                    artifacts={this.state.item.artifacts}
-                                                    pageRefreshCallback={(status, productKey) => this.handleAddDocumentPageRefreshCallback(status, productKey)}
-                                                />
+                                                <ArtifactProductsTab item={this.props.item} />
                                             </Tab>
                                         </Tabs>
                                     </div>
@@ -1256,8 +769,8 @@ class Product extends Component {
                         <Modal
                             className={"loop-popup"}
                             aria-labelledby="contained-modal-title-vcenter"
-                            centered
                             show={this.state.showReleaseProduct}
+                            centered
                             onHide={this.showReleaseProduct}
                             animation={false}>
                             <ModalBody>
@@ -1281,6 +794,7 @@ class Product extends Component {
 
                                 {!this.state.showReleaseSuccess ? (
                                     <>
+                                    <div style={{position:"relative"}} className="text_fild mb-3">
                                         <AutocompleteCustom
                                             orgs={true}
                                             companies={true}
@@ -1289,6 +803,7 @@ class Product extends Component {
                                                 this.companyDetails(action)
                                             }
                                         />
+                                    </div>
 
                                         <form onSubmit={this.submitReleaseProduct}>
                                             <div className={"row justify-content-center p-2"}>
@@ -1505,7 +1020,7 @@ class Product extends Component {
                                     <div className={"col-10 text-center"}>
                                         <p
                                             style={{ textTransform: "Capitalize" }}
-                                            className={"text-bold text-blue"}>
+                                            className={"text-bold text-blue "}>
                                             Change Service Agent For: {this.state.item.product.name}
                                         </p>
                                     </div>
@@ -1522,7 +1037,7 @@ class Product extends Component {
                                             }
                                         />
                                         <form onSubmit={this.submitServiceAgentProduct}>
-                                            <div className={"row justify-content-center p-2"}>
+                                            <div className={"row justify-content-center p-2 mt-4"}>
                                                 <div className={"col-12 text-center mt-2"}>
                                                     <div className={"row justify-content-center"}>
                                                         <div className={"col-12 text-center mb-4"}>
@@ -1692,6 +1207,8 @@ class Product extends Component {
                                 )}
                             </ModalBody>
                         </Modal>
+
+
                     </>
                 ) : (
                     <div className={"loading-screen"}> Loading .... </div>
@@ -1791,8 +1308,9 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(Product);
+export default connect(mapStateToProps, mapDispachToProps)(ProductDetailContent);

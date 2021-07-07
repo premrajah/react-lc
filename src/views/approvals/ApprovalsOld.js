@@ -17,12 +17,11 @@ import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
-import ErrorBoundary from "../../components/ErrorBoundary";
 
 
 const StyledTabs = withStyles({
     root: {
-        borderBottom: '1px solid #70707062',
+        borderBottom: '1px solid #e8e8e8',
     },
     indicator: {
         backgroundColor: '#07AD88',
@@ -32,7 +31,7 @@ const StyledTabs = withStyles({
 
 const StyledTab = withStyles((theme) => ({
     root: {
-        minWidth: 290,
+        minWidth: 280,
         textTransform: 'none',
         color: '#3C3972',
 
@@ -97,7 +96,7 @@ class Approvals extends Component {
             value: newValue,
         });
 
-// alert(newValue);
+
 
         //
         // if (newValue === 0) {
@@ -127,7 +126,6 @@ class Approvals extends Component {
 
 
         this.refreshItems()
-        this.props.loadSites()
 
     }
 
@@ -167,7 +165,7 @@ render() {
         return (
             <div>
                 <Sidebar />
-                <div className="wrapper approval-page">
+                <div className="wrapper">
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
@@ -222,29 +220,27 @@ render() {
                                     </StyledTabs>
                                 </AppBar>
 
-                                {this.state.value == 0 &&
-                                <div className={"row"} value={this.state.value} index={0}>
+                                <TabPanel value={this.state.value} index={0}>
+                                    <div className={"container"}>
 
-
-                                        <div className="col-12 mt-3 mb-3">
+                                        <div className="row mb-3">
                                             <div className="col d-flex justify-content-end">
-                                                <Link to="/approved" className="btn btn-sm blue-btn"
-                                                      style={{color: "#fff"}}>
+                                                <Link to="/approved" className="btn btn-sm blue-btn" style={{color: "#fff"}}>
                                                     Release Request Record
                                                 </Link>
                                             </div>
                                         </div>
-                                        <div className={"listing-row-border "}></div>
 
                                         {this.props.productReleaseRequested.map((item, index) => (
-                                            <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
-
+                                            <div className="row" key={index}>
+                                                <div className="col" key={index}>
                                                     <RequestReleaseItem
+
                                                         history={this.props.history}
                                                         item={item}
                                                         // refreshPageCallback={this.refreshProductReleaseCallback}
                                                     />
-
+                                                </div>
                                             </div>
                                         ))}
                                         {this.props.productReleaseRequested.length === 0 && (
@@ -256,21 +252,18 @@ render() {
                                                 </p>
                                             </div>
                                         )}
+                                    </div>
+                                </TabPanel>
 
-                                </div>
-                                }
-                                {this.state.value == 1 &&
-                                <div className={"row"} value={this.state.value} index={1}>
-
+                                <TabPanel value={this.state.value} index={1}>
+                                    <div className={"container"}>
                                         {this.props.productRegisterRequests.map((item, index) => (
-                                            <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
-
+                                            <React.Fragment key={index}>
                                                 <RequestRegisterItem
                                                     history={this.props.history}
                                                     item={item}
                                                 />
-
-                                            </div>
+                                            </React.Fragment>
                                         ))}
 
                                         {this.props.productRegisterRequests.length === 0 && (
@@ -282,18 +275,17 @@ render() {
                                                 </p>
                                             </div>
                                         )}
-
-                                </div>}
-                                {this.state.value == 2 &&
-                                <div className={"row"} value={this.state.value} index={2}>
-
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value={this.state.value} index={2}>
+                                    <div className={"container"}>
                                         {this.props.serviceAgentRequests.map((item, index) => (
-                                            <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
+                                            <React.Fragment key={index}>
                                                 <RequestServiceAgentItem
                                                     history={this.props.history}
                                                     item={item}
                                                 />
-                                            </div>
+                                            </React.Fragment>
                                         ))}
 
                                         {this.props.serviceAgentRequests.length === 0 && (
@@ -305,12 +297,8 @@ render() {
                                                 </p>
                                             </div>
                                         )}
-
-                                </div>}
-
-
-
-
+                                    </div>
+                                </TabPanel>
                             </div>
                         </div>
                     </div>
@@ -524,7 +512,6 @@ const mapDispatchToProps = (dispatch) => {
         fetchReleaseRequest: () => dispatch(actionCreator.fetchReleaseRequest()),
         fetchServiceAgentRequest: () => dispatch(actionCreator.fetchServiceAgentRequest()),
         fetchRegisterRequest: () => dispatch(actionCreator.fetchRegisterRequest()),
-        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
 
     };
 };

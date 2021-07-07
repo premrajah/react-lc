@@ -140,11 +140,6 @@ class ProductForm extends Component {
             newFiles.push({ file: event.target.files[i], status: 0, id: null });
         }
 
-        //
-        //
-
-        //
-        //
 
         this.setState({
             files: files,

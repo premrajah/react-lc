@@ -70,9 +70,12 @@ class Products extends Component {
             this.options
         );
         //Observ the `loadingRef`
-        this.observer.observe(this.loadingRef);
 
+        window.onload = function() {
+            if (this.loadingRef)
+            this.observer.observe(this.loadingRef);
 
+        }
     }
 
 
@@ -148,11 +151,10 @@ class Products extends Component {
         this.props.dispatchLoadProductsWithoutParent();
     }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
+
+    UNSAFE_componentWillMount() {
+        window.scrollTo(0, 0);
     }
-
-
 
     render() {
         const classesBottom = withStyles();
@@ -238,9 +240,11 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.length > 0 && this.props.productWithoutParentList.filter((filterV) => {
+                        {this.props.productWithoutParentList.length > 0 &&
+                        this.props.productWithoutParentList.filter((filterV) => {
                             return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
-                        }).map((item, index) => (
+                        })
+                            .map((item, index) => (
                             <div key={index}>
                                 <ProductItem
                                     goToLink={true}

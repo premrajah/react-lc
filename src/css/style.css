@@ -45,6 +45,7 @@ html {
 body {
     min-height: 100%;
     height: auto;
+    overflow-y: auto;
     font-family: 'Nunito', sans-serif !important;
     font-size: 16px;
     line-height: 30px;
@@ -56,7 +57,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     background: white !important;
-    /*overflow: auto!important;*/
+    letter-spacing: inherit!important;
 }
 
 /*h1{*/
@@ -724,7 +725,7 @@ body a.btn-success {
 }
 
 .btn-lg {
-    padding: .815rem 1.5rem;
+    padding: .815rem    1.5rem;
 }
 
 .btn-sm {
@@ -2498,11 +2499,15 @@ pre {
 
 
 .green-btn-border {
-
     border: 2px solid #07AD88;
     color: #07AD88;
     min-width: 120px !important;
+}
 
+.green-btn-border-auto {
+    border: 2px solid #07AD88;
+    color: #07AD88;
+    /*min-width: 120px !important;*/
 }
 
 .green-btn-min {
@@ -2668,7 +2673,7 @@ pre {
     color: #ffffff;
     padding: 0 0 10px 0;
     font-size: 0.75rem;
-    text-transform: capitalize;
+    text-transform: uppercase;
     text-decoration: none;
 }
 
@@ -3406,14 +3411,12 @@ a.page-link:hover {
 
     text-transform: capitalize;
 }
-.text-camel {
 
-    text-transform: capitalize;
-}
 .nav-link {
-    height: 46px;
+    /*height: 46px;*/
     vertical-align: middle;
     line-height: 30px;
+    font-size: 16px;
 }
 
 /*.img-list{*/
@@ -3567,7 +3570,10 @@ a.page-link:hover {
 
     padding: 0 !important;
 }
+.MuiAlert-root.MuiPaper-root{
 
+    padding: 6px 16px!important;
+}
 .tabs-detail .tab-pane{
 
     box-shadow: none;
@@ -3596,6 +3602,12 @@ a.page-link:hover {
 
 #searchBar{padding-left: 130px;}
 
+
+.btn-link:disabled{
+
+    color: white!important;
+}
+
 .slide-rl {
     position: absolute;
     right: -230px;
@@ -3614,8 +3626,16 @@ a.page-link:hover {
 
 @keyframes slide {
     100% { right: 0; }
+
+}
+.text-capitalize{
+
+    text-transform: capitalize;
 }
 .mb-150{
 
     margin-bottom: 150px;
+}
+.no-visibility{
+    visibility: hidden;
 }

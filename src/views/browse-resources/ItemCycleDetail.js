@@ -220,7 +220,7 @@ class ItemCycleDetail extends Component {
                     <div className="container ">
                         <div>
                             <PageHeader
-                                pageTitle="Product Details"
+                                pageTitle="Product Details (Provenance)"
                                 subTitle="See product details and Provenance."
                             />
 

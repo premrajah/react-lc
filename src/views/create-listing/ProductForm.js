@@ -1700,7 +1700,7 @@ class ProductForm extends Component {
                                                 "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                             }
                                         disabled={this.state.isSubmitButtonPressed}>
-                                            Create A Product
+                                            Add Product
                                         </button>
                                     )
                                 ) : (
@@ -1710,7 +1710,7 @@ class ProductForm extends Component {
                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                         }
                                         disabled={this.state.isSubmitButtonPressed}>
-                                        Create A Product
+                                        Add Product
                                     </button>
                                 )}
                             </div>

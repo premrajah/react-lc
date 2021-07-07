@@ -106,7 +106,7 @@ class FindResourcePage extends Component {
                                 when you receive a match.
                             </p>
                             <Link to="/list-form" className="btn btn-green">
-                                New Listing
+                                Create a Listing
                             </Link>
                         </div>
                     </div>

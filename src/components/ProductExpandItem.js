@@ -10,6 +10,7 @@ import ProductItemNew from "./ProductItemNew";
 import { makeStyles, withStyles } from "@material-ui/core/styles/index";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {Spinner} from "react-bootstrap";
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {
@@ -412,7 +413,18 @@ class ProductExpandItem extends Component {
                                                                     Sub Products)
                                                                 </option>
                                                             ))}
+
+
                                                     </Select>
+                                                    {this.props.productList.length===0&&   <Spinner
+                                                        as="span"
+                                                        animation="border"
+                                                        size="sm"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                        style={{color:"#07AD88"}}
+                                                        className={"spinner-select"}
+                                                    />}
                                                     {this.state.errors["product"] && (
                                                         <span className={"text-mute small"}>
                                                             <span style={{ color: "red" }}>* </span>
@@ -427,13 +439,7 @@ class ProductExpandItem extends Component {
                                                     {/*</FormHelperText>*/}
                                                 </FormControl>
 
-                                                {/*{this.state.subProductSelected&&*/}
-                                                {/*<>*/}
 
-                                                {/*<ProductItemNew item={this.state.subProductSelected}/>*/}
-
-                                                {/*</>*/}
-                                                {/*}*/}
                                             </div>
 
                                             <div className="col-3">

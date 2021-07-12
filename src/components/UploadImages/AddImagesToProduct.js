@@ -6,29 +6,36 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import docs from '../../img/icons/docs.png';
+import * as actionCreator from "../../store/actions/actions";
 
 class AddImagesToProduct extends Component {
-    state = {
-        files: [],
-        images: [],
-        productKey: null,
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            files: [],
+            images: [],
+            productKey: null,
+        };
+    }
+
 
     componentDidMount() {
-        this.setState({ productKey: this.props.match.params.slug });
+        // this.setState({ productKey: this.props.match.params.slug });'
+        console.log("image upload product")
+        console.log(this.props.item)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let pathMatch = this.props.match.params.slug;
-
-        if (prevProps.match.params.slug !== this.props.match.params.slug) {
-            this.setState({ productKey: pathMatch });
-        }
+        // let pathMatch = this.props.match.params.slug;
+        //
+        // if (prevProps.match.params.slug !== this.props.match.params.slug) {
+        //     this.setState({ productKey: pathMatch });
+        // }
     }
 
     handleChangeFile = (event) => {
         if (!event) return;
-        this.handleCallbackImagesUploadStatus("");
 
         let files = this.state.files;
         let newFiles = [];
@@ -38,12 +45,15 @@ class AddImagesToProduct extends Component {
             newFiles.push({ file: event.target.files[i], status: 0, id: null });
         }
 
+        this.setState({
+            files: files,
+        });
+
         this.uploadImage(newFiles);
     };
 
     handleCancel = (e) => {
         e.preventDefault();
-        this.handleCallbackImagesUploadStatus("");
 
         let index = e.currentTarget.dataset.index;
         let name = e.currentTarget.dataset.name;
@@ -62,9 +72,8 @@ class AddImagesToProduct extends Component {
     };
 
     handleUploadImagesToServer = () => {
-        this.handleCallbackImagesUploadStatus("");
-        this.addArtifactsToProduct(this.state.productKey, this.state.images);
-        this.handleProductReload(this.state.productKey);
+        this.addArtifactsToProduct( this.state.images);
+
     };
 
     getBase64(file) {
@@ -92,19 +101,17 @@ class AddImagesToProduct extends Component {
     }
 
     handleCallbackImagesUploadStatus = (imageUploadStatus) => {
-        this.props.handleCallBackImagesUploadStatus(imageUploadStatus);
+        // this.props.handleCallBackImagesUploadStatus(imageUploadStatus);
     };
 
-    handleProductReload = (productKey) => {
-        this.props.handleProductReload(productKey);
-    };
 
-    addArtifactsToProduct = (productKey, images) => {
-        if (!productKey || !images.length > 0) return;
+
+    addArtifactsToProduct = ( images) => {
+        if (!images.length > 0) return;
         this.handleCallbackImagesUploadStatus("");
 
         const payload = {
-            product_id: productKey,
+            product_id: this.props.item.product._key,
             artifact_ids: images,
         };
 
@@ -116,7 +123,12 @@ class AddImagesToProduct extends Component {
                         images: [],
                         files: [],
                     });
-                    this.handleCallbackImagesUploadStatus("success");
+
+                    this.props.showSnackbar({show:true,severity:"success",message:"Artifacts linked successfully to product. Thanks"})
+
+                    this.props.loadCurrentProduct(this.props.item.product._key)
+
+
                 }
             })
             .catch((error) => {
@@ -320,5 +332,15 @@ const mapStateToProps = (state) => {
         userDetail: state.userDetail,
     };
 };
+const mapDispachToProps = (dispatch) => {
+    return {
 
-export default withRouter(connect(mapStateToProps)(AddImagesToProduct));
+        loadCurrentProduct: (data) =>
+            dispatch(actionCreator.loadCurrentProduct(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispachToProps)(AddImagesToProduct);

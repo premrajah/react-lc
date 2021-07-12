@@ -13,6 +13,8 @@ import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browse-resources/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import Products from "./views/loop-cycle/Products";
+import ProductsNew from "./pages/my-products/Products";
+import Product from "./pages/product-detail/Product";
 import ProductsService from "./views/loop-cycle/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -64,6 +66,7 @@ import ApprovedReleases from "./views/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
 import TrackedProducts from "./components/Products/TrackedProducts";
+import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 
 let hist = createBrowserHistory();
 
@@ -91,7 +94,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
-                        <LoggedInRoute exact path="/my-products" component={Products} />
+                        {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
+                        <LoggedInRoute exact path="/my-products" component={ProductsNew} />
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
@@ -126,7 +130,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/product/:slug" component={ProductView} />
+                        <LoggedInRoute exact path="/product/:slug" component={Product} />
                         <LoggedInRoute
                             exact
                             path="/sub-product-view/:slug"
@@ -156,6 +160,7 @@ class App extends Component {
 
                     {this.props.showLoginPopUp && <LoginPopUp />}
                     {this.props.showProductPopUp && <ProductPopUp />}
+                    <CustomSnackbar />
                 </BrowserRouter>
             </>
         );

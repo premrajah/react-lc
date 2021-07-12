@@ -58,3 +58,4 @@ export const getImageAsBytes = (file) => {
         reader.onerror = (error) => reject(error);
     });
 }
+

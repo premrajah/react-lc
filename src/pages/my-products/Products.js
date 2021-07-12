@@ -3,8 +3,6 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,6 +16,7 @@ import {CSVLink} from "react-csv";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import {ref} from "yup";
+import Layout from "../../components/Layout/Layout";
 
 
 class Products extends Component {
@@ -64,11 +63,6 @@ class Products extends Component {
         this.props.loadSites();
         this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-        // this.interval = setInterval(() => {
-        //     this.props.dispatchLoadProductsWithoutParent();
-        // }, 15000);
-
-
 
         // Create an observer
         this.observer = new IntersectionObserver(
@@ -76,9 +70,12 @@ class Products extends Component {
             this.options
         );
         //Observ the `loadingRef`
-        this.observer.observe(this.loadingRef);
 
+        window.onload = function() {
+            if (this.loadingRef)
+            this.observer.observe(this.loadingRef);
 
+        }
     }
 
 
@@ -154,11 +151,10 @@ class Products extends Component {
         this.props.dispatchLoadProductsWithoutParent();
     }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
+
+    UNSAFE_componentWillMount() {
+        window.scrollTo(0, 0);
     }
-
-
 
     render() {
         const classesBottom = withStyles();
@@ -166,12 +162,12 @@ class Products extends Component {
 
 
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
 
-                    {this.state.selectedProducts.length > 0 ?  <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
+                <div className="wrapper">
+
+                    {this.state.selectedProducts.length > 0 ?
+                        <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
                         <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
                             <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
                                 <div className="col d-flex justify-content-end">
@@ -244,9 +240,11 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.length > 0 && this.props.productWithoutParentList.filter((filterV) => {
+                        {this.props.productWithoutParentList.length > 0 &&
+                        this.props.productWithoutParentList.filter((filterV) => {
                             return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
-                        }).map((item, index) => (
+                        })
+                            .map((item, index) => (
                             <div key={index}>
                                 <ProductItem
                                     goToLink={true}
@@ -283,7 +281,7 @@ class Products extends Component {
                                     <div className="col-auto" style={{cursor: 'pointer' }}>
                                         <a onClick={this.showProductSelection}>
                                             <p className={"green-text bottom-bar-text"}>
-                                                <b>Add Product</b>
+                                                <b>Create New Product</b>
                                             </p>
                                         </a>
                                     </div>
@@ -311,7 +309,7 @@ class Products extends Component {
                         </Modal>
                     </>
                 )}
-            </div>
+            </Layout>
         );
     }
 }

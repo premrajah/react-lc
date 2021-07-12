@@ -3,6 +3,8 @@ import {Modal, Tab} from "react-bootstrap";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import { useParams} from 'react-router-dom';
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
 
 const AddedDocumentsDisplay = (props) => {
     const { artifacts, pageRefreshCallback } = props;
@@ -32,8 +34,9 @@ const AddedDocumentsDisplay = (props) => {
             "artifact_ids": artifactIds
         }
 
-        handleReplaceArtifacts(payload);
         handleClose();
+
+        handleReplaceArtifacts(payload);
 
     }
 
@@ -44,18 +47,20 @@ const AddedDocumentsDisplay = (props) => {
             .then(response => {
                 if(response.status === 200) {
                     handleClose();
-                    handlePageRefreshCallback("success", payload.product_id);
+
+                    props.loadCurrentProduct(payload.product_id)
+                    props.showSnackbar({show:true,severity:"success",message:"Artifact removed successfully from product. Thanks"})
+
+
                 }
             })
             .catch(error => {
                 console.log('artifact replace error ', error);
-                handlePageRefreshCallback("fail", payload.product_id)
+                // handlePageRefreshCallback("fail", payload.product_id)
             })
     }
 
-    const handlePageRefreshCallback = (status, productKey) => {
-        pageRefreshCallback(status, productKey); // "success"/"fail"
-    }
+
 
     return (
         <>
@@ -122,4 +127,37 @@ const AddedDocumentsDisplay = (props) => {
     );
 };
 
-export default AddedDocumentsDisplay;
+const mapStateToProps = (state) => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+        showSubProductView: state.showSubProductView,
+    };
+};
+
+const mapDispachToProps = (dispatch) => {
+    return {
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+        loadCurrentProduct: (data) =>
+            dispatch(actionCreator.loadCurrentProduct(data)),
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+    };
+};
+export default connect(mapStateToProps, mapDispachToProps)(AddedDocumentsDisplay);
+

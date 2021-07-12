@@ -9,7 +9,7 @@ import moment from "moment/moment";
 import { Link } from "react-router-dom";
 import MoreMenu from "./MoreMenu";
 import ProductEditForm from "./ProductEditForm";
-import ProductDetail from "./ProductDetail";
+import ProductDetail from "./Products/ProductDetail";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
 
@@ -209,10 +209,12 @@ class ProductItemNew extends Component {
                                     <span className="mr-1">
                                         {this.props.item.product.category},
                                     </span>
-                                    <span className="mr-1">{this.props.item.product.type},</span>
-                                    <span className="mr-1">{this.props.item.product.state},</span>
+                                    <span className="mr-1 text-capitalize">{this.props.item.product.type},</span>
+                                    <span className="mr-1 text-capitalize">{this.props.item.product.state},</span>
                                     <span>{this.props.item.product.volume}</span>
-                                    <span>{this.props.item.product.units}</span>
+                                    <span >{this.props.item.product.units}</span>
+                                    <p className={"text-capitalize text-bold"}>{this.props.item.product.sku.brand}</p>
+
                                 </p>
                                 {this.props.item.search_ids && (
                                     <p

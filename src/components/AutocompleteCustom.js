@@ -5,6 +5,7 @@ import { baseUrl } from "../Util/Constants";
 import axios from "axios/index";
 import CompaniesHouseLogo from "../img/icons/companies_house_logo_18px.png";
 import LoopcycleLogo from '../img/loopcycle_logo_31x31.png';
+import PencilIcon from '@material-ui/icons/Edit';
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -111,6 +112,8 @@ class AutocompleteCustom extends Component {
             filteredSuggestions: [],
             showSuggestions: false,
             userInput: e.currentTarget.innerText,
+            selected:true,
+
         });
 
         this.props.selectedCompany({
@@ -148,6 +151,29 @@ class AutocompleteCustom extends Component {
             this.setState({ activeSuggestion: activeSuggestion + 1 });
         }
     };
+    resetSelection = (e) => {
+        this.refs.itemInput.value = '';
+        this.setState({
+            activeSuggestion: 0,
+            filteredSuggestions: [],
+            showSuggestions: false,
+            userInput: null,
+            selected:false,
+            name: null,
+            type: null,
+            _id: null,
+            image: null,
+        });
+
+        // this.props.setSelectedItem({
+        //     name: null,
+        //     type: null,
+        //     _id: null,
+        //     image: null,
+        //
+        // });
+
+    }
 
     render() {
         const {
@@ -176,6 +202,7 @@ class AutocompleteCustom extends Component {
                                     className={className}
                                     data-company={suggestion.company}
                                     data-org={suggestion.org}
+                                    data-name={suggestion.org}
                                     key={suggestion}
                                     onClick={onClick}>
                                     <div className="d-flex justify-content-start align-items-center">
@@ -202,7 +229,7 @@ class AutocompleteCustom extends Component {
                 );
             } else {
                 suggestionsListComponent = (
-                    <div class="no-suggestions">
+                    <div style={{position:"absolute"}} class="no-suggestions">
                         <em>No suggestions, you're on your own!</em>
                     </div>
                 );
@@ -212,13 +239,31 @@ class AutocompleteCustom extends Component {
         return (
             <Fragment>
                 <input
-                    className={"custom-input"}
+
+                    className={`${this.state.selected&&"d-none "} custom-input`}
                     onChange={onChange}
                     onKeyDown={onKeyDown}
-                    value={userInput}
+                    value={this.state.userInput}
                     autoComplete={"new-password"}
                     placeholder={"Company (Type your company name here)"}
+                    ref="itemInput"
                 />
+                {this.state.selected &&  <div className=" search-card m-1" style={{width: "100%"}}>
+                    <div className={"col-2"}>
+                    <div className={"img-left p-1"}>
+                        <img className="card-img-top" src={CompaniesHouseLogo} alt="Card image cap" />
+
+                    </div>
+                    </div>
+                    <div className={"col-10"}>
+                    <div className={"text-right"}>
+                        <p style={{color:"#293842", fontWeight:"600",textAlign: "left"}}>{this.state.userInput}</p>
+                        {/*<p className={"selected-item"}>Rate and Review</p>*/}
+
+                        <span onClick={this.resetSelection} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
+                    </div>
+                    </div>
+                </div>}
 
                 {suggestionsListComponent}
             </Fragment>

@@ -67,6 +67,7 @@ import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
 import TrackedProducts from "./components/Products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
+import ResourceItem from "./components/Resources/ResourceItem";
 
 let hist = createBrowserHistory();
 
@@ -120,6 +121,7 @@ class App extends Component {
                         />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
+                        <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exact path="/edit-account" component={EditAccount} />

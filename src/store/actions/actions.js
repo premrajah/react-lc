@@ -245,9 +245,9 @@ export const loadProductsWithoutParentSync = (data) => (dispatch) => {
 
 
     axios
-        .get(`${baseUrl}product/no-parent/expand`)
+        // .get(`${baseUrl}product/no-parent/expand`)
 
-        // .get(`${baseUrl}product/no-parent/expand?offset=${data.offset}&size=${data.size}`)
+        .get(`${baseUrl}product/no-parent/expand?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
                 if(response.status === 200) {

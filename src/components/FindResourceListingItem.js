@@ -56,10 +56,10 @@ const FindResourceListingItem = ({ item }) => {
                 ) : null}
                 {listing ? (
                     <div align="right">
-                        Available
-                        {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
+                        <span className="mr-2">Available</span>
+                        <span>{moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                             " - " +
-                            moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}
+                        moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}</span>
                     </div>
                 ) : null}
             </div>

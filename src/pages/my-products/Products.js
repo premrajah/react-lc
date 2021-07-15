@@ -281,7 +281,7 @@ class Products extends Component {
                                     <div className="col-auto" style={{cursor: 'pointer' }}>
                                         <a onClick={this.showProductSelection}>
                                             <p className={"green-text bottom-bar-text"}>
-                                                <b>Create New Product</b>
+                                                <b>Add New Product</b>
                                             </p>
                                         </a>
                                     </div>

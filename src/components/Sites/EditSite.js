@@ -62,7 +62,7 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                 }
             })
             .catch(error => {
-                handleCallback(<span className="text-warning">Sorry. Unable to update at this time</span>);
+                handleCallback(<span className="text-warning">Sorry. Unable to update at this time, {error.message}</span>);
             })
 
             : axios.put(`${baseUrl}site`, payload)
@@ -73,7 +73,7 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                     }
                 })
                 .catch(error => {
-                    handleCallback(<span className="text-warning">Sorry. Unable to add at this time</span>);
+                    handleCallback(<span className="text-warning">Sorry. Unable to add at this time, {error.message}</span>);
                 })
     }
 

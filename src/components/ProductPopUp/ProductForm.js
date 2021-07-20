@@ -26,6 +26,8 @@ import {Form, Formik} from "formik";
 import * as Yup from "yup";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
+import {createProductUrl} from "../../Util/Api";
+import {validateInput, validateInputs, Validators} from "../../Util/Validator";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,44 +47,7 @@ const useStylesTabs = makeStyles((theme) => ({
 
 class ProductForm extends Component {
 
-     INITIAL_VALUES = {
-        title:  '',
-         description:  '',
-         sku:  '',
-         brand:  '',
-         type:  '',
-         state:  '',
-         category:  '',
-         units:  '',
-         deliver:  '',
-         volume:  '',
-         purpose:  '',
-         condition:  '',
-         upc:  '',
-         manufacturedDate:  '',
-         serial:  '',
-         model:  '',
-         part_no:'',
-         is_listable:true
 
-
-    }
-
-     VALIDATION_SCHEMA = Yup.object().shape({
-        title: Yup.string().required('Required'),
-         description:  Yup.string().required('Required'),
-         // sku:  '',
-         brand:  Yup.string().required('Required'),
-         category:  Yup.string().required('Required'),
-         type:  Yup.string().required('Required'),
-         state:  Yup.string().required('Required'),
-         units:  Yup.string().required('Required'),
-         deliver:  Yup.string().required('Required'),
-         volume:  Yup.string().required('Required'),
-         purpose:  Yup.string().required('Required'),
-         condition:  Yup.array().required('Required'),
-
-    })
     slug = null;
 
     constructor(props) {
@@ -534,248 +499,57 @@ class ProductForm extends Component {
             );
     }
 
-    handleValidationProduct2() {
-        let fields = this.state.fieldsProduct;
-        let errors = {};
-        let formIsValid = true;
-
-
-        //Name
-        if (!fields["purpose"]) {
-            formIsValid = false;
-            errors["purpose"] = "Required";
-        }
-        if (!fields["title"]) {
-            formIsValid = false;
-            errors["title"] = "Required";
-        }
-
-        if (!fields["description"]) {
-            formIsValid = false;
-            errors["description"] = "Required";
-        }
-        if (!fields["category"]) {
-            formIsValid = false;
-            errors["category"] = "Required";
-        }
-
-        if (!fields["type"]) {
-            formIsValid = false;
-            errors["type"] = "Required";
-        }
-
-        if (!fields["state"]) {
-            formIsValid = false;
-            errors["state"] = "Required";
-        }
-
-        if (!fields["deliver"]) {
-            formIsValid = false;
-            errors["deliver"] = "Required";
-        }
-
-        if (!fields["units"]) {
-            formIsValid = false;
-            errors["units"] = "Required";
-        }
-
-        if (!fields["volume"]) {
-            formIsValid = false;
-            errors["volume"] = "Required";
-        }
-
-        if (!fields["manufacturedDate"]) {
-            formIsValid = false;
-            errors["manufacturedDate"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            if (!fields["category"]) {
-                formIsValid = false;
-                errors["category"] = "Required";
-            }
-
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsProduct: errors });
-
-        return formIsValid;
-    }
 
     handleValidationProduct() {
-        let fields = this.state.fieldsProduct;
-        let errors = {};
-        let formIsValid = true;
 
 
-        if (!fields["title"]) {
-            formIsValid = false;
-            errors["title"] = "Required";
-        }
+        let fields = this.state.fields;
 
-        if (!fields["description"]) {
-            formIsValid = false;
-            errors["description"] = "Required";
-        }
-        if (!fields["category"]) {
-            formIsValid = false;
-            errors["category"] = "Required";
-        }
+        let validations=[
+            {field: "title",value:fields["title"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "brand",value:fields["brand"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "description",value:fields["description"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "volume",value:fields["volume"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "category",value:fields["category"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "type",value:fields["type"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "state",value:fields["state"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "deliver",value:fields["deliver"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "units",value:fields["units"], validations: [{check: Validators.required, message: 'This field is required'}]},
 
-        if (!fields["type"]) {
-            formIsValid = false;
-            errors["type"] = "Required";
-        }
+        ]
 
-        if (!fields["state"]) {
-            formIsValid = false;
-            errors["state"] = "Required";
-        }
 
-        if (!fields["deliver"]) {
-            formIsValid = false;
-            errors["deliver"] = "Required";
-        }
+        let {formIsValid,errors}= validateInputs(validations)
 
-        if (!fields["units"]) {
-            formIsValid = false;
-            errors["units"] = "Required";
-        }
+        console.log("title error",errors["title"])
 
-        if (!fields["volume"]) {
-            formIsValid = false;
-            errors["volume"] = "Required";
-        }
+        console.log(formIsValid,errors)
 
-        if (!fields["brand"]) {
-            formIsValid = false;
-            errors["brand"] = "Required";
-        }
-
-        // if (!fields["manufacturedDate"]) {
-        //     formIsValid = false;
-        //     errors["manufacturedDate"] = "Required";
-        // }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsProduct: errors });
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
-    handleChangeProduct(field, event) {
-        let fields = this.state.fieldsProduct;
-        fields[field] = event.target.value;
+    handleChangeProduct(value,field ) {
+
+        console.log(field,value)
+        let fields = this.state.fields;
+        fields[field] = value;
         this.setState({ fields });
 
-        if (field === "category") {
-            if (event.target.value !== "Select") {
-                var catSelected = this.state.categories.filter(
-                    (item) => item.name === event.target.value
-                )[0];
-
-                var subCategories = this.state.categories.filter(
-                    (item) => item.name === event.target.value
-                )[0].types;
-
-                this.setState({
-                    catSelected: catSelected,
-                });
-
-                this.setState({
-                    subCategories: subCategories,
-                });
-            } else {
-                this.setState({
-                    catSelected: null,
-                });
-
-                this.setState({
-                    subCategories: [],
-                });
-            }
-        }
-
-        if (field === "type") {
-            if (event.target.value !== "Select") {
-                var subCatSelected = this.state.subCategories.filter(
-                    (item) => item.name === event.target.value
-                )[0];
-
-                var states = this.state.subCategories.filter(
-                    (item) => item.name === event.target.value
-                )[0].state;
-
-                var units = this.state.subCategories.filter(
-                    (item) => item.name === event.target.value
-                )[0].units;
-
-                this.setState({
-                    subCatSelected: subCatSelected,
-                });
-
-                this.setState({
-                    states: states,
-                    units: units,
-                });
-            } else {
-                this.setState({
-                    subCatSelected: null,
-                });
-
-                this.setState({
-                    states: [],
-                    units: [],
-                });
-            }
-        }
     }
 
-    handleSubmit = (values) =>{
-
-        // alert("submit")
-        console.log((values))
-
-    }
 
     handleSubmitProduct = (event) => {
+
         event.preventDefault();
+        if (!this.handleValidationProduct()){
 
+            console.log("form invalid")
+            return
 
+        }
+        console.log("form valid")
 
-        alert("submit")
-        if (this.handleValidationProduct()) {
             const form = event.currentTarget;
 
             this.setState({
@@ -879,7 +653,7 @@ class ProductForm extends Component {
                     this.setState({isSubmitButtonPressed: false})
                 });
 
-        }
+
     };
 
     getFiltersCategories() {
@@ -989,18 +763,17 @@ class ProductForm extends Component {
 
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
-                        <Formik
-                            initialValues={{...this.INITIAL_VALUES}}
-                            validationSchema={this.VALIDATION_SCHEMA}
-                            onSubmit={(values) => this.handleSubmit(values) }>
-                            {({ errors,values, touched,setFieldValue }) => (
-                            <Form>
+
+                            <form onSubmit={this.handleSubmitProduct}>
 
 
                             <div className="row no-gutters">
                                 <div className="col-12 mt-4">
 
-                                   <TextFieldWrapper error={errors.title} name="title" title="Give your product a title" />
+                                   <TextFieldWrapper
+                                     onChange={(value)=>this.handleChangeProduct(value,"title")}
+                                     error={this.state.errors["title"]}
+                                     name="title" title="Give your product a title" />
 
                                 </div>
                             </div>
@@ -1009,34 +782,26 @@ class ProductForm extends Component {
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper onChange={this.checkListable} color="primary" name={"is_listable"} title="Allow product to be listed for sale" />
-                                    {/*<FormControlLabel*/}
-                                    {/*    control={*/}
-                                    {/*        <Checkbox*/}
-                                    {/*            checked={this.state.is_listable}*/}
-                                    {/*            onChange={this.checkListable}*/}
-                                    {/*            name="is_listable"*/}
-                                    {/*            color="primary"*/}
-                                    {/*        />*/}
-                                    {/*    }*/}
-                                    {/*    label="Allow product to be listed for sale"*/}
-                                    {/*/>*/}
+
                                 </div>
 
                                 <div className="col-md-4 col-sm-12">
 
                                     <SelectArrayWrapper
-                                        defaultValue={values.condition}
-                                                        handleChange={(value)=> {
-                                                            setFieldValue('condition', value);
 
-                                                        }}
-                                                        options={this.state.condition} name={"condition"} title="Condition"/>
+                                        onChange={(value)=>this.handleChangeProduct(value,"condition")}
+                                        error={this.state.errors["condition"]}
+                                        options={this.state.condition}
+                                        name={"condition"} title="Condition"/>
 
                                 </div>
 
                                 <div className="col-md-4 col-sm-12">
 
-                                    <TextFieldWrapper  name="brand" title="Brand" />
+                                    <TextFieldWrapper
+                                        onChange={(value)=>this.handleChangeProduct(value,"brand")}
+                                        error={this.state.errors["title"]}
+                                        name="brand" title="Brand" />
 
                                 </div>
                             </div>
@@ -1046,18 +811,23 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
+                                        option={"name"}
+                                      valueKey={"name"}
                                         select={"Select"}
-                                        defaultValue={values.category}
-                                        handleChange={(value)=> {
-                                            setFieldValue('category',value);
-                                            this.setState({
-                                        catSelected:   this.state.categories.filter(
-                                            (item) => item.name === value
-                                        )[0],
+                                        error={this.state.errors["category"]}
+                                        onChange={(value)=> {
 
-                                        subCategories:this.state.categories.filter(
+                                            this.handleChangeProduct(value,"category")
+                                            this.setState({
+                                        catSelected:  this.state.categories.length>0? this.state.categories.filter(
                                             (item) => item.name === value
-                                        )[0].types,
+                                        )[0]:null,
+
+                                        subCategories:this.state.categories.length>0?this.state.categories.filter(
+                                            (item) => item.name === value
+                                        )[0]&&this.state.categories.filter(
+                                            (item) => item.name === value
+                                        )[0].types:[],
                                         states: [],
                                         units: [],
 
@@ -1069,43 +839,43 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
+
+                                        option={"name"}
+                                      valueKey={"name"}
                                         select={"Select"}
+                                        error={this.state.errors["type"]}
+                                        onChange={(value)=> {
+                                            this.handleChangeProduct(value,"type")
 
-                                        defaultValue={values.type}
-                                        handleChange={(value)=> {
-                                            setFieldValue('type',value);
                                             this.setState({
-                                            subCatSelected:   this.state.subCategories.filter(
+                                            subCatSelected:  this.state.subCategories.length>0? this.state.subCategories.filter(
                                                 (item) => item.name === value
-                                            )[0],
+                                            )[0]:null,
 
-                                            states:this.state.subCategories.filter(
+                                            states: this.state.subCategories.length>0?this.state.subCategories.filter(
                                                 (item) => item.name === value
-                                            )[0].state,
-                                            units:this.state.subCategories.filter(
+                                            )[0].state:[],
+                                            units: this.state.subCategories.length>0?this.state.subCategories.filter(
                                                 (item) => item.name === value
-                                            )[0].units
-
-
-                                        })
+                                            )[0].units:[]
+                                            })
                                         }}
 
                                         disabled={
-                                        this.state.subCategories.length > 0 ? false : true
-                                    } options={this.state.subCategories} name={"type"} title="Type"/>
+                                            this.state.subCategories&&this.state.subCategories.length > 0 ? false : true
+                                    } options={this.state.subCategories?this.state.subCategories:[]} name={"type"} title="Type"/>
 
                                 </div>
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
-                                        defaultValue={values.state}
-                                        handleChange={(value)=> {
-                                            setFieldValue('state', value);
 
-                                        }}
+                                        onChange={(value)=>this.handleChangeProduct(value,"state")}
+                                        error={this.state.errors["state"]}
+
                                         select={"Select"}
                                         disabled={this.state.states.length > 0 ? false : true}
-                                        options={this.state.states} name={"state"} title="State"/>
+                                        options={this.state.states?this.state.states:[]} name={"state"} title="State"/>
 
                                 </div>
                             </div>
@@ -1122,18 +892,20 @@ class ProductForm extends Component {
 
                                         <div className="col-6 pr-2">
                                             <SelectArrayWrapper
-                                                defaultValue={values.units}
-                                                handleChange={(value)=> {
-                                                    setFieldValue('units', value);
+                                                select={"Select"}
 
-                                                }}
+                                                onChange={(value)=>this.handleChangeProduct(value,"units")}
+                                                error={this.state.errors["units"]}
 
                                                 disabled={this.state.units.length > 0 ? false : true}
                                                 options={this.state.units} name={"units"} title="(Units)"/>
                                         </div>
                                         <div className="col-6 pl-2">
 
-                                            <TextFieldWrapper  name="volume" title="(Volume)" />
+                                            <TextFieldWrapper
+                                                onChange={(value)=>this.handleChangeProduct(value,"volume")}
+                                                error={this.state.errors["volume"]}
+                                                name="volume" title="(Volume)" />
 
                                         </div>
                                     </div>
@@ -1144,22 +916,25 @@ class ProductForm extends Component {
                                 <div className="col-12">
                                     <div className="row camera-grids   no-gutters   ">
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
+
                                             <SelectArrayWrapper
-                                                defaultValue={values.purpose}
                                                 handleChange={(value)=> {
-                                                    setFieldValue('purpose', value);
 
                                                 }}
-                                                select={"Select"} options={this.state.purpose} name={"purpose"} title="Purpose"/>
+                                               options={this.state.purpose} name={"purpose"} title="Purpose"/>
 
                                         </div>
 
                                         <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
 
                                             <SelectArrayWrapper
-                                                defaultValue={values.deliver}
-                                                                handleChange={(value)=> {
-                                                                    setFieldValue('deliver', value);
+
+                                                option={"name"}
+                                              valueKey={"_key"}
+                                                error={this.state.errors["deliver"]}
+                                                  onChange={(value)=> {
+
+                                                                    this.handleChangeProduct(value,"deliver")
 
                                                                 }} select={"Select"} options={this.props.siteList} name={"deliver"} title="Dispatch / Collection Address"/>
 
@@ -1207,7 +982,10 @@ class ProductForm extends Component {
                             <div className="row no-gutters mt-4">
                                 <div className="col-12">
 
-                                    <TextFieldWrapper multiline
+                                    <TextFieldWrapper
+                                        onChange={(value)=>this.handleChangeProduct(value,"description")}
+                                        error={this.state.errors["description"]}
+                                        multiline
                                                       rows={4} name="description" title="Give it a description" />
 
 
@@ -1236,9 +1014,8 @@ class ProductForm extends Component {
                                         <div className="row">
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
-                                                    defaultValue={values.manufacturedDate}
+
                                                     handleChange={(value)=> {
-                                                        setFieldValue('manufacturedDate', value);
 
                                                     }}
                                                     options={this.state.yearsList} name={"manufacturedDate"} title="Year Of Manufacture"/>
@@ -1455,10 +1232,8 @@ class ProductForm extends Component {
                                     </button>
                                 )}
                             </div>
-                            </Form>
-                            )}
+                            </form>
 
-                        </Formik>
                     </div>
                 </div>
             </>

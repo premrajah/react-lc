@@ -1,27 +1,29 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {TextField} from "@material-ui/core";
-import {useField} from 'formik'
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-//
+
+
 import ErrorOutline from '@material-ui/icons/ErrorOutline';
+import Select from "@material-ui/core/Select";
 
-const TextFieldWrapper = ({name,title,error, ...otherProps}) => {
+const TextFieldWrapper = ({name,title,validators,onChange,error, ...otherProps}) => {
 
-    const [field, mata] = useField(name)
+    // const [field, mata] = useField(name)
 
-    const configTextField = {
-        ...field,
+
+        const configTextField = {
+        // ...field,
         ...otherProps,
         variant: 'outlined',
         fullWidth: true,
     }
 
-    if(mata && mata.touched && mata.error) {
-        configTextField.error = true;
-        configTextField.helperText = mata.error;
-    }
+    const handleChange = (event) => {
+
+            const {value} = event.target;
+            console.log(value)
+
+        onChange(value)
+    };
 
     return(
         <>
@@ -30,10 +32,11 @@ const TextFieldWrapper = ({name,title,error, ...otherProps}) => {
             {title}
         </div>
 
-           <div className={"field-box"}><TextField {...configTextField} />{error&& <ErrorOutline style={{color:"#f44336"}} />}</div>
-
-
-   </>
+           <div className={"field-box mb-1"}>
+               <TextField   className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
+           </div>
+            {error && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{error.message}</span>}
+        </>
 
     )
 }

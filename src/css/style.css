@@ -3643,3 +3643,6 @@ a.page-link:hover {
 .spinner-select{position: absolute;left: 88%;top: 40%;}
 .field-box{position: relative;}
 .field-box>svg{position: absolute;right: 3%;top: 20%}
+.border-red-error .MuiOutlinedInput-notchedOutline{
+    border: 1px solid #f44336!important;
+}

@@ -1,3 +1,3 @@
 import {baseUrl} from "./Constants";
 
-export const createProductUrl = baseUrl+""
+export const createProductUrl = baseUrl+"product"

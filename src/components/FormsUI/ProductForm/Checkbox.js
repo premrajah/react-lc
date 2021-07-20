@@ -4,25 +4,25 @@ import {useField, useFormikContext} from 'formik'
 
 const CheckboxWrapper = ({name, title, legend, ...otherProps}) => {
 
-    const [field, mata, helpers] = useField(name);
-    const { setFieldValue } = useFormikContext();
+    // const [field, mata, helpers] = useField(name);
+    // const { setFieldValue } = useFormikContext();
 
     const handleChange = e => {
         const { checked } = e.target;
-        setFieldValue(name, checked);
+        // setFieldValue(name, checked);
     };
 
     const configCheckbox = {
-        ...field,
+        // ...field,
         ...otherProps,
         onChange: handleChange
     };
 
-    const configFormControl = {};
-
-    if(mata && mata.touched && mata.error) {
-        configFormControl.error = true;
-    }
+    // const configFormControl = {};
+    //
+    // if(mata && mata.touched && mata.error) {
+    //     configFormControl.error = true;
+    // }
 
     return  (
         <>

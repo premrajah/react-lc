@@ -15,19 +15,19 @@ class SearchBar extends Component {
 
     handleSearchFilter = (value) => {
         this.setState({filterDefaultValue: value});
-        return this.props.onSearchFilter(value);
+        return this.props.onSearch(value);
     }
 
     render() {
-        const { title, searchType, onSearch, onSearchFilter, dropDown, dropDownValues } = this.props;
+        const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
             <div className="row">
                 <div className="col d-flex">
-                    <div style={{width:  '100%'}} className={"search-container"}>
-                        <FormControl className={"filter-box"} style={{width:  '10%'}}  component="div">
+                    <div style={{width:  '100%'}} className="search-container">
+                        <FormControl className="filter-box" style={{width:  '10%'}}  component="div">
 
-                            <NativeSelect label={"Filter"} className={"search-filter"}  labelId="filterLabel"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
-                                <option value="" disabled>
+                            <NativeSelect label="Filter" className="search-filter"  labelId="filterLabel"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                                <option value="" >
                                     Filter By
                                 </option>
                                 {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
@@ -53,17 +53,6 @@ class SearchBar extends Component {
                             }}
                         />
                     </div>
-
-                    {/*{dropDown && <div style={{width: dropDown ? '30%' : ''}}>*/}
-                    {/*    <FormControl variant="outlined"  component="div">*/}
-                    {/*        <InputLabel id="filterLabel">Filter</InputLabel>*/}
-                    {/*        <Select labelId="filterLabel" label="Select Filter" value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >*/}
-                    {/*            {dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {*/}
-                    {/*                return <MenuItem key={index} value={drop}>{drop}</MenuItem>*/}
-                    {/*            }) : null}*/}
-                    {/*        </Select>*/}
-                    {/*    </FormControl>*/}
-                    {/*</div>}*/}
                 </div>
             </div>
         );

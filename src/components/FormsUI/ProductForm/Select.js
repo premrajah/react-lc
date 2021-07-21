@@ -15,6 +15,7 @@ const SelectArrayWrapper = (props) => {
 
         console.log(event.target.value)
 
+           if (onChange)
             onChange(event.target.value)
     };
 

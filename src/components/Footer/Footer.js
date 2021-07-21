@@ -105,12 +105,12 @@ class Footer extends React.Component {
                         <Col md="2">
                             <Nav>
                                 <NavItem>
-                                    <NavLink to="/" tag={Link}>
+                                    <NavLink className={styles.footerlink} to="/" tag={Link}>
                                         <b>Resources</b>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink
+                                    <NavLink className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/find-resources"}
                                         tag={Link}>
@@ -119,6 +119,7 @@ class Footer extends React.Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink
+                                        className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-search"}
                                         tag={Link}>
@@ -127,6 +128,7 @@ class Footer extends React.Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink
+                                        className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-listings"}
                                         tag={Link}>

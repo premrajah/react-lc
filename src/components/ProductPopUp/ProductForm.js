@@ -47,7 +47,6 @@ const useStylesTabs = makeStyles((theme) => ({
 
 class ProductForm extends Component {
 
-
     slug = null;
 
     constructor(props) {
@@ -354,9 +353,11 @@ class ProductForm extends Component {
         this.setState({ fields: fields });
     }
 
-    checkListable() {
+    checkListable(checked) {
+
+
         this.setState({
-            is_listable: !this.state.is_listable,
+            is_listable: checked,
         });
     }
 
@@ -500,16 +501,18 @@ class ProductForm extends Component {
     }
 
 
+
     handleValidationProduct() {
 
 
         let fields = this.state.fields;
 
         let validations=[
+            // this.validationCheck("title", required, "This field is required",fields),
             {field: "title",value:fields["title"], validations: [{check: Validators.required, message: 'This field is required'}]},
             {field: "brand",value:fields["brand"], validations: [{check: Validators.required, message: 'This field is required'}]},
             {field: "description",value:fields["description"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "volume",value:fields["volume"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            {field: "volume",value:fields["volume"], validations: [{check: Validators.required, message: 'This field is required'},{check: Validators.number, message: 'This field should be an integer.'}]},
             {field: "category",value:fields["category"], validations: [{check: Validators.required, message: 'This field is required'}]},
             {field: "type",value:fields["type"], validations: [{check: Validators.required, message: 'This field is required'}]},
             {field: "state",value:fields["state"], validations: [{check: Validators.required, message: 'This field is required'}]},
@@ -517,6 +520,7 @@ class ProductForm extends Component {
             {field: "units",value:fields["units"], validations: [{check: Validators.required, message: 'This field is required'}]},
 
         ]
+
 
 
         let {formIsValid,errors}= validateInputs(validations)
@@ -531,7 +535,7 @@ class ProductForm extends Component {
 
     handleChangeProduct(value,field ) {
 
-        console.log(field,value)
+        // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -544,11 +548,9 @@ class ProductForm extends Component {
         event.preventDefault();
         if (!this.handleValidationProduct()){
 
-            console.log("form invalid")
             return
 
         }
-        console.log("form valid")
 
             const form = event.currentTarget;
 
@@ -575,8 +577,9 @@ class ProductForm extends Component {
             const upc = data.get("upc");
             const part_no = data.get("part_no");
             const state = data.get("state");
-
-            // const site=data.get("deliver")
+            const is_listable = this.state.is_listable;
+            const site=data.get("deliver")
+             const    year_of_making= data.get("manufacturedDate")
 
             const productData = {
                 purpose: purpose.toLowerCase(),
@@ -588,7 +591,7 @@ class ProductForm extends Component {
                 units: units,
                 state: state,
                 volume: volume,
-                is_listable: this.state.is_listable,
+                is_listable: is_listable,
                 // "stage" : "certified",
                 sku: {
                     serial: serial,
@@ -599,7 +602,7 @@ class ProductForm extends Component {
                     part_no: part_no,
                 },
 
-                year_of_making: data.get("manufacturedDate"),
+                year_of_making: year_of_making,
             };
 
             var completeData;
@@ -609,7 +612,7 @@ class ProductForm extends Component {
                     product: productData,
                     sub_products: [],
                     artifact_ids: this.state.images,
-                    site_id: data.get("deliver"),
+                    site_id: site,
                     parent_product_id: this.props.parentProduct,
                 };
             } else {
@@ -619,16 +622,16 @@ class ProductForm extends Component {
                     // "sub_product_ids": [],
                     artifact_ids: this.state.images,
                     parent_product_id: null,
-                    site_id: data.get("deliver"),
+                    site_id: site,
                 };
             }
 
             this.setState({isSubmitButtonPressed: true})
 
+        // return false
             axios
                 .put(
-                    baseUrl + "product",
-
+                    createProductUrl,
                     completeData,
                     {
                         headers: {
@@ -771,6 +774,7 @@ class ProductForm extends Component {
                                 <div className="col-12 mt-4">
 
                                    <TextFieldWrapper
+                                       // initialValue={"My Value"}
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
                                      name="title" title="Give your product a title" />
@@ -781,7 +785,7 @@ class ProductForm extends Component {
                             <div className="row  mt-4">
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
-                                    <CheckboxWrapper onChange={this.checkListable} color="primary" name={"is_listable"} title="Allow product to be listed for sale" />
+                                    <CheckboxWrapper onChange={(checked)=>this.checkListable(checked)} color="primary" name={"is_listable"} title="Allow product to be listed for sale" />
 
                                 </div>
 
@@ -918,7 +922,7 @@ class ProductForm extends Component {
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
 
                                             <SelectArrayWrapper
-                                                handleChange={(value)=> {
+                                                onChange={(value)=> {
 
                                                 }}
                                                options={this.state.purpose} name={"purpose"} title="Purpose"/>
@@ -1015,7 +1019,8 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
 
-                                                    handleChange={(value)=> {
+                                                    select={"Select"}
+                                                    onChange={(value)=> {
 
                                                     }}
                                                     options={this.state.yearsList} name={"manufacturedDate"} title="Year Of Manufacture"/>

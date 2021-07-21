@@ -92,7 +92,7 @@ class Products extends Component {
 
         if (entry.intersectionRatio>this.state.intersectionRatio&!this.props.loading){
 
-            this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
+            // this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
 
         }
 
@@ -245,7 +245,7 @@ class Products extends Component {
                             return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         })
                             .map((item, index) => (
-                            <div key={index}>
+                            <div key={item.product._key}>
                                 <ProductItem
                                     goToLink={true}
                                     delete={false}

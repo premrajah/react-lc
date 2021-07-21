@@ -47,8 +47,6 @@ export const validateInput = (validators, value) => {
         }
     }
 
-
-
     return false;
 };
 
@@ -80,3 +78,15 @@ export const validateInputs = (validations) => {
 
     return {formIsValid:formIsValid, errors:errors};
 };
+
+
+export const validationCheck = (title, type, message,fields)=> {
+    return {
+        field: title,
+        value: fields[title],
+        validations: [{
+            check: `${Validators}.${type}`,
+            message: message
+        }]
+    }
+}

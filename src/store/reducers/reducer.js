@@ -227,8 +227,9 @@ const reducer = (state = initialState, action) => {
 
 
             let prevList= state.productWithoutParentList
-            newState.productWithoutParentList= prevList.concat(action.value.val);
+            // newState.productWithoutParentList= prevList.concat(action.value.val);
 
+            newState.productWithoutParentList= (action.value.val);
 
             newState.loading = false;
 

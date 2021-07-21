@@ -167,18 +167,18 @@ class Footer extends React.Component {
                                 <UncontrolledTooltip delay={0} target="tooltip622135962">
                                     Follow us
                                 </UncontrolledTooltip>
-                                {/*<Button*/}
-                                {/*    className="btn-icon btn-neutral btn-round btn-simple"*/}
-                                {/*    color="default"*/}
-                                {/*    href="https://www.instagram.com/loopcycle_io"*/}
-                                {/*    id="tooltip230450801"*/}
-                                {/*    target="_blank"*/}
-                                {/*    rel="noopener noreferrer">*/}
-                                {/*    <i className="fab fa-instagram" />*/}
-                                {/*</Button>*/}
-                                {/*<UncontrolledTooltip delay={0} target="tooltip230450801">*/}
-                                {/*    Like us*/}
-                                {/*</UncontrolledTooltip>*/}
+                                <Button
+                                    className="btn-icon btn-neutral btn-round btn-simple"
+                                    color="default"
+                                    href="https://www.youtube.com/channel/UCzXmbG1RV2ejUlIgRytdFfw"
+                                    id="tooltip230450801"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    <i className="fab fa-youtube" />
+                                </Button>
+                                <UncontrolledTooltip delay={0} target="tooltip230450801">
+                                    View Content
+                                </UncontrolledTooltip>
                             </div>
                         </Col>
                     </Row>

@@ -2,48 +2,23 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import "../../Util/upload-file.css";
 import { Cancel, Check, Error, Publish } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles/index";
 import axios from "axios/index";
-import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import {baseUrl, capitalizeFirstLetter, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
 import { Spinner } from "react-bootstrap";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import AddSite from "../../components/AddSite";
 import EditSite from "../../components/Sites/EditSite";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import {Form, Formik} from "formik";
-import * as Yup from "yup";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
-import {validateInput, validateInputs, Validators} from "../../Util/Validator";
+import { validateInputs, Validators} from "../../Util/Validator";
+import {capitalize} from "../../Util/GlobalFunctions";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
 
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 class ProductForm extends Component {
 
@@ -54,6 +29,7 @@ class ProductForm extends Component {
 
         this.state = {
             timerEnd: false,
+            isEditProduct:false,
             count: 0,
             nextIntervalFlag: false,
             activePage: 0, //0 logn. 1- sign up , 3 -search,
@@ -115,24 +91,51 @@ class ProductForm extends Component {
             isSubmitButtonPressed: false,
         };
 
-        this.selectCategory = this.selectCategory.bind(this);
-        this.selectType = this.selectType.bind(this);
-        this.selectState = this.selectState.bind(this);
 
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
-        this.getFiltersCategories = this.getFiltersCategories.bind(this);
-        this.selectSubCatType = this.selectSubCatType.bind(this);
 
-        this.getProducts = this.getProducts.bind(this);
-        this.selectProduct = this.selectProduct.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
-        this.showProductSelection = this.showProductSelection.bind(this);
-        this.getSites = this.getSites.bind(this);
-        this.showSubmitSite = this.showSubmitSite.bind(this);
+
         this.checkListable = this.checkListable.bind(this);
         this.showMoreDetails = this.showMoreDetails.bind(this);
-        this.phonenumber = this.phonenumber.bind(this);
+    }
+
+    getFiltersCategories() {
+        axios
+            .get(baseUrl + "category", {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    let   responseAll=[]
+                     responseAll = _.sortBy(response.data.data, ["name"]);
+
+                    this.setState({
+                        categories: responseAll,
+                    });
+
+                   //  console.log("responseAll")
+                   //  console.log(responseAll)
+                   //  let types = responseAll.filter((item) => item.name === this.props.item.product.category)[0].types
+                   //  console.log("types")
+                   // console.log(types)
+
+                    if (responseAll.length>0&&this.props.item){
+
+                        this.setState({
+                            subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
+                            states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
+                            units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+                        })
+
+                    }
+
+                },
+                (error) => {}
+            );
     }
 
     handleChangeFile(event) {
@@ -271,87 +274,7 @@ class ProductForm extends Component {
         }
     }
 
-    phonenumber(inputtxt) {
-        var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
-        var phoneWithZero = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
-
-        if (inputtxt.match(phoneNoWithCode)) {
-            return true;
-        } else if (inputtxt.match(phoneWithZero)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    handleValidationSite() {
-        let fields = this.state.fieldsSite;
-        let errors = {};
-        let formIsValid = true;
-
-        //Name
-        if (!fields["name"]) {
-            formIsValid = false;
-            errors["name"] = "Required";
-        }
-
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
-
-        if (!fields["address"]) {
-            formIsValid = false;
-            errors["address"] = "Required";
-        }
-
-        if (!fields["contact"]) {
-            formIsValid = false;
-            errors["contact"] = "Required";
-        }
-
-        if (!fields["phone"]) {
-            formIsValid = false;
-            errors["phone"] = "Required";
-        }
-        if (fields["phone"] && !this.phonenumber(fields["phone"])) {
-            formIsValid = false;
-            errors["phone"] = "Invalid Phone Number!";
-        }
-
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsSite: errors });
-        return formIsValid;
-    }
-
-    handleChangeSite(field, e) {
-        let fields = this.state.fieldsSite;
-        fields[field] = e.target.value;
-        this.setState({ fields: fields });
-    }
 
     checkListable(checked) {
 
@@ -365,103 +288,6 @@ class ProductForm extends Component {
         this.setState({
             moreDetail: !this.state.moreDetail,
         });
-    }
-
-    showSubmitSite() {
-        this.setState({
-            errorRegister: null,
-        });
-
-        this.setState({
-            showSubmitSite: !this.state.showSubmitSite,
-        });
-    }
-
-    handleSubmitSite = (event) => {
-        this.setState({
-            errorRegister: null,
-        });
-
-        event.preventDefault();
-
-        if (this.handleValidationSite()) {
-            const form = event.currentTarget;
-
-            this.setState({
-                btnLoading: true,
-            });
-
-            const data = new FormData(event.target);
-
-            const email = data.get("email");
-            const others = data.get("others");
-            const name = data.get("name");
-            const contact = data.get("contact");
-            const address = data.get("address");
-            const phone = data.get("phone");
-
-            axios
-                .put(
-                    baseUrl + "site",
-
-                    {
-                        site: {
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            address: address,
-                            phone: phone,
-                            others: others,
-                        },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // this.toggleSite()
-                    // this.getSites()
-
-                    this.props.loadSites(this.props.userDetail.token);
-
-                    this.showSubmitSite();
-                })
-                .catch((error) => {});
-        }
-    };
-
-    getSites() {
-        axios
-            .get(baseUrl + "site", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var responseAll = response.data.data;
-
-                    this.setState({
-                        sites: responseAll,
-                    });
-                },
-                (error) => {}
-            );
-    }
-
-    showProductSelection() {
-        if (!this.props.parentProduct) {
-            this.props.setProduct(this.state.product);
-            this.props.setParentProduct(this.state.parentProduct);
-        } else {
-        }
-
-        this.props.loadProducts(this.props.userDetail.token);
-        this.props.loadProductsWithoutParent(this.props.userDetail.token);
-
-        this.props.showProductPopUp({ type: "sub_product_view", show: true });
     }
 
     setUpYearList() {
@@ -478,28 +304,6 @@ class ProductForm extends Component {
             yearsList: years,
         });
     }
-
-    getProducts() {
-        axios
-            .get(baseUrl + "product", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var responseAll = response.data.data;
-
-                    this.setState({
-                        products: responseAll,
-                    });
-                },
-                (error) => {
-                    var status = error.response.status;
-                }
-            );
-    }
-
 
 
     handleValidationProduct() {
@@ -535,13 +339,26 @@ class ProductForm extends Component {
 
     handleChangeProduct(value,field ) {
 
-        // console.log(field,value)
+        console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
 
     }
 
+
+    showProductSelection=() =>{
+        if (!this.props.parentProduct) {
+            this.props.setProduct(this.state.product);
+            this.props.setParentProduct(this.state.parentProduct);
+        } else {
+        }
+
+        this.props.loadProducts(this.props.userDetail.token);
+        this.props.loadProductsWithoutParent(this.props.userDetail.token);
+
+        this.props.showProductPopUp({ type: "sub_product_view", show: true });
+    }
 
     handleSubmitProduct = (event) => {
 
@@ -552,6 +369,7 @@ class ProductForm extends Component {
 
         }
 
+
             const form = event.currentTarget;
 
             this.setState({
@@ -559,6 +377,193 @@ class ProductForm extends Component {
             });
 
             const data = new FormData(event.target);
+
+
+            if (this.props.item){
+                this.updateSubmitProduct(data)
+            }
+            else {
+
+                const title = data.get("title");
+                const purpose = data.get("purpose");
+                const condition = data.get("condition");
+                const description = data.get("description");
+                const category = data.get("category");
+                const type = data.get("type");
+                const units = data.get("units");
+
+                const serial = data.get("serial");
+                const model = data.get("model");
+                const brand = data.get("brand");
+
+                const volume = data.get("volume");
+                const sku = data.get("sku");
+                const upc = data.get("upc");
+                const part_no = data.get("part_no");
+                const state = data.get("state");
+                const is_listable = this.state.is_listable;
+                const site = data.get("deliver")
+                const year_of_making = data.get("manufacturedDate")
+
+                const productData = {
+                    purpose: purpose.toLowerCase(),
+                    condition: condition.toLowerCase(),
+                    name: title,
+                    description: description,
+                    category: category,
+                    type: type,
+                    units: units,
+                    state: state,
+                    volume: volume,
+                    is_listable: is_listable,
+                    // "stage" : "certified",
+                    sku: {
+                        serial: serial,
+                        model: model,
+                        brand: brand,
+                        sku: sku,
+                        upc: upc,
+                        part_no: part_no,
+                    },
+
+                    year_of_making: year_of_making,
+                };
+
+                var completeData;
+
+                if (this.props.parentProduct) {
+                    completeData = {
+                        product: productData,
+                        sub_products: [],
+                        artifact_ids: this.state.images,
+                        site_id: site,
+                        parent_product_id: this.props.parentProduct,
+                    };
+                } else {
+                    completeData = {
+                        product: productData,
+                        sub_products: [],
+                        // "sub_product_ids": [],
+                        artifact_ids: this.state.images,
+                        parent_product_id: null,
+                        site_id: site,
+                    };
+                }
+
+                this.setState({isSubmitButtonPressed: true})
+
+                // return false
+                axios
+                    .put(
+                        createProductUrl,
+                        completeData,
+                        {
+                            headers: {
+                                Authorization: "Bearer " + this.props.userDetail.token,
+                            },
+                        }
+                    )
+                    .then((res) => {
+                        if (!this.props.parentProduct) {
+                            this.setState({
+                                product: res.data.data,
+                                parentProduct: res.data.data,
+                            });
+                        }
+
+                        this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
+                        this.showProductSelection();
+                        this.props.loadProducts(this.props.userDetail.token);
+                        this.props.loadProductsWithoutParent();
+
+                    })
+                    .catch((error) => {
+                        this.setState({isSubmitButtonPressed: false})
+                    });
+            }
+
+    };
+    loadImages=()=> {
+        let images = [];
+
+        let currentFiles = [];
+
+        for (let k = 0; k < this.props.item.artifacts.length; k++) {
+
+            console.log(this.props.item.artifacts[k].blob_url)
+            var fileItem = {
+                status: 1,
+                id: this.props.item.artifacts[k]._key,
+                imgUrl: this.props.item.artifacts[k].blob_url,
+                file: {
+                    mime_type: this.props.item.artifacts[k].mime_type,
+                    name: this.props.item.artifacts[k].name,
+                },
+            };
+            // fileItem.status = 1  //success
+            // fileItem.id = this.state.item.artifacts[k]._key
+            // fileItem.url = this.state.item.artifacts[k].blob_url
+
+            images.push(this.props.item.artifacts[k]._key);
+
+            currentFiles.push(fileItem);
+        }
+
+        this.setState({
+            files: currentFiles,
+            images: images,
+        });
+    }
+
+
+    updateImages() {
+        axios
+            .post(
+                baseUrl + "product/artifact/replace",
+
+                {
+                    product_id: this.props.item.product._key,
+                    artifact_ids: this.state.images,
+                },
+            )
+            .then((res) => {
+                if (!this.props.parentProduct) {
+                    // this.setState({
+                    //     product: res.data.data,
+                    //     parentProduct: res.data.data,
+                    // });
+                }
+
+                this.triggerCallback();
+
+            })
+            .catch((error) => {
+
+            });
+    }
+
+    updateSite(site) {
+        axios
+            .post(
+                baseUrl + "product/site",
+
+                {
+                    product_id: this.props.item.product._key,
+                    site_id: site,
+                },
+            )
+            .then((res) => {})
+            .catch((error) => {
+
+            });
+    }
+
+    updateSubmitProduct = (formData) => {
+
+
+
+             const data = formData;
+
 
             const title = data.get("title");
             const purpose = data.get("purpose");
@@ -577,190 +582,96 @@ class ProductForm extends Component {
             const upc = data.get("upc");
             const part_no = data.get("part_no");
             const state = data.get("state");
-            const is_listable = this.state.is_listable;
-            const site=data.get("deliver")
-             const    year_of_making= data.get("manufacturedDate")
+
+            const site = data.get("deliver");
 
             const productData = {
-                purpose: purpose.toLowerCase(),
-                condition: condition.toLowerCase(),
-                name: title,
-                description: description,
-                category: category,
-                type: type,
-                units: units,
-                state: state,
-                volume: volume,
-                is_listable: is_listable,
-                // "stage" : "certified",
-                sku: {
-                    serial: serial,
-                    model: model,
-                    brand: brand,
-                    sku: sku,
-                    upc: upc,
-                    part_no: part_no,
-                },
+                id: this.props.item.product._key,
+                update: {
+                    artifacts: this.state.images,
 
-                year_of_making: year_of_making,
+                    purpose: purpose.toLowerCase(),
+                    condition: condition.toLowerCase(),
+                    name: title,
+                    description: description,
+                    category: category,
+                    type: type,
+                    units: units,
+                    state: state,
+                    volume: Number(volume),
+                    stage: "certified",
+                    is_listable: this.state.is_listable,
+                    sku: {
+                        serial: serial,
+                        model: model,
+                        brand: brand,
+                        sku: sku,
+                        upc: upc,
+                        part_no: part_no,
+                    },
+
+                    year_of_making: Number(data.get("manufacturedDate")),
+                },
             };
 
-            var completeData;
-
-            if (this.props.parentProduct) {
-                completeData = {
-                    product: productData,
-                    sub_products: [],
-                    artifact_ids: this.state.images,
-                    site_id: site,
-                    parent_product_id: this.props.parentProduct,
-                };
-            } else {
-                completeData = {
-                    product: productData,
-                    sub_products: [],
-                    // "sub_product_ids": [],
-                    artifact_ids: this.state.images,
-                    parent_product_id: null,
-                    site_id: site,
-                };
-            }
-
-            this.setState({isSubmitButtonPressed: true})
-
-        // return false
+        //     console.log(productData)
+        //
+        //
+        // return
             axios
-                .put(
-                    createProductUrl,
-                    completeData,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    }
+                .post(
+                    baseUrl + "product",
+
+                    productData
                 )
                 .then((res) => {
-                    if (!this.props.parentProduct) {
-                        this.setState({
-                            product: res.data.data,
-                            parentProduct: res.data.data,
-                        });
-                    }
 
-                    this.showProductSelection();
+                        this.updateSite(site);
+                        this.updateImages();
+                       this.props.loadCurrentProduct(this.props.item.product._key)
+                    this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
 
-                    this.props.loadProducts(this.props.userDetail.token);
-                    this.props.loadProductsWithoutParent();
+
+                    this.props.triggerCallback("edit")
+
+
                 })
-                .catch((error) => {
-                    this.setState({isSubmitButtonPressed: false})
-                });
-
+                .catch((error) => {});
 
     };
 
-    getFiltersCategories() {
-        axios
-            .get(baseUrl + "category", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var responseAll = _.sortBy(response.data.data, ["name"]);
-
-                    this.setState({
-                        categories: responseAll,
-                    });
-                },
-                (error) => {}
-            );
-    }
-
-    selectCategory() {
-        this.setState({
-            activePage: 1,
-        });
-    }
-
-    selectProduct(event) {
-        this.setState({
-            productSelected: this.state.products.filter(
-                (item) => item.title === event.currentTarget.dataset.name
-            )[0],
-        });
-
-        this.setState({
-            activePage: 5,
-        });
-    }
-
-    selectType(event) {
-        this.setState({
-            catSelected: this.state.categories.filter(
-                (item) => item.name === event.currentTarget.dataset.name
-            )[0],
-        });
-
-        this.setState({
-            subCategories: this.state.categories.filter(
-                (item) => item.name === event.currentTarget.dataset.name
-            )[0].types,
-        });
-
-        this.setState({
-            activePage: 2,
-        });
-    }
-
-    selectSubCatType(event) {
-        this.setState({
-            subCatSelected: this.state.subCategories.filter(
-                (item) => event.currentTarget.dataset.name === item.name
-            )[0],
-        });
-
-        this.setState({
-            activePage: 3,
-            states: this.state.subCategories.filter(
-                (item) => event.currentTarget.dataset.name === item.name
-            )[0].state,
-        });
-    }
-
-    selectState(event) {
-        this.setState({
-            stateSelected: event.currentTarget.dataset.name,
-        });
-
-        this.setState({
-            activePage: 0,
-
-            units: this.state.subCatSelected.units,
-        });
-    }
-
     componentDidMount() {
         window.scrollTo(0, 0);
+
         this.getFiltersCategories();
+
+
+        if (this.props.item){
+            this.loadImages()
+            this.setState({
+                isEditProduct:true,
+
+            })
+
+        }
+
 
         this.setUpYearList();
 
         this.props.loadSites(this.props.userDetail.token);
     }
 
-    classes = useStylesSelect;
 
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
 
+
         return (
             <>
                 <div className="row   pt-2 ">
                     <div className="col-12  ">
-                        <h3 className={"blue-text text-heading"}>{this.props.heading}</h3>
+                        <h3 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
                     </div>
                 </div>
 
@@ -774,7 +685,7 @@ class ProductForm extends Component {
                                 <div className="col-12 mt-4">
 
                                    <TextFieldWrapper
-                                       // initialValue={"My Value"}
+                                     initialValue={this.props.item&&this.props.item.product.name}
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
                                      name="title" title="Give your product a title" />
@@ -785,7 +696,9 @@ class ProductForm extends Component {
                             <div className="row  mt-4">
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
-                                    <CheckboxWrapper onChange={(checked)=>this.checkListable(checked)} color="primary" name={"is_listable"} title="Allow product to be listed for sale" />
+                                    <CheckboxWrapper
+                                        initialValue={this.props.item&&this.props.item.product.is_listable}
+                                        onChange={(checked)=>this.checkListable(checked)} color="primary" name={"is_listable"} title="Allow product to be listed for sale" />
 
                                 </div>
 
@@ -793,6 +706,7 @@ class ProductForm extends Component {
 
                                     <SelectArrayWrapper
 
+                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
                                         options={this.state.condition}
@@ -803,6 +717,7 @@ class ProductForm extends Component {
                                 <div className="col-md-4 col-sm-12">
 
                                     <TextFieldWrapper
+                                        initialValue={this.props.item&&this.props.item.product.sku.brand}
                                         onChange={(value)=>this.handleChangeProduct(value,"brand")}
                                         error={this.state.errors["title"]}
                                         name="brand" title="Brand" />
@@ -815,8 +730,9 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
+                                        initialValue={this.props.item&&this.props.item.product.category}
                                         option={"name"}
-                                      valueKey={"name"}
+                                        valueKey={"name"}
                                         select={"Select"}
                                         error={this.state.errors["category"]}
                                         onChange={(value)=> {
@@ -843,7 +759,7 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
-
+                                        initialValue={this.props.item&&this.props.item.product.type}
                                         option={"name"}
                                       valueKey={"name"}
                                         select={"Select"}
@@ -866,19 +782,20 @@ class ProductForm extends Component {
                                         }}
 
                                         disabled={
-                                            this.state.subCategories&&this.state.subCategories.length > 0 ? false : true
+                                            ((this.state.subCategories&&this.state.subCategories.length > 0)) ? false : true
                                     } options={this.state.subCategories?this.state.subCategories:[]} name={"type"} title="Type"/>
 
                                 </div>
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
+                                        initialValue={this.props.item&&this.props.item.product.state}
 
                                         onChange={(value)=>this.handleChangeProduct(value,"state")}
                                         error={this.state.errors["state"]}
 
                                         select={"Select"}
-                                        disabled={this.state.states.length > 0 ? false : true}
+                                        disabled={ (this.state.states.length > 0 )? false : true}
                                         options={this.state.states?this.state.states:[]} name={"state"} title="State"/>
 
                                 </div>
@@ -897,16 +814,17 @@ class ProductForm extends Component {
                                         <div className="col-6 pr-2">
                                             <SelectArrayWrapper
                                                 select={"Select"}
-
+                                                initialValue={this.props.item&&this.props.item.product.units}
                                                 onChange={(value)=>this.handleChangeProduct(value,"units")}
                                                 error={this.state.errors["units"]}
 
-                                                disabled={this.state.units.length > 0 ? false : true}
+                                                disabled={ (this.state.units.length > 0) ? false : true}
                                                 options={this.state.units} name={"units"} title="(Units)"/>
                                         </div>
                                         <div className="col-6 pl-2">
 
                                             <TextFieldWrapper
+                                                initialValue={this.props.item&&this.props.item.product.volume}
                                                 onChange={(value)=>this.handleChangeProduct(value,"volume")}
                                                 error={this.state.errors["volume"]}
                                                 name="volume" title="(Volume)" />
@@ -922,6 +840,7 @@ class ProductForm extends Component {
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
 
                                             <SelectArrayWrapper
+                                                initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
                                                 onChange={(value)=> {
 
                                                 }}
@@ -932,6 +851,8 @@ class ProductForm extends Component {
                                         <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
 
                                             <SelectArrayWrapper
+
+                                                initialValue={this.props.item&&this.props.item.site._key}
 
                                                 option={"name"}
                                               valueKey={"_key"}
@@ -987,10 +908,11 @@ class ProductForm extends Component {
                                 <div className="col-12">
 
                                     <TextFieldWrapper
+                                        initialValue={this.props.item&&this.props.item.product.description}
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
                                         multiline
-                                                      rows={4} name="description" title="Give it a description" />
+                                  rows={4} name="description" title="Give it a description" />
 
 
                                 </div>
@@ -1019,6 +941,7 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
 
+                                                    initialValue={this.props.item&&this.props.item.product.year_of_making}
                                                     select={"Select"}
                                                     onChange={(value)=> {
 
@@ -1032,27 +955,27 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
 
 
-                                                <TextFieldWrapper  name="model" title="Model" />
+                                                <TextFieldWrapper  initialValue={this.props.item&&this.props.item.product.sku.model} name="model" title="Model" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  name="serial" title="Serial Number" />
+                                                <TextFieldWrapper  initialValue={this.props.item&&this.props.item.product.sku.serial} name="serial" title="Serial Number" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  name="sku" title="Sku" />
+                                                <TextFieldWrapper  initialValue={this.props.item&&this.props.item.product.sku.sku} name="sku" title="Sku" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  name="upc" title="UPC" />
+                                                <TextFieldWrapper   initialValue={this.props.item&&this.props.item.product.sku.upc} name="upc" title="UPC" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  name="part_no" title="Part No." />
+                                                <TextFieldWrapper  initialValue={this.props.item&&this.props.item.product.sku.part_no} name="part_no" title="Part No." />
 
                                             </div>
                                         </div>
@@ -1106,97 +1029,111 @@ class ProductForm extends Component {
                                                             </div>
 
                                                             {this.state.files &&
-                                                                this.state.files.map(
-                                                                    (item, index) => (
-                                                                        <div key={index}
+                                                            this.state.files.map(
+                                                                (item, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className={
+                                                                            "file-uploader-thumbnail-container"
+                                                                        }>
+                                                                        <div
+                                                                            backgroundImage={"url("+item.imgUrl+")"}
+                                                                            data-index={
+                                                                                index
+                                                                            }
                                                                             className={
-                                                                                "file-uploader-thumbnail-container"
-                                                                            }>
-                                                                            {/*<img src={URL.createObjectURL(item)}/>*/}
-                                                                            <div
-                                                                                data-index={index}
-                                                                                // data-url={URL.createObjectURL(item.file)}
+                                                                                "file-uploader-thumbnail"
+                                                                            }
 
-                                                                                className={
-                                                                                    "file-uploader-thumbnail"
-                                                                                }
-                                                                                style={{
-                                                                                    backgroundImage:
-                                                                                        "url(" +
-                                                                                        URL.createObjectURL(
-                                                                                            item.file
-                                                                                        ) +
-                                                                                        ")",
-                                                                                }}>
-                                                                                {item.status ===
-                                                                                    0 && (
-                                                                                    <Spinner
-                                                                                        as="span"
-                                                                                        animation="border"
-                                                                                        size="sm"
-                                                                                        role="status"
-                                                                                        aria-hidden="true"
-                                                                                        style={{
-                                                                                            color:
-                                                                                                "#cccccc",
-                                                                                        }}
-                                                                                        className={
-                                                                                            "center-spinner"
-                                                                                        }
-                                                                                    />
-                                                                                )}
+                                                                            style={{
+                                                                                // backgroundImage: "url("+ (item.imgUrl?item.imgUrl
+                                                                                //         : URL.createObjectURL(
+                                                                                //             item.file
+                                                                                //         )) + ")"
 
-                                                                                {item.status ===
-                                                                                    1 && (
-                                                                                    <Check
-                                                                                        style={{
-                                                                                            color:
-                                                                                                "#cccccc",
-                                                                                        }}
-                                                                                        className={
-                                                                                            " file-upload-img-thumbnail-check"
-                                                                                        }
-                                                                                    />
-                                                                                )}
-                                                                                {item.status ===
-                                                                                    2 && (
-                                                                                    <span
-                                                                                        className={
-                                                                                            "file-upload-img-thumbnail-error"
-                                                                                        }>
-                                                                                        <Error
-                                                                                            style={{
-                                                                                                color:
-                                                                                                    "red",
-                                                                                            }}
-                                                                                            className={
-                                                                                                " "
-                                                                                            }
-                                                                                        />
-                                                                                        <p>
-                                                                                            Error!
-                                                                                        </p>
-                                                                                    </span>
-                                                                                )}
-                                                                                <Cancel
-                                                                                    data-name={
-                                                                                        item.file
-                                                                                            .name
-                                                                                    }
-                                                                                    data-index={
-                                                                                        item.id
-                                                                                    }
-                                                                                    onClick={this.handleCancel.bind(
-                                                                                        this
-                                                                                    )}
+                                                                                // backgroundImage:`url(${item.imgUrl})`,
+                                                                                backgroundImage: "url(" +item.imgUrl  + ")",
+                                                                            }}
+
+                                                                            // style={{ backgroundImage: "url(" + item.imgUrl?item.imgUrl:""+")"}}
+                                                                        >
+                                                                            {item.status ===
+                                                                            0 && (
+                                                                                <Spinner
+                                                                                    as="span"
+                                                                                    animation="border"
+                                                                                    size="sm"
+                                                                                    role="status"
+                                                                                    aria-hidden="true"
+                                                                                    style={{
+                                                                                        color:
+                                                                                            "#cccccc",
+                                                                                    }}
                                                                                     className={
-                                                                                        "file-upload-img-thumbnail-cancel"
+                                                                                        "center-spinner"
                                                                                     }
                                                                                 />
-                                                                            </div>
+                                                                            )}
+
+                                                                            {item.status ===
+                                                                            1 && (
+                                                                                <Check
+                                                                                    style={{
+                                                                                        color:
+                                                                                            "#cccccc",
+                                                                                    }}
+                                                                                    className={
+                                                                                        " file-upload-img-thumbnail-check"
+                                                                                    }
+                                                                                />
+                                                                            )}
+                                                                            {item.status ===
+                                                                            2 && (
+                                                                                <span
+                                                                                    className={
+                                                                                        "file-upload-img-thumbnail-error"
+                                                                                    }>
+                                                                                                <Error
+                                                                                                    style={{
+                                                                                                        color:
+                                                                                                            "red",
+                                                                                                    }}
+                                                                                                    className={
+                                                                                                        " "
+                                                                                                    }
+                                                                                                />
+                                                                                                <p>
+                                                                                                    Error!
+                                                                                                </p>
+                                                                                            </span>
+                                                                            )}
+                                                                            <Cancel
+                                                                                data-name={
+                                                                                    item.file &&
+                                                                                    item
+                                                                                        .file[
+                                                                                        "name"
+                                                                                        ]
+                                                                                        ? item
+                                                                                            .file[
+                                                                                            "name"
+                                                                                            ]
+                                                                                        : ""
+                                                                                }
+                                                                                data-index={
+                                                                                    item.id
+                                                                                }
+                                                                                onClick={this.handleCancel.bind(
+                                                                                    this
+                                                                                )}
+                                                                                className={
+                                                                                    "file-upload-img-thumbnail-cancel"
+                                                                                }
+                                                                            />
                                                                         </div>
-                                                                    )
-                                                                )}
+                                                                    </div>
+                                                                )
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1247,16 +1184,6 @@ class ProductForm extends Component {
 }
 
 
-const useStylesSelect = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(0),
-        width: "100%",
-        // minWidth: auto,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(0),
-    },
-}));
 
 
 const mapStateToProps = (state) => {
@@ -1288,8 +1215,11 @@ const mapDispachToProps = (dispatch) => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadCurrentProduct: (data) =>
+            dispatch(actionCreator.loadCurrentProduct(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductForm);

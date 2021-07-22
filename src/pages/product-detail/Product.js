@@ -77,7 +77,6 @@ class ProductView extends Component {
                                         history={this.props.history}
                                         hideRegister={true}
                                         item={this.props.currentProduct}
-
                                     />
                                 </>
                             )}

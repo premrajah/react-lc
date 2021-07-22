@@ -77,7 +77,7 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset:1,
+    productPageOffset:0,
     productPageSize:20,
     lastPageReached:false,
     serviceAgentRequests: [],

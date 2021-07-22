@@ -9,7 +9,7 @@ const TextFieldWrapper = ({name,title,validators,onChange,error,initialValue, ..
 
     // const [field, mata] = useField(name)
 
-    const [value,setValue] = useState(initialValue)
+    const [field,setField] = useState(initialValue)
 
 
         const configTextField = {
@@ -18,14 +18,20 @@ const TextFieldWrapper = ({name,title,validators,onChange,error,initialValue, ..
         variant: 'outlined',
         fullWidth: true,
     }
+    useEffect(()=>{
+        if (onChange)
+        onChange(initialValue)
+    },[])
 
     const handleChange = (event) => {
 
-            const {inputValue} = event.target;
+           const {value} = event.target;
             // console.log(value)
-           setValue(inputValue)
+           setField(value)
+
+
             if (onChange)
-             onChange(inputValue)
+             onChange(value)
     };
 
     return(
@@ -36,7 +42,7 @@ const TextFieldWrapper = ({name,title,validators,onChange,error,initialValue, ..
         </div>
 
            <div className={"field-box mb-1"}>
-               <TextField  value={value} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
+               <TextField  value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
            </div>
             {error && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{error.message}</span>}
         </>

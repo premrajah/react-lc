@@ -113,6 +113,7 @@ class AutocompleteCustom extends Component {
             showSuggestions: false,
             userInput: e.currentTarget.innerText,
             selected:true,
+            image:e.currentTarget.dataset.image
 
         });
 
@@ -204,6 +205,7 @@ class AutocompleteCustom extends Component {
                                     data-org={suggestion.org}
                                     data-name={suggestion.org}
                                     key={suggestion}
+                                    data-image={suggestion.company?CompaniesHouseLogo:LoopcycleLogo}
                                     onClick={onClick}>
                                     <div className="d-flex justify-content-start align-items-center">
                                         {suggestion.company ? (
@@ -251,7 +253,7 @@ class AutocompleteCustom extends Component {
                 {this.state.selected &&  <div className=" search-card m-1" style={{width: "100%"}}>
                     <div className={"col-2"}>
                     <div className={"img-left p-1"}>
-                        <img className="card-img-top" src={CompaniesHouseLogo} alt="Card image cap" />
+                        <img className="card-img-top" src={this.state.image} alt="Card image cap" />
 
                     </div>
                     </div>

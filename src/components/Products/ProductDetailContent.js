@@ -28,6 +28,7 @@ import InfoTabContent from "./InfoTabContent";
 import SubProductsTab from "./SubProductsTab";
 import CustomSnackbar from "../UIComponents/CustomSnackbar";
 import ArtifactProductsTab from "./ArtifactProductsTab";
+import ProductForm from "../ProductPopUp/ProductForm";
 
 class ProductDetailContent extends Component {
     slug;
@@ -68,6 +69,7 @@ class ProductDetailContent extends Component {
             org_id: null,
             currentReleaseId: null,
             cancelReleaseSuccess: false,
+            initialValues:{}
 
         };
 
@@ -308,7 +310,7 @@ class ProductDetailContent extends Component {
 
     triggerCallback() {
         this.showProductEdit();
-        this.props.triggerCallback();
+        // this.props.triggerCallback();
     }
 
     deleteItem() {
@@ -758,11 +760,18 @@ class ProductDetailContent extends Component {
                                 </button>
                             </div>
 
-                            <ProductEditForm
-                                triggerCallback={(action) => this.callBackSubmit(action)}
-                                isDuplicate={this.state.productDuplicate}
-                                productId={this.state.item.product._key}
-                            />
+                            {/*<ProductEditForm*/}
+                            {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
+                            {/*    isDuplicate={this.state.productDuplicate}*/}
+                            {/*    productId={this.state.item.product._key}*/}
+                            {/*/>*/}
+                            <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
+                                <div className="col mobile-menu">
+                                    <div className="form-col-left col-12">
+                            <ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />
+                                    </div>
+                                </div>
+                            </div>
 
                         </Modal>
 

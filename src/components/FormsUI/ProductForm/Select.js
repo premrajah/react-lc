@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Field, ErrorMessage} from 'formik';
 import {TextField} from "formik-material-ui";
 import {MenuItem} from "@material-ui/core";
@@ -6,7 +6,7 @@ import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
 const SelectArrayWrapper = (props) => {
-    const {title,option,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
+    const {title,option,initialValue,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState(null);
 
@@ -18,6 +18,12 @@ const SelectArrayWrapper = (props) => {
            if (onChange)
             onChange(event.target.value)
     };
+
+    useEffect(()=>{
+        if (onChange)
+            onChange(initialValue)
+    },[])
+
 
     return (
         <>
@@ -43,7 +49,7 @@ const SelectArrayWrapper = (props) => {
                 </option>}
 
                 {options.map((item, index) => (
-                    <option selected={!select&&index==0}  key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
+                    <option selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}   key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
                         {option?item[option]:item}
                     </option>
                 ))}

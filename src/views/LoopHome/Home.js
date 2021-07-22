@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import Footer from "../Footer/Footer";
-import WaveBorder from "../Footer/WaveBorder";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 
@@ -78,7 +77,7 @@ class Home extends Component {
                                     <div className="row no-gutters">
                                         <div className="col-12">
                                             <h1 className={"white-text"}>
-                                                A Platform for the future
+                                                Create Change
                                             </h1>
                                         </div>
 
@@ -87,7 +86,7 @@ class Home extends Component {
                                                 <p className={"white-text"}>
                                                     Loopcycle’s product traceability platform redefines the management,
                                                     recovery and resale of valuable secondary products, driving integrity
-                                                    within the reuse marketplace.
+                                                    within the reuse market.
                                                 </p>
                                             </div>
                                         </div>
@@ -120,11 +119,6 @@ class Home extends Component {
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="container-fluid container-light-blue pt-5">
-                        <div className="row no-gutters">
-                            <WaveBorder />
                         </div>
                     </div>
                     <div className="container-fluid container-blue pt-5">
@@ -185,7 +179,7 @@ class Home extends Component {
                                 <h3 className={"blue-text text-center "}>
                                     <b>
                                         View all resources on the <br />
-                                        Loopcycle Platform.
+                                        Loopcycle Platform
                                     </b>
                                 </h3>
                             </div>

@@ -35,7 +35,6 @@ class Footer extends React.Component {
     render() {
         return (
             <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
-                {/*<Container>*/}
                     <Row className={""}>
                         <Col md="4">
                             <div className="row no-gutters mb-5">
@@ -70,25 +69,13 @@ class Footer extends React.Component {
                                         About
                                     </a>
                                 </NavItem>
-                                {/*<NavItem>*/}
-                                {/*  <a className={styles.footerlink} href="https://loopcycle.io/what-we-do/" target="_blank" rel="noopener noreferrer">What We Do</a>*/}
-                                {/*</NavItem>*/}
-                                <NavItem>
-                                    <a
-                                        className={styles.footerlink}
-                                        href="https://loopcycle.io/how-it-works/"
-                                        target="_blank"
-                                        rel="noopener noreferrer">
-                                        How It Works
-                                    </a>
-                                </NavItem>
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
                                         href="https://loopcycle.io/news/"
                                         target="_blank"
                                         rel="noopener noreferrer">
-                                        News
+                                        Latest
                                     </a>
                                 </NavItem>
                                 <NavItem>
@@ -208,7 +195,7 @@ class Footer extends React.Component {
                             </ul>
                         </div>
                     </div>
-                {/*</Container>*/}
+
             </footer>
         );
     }

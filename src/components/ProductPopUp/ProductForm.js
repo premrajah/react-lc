@@ -1157,7 +1157,7 @@ class ProductForm extends Component {
                                                 "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                             }
                                         disabled={this.state.isSubmitButtonPressed}>
-                                            Add Product
+                                            {this.props.item?"Update Product":"Add Product"}
                                         </button>
                                     )
                                 ) : (
@@ -1167,7 +1167,7 @@ class ProductForm extends Component {
                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                         }
                                         disabled={this.state.isSubmitButtonPressed}>
-                                        Add Product
+                                        {this.props.item?"Update Product":"Add Product"}
                                     </button>
                                 )}
                             </div>

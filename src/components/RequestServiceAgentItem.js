@@ -9,6 +9,7 @@ import moment from "moment/moment";
 import { withStyles } from "@material-ui/core/styles/index";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
+import {Link} from "react-router-dom";
 
 class RequestServiceAgentItem extends Component {
     constructor(props) {
@@ -331,10 +332,11 @@ class RequestServiceAgentItem extends Component {
                             </div>
                             <div className={"col-5 pl-2  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
-                                    {this.state.item.product.product.name}
+                                    <Link to={`/p/${this.state.item.product.product._key}`}>{this.state.item.product.product.name}</Link>
                                 </p>
                                 <div style={{ margin: "0" }}>
-                                    <Org orgId={this.state.item.originator._id} /> →
+                                    <Org orgId={this.state.item.originator._id} />
+                                    <span>→</span>
                                     <Org orgId={this.state.item.responder._id} />
                                 </div>
 

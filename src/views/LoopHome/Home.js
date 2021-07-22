@@ -85,9 +85,9 @@ class Home extends Component {
                                         <div className="col-12">
                                             <div className="row no-gutters">
                                                 <p className={"white-text"}>
-                                                    Loopcycle is a match making platform for
-                                                    organisations that generate waste and for those
-                                                    that need waste to manufacture their products.
+                                                    Loopcycle’s product traceability platform redefines the management,
+                                                    recovery and resale of valuable secondary products, driving integrity
+                                                    within the reuse marketplace.
                                                 </p>
                                             </div>
                                         </div>

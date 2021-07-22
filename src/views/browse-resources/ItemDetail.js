@@ -407,9 +407,7 @@ class ItemDetail extends Component {
                                                         <p
                                                             style={{ fontSize: "18px" }}
                                                             className="  mb-1">
-                                                            {this.state.item.listing.category},
-                                                            {this.state.item.listing.type},
-                                                            {this.state.item.listing.state}
+                                                            {this.state.item.listing.category}, {this.state.item.listing.type}, {this.state.item.listing.state}, {this.state.item.listing.volume}{this.state.item.listing.units}
                                                         </p>
                                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
                                                         {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}

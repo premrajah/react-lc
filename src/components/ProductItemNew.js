@@ -189,7 +189,7 @@ class ProductItemNew extends Component {
                             </div>
                             <div className={"col-7 pl-2  content-box-listing"}>
 
-                                <p style={{ fontSize: "18px" }} className=" mb-1">
+                                <p style={{ fontSize: "18px" }} className=" mb-1 text-caps">
                                     <Link
                                         onClick={this.goToProduct}
                                         to={"/product/" + this.props.item.product._key}>
@@ -198,10 +198,10 @@ class ProductItemNew extends Component {
                                 </p>
 
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span>{this.props.item.product.purpose}</span>
+                                    <span className={"text-caps"}>{this.props.item.product.purpose}, </span>
                                     {this.props.item.product.condition && (
-                                        <span>
-                                            , <b>{capitalizeFirstLetter(this.props.item.product.condition)}</b>
+                                        <span className={"text-bold text-caps"}>
+                                            {this.props.item.product.condition}
                                         </span>
                                     )}
                                 </p>
@@ -266,16 +266,16 @@ class ProductItemNew extends Component {
                                     )}
                                 </div>
                                 <div className={"col-7 pl-2  content-box-listing"}>
-                                    <p style={{ fontSize: "18px" }} className=" mb-1">
+                                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
                                         {this.props.item.name}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1">
                                         {this.props.item.purpose}
                                     </p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                    <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
                                         <span className="mr-1">{this.props.item.category},</span>
                                         <span className="mr-1">{this.props.item.type},</span>
-                                        <span className="mr-1">{this.props.item.state},</span>
+                                        <span className="mr-1 ">{this.props.item.state},</span>
                                         <span>{this.props.item.volume}</span>
                                         <span>{this.props.item.units}</span>
                                     </p>

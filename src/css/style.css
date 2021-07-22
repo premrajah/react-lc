@@ -3600,7 +3600,7 @@ a.page-link:hover {
     border: none!important;
 }
 
-#searchBar{padding-left: 130px;}
+#searchBar{padding-left: 140px;}
 
 
 .btn-link:disabled{
@@ -3649,4 +3649,7 @@ a.page-link:hover {
 .MuiAlert-filledSuccess{
 
     background: #07AD88!important;
+}
+.company-logo-select{
+    height: 32px;
 }

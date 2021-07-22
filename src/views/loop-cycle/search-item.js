@@ -118,9 +118,7 @@ class SearchItem extends Component {
                             {this.props.item.search.name}
                         </p>
                         <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                            {this.props.item.search.category}, {this.props.item.search.type},
-                            {this.props.item.search.state} {this.props.item.search.volume}
-                            {this.props.item.search.units}
+                            {this.props.item.search.category}, {this.props.item.search.type}, {this.props.item.search.state} {this.props.item.search.volume}{this.props.item.search.units}
                         </p>
 
                         <p style={{ fontSize: "16px" }} className=" mb-1">

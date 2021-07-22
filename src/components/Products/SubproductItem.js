@@ -8,6 +8,7 @@ import MoreMenu from "../MoreMenu";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 const SubproductItem = (props) => {
 
@@ -78,11 +79,11 @@ const SubproductItem = (props) => {
                         <h5>{item.name}</h5>
                     </Link>
                 </div>
-                <div className="text-muted">{item.purpose}</div>
-                <div className="text-muted" style={{lineHeight: '22px'}}>
+                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
+                <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
                     <span className="mr-1">{item.category},</span>
                     <span className="mr-1">{item.type},</span>
-                    <span className="mr-1">{item.state},</span>
+                    <span className="mr-1 ">{capitalize(item.state)},</span>
                     <span>{item.volume}</span>
                     <span>{item.units}</span>
                 </div>

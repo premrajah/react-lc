@@ -3646,3 +3646,7 @@ a.page-link:hover {
 .border-red-error .MuiOutlinedInput-notchedOutline{
     border: 1px solid #f44336!important;
 }
+.MuiAlert-filledSuccess{
+
+    background: #07AD88!important;
+}

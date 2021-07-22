@@ -84,7 +84,7 @@ class AutocompleteCustom extends Component {
         // alert(userInput)
         this.setState({
             activeSuggestion: 0,
-            // filteredSuggestions,
+            filteredSuggestions:[],
             showSuggestions: true,
             userInput: e.currentTarget.value,
         });
@@ -257,13 +257,16 @@ class AutocompleteCustom extends Component {
 
                     </div>
                     </div>
-                    <div className={"col-10"}>
+                    <div className={"col-8"}>
                     <div className={"text-right"}>
                         <p style={{color:"#293842", fontWeight:"600",textAlign: "left"}}>{this.state.userInput}</p>
                         {/*<p className={"selected-item"}>Rate and Review</p>*/}
 
-                        <span onClick={this.resetSelection} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
                     </div>
+
+                    </div>
+                    <div className={"col-2"}>
+                        <span onClick={this.resetSelection} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
                     </div>
                 </div>}
 

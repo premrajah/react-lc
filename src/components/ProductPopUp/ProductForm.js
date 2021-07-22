@@ -1036,8 +1036,12 @@ class ProductForm extends Component {
                                                                         className={
                                                                             "file-uploader-thumbnail-container"
                                                                         }>
+                                                                        {console.log(">> ", "url("+ (item.imgUrl?item.imgUrl
+                                                                            : URL.createObjectURL(
+                                                                                item.file
+                                                                            )) + ")")}
                                                                         <div
-                                                                            backgroundImage={"url("+item.imgUrl+")"}
+
                                                                             data-index={
                                                                                 index
                                                                             }
@@ -1046,16 +1050,9 @@ class ProductForm extends Component {
                                                                             }
 
                                                                             style={{
-                                                                                // backgroundImage: "url("+ (item.imgUrl?item.imgUrl
-                                                                                //         : URL.createObjectURL(
-                                                                                //             item.file
-                                                                                //         )) + ")"
+                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
 
-                                                                                // backgroundImage:`url(${item.imgUrl})`,
-                                                                                backgroundImage: "url(" +item.imgUrl  + ")",
                                                                             }}
-
-                                                                            // style={{ backgroundImage: "url(" + item.imgUrl?item.imgUrl:""+")"}}
                                                                         >
                                                                             {item.status ===
                                                                             0 && (

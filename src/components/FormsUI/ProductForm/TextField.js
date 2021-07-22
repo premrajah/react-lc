@@ -11,17 +11,17 @@ const TextFieldWrapper = ({name,title,validators,onChange,error,initialValue, ..
 
     const [field,setField] = useState(initialValue)
 
-
+    useEffect(()=>{
+        if (onChange)
+            onChange(initialValue)
+    },[])
         const configTextField = {
         // ...field,
         ...otherProps,
         variant: 'outlined',
         fullWidth: true,
     }
-    useEffect(()=>{
-        if (onChange)
-        onChange(initialValue)
-    },[])
+
 
     const handleChange = (event) => {
 

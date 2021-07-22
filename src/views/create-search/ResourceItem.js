@@ -151,7 +151,7 @@ class ResourceItem extends Component {
                                 )}
                             </div>
                             <div className={"col-4 pl-3 content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
+                                <p style={{ fontSize: "18px" }} className="text-caps mb-1 list-title">
                                     {this.props.item.listing.name}
                                 </p>
                                 <p style={{ fontSize: "16px" }} className=" mb-1 ">
@@ -162,7 +162,7 @@ class ResourceItem extends Component {
 
                                 <p
                                     style={{ fontSize: "16px" }}
-                                    className="text-mute mb-1 text-cabs">
+                                    className="text-mute mb-1 text-caps">
                                     {this.props.item.listing.category}, {this.props.item.listing.type}, {this.props.item.listing.state}, {this.props.item.listing.volume}{this.props.item.listing.units}
                                 </p>
                                 {/*<p*/}

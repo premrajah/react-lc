@@ -503,7 +503,7 @@ class ViewSearch extends Component {
                                                                 <div className="col-8 text-left">
                                                                     <h5
                                                                         className={
-                                                                            "blue-text text-heading"
+                                                                            "text-caps blue-text text-heading"
                                                                         }>
                                                                         {
                                                                             this.state

@@ -69,21 +69,21 @@ class Home extends Component {
                 <Sidebar />
                 <HeaderDark />
                 <div className="wrapper homepage">
-                    <div className="container-fluid container-light-blue pt-5">
+                    <div className="container-fluid  pt-5">
                         <div className="container   pt-5 pb-5">
 
                             <div className="row no-gutters">
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className={"white-text"}>
+                                            <h1 className={"blue-text"}>
                                                 Create Change
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className={"white-text"}>
+                                                <p className="blue-text">
                                                     Loopcycle’s product traceability platform redefines the management,
                                                     recovery and resale of valuable secondary products, driving integrity
                                                     within the reuse market.
@@ -100,7 +100,7 @@ class Home extends Component {
                                                 rel="noopener noreferrer"
                                                 type="button"
                                                 style={{ textDecoration: "none", color: "#3F3C6E" }}
-                                                className="mr-2 btn btn-link white-border-btn mt-2 mb-2">
+                                                className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />
                                             </a>
                                         </div>

@@ -12,6 +12,7 @@ import ProductEditForm from "./ProductEditForm";
 import ProductDetail from "./Products/ProductDetail";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
+import {capitalize} from "../Util/GlobalFunctions";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -269,13 +270,13 @@ class ProductItemNew extends Component {
                                     <p style={{ fontSize: "18px" }} className="text-caps mb-1">
                                         {this.props.item.name}
                                     </p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
                                         {this.props.item.purpose}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
                                         <span className="mr-1">{this.props.item.category},</span>
                                         <span className="mr-1">{this.props.item.type},</span>
-                                        <span className="mr-1 ">{this.props.item.state},</span>
+                                        <span className="mr-1 ">{capitalize(this.props.item.state)},</span>
                                         <span>{this.props.item.volume}</span>
                                         <span>{this.props.item.units}</span>
                                     </p>

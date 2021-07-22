@@ -8,7 +8,7 @@ import ErrorOutline from "@material-ui/icons/ErrorOutline";
 const SelectArrayWrapper = (props) => {
     const {title,option,initialValue,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
 
-    const [value, setValue] = React.useState(null);
+    const [value, setValue] = React.useState();
 
     const handleChange = (event) => {
         setValue(event.target.value);

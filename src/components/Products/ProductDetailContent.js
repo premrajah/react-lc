@@ -644,7 +644,7 @@ class ProductDetailContent extends Component {
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-8">
-                                                <h4 className={"blue-text text-heading"}>
+                                                <h4 className="blue-text text-heading text-caps">
                                                     {this.state.item.product.name}
                                                 </h4>
                                             </div>
@@ -712,6 +712,7 @@ class ProductDetailContent extends Component {
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title="Product Info">
                                                <InfoTabContent item={this.props.item} />
+
                                             </Tab>
 
                                             <Tab eventKey="subproducts" title="Subproducts">

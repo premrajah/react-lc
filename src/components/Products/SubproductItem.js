@@ -100,7 +100,7 @@ const SubproductItem = (props) => {
                     <div className={"text-gray-light small "}>
                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                     </div>
-                    <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />
+                    {!props.hideMoreMenu&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
                 </div>
             </div>
         </div>

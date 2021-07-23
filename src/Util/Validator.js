@@ -80,13 +80,12 @@ export const validateInputs = (validations) => {
 };
 
 
-export const validationCheck = (title, type, message,fields)=> {
+export const validateFormatCreate = (title, validations,fields)=> {
     return {
         field: title,
         value: fields[title],
-        validations: [{
-            check: `${Validators}.${type}`,
-            message: message
-        }]
+        validations: validations
     }
 }
+
+

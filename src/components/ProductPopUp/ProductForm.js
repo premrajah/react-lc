@@ -15,7 +15,7 @@ import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
-import { validateInputs, Validators} from "../../Util/Validator";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {capitalize} from "../../Util/GlobalFunctions";
 
 
@@ -311,17 +311,19 @@ class ProductForm extends Component {
 
         let fields = this.state.fields;
 
+
+
+
         let validations=[
-            // this.validationCheck("title", required, "This field is required",fields),
-            {field: "title",value:fields["title"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "brand",value:fields["brand"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "description",value:fields["description"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "volume",value:fields["volume"], validations: [{check: Validators.required, message: 'This field is required'},{check: Validators.number, message: 'This field should be an integer.'}]},
-            {field: "category",value:fields["category"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "type",value:fields["type"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "state",value:fields["state"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "deliver",value:fields["deliver"], validations: [{check: Validators.required, message: 'This field is required'}]},
-            {field: "units",value:fields["units"], validations: [{check: Validators.required, message: 'This field is required'}]},
+            validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
+            validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),
 
         ]
 

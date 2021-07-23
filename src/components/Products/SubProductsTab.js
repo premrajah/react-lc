@@ -48,7 +48,7 @@ class SubProductsTab extends Component {
 
         return (
             <>
-                {this.props.userDetail.orgId===this.props.item.org._id&& <p
+                {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&& <p
                     style={{ margin: "10px 0px" }}
                     className={
                         "green-text forgot-password-link text-mute small"
@@ -65,7 +65,7 @@ class SubProductsTab extends Component {
                         {this.props.item.sub_products.map(
                             (item, index) => (
                                 <SubproductItem
-                                    hideMoreMenu={this.props.userDetail.orgId===this.props.item.org._id?false:true}
+                                    hideMoreMenu={this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id?false:true}
                                     key={index}
                                     item={item}
                                     parentId={this.props.item.product._key}

@@ -4,7 +4,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import LogoNew from "../../img/logo-cropped.png";
 import HeaderLogoSvg from '../../img/loopcycle_header_logo.svg';
 import { connect } from "react-redux";
@@ -199,7 +199,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/search-form"}
                                         className="nav-link d-none d-lg-block green-link "
                                         color="default">
-                                        Create a search
+                                        Create Search
                                     </Link>
                                 </NavItem>
 
@@ -208,7 +208,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/list-form"}
                                         className="nav-link d-none d-lg-block green-link "
                                         color="default">
-                                        Create a Listing
+                                        Create Listing
                                     </Link>
                                 </NavItem>
                             </>
@@ -260,7 +260,7 @@ class ComponentsNavbar extends React.Component {
                                     <button className="btn btn-link text-dark btn-inbox">
                                         <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
                                             <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
-                                                <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
+                                                <NotificationsNoneIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>
                                     </button>

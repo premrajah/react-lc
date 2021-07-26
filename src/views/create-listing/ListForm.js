@@ -784,7 +784,7 @@ class ListForm extends Component {
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle={"Create a Listing"} />
+                        <PageHeader pageTitle="Create Listing" />
 
                         <div className={this.state.page === 1 ? "" : "d-none"}>
                             <div className="row add-listing-container   pb-5 pt-2">

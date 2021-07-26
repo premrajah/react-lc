@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import Footer from "../Footer/Footer";
-import WaveBorder from "../Footer/WaveBorder";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 
@@ -70,24 +69,24 @@ class Home extends Component {
                 <Sidebar />
                 <HeaderDark />
                 <div className="wrapper homepage">
-                    <div className="container-fluid container-light-blue pt-5">
+                    <div className="container-fluid  pt-5">
                         <div className="container   pt-5 pb-5">
 
                             <div className="row no-gutters">
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className={"white-text"}>
-                                                A Platform for the future
+                                            <h1 className={"blue-text"}>
+                                                Create Change
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className={"white-text"}>
-                                                    Loopcycle is a match making platform for
-                                                    organisations that generate waste and for those
-                                                    that need waste to manufacture their products.
+                                                <p className="blue-text">
+                                                    Loopcycle’s product traceability platform redefines the management,
+                                                    recovery and resale of valuable secondary products, driving integrity
+                                                    within the reuse market.
                                                 </p>
                                             </div>
                                         </div>
@@ -101,7 +100,7 @@ class Home extends Component {
                                                 rel="noopener noreferrer"
                                                 type="button"
                                                 style={{ textDecoration: "none", color: "#3F3C6E" }}
-                                                className="mr-2 btn btn-link white-border-btn mt-2 mb-2">
+                                                className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />
                                             </a>
                                         </div>
@@ -120,11 +119,6 @@ class Home extends Component {
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="container-fluid container-light-blue pt-5">
-                        <div className="row no-gutters">
-                            <WaveBorder />
                         </div>
                     </div>
                     <div className="container-fluid container-blue pt-5">
@@ -185,7 +179,7 @@ class Home extends Component {
                                 <h3 className={"blue-text text-center "}>
                                     <b>
                                         View all resources on the <br />
-                                        Loopcycle Platform.
+                                        Loopcycle Platform
                                     </b>
                                 </h3>
                             </div>

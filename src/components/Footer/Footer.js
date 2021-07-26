@@ -35,7 +35,6 @@ class Footer extends React.Component {
     render() {
         return (
             <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
-                {/*<Container>*/}
                     <Row className={""}>
                         <Col md="4">
                             <div className="row no-gutters mb-5">
@@ -70,25 +69,13 @@ class Footer extends React.Component {
                                         About
                                     </a>
                                 </NavItem>
-                                {/*<NavItem>*/}
-                                {/*  <a className={styles.footerlink} href="https://loopcycle.io/what-we-do/" target="_blank" rel="noopener noreferrer">What We Do</a>*/}
-                                {/*</NavItem>*/}
-                                <NavItem>
-                                    <a
-                                        className={styles.footerlink}
-                                        href="https://loopcycle.io/how-it-works/"
-                                        target="_blank"
-                                        rel="noopener noreferrer">
-                                        How It Works
-                                    </a>
-                                </NavItem>
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
                                         href="https://loopcycle.io/news/"
                                         target="_blank"
                                         rel="noopener noreferrer">
-                                        News
+                                        Latest
                                     </a>
                                 </NavItem>
                                 <NavItem>
@@ -160,7 +147,7 @@ class Footer extends React.Component {
                                 <Button
                                     className="btn-icon btn-neutral btn-round btn-simple"
                                     color="default"
-                                    href="https://twitter.com/Loopcycle"
+                                    href="https://twitter.com/loopcycle_"
                                     id="tooltip622135962"
                                     target="_blank"
                                     rel="noopener noreferrer">
@@ -169,18 +156,18 @@ class Footer extends React.Component {
                                 <UncontrolledTooltip delay={0} target="tooltip622135962">
                                     Follow us
                                 </UncontrolledTooltip>
-                                {/*<Button*/}
-                                {/*    className="btn-icon btn-neutral btn-round btn-simple"*/}
-                                {/*    color="default"*/}
-                                {/*    href="https://www.instagram.com/loopcycle_io"*/}
-                                {/*    id="tooltip230450801"*/}
-                                {/*    target="_blank"*/}
-                                {/*    rel="noopener noreferrer">*/}
-                                {/*    <i className="fab fa-instagram" />*/}
-                                {/*</Button>*/}
-                                {/*<UncontrolledTooltip delay={0} target="tooltip230450801">*/}
-                                {/*    Like us*/}
-                                {/*</UncontrolledTooltip>*/}
+                                <Button
+                                    className="btn-icon btn-neutral btn-round btn-simple"
+                                    color="default"
+                                    href="https://www.youtube.com/channel/UCzXmbG1RV2ejUlIgRytdFfw"
+                                    id="tooltip230450801"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    <i className="fab fa-youtube" />
+                                </Button>
+                                <UncontrolledTooltip delay={0} target="tooltip230450801">
+                                    View Content
+                                </UncontrolledTooltip>
                             </div>
                         </Col>
                     </Row>
@@ -210,7 +197,7 @@ class Footer extends React.Component {
                             </ul>
                         </div>
                     </div>
-                {/*</Container>*/}
+
             </footer>
         );
     }

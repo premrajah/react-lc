@@ -43,7 +43,8 @@ import {
     PRODUCT_RELEASE,
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
-    CURRENT_PRODUCT
+    CURRENT_PRODUCT,
+    GET_LISTINGS,
 } from "../types";
 
 export const initialState = {
@@ -69,6 +70,7 @@ export const initialState = {
     productList: [],
     productWithoutParentList: [],
     siteList: [],
+    allListings: [],
     showSitePopUp: false,
     orgImage: null,
     messages: [],
@@ -400,6 +402,9 @@ const reducer = (state = initialState, action) => {
             break;
         case UNREAD_NOTIFICATIONS:
             newState.unreadNotifications = action.value;
+            break;
+        case GET_LISTINGS:
+            newState.allListings = action.value;
             break;
     }
 

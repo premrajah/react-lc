@@ -50,7 +50,7 @@ const TrackedProducts = () => {
                     />
 
                     <div className="row mt-3 mb-5">
-                        <div className="col-12 d-flex justify-content-end">
+                        <div className="col-12 d-flex justify-content-start">
                             <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
                                 Product Service
                             </Link>

@@ -5,14 +5,12 @@ import "./css/style.css";
 import {createBrowserHistory} from "history";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
 import Home from "./views/LoopHome/Home";
-import Inbox from "./views/inbox/index";
 import LoginPopUp from "./views/login/LoginPopUp";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
 import MyListingsOld from "./views/loop-cycle/MyListings";
 import ItemDetail from "./views/browse-resources/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
-import Products from "./views/loop-cycle/Products";
 import ProductsNew from "./pages/my-products/Products";
 import Product from "./pages/product-detail/Product";
 import ProductsService from "./views/loop-cycle/ProductsService";
@@ -67,6 +65,7 @@ import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
 import TrackedProducts from "./components/Products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
+import ResourceItem from "./components/Resources/ResourceItem";
 
 let hist = createBrowserHistory();
 
@@ -120,6 +119,7 @@ class App extends Component {
                         />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
+                        <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exact path="/edit-account" component={EditAccount} />

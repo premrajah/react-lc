@@ -14,17 +14,18 @@ import FindResourceListingItem from "../../components/FindResourceListingItem";
 import SearchBar from "../../components/SearchBar";
 import * as actionCreator from "../../store/actions/actions";
 import ErrorBoundary from "../../components/ErrorBoundary";
+import {getListings} from "../../store/actions/actions";
 
 class FindResourcePage extends Component {
     state = {
-        allListings: [],
         search: "",
     };
 
 
     componentDidMount() {
-        this.getAllListings();
+        this.props.dispatchListings();
         this.updateNotifications();
+
     }
 
     componentWillUnmount() {
@@ -33,30 +34,18 @@ class FindResourcePage extends Component {
 
     updateNotifications() {
         this.interval = setInterval(() => {
-            this.getAllListings();
+            this.props.dispatchListings();
         }, 10000);
     }
 
-    getAllListings = () => {
-        axios
-            .get(`${baseUrl}listing?m=a`, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then((response) => {
-                this.setState({ allListings: response.data.data });
-            })
-            .catch((error) => {});
-    };
 
     handleSearch = (searchValue) => {
         this.setState({ search: searchValue });
     };
 
     displayListings = () => {
-        return this.state.allListings.length > 0
-            ? this.state.allListings
+        return this.props.allListings.length > 0
+            ? this.props.allListings
                   .filter((item) => {
                       if (this.state.search.length === 0) {
                           return item;
@@ -123,16 +112,8 @@ class FindResourcePage extends Component {
                         <div className={"col-12"}>
                             <SearchBar
                                 dropDown dropDownValues={PRODUCTS_FILTER_VALUES}
-
                                 onSearch={(e) => this.handleSearch(e)}
                             />
-                            {/*<p className="mt-2">*/}
-                            {/*    Available listings (*/}
-                            {/*    {this.state.allListings.length > 0*/}
-                            {/*        ? this.state.allListings.length*/}
-                            {/*        : "..."}*/}
-                            {/*    )*/}
-                            {/*</p>*/}
                         </div>
                     </div>
 
@@ -151,6 +132,7 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
+        allListings: state.allListings,
     };
 };
 
@@ -158,6 +140,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
+        dispatchListings: (data) => dispatch(actionCreator.getListings()),
     };
 };
 

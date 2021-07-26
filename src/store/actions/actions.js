@@ -36,8 +36,10 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
-    PRODUCT_REGISTER,PRODUCT_RELEASE,SERVICE_AGENT_REQUEST,SHOW_SNACKBAR,CURRENT_PRODUCT
+    PRODUCT_REGISTER,PRODUCT_RELEASE,SERVICE_AGENT_REQUEST,SHOW_SNACKBAR,CURRENT_PRODUCT,
+    GET_LISTINGS,
 } from "../types";
+import {load} from "dotenv";
 
 
 
@@ -405,6 +407,24 @@ export const loadUserDetail = (data) => {
     //
     return { type: LOAD_USER_DETAIL, value: userDetials };
 };
+
+export const getListings = (data) => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(getListingsSync(data));
+    }
+}
+
+export const getListingsSync = (data) => (dispatch) => {
+    axios.get(`${baseUrl}listing`)
+        .then(res => {
+            dispatch({type: GET_LISTINGS, value: res.data.data})
+            dispatch(loading(false));
+        })
+        .catch(error => {
+            console.log('listing error ', error.message);
+        })
+}
 
 export const getUserDetail = (data) => {
     return (dispatch) => {

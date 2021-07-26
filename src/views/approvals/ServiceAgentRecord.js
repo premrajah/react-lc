@@ -32,7 +32,7 @@ const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, his
 
                     <div className="row mt-3 mb-5">
                         <div className="col-12 d-flex justify-content-end">
-                            <Link to="/approve?tab=2" className="btn btn-sm blue-btn mr-2">
+                            <Link to="/approve" className="btn btn-sm blue-btn mr-2">
                                 Approvals
                             </Link>
                         </div>

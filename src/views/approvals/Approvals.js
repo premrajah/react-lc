@@ -224,8 +224,6 @@ render() {
 
                                 {this.state.value == 0 &&
                                 <div className={"row"} value={this.state.value} index={0}>
-
-
                                         <div className="col-12 mt-3 mb-3">
                                             <div className="col d-flex justify-content-end">
                                                 <Link to="/approved" className="btn btn-sm blue-btn"
@@ -262,7 +260,20 @@ render() {
                                 {this.state.value == 1 &&
                                 <div className={"row"} value={this.state.value} index={1}>
 
-                                        {this.props.productRegisterRequests.map((item, index) => (
+                                        <div className="col-12 mt-3 mb-3">
+                                            <div className="col d-flex justify-content-end">
+                                                <Link to="/register-record" className="btn btn-sm blue-btn"
+                                                      style={{color: "#fff"}}>
+                                                    Register Request Record
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        {this.props.productRegisterRequests.filter(r => (
+                                            r.registration.stage !== "complete" &&
+                                            r.registration.stage !== "cancelled" &&
+                                            r.registration.stage !== "invalidated")
+                                        ).map((item, index) => (
                                             <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
 
                                                 <RequestRegisterItem
@@ -283,11 +294,38 @@ render() {
                                             </div>
                                         )}
 
+
+                                        {
+                                            this.props.productRegisterRequests.filter(r => (
+                                                r.registration.stage !== "complete" &&
+                                                r.registration.stage !== "cancelled" &&
+                                                r.registration.stage !== "invalidated")
+                                            ).length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This currently has no active results"}
+                                                    </p>
+                                                </div>
+                                            )
+                                        }
+
+
                                 </div>}
                                 {this.state.value == 2 &&
                                 <div className={"row"} value={this.state.value} index={2}>
 
-                                        {this.props.serviceAgentRequests.map((item, index) => (
+                                    <div className="col-12 mt-3 mb-3">
+                                        <div className="col d-flex justify-content-end">
+                                            <Link to="/service-agent-record" className="btn btn-sm blue-btn"
+                                                  style={{color: "#fff"}}>
+                                                Service Agent Request Record
+                                            </Link>
+                                        </div>
+                                    </div>
+
+                                        {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (
                                             <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
                                                 <RequestServiceAgentItem
                                                     history={this.props.history}
@@ -305,6 +343,21 @@ render() {
                                                 </p>
                                             </div>
                                         )}
+
+                                    {
+                                        this.props.serviceAgentRequests.filter(r => (
+                                            r.Release.stage !== "complete" &&
+                                            r.Release.stage !== "cancelled")
+                                        ).length === 0 && (
+                                            <div className={" column--message"}>
+                                                <p>
+                                                    {this.state.loading
+                                                        ? "Loading..."
+                                                        : "This currently has no active results"}
+                                                </p>
+                                            </div>
+                                        )
+                                    }
 
                                 </div>}
 
@@ -519,8 +572,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
-
         fetchReleaseRequest: () => dispatch(actionCreator.fetchReleaseRequest()),
         fetchServiceAgentRequest: () => dispatch(actionCreator.fetchServiceAgentRequest()),
         fetchRegisterRequest: () => dispatch(actionCreator.fetchRegisterRequest()),

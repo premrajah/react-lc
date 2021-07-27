@@ -278,7 +278,7 @@ class MoreMenu extends Component {
                                     <div className={"col-10 text-center"}>
                                         <p className={"text-bold text-caps"}>Duplicate</p>
                                         <p>
-                                            Are you sure you want to create duplicate of this item ?
+                                            Are you sure you want to duplicate this item?
                                         </p>
                                     </div>
                                 </div>

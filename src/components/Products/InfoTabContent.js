@@ -29,6 +29,7 @@ import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
 import SubproductItem from "./SubproductItem";
 import ImageHeader from "../UIComponents/ImageHeader";
 import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 class InfoTabContent extends Component {
     slug;
@@ -54,15 +55,15 @@ class InfoTabContent extends Component {
                         </p>
                         <p
                             style={{ fontSize: "18px" }}
-                            className="  mb-1">
+                            className=" text-caps mb-1">
                                                             <span className="mr-1">
                                                                 {this.props.item.product.category},
                                                             </span>
                             <span className="mr-1">
                                                                 {this.props.item.product.type},
                                                             </span>
-                            <span className="mr-1">
-                                                                {this.props.item.product.state},
+                            <span className="text-caps mr-1">
+                                                                {capitalize(this.props.item.product.state)},
                                                             </span>
                             <span>
                                                                 {this.props.item.product.volume}

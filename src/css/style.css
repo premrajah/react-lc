@@ -2673,7 +2673,7 @@ pre {
     color: #ffffff;
     padding: 0 0 10px 0;
     font-size: 0.75rem;
-    text-transform: uppercase;
+    text-transform: capitalize;
     text-decoration: none;
 }
 
@@ -3600,7 +3600,7 @@ a.page-link:hover {
     border: none!important;
 }
 
-#searchBar{padding-left: 130px;}
+#searchBar{padding-left: 140px;}
 
 
 .btn-link:disabled{
@@ -3641,3 +3641,15 @@ a.page-link:hover {
 }
 
 .spinner-select{position: absolute;left: 88%;top: 40%;}
+.field-box{position: relative;}
+.field-box>svg{position: absolute;right: 3%;top: 20%}
+.border-red-error .MuiOutlinedInput-notchedOutline{
+    border: 1px solid #f44336!important;
+}
+.MuiAlert-filledSuccess{
+
+    background: #07AD88!important;
+}
+.company-logo-select{
+    height: 32px;
+}

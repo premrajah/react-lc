@@ -40,6 +40,8 @@ import OrgTrailsTimeline from "./OrgTrailsTimeline";
 import SiteTrailsTimeline from "./SiteTrailsTimeline";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import LinkIcon from '@material-ui/icons/Link';
+import InfoTabContent from "./Products/InfoTabContent";
+import SubProductsTab from "./Products/SubProductsTab";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -729,161 +731,18 @@ class ProductDetailCycle extends Component {
                         </div>
                         <div className={"listing-row-border "}></div>
 
-                        <div className="row justify-content-start pb-3 pt-3 ">
+                        <div className="row justify-content-start pb-3 pt-3 tabs-detail">
                             <div className="col-12 mt-2">
                                 <Tabs defaultActiveKey="productinfo" id="uncontrolled-tab-example">
                                     <Tab eventKey="productinfo" title="Product Info">
-                                        <div className="row  justify-content-start search-container  pb-2">
-                                            <div className={"col-auto"}>
-                                                <p
-                                                    style={{ fontSize: "18px" }}
-                                                    className="text-mute text-bold text-blue mb-1">
-                                                    Category
-                                                </p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.props.item.product.category},
-                                                    {this.props.item.product.type},
-                                                    {this.props.item.product.state}
-                                                    {this.props.item.product.volume}
-                                                    {this.props.item.product.units}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {(this.props.item && this.props.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
-                                            <div className="col-auto">
-                                                <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.props.item.product.condition)}</p>
-                                            </div>
-                                        </div> }
-
-                                        {this.props.item && this.props.item.product.year_of_making && (
-                                            <div className="row  justify-content-start search-container  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Year Of Manufacturer
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item.product.year_of_making}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.props.item && this.props.item.product.sku.model && (
-                                            <div className="row  justify-content-start search-container  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Model Number
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item &&
-                                                            this.props.item.product.sku.model}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.props.item && this.props.item.product.sku.serial && (
-                                            <div className="row  justify-content-start search-container  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Serial Number
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item &&
-                                                            this.props.item.product.sku.serial}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.props.item && this.props.item.product.sku.brand && (
-                                            <div className="row  justify-content-start search-container  pb-2 ">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Brand
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item &&
-                                                            this.props.item.product.sku.brand}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="row  justify-content-start search-container  pb-2 ">
-                                            <div className={"col-auto"}>
-                                                <p
-                                                    style={{ fontSize: "18px" }}
-                                                    className="text-mute text-bold text-blue mb-1">
-                                                    State
-                                                </p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.props.item.product.state}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {this.props.item.site && (
-                                            <div className="row justify-content-start search-container pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Located At
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item.site.name},
-                                                        {this.props.item.site.address}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="row  justify-content-start search-container  pb-2 ">
-                                            <div className={"col-auto"}>
-                                                <p
-                                                    style={{ fontSize: "18px" }}
-                                                    className="text-mute text-bold text-blue mb-1">
-                                                    Service Agent
-                                                </p>
-                                                <div style={{ fontSize: "18px" }} className="  mb-1">
-                                                    <Org
-                                                        orgId={this.props.item.service_agent._id}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <InfoTabContent item={this.props.item} />
                                     </Tab>
 
                                     {this.state.subProducts.length > 0 && (
                                         <Tab eventKey="subproducts" title="Subproducts">
-                                            {this.state.subProducts.map((item, index) => (
-                                                <ProductItemNew
-                                                    hideMore={true}
-                                                    key={index}
-                                                    item={item}
-                                                />
-                                            ))}
+
+                                            <SubProductsTab item={this.props.item} />
+
                                         </Tab>
                                     )}
 

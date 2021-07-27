@@ -79,7 +79,7 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset:1,
+    productPageOffset:0,
     productPageSize:20,
     lastPageReached:false,
     serviceAgentRequests: [],
@@ -229,8 +229,9 @@ const reducer = (state = initialState, action) => {
 
 
             let prevList= state.productWithoutParentList
-            newState.productWithoutParentList= prevList.concat(action.value.val);
+            // newState.productWithoutParentList= prevList.concat(action.value.val);
 
+            newState.productWithoutParentList= (action.value.val);
 
             newState.loading = false;
 

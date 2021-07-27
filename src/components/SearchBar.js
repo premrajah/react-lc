@@ -23,8 +23,10 @@ class SearchBar extends Component {
         return (
             <div className="row">
                 <div className="col d-flex">
-                    <div style={{width:  '100%'}} className="search-container">
-                        <FormControl className="filter-box" style={{width:  '10%'}}  component="div">
+
+                    <div style={{width:  '100%'}} className={"search-container"}>
+                        <FormControl className={"filter-box"} style={{width:  '10.5%'}}  component="div">
+
 
                             <NativeSelect label="Filter" className="search-filter"  labelId="filterLabel"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >

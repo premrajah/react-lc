@@ -21,7 +21,6 @@ import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
 import Org from "../Org/Org";
-import ProductEditForm from "../ProductEditForm";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
@@ -1245,11 +1244,12 @@ class Product extends Component {
                                 </button>
                             </div>
 
-                            <ProductEditForm
-                                triggerCallback={(action) => this.callBackSubmit(action)}
-                                isDuplicate={this.state.productDuplicate}
-                                productId={this.state.item.product._key}
-                            />
+                            {/*<ProductEditForm*/}
+                            {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
+                            {/*    isDuplicate={this.state.productDuplicate}*/}
+                            {/*    productId={this.state.item.product._key}*/}
+                            {/*/>*/
+                            }
 
                         </Modal>
 

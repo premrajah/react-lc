@@ -1,10 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
 import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
-import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
 
 
 class ArtifactProductsTab extends Component {

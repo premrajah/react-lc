@@ -1,32 +1,28 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../../Util/Constants";
+import {Link} from "react-router-dom";
+import {makeStyles} from "@material-ui/core/styles";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
-import { withStyles } from "@material-ui/core/styles/index";
+import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
+import {withStyles} from "@material-ui/core/styles/index";
 
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
 import Org from "../Org/Org";
-import ProductEditForm from "../ProductEditForm";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
-
-import SubproductItem from "./SubproductItem";
 import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
 import SubProductsTab from "./SubProductsTab";
-import CustomSnackbar from "../UIComponents/CustomSnackbar";
 import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 

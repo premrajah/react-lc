@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 
-import { Alert, Spinner } from "react-bootstrap";
+import {makeStyles} from "@material-ui/core/styles";
 
-import { makeStyles } from "@material-ui/core/styles";
-
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import TextField from "@material-ui/core/TextField";
 import ProductDetailCycle from "../../components/ProductDetailCycle";
 import PageHeader from "../../components/PageHeader";
 

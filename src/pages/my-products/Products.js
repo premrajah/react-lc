@@ -1,4 +1,4 @@
-import React, {Component,useRef, useState,useEffect} from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
@@ -15,7 +15,6 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import {CSVLink} from "react-csv";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
-import {ref} from "yup";
 import Layout from "../../components/Layout/Layout";
 
 

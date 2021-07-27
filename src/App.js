@@ -24,9 +24,8 @@ import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import CreateListing from "./views/create-listing/create-listing";
 import SubProductView from "./views/create-listing/SubProductView";
-import ProductView from "./views/create-listing/ProductView";
+// import ProductView from "./views/create-listing/ProductView";
 import ListForm from "./views/create-listing/ListForm";
-import ProductForm from "./views/create-listing/ProductForm";
 import SearchForm from "./views/create-search/SearchForm";
 import ViewSearchNew from "./views/create-search/ViewSearch";
 import SearchMatches from "./views/create-search/search-matches";
@@ -109,8 +108,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form-old" component={CreateListing} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
-                        <LoggedInRoute exact path="/product-form" component={ProductForm} />
-                        <LoggedInRoute exact path="/product-form/:slug" component={ProductForm} />
+
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute
                             exact
@@ -136,7 +134,7 @@ class App extends Component {
                             path="/sub-product-view/:slug"
                             component={SubProductView}
                         />
-                        <LoggedInRoute exact path="/product-view/:slug" component={ProductView} />
+                        {/*<LoggedInRoute exact path="/product-view/:slug" component={ProductView} />*/}
                         <LoggedInRoute
                             exact
                             path="/message-seller/:slug"

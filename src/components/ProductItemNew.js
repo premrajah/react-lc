@@ -1,14 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import {baseUrl, capitalizeFirstLetter} from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import { Modal } from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import moment from "moment/moment";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import MoreMenu from "./MoreMenu";
-import ProductEditForm from "./ProductEditForm";
 import ProductDetail from "./Products/ProductDetail";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
@@ -329,15 +328,17 @@ class ProductItemNew extends Component {
                         </button>
                     </div>
 
-                    <ProductEditForm
-                        triggerCallback={(action) => this.callBackSubmit(action)}
-                        isDuplicate={this.state.productDuplicate}
-                        productId={
-                            this.props.item && this.props.item.product
-                                ? this.props.item.product._key
-                                : this.props.item._key
-                        }
-                    />
+                    {/*<ProductEditForm*/}
+                    {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
+                    {/*    isDuplicate={this.state.productDuplicate}*/}
+                    {/*    productId={*/}
+                    {/*        this.props.item && this.props.item.product*/}
+                    {/*            ? this.props.item.product._key*/}
+                    {/*            : this.props.item._key*/}
+                    {/*    }*/}
+                    {/*/>*/}
+
+
                 </Modal>
 
                 {this.state.showProductHide && (

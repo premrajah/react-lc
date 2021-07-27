@@ -70,7 +70,6 @@ class ProductForm extends Component {
             filesStatus: [],
             free: false,
             price: null,
-
             brand: null,
             manufacturedDate: null,
             model: null,
@@ -362,7 +361,7 @@ class ProductForm extends Component {
         this.props.showProductPopUp({ type: "sub_product_view", show: true });
     }
 
-    handleSubmitProduct = (event) => {
+    handleSubmit = (event) => {
 
         event.preventDefault();
         if (!this.handleValidationProduct()){
@@ -393,11 +392,9 @@ class ProductForm extends Component {
                 const category = data.get("category");
                 const type = data.get("type");
                 const units = data.get("units");
-
                 const serial = data.get("serial");
                 const model = data.get("model");
                 const brand = data.get("brand");
-
                 const volume = data.get("volume");
                 const sku = data.get("sku");
                 const upc = data.get("upc");
@@ -432,6 +429,7 @@ class ProductForm extends Component {
                 };
 
                 var completeData;
+                console.log(productData)
 
                 if (this.props.parentProduct) {
                     completeData = {
@@ -680,7 +678,7 @@ class ProductForm extends Component {
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
 
-                            <form onSubmit={this.handleSubmitProduct}>
+                            <form onSubmit={this.handleSubmit}>
 
 
                             <div className="row no-gutters">

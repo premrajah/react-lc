@@ -7,7 +7,7 @@ const CheckboxWrapper = ({name, title,onChange, legend,initialValue, ...otherPro
     const [field,setField] = useState(initialValue)
 
     useEffect(()=>{
-        if (onChange)
+        if (onChange&&initialValue)
             onChange(initialValue)
     },[])
 

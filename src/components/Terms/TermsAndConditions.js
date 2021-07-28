@@ -17,7 +17,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         {acceptBtn ? (
                             acceptBtn
                         ) : (
-                            <h3 className="blue-text">{title ? title : "Terms and Conditions"}</h3>
+                            <h3 className="blue-text primary-heading" >{title ? title : "Terms and Conditions"}</h3>
                         )}
                     </div>
                 </div>
@@ -25,7 +25,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                 <div className="row mt-3">
                     <div className="col-sm-12">
                         <h3>
-                            <strong>WHO WE ARE AND HOW TO CONTACT US</strong>
+                            <strong className="primary-heading">WHO WE ARE AND HOW TO CONTACT US</strong>
                         </h3>
 
                         <p>
@@ -53,7 +53,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
                         <h4>
-                            <strong>BY USING OUR SITE YOU ACCEPT THESE TERMS</strong>
+                            <strong className="primary-heading">BY USING OUR SITE YOU ACCEPT THESE TERMS</strong>
                         </h4>
                         <p>
                             By using our site, you confirm that you accept these terms of use and
@@ -64,7 +64,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             We recommend that you print a copy of these terms for future reference.
                         </p>
                         <h4>
-                            <strong>THERE ARE OTHER TERMS THAT MAY APPLY TO YOU</strong>
+                            <strong className="primary-heading">THERE ARE OTHER TERMS THAT MAY APPLY TO YOU</strong>
                         </h4>
                         <p>
                             These terms of use refer to the following additional terms, which also
@@ -109,7 +109,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             will apply to the sales.
                         </p>
                         <h4>
-                            <strong>WE MAY MAKE CHANGES TO THESE TERMS</strong>
+                            <strong className="primary-heading">WE MAY MAKE CHANGES TO THESE TERMS</strong>
                         </h4>
                         <p>
                             We amend these terms from time to time. Every time you wish to use our
@@ -117,14 +117,14 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             apply at that time.
                         </p>
                         <h4>
-                            <strong>WE MAY MAKE CHANGES TO OUR SITE</strong>
+                            <strong className="primary-heading">WE MAY MAKE CHANGES TO OUR SITE</strong>
                         </h4>
                         <p>
                             We may update and change our site from time to time to reflect changes
                             to our users' needs and our business priorities.
                         </p>
                         <h4>
-                            <strong>WE MAY SUSPEND OR WITHDRAW OUR SITE</strong>
+                            <strong className="primary-heading">WE MAY SUSPEND OR WITHDRAW OUR SITE</strong>
                         </h4>
                         <p>Our site is made available free of charge.</p>
                         <p>
@@ -141,7 +141,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             them.
                         </p>
                         <h4>
-                            <strong>WE MAY TRANSFER THIS AGREEMENT TO SOMEONE ELSE</strong>
+                            <strong className="primary-heading">WE MAY TRANSFER THIS AGREEMENT TO SOMEONE ELSE</strong>
                         </h4>
                         <p>
                             We may transfer our rights and obligations under these terms to another
@@ -149,16 +149,16 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             will ensure that the transfer will not affect your rights under the
                             contract.
                         </p>
-                        <p>
-                            <strong>OUR SITE IS ONLY FOR USERS IN THE UK</strong>
-                        </p>
+                        <h4>
+                            <strong className="primary-heading">OUR SITE IS ONLY FOR USERS IN THE UK</strong>
+                        </h4>
                         <p>
                             Our site is directed to people residing in the United Kingdom. We do not
                             represent that content available on or through our site is appropriate
                             for use or available in other locations.
                         </p>
                         <h4>
-                            <strong>YOU MUST KEEP YOUR ACCOUNT DETAILS SAFE</strong>
+                            <strong className="primary-heading">YOU MUST KEEP YOUR ACCOUNT DETAILS SAFE</strong>
                         </h4>
                         <p>
                             If you choose, or you are provided with, a user identification code,
@@ -177,9 +177,9 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             identification code or password, you must promptly notify us at
                             <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
-                        <p>
-                            <strong>HOW YOU MAY USE MATERIAL ON OUR SITE</strong>
-                        </p>
+                        <h4>
+                            <strong className="primary-heading">HOW YOU MAY USE MATERIAL ON OUR SITE</strong>
+                        </h4>
                         <p>
                             We are the owner or the licensee of all intellectual property rights in
                             our site, and in the material published on it. Those works are protected
@@ -212,7 +212,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             materials you have made.
                         </p>
                         <h4>
-                            <strong>DO NOT RELY ON INFORMATION ON THIS SITE</strong>
+                            <strong className="primary-heading">DO NOT RELY ON INFORMATION ON THIS SITE</strong>
                         </h4>
                         <p>
                             The content on our site is provided for general information only. It is
@@ -227,7 +227,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             or up to date.
                         </p>
                         <h4>
-                            <strong>WE ARE NOT RESPONSIBLE FOR WEBSITES WE LINK TO</strong>
+                            <strong className="primary-heading">WE ARE NOT RESPONSIBLE FOR WEBSITES WE LINK TO</strong>
                         </h4>
                         <p>
                             Where our site contains links to other sites and resources provided by
@@ -237,7 +237,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         </p>
                         <p>We have no control over the contents of those sites or resources.</p>
                         <h4>
-                            <strong>USER-GENERATED CONTENT IS NOT APPROVED BY US</strong>
+                            <strong className="primary-heading">USER-GENERATED CONTENT IS NOT APPROVED BY US</strong>
                         </h4>
                         <p>
                             This website may include information and materials uploaded by other
@@ -247,7 +247,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             views or values.
                         </p>
                         <h4>
-                            <strong>HOW TO COMPLAIN ABOUT CONTENT UPLOADED BY OTHER USERS</strong>
+                            <strong className="primary-heading">HOW TO COMPLAIN ABOUT CONTENT UPLOADED BY OTHER USERS</strong>
                         </h4>
                         <p>
                             If you wish to complain about content uploaded by other users, please
@@ -255,7 +255,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             .
                         </p>
                         <h4>
-                            <strong>OUR RESPONSIBILITY FOR LOSS OR DAMAGE SUFFERED BY YOU</strong>
+                            <strong className="primary-heading">OUR RESPONSIBILITY FOR LOSS OR DAMAGE SUFFERED BY YOU</strong>
                         </h4>
                         <p>
                             We do not exclude or limit in any way our liability to you where it
@@ -305,14 +305,14 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             </li>
                         </ul>
                         <h4>
-                            <strong>HOW WE MAY USE YOUR PERSONAL INFORMATION</strong>
+                            <strong className="primary-heading">HOW WE MAY USE YOUR PERSONAL INFORMATION</strong>
                         </h4>
                         <p>
                             We will only use your personal information as set out in our Privacy
                             Policy.
                         </p>
                         <h4>
-                            <strong>UPLOADING CONTENT TO OUR SITE</strong>
+                            <strong className="primary-heading">UPLOADING CONTENT TO OUR SITE</strong>
                         </h4>
                         <p>
                             Whenever you make use of a feature that allows you to upload content to
@@ -348,7 +348,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                         <p>You are solely responsible for securing and backing up your content.</p>
                         <p>We do not store terrorist content.</p>
                         <h4>
-                            <strong>RIGHTS YOU ARE GIVING US TO USE MATERIAL YOU UPLOAD</strong>
+                            <strong className="primary-heading">RIGHTS YOU ARE GIVING US TO USE MATERIAL YOU UPLOAD</strong>
                         </h4>
                         <p>
                             When you upload or post content to our site, you grant us the following
@@ -387,7 +387,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             </li>
                         </ul>
                         <h4>
-                            <strong>
+                            <strong className="primary-heading">
                                 WE ARE NOT RESPONSIBLE FOR VIRUSES AND YOU MUST NOT INTRODUCE THEM
                             </strong>
                         </h4>
@@ -415,7 +415,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             immediately.
                         </p>
                         <h4>
-                            <strong>RULES ABOUT LINKING TO OUR SITE</strong>
+                            <strong className="primary-heading">RULES ABOUT LINKING TO OUR SITE</strong>
                         </h4>
                         <p>
                             You may link to our home page, provided you do so in a way that is fair
@@ -444,7 +444,7 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             <a href="mailto:hello@loopcycle.io">hello@loopcycle.io</a>.
                         </p>
                         <h4>
-                            <strong>WHICH COUNTRY'S LAWS APPLY TO ANY DISPUTES?</strong>
+                            <strong className="primary-heading">WHICH COUNTRY'S LAWS APPLY TO ANY DISPUTES?</strong>
                         </h4>
                         <p>
                             If you are a consumer, please note that these terms of use, their
@@ -460,9 +460,9 @@ const TermsAndConditions = ({ title, header, footer, acceptBtn }) => {
                             governed by English law. We both agree to the exclusive jurisdiction of
                             the courts of England and Wales.
                         </p>
-                        <p>
-                            <strong>OUR TRADEMARKS ARE REGISTERED</strong>
-                        </p>
+                        <h4>
+                            <strong className="primary-heading">OUR TRADEMARKS ARE REGISTERED</strong>
+                        </h4>
                         <p>
                             "Loopcycle" is a UK registered trademark of Loop Infinity Ltd. You are
                             not permitted to use them without our approval, unless they are part of

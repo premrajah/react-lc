@@ -200,7 +200,11 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.productRegisterRequests.length > 0
-                                                    ? `Product Register Requests (${this.props.productRegisterRequests.length})`
+                                                    ? `Product Register Requests (${this.props.productRegisterRequests.filter(r => (
+                                                        r.registration.stage !== "complete" &&
+                                                        r.registration.stage !== "cancelled" &&
+                                                        r.registration.stage !== "invalidated")
+                                                    ).length})`
                                                     : "Product Register Requests"
                                             }
                                             {...a11yProps(1)}
@@ -208,7 +212,10 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.serviceAgentRequests.length > 0
-                                                    ? `Change Service Agent Requests (${this.props.serviceAgentRequests.length})`
+                                                    ? `Change Service Agent Requests (${this.props.serviceAgentRequests.filter(r => (
+                                                        r.Release.stage !== "complete" &&
+                                                        r.Release.stage !== "cancelled")
+                                                    ).length})`
                                                     : "Change Service Agent Requests"
                                             }
                                             {...a11yProps(2)}
@@ -222,7 +229,7 @@ render() {
                                             <div className="col d-flex justify-content-end">
                                                 <Link to="/approved" className="btn btn-sm blue-btn"
                                                       style={{color: "#fff"}}>
-                                                    Release Request Record
+                                                    Release Request Records
                                                 </Link>
                                             </div>
                                         </div>
@@ -260,7 +267,7 @@ render() {
                                             <div className="col d-flex justify-content-end">
                                                 <Link to="/register-record" className="btn btn-sm blue-btn"
                                                       style={{color: "#fff"}}>
-                                                    Register Request Record
+                                                    Register Request Records
                                                 </Link>
                                             </div>
                                         </div>
@@ -316,7 +323,7 @@ render() {
                                         <div className="col d-flex justify-content-end">
                                             <Link to="/service-agent-record" className="btn btn-sm blue-btn"
                                                   style={{color: "#fff"}}>
-                                                Service Agent Request Record
+                                                Service Agent Request Records
                                             </Link>
                                         </div>
                                     </div>

@@ -25,7 +25,7 @@ const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, his
                 <div className="container  pb-4 pt-4">
                     <PageHeader
                         pageIcon={ArchiveIcon}
-                        pageTitle="Service Agent Request Record"
+                        pageTitle="Service Agent Request Records"
                         subTitle="Your previously registered service agent requests"
                         bottomLine={<hr />}
                     />

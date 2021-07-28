@@ -24,7 +24,7 @@ const RegisterRecord = ({ productRegisterRequests, fetchRegisterRequest, history
                 <div className="container  pb-4 pt-4">
                     <PageHeader
                         pageIcon={ArchiveIcon}
-                        pageTitle="Register Request Record"
+                        pageTitle="Register Request Records"
                         subTitle="Your previously registered requests"
                         bottomLine={<hr />}
                     />

@@ -26,7 +26,7 @@ class ApprovedReleases extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
-                            pageTitle="Release Request Record"
+                            pageTitle="Release Request Records"
                             subTitle="Your previously released requests"
                             bottomLine={<hr />}
                         />

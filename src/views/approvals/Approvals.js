@@ -192,9 +192,7 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.productReleaseRequested.length > 0
-                                                    ? "Product Release Requests (" +
-                                                    this.props.productReleaseRequested.length +
-                                                    ")"
+                                                    ? `Product Release Requests (${this.props.productReleaseRequested.length})`
                                                     : "Product Release Requests"
                                             }
                                             {...a11yProps(0)}
@@ -202,9 +200,7 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.productRegisterRequests.length > 0
-                                                    ? "Product Register Requests (" +
-                                                    this.props.productRegisterRequests.length +
-                                                    ")"
+                                                    ? `Product Register Requests (${this.props.productRegisterRequests.length})`
                                                     : "Product Register Requests"
                                             }
                                             {...a11yProps(1)}
@@ -212,9 +208,7 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.serviceAgentRequests.length > 0
-                                                    ? "Change Service Agent Requests (" +
-                                                    this.props.serviceAgentRequests.length +
-                                                    ")"
+                                                    ? `Change Service Agent Requests (${this.props.serviceAgentRequests.length})`
                                                     : "Change Service Agent Requests"
                                             }
                                             {...a11yProps(2)}

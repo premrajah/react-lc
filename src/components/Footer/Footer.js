@@ -36,19 +36,7 @@ class Footer extends React.Component {
         return (
             <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
                     <Row className={""}>
-                        <Col md="4">
-                            <div className="row no-gutters mb-5">
-                                <div className="col-auto">
-                                    <>
-                                        <img
-                                            className={"text-logo-home web-only"}
-                                            src={HeaderLogoSvg}
-                                            alt=""
-                                        />
-                                    </>
-                                </div>
-                            </div>
-                        </Col>
+                        <Col md="4"></Col>
                         <Col md="2">
                             <Nav>
                                 <NavItem>
@@ -205,16 +193,7 @@ class Footer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
-        // loading: state.loading,
         isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
     };
 };
 

@@ -76,7 +76,7 @@ class Home extends Component {
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className={"blue-text"}>
+                                            <h1 className="blue-text" style={{fontFamily: "var(--main-heading)", fontSize: "70px"}}>
                                                 Create Change
                                             </h1>
                                         </div>

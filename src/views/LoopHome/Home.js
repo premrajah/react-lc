@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import LogoText from "../../img/logo-text.png";
 import PhoneHome from "../../img/phone-home.png";
 import BikeHome from "../../img/LoopBike.png";
 import LoopHomeImage from "../../img/loop-home-image.png";
@@ -76,8 +75,8 @@ class Home extends Component {
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className="blue-text" style={{fontFamily: "var(--main-heading)", fontSize: "70px"}}>
-                                                Create Change
+                                            <h1 className="blue-text primary-heading" style={{fontSize: "62px"}}>
+                                                Connect the dots
                                             </h1>
                                         </div>
 
@@ -335,13 +334,6 @@ class Home extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
-
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
     };
 };
 

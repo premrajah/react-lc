@@ -12,9 +12,18 @@
 }
 
 :root {
-    --main-heading: "poppins-semi-bold" !important;
+    --primary-heading: "poppins-semi-bold", sans-serif !important;
     --secondary-heading: "Nunito", sans-serif !important;
 }
+
+.primary-heading {
+    font-family: var(--primary-heading);
+}
+.secondary-heading {
+    font-family: var(--secondary-heading);
+}
+
+
 
 /* basic */
 html {

@@ -39,11 +39,11 @@ class ApprovedReleases extends Component {
                             </div>
                         </div>
 
-                        {this.props.productReleaseRequested.length > 0 ? <div className="row">
+                        {this.props.productReleaseRequests.length > 0 ? <div className="row">
                             <div className="col">
                                 {
                                     <>
-                                        {this.props.productReleaseRequested.length !== 0 ? this.props.productReleaseRequested.filter(r => r.Release.stage !== "requested").map((item, index) => (
+                                        {this.props.productReleaseRequests.length !== 0 ? this.props.productReleaseRequests.filter(r => r.Release.stage !== "requested").map((item, index) => (
                                             <div className="row" key={index}>
                                                 <div className="col">
                                                     <Link to={`/product/${item.product.product._key}`}>
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
-        productReleaseRequested: state.productReleaseRequested,
+        productReleaseRequests: state.productReleaseRequests,
     };
 };
 

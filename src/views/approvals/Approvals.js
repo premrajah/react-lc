@@ -233,8 +233,10 @@ render() {
                                             </div>
                                         </div>
                                         <div className={"listing-row-border "}></div>
-
-                                        {this.props.productReleaseRequested.map((item, index) => (
+                                        {this.props.productReleaseRequests.filter(r =>
+                                            r.Release.stage !== "complete" &&
+                                            r.Release.stage !== "cancelled" &&
+                                            r.Release.stage !== "invalidated").map((item, index) => (
                                             <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
 
                                                     <RequestReleaseItem
@@ -564,6 +566,7 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
         serviceAgentRequests: state.serviceAgentRequests,
+        productReleaseRequests: state.productReleaseRequests,
         productReleaseRequested: state.productReleaseRequested,
         productRegisterRequests: state.productRegisterRequests,
 

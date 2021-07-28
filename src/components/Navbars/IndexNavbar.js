@@ -6,7 +6,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import LogoNew from "../../img/logo-cropped.png";
-import HeaderLogoSvg from '../../img/loopcycle_header_logo.svg';
+import HeaderLogoSvg from '../../img/Logo-white.svg';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";

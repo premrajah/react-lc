@@ -438,7 +438,7 @@ class MatchItemBuyer extends Component {
                                     onClick={()=> this.showPopUp(true)}
                                     type="button"
                                     className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
-                                  Accept Seller's Listed Price
+                                  Accept Seller's Offer
                                 </button>
                             </div>
                         </div>
@@ -649,7 +649,7 @@ class MatchItemBuyer extends Component {
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Make an offer</p>
+                                <p className={"text-bold"}>{this.state.price?"Accept Seller's Offer":"Make an offer"}</p>
                                 {/*<p>Make an offer</p>*/}
                             </div>
                         </div>

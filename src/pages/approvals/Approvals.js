@@ -192,9 +192,7 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.productReleaseRequested.length > 0
-                                                    ? "Product Release Requests (" +
-                                                    this.props.productReleaseRequested.length +
-                                                    ")"
+                                                    ? `Product Release Requests (${this.props.productReleaseRequested.length})`
                                                     : "Product Release Requests"
                                             }
                                             {...a11yProps(0)}
@@ -202,9 +200,11 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.productRegisterRequests.length > 0
-                                                    ? "Product Register Requests (" +
-                                                    this.props.productRegisterRequests.length +
-                                                    ")"
+                                                    ? `Product Register Requests (${this.props.productRegisterRequests.filter(r => (
+                                                        r.registration.stage !== "complete" &&
+                                                        r.registration.stage !== "cancelled" &&
+                                                        r.registration.stage !== "invalidated")
+                                                    ).length})`
                                                     : "Product Register Requests"
                                             }
                                             {...a11yProps(1)}
@@ -212,9 +212,10 @@ render() {
                                         <StyledTab
                                             label={
                                                 this.props.serviceAgentRequests.length > 0
-                                                    ? "Change Service Agent Requests (" +
-                                                    this.props.serviceAgentRequests.length +
-                                                    ")"
+                                                    ? `Change Service Agent Requests (${this.props.serviceAgentRequests.filter(r => (
+                                                        r.Release.stage !== "complete" &&
+                                                        r.Release.stage !== "cancelled")
+                                                    ).length})`
                                                     : "Change Service Agent Requests"
                                             }
                                             {...a11yProps(2)}
@@ -224,19 +225,19 @@ render() {
 
                                 {this.state.value == 0 &&
                                 <div className={"row"} value={this.state.value} index={0}>
-
-
                                         <div className="col-12 mt-3 mb-3">
                                             <div className="col d-flex justify-content-end">
                                                 <Link to="/approved" className="btn btn-sm blue-btn"
                                                       style={{color: "#fff"}}>
-                                                    Release Request Record
+                                                    Release Request Records
                                                 </Link>
                                             </div>
                                         </div>
                                         <div className={"listing-row-border "}></div>
-
-                                        {this.props.productReleaseRequested.map((item, index) => (
+                                        {this.props.productReleaseRequests.filter(r =>
+                                            r.Release.stage !== "complete" &&
+                                            r.Release.stage !== "cancelled" &&
+                                            r.Release.stage !== "invalidated").map((item, index) => (
                                             <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
 
                                                     <RequestReleaseItem
@@ -262,7 +263,20 @@ render() {
                                 {this.state.value == 1 &&
                                 <div className={"row"} value={this.state.value} index={1}>
 
-                                        {this.props.productRegisterRequests.map((item, index) => (
+                                        <div className="col-12 mt-3 mb-3">
+                                            <div className="col d-flex justify-content-end">
+                                                <Link to="/register-record" className="btn btn-sm blue-btn"
+                                                      style={{color: "#fff"}}>
+                                                    Register Request Records
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        {this.props.productRegisterRequests.filter(r => (
+                                            r.registration.stage !== "complete" &&
+                                            r.registration.stage !== "cancelled" &&
+                                            r.registration.stage !== "invalidated")
+                                        ).map((item, index) => (
                                             <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
 
                                                 <RequestRegisterItem
@@ -283,11 +297,38 @@ render() {
                                             </div>
                                         )}
 
+
+                                        {
+                                            this.props.productRegisterRequests.filter(r => (
+                                                r.registration.stage !== "complete" &&
+                                                r.registration.stage !== "cancelled" &&
+                                                r.registration.stage !== "invalidated")
+                                            ).length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This currently has no active results"}
+                                                    </p>
+                                                </div>
+                                            )
+                                        }
+
+
                                 </div>}
                                 {this.state.value == 2 &&
                                 <div className={"row"} value={this.state.value} index={2}>
 
-                                        {this.props.serviceAgentRequests.map((item, index) => (
+                                    <div className="col-12 mt-3 mb-3">
+                                        <div className="col d-flex justify-content-end">
+                                            <Link to="/service-agent-record" className="btn btn-sm blue-btn"
+                                                  style={{color: "#fff"}}>
+                                                Service Agent Request Records
+                                            </Link>
+                                        </div>
+                                    </div>
+
+                                        {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (
                                             <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
                                                 <RequestServiceAgentItem
                                                     history={this.props.history}
@@ -305,6 +346,21 @@ render() {
                                                 </p>
                                             </div>
                                         )}
+
+                                    {
+                                        this.props.serviceAgentRequests.filter(r => (
+                                            r.Release.stage !== "complete" &&
+                                            r.Release.stage !== "cancelled")
+                                        ).length === 0 && (
+                                            <div className={" column--message"}>
+                                                <p>
+                                                    {this.state.loading
+                                                        ? "Loading..."
+                                                        : "This currently has no active results"}
+                                                </p>
+                                            </div>
+                                        )
+                                    }
 
                                 </div>}
 
@@ -511,6 +567,7 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
         serviceAgentRequests: state.serviceAgentRequests,
+        productReleaseRequests: state.productReleaseRequests,
         productReleaseRequested: state.productReleaseRequested,
         productRegisterRequests: state.productRegisterRequests,
 
@@ -519,8 +576,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: null,
-
         fetchReleaseRequest: () => dispatch(actionCreator.fetchReleaseRequest()),
         fetchServiceAgentRequest: () => dispatch(actionCreator.fetchServiceAgentRequest()),
         fetchRegisterRequest: () => dispatch(actionCreator.fetchRegisterRequest()),

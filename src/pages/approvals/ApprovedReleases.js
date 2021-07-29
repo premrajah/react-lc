@@ -5,29 +5,15 @@ import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
 import RequestReleaseItem from "../../components/RequestReleaseItem";
+import * as actionCreator from "../../store/actions/actions";
 
 class ApprovedReleases extends Component {
 
-    state = {
-        approvedRequests: [],
-    }
+    state = {}
 
     componentDidMount() {
-        this.getAllRequests();
-    }
-
-    getAllRequests = () => {
-        axios.get(`${baseUrl}release`)
-            .then(response => {
-                const data = response.data.data;
-                this.setState({approvedRequests: data.filter((item) => item.Release.stage !== "requested")});
-            })
-            .catch(error => {
-
-            })
+        this.props.fetchReleaseRequest();
     }
 
     render() {
@@ -40,8 +26,8 @@ class ApprovedReleases extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
-                            pageTitle="Release Request Record"
-                            subTitle="Your previously release requests"
+                            pageTitle="Release Request Records"
+                            subTitle="Your previously released requests"
                             bottomLine={<hr />}
                         />
 
@@ -53,11 +39,11 @@ class ApprovedReleases extends Component {
                             </div>
                         </div>
 
-                        <div className="row">
+                        {this.props.productReleaseRequests.length > 0 ? <div className="row">
                             <div className="col">
                                 {
-                                    this.state.approvedRequests.length > 0 ? <>
-                                        {this.state.approvedRequests.map((item, index) => (
+                                    <>
+                                        {this.props.productReleaseRequests.length !== 0 ? this.props.productReleaseRequests.filter(r => r.Release.stage !== "requested").map((item, index) => (
                                             <div className="row" key={index}>
                                                 <div className="col">
                                                     <Link to={`/product/${item.product.product._key}`}>
@@ -68,11 +54,11 @@ class ApprovedReleases extends Component {
                                                     </Link>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </> : this.state.approvedRequests.length === 0 ? " No previously release requests yet..." : "loading..."
+                                        )) : <div>No released request records yet.</div>}
+                                    </>
                                 }
                             </div>
-                        </div>
+                        </div> : <div>Loading...No previously release requests records yet...</div>}
 
 
                     </div>
@@ -86,12 +72,13 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
+        productReleaseRequests: state.productReleaseRequests,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        test: {}
+        fetchReleaseRequest: () => dispatch(actionCreator.fetchReleaseRequest()),
     };
 };
 

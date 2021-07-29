@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import LogoText from "../../img/logo-text.png";
 import PhoneHome from "../../img/phone-home.png";
 import BikeHome from "../../img/LoopBike.png";
 import LoopHomeImage from "../../img/loop-home-image.png";
@@ -76,14 +75,14 @@ class Home extends Component {
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className={"blue-text"}>
-                                                Create Change
+                                            <h1 className="blue-text primary-heading" style={{fontSize: "3em"}}>
+                                                Connect the dots
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className="blue-text">
+                                                <p className="blue-text" style={{fontSize: "1.3em"}}>
                                                     Loopcycle’s product traceability platform redefines the management,
                                                     recovery and resale of valuable secondary products, driving integrity
                                                     within the reuse market.
@@ -108,11 +107,11 @@ class Home extends Component {
                                 </div>
 
                                 <div className="col-md-6 col-sm-12 col-xs-12 ">
-                                    <img className={"img-fluid"} src={PhoneHome} alt="" />
+                                    <img className="img-fluid" src={PhoneHome} alt="" />
                                 </div>
 
                                 <div className="col-12 mobile-only pt-4">
-                                    <p className={"white-text"}>
+                                    <p className="white-text">
                                         Loopcycle uses artificial intelligence to match
                                         organizations and blockchain technology is used to ensure
                                         the transaction is secure and traceable.
@@ -133,7 +132,7 @@ class Home extends Component {
 
                                     <div className="row no-gutters justify-content-center">
                                         <div className="col-10">
-                                            <h3 className={"white-text mt-4"}>
+                                            <h3 className="white-text mt-4 primary-heading">
                                                 Do more, with less
                                             </h3>
 
@@ -158,7 +157,7 @@ class Home extends Component {
 
                                     <div className="row no-gutters justify-content-center">
                                         <div className="col-10">
-                                            <h3 className={"white-text mt-4"}>
+                                            <h3 className="white-text mt-4 primary-heading">
                                                 Igniting community
                                             </h3>
                                             <p className={"white-text mt-4"}>
@@ -335,13 +334,6 @@ class Home extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
-
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
     };
 };
 

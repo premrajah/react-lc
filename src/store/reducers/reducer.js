@@ -110,14 +110,10 @@ const reducer = (state = initialState, action) => {
             newState.showSitePopUp = action.value;
             break;
 
-
-
         case PRODUCT_RELEASE:
-
             newState.productReleaseRequests = action.value;
             newState.productReleaseRequested=[]
             newState.productReleaseRequested = action.value.filter((item) => item.Release.stage === "requested" );
-
             break;
 
 

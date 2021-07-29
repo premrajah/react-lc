@@ -65,6 +65,8 @@ import MessagePage from "./components/Inbox/MessagePage";
 import TrackedProducts from "./components/Products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
+import RegisterRecord from "./views/approvals/RegisterRecord";
+import ServiceAgentRecord from "./views/approvals/ServiceAgentRecord";
 
 let hist = createBrowserHistory();
 
@@ -97,6 +99,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
+                        <LoggedInRoute exact path="/register-record" component={RegisterRecord} />
+                        <LoggedInRoute exact path="/service-agent-record" component={ServiceAgentRecord} />
                         <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />

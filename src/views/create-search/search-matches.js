@@ -291,11 +291,7 @@ function NavTabs(props) {
                     onChange={handleChange}
                     aria-label="nav tabs example">
                     {/*{props.matches.length>0 &&*/}
-                    <LinkTab
-                        label={"Confirmed (" + props.matches.length + ")"}
-                        href="/drafts"
-                        {...a11yProps(0)}
-                    />
+
                     {/*}*/}
 
                     {/*{props.suggesstions.length > 0 &&*/}
@@ -304,6 +300,11 @@ function NavTabs(props) {
                         label={"Suggested (" + props.suggesstions.length + ")"}
                         href="/drafts"
                         {...a11yProps(1)}
+                    />
+                    <LinkTab
+                        label={"Confirmed (" + props.matches.length + ")"}
+                        href="/drafts"
+                        {...a11yProps(0)}
                     />
 
                     {/*}*/}

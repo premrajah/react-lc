@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from "react";
-import Sidebar from "../menu/Sidebar";
-import HeaderDark from "../header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
 import {makeStyles,withStyles} from "@material-ui/core/styles/index";

@@ -24,9 +24,10 @@ componentDidMount() {
 
         return (
             <>
-                <AddImagesToProduct item={this.props.item}/>
+                {!this.props.hideAdd && <AddImagesToProduct item={this.props.item}/>}
 
                 <AddedDocumentsDisplay
+                    hideAdd={this.props.hideAdd?this.props.hideAdd:false}
                     artifacts={this.props.item.artifacts}
                 />
             </>

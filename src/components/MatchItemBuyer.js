@@ -20,12 +20,13 @@ class MatchItemBuyer extends Component {
             editOfferKey: null,
             action: null,
             cycle: null,
+            price:null
         };
 
         this.acceptMatch = this.acceptMatch.bind(this);
         this.rejectMatch = this.rejectMatch.bind(this);
         this.makeOfferMatch = this.makeOfferMatch.bind(this);
-        this.showPopUp = this.showPopUp.bind(this);
+
         this.editPopUp = this.editPopUp.bind(this);
 
         this.getOffer = this.getOffer.bind(this);
@@ -63,10 +64,15 @@ class MatchItemBuyer extends Component {
         });
     }
 
-    showPopUp() {
+    showPopUp=(showListedPrice)=> {
+
+        // console.log(showListedPrice)
+
         this.setState({
             showPopUp: !this.state.showPopUp,
+            price:showListedPrice?this.props.item.listing.listing.price:null
         });
+
     }
 
     getOffer() {
@@ -403,8 +409,7 @@ class MatchItemBuyer extends Component {
             <div className="row no-gutters justify-content-center mt-4 mb-4  border-light p-2">
                 <div style={{ textAlign: "center" }} className={"col-12"}>
                     <p>
-                        Match Stage:
-                        <span className={"text-blue img-list text-bold text-caps"}>
+                        Match Stage: <span className={"text-blue img-list text-bold text-caps"}>
                             {this.props.item.match.stage}
                         </span>
                     </p>
@@ -420,14 +425,35 @@ class MatchItemBuyer extends Component {
                         </p>
                     )}
                 </div>
+
                 <div style={{ textAlign: "right" }} className={"col-12"}>
+
+
+                    {(this.props.item.match.stage === "accepted" ||
+                        this.props.item.match.stage === "offered") &&
+                    this.props.item.listing.org._id != this.props.userDetail.orgId && (
+                        <div className={"row justify-content-center"}>
+                            <div className="col-auto ">
+                                <button
+                                    onClick={()=> this.showPopUp(true)}
+                                    type="button"
+                                    className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
+                                  Accept Seller's Listed Price
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div style={{ textAlign: "right" }} className={"col-12"}>
+
+
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
                         this.props.item.listing.org._id != this.props.userDetail.orgId && (
                             <div className={"row justify-content-center"}>
                                 <div className="col-auto ">
                                     <button
-                                        onClick={this.showPopUp}
+                                        onClick={()=> this.showPopUp(false)}
                                         type="button"
                                         className=" mr-2 btn btn-link btn-green mt-2 mb-2 ">
                                         Make an Offer
@@ -611,7 +637,8 @@ class MatchItemBuyer extends Component {
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
                     show={this.state.showPopUp}
-                    onHide={this.showPopUp}
+                    onHide={()=> this.showPopUp(true)}
+
                     animation={false}>
                     <ModalBody>
                         {/*<div className={"row justify-content-center"}>*/}
@@ -623,20 +650,23 @@ class MatchItemBuyer extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>Make an offer</p>
-                                <p>Make an offer</p>
+                                {/*<p>Make an offer</p>*/}
                             </div>
                         </div>
+
 
                         <form onSubmit={this.makeOfferMatch}>
                             <div className={"row justify-content-center"}>
                                 <div className={"col-12 text-center"}>
                                     <TextField
+                                        className={this.state.price?"d-none":""}
                                         id="outlined-basic"
                                         label="Offer Price"
                                         variant="outlined"
                                         fullWidth={true}
                                         name={"price"}
                                         type={"number"}
+                                        value={this.state.price&&this.state.price.value}
                                     />
                                 </div>
                                 <div className={"col-12 text-center mt-2"}>

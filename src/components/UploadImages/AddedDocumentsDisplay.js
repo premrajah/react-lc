@@ -66,9 +66,9 @@ const AddedDocumentsDisplay = (props) => {
         <>
             <div className="row">
                 <div className="col">
-                    <p className="mt-1 mb-3 text-gray-light">
+                    {!props.hideAdd &&   <p className="mt-1 mb-3 text-gray-light">
                         If documents have been added, please find the links to download below
-                    </p>
+                    </p>}
                     {artifacts.length > 0 ? (
                         artifacts.map((artifact, index) => {
                             if (
@@ -91,12 +91,12 @@ const AddedDocumentsDisplay = (props) => {
                                             rel="noopener noreferrer">
                                             {artifact.blob_name}
                                         </a>
-                                        <span
-                                            className="ml-1 text-danger"
+                                        {!props.hideAdd &&    <span
+                                            className="ml-2 text-danger"
                                             style={{ cursor: "pointer" }}
                                             onClick={() => handleDocumentKey(artifact._key)}>
                                             <b>X</b>
-                                        </span>
+                                        </span>}
 
                                     </div>
                                 );

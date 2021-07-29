@@ -31,6 +31,7 @@ import {FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
 import LinkIcon from '@material-ui/icons/Link';
 import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
+import ArtifactProductsTab from "./Products/ArtifactProductsTab";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -734,7 +735,9 @@ class ProductDetailCycle extends Component {
 
                                         </Tab>
                                     )}
-
+                                    <Tab eventKey="artifacts" title="Artifacts">
+                                        <ArtifactProductsTab hideAdd={true} item={this.props.item} />
+                                    </Tab>
                                     {this.state.searches.length > 0 && (
                                         <Tab eventKey="search" title="Searches">
                                             {this.state.searches.map((item, index) => (

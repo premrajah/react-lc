@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import Sidebar from "../menu/Sidebar";
-import HeaderDark from "../header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";

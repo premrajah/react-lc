@@ -269,8 +269,7 @@ class ItemDetailMatch extends Component {
                                                     <div className="col-3 green-text text-heading text-right">
                                                         {this.state.item.listing.price ? (
                                                             <>
-                                                                GBP
-                                                                {
+                                                                GBP {
                                                                     this.state.item.listing.price
                                                                         .value
                                                                 }

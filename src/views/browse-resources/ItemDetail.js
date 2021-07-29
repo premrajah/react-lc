@@ -365,8 +365,7 @@ class ItemDetail extends Component {
                                                             <div className="col-5 green-text text-heading text-right">
                                                                 {this.state.item.listing.price ? (
                                                                     <>
-                                                                        GBP
-                                                                        {
+                                                                        GBP {
                                                                             this.state.item.listing
                                                                                 .price.value
                                                                         }

@@ -5,7 +5,7 @@ import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import LogoNew from "../../img/logo-cropped.png";
+import LogoSymbol from "../../img/Symbol-white.svg";
 import HeaderLogoSvg from '../../img/Logo-white.svg';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
@@ -158,14 +158,14 @@ class ComponentsNavbar extends React.Component {
                             <div className="row no-gutters">
                                 <div className="col-auto">
                                     <Link className={"logo-link"} to={"/"}>
-                                        <>
-                                            <img className="header-logo mobile-only" src={LogoNew} alt="" />
+                                        <div className="d-flex justify-content-center align-content-center">
+                                            <img className="header-logo mobile-only" src={LogoSymbol} alt=""/>
                                             <img
-                                                className={"text-logo-home web-only"}
+                                                className="text-logo-home web-only"
                                                 src={HeaderLogoSvg}
                                                 alt=""
                                             />
-                                        </>
+                                        </div>
                                     </Link>
                                 </div>
                             </div>

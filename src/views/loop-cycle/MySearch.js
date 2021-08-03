@@ -43,29 +43,15 @@ class MySearch extends Component {
     }
 
     getItems() {
-        var url = baseUrl + "search/expand";
-
         this.props.showLoading(true);
-
         axios
-            .get(url, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(`${baseUrl}search/expand`)
             .then(
                 (response) => {
-                    var response = response.data.data;
-
-                    this.setState({
-                        items: response,
-                    });
-
+                    this.setState({items: response.data.data,});
                     this.props.showLoading(false);
                 },
                 (error) => {
-                    // var status = error.response.status
-
                     this.props.showLoading(false);
                 }
             );
@@ -89,6 +75,14 @@ class MySearch extends Component {
                             pageIcon={SearchIcon}
                         />
 
+                        <div className="row">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/my-search-records" className="btn btn-sm blue-btn mr-2">
+                                    Search Records
+                                </Link>
+                            </div>
+                        </div>
+
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchField />
@@ -111,7 +105,7 @@ class MySearch extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.items.map((item, index) => (
+                        {this.state.items.filter(s => s.search.stage !== "expired" && s.search.stage !== "agreed").map((item, index) => (
                             <SearchItem
                                 showMoreMenu={true}
                                 triggerCallback={() => this.callBackResult()}

@@ -67,6 +67,8 @@ import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
 import RegisterRecord from "./views/approvals/RegisterRecord";
 import ServiceAgentRecord from "./views/approvals/ServiceAgentRecord";
+import SearchRecords from "./components/Searches/SearchRecords";
+import ListingRecord from "./components/Listings/ListingRecord";
 
 let hist = createBrowserHistory();
 
@@ -91,7 +93,9 @@ class App extends Component {
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
+                        <LoggedInRoute exact path="/my-search-records" component={SearchRecords} />
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
+                        <LoggedInRoute exact path="/my-listing-record" component={ListingRecord} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}

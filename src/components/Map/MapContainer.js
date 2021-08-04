@@ -1,4 +1,3 @@
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import React, {useState, Component} from "react";
 import GoogleMapReact from 'google-map-react';
 import MapIcon from '@material-ui/icons/Place';

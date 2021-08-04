@@ -17,7 +17,7 @@ import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
-import ErrorBoundary from "../../components/ErrorBoundary";
+
 
 
 const StyledTabs = withStyles({
@@ -97,28 +97,6 @@ class Approvals extends Component {
             value: newValue,
         });
 
-// alert(newValue);
-
-        //
-        // if (newValue === 0) {
-        //     this.setState({
-        //         releaseRequests: [],
-        //     });
-        //
-        //     this.fetchReleaseRequest();
-        // } else if (newValue === 1) {
-        //     this.setState({
-        //         registerRequests: [],
-        //     });
-        //
-        //     this.fetchRegisterRequest();
-        // } else if (newValue === 2) {
-        //     this.setState({
-        //         serviceAgentRequests: [],
-        //     });
-        //
-        //     this.fetchServiceAgentRequest();
-        // }
     };
 
 

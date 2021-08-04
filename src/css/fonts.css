@@ -1,0 +1,33 @@
+@font-face {
+    font-family: "poppins-reg";
+    src: url("../fonts/poppins/Poppins-Regular.ttf");
+}
+@font-face {
+    font-family: "poppins-italic";
+    src: url("../fonts/poppins/Poppins-Italic.ttf");
+}
+@font-face {
+    font-family: "poppins-semi-bold";
+    src: url("../fonts/poppins/Poppins-SemiBold.ttf");
+}
+
+/*---------*/
+
+@font-face {
+    font-family: "nunito-sans-reg";
+    src: url("../fonts/nunito_sans/NunitoSans-Regular.ttf");
+}
+@font-face {
+    font-family: "nunito-sans-bold";
+    src: url("../fonts/nunito_sans/NunitoSans-Bold.ttf");
+}
+@font-face {
+    font-family: "nunito-sans-italic";
+    src: url("../fonts/nunito_sans/NunitoSans-Italic.ttf");
+}
+@font-face {
+    font-family: "nunito-sans-semi-bold";
+    src: url("../fonts/nunito_sans/NunitoSans-SemiBold.ttf");
+}
+
+/*---------*/

@@ -1,19 +1,9 @@
-@font-face {
-    font-family: "poppins-reg";
-    src: url("../fonts/poppins/Poppins-Regular.ttf");
-}
-@font-face {
-    font-family: "poppins-italic";
-    src: url("../fonts/poppins/Poppins-Italic.ttf");
-}
-@font-face {
-    font-family: "poppins-semi-bold";
-    src: url("../fonts/poppins/Poppins-SemiBold.ttf");
-}
+@import "fonts.css";
 
 :root {
     --primary-heading: "poppins-semi-bold", sans-serif !important;
-    --secondary-heading: "Nunito", sans-serif !important;
+    --secondary-heading: "nunito-sans-reg", sans-serif !important;
+    --body-text: "nunito-sans-reg", sans-serif !important;
 }
 
 .primary-heading {
@@ -22,20 +12,22 @@
 .secondary-heading {
     font-family: var(--secondary-heading);
 }
-
+.body-text {
+    font-family: var(--body-text);
+}
 
 
 /* basic */
 html {
     height: 100%;
-    font-family: "Nunito", sans-serif !important;
+    font-family: "nunito-sans-reg", sans-serif !important;
 }
 
 body {
     min-height: 100%;
     height: auto;
     overflow-y: auto;
-    font-family: "Nunito", sans-serif !important;
+    font-family: "nunito-sans-reg", sans-serif !important;
     font-size: 16px;
     line-height: 30px;
     -webkit-overflow-scrolling: touch;

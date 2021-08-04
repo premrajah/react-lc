@@ -36,7 +36,7 @@ const SiteItem = ({site}) => {
                         <div className="blue-text text-bold flex-grow-1">{name} {is_head_office && <span className="mr-2"><small>(Head Office)</small></span>}</div>
 
                         <div className={"click-item"}>
-                            <MapIcon fontSize="small" onClick={() => handleMapModal()} />
+                            <MapIcon className={"mr-2"} fontSize="small" onClick={() => handleMapModal()} />
                             <EditIcon fontSize="small" onClick={() => handleOpenModal()} />
                         </div>
 
@@ -89,7 +89,7 @@ const SiteItem = ({site}) => {
 
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <MapContainer />
+                                    <MapContainer width={"100%"}  height={"300px"} siteName={name} location={site.geo_codes[0].address_info.geometry.location} />
                                 </div>
                             </div>
                         </div>

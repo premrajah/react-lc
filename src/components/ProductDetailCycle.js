@@ -32,6 +32,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
 import ArtifactProductsTab from "./Products/ArtifactProductsTab";
+import MapContainer from "./Map/MapContainer";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -735,6 +736,11 @@ class ProductDetailCycle extends Component {
 
                                         </Tab>
                                     )}
+
+                                    <Tab eventKey="maps" title="Site">
+                                        <MapContainer width={"100%"}  height={"300px"} siteName={this.props.item.site.name} location={this.props.item.site.geo_codes[0].address_info.geometry.location} />
+                                    </Tab>
+
                                     <Tab eventKey="artifacts" title="Artifacts">
                                         <ArtifactProductsTab hideAdd={true} item={this.props.item} />
                                     </Tab>

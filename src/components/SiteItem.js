@@ -89,7 +89,7 @@ const SiteItem = ({site}) => {
 
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <MapContainer width={"100%"}  height={"300px"} siteName={name} location={site.geo_codes[0].address_info.geometry.location} />
+                                    <MapContainer width={"100%"}  height={"300px"} siteName={name} location={site.geo_codes&&site.geo_codes[0]&&site.geo_codes[0].address_info.geometry.location} />
                                 </div>
                             </div>
                         </div>

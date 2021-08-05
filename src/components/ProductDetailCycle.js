@@ -737,9 +737,9 @@ class ProductDetailCycle extends Component {
                                         </Tab>
                                     )}
 
-                                    <Tab eventKey="maps" title="Site">
+                                    {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&  <Tab eventKey="maps" title="Site">
                                         <MapContainer width={"100%"}  height={"300px"} siteName={this.props.item.site.name} location={this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&this.props.item.site.geo_codes[0].address_info.geometry.location} />
-                                    </Tab>
+                                    </Tab>}
 
                                     <Tab eventKey="artifacts" title="Artifacts">
                                         <ArtifactProductsTab hideAdd={true} item={this.props.item} />

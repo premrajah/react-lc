@@ -716,9 +716,9 @@ class ProductDetailContent extends Component {
                                               <SubProductsTab item={this.props.item} />
                                             </Tab>
 
-                                            <Tab eventKey="maps" title="Site">
+                                            {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&    <Tab eventKey="maps" title="Site">
                                                 <MapContainer width={"100%"}  height={"300px"} siteName={this.props.item.site.name} location={this.props.item.site.geo_codes[0].address_info.geometry.location} />
-                                            </Tab>
+                                            </Tab>}
 
                                             {this.state.searches.length > 0 && (
                                                 <Tab eventKey="search" title="Searches">

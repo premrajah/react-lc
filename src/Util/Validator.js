@@ -22,6 +22,24 @@ export class Validators {
         return false;
     }
 
+    static requiredCheck(value, message) {
+        if (!value) {
+
+            return { error: true, message };
+        }
+        return false;
+    }
+
+    static confirmPassword(value, message,password) {
+        console.log(value, message,password)
+
+        if (password&&value.toString().trim().length&&(password!==value)) {
+
+            return { error: true, message };
+        }
+        return false;
+    }
+
     static number(value, message) {
         const length = value ? value.toString().length : 0;
 
@@ -52,6 +70,9 @@ export const validateInput = (validators, value) => {
 
 export const validateInputs = (validations) => {
 
+
+
+
     let formIsValid=true
     let errors=[]
 
@@ -63,7 +84,7 @@ export const validateInputs = (validations) => {
             if (inputField && inputField.validations.length) {
                 for (let i = 0; i < inputField.validations.length; i++) {
 
-                    const error = inputField.validations[i].check(inputField.value, inputField.validations[i].message);
+                    const error = inputField.validations[i].check(inputField.value, inputField.validations[i].message,inputField.password);
                     if (error) {
 
                         formIsValid=false
@@ -81,10 +102,15 @@ export const validateInputs = (validations) => {
 
 
 export const validateFormatCreate = (title, validations,fields)=> {
+
+
+
     return {
         field: title,
         value: fields[title],
-        validations: validations
+        validations: validations,
+        password:fields["password"]
+
     }
 }
 

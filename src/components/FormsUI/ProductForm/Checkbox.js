@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel} from '@material-ui/core'
 import {useField, useFormikContext} from 'formik'
 
-const CheckboxWrapper = ({name, title,onChange, legend,initialValue, ...otherProps}) => {
+const CheckboxWrapper = ({name, title,onChange, legend,initialValue,error, ...otherProps}) => {
 
     const [field,setField] = useState(initialValue)
 
@@ -36,10 +36,11 @@ const CheckboxWrapper = ({name, title,onChange, legend,initialValue, ...otherPro
         <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-3"}>
             {title}
         </div>
-            <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-3"}>
+            <span style={{width:"100%"}} className={""}>
 
-            <Checkbox checked={field} onChange={handleChange} {...configCheckbox} />
-            </div>
+            <Checkbox className={error?"border-red-error":""} checked={field} onChange={handleChange} {...configCheckbox} />
+            </span>
+
         </>
     )
 

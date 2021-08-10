@@ -1,15 +1,24 @@
 import React, {useEffect} from 'react';
-import {Field, ErrorMessage} from 'formik';
-import {TextField} from "formik-material-ui";
-import {MenuItem} from "@material-ui/core";
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
+}));
+
 const SelectArrayWrapper = (props) => {
-    const {title,option,initialValue,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
+
+    const {label,title,option,initialValue,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState();
-
+    const classes = useStyles();
     const handleChange = (event) => {
         setValue(event.target.value);
 
@@ -27,14 +36,15 @@ const SelectArrayWrapper = (props) => {
 
     return (
         <>
-            <div className={"custom-label text-bold text-blue mb-3"}>
+            {title&& <div className={"custom-label text-bold text-blue mb-3"}>
                 {title}
-            </div>
+            </div>}
             <div className={"field-box"}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                {label && <InputLabel >{label}</InputLabel>}
             <Select
                 native
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                label={label}
                 value={defaultValue}
                 onChange={handleChange}
                 variant="outlined"
@@ -45,7 +55,11 @@ const SelectArrayWrapper = (props) => {
             >
                 {select&&
                 <option  value={""}>
-                    {"Select"}
+                    {select}
+                </option>}
+                {placeholder&&
+                <option  value="" disabled>
+                    {placeholder}
                 </option>}
 
                 {options.map((item, index) => (
@@ -54,8 +68,9 @@ const SelectArrayWrapper = (props) => {
                     </option>
                 ))}
             </Select>
+                </FormControl>
 
-                {error && <span style={{color:"#f44336",fontSize: "0.75rem"}}> {error.message}</span>}
+                {error && <span style={{color:"#f44336",fontSize: "0.75rem"}} className={"text-danger"}> {error.message}</span>}
             </div>
         </>
     );

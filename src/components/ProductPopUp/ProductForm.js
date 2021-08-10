@@ -212,7 +212,6 @@ class ProductForm extends Component {
         });
     }
 
-
     uploadImage(files) {
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {
@@ -698,7 +697,8 @@ class ProductForm extends Component {
 
                                     <CheckboxWrapper
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
-                                        onChange={(checked)=>this.checkListable(checked)} color="primary" name={"is_listable"} title="Allow product to be listed for sale" />
+                                        onChange={(checked)=>this.checkListable(checked)} color="primary"
+                                        name={"is_listable"} title="Allow product to be listed for sale" />
 
                                 </div>
 
@@ -840,6 +840,7 @@ class ProductForm extends Component {
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
 
                                             <SelectArrayWrapper
+
                                                 initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
                                                 onChange={(value)=> {
 
@@ -853,11 +854,10 @@ class ProductForm extends Component {
                                             <SelectArrayWrapper
 
                                                 initialValue={this.props.item&&this.props.item.site._key}
-
                                                 option={"name"}
-                                              valueKey={"_key"}
+                                                valueKey={"_key"}
                                                 error={this.state.errors["deliver"]}
-                                                  onChange={(value)=> {
+                                                onChange={(value)=> {
 
                                                                     this.handleChangeProduct(value,"deliver")
 

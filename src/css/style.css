@@ -78,6 +78,7 @@ body {
 
 .text-danger {
     color: #f16060 !important;
+    font-size: 0.75rem;
 }
 
 .bg-primary-light {
@@ -3435,4 +3436,37 @@ a.page-link:hover {
 }
 .company-logo-select {
     height: 32px;
+}
+.edit-icon{
+
+    position: absolute;
+    right: 5%;
+
+    top: 5%;
+    background: white;
+    border-radius: 50%;
+    /*padding: 2px;*/
+    height: 36px;
+    width: 36px;
+    font-size: 32px;
+    cursor: pointer;
+    text-align: center;
+}
+.edit-icon{
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+}
+.append-animate {
+    animation: append-animate .2s linear;
+}
+
+@keyframes append-animate {
+    from {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0%);
+        opacity: 1;
+    }
 }

@@ -237,7 +237,7 @@ class SignUp extends Component {
 
             console.log(dataSignUp)
             this.props.signUp(dataSignUp);
-            
+
         } else {
         }
     };

@@ -321,6 +321,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Account
                                         </Link>
+                                        <Link className={"dropdown-item"} to="/my-products">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Products
+                                        </Link>
 
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
@@ -336,10 +340,7 @@ class ComponentsNavbar extends React.Component {
                                             My Cycles
                                         </Link>
 
-                                        <Link className={"dropdown-item"} to="/my-products">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            My Products
-                                        </Link>
+
 
                                         <Link className={"dropdown-item"} to="/approve">
                                             <i className="tim-icons icon-bullet-list-67" />

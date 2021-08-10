@@ -732,7 +732,7 @@ class ProductDetailCycle extends Component {
                                     {this.state.subProducts.length > 0 && (
                                         <Tab eventKey="subproducts" title="Subproducts">
 
-                                            <SubProductsTab item={this.props.item} />
+                                            <SubProductsTab noLinking={true} item={this.props.item} />
 
                                         </Tab>
                                     )}

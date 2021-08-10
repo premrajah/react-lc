@@ -75,7 +75,7 @@ const SubproductItem = (props) => {
 
             <div className="col-sm-7 pl-2">
                 <div>
-                    <Link  to={`/product/${item._key}`}>
+                    <Link  to={props.noLinking?"#":`/product/${item._key}`}>
                         <h5>{item.name}</h5>
                     </Link>
                 </div>

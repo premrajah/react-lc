@@ -761,7 +761,7 @@ class ProductForm extends Component {
                                     <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.product.type}
                                         option={"name"}
-                                      valueKey={"name"}
+                                        valueKey={"name"}
                                         select={"Select"}
                                         error={this.state.errors["type"]}
                                         onChange={(value)=> {
@@ -948,12 +948,9 @@ class ProductForm extends Component {
                                                     }}
                                                     options={this.state.yearsList} name={"manufacturedDate"} title="Year Of Manufacture"/>
 
-
-
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-
 
                                                 <TextFieldWrapper  initialValue={this.props.item&&this.props.item.product.sku.model} name="model" title="Model" />
 

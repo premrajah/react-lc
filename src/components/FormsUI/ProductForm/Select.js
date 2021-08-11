@@ -3,6 +3,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import {makeStyles} from '@material-ui/core/styles';
+import {capitalize} from "../../../Util/GlobalFunctions";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -64,7 +65,7 @@ const SelectArrayWrapper = (props) => {
 
                 {options.map((item, index) => (
                     <option selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}   key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
-                        {option?item[option]:item}
+                        {capitalize(option?item[option]:item)}
                     </option>
                 ))}
             </Select>

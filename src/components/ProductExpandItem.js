@@ -150,26 +150,6 @@ class ProductExpandItem extends Component {
         if (productKey)
         this.props.loadCurrentProduct(productKey)
 
-
-        // if (productKey)
-        //     axios.get(baseUrl + "product/" + productKey + "/expand").then(
-        //         (response) => {
-        //             var responseAll = response.data;
-        //
-        //             this.setState({
-        //                 product: responseAll.data,
-        //             });
-        //
-        //             this.setState({
-        //                 subProducts: [],
-        //             });
-        //
-        //             if (responseAll.data.sub_products.length > 0) {
-        //                 this.getSubProducts();
-        //             }
-        //         },
-        //         (error) => {}
-        //     );
     }
 
     showPopUp() {
@@ -190,9 +170,6 @@ class ProductExpandItem extends Component {
         });
 
         const data = new FormData(event.target);
-
-        // const volume = data.get("volume[]")
-        // const subProduct = data.get("product[]")
 
         var array = [];
 
@@ -237,47 +214,6 @@ class ProductExpandItem extends Component {
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
     }
 
-    getSubProducts() {
-        // var subProductIds = this.props.currentProduct.sub_products?this.props.currentProduct.sub_products:[]
-        //
-        // for (var i = 0; i < subProductIds.length; i++) {
-        //
-        //
-        //
-        //     axios.get(baseUrl + "product/" + subProductIds[i].replace('Product/',''),
-        //         {
-        //             headers: {
-        //                 "Authorization": "Bearer " + this.props.userDetail.token
-        //             }
-        //         }
-        //     )
-        //         .then((response) => {
-        //
-        //                 var responseAll = response.data;
-        //
-        //
-        //
-        //
-        //                 var subProducts = this.state.subProducts
-        //
-        //                 subProducts.push(responseAll.data)
-        //
-        //                 this.setState({
-        //
-        //                     subProducts: subProducts
-        //                 })
-        //
-        //
-        //
-        //
-        //             },
-        //             (error) => {
-        //
-        //             }
-        //         );
-        //
-        // }
-    }
 
     render() {
         const classes = withStyles();

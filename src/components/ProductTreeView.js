@@ -10,6 +10,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import Typography from "@material-ui/core/Typography";
 import ProductTreeItemView from "./ProductTreeItemView";
 import TextField from "@material-ui/core/TextField";
+import {Spinner} from "react-bootstrap";
 
 class ProductTreeView extends Component {
     constructor(props) {
@@ -190,6 +191,15 @@ class ProductTreeView extends Component {
                                     name={"name"}
                                     onChange={this.handleSearch.bind(this, "name")}
                                 />
+                                {this.props.productList.length===0&&   <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    style={{color:"#07AD88"}}
+                                    className={"spinner-select"}
+                                />}
                             </div>
                             <div className={"col-12"}>
                                 <div className={"row tree-view-menu"}>

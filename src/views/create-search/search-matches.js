@@ -26,12 +26,39 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const useStylesTabs = makeStyles((theme) => ({
+
+const StyledTabs = withStyles({
     root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
+        borderBottom: '1px solid #70707062',
     },
-}));
+    indicator: {
+        backgroundColor: '#07AD88',
+    },
+
+})((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
+const StyledTab = withStyles((theme) => ({
+    root: {
+        minWidth: 290,
+        textTransform: 'none',
+        color: '#3C3972',
+
+        fontSize: theme.typography.pxToRem(15),
+        marginRight: theme.spacing(1),
+
+        '&:hover': {
+            color: '#3C3972',
+            opacity: 1,
+        },
+        '&$selected': {
+            color: '#3C3972',
+            fontWeight: 500,
+        },
+        '&:focus': {
+            color: '#3C3972',
+        },
+    },
+}))((props) => <Tab disableRipple {...props} />);
+
 
 class SearchMatches extends Component {
     slug;
@@ -269,7 +296,6 @@ function LinkTab(props) {
 }
 
 function NavTabs(props) {
-    const classes = useStylesTabs();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -277,15 +303,15 @@ function NavTabs(props) {
     };
 
     return (
-        <div className={classes.root}>
+        <div className={""}>
             <AppBar position="static" style={{ boxShadhow: "none" }} elevation={0}>
-                <Tabs
+                <StyledTabs
                     style={{
                         backgroundColor: "#ffffff",
                         color: "#07AD88!important",
                         boxShadow: "none",
                     }}
-                    indicatorColor="secondary"
+                    // indicatorColor="secondary"
                     variant="fullWidth"
                     value={value}
                     onChange={handleChange}
@@ -308,11 +334,11 @@ function NavTabs(props) {
                     />
 
                     {/*}*/}
-                </Tabs>
+                </StyledTabs>
             </AppBar>
 
             {/*{props.suggesstions.length>0 &&*/}
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={0}>
                 <div className={"container"}>
                     {props.suggesstions.map((item) => (
                         <>
@@ -339,7 +365,7 @@ function NavTabs(props) {
             {/*}*/}
             {/*{props.matches.length>0 &&*/}
 
-            <TabPanel value={value} index={0}>
+            <TabPanel value={value} index={1}>
                 <div className={"container"}>
                     {props.matches.map((item) => (
                         <>

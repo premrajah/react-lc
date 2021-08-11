@@ -114,7 +114,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
-                        <LoggedInRoute exact path="/list-form-old" component={CreateListing} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
 
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />

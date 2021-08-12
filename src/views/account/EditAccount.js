@@ -159,7 +159,7 @@ class EditAccount extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        if (this.handleValidationSite()) {
+        if (this.handleValidation()) {
             const form = event.currentTarget;
 
             this.setState({
@@ -287,41 +287,47 @@ class EditAccount extends Component {
                                                     name="phone" label="Phone" />
                                             </div>
 
-
-
-                                            <div className="col-12 mt-4">
-                                                <div className="row">
-                                                    <div className={this.state.reasonOtherShow?"col-6 ":"col-12"}>
-                                                        <SelectArrayWrapper
-                                                            initialValue={this.state.reason}
-                                                            onChange={(value)=> {
-
-                                                                if (value==="Other"){
-
-                                                                    this.setState({
-                                                                        reasonOtherShow:true
-                                                                    })
-                                                                }else{
-                                                                    this.setState({
-                                                                        reasonOtherShow:false
-                                                                    })
-                                                                }
-                                                            }}
-                                                            select
-                                                            options={this.state.reasons} name={"reason"} label="Main Reason for using Loopcycle"
-                                                        />
-                                                    </div>
-
-                                                    <div className={this.state.reasonOtherShow?"col-6 append-animate":"d-none"}>
-                                                        <TextFieldWrapper
-
-                                                            onChange={(value)=>this.handleChange(value,"volume")}
-                                                            error={this.state.errors["reason"]}
-                                                            name="reason-other" label=" Specify here" />
-                                                    </div>
-                                                </div>
-
+                                            <div className="col-12 mt-4 pl-2">
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.reason}
+                                                    onChange={(value)=>this.handleChange(value,"reason")}
+                                                    error={this.state.errors["reason"]}
+                                                    name="reason" label="Main Reason for using Loopcycle" />
                                             </div>
+
+                                            {/*<div className="col-12 mt-4">*/}
+                                            {/*    <div className="row">*/}
+                                            {/*        <div className={this.state.reasonOtherShow?"col-6 ":"col-12"}>*/}
+                                            {/*            <SelectArrayWrapper*/}
+                                            {/*                initialValue={this.state.reason}*/}
+                                            {/*                onChange={(value)=> {*/}
+
+                                            {/*                    if (value==="Other"){*/}
+
+                                            {/*                        this.setState({*/}
+                                            {/*                            reasonOtherShow:true*/}
+                                            {/*                        })*/}
+                                            {/*                    }else{*/}
+                                            {/*                        this.setState({*/}
+                                            {/*                            reasonOtherShow:false*/}
+                                            {/*                        })*/}
+                                            {/*                    }*/}
+                                            {/*                }}*/}
+                                            {/*                select*/}
+                                            {/*                options={this.state.reasons} name={"reason"} label="Main Reason for using Loopcycle"*/}
+                                            {/*            />*/}
+                                            {/*        </div>*/}
+
+                                            {/*        <div className={this.state.reasonOtherShow?"col-6 append-animate":"d-none"}>*/}
+                                            {/*            <TextFieldWrapper*/}
+
+                                            {/*                onChange={(value)=>this.handleChange(value,"volume")}*/}
+                                            {/*                error={this.state.errors["reason"]}*/}
+                                            {/*                name="reason-other" label=" Specify here" />*/}
+                                            {/*        </div>*/}
+                                            {/*    </div>*/}
+
+                                            {/*</div>*/}
 
 
 

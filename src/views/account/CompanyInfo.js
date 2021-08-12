@@ -14,6 +14,8 @@ import PageHeader from "../../components/PageHeader";
 import PlaceholderImg from "../../../src/img/place-holder-lc.png";
 import EditIcon from "@material-ui/icons/Edit";
 import {Publish} from "@material-ui/icons";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -36,6 +38,7 @@ class CompanyInfo extends Component {
             companyNumber: null,
             submitSuccess: false,
             file:null,
+            errorCompany:null
 
         };
 
@@ -106,15 +109,21 @@ class CompanyInfo extends Component {
                     this.setState({
                         loading: false,
                         submitSuccess: true,
+                        errorCompany:null
                     });
 
                     let responseAll = response.data.data;
 
                     this.companyInfo();
+
                 },
                 (error) => {
+
+                    // console.log( error.response)
+
                     this.setState({
                         loading: false,
+                        errorCompany:error.response.data.errors[0].message
                     });
                 }
             );
@@ -130,6 +139,11 @@ class CompanyInfo extends Component {
                     org: responseOrg.data,
                     companyName: responseOrg.data.name,
                     description: responseOrg.data.description,
+                    industry: responseOrg.data.details&&responseOrg.data.details.industry?responseOrg.data.details.industry:null,
+                    sector: responseOrg.data.details&&responseOrg.data.details.sector?responseOrg.data.details.sector:null,
+                    no_of_staff:  responseOrg.data.details&&responseOrg.data.details.no_of_staff?responseOrg.data.details.no_of_staff:null,
+
+
                 });
 
                 this.getArtifactForOrg();
@@ -157,22 +171,54 @@ class CompanyInfo extends Component {
         return formIsValid;
     }
 
-    handleChange(field, e) {
+    handleValidation() {
+
+
         let fields = this.state.fields;
-        fields[field] = e.target.value;
-        this.setState({ fields: fields });
 
-        if (field === "companyName") {
-            this.setState({
-                companyName: e.target.value,
-            });
-        } else if (field === "description") {
-            this.setState({
-                description: e.target.value,
-            });
-        }
 
+        let validations=[
+
+            validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("description", [{check: Validators.requiredCheck, message: 'Required'}],fields),
+        ]
+
+
+
+        let {formIsValid,errors}= validateInputs(validations)
+
+        console.log(formIsValid,errors)
+
+        this.setState({ errors: errors });
+        return formIsValid;
     }
+
+
+
+    handleChange(value,field ) {
+
+        console.log(field,value)
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+    }
+
+    // handleChange(field, e) {
+    //     let fields = this.state.fields;
+    //     fields[field] = e.target.value;
+    //     this.setState({ fields: fields });
+    //
+    //     if (field === "companyName") {
+    //         this.setState({
+    //             companyName: e.target.value,
+    //         });
+    //     } else if (field === "description") {
+    //         this.setState({
+    //             description: e.target.value,
+    //         });
+    //     }
+    //
+    // }
 
     _handleReaderLoaded = (readerEvent) => {
         let binaryString = readerEvent.target.result;
@@ -186,7 +232,7 @@ class CompanyInfo extends Component {
             loading: true,
         });
 
-        if (this.handleValidationSite()) {
+        if (this.handleValidation()) {
             const form = event.currentTarget;
 
             this.setState({
@@ -204,6 +250,12 @@ class CompanyInfo extends Component {
                         update: {
                             name: name,
                             description: description,
+                            details:{
+
+                                "industry": data.get("industry"),
+                                "sector": data.get("businessField"),
+                                "no_of_staff": data.get("no_of_staff")
+                            }
                         },
                     }
                 )
@@ -217,8 +269,10 @@ class CompanyInfo extends Component {
                     }
                 })
                 .catch((error) => {
+
                     this.setState({
                         loading: false,
+
                     });
                 });
 
@@ -464,61 +518,58 @@ class CompanyInfo extends Component {
                                     <form onSubmit={this.handleSubmitSite}>
                                         <div className="row no-gutters justify-content-center ">
                                             <div className="col-12 mt-4">
-                                                <TextField
-                                                    id="outlined-basic"
-                                                    label="Company Name"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                    name={"companyName"}
-                                                    value={this.state.companyName}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "companyName"
-                                                    )}
-                                                />
 
-                                                {this.state.errors["companyName"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["companyName"]}
-                                                    </span>
-                                                )}
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.companyName}
+                                                    onChange={(value)=>this.handleChange(value,"companyName")}
+                                                    error={this.state.errors["companyName"]}
+                                                    name="companyName" label="Company Name" />
+
+
                                             </div>
 
                                             <div className="col-12 mt-4">
-                                                <TextField
-                                                    id="outlined-basic"
-                                                    label="Description"
-                                                    variant="outlined"
-                                                    value={this.state.description}
-                                                    fullWidth={true}
-                                                    name={"description"}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "description"
-                                                    )}
-                                                />
 
-                                                {this.state.errors["description"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["description"]}
-                                                    </span>
-                                                )}
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.description}
+                                                    onChange={(value)=>this.handleChange(value,"description")}
+                                                    error={this.state.errors["description"]}
+                                                    name="description" label="Description" />
+
+
                                             </div>
 
-                                            {/*<div className="col-12 mt-4">*/}
-                                            {/*    <input*/}
-                                            {/*        type="file"*/}
-                                            {/*        name="orgImg"*/}
-                                            {/*        id="orgImg"*/}
-                                            {/*        accept=".jpeg, .jpg, .png"*/}
-                                            {/*        onChange={this.handleChange.bind(*/}
-                                            {/*            this,*/}
-                                            {/*            "orgImg"*/}
-                                            {/*        )}*/}
-                                            {/*    />*/}
-                                            {/*</div>*/}
+                                            <div className="col-12 mt-4">
+
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.industry}
+                                                    onChange={(value)=>this.handleChange(value,"industry")}
+                                                    error={this.state.errors["industry"]}
+                                                    name="industry" label="Industry" />
+
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.sector}
+                                                    onChange={(value)=>this.handleChange(value,"businessField")}
+                                                    error={this.state.errors["businessField"]}
+                                                    name="businessField" label="Field of Business" />
+
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.no_of_staff}
+                                                    onChange={(value)=>this.handleChange(value,"no_of_staff")}
+                                                    error={this.state.errors["no_of_staff"]}
+                                                    name="no_of_staff" label="No of staff" />
+
+
+                                            </div>
+
 
                                             <div className="col-12 mt-4">
                                                 <button
@@ -576,6 +627,13 @@ class CompanyInfo extends Component {
 
                                             {this.state.loading ? "Wait.." : "Submit Company"}
                                         </button>
+                                    </div>
+                                    <div className="col-12 mt-4">
+                                    {this.state.errorCompany && (
+                                        <Alert key={"alert"} variant={"danger"}>
+                                            { this.state.errorCompany}
+                                        </Alert>
+                                    )}
                                     </div>
                                 </div>
                             </>

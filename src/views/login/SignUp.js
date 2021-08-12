@@ -431,6 +431,7 @@ class SignUp extends Component {
                             <div className="col-12 mt-4">
                                 <TextFieldWrapper
 
+                                    type="password"
                                     onChange={(value)=>this.handleChange(value,"confirmPassword")}
                                     error={this.state.errors["confirmPassword"]}
                                     name="confirmPassword" label="Confirm Password" />

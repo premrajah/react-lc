@@ -1,7 +1,7 @@
 import React, {useState, Component} from "react";
 import GoogleMapReact from 'google-map-react';
 import MapIcon from '@material-ui/icons/Place';
-
+import Tooltip from '@material-ui/core/Tooltip';
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 export class MapContainer extends Component {
     constructor(props) {
@@ -37,12 +37,15 @@ this.setState({
                     defaultCenter={this.state.center}
                     defaultZoom={this.state.zoom}
                 >
-                    <MapIcon
+
+                    <Tooltip title={this.props.siteName}>
+                        <MapIcon
                         style={{color:"red",fontSize:"45px"}}
                         lat={this.props.location.lat}
                         lng={this.props.location.lng}
                         text="My Marker"
                     />
+                    </Tooltip>
                 </GoogleMapReact>
             </div>
         );

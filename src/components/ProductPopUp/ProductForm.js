@@ -339,7 +339,7 @@ class ProductForm extends Component {
 
     handleChangeProduct(value,field ) {
 
-        console.log(field,value)
+        // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });

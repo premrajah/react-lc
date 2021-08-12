@@ -127,7 +127,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
-                        <LoggedInRoute exact path="/edit-account" component={EditAccount} />
+                        <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
                         <LoggedInRoute exact path="/addresses" component={Address} />
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />

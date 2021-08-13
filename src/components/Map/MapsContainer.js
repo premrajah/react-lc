@@ -11,10 +11,28 @@ import GoogleMapReact from "google-map-react";
         this.state = {
 
             center:null,
-            zoom:15
+            zoom:15,
+            showingInfoWindow: false,
+            activeMarker: {},
+            selectedPlace: {},
 
         }
     }
+     onMarkerClick = (props, marker, e) =>
+         this.setState({
+             selectedPlace: props,
+             activeMarker: marker,
+             showingInfoWindow: true
+         });
+
+     onMapClicked = (props) => {
+         if (this.state.showingInfoWindow) {
+             this.setState({
+                 showingInfoWindow: false,
+                 activeMarker: null
+             })
+         }
+     };
 
     componentDidMount() {
 
@@ -26,6 +44,7 @@ import GoogleMapReact from "google-map-react";
         return (
      <div style={{width:this.props.width, height:this.props.height}}>
             <Map
+                onClick={this.onMapClicked}
                 google={this.props.google}
                 style={{margin:"0",width: "95%"}}
                 initialCenter={{
@@ -40,15 +59,29 @@ import GoogleMapReact from "google-map-react";
                 {this.props.locations.map((item)=>
 
                 <Marker
+                    onClick={this.onMarkerClick}
+                  icon={{
+                      url :"https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png",
+                      anchor: new this.props.google.maps.Point(32,32),
+                      scaledSize: new this.props.google.maps.Size(50,50)
 
-                  
+                  }}
                     animation= {this.props.google.maps.Animation.DROP}
                     position= {{"lat": item.location.lat,lng: item.location.lng }}
-                        name={'Current location'}
+                        name={item.name}
                 />
 
-                )}
 
+
+                )}
+                <InfoWindow
+                    marker={this.state.activeMarker}
+                    visible={this.state.showingInfoWindow}>
+
+                    <div>
+                        <span>{this.state.selectedPlace.name}</span>
+                    </div>
+                </InfoWindow>
 
 
             </Map>

@@ -17,7 +17,10 @@ import LogoText from "../../img/logo-text.png";
 import styles from "./Footer.module.css";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
+// // import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
+// import HeaderLogoSvg from '../../img/Logo-white.svg';
+import HeaderLogoSvg from '../../img/Logo-white.svg';
+import LogoSymbol from "../../img/Symbol-white.svg";
 
 class Footer extends React.Component {
     constructor(props) {
@@ -36,7 +39,14 @@ class Footer extends React.Component {
         return (
             <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
                     <Row className={""}>
-                        <Col md="4"></Col>
+                        <Col md="4">
+                            <img className="header-logo mobile-only" src={LogoSymbol} alt=""/>
+                            <img
+                                className="text-logo-home web-only"
+                                src={HeaderLogoSvg}
+                                alt=""
+                            />
+                        </Col>
                         <Col md="2">
                             <Nav>
                                 <NavItem>

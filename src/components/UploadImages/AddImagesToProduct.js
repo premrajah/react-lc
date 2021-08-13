@@ -22,8 +22,8 @@ class AddImagesToProduct extends Component {
 
     componentDidMount() {
         // this.setState({ productKey: this.props.match.params.slug });'
-        console.log("image upload product")
-        console.log(this.props.item)
+        // console.log("image upload product")
+        // console.log(this.props.item)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -132,7 +132,7 @@ class AddImagesToProduct extends Component {
                 }
             })
             .catch((error) => {
-                console.log("upload artifact to product error ", error);
+                // console.log("upload artifact to product error ", error);
                 this.handleCallbackImagesUploadStatus("fail");
             });
     };
@@ -185,12 +185,12 @@ class AddImagesToProduct extends Component {
                                 })
 
                         } catch (e) {
-                            console.log('catch Error ', e);
+                            // console.log('catch Error ', e);
                         }
 
                     })
                     .catch(error => {
-                        console.log('image upload error ', error);
+                        // console.log('image upload error ', error);
                     })
 
             }

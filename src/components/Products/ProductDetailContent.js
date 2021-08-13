@@ -25,7 +25,7 @@ import InfoTabContent from "./InfoTabContent";
 import SubProductsTab from "./SubProductsTab";
 import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
-import MapContainer from "../Map/MapContainer";
+import {GoogleMap} from "../Map/MapsContainer";
 
 class ProductDetailContent extends Component {
     slug;
@@ -717,7 +717,9 @@ class ProductDetailContent extends Component {
                                             </Tab>
 
                                             {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&    <Tab eventKey="maps" title="Site">
-                                                <MapContainer width={"100%"}  height={"300px"} siteName={this.props.item.site.name} location={this.props.item.site.geo_codes[0].address_info.geometry.location} />
+
+                                                <GoogleMap width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+
                                             </Tab>}
 
                                             {this.state.searches.length > 0 && (

@@ -33,6 +33,7 @@ import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
 import ArtifactProductsTab from "./Products/ArtifactProductsTab";
 import MapContainer from "./Map/MapContainer";
+import {GoogleMap} from "./Map/MapsContainer";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -72,6 +73,7 @@ class ProductDetailCycle extends Component {
             orgTrails: null,
             siteTrails: null,
             timelineDisplay: "org",
+
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -737,8 +739,8 @@ class ProductDetailCycle extends Component {
                                         </Tab>
                                     )}
 
-                                    {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&  <Tab eventKey="maps" title="Site">
-                                        <MapContainer width={"100%"}  height={"300px"} siteName={this.props.item.site.name} location={this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&this.props.item.site.geo_codes[0].address_info.geometry.location} />
+                                    {this.props.item.site.name&&this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&  <Tab eventKey="maps" title="Site">
+                                        <GoogleMap width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
                                     </Tab>}
 
                                     <Tab eventKey="artifacts" title="Artifacts">
@@ -785,12 +787,12 @@ class ProductDetailCycle extends Component {
                                         value={this.state.timelineDisplay}
                                         onChange={(e) => this.handleTimelineOptions(e)}>
                                         <FormControlLabel
-                                            control={<Radio />}
+                                            control={<Radio style={{color:"#07ad88"}} />}
                                             label="Organisations"
                                             value="org"
                                         />
                                         <FormControlLabel
-                                            control={<Radio />}
+                                            control={<Radio style={{color:"#07ad88"}} />}
                                             label="Locations"
                                             value="site"
                                         />
@@ -1367,70 +1369,7 @@ class ProductDetailCycle extends Component {
     }
 }
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
-function BottomAppBar(props) {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <Link
-                                to={"/message-seller/" + props.slug}
-                                type="button"
-                                className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Message Seller
-                            </Link>
-                        </div>
-                        <div className="col-auto">
-                            <Link
-                                to={"/make-offer/" + props.slug}
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Make Offer
-                            </Link>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

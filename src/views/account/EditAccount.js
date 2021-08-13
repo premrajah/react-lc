@@ -287,12 +287,16 @@ class EditAccount extends Component {
                                                     name="phone" label="Phone" />
                                             </div>
 
-                                            <div className="col-12 mt-4 pl-2">
+                                            <div className="col-12 mt-4 ">
+                                                <div className="row">
+                                                    <div className="col-12">
                                                 <TextFieldWrapper
                                                     initialValue={this.state.reason}
                                                     onChange={(value)=>this.handleChange(value,"reason")}
                                                     error={this.state.errors["reason"]}
                                                     name="reason" label="Main Reason for using Loopcycle" />
+                                                </div>
+                                                </div>
                                             </div>
 
                                             {/*<div className="col-12 mt-4">*/}

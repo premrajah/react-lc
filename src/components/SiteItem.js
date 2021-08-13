@@ -4,6 +4,7 @@ import Close from "@material-ui/icons/Close";
 import EditSite from "./Sites/EditSite";
 import MapIcon from '@material-ui/icons/Place';
 import {MapContainer} from "./Map/MapContainer";
+import {GoogleMap} from "./Map/MapsContainer";
 const SiteItem = ({site}) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = site;
     const [showModal, setShowModal] = useState(false);
@@ -13,6 +14,7 @@ const SiteItem = ({site}) => {
         setErrorMsg('')
         setShowModal(true);
     }
+
 
 
     const handleMapModal = () => {
@@ -89,7 +91,10 @@ const SiteItem = ({site}) => {
 
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <MapContainer width={"100%"}  height={"300px"} siteName={name} location={site.geo_codes&&site.geo_codes[0]&&site.geo_codes[0].address_info.geometry.location} />
+                                    {site.geo_codes&&site.geo_codes[0] &&
+                                    <GoogleMap width={"100%"}  height={"300px"}
+                                               locations={[{name:name,location:site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+                                    }
                                 </div>
                             </div>
                         </div>

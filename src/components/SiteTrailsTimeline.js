@@ -8,12 +8,13 @@ import TimelineDot from "@material-ui/lab/TimelineDot";
 import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import moment from "moment";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MapIcon from '@material-ui/icons/Place';
 import {showSiteModal} from "../store/actions/actions";
 import Close from "@material-ui/icons/Close";
 import {MapContainer} from "./Map/MapContainer";
+import {GoogleMap} from "./Map/MapsContainer";
 const useStyles = makeStyles((theme) => ({
     text: {
         padding: theme.spacing(2, 2, 0),
@@ -47,12 +48,50 @@ const useStyles = makeStyles((theme) => ({
 function SiteTrailsTimeline(props) {
     const classes = useStyles();
     const [showMap, setShowMap] = useState(false);
+    const [locations, setLocations] = useState([]);
+
     const [site, setSite] = useState(null);
     const handleMapModal = (site) => {
 
         setShowMap(!showMap);
         setSite(site)
     }
+
+    useEffect(()=>{
+
+        let locationsList = []
+
+
+
+        let sites =props.siteTrails
+        // console.log(sites)
+
+        for (let i=0;i<sites.length;i++){
+
+            let site = sites[i].site.site
+            // locationsList.push(site)
+            try{
+                if (site&&site.geo_codes&&site.geo_codes[0])
+                    locationsList.push(
+                        {isCenter:i==0?true:false,name:site.name,
+                            location:site.geo_codes[0].address_info.geometry.location}
+                    )
+            }catch (error){
+
+                console.log(error)
+            }
+
+        }
+
+        console.log(locationsList)
+
+        setLocations(locationsList)
+
+    },props.siteTrails)
+
+
+
+
     return (
         <div>
             <Timeline>
@@ -172,7 +211,7 @@ function SiteTrailsTimeline(props) {
                     ))}
             </Timeline>
 
-            {showMap && (
+            {(showMap &&locations.length>0)&& (
                 <>
                     <div className={"body-overlay"}>
                         <div className={"modal-popup site-popup"}>
@@ -186,7 +225,11 @@ function SiteTrailsTimeline(props) {
 
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <MapContainer width={"100%"}  height={"300px"} siteName={site&&site.name} location={site&&(site.geo_codes&&site.geo_codes[0]&&site.geo_codes[0].address_info.geometry.location)} />
+                                    <GoogleMap width={"100%"}
+                                                          height={"300px"}
+
+                                                          locations={locations}
+                                    />
                                 </div>
                             </div>
                         </div>

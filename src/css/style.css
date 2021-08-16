@@ -3390,7 +3390,6 @@ a.page-link:hover {
     right: -230px;
     width: 100px;
     height: 100px;
-    background: blue;
     -webkit-animation: slide 0.2s forwards;
     -webkit-animation-delay: 2s;
     animation: slide 0.2s forwards;

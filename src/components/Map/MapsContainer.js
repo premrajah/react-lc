@@ -1,5 +1,5 @@
 import React, {useState, Component} from "react";
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import {Map, InfoWindow, Marker, GoogleApiWrapper, Polygon, Polyline} from 'google-maps-react';
 
 import MapIcon from '@material-ui/icons/Place';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -9,15 +9,19 @@ import GoogleMapReact from "google-map-react";
         super(props);
 
         this.state = {
-
             center:null,
             zoom:15,
             showingInfoWindow: false,
             activeMarker: {},
             selectedPlace: {},
-
         }
     }
+
+
+      polyLine = [
+
+     ];
+
      onMarkerClick = (props, marker, e) =>
          this.setState({
              selectedPlace: props,
@@ -34,7 +38,14 @@ import GoogleMapReact from "google-map-react";
          }
      };
 
-    componentDidMount() {
+ componentDidMount() {
+
+
+     for (let i=0;i<this.props.locations.length;i++){
+
+         this.polyLine.push( {lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
+
+     }
 
 }
 
@@ -43,7 +54,8 @@ import GoogleMapReact from "google-map-react";
     render() {
         return (
      <div style={{width:this.props.width, height:this.props.height}}>
-            <Map
+         {this.props.locations.length>0 &&
+         <Map
                 onClick={this.onMapClicked}
                 google={this.props.google}
                 style={{margin:"0",width: "95%"}}
@@ -55,14 +67,14 @@ import GoogleMapReact from "google-map-react";
                 zoom={14}
             >
 
+                {this.props.locations.reverse().map((item)=>
 
-                {this.props.locations.map((item)=>
 
-                <Marker
+                 <Marker
                     onClick={this.onMarkerClick}
                   icon={{
-                      url :"https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png",
-                      anchor: new this.props.google.maps.Point(32,32),
+                      url :item.isCenter?"/icon/blue-marker.png":"/icon/green-marker.png",
+                      anchor: new this.props.google.maps.Point(25,25),
                       scaledSize: new this.props.google.maps.Size(50,50)
 
                   }}
@@ -70,7 +82,6 @@ import GoogleMapReact from "google-map-react";
                     position= {{"lat": item.location.lat,lng: item.location.lng }}
                         name={item.name}
                 />
-
 
 
                 )}
@@ -82,13 +93,26 @@ import GoogleMapReact from "google-map-react";
                         <span>{this.state.selectedPlace.name}</span>
                     </div>
                 </InfoWindow>
+                <Polyline
+                    path={this.polyLine}
+                    geodesic={true}
+                    strokeColor="#07ad88"
+                    strokeOpacity={1}
+                    strokeWeight={2}
 
+                    icons={ [{
+                          icon: {path: this.props.google.maps.SymbolPath.FORWARD_CLOSED_ARROW},
+                           offset: "100%" }]}
 
-            </Map>
+              />
+
+            </Map>}
 </div>
         );
     }
 }
+
+
 
 export const GoogleMap = GoogleApiWrapper({
     apiKey: "AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM",

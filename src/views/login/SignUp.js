@@ -45,7 +45,9 @@ class SignUp extends Component {
             businessFields:["Manufacturer","Dealer","Operator","Other"],
             reasonOtherShow:false,
             industryOtherShow:false,
-            businessFieldOtherShow:false
+            businessFieldOtherShow:false,
+            isLoopCycleCompany:false,
+            companyNumber:null
 
 
         };
@@ -65,12 +67,54 @@ class SignUp extends Component {
     }
 
     companyDetails = (detail) => {
+
+
+
         if (detail.org) {
             this.setState({
                 org_id: detail.org,
             });
+
+            this.setState({
+                isLoopCycleCompany:true
+            })
         } else {
-            axios.get(baseUrl + "org/company/" + detail.company).then(
+
+            this.setState({
+                isLoopCycleCompany:false,
+                companyNumber:detail.company
+            })
+            // axios.get(baseUrl + "org/company/" + detail.company).then(
+            //     (response) => {
+            //         var responseAll = response.data.data;
+            //
+            //         // console.log(response.data.data)
+            //
+            //         this.setState({
+            //             org_id: responseAll._key,
+            //         });
+            //     },
+            //     (error) => {}
+            // );
+        }
+    };
+
+
+    createCompanyWithDetails = (data) => {
+
+      return       axios.post(baseUrl + "org/company/",{
+
+
+                "company_number":this.state.companyNumber,
+                "email":data.get("email"),
+                "details": {
+
+                    "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
+                    "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),
+                    "no_of_staff": data.get("no_of_staff")
+                }
+
+            }).then(
                 (response) => {
                     var responseAll = response.data.data;
 
@@ -82,7 +126,7 @@ class SignUp extends Component {
                 },
                 (error) => {}
             );
-        }
+
     };
 
     hideLoginPopUp = (event) => {
@@ -157,7 +201,7 @@ class SignUp extends Component {
 
         let {formIsValid,errors}= validateInputs(validations)
 
-        console.log(formIsValid,errors)
+        // console.log(formIsValid,errors)
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -167,7 +211,7 @@ class SignUp extends Component {
 
     handleChange(value,field ) {
 
-        console.log(field,value)
+       // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -181,7 +225,7 @@ class SignUp extends Component {
         this.setState({ showPassword: !this.state.showPassword });
     };
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -192,6 +236,18 @@ class SignUp extends Component {
             });
 
             const data = new FormData(event.target);
+
+
+            //update company details first
+
+
+            if (!this.state.isLoopCycleCompany){
+
+                   await   this.createCompanyWithDetails(data)
+            }
+
+
+
             const username = data.get("email");
             const password = data.get("password");
             const firstName = data.get("firstName");
@@ -208,12 +264,12 @@ class SignUp extends Component {
                     firstName: firstName,
                     phone: phone,
                     org_id: this.state.org_id,
-                    user_details:{
-                        reason_for_joining:data.get("reason")!="Other"?data.get("reason"):data.get("reason-other")
+                    user_details: {
+                        reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
                     },
-                    org_details:{
-                        "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
-                        "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),
+                    org_details: {
+                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
+                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
                         "no_of_staff": data.get("no_of_staff")
                     }
                 };
@@ -224,18 +280,18 @@ class SignUp extends Component {
                     lastName: lastName,
                     firstName: firstName,
                     phone: phone,
-                    user_details:{
-                        reason_for_joining:data.get("reason")!="Other"?data.get("reason"):data.get("reason-other")
+                    user_details: {
+                        reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
                     },
-                    org_details:{
-                        "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
-                        "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),
+                    org_details: {
+                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
+                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
                         "no_of_staff": data.get("no_of_staff")
                     }
                 };
             }
 
-            console.log(dataSignUp)
+            // console.log(dataSignUp)
             this.props.signUp(dataSignUp);
 
         } else {
@@ -295,6 +351,8 @@ class SignUp extends Component {
 
 
                             </div>
+                            {!this.state.isLoopCycleCompany &&
+                                <>
                             <div className="col-12 mt-4">
 
                                 <div className="row">
@@ -401,7 +459,11 @@ class SignUp extends Component {
                                     error={this.state.errors["no_of_staff"]}
                                     name="no_of_staff" label="No. of staff" />
                             </div>
+                            </>}
+
                             <div className="col-12 mt-4">
+
+
 
                                 <TextFieldWrapper
 

@@ -65,7 +65,7 @@ const SelectArrayWrapper = (props) => {
 
                 {options.map((item, index) => (
                     <option selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}   key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
-                        {capitalize(option?item[option]:item)}
+                        {(option?item[option]:item)}
                     </option>
                 ))}
             </Select>

@@ -329,9 +329,9 @@ class ProductForm extends Component {
 
         let {formIsValid,errors}= validateInputs(validations)
 
-        console.log("title error",errors["title"])
-
-        console.log(formIsValid,errors)
+        // console.log("title error",errors["title"])
+        //
+        // console.log(formIsValid,errors)
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -428,7 +428,7 @@ class ProductForm extends Component {
                 };
 
                 var completeData;
-                console.log(productData)
+               // console.log(productData)
 
                 if (this.props.parentProduct) {
                     completeData = {
@@ -489,7 +489,7 @@ class ProductForm extends Component {
 
         for (let k = 0; k < this.props.item.artifacts.length; k++) {
 
-            console.log(this.props.item.artifacts[k].blob_url)
+           // console.log(this.props.item.artifacts[k].blob_url)
             var fileItem = {
                 status: 1,
                 id: this.props.item.artifacts[k]._key,
@@ -1033,10 +1033,7 @@ class ProductForm extends Component {
                                                                         className={
                                                                             "file-uploader-thumbnail-container"
                                                                         }>
-                                                                        {console.log(">> ", "url("+ (item.imgUrl?item.imgUrl
-                                                                            : URL.createObjectURL(
-                                                                                item.file
-                                                                            )) + ")")}
+
                                                                         <div
 
                                                                             data-index={

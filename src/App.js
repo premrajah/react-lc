@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./css/style.css";
-import {createBrowserHistory} from "history";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
 import Home from "./views/LoopHome/Home";
 import LoginPopUp from "./views/login/LoginPopUp";
@@ -22,9 +21,7 @@ import LoopDetail from "./views/loop-cycle/LoopDetail";
 import ViewCycle from "./views/loop-cycle/view-cycle";
 import CreateSearchHome from "./views/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
-import CreateListing from "./views/create-listing/create-listing";
 import SubProductView from "./views/create-listing/SubProductView";
-// import ProductView from "./views/create-listing/ProductView";
 import ListForm from "./views/create-listing/ListForm";
 import SearchForm from "./views/create-search/SearchForm";
 import ViewSearchNew from "./views/create-search/ViewSearch";
@@ -70,7 +67,7 @@ import ServiceAgentRecord from "./views/approvals/ServiceAgentRecord";
 import SearchRecords from "./components/Searches/SearchRecords";
 import ListingRecord from "./components/Listings/ListingRecord";
 
-let hist = createBrowserHistory();
+
 
 class App extends Component {
 

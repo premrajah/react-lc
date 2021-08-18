@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Formik, Form, ErrorMessage, Field} from 'formik';
+import {Formik, Form, Field} from 'formik';
 import  * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
@@ -11,8 +11,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {TextField} from "formik-material-ui";
 import {MenuItem} from "@material-ui/core";
 import EditSite from "../Sites/EditSite";
-import CloseIcon from '@material-ui/icons/Close';
-import {load} from "dotenv";
+
 
 
 
@@ -164,6 +163,13 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
         <div className="row mb-3">
             <div className="col">
                 <h4>{isSite && 'Sites Upload'}{isProduct && 'Products Upload'}</h4>
+                <p className="green-link-url">
+                    <a href={isProduct
+                                ? "../../../public/downloads/products.csv"
+                                : "../../../public/downloads/sites.csv"} download>Download {isProduct
+                                                                                                ? "products"
+                                                                                                : "sites"} csv template</a>
+                </p>
             </div>
         </div>
 

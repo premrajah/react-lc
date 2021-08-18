@@ -8,9 +8,13 @@ import TimelineDot from "@material-ui/lab/TimelineDot";
 import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import moment from "moment";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
+import MapIcon from '@material-ui/icons/Place';
+import {showSiteModal} from "../store/actions/actions";
+import Close from "@material-ui/icons/Close";
+import {MapContainer} from "./Map/MapContainer";
+import {GoogleMap} from "./Map/MapsContainer";
 const useStyles = makeStyles((theme) => ({
     text: {
         padding: theme.spacing(2, 2, 0),
@@ -43,6 +47,50 @@ const useStyles = makeStyles((theme) => ({
 
 function SiteTrailsTimeline(props) {
     const classes = useStyles();
+    const [showMap, setShowMap] = useState(false);
+    const [locations, setLocations] = useState([]);
+
+    const [site, setSite] = useState(null);
+    const handleMapModal = (site) => {
+
+        setShowMap(!showMap);
+        setSite(site)
+    }
+
+    useEffect(()=>{
+
+        let locationsList = []
+
+
+
+        let sites =props.siteTrails
+        // console.log(sites)
+
+        for (let i=0;i<sites.length;i++){
+
+            let site = sites[i].site.site
+            // locationsList.push(site)
+            try{
+                if (site&&site.geo_codes&&site.geo_codes[0])
+                    locationsList.push(
+                        {isCenter:i==0?true:false,name:site.name,
+                            location:site.geo_codes[0].address_info.geometry.location}
+                    )
+            }catch (error){
+
+                console.log(error)
+            }
+
+        }
+
+        console.log(locationsList)
+
+        setLocations(locationsList)
+
+    },props.siteTrails)
+
+
+
 
     return (
         <div>
@@ -97,7 +145,7 @@ function SiteTrailsTimeline(props) {
                                     className="blue-text"
                                     variant="subtitle1"
                                     component="div">
-                                    {item.site.site.address}
+                                    {item.site.site.address}  <MapIcon onClick={() => handleMapModal(item.site.site)} />
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
@@ -118,6 +166,8 @@ function SiteTrailsTimeline(props) {
                                             {item.site.org.description &&
                                                 ", " + item.site.org.description}
                                         </span>
+
+
                                     </Typography>
                                 </Paper>
                             </TimelineOppositeContent>
@@ -154,12 +204,40 @@ function SiteTrailsTimeline(props) {
                                     className="blue-text"
                                     variant="subtitle1"
                                     component="div">
-                                    {item.site.site.address}
+                                    {item.site.site.address}   <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
                     ))}
             </Timeline>
+
+            {(showMap &&locations.length>0)&& (
+                <>
+                    <div className={"body-overlay"}>
+                        <div className={"modal-popup site-popup"}>
+                            <div className=" text-right ">
+                                <Close
+                                    onClick={() => handleMapModal()}
+                                    className="blue-text click-item"
+                                    style={{ fontSize: 32 }}
+                                />
+                            </div>
+
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    <GoogleMap width={"100%"}
+                                                          height={"300px"}
+
+                                                          locations={locations}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+
         </div>
     );
 }

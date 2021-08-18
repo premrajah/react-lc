@@ -167,7 +167,7 @@ class PaymentMethod extends Component {
                                 </div>
                             </div>
 
-                            <div className="col-md-2">
+                            <div className="col-md-4">
                                 <div
                                     onClick={() => this.toggleMultiSite()}
                                     className="green-link-url"

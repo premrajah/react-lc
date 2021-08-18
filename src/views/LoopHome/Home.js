@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import LogoText from "../../img/logo-text.png";
 import PhoneHome from "../../img/phone-home.png";
 import BikeHome from "../../img/LoopBike.png";
 import LoopHomeImage from "../../img/loop-home-image.png";
@@ -11,7 +10,6 @@ import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import Footer from "../Footer/Footer";
-import WaveBorder from "../Footer/WaveBorder";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 
@@ -70,24 +68,24 @@ class Home extends Component {
                 <Sidebar />
                 <HeaderDark />
                 <div className="wrapper homepage">
-                    <div className="container-fluid container-light-blue pt-5">
+                    <div className="container-fluid  pt-5">
                         <div className="container   pt-5 pb-5">
 
                             <div className="row no-gutters">
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className={"white-text"}>
-                                                A Platform for the future
+                                            <h1 className="blue-text primary-heading" style={{fontSize: "3em"}}>
+                                                Connect the dots
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className={"white-text"}>
-                                                    Loopcycle is a match making platform for
-                                                    organisations that generate waste and for those
-                                                    that need waste to manufacture their products.
+                                                <p className="blue-text" style={{fontSize: "1.3em"}}>
+                                                    Loopcycle’s product traceability platform redefines the management,
+                                                    recovery and resale of valuable secondary products, driving integrity
+                                                    within the reuse market.
                                                 </p>
                                             </div>
                                         </div>
@@ -101,7 +99,7 @@ class Home extends Component {
                                                 rel="noopener noreferrer"
                                                 type="button"
                                                 style={{ textDecoration: "none", color: "#3F3C6E" }}
-                                                className="mr-2 btn btn-link white-border-btn mt-2 mb-2">
+                                                className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />
                                             </a>
                                         </div>
@@ -109,22 +107,17 @@ class Home extends Component {
                                 </div>
 
                                 <div className="col-md-6 col-sm-12 col-xs-12 ">
-                                    <img className={"img-fluid"} src={PhoneHome} alt="" />
+                                    <img className="img-fluid" src={PhoneHome} alt="" />
                                 </div>
 
                                 <div className="col-12 mobile-only pt-4">
-                                    <p className={"white-text"}>
+                                    <p className="white-text">
                                         Loopcycle uses artificial intelligence to match
                                         organizations and blockchain technology is used to ensure
                                         the transaction is secure and traceable.
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="container-fluid container-light-blue pt-5">
-                        <div className="row no-gutters">
-                            <WaveBorder />
                         </div>
                     </div>
                     <div className="container-fluid container-blue pt-5">
@@ -139,7 +132,7 @@ class Home extends Component {
 
                                     <div className="row no-gutters justify-content-center">
                                         <div className="col-10">
-                                            <h3 className={"white-text mt-4"}>
+                                            <h3 className="white-text mt-4 primary-heading">
                                                 Do more, with less
                                             </h3>
 
@@ -164,7 +157,7 @@ class Home extends Component {
 
                                     <div className="row no-gutters justify-content-center">
                                         <div className="col-10">
-                                            <h3 className={"white-text mt-4"}>
+                                            <h3 className="white-text mt-4 primary-heading">
                                                 Igniting community
                                             </h3>
                                             <p className={"white-text mt-4"}>
@@ -185,7 +178,7 @@ class Home extends Component {
                                 <h3 className={"blue-text text-center "}>
                                     <b>
                                         View all resources on the <br />
-                                        Loopcycle Platform.
+                                        Loopcycle Platform
                                     </b>
                                 </h3>
                             </div>
@@ -341,13 +334,6 @@ class Home extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
-
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
     };
 };
 

@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import ProductForm from "../create-listing/ProductForm";
+
 import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductForm from "../../components/ProductPopUp/ProductForm";
 
 class ProductPopUp extends Component {
     componentDidMount() {}
@@ -55,21 +56,10 @@ class ProductPopUp extends Component {
                                 />
                             )}
 
-                            {/*<ProductExpandItem productId={"product-1612196249585-OoEd1eCa56"}/>*/}
-
-                            {/*{this.props.showProductView && <ProductView  />}*/}
                         </div>
                     </div>
                 </div>
 
-                {/*<div className="row py-3 justify-content-center mobile-menu-row pt-3">*/}
-
-                {/*<div className="col-3 mobile-menu">*/}
-
-                {/*{this.props.showSubProductView &&  <button type={"submit"} onClick={this.hidePopUp} className={"btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"}>Done</button>}*/}
-
-                {/*</div>*/}
-                {/*</div>*/}
             </Modal>
         );
     }

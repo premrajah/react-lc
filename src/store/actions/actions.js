@@ -1,9 +1,10 @@
 import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage/user";
 import axios from "axios/index";
+import encodeUrl from "encodeurl";
 
 import { baseUrl } from "../../Util/Constants";
 import {
-    IS_CART_LOADING,
+
     LOAD_USER_DETAIL,
     LOADING,
     LOADING_SPINNER,
@@ -35,14 +36,12 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
-    PRODUCT_REGISTER,PRODUCT_RELEASE,SERVICE_AGENT_REQUEST
+    PRODUCT_REGISTER,PRODUCT_RELEASE,SERVICE_AGENT_REQUEST,SHOW_SNACKBAR,CURRENT_PRODUCT,
+    GET_LISTINGS,
 } from "../types";
+import {load} from "dotenv";
 
-export const enableCartLoading = () => {
-    return {
-        type: IS_CART_LOADING,
-    };
-};
+
 
 export const loadingSpinner = () => {
     return {
@@ -69,6 +68,14 @@ export const setOrgImage = (val) => {
         value: val,
     };
 };
+
+export const showSnackbar = (val) => {
+    return {
+        type: SHOW_SNACKBAR,
+        value: val,
+    };
+};
+
 
 export const showLoading = (val) => {
     return {
@@ -175,7 +182,42 @@ export const loadSitesSync = (data) => (dispatch) => {
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
+
+export const loadCurrentProduct = (data) => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(loadCurrentProductSync(data));
+    };
+};
+
+export const loadCurrentProductSync = (data) => (dispatch) => {
+
+    axios
+        .get(baseUrl + "product/" + encodeUrl(data) + "/expand"
+        )
+        .then(
+            (response) => {
+                var responseAll = response.data;
+
+                dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
+
+
+            },
+            (error) => {
+                // this.setState({
+                //     notFound: true,
+                // });
+            }
+        );
+
+};
+
+
+
 export const loadProductsSync = (data) => (dispatch) => {
+
+
+
     axios
         .get(baseUrl + "product", {
             headers: {
@@ -201,14 +243,18 @@ export const loadProductsSync = (data) => (dispatch) => {
 };
 
 export const loadProductsWithoutParentSync = (data) => (dispatch) => {
+
+
+
     axios
         .get(`${baseUrl}product/no-parent/expand`)
+        // .get(`${baseUrl}product/no-parent/expand?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
                 if(response.status === 200) {
                     dispatch(loading(false));
                 }
-                dispatch({ type: PRODUCT_NPARENT_LIST, value: response.data.data });
+                dispatch({ type: PRODUCT_NPARENT_LIST, value: {val:response.data.data,offset:data.offset, size:data.size}});
             },
             (error) => {
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: [] });
@@ -362,6 +408,24 @@ export const loadUserDetail = (data) => {
     return { type: LOAD_USER_DETAIL, value: userDetials };
 };
 
+export const getListings = (data) => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(getListingsSync(data));
+    }
+}
+
+export const getListingsSync = (data) => (dispatch) => {
+    axios.get(`${baseUrl}listing`)
+        .then(res => {
+            dispatch({type: GET_LISTINGS, value: res.data.data})
+            dispatch(loading(false));
+        })
+        .catch(error => {
+            console.log('listing error ', error.message);
+        })
+}
+
 export const getUserDetail = (data) => {
     return (dispatch) => {
         dispatch(loading());
@@ -513,7 +577,6 @@ export const fetchReleaseRequest = () => {
         dispatch(loading());
         dispatch(fetchReleaseRequestSync());
 
-        // return  { type: "PRODUCT_LIST", value: [] }
     };
 };
 
@@ -525,7 +588,6 @@ export const fetchReleaseRequestSync = () => (dispatch) => {
 
             dispatch({ type: PRODUCT_RELEASE, value: responseAll });
 
-            // dispatch()
         },
         (error) => {
             // let status = error.response.status

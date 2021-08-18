@@ -9,6 +9,11 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import {capitalize} from "../../Util/GlobalFunctions";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,13 +28,7 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
 
-        // this.state = {
-        //
-        //     timerEnd: false,
-        //     count : 0,
-        //     nextIntervalFlag: false,
-        //     active: 0   //0 logn. 1- sign up , 3 -search
-        // }
+
 
         this.state = {
             fields: {},
@@ -41,6 +40,16 @@ class SignUp extends Component {
             showPassword: false,
             isChecked: false,
             org_id: null,
+            industries:["Commercial kitchen equipment","Commercial laundry equipment","Hospitality","Healthcare","Other"],
+            reasons:["Register new products","Access Marketplace","Other"],
+            businessFields:["Manufacturer","Dealer","Operator","Other"],
+            reasonOtherShow:false,
+            industryOtherShow:false,
+            businessFieldOtherShow:false,
+            isLoopCycleCompany:false,
+            companyNumber:null
+
+
         };
 
         this.goToSignUp = this.goToSignUp.bind(this);
@@ -58,12 +67,54 @@ class SignUp extends Component {
     }
 
     companyDetails = (detail) => {
+
+
+
         if (detail.org) {
             this.setState({
                 org_id: detail.org,
             });
+
+            this.setState({
+                isLoopCycleCompany:true
+            })
         } else {
-            axios.get(baseUrl + "org/company/" + detail.company).then(
+
+            this.setState({
+                isLoopCycleCompany:false,
+                companyNumber:detail.company
+            })
+            // axios.get(baseUrl + "org/company/" + detail.company).then(
+            //     (response) => {
+            //         var responseAll = response.data.data;
+            //
+            //         // console.log(response.data.data)
+            //
+            //         this.setState({
+            //             org_id: responseAll._key,
+            //         });
+            //     },
+            //     (error) => {}
+            // );
+        }
+    };
+
+
+    createCompanyWithDetails = (data) => {
+
+      return       axios.post(baseUrl + "org/company/",{
+
+
+                "company_number":this.state.companyNumber,
+                "email":data.get("email"),
+                "details": {
+
+                    "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
+                    "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),
+                    "no_of_staff": data.get("no_of_staff")
+                }
+
+            }).then(
                 (response) => {
                     var responseAll = response.data.data;
 
@@ -75,7 +126,7 @@ class SignUp extends Component {
                 },
                 (error) => {}
             );
-        }
+
     };
 
     hideLoginPopUp = (event) => {
@@ -129,79 +180,40 @@ class SignUp extends Component {
     }
 
     handleValidation() {
+
+
         let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
 
-        //Name
-        if (!fields["password"]) {
-            formIsValid = false;
-            errors["password"] = "Required";
-        }
-        if (!fields["firstName"]) {
-            formIsValid = false;
-            errors["firstName"] = "Required";
-        }
-        // if(!fields["agree"]){
-        //     formIsValid = false;
-        //     errors["agree"] = "Required";
-        // }
 
-        if (!this.state.isChecked) {
-            formIsValid = false;
-            errors["agree"] = "Required";
-        }
+        let validations=[
+            validateFormatCreate("firstName", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
+            validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
+            validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
+            validateFormatCreate("agree", [{check: Validators.requiredCheck, message: 'Required'}],fields),
+            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'This field should be a number.'}],fields),
 
-        if (!fields["lastName"]) {
-            formIsValid = false;
-            errors["lastName"] = "Required";
-        }
-        if (!fields["password"]) {
-            formIsValid = false;
-            errors["password"] = "Required";
-        }
+        ]
 
-        if (!fields["confirmPassword"]) {
-            formIsValid = false;
-            errors["confirmPassword"] = "Required";
-        }
 
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
 
-        if (fields["password"] !== fields["confirmPassword"]) {
-            formIsValid = false;
-            errors["password"] = "Does-Not-Match";
-            errors["confirmPassword"] = "Does-Not-Match";
-        }
+        let {formIsValid,errors}= validateInputs(validations)
 
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
+        // console.log(formIsValid,errors)
 
         this.setState({ errors: errors });
         return formIsValid;
     }
 
-    handleChange(field, e) {
+
+
+    handleChange(value,field ) {
+
+       // console.log(field,value)
         let fields = this.state.fields;
-        fields[field] = e.target.value;
+        fields[field] = value;
         this.setState({ fields });
     }
 
@@ -213,7 +225,7 @@ class SignUp extends Component {
         this.setState({ showPassword: !this.state.showPassword });
     };
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -224,6 +236,17 @@ class SignUp extends Component {
             });
 
             const data = new FormData(event.target);
+
+
+            //update company details first
+
+
+            if (!this.state.isLoopCycleCompany){
+
+                   await   this.createCompanyWithDetails(data)
+            }
+
+
 
             const username = data.get("email");
             const password = data.get("password");
@@ -241,6 +264,14 @@ class SignUp extends Component {
                     firstName: firstName,
                     phone: phone,
                     org_id: this.state.org_id,
+                    user_details: {
+                        reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
+                    },
+                    org_details: {
+                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
+                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
+                        "no_of_staff": data.get("no_of_staff")
+                    }
                 };
             } else {
                 dataSignUp = {
@@ -249,10 +280,20 @@ class SignUp extends Component {
                     lastName: lastName,
                     firstName: firstName,
                     phone: phone,
+                    user_details: {
+                        reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
+                    },
+                    org_details: {
+                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
+                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
+                        "no_of_staff": data.get("no_of_staff")
+                    }
                 };
             }
 
+            // console.log(dataSignUp)
             this.props.signUp(dataSignUp);
+
         } else {
         }
     };
@@ -269,77 +310,35 @@ class SignUp extends Component {
 
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
-                            <div className="col-12 mt-4">
-                                <TextField
-                                    id="outlined-basic"
-                                    label="*First Name"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name={"firstName"}
-                                    onChange={this.handleChange.bind(this, "firstName")}
-                                />
+                            <div className="col-6 pr-2 mt-4">
 
-                                {this.state.errors["firstName"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["firstName"]}
-                                    </span>
-                                )}
+                                <TextFieldWrapper
+
+                                    onChange={(value)=>this.handleChange(value,"firstName")}
+                                    error={this.state.errors["firstName"]}
+                                    name="firstName" label="First Name" />
                             </div>
 
-                            <div className="col-12 mt-4">
-                                <TextField
-                                    id="outlined-basic"
-                                    label="*Last Name"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name={"lastName"}
-                                    onChange={this.handleChange.bind(this, "lastName")}
-                                />
+                            <div className="col-6 mt-4 pl-2">
+                                <TextFieldWrapper
 
-                                {this.state.errors["lastName"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["lastName"]}
-                                    </span>
-                                )}
+                                    onChange={(value)=>this.handleChange(value,"lastName")}
+                                    error={this.state.errors["lastName"]}
+                                    name="lastName" label="Last Name" />
                             </div>
 
-                            <div className="col-12 mt-4">
-                                <TextField
-                                    id="outlined-basic"
-                                    label="*Email"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name={"email"}
-                                    type={"email"}
-                                    onChange={this.handleChange.bind(this, "email")}
-                                />
-
-                                {this.state.errors["email"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["email"]}
-                                    </span>
-                                )}
+                            <div className="col-6 mt-4 pr-2">
+                                <TextFieldWrapper
+                                    onChange={(value)=>this.handleChange(value,"email")}
+                                    error={this.state.errors["email"]}
+                                    name="email" label="Email" />
                             </div>
 
-                            <div className="col-12 mt-4">
-                                <TextField
-                                    id="phone"
-                                    label="Phone"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name="phone"
-                                    type="number"
-                                    onChange={this.handleChange.bind(this, "phone")}
-                                />
-                                {this.state.errors["phone"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["phone"]}
-                                    </span>
-                                )}
+                            <div className="col-6 mt-4 pl-2">
+                                <TextFieldWrapper
+                                    onChange={(value)=>this.handleChange(value,"phone")}
+                                    error={this.state.errors["phone"]}
+                                    name="phone" label="Phone" />
                             </div>
 
                             <div className="col-12 mt-4">
@@ -350,124 +349,183 @@ class SignUp extends Component {
                                     selectedCompany={(action) => this.companyDetails(action)}
                                 />
 
-                                {/*No id, name, class: <input list="myList" /><br />*/}
-                                {/*With class: <input name="myInputClass" list="myList" autoComplete="off" />*/}
 
-                                {/*<datalist id="myList">*/}
-                                {/*<option value="Option 1"></option>*/}
-                                {/*<option value="Option 2"></option>*/}
-                                {/*</datalist>*/}
+                            </div>
+                            {!this.state.isLoopCycleCompany &&
+                                <>
+                            <div className="col-12 mt-4">
 
-                                {/*<Autocomplete*/}
+                                <div className="row">
+                                    <div className={this.state.industryOtherShow?"col-6 transition-width":"col-12 transition-width"}>
+                               <SelectArrayWrapper
 
-                                {/*id="combo-box-demo"*/}
-                                {/*options={top100Films}*/}
-                                {/*getOptionLabel={(option) => option.title}*/}
-                                {/*style={{ width: 300 }}*/}
-                                {/*renderInput={(params) =>*/}
-                                {/*<TextField*/}
+                                   select
+                                   onChange={(value)=> {
+                                       if (value==="Other"){
 
-                                {/**/}
-                                {/*autoComplete={"new-password"} {...params} label="Combo box" variant="outlined" />}*/}
-                                {/*/>*/}
+                                           this.setState({
+                                               industryOtherShow:true
+                                           })
+                                       }else{
+                                           this.setState({
+                                               industryOtherShow:false
+                                           })
+                                       }
+                                   }}
+                                   options={this.state.industries} name={"industry"} label="Industry"
+                               />
+                                    </div>
+
+                                    <div className={this.state.industryOtherShow?"col-6 append-animate":"d-none"}>
+                                        <TextFieldWrapper
+
+                                            // onChange={(value)=>this.handleChangeProduct(value,"volume")}
+                                            error={this.state.errors["industry"]}
+                                            name="industry-other" label=" Specify here" />
+                                    </div>
+                                </div>
+
                             </div>
                             <div className="col-12 mt-4">
-                                <TextField
-                                    onChange={this.handleChange.bind(this, "password")}
-                                    name={"password"}
-                                    id="password"
-                                    label="*Password"
-                                    variant="outlined"
-                                    fullWidth={true}
+                                <div className="row">
+                                <div className={this.state.reasonOtherShow?"col-6 ":"col-12"}>
+                                <SelectArrayWrapper
+                                    // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                    onChange={(value)=> {
+
+                                        if (value==="Other"){
+
+                                            this.setState({
+                                                reasonOtherShow:true
+                                            })
+                                        }else{
+                                            this.setState({
+                                                reasonOtherShow:false
+                                            })
+                                        }
+
+                                    }}
+                                    select
+                                    options={this.state.reasons} name={"reason"} label="Main Reason for using Loopcycle"
+                                />
+                                </div>
+
+                                <div className={this.state.reasonOtherShow?"col-6 append-animate":"d-none"}>
+                                <TextFieldWrapper
+
+                                    // onChange={(value)=>this.handleChangeProduct(value,"volume")}
+                                    error={this.state.errors["reason"]}
+                                    name="reason-other" label=" Specify here" />
+                                </div>
+                                </div>
+
+                            </div>
+                            <div className="col-12 mt-4">
+                                <div className="row">
+                                    <div className={this.state.businessFieldOtherShow?"col-6 ":"col-12"}>
+                                <SelectArrayWrapper
+                                    // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                    select
+                                    onChange={(value)=> {
+                                        if (value==="Other"){
+
+                                            this.setState({
+                                                businessFieldOtherShow:true
+                                            })
+                                        }else{
+                                            this.setState({
+                                                businessFieldOtherShow:false
+                                            })
+                                        }
+                                    }}
+                                    options={this.state.businessFields} name={"businessField"} label="Field of Business"
+                                />
+                                    </div>
+                                <div className={this.state.businessFieldOtherShow?"col-6 append-animate":"d-none"}>
+                                    <TextFieldWrapper
+
+                                        // onChange={(value)=>this.handleChangeProduct(value,"volume")}
+                                        error={this.state.errors["businessField"]}
+                                        name="businessField-other" label="Specify here" />
+                                </div>
+
+                            </div>
+
+
+                            </div>
+                            <div className="col-12 mt-4">
+                                <TextFieldWrapper
+                                    onChange={(value)=>this.handleChange(value,"no_of_staff")}
+                                    error={this.state.errors["no_of_staff"]}
+                                    name="no_of_staff" label="No. of staff" />
+                            </div>
+                            </>}
+
+                            <div className="col-12 mt-4">
+
+
+
+                                <TextFieldWrapper
+
+                                    onChange={(value)=>this.handleChange(value,"password")}
+                                    error={this.state.errors["password"]}
+                                    name="password" label="Password"
                                     type={this.state.showPassword ? "text" : "password"}
                                     InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    onClick={this.handleShowPassword}
-                                                    edge="end">
-                                                    {this.state.showPassword ? (
-                                                        <Visibility />
-                                                    ) : (
-                                                        <VisibilityOff />
-                                                    )}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        onClick={this.handleShowPassword}
+                                                        edge="end">
+                                                        {this.state.showPassword ? (
+                                                            <Visibility />
+                                                        ) : (
+                                                            <VisibilityOff />
+                                                        )}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                 />
 
-                                {this.state.errors["password"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["password"]}
-                                    </span>
-                                )}
-                                {this.state.errors["Does-Not-Match"] && (
-                                    <span className={"text-mute small"}>
-                                        <span> style={{ color: "red" }}>* </span>
-                                        {this.state.errors["Does-Not-Match"]}
-                                    </span>
-                                )}
                             </div>
 
                             <div className="col-12 mt-4">
-                                <TextField
-                                    onChange={this.handleChange.bind(this, "confirmPassword")}
-                                    name={"confirmPassword"}
-                                    id="outlined-basic"
-                                    label="*Confirm Password"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    type={this.state.showPassword ? "text" : "password"}
-                                />
+                                <TextFieldWrapper
 
-                                {this.state.errors["confirmPassword"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["confirmPassword"]}
-                                    </span>
-                                )}
-                                {this.state.errors["Does-Not-Match"] && (
-                                    <span className={"text-mute small"}>
-                                        <span> style={{ color: "red" }}>* </span>
-                                        {this.state.errors["Does-Not-Match"]}
-                                    </span>
-                                )}
+                                    type="password"
+                                    onChange={(value)=>this.handleChange(value,"confirmPassword")}
+                                    error={this.state.errors["confirmPassword"]}
+                                    name="confirmPassword" label="Confirm Password" />
+
                             </div>
 
-                            {/*<div className="col-12 mt-4 justify-content-center">*/}
-                            {/*<p className={"text-mute small"}>Don’t see your company here?</p>*/}
-                            {/*<p className={"forgot-password-link text-mute small"}>Create a new company profile</p>*/}
-                            {/*</div>*/}
-
                             <div className="col-12 mt-4 justify-content-center">
-                                <p className={"text-mute small"}>
-                                    <Checkbox
+                                <div className={""}>
+                                <p className={""}>
+                                    <CheckboxWrapper
                                         name={"agree"}
-                                        onChange={this.handleToggleChecked}
-                                        checked={this.state.isChecked}
+                                        onChange={(value)=>this.handleChange(value,"agree")}
+                                        initialValue={false}
                                         // color="#07AD88"
                                         style={{
                                             color: this.state.errors["agree"] ? "red" : "#07AD88",
                                         }}
                                         inputProps={{ "aria-label": "secondary checkbox" }}
                                     />
+                                {/*</div>*/}
+                                {/*<div className={"col-10"}>*/}
+                                <span className={"text-mute small"}>
+
                                     I agree to the
                                     <span className={"forgot-password-link"}>
                                         <a href="/terms" target="_blank" rel="noopener noreferrer">
                                             Terms and Conditions
                                         </a>
                                     </span>
-                                    <p>
-                                        {this.state.errors["agree"] && (
-                                            <span className={"text-mute small"}>
-                                                <span style={{ color: "red" }}>* </span>
-                                                {this.state.errors["agree"]}
-                                            </span>
-                                        )}
-                                    </p>
+                                </span>
                                 </p>
+                                </div>
                             </div>
 
                             {this.props.signUpFailed && (

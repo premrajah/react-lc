@@ -6,8 +6,15 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
 import {Link} from "react-router-dom";
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
+import {capitalize} from "../../Util/GlobalFunctions";
 
-const SubproductItem = ({item, parentId, remove}) => {
+const SubproductItem = (props) => {
+
+    const item=props.item
+    const parentId= props.parentId
+    const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
 
     useEffect(() => {
@@ -36,13 +43,14 @@ const SubproductItem = ({item, parentId, remove}) => {
                     : item._key,
             ]
         };
-
+        //
         axios
             .post(`${baseUrl}product/sub-product/remove`, payload)
             .then((res) => {
-                if(res.status === 200) {
-                    window.location.reload();
-                }
+
+                props.loadCurrentProduct(parentId)
+                props.showSnackbar({show:true,severity:"success",message:"Subproduct removed successfully from product. Thanks"})
+
             })
             .catch((error) => {});
     }
@@ -67,15 +75,15 @@ const SubproductItem = ({item, parentId, remove}) => {
 
             <div className="col-sm-7 pl-2">
                 <div>
-                    <Link  to={`/product/${item._key}`}>
+                    <Link  to={props.noLinking?"#":`/product/${item._key}`}>
                         <h5>{item.name}</h5>
                     </Link>
                 </div>
-                <div className="text-muted">{item.purpose}</div>
-                <div className="text-muted" style={{lineHeight: '22px'}}>
+                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
+                <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
                     <span className="mr-1">{item.category},</span>
                     <span className="mr-1">{item.type},</span>
-                    <span className="mr-1">{item.state},</span>
+                    <span className="mr-1 ">{capitalize(item.state)},</span>
                     <span>{item.volume}</span>
                     <span>{item.units}</span>
                 </div>
@@ -92,11 +100,43 @@ const SubproductItem = ({item, parentId, remove}) => {
                     <div className={"text-gray-light small "}>
                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                     </div>
-                    <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />
+                    {!props.hideMoreMenu&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
                 </div>
             </div>
         </div>
     </>
 }
 
-export default SubproductItem;
+const mapStateToProps = (state) => {
+    return {
+        loginError: state.loginError,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        loginFailed: state.loginFailed,
+        showLoginPopUp: state.showLoginPopUp,
+        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+        userDetail: state.userDetail,
+        // abondonCartItem : state.abondonCartItem,
+        // showNewsletter: state.showNewsletter
+        loginPopUpStatus: state.loginPopUpStatus,
+        showSubProductView: state.showSubProductView,
+    };
+};
+
+const mapDispachToProps = (dispatch) => {
+    return {
+        logIn: (data) => dispatch(actionCreator.logIn(data)),
+        signUp: (data) => dispatch(actionCreator.signUp(data)),
+        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+        loadCurrentProduct: (data) =>
+            dispatch(actionCreator.loadCurrentProduct(data)),
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+    };
+};
+export default connect(mapStateToProps, mapDispachToProps)(SubproductItem);

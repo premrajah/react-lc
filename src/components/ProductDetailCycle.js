@@ -1,20 +1,18 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import { makeStyles } from "@material-ui/core/styles";
-import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../Util/Constants";
+import {makeStyles} from "@material-ui/core/styles";
+import {baseUrl, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
-import moment from "moment";
 import ImagesSlider from "./ImagesSlider";
 import encodeUrl from "encodeurl";
-import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
-import { withStyles } from "@material-ui/core/styles/index";
-import ProductItemNew from "./ProductItemNew";
+import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
+import {withStyles} from "@material-ui/core/styles/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
 import SearchItem from "../views/loop-cycle/search-item";
@@ -26,20 +24,16 @@ import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
 import MoreMenu from "./MoreMenu";
 import IssueSubmitForm from "./IssueSubmitForm";
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
-import TimelineDot from "@material-ui/lab/TimelineDot";
-import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import AutocompleteCustom from "./AutocompleteCustom";
 import OrgTrailsTimeline from "./OrgTrailsTimeline";
 import SiteTrailsTimeline from "./SiteTrailsTimeline";
-import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
+import {FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
 import LinkIcon from '@material-ui/icons/Link';
+import InfoTabContent from "./Products/InfoTabContent";
+import SubProductsTab from "./Products/SubProductsTab";
+import ArtifactProductsTab from "./Products/ArtifactProductsTab";
+import MapContainer from "./Map/MapContainer";
+import {GoogleMap} from "./Map/MapsContainer";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -79,6 +73,7 @@ class ProductDetailCycle extends Component {
             orgTrails: null,
             siteTrails: null,
             timelineDisplay: "org",
+
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -729,164 +724,28 @@ class ProductDetailCycle extends Component {
                         </div>
                         <div className={"listing-row-border "}></div>
 
-                        <div className="row justify-content-start pb-3 pt-3 ">
+                        <div className="row justify-content-start pb-3 pt-3 tabs-detail">
                             <div className="col-12 mt-2">
                                 <Tabs defaultActiveKey="productinfo" id="uncontrolled-tab-example">
                                     <Tab eventKey="productinfo" title="Product Info">
-                                        <div className="row  justify-content-start search-container  pb-2">
-                                            <div className={"col-auto"}>
-                                                <p
-                                                    style={{ fontSize: "18px" }}
-                                                    className="text-mute text-bold text-blue mb-1">
-                                                    Category
-                                                </p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.props.item.product.category},
-                                                    {this.props.item.product.type},
-                                                    {this.props.item.product.state}
-                                                    {this.props.item.product.volume}
-                                                    {this.props.item.product.units}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {(this.props.item && this.props.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
-                                            <div className="col-auto">
-                                                <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Condition</p>
-                                                <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.props.item.product.condition)}</p>
-                                            </div>
-                                        </div> }
-
-                                        {this.props.item && this.props.item.product.year_of_making && (
-                                            <div className="row  justify-content-start search-container  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Year Of Manufacturer
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item.product.year_of_making}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.props.item && this.props.item.product.sku.model && (
-                                            <div className="row  justify-content-start search-container  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Model Number
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item &&
-                                                            this.props.item.product.sku.model}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.props.item && this.props.item.product.sku.serial && (
-                                            <div className="row  justify-content-start search-container  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Serial Number
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item &&
-                                                            this.props.item.product.sku.serial}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.props.item && this.props.item.product.sku.brand && (
-                                            <div className="row  justify-content-start search-container  pb-2 ">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Brand
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item &&
-                                                            this.props.item.product.sku.brand}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="row  justify-content-start search-container  pb-2 ">
-                                            <div className={"col-auto"}>
-                                                <p
-                                                    style={{ fontSize: "18px" }}
-                                                    className="text-mute text-bold text-blue mb-1">
-                                                    State
-                                                </p>
-                                                <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.props.item.product.state}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {this.props.item.site && (
-                                            <div className="row justify-content-start search-container pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Located At
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.props.item.site.name},
-                                                        {this.props.item.site.address}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="row  justify-content-start search-container  pb-2 ">
-                                            <div className={"col-auto"}>
-                                                <p
-                                                    style={{ fontSize: "18px" }}
-                                                    className="text-mute text-bold text-blue mb-1">
-                                                    Service Agent
-                                                </p>
-                                                <div style={{ fontSize: "18px" }} className="  mb-1">
-                                                    <Org
-                                                        orgId={this.props.item.service_agent._id}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <InfoTabContent item={this.props.item} />
                                     </Tab>
 
                                     {this.state.subProducts.length > 0 && (
                                         <Tab eventKey="subproducts" title="Subproducts">
-                                            {this.state.subProducts.map((item, index) => (
-                                                <ProductItemNew
-                                                    hideMore={true}
-                                                    key={index}
-                                                    item={item}
-                                                />
-                                            ))}
+
+                                            <SubProductsTab noLinking={true} item={this.props.item} />
+
                                         </Tab>
                                     )}
 
+                                    {this.props.item.site.name&&this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&  <Tab eventKey="maps" title="Site">
+                                        <GoogleMap width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+                                    </Tab>}
+
+                                    <Tab eventKey="artifacts" title="Artifacts">
+                                        <ArtifactProductsTab hideAdd={true} item={this.props.item} />
+                                    </Tab>
                                     {this.state.searches.length > 0 && (
                                         <Tab eventKey="search" title="Searches">
                                             {this.state.searches.map((item, index) => (
@@ -928,12 +787,12 @@ class ProductDetailCycle extends Component {
                                         value={this.state.timelineDisplay}
                                         onChange={(e) => this.handleTimelineOptions(e)}>
                                         <FormControlLabel
-                                            control={<Radio />}
+                                            control={<Radio style={{color:"#07ad88"}} />}
                                             label="Organisations"
                                             value="org"
                                         />
                                         <FormControlLabel
-                                            control={<Radio />}
+                                            control={<Radio style={{color:"#07ad88"}} />}
                                             label="Locations"
                                             value="site"
                                         />
@@ -1510,70 +1369,7 @@ class ProductDetailCycle extends Component {
     }
 }
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
-function BottomAppBar(props) {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <Link
-                                to={"/message-seller/" + props.slug}
-                                type="button"
-                                className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Message Seller
-                            </Link>
-                        </div>
-                        <div className="col-auto">
-                            <Link
-                                to={"/make-offer/" + props.slug}
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Make Offer
-                            </Link>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

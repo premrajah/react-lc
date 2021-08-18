@@ -1,10 +1,8 @@
 import { getKey, saveKey } from "../../LocalStorage/user";
 import {
     ERROR_REQUEST,
-    IS_GUEST,
     LOAD_USER_DETAIL,
     LOADING,
-    LOADING_COUPON,
     LOADING_SPINNER,
     LOGIN,
     LOGIN_ERROR,
@@ -41,14 +39,16 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS,
-    PRODUCT_RELEASE,
     PRODUCT_REGISTER,
-    SERVICE_AGENT_REQUEST
-
+    PRODUCT_RELEASE,
+    SERVICE_AGENT_REQUEST,
+    SHOW_SNACKBAR,
+    CURRENT_PRODUCT,
+    GET_LISTINGS,
 } from "../types";
 
 export const initialState = {
-    age: 20,
+
     loginPopUpStatus: 0,
     loading: false,
     isLoggedIn: false,
@@ -70,6 +70,7 @@ export const initialState = {
     productList: [],
     productWithoutParentList: [],
     siteList: [],
+    allListings: [],
     showSitePopUp: false,
     orgImage: null,
     messages: [],
@@ -78,10 +79,15 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
+    productPageOffset:0,
+    productPageSize:20,
+    lastPageReached:false,
     serviceAgentRequests: [],
     productReleaseRequests: [],
     productReleaseRequested: [],
     productRegisterRequests: [],
+    snackbarMessage: {show:false,message:"",severity:""},
+    currentProduct:null
 };
 
 const reducer = (state = initialState, action) => {
@@ -104,13 +110,10 @@ const reducer = (state = initialState, action) => {
             newState.showSitePopUp = action.value;
             break;
 
-
         case PRODUCT_RELEASE:
-
             newState.productReleaseRequests = action.value;
             newState.productReleaseRequested=[]
             newState.productReleaseRequested = action.value.filter((item) => item.Release.stage === "requested" );
-
             break;
 
 
@@ -134,7 +137,6 @@ const reducer = (state = initialState, action) => {
                 newState.isLoggedIn = true;
                 newState.loading = false;
                 newState.token = action.value.token;
-
                 newState.userDetail = action.value;
 
                 //
@@ -192,14 +194,46 @@ const reducer = (state = initialState, action) => {
 
             break;
 
+
+        case SHOW_SNACKBAR:
+
+          newState.snackbarMessage=action.value
+
+            break;
+        case CURRENT_PRODUCT:
+
+            newState.currentProduct=action.value
+
+            break;
         case PRODUCT_LIST:
             newState.productList = action.value;
             newState.loading = false;
             break;
 
         case PRODUCT_NPARENT_LIST:
-            newState.productWithoutParentList = action.value;
+            if (action.value.val.length<state.productPageSize){
+                newState.lastPageReached=true
+
+                console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
+
+
+
+            }else{
+
+                newState.lastPageReached=false
+            }
+
+
+            let prevList= state.productWithoutParentList
+            // newState.productWithoutParentList= prevList.concat(action.value.val);
+
+            newState.productWithoutParentList= (action.value.val);
+
             newState.loading = false;
+
+            newState.productPageOffset=action.value.offset
+            newState.productPageSize=action.value.size
+
             break;
 
         case SITE_LIST:
@@ -277,14 +311,7 @@ const reducer = (state = initialState, action) => {
             newState.loading = true;
             break;
 
-        case IS_GUEST:
-            newState.isGuest = true;
-            break;
 
-        case LOADING_COUPON:
-            newState.couponCheckloading = true;
-            newState.couponError = false;
-            break;
 
         case SLIDES_LOAD:
             newState.slides = action.value;
@@ -336,13 +363,8 @@ const reducer = (state = initialState, action) => {
             break;
 
         case USER_DETAIL:
-            if (action.value.isGuest) {
-                newState.isGuest = true;
-                newState.isLoggedIn = false;
-            } else {
-                newState.isLoggedIn = true;
-                newState.isGuest = false;
-            }
+
+           newState.isLoggedIn = true;
 
             newState.userDetail = action.value;
             newState.loading = false;
@@ -350,25 +372,7 @@ const reducer = (state = initialState, action) => {
             break;
 
         case SIGN_UP:
-            // newState.showSocialLoginPopUp = false
-            //
-            // if (action.value.isGuest) {
-            //
-            //     newState.isGuest = true;
-            //     newState.isLoggedIn = false;
-            //
-            // }else {
-            //
-            //     newState.isLoggedIn = true;
-            //     newState.isGuest = false;
-            // }
-            //
-            //
-            //
-            //
-            // newState.showLoginPopUp = false
-            // newState.showLoginCheckoutPopUp = false
-            // newState.userDetail = action.value;
+
 
             newState.loginPopUpStatus = 5;
             newState.loading = false;
@@ -394,6 +398,9 @@ const reducer = (state = initialState, action) => {
             break;
         case UNREAD_NOTIFICATIONS:
             newState.unreadNotifications = action.value;
+            break;
+        case GET_LISTINGS:
+            newState.allListings = action.value;
             break;
     }
 

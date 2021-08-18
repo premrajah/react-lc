@@ -1,35 +1,34 @@
 import React, { Component } from "react";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import { Link } from "react-router-dom";
-import PlaceholderImg from "../img/place-holder-lc.png";
+import PlaceholderImg from "../../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
-import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../Util/Constants";
+import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import ImagesSlider from "./ImagesSlider";
+import ImagesSlider from "../ImagesSlider";
 import encodeUrl from "encodeurl";
 import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductItemNew from "./ProductItemNew";
+import ProductItemNew from "../ProductItemNew";
 import jspdf from "jspdf";
-import QrCodeBg from "../img/qr-code-bg.png";
-import LoopcycleLogo from "../img/logo-text.png";
-import SearchItem from "../views/loop-cycle/search-item";
-import ResourceItem from "../views/create-search/ResourceItem";
+import QrCodeBg from "../../img/qr-code-bg.png";
+import LoopcycleLogo from "../../img/logo-text.png";
+import SearchItem from "../../views/loop-cycle/search-item";
+import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
-import Org from "./Org/Org";
-import ProductEditForm from "./ProductEditForm";
-import MoreMenu from "./MoreMenu";
-import AutocompleteCustom from "./AutocompleteCustom";
+import Org from "../Org/Org";
+import MoreMenu from "../MoreMenu";
+import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
-import AddImagesToProduct from "./UploadImages/AddImagesToProduct";
-import AddedDocumentsDisplay from "./UploadImages/AddedDocumentsDisplay";
-import SubproductItem from "./Products/SubproductItem";
+import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
+import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
+import SubproductItem from "./SubproductItem";
 
-class ProductDetail extends Component {
+class Product extends Component {
     slug;
     search;
 
@@ -809,38 +808,38 @@ class ProductDetail extends Component {
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className=" stick-left-box  ">
                                     {/*<div className="col-12 text-center ">*/}
-                                        {this.state.item &&
-                                        this.state.item.artifacts &&
-                                        this.state.item.artifacts.length > 0 ? (
-                                            <ImagesSlider images={this.state.item.artifacts} />
-                                        ) : (
-                                            <img
-                                                className={"img-fluid"}
-                                                src={PlaceholderImg}
-                                                alt=""
-                                            />
-                                        )}
+                                    {this.state.item &&
+                                    this.state.item.artifacts &&
+                                    this.state.item.artifacts.length > 0 ? (
+                                        <ImagesSlider images={this.state.item.artifacts} />
+                                    ) : (
+                                        <img
+                                            className={"img-fluid"}
+                                            src={PlaceholderImg}
+                                            alt=""
+                                        />
+                                    )}
                                     {/*</div>*/}
 
                                     {this.state.isLoggedIn &&
-                                        !this.state.hideRegister &&
-                                        this.state.userDetail.orgId !== this.state.item.org._id && (
-                                            <>
-                                                <div className={"col-12 pb-5 mb-5"}>
-                                                    <div className="row justify-content-start pb-3 pt-3 ">
-                                                        <div className="col-12 ">
-                                                            <button
-                                                                onClick={this.showRegister}
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"
-                                                                }>
-                                                                Register this product
-                                                            </button>
-                                                        </div>
+                                    !this.state.hideRegister &&
+                                    this.state.userDetail.orgId !== this.state.item.org._id && (
+                                        <>
+                                            <div className={"col-12 pb-5 mb-5"}>
+                                                <div className="row justify-content-start pb-3 pt-3 ">
+                                                    <div className="col-12 ">
+                                                        <button
+                                                            onClick={this.showRegister}
+                                                            className={
+                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"
+                                                            }>
+                                                            Register this product
+                                                        </button>
                                                     </div>
                                                 </div>
-                                            </>
-                                        )}
+                                            </div>
+                                        </>
+                                    )}
 
                                     <div className={"col-12 pb-5 mb-5"}>
                                         <div className="row justify-content-start pb-3 pt-3 ">
@@ -905,8 +904,8 @@ class ProductDetail extends Component {
                                                                 <a
                                                                     className={"mr-3"}
                                                                     href={
-                                                                    baseUrl + "product/" + this.state.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item.product._key + ".png" }>[Mono]</a>
+                                                                        baseUrl + "product/" + this.state.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                                    } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item.product._key + ".png" }>[Mono]</a>
                                                             </p>
                                                         )}
                                                     </div>
@@ -929,7 +928,7 @@ class ProductDetail extends Component {
 
                                             <div className="col-4 text-right">
                                                 { (this.state.item.org._id ===
-                                                this.props.userDetail.orgId) && <MoreMenu
+                                                    this.props.userDetail.orgId) && <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
@@ -1027,84 +1026,84 @@ class ProductDetail extends Component {
 
                                                 {this.state.item &&
                                                 (this.state.item.product.year_of_making || this.state.item.product.year_of_making > 0) && (
-                                                        <div className="row  justify-content-start search-container  pb-2">
-                                                            <div className={"col-auto"}>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="text-mute text-bold text-blue mb-1">
-                                                                    Year Of Manufacturer
-                                                                </p>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="  mb-1">
-                                                                    {
-                                                                        this.state.item.product
-                                                                            .year_of_making
-                                                                    }
-                                                                </p>
-                                                            </div>
+                                                    <div className="row  justify-content-start search-container  pb-2">
+                                                        <div className={"col-auto"}>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="text-mute text-bold text-blue mb-1">
+                                                                Year Of Manufacturer
+                                                            </p>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="  mb-1">
+                                                                {
+                                                                    this.state.item.product
+                                                                        .year_of_making
+                                                                }
+                                                            </p>
                                                         </div>
-                                                    )}
+                                                    </div>
+                                                )}
 
                                                 {this.state.item &&
-                                                    this.state.item.product.sku.model && (
-                                                        <div className="row  justify-content-start search-container  pb-2">
-                                                            <div className={"col-auto"}>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="text-mute text-bold text-blue mb-1">
-                                                                    Model Number
-                                                                </p>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="  mb-1">
-                                                                    {this.state.item &&
-                                                                        this.state.item.product.sku
-                                                                            .model}
-                                                                </p>
-                                                            </div>
+                                                this.state.item.product.sku.model && (
+                                                    <div className="row  justify-content-start search-container  pb-2">
+                                                        <div className={"col-auto"}>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="text-mute text-bold text-blue mb-1">
+                                                                Model Number
+                                                            </p>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="  mb-1">
+                                                                {this.state.item &&
+                                                                this.state.item.product.sku
+                                                                    .model}
+                                                            </p>
                                                         </div>
-                                                    )}
+                                                    </div>
+                                                )}
 
                                                 {this.state.item &&
-                                                    this.state.item.product.sku.serial && (
-                                                        <div className="row  justify-content-start search-container  pb-2">
-                                                            <div className={"col-auto"}>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="text-mute text-bold text-blue mb-1">
-                                                                    Serial Number
-                                                                </p>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="  mb-1">
-                                                                    {this.state.item &&
-                                                                        this.state.item.product.sku
-                                                                            .serial}
-                                                                </p>
-                                                            </div>
+                                                this.state.item.product.sku.serial && (
+                                                    <div className="row  justify-content-start search-container  pb-2">
+                                                        <div className={"col-auto"}>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="text-mute text-bold text-blue mb-1">
+                                                                Serial Number
+                                                            </p>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="  mb-1">
+                                                                {this.state.item &&
+                                                                this.state.item.product.sku
+                                                                    .serial}
+                                                            </p>
                                                         </div>
-                                                    )}
+                                                    </div>
+                                                )}
 
                                                 {this.state.item &&
-                                                    this.state.item.product.sku.brand && (
-                                                        <div className="row  justify-content-start search-container  pb-2 ">
-                                                            <div className={"col-auto"}>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="text-mute text-bold text-blue mb-1">
-                                                                    Brand
-                                                                </p>
-                                                                <p
-                                                                    style={{ fontSize: "18px" }}
-                                                                    className="  mb-1">
-                                                                    {this.state.item &&
-                                                                        this.state.item.product.sku
-                                                                            .brand}
-                                                                </p>
-                                                            </div>
+                                                this.state.item.product.sku.brand && (
+                                                    <div className="row  justify-content-start search-container  pb-2 ">
+                                                        <div className={"col-auto"}>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="text-mute text-bold text-blue mb-1">
+                                                                Brand
+                                                            </p>
+                                                            <p
+                                                                style={{ fontSize: "18px" }}
+                                                                className="  mb-1">
+                                                                {this.state.item &&
+                                                                this.state.item.product.sku
+                                                                    .brand}
+                                                            </p>
                                                         </div>
-                                                    )}
+                                                    </div>
+                                                )}
 
                                                 <div className="row  justify-content-start search-container  pb-2 ">
                                                     <div className={"col-auto"}>
@@ -1245,11 +1244,12 @@ class ProductDetail extends Component {
                                 </button>
                             </div>
 
-                            <ProductEditForm
-                                triggerCallback={(action) => this.callBackSubmit(action)}
-                                isDuplicate={this.state.productDuplicate}
-                                productId={this.state.item.product._key}
-                            />
+                            {/*<ProductEditForm*/}
+                            {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
+                            {/*    isDuplicate={this.state.productDuplicate}*/}
+                            {/*    productId={this.state.item.product._key}*/}
+                            {/*/>*/
+                            }
 
                         </Modal>
 
@@ -1795,4 +1795,4 @@ const mapDispachToProps = (dispatch) => {
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ProductDetail);
+export default connect(mapStateToProps, mapDispachToProps)(Product);

@@ -15,12 +15,13 @@
     border-top-width: 0;
     list-style: none;
     margin-top: 0;
-    max-height: 143px;
+    max-height: 300px;
     overflow-y: auto;
     padding-left: 0;
     width: 100%;
     z-index: 10000000;
     background: white;
+    position: absolute;
 }
 
 .suggestions li {
@@ -44,5 +45,46 @@
     width: 100%;
     height: 54px;
     border-radius: 4px;
+
+}
+.selected-item{margin-right: 2px!important;display: block;opacity: 0.5;  font-size: 12px;}
+.search-card>div{
+    display: inline;
+    float: left;
+}
+.search-card{display: flex;}
+.search-card>.img-left>img{height: 32px;width: 32px;}
+
+.search-card {
+    box-shadow: 0px 2px 4px 0 #0000000d;
+    border: 1px solid #eee;
+    padding: 9px;
+}
+.search-card>.img-left{width: 48px;}
+
+.search-card>.text-right{
+    /*min-width: 300px;*/
+
+    text-align: left;
+    float: left;
+    position: relative;
+}
+.edit-item{position: absolute;
+
+    top: 0%;
+    right:10px;
+    display:block;
+}
+.search-card>.text-right>p{
+    text-align: left!important;
+    padding: 5px;
+}
+.fa-pencil{
+
+    color: #AAAAAA;
+    background: #F6F6F6;
+    border-radius:50%;
+    padding:10px;
+    font-size: 20px;
 
 }

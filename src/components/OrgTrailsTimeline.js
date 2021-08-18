@@ -45,7 +45,7 @@ function OrgTrailsTimeline(props) {
     const classes = useStyles();
 
     return (
-        <div>
+        <>
             <Timeline>
                 {props.orgTrails
                     .filter((item) => item._relation === "belongs_to")
@@ -139,7 +139,7 @@ function OrgTrailsTimeline(props) {
                         </TimelineItem>
                     ))}
             </Timeline>
-        </div>
+        </>
     );
 }
 

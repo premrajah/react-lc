@@ -161,9 +161,17 @@ class ListForm extends Component {
                 (response) => {
                     var responseAll = response.data.data;
 
+                    console.log("images ")
+                    console.log(responseAll)
+
+                  let image=(responseAll.find(
+                        (item) =>
+                            item.mime_type === "image/jpeg" || item.mime_type === "image/png"
+                    ))
+
                     if (responseAll.length > 0) {
                         this.setState({
-                            previewImage: responseAll[0].blob_url,
+                            previewImage:image?image.blob_url:null,
                         });
                     }
                 },
@@ -784,7 +792,7 @@ class ListForm extends Component {
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle={"Create a Listing"} />
+                        <PageHeader pageTitle="Create Listing" />
 
                         <div className={this.state.page === 1 ? "" : "d-none"}>
                             <div className="row add-listing-container   pb-5 pt-2">
@@ -1344,83 +1352,7 @@ function BottomAppBar() {
     );
 }
 
-function UnitSelect(props) {
-    const classes = useStylesSelect();
-    const [state, setState] = React.useState({
-        unit: "",
-        name: "hai",
-    });
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        setState({
-            ...state,
-            [name]: event.target.value,
-        });
-    };
-
-    return (
-        <div>
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
-                <Select
-                    name={"unit"}
-                    native
-                    value={state.age}
-                    onChange={handleChange}
-                    label="Age"
-                    inputProps={{
-                        name: "unit",
-                        id: "outlined-age-native-simple",
-                    }}>
-                    {props.units.map((item) => (
-                        <option value={"Kg"}>{item}</option>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
-    );
-}
-
-function SiteSelect(props) {
-    const classes = useStylesSelect();
-    const [state, setState] = React.useState({
-        unit: "",
-        name: "hai",
-    });
-
-    const handleChange = (event) => {
-        const name = event.target.name;
-        setState({
-            ...state,
-            [name]: event.target.value,
-        });
-    };
-
-    return (
-        <div>
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
-                <Select
-                    name={"site"}
-                    native
-                    value={state}
-                    onChange={handleChange}
-                    label="Age"
-                    inputProps={{
-                        name: "unit",
-                        id: "outlined-age-native-simple",
-                    }}>
-                    <option value={null}>Select</option>
-
-                    {props.sites.map((item) => (
-                        <option value={item.id}>{item.name + "(" + item.address + ")"}</option>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
-    );
-}
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {

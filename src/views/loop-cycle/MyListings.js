@@ -43,29 +43,20 @@ class MyListings extends Component {
     }
 
     getItems() {
-        var url = baseUrl + "listing";
-
         this.props.showLoading(true);
-
         axios
-            .get(url, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(`${baseUrl}listing`)
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
 
                     this.props.showLoading(false);
 
                     this.setState({
-                        items: responseAll,
+                        items: response.data.data,
                     });
                 },
                 (error) => {
-                    // var status = error.response.status
-
+                    console.log("listing error ", error.message)
                     this.props.showLoading(false);
                 }
             );
@@ -89,6 +80,14 @@ class MyListings extends Component {
                             pageTitle="My Listings"
                             subTitle="Accept or decline a match to start a loop."
                         />
+
+                        <div className="row mb-3">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/my-listing-record" className="btn btn-sm blue-btn mr-2">
+                                    Listing Record
+                                </Link>
+                            </div>
+                        </div>
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
@@ -119,7 +118,7 @@ class MyListings extends Component {
 
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.items.map((item, index) => (
+                        {this.state.items.filter(l => l.listing.stage !== "agreed" && l.listing.stage !== "complete").map((item, index) => (
                             <>
                                 <ResourceItem
                                     triggerCallback={() => this.callBackResult()}
@@ -190,15 +189,11 @@ function SearchField() {
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

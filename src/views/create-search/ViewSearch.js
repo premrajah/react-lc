@@ -503,7 +503,7 @@ class ViewSearch extends Component {
                                                                 <div className="col-8 text-left">
                                                                     <h5
                                                                         className={
-                                                                            "blue-text text-heading"
+                                                                            "text-caps blue-text text-heading"
                                                                         }>
                                                                         {
                                                                             this.state
@@ -564,15 +564,13 @@ class ViewSearch extends Component {
                                                                 className="text-mute text-bold text-blue mb-1">
                                                                 Category
                                                             </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
+                                                            <p style={{ fontSize: "18px" }}
                                                                 className="  mb-1">
                                                                 {
                                                                     this.state.createSearchData
                                                                         .search.category
                                                                 }
-                                                                ,
-                                                                {
+                                                                , {
                                                                     this.state.createSearchData
                                                                         .search.type
                                                                 }

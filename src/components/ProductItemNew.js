@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import {baseUrl, capitalizeFirstLetter} from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import { Modal } from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import moment from "moment/moment";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import MoreMenu from "./MoreMenu";
-import ProductEditForm from "./ProductEditForm";
-import ProductDetail from "./ProductDetail";
+import ProductDetail from "./Products/ProductDetail";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
+import {capitalize} from "../Util/GlobalFunctions";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -189,7 +189,7 @@ class ProductItemNew extends Component {
                             </div>
                             <div className={"col-7 pl-2  content-box-listing"}>
 
-                                <p style={{ fontSize: "18px" }} className=" mb-1">
+                                <p style={{ fontSize: "18px" }} className=" mb-1 text-caps">
                                     <Link
                                         onClick={this.goToProduct}
                                         to={"/product/" + this.props.item.product._key}>
@@ -198,10 +198,10 @@ class ProductItemNew extends Component {
                                 </p>
 
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span>{this.props.item.product.purpose}</span>
+                                    <span className={"text-caps"}>{this.props.item.product.purpose}, </span>
                                     {this.props.item.product.condition && (
-                                        <span>
-                                            , <b>{capitalizeFirstLetter(this.props.item.product.condition)}</b>
+                                        <span className={"text-bold text-caps"}>
+                                            {this.props.item.product.condition}
                                         </span>
                                     )}
                                 </p>
@@ -209,10 +209,12 @@ class ProductItemNew extends Component {
                                     <span className="mr-1">
                                         {this.props.item.product.category},
                                     </span>
-                                    <span className="mr-1">{this.props.item.product.type},</span>
-                                    <span className="mr-1">{this.props.item.product.state},</span>
+                                    <span className="mr-1 text-capitalize">{this.props.item.product.type},</span>
+                                    <span className="mr-1 text-capitalize">{this.props.item.product.state},</span>
                                     <span>{this.props.item.product.volume}</span>
-                                    <span>{this.props.item.product.units}</span>
+                                    <span >{this.props.item.product.units}</span>
+                                    <p className={"text-capitalize text-bold"}>{this.props.item.product.sku.brand}</p>
+
                                 </p>
                                 {this.props.item.search_ids && (
                                     <p
@@ -264,16 +266,16 @@ class ProductItemNew extends Component {
                                     )}
                                 </div>
                                 <div className={"col-7 pl-2  content-box-listing"}>
-                                    <p style={{ fontSize: "18px" }} className=" mb-1">
+                                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
                                         {this.props.item.name}
                                     </p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
                                         {this.props.item.purpose}
                                     </p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                    <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
                                         <span className="mr-1">{this.props.item.category},</span>
                                         <span className="mr-1">{this.props.item.type},</span>
-                                        <span className="mr-1">{this.props.item.state},</span>
+                                        <span className="mr-1 ">{capitalize(this.props.item.state)},</span>
                                         <span>{this.props.item.volume}</span>
                                         <span>{this.props.item.units}</span>
                                     </p>
@@ -326,15 +328,17 @@ class ProductItemNew extends Component {
                         </button>
                     </div>
 
-                    <ProductEditForm
-                        triggerCallback={(action) => this.callBackSubmit(action)}
-                        isDuplicate={this.state.productDuplicate}
-                        productId={
-                            this.props.item && this.props.item.product
-                                ? this.props.item.product._key
-                                : this.props.item._key
-                        }
-                    />
+                    {/*<ProductEditForm*/}
+                    {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
+                    {/*    isDuplicate={this.state.productDuplicate}*/}
+                    {/*    productId={*/}
+                    {/*        this.props.item && this.props.item.product*/}
+                    {/*            ? this.props.item.product._key*/}
+                    {/*            : this.props.item._key*/}
+                    {/*    }*/}
+                    {/*/>*/}
+
+
                 </Modal>
 
                 {this.state.showProductHide && (

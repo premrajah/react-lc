@@ -4,9 +4,9 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOutline from "@material-ui/icons/MailOutline";
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import LogoNew from "../../img/logo-cropped.png";
-import HeaderLogoSvg from '../../img/loopcycle_header_logo.svg';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import LogoSymbol from "../../img/Symbol-white.svg";
+import HeaderLogoSvg from '../../img/Logo-white.svg';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
@@ -158,14 +158,14 @@ class ComponentsNavbar extends React.Component {
                             <div className="row no-gutters">
                                 <div className="col-auto">
                                     <Link className={"logo-link"} to={"/"}>
-                                        <>
-                                            <img className="header-logo mobile-only" src={LogoNew} alt="" />
+                                        <div className="d-flex justify-content-center align-content-center">
+                                            <img className="header-logo mobile-only" src={LogoSymbol} alt=""/>
                                             <img
-                                                className={"text-logo-home web-only"}
+                                                className="text-logo-home web-only"
                                                 src={HeaderLogoSvg}
                                                 alt=""
                                             />
-                                        </>
+                                        </div>
                                     </Link>
                                 </div>
                             </div>
@@ -199,7 +199,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/search-form"}
                                         className="nav-link d-none d-lg-block green-link "
                                         color="default">
-                                        Create a search
+                                        Create Search
                                     </Link>
                                 </NavItem>
 
@@ -208,7 +208,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/list-form"}
                                         className="nav-link d-none d-lg-block green-link "
                                         color="default">
-                                        Create a Listing
+                                        Create Listing
                                     </Link>
                                 </NavItem>
                             </>
@@ -260,7 +260,7 @@ class ComponentsNavbar extends React.Component {
                                     <button className="btn btn-link text-dark btn-inbox">
                                         <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
                                             <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
-                                                <NotificationsIcon className="white-text" style={{ fontSize: 24 }} />
+                                                <NotificationsNoneIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Badge>
                                         </Link>
                                     </button>
@@ -321,6 +321,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Account
                                         </Link>
+                                        <Link className={"dropdown-item"} to="/my-products">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Products
+                                        </Link>
 
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
@@ -336,10 +340,7 @@ class ComponentsNavbar extends React.Component {
                                             My Cycles
                                         </Link>
 
-                                        <Link className={"dropdown-item"} to="/my-products">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            My Products
-                                        </Link>
+
 
                                         <Link className={"dropdown-item"} to="/approve">
                                             <i className="tim-icons icon-bullet-list-67" />

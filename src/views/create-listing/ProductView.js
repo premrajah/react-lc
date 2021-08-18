@@ -8,7 +8,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductDetail from "../../components/ProductDetail";
+import ProductDetail from "../../components/Products/ProductDetail";
 import NotFound from "../NotFound/index";
 
 class ProductView extends Component {

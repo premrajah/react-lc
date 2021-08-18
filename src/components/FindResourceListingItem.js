@@ -5,6 +5,7 @@ import PlaceHolderImage from "../img/place-holder-lc.png";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import PlaceholderImg from "../img/place-holder-lc.png";
+import {Link} from "react-router-dom";
 
 const FindResourceListingItem = ({ item }) => {
     const { listing, product, site, org, artifacts } = item;
@@ -21,7 +22,7 @@ const FindResourceListingItem = ({ item }) => {
             </div>
             <div className="col-lg-6 col-sm-12">
                 <Card>
-                    {listing.name ? <Card.Title>{listing.name}</Card.Title> : null}
+                    {listing.name ? <Card.Title><Link to={`/resource/${listing._key}`}>{listing.name}</Link></Card.Title> : null}
                     {listing.description ? (
                         <Card.Subtitle>{listing.description}</Card.Subtitle>
                     ) : null}
@@ -55,10 +56,10 @@ const FindResourceListingItem = ({ item }) => {
                 ) : null}
                 {listing ? (
                     <div align="right">
-                        Available
-                        {moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
+                        <span className="mr-2">Available</span>
+                        <span>{moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                             " - " +
-                            moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}
+                        moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}</span>
                     </div>
                 ) : null}
             </div>

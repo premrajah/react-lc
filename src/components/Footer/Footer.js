@@ -17,7 +17,10 @@ import LogoText from "../../img/logo-text.png";
 import styles from "./Footer.module.css";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
+// // import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
+// import HeaderLogoSvg from '../../img/Logo-white.svg';
+import HeaderLogoSvg from '../../img/Logo-white.svg';
+import LogoSymbol from "../../img/Symbol-white.svg";
 
 class Footer extends React.Component {
     constructor(props) {
@@ -35,20 +38,14 @@ class Footer extends React.Component {
     render() {
         return (
             <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
-                {/*<Container>*/}
                     <Row className={""}>
                         <Col md="4">
-                            <div className="row no-gutters mb-5">
-                                <div className="col-auto">
-                                    <>
-                                        <img
-                                            className={"text-logo-home web-only"}
-                                            src={HeaderLogoSvg}
-                                            alt=""
-                                        />
-                                    </>
-                                </div>
-                            </div>
+                            <img className="header-logo mobile-only" src={LogoSymbol} alt=""/>
+                            <img
+                                className="text-logo-home web-only"
+                                src={HeaderLogoSvg}
+                                alt=""
+                            />
                         </Col>
                         <Col md="2">
                             <Nav>
@@ -70,25 +67,13 @@ class Footer extends React.Component {
                                         About
                                     </a>
                                 </NavItem>
-                                {/*<NavItem>*/}
-                                {/*  <a className={styles.footerlink} href="https://loopcycle.io/what-we-do/" target="_blank" rel="noopener noreferrer">What We Do</a>*/}
-                                {/*</NavItem>*/}
-                                <NavItem>
-                                    <a
-                                        className={styles.footerlink}
-                                        href="https://loopcycle.io/how-it-works/"
-                                        target="_blank"
-                                        rel="noopener noreferrer">
-                                        How It Works
-                                    </a>
-                                </NavItem>
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
                                         href="https://loopcycle.io/news/"
                                         target="_blank"
                                         rel="noopener noreferrer">
-                                        News
+                                        Latest
                                     </a>
                                 </NavItem>
                                 <NavItem>
@@ -105,12 +90,12 @@ class Footer extends React.Component {
                         <Col md="2">
                             <Nav>
                                 <NavItem>
-                                    <NavLink to="/" tag={Link}>
+                                    <NavLink className={styles.footerlink} to="/" tag={Link}>
                                         <b>Resources</b>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink
+                                    <NavLink className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/find-resources"}
                                         tag={Link}>
@@ -119,6 +104,7 @@ class Footer extends React.Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink
+                                        className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-search"}
                                         tag={Link}>
@@ -127,6 +113,7 @@ class Footer extends React.Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink
+                                        className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-listings"}
                                         tag={Link}>
@@ -158,7 +145,7 @@ class Footer extends React.Component {
                                 <Button
                                     className="btn-icon btn-neutral btn-round btn-simple"
                                     color="default"
-                                    href="https://twitter.com/Loopcycle"
+                                    href="https://twitter.com/loopcycle_"
                                     id="tooltip622135962"
                                     target="_blank"
                                     rel="noopener noreferrer">
@@ -167,18 +154,18 @@ class Footer extends React.Component {
                                 <UncontrolledTooltip delay={0} target="tooltip622135962">
                                     Follow us
                                 </UncontrolledTooltip>
-                                {/*<Button*/}
-                                {/*    className="btn-icon btn-neutral btn-round btn-simple"*/}
-                                {/*    color="default"*/}
-                                {/*    href="https://www.instagram.com/loopcycle_io"*/}
-                                {/*    id="tooltip230450801"*/}
-                                {/*    target="_blank"*/}
-                                {/*    rel="noopener noreferrer">*/}
-                                {/*    <i className="fab fa-instagram" />*/}
-                                {/*</Button>*/}
-                                {/*<UncontrolledTooltip delay={0} target="tooltip230450801">*/}
-                                {/*    Like us*/}
-                                {/*</UncontrolledTooltip>*/}
+                                <Button
+                                    className="btn-icon btn-neutral btn-round btn-simple"
+                                    color="default"
+                                    href="https://www.youtube.com/channel/UCzXmbG1RV2ejUlIgRytdFfw"
+                                    id="tooltip230450801"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    <i className="fab fa-youtube" />
+                                </Button>
+                                <UncontrolledTooltip delay={0} target="tooltip230450801">
+                                    View Content
+                                </UncontrolledTooltip>
                             </div>
                         </Col>
                     </Row>
@@ -208,7 +195,7 @@ class Footer extends React.Component {
                             </ul>
                         </div>
                     </div>
-                {/*</Container>*/}
+
             </footer>
         );
     }
@@ -216,16 +203,7 @@ class Footer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
-        // loading: state.loading,
         isLoggedIn: state.isLoggedIn,
-        // loginFailed: state.loginFailed,
-        // showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
     };
 };
 

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Formik, Form, ErrorMessage, Field} from 'formik';
+import {Formik, Form, Field} from 'formik';
 import  * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
@@ -10,6 +10,8 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {TextField} from "formik-material-ui";
 import {MenuItem} from "@material-ui/core";
+import EditSite from "../Sites/EditSite";
+
 
 
 
@@ -19,13 +21,17 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [uploadSitesError, setUploadSitesError] = useState('');
     const [errorsArray, setErrorsArray] = useState([]);
-    const [sites, setSites] = useState([]);
+    // const [sites, setSites] = useState([]);
+    const [siteShowHide, setSiteShowHide] = useState(false);
+    const [submitSiteError, setSubmitSiteError] = useState("");
+    const [submitSiteErrorClassName, setSubmitSiteErrorClassName] = useState("")
     const formikRef = useRef();
 
     useEffect(() => {
         if(isProduct) {
-            setSites(siteList);
+            loadSites();
         }
+
     }, [])
 
 
@@ -62,7 +68,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                 postArtifact(data, artifact, match_strategy, merge_strategy, siteId);
             })
             .catch(error => {
-                console.log('Convert as bytes error ', error);
+                console.log('Convert as bytes error ', error.message);
                 setIsDisabled(false);
             });
     }
@@ -86,7 +92,6 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                     }
 
                     const url = `${baseUrl}load/sites`;
-                    // console.log('artifact upload res ', _id, blob_url)
                     if(res.status === 200) {
                         postLoadSitesOrProducts(url, payload);
                     }
@@ -112,13 +117,25 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
 
             })
             .catch(error => {
-                console.log('artifact upload error ', error)
+                console.log('artifact upload error ', error.message)
                 setUploadArtifactError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
                 setIsDisabled(false);
             })
     }
 
+    const handleShowHideSite = () => {
+        loadSites();
+        setSiteShowHide(!siteShowHide);
+        setSubmitSiteError('');
+        setSubmitSiteErrorClassName('');
+    }
 
+    const handleEditSiteCallBack = (e) => {
+        setSubmitSiteError(e.props.children);
+        setSubmitSiteErrorClassName(e.props.className);
+        setSiteShowHide(!siteShowHide);
+
+    }
 
     const postLoadSitesOrProducts = (url, payload) => {
         axios.post(url, payload)
@@ -133,7 +150,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                 }
             })
             .catch(error => {
-                console.log("multi site upload error ", error);
+                console.log("multi site upload error ", error.message);
                 setUploadSitesError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
                 setIsDisabled(false)
             })
@@ -146,6 +163,13 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
         <div className="row mb-3">
             <div className="col">
                 <h4>{isSite && 'Sites Upload'}{isProduct && 'Products Upload'}</h4>
+                <p className="green-link-url">
+                    <a href={isProduct
+                                ? "../../../public/downloads/products.csv"
+                                : "../../../public/downloads/sites.csv"} download>Download {isProduct
+                                                                                                ? "products"
+                                                                                                : "sites"} csv template</a>
+                </p>
             </div>
         </div>
 
@@ -175,7 +199,6 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
 
                             <div className="row mb-2">
                                 <div className="col">
-                                    {/*<Input type="file" name="artifact" onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))} />*/}
                                     <Button
                                         variant="contained"
                                         component="label"
@@ -196,7 +219,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                 </div>
                             </div>
 
-                            {isProduct && <div className="row mb-2">
+                            {isProduct && <div className="row">
                                 <div className="col">
                                     <Field
                                         component={TextField}
@@ -212,12 +235,28 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                         }}
                                     >
                                         <MenuItem value="">Pick a site</MenuItem>
-                                        {sites.length > 0 ? sites.map((option) => (
+                                        {siteList.length > 0 ? siteList.map((option) => (
                                             <MenuItem key={option._id} value={option._id}>
                                                 {`${option.name} - (${option.address})`}
                                             </MenuItem>
                                         )) : <MenuItem value="">Loading...</MenuItem> }
                                     </Field>
+                                </div>
+                            </div>}
+
+                            {isProduct && <div className="row mb-2">
+                                <div className="col">
+                                    <div className="row">
+                                        <div className="col-md-6 green-text" style={{cursor: "pointer"}} onClick={() => handleShowHideSite()}>Add Site {siteShowHide ? <span className='text-warning'><b>Close</b></span> : ""}</div>
+                                    </div>
+                                    <div className={submitSiteErrorClassName}><b>{submitSiteError}</b></div>
+                                    {siteShowHide && <div className="row">
+                                        <div className="col">
+                                            <div className="container p-4" style={{backgroundColor: "#f2f2f2", width: '70%'}}>
+                                                <EditSite site={{}} submitCallback={(e) => handleEditSiteCallBack(e)} />
+                                            </div>
+                                        </div>
+                                    </div>}
                                 </div>
                             </div>}
 

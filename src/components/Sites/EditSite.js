@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {Formik, Form, Field} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "../FormsUI/TextField";
@@ -12,6 +12,7 @@ import {Checkbox, FormLabel} from '@material-ui/core';
 
 const EditSite = ({editable, loadSites, site, submitCallback}) => {
     const { key, name, address, email, contact, phone, others, is_head_office } = site;
+    const[isDisabled, setIsDisabled] = useState(false);
 
     const INITIAL_VALUES = {
         name: editable ? name : '',
@@ -35,6 +36,7 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
 
     const handleSubmitForm = (values) => {
         if(!values) return;
+        setIsDisabled(true);
 
         let payload;
         if(editable) {
@@ -59,10 +61,12 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                 if(res.status === 200) {
                     handleCallback(<span className="text-success">Updated successfully.</span>);
                     loadSites();
+                    setIsDisabled(false);
                 }
             })
             .catch(error => {
-                handleCallback(<span className="text-warning">Sorry. Unable to update at this time</span>);
+                handleCallback(<span className="text-warning">Sorry. Unable to update at this time, {error.message}</span>);
+                setIsDisabled(false);
             })
 
             : axios.put(`${baseUrl}site`, payload)
@@ -70,10 +74,12 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                     if(res.status === 200) {
                         handleCallback(<span className="text-success">Added successfully.</span>);
                         loadSites();
+                        setIsDisabled(false);
                     }
                 })
                 .catch(error => {
-                    handleCallback(<span className="text-warning">Sorry. Unable to add at this time</span>);
+                    handleCallback(<span className="text-warning">Sorry. Unable to add at this time, {error.message}</span>);
+                    setIsDisabled(false);
                 })
     }
 
@@ -132,7 +138,7 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <button className="btn btn-block btn-green" type="submit" style={{backgroundColor: '#07AD88'}} >Submit</button>
+                                <button className="btn btn-block btn-green" type="submit" disabled={isDisabled} style={{backgroundColor: '#07AD88'}} >Submit</button>
                             </div>
                         </div>
                     </Form>

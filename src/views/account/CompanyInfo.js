@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
 import { Spinner } from "react-bootstrap";
@@ -11,6 +11,11 @@ import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
+import PlaceholderImg from "../../../src/img/place-holder-lc.png";
+import EditIcon from "@material-ui/icons/Edit";
+import {Publish} from "@material-ui/icons";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -32,11 +37,37 @@ class CompanyInfo extends Component {
             uploadedImgType: "",
             companyNumber: null,
             submitSuccess: false,
+            file:null,
+            errorCompany:null
+
         };
 
         this.companyInfo = this.companyInfo.bind(this);
     }
 
+
+
+    setArtifactOrg=(org_id,artifact_id)=>{
+
+
+        const artifactData = {
+            org_id: this.state.org._id,
+            artifact_ids: [artifact_id],
+        };
+        axios
+            .post(`${baseUrl}org/artifact`, artifactData)
+            .then((resposne) => {
+
+                this.companyInfo(); // get company info
+
+            })
+            .catch((error) => {});
+
+        this.setState({
+            loading: false,
+        });
+
+    }
     getArtifactForOrg = () => {
         let url = `${baseUrl}org/${encodeURIComponent(this.state.org._id)}/artifact`;
         axios
@@ -70,7 +101,7 @@ class CompanyInfo extends Component {
         });
 
         axios
-            .post(`${baseUrl}org/company`, {
+            .post(`${baseUrl}org/add-company`, {
                 company_number: this.state.companyNumber,
             })
             .then(
@@ -78,15 +109,21 @@ class CompanyInfo extends Component {
                     this.setState({
                         loading: false,
                         submitSuccess: true,
+                        errorCompany:null
                     });
 
                     let responseAll = response.data.data;
 
                     this.companyInfo();
+
                 },
                 (error) => {
+
+                    // console.log( error.response)
+
                     this.setState({
                         loading: false,
+                        errorCompany:error.response.data.errors[0].message
                     });
                 }
             );
@@ -102,6 +139,11 @@ class CompanyInfo extends Component {
                     org: responseOrg.data,
                     companyName: responseOrg.data.name,
                     description: responseOrg.data.description,
+                    industry: responseOrg.data.details&&responseOrg.data.details.industry?responseOrg.data.details.industry:null,
+                    sector: responseOrg.data.details&&responseOrg.data.details.sector?responseOrg.data.details.sector:null,
+                    no_of_staff:  responseOrg.data.details&&responseOrg.data.details.no_of_staff?responseOrg.data.details.no_of_staff:null,
+
+
                 });
 
                 this.getArtifactForOrg();
@@ -129,33 +171,54 @@ class CompanyInfo extends Component {
         return formIsValid;
     }
 
-    handleChangeSite(field, e) {
+    handleValidation() {
+
+
         let fields = this.state.fields;
-        fields[field] = e.target.value;
-        this.setState({ fields: fields });
 
-        if (field === "companyName") {
-            this.setState({
-                companyName: e.target.value,
-            });
-        } else if (field === "description") {
-            this.setState({
-                description: e.target.value,
-            });
-        } else if (field === "orgImg") {
-            let file = e.target.files[0];
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = this._handleReaderLoaded.bind(this);
-                reader.readAsBinaryString(file);
-                this.setState({
-                    uploadedImgName: file.name,
-                    uploadedImgType: file.type,
-                });
-            }
-        }
+        let validations=[
+
+            validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("description", [{check: Validators.requiredCheck, message: 'Required'}],fields),
+        ]
+
+
+
+        let {formIsValid,errors}= validateInputs(validations)
+
+        console.log(formIsValid,errors)
+
+        this.setState({ errors: errors });
+        return formIsValid;
     }
+
+
+
+    handleChange(value,field ) {
+
+        console.log(field,value)
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+    }
+
+    // handleChange(field, e) {
+    //     let fields = this.state.fields;
+    //     fields[field] = e.target.value;
+    //     this.setState({ fields: fields });
+    //
+    //     if (field === "companyName") {
+    //         this.setState({
+    //             companyName: e.target.value,
+    //         });
+    //     } else if (field === "description") {
+    //         this.setState({
+    //             description: e.target.value,
+    //         });
+    //     }
+    //
+    // }
 
     _handleReaderLoaded = (readerEvent) => {
         let binaryString = readerEvent.target.result;
@@ -169,7 +232,7 @@ class CompanyInfo extends Component {
             loading: true,
         });
 
-        if (this.handleValidationSite()) {
+        if (this.handleValidation()) {
             const form = event.currentTarget;
 
             this.setState({
@@ -187,6 +250,12 @@ class CompanyInfo extends Component {
                         update: {
                             name: name,
                             description: description,
+                            details:{
+
+                                "industry": data.get("industry"),
+                                "sector": data.get("businessField"),
+                                "no_of_staff": data.get("no_of_staff")
+                            }
                         },
                     }
                 )
@@ -200,45 +269,13 @@ class CompanyInfo extends Component {
                     }
                 })
                 .catch((error) => {
+
                     this.setState({
                         loading: false,
+
                     });
                 });
 
-            if (this.state.base64Data) {
-                const imageData = {
-                    metadata: {
-                        name: this.state.uploadedImgName,
-                        mime_type: this.state.uploadedImgType,
-                        context: this.state.org._key,
-                    },
-                    data_as_base64_string: this.state.base64Data,
-                };
-
-                axios
-                    .post(`${baseUrl}artifact`, imageData)
-                    .then((response) => {
-                        if (response.status === 200) {
-                            const artifactData = {
-                                org_id: this.state.org._id,
-                                artifact_ids: [response.data.data._key],
-                            };
-                            axios
-                                .post(`${baseUrl}org/artifact`, artifactData)
-                                .then((resposne) => {
-                                    this.companyInfo(); // get company info
-                                })
-                                .catch((error) => {});
-
-                            this.setState({
-                                loading: false,
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        this.setState({ loading: false });
-                    });
-            }
         }
     };
 
@@ -246,6 +283,123 @@ class CompanyInfo extends Component {
         window.scrollTo(0, 0);
         this.companyInfo();
     }
+
+
+    handleChangeFile(event) {
+        let file = this.state.file;
+        // var filesUrl = this.state.filesUrl
+
+        let newFile = null;
+
+        for (var i = 0; i < event.target.files.length; i++) {
+            file=({ file: event.target.files[i], status: 0, id: null });
+            newFile =({ file: event.target.files[i], status: 0, id: null });
+        }
+
+
+        this.setState({
+            file: file,
+        });
+
+        this.uploadImage(file);
+    }
+
+    handleCancel(e) {
+        e.preventDefault();
+
+        var index = e.currentTarget.dataset.index;
+        var name = e.currentTarget.dataset.name;
+        var url = e.currentTarget.dataset.url;
+
+        var files = this.state.files.filter((item) => item.file.name !== name);
+        // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
+
+        // var images = this.state.images.filter((item)=> item !==index )
+
+        // var images = this.state.images
+
+        // images.splice(index,1)
+
+        var images = [];
+        for (let k = 0; k < files.length; k++) {
+            if (files[k].id) {
+                images.push(files[k].id);
+            }
+        }
+
+        this.setState({
+            images: images,
+        });
+
+        this.setState({
+            files: files,
+        });
+    }
+
+    getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsBinaryString(file);
+
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
+    getImageAsBytes(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+
+            reader.onload = () => {
+                let arrayBuffer = reader.result;
+                let bytes = new Uint8Array(arrayBuffer);
+                resolve(bytes);
+            };
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
+    uploadImage(file) {
+        if (file) {
+
+                let imgFile = file;
+
+                this.getImageAsBytes(imgFile.file)
+                    .then(data => {
+                        const payload = data;
+
+                        try {
+                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
+                                .then(res => {
+
+
+                                    console.log(res.data.data.blob_url)
+
+
+                                    this.setArtifactOrg(this.state.org._id, res.data.data._key)
+                                    this.setState({
+                                        orgImage: res.data.data.blob_url,
+                                    });
+
+                                })
+                                .catch(error => {
+
+                                })
+
+                        } catch (e) {
+                            console.log('catch Error ', e);
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log('image upload error ', error);
+                    })
+
+            }
+
+    }
+
 
     render() {
         return (
@@ -271,18 +425,45 @@ class CompanyInfo extends Component {
                             </Alert>
                         )}
 
-                        <div className="row">
-                            <div className="col-3">
-                                {this.state.orgImage ? (
-                                    <img
-                                        src={this.state.orgImage}
-                                        alt="logo"
-                                        style={{ maxHeight: "150px", objectFit: "contain" }}
-                                    />
-                                ) : null}
-                            </div>
+                        <div className="row no-gutters">
 
-                            <div className="col-9">
+                            <div style={{display: "flex",position:"relative"}} className="col-12 ">
+                                <div className={"img-box"}  style={{position:"relative"}}>
+                                {this.state.orgImage||this.state.file ? (
+                                    <img
+                                        // src={this.state.orgImage}
+                                        src={this.state.orgImage? this.state.orgImage:URL.createObjectURL(this.state.file.file)}
+                                        alt="logo"
+                                        style={{ maxHeight: "150px", objectFit:"contain" }}
+                                    />
+                                ) : <img
+                                    src={PlaceholderImg}
+                                    alt="logo"
+                                    style={{ maxHeight: "150px" , objectFit:"contain"}}
+                                />}
+
+                                    <label
+                                        className={"edit-icon"}
+                                        htmlFor="fileInput-2">
+
+                                        <EditIcon className={""} style={{
+                                            fontSize: 22,
+                                            color: "#07ad88",
+                                            margin: "auto",
+                                        }} />
+                                    </label>
+                                    <input
+                                        accept={MIME_TYPES_ACCEPT}
+                                        style={{ display: "none" }}
+                                        id="fileInput-2"
+                                        className={""}
+                                        type="file"
+                                        onChange={this.handleChangeFile.bind(
+                                            this
+                                        )}
+                                    />
+                                </div>
+                                <div className={"pl-2"}>
                                 {this.state.org && this.state.org.company && (
                                     <>
                                         <h5 className={"text-bold"}>
@@ -327,6 +508,7 @@ class CompanyInfo extends Component {
                                         </div>
                                     </>
                                 )}
+                                </div>
                             </div>
                         </div>
 
@@ -336,61 +518,58 @@ class CompanyInfo extends Component {
                                     <form onSubmit={this.handleSubmitSite}>
                                         <div className="row no-gutters justify-content-center ">
                                             <div className="col-12 mt-4">
-                                                <TextField
-                                                    id="outlined-basic"
-                                                    label="Company Name"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                    name={"companyName"}
-                                                    value={this.state.companyName}
-                                                    onChange={this.handleChangeSite.bind(
-                                                        this,
-                                                        "companyName"
-                                                    )}
-                                                />
 
-                                                {this.state.errors["companyName"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["companyName"]}
-                                                    </span>
-                                                )}
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.companyName}
+                                                    onChange={(value)=>this.handleChange(value,"companyName")}
+                                                    error={this.state.errors["companyName"]}
+                                                    name="companyName" label="Company Name" />
+
+
                                             </div>
 
                                             <div className="col-12 mt-4">
-                                                <TextField
-                                                    id="outlined-basic"
-                                                    label="Description"
-                                                    variant="outlined"
-                                                    value={this.state.description}
-                                                    fullWidth={true}
-                                                    name={"description"}
-                                                    onChange={this.handleChangeSite.bind(
-                                                        this,
-                                                        "description"
-                                                    )}
-                                                />
 
-                                                {this.state.errors["description"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["description"]}
-                                                    </span>
-                                                )}
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.description}
+                                                    onChange={(value)=>this.handleChange(value,"description")}
+                                                    error={this.state.errors["description"]}
+                                                    name="description" label="Description" />
+
+
                                             </div>
 
                                             <div className="col-12 mt-4">
-                                                <input
-                                                    type="file"
-                                                    name="orgImg"
-                                                    id="orgImg"
-                                                    accept=".jpeg, .jpg, .png"
-                                                    onChange={this.handleChangeSite.bind(
-                                                        this,
-                                                        "orgImg"
-                                                    )}
-                                                />
+
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.industry}
+                                                    onChange={(value)=>this.handleChange(value,"industry")}
+                                                    error={this.state.errors["industry"]}
+                                                    name="industry" label="Industry" />
+
+
                                             </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.sector}
+                                                    onChange={(value)=>this.handleChange(value,"businessField")}
+                                                    error={this.state.errors["businessField"]}
+                                                    name="businessField" label="Field of Business" />
+
+
+                                            </div>
+                                            <div className="col-12 mt-4">
+
+                                                <TextFieldWrapper
+                                                    initialValue={this.state.no_of_staff}
+                                                    onChange={(value)=>this.handleChange(value,"no_of_staff")}
+                                                    error={this.state.errors["no_of_staff"]}
+                                                    name="no_of_staff" label="No of staff" />
+
+
+                                            </div>
+
 
                                             <div className="col-12 mt-4">
                                                 <button
@@ -448,6 +627,13 @@ class CompanyInfo extends Component {
 
                                             {this.state.loading ? "Wait.." : "Submit Company"}
                                         </button>
+                                    </div>
+                                    <div className="col-12 mt-4">
+                                    {this.state.errorCompany && (
+                                        <Alert key={"alert"} variant={"danger"}>
+                                            { this.state.errorCompany}
+                                        </Alert>
+                                    )}
                                     </div>
                                 </div>
                             </>

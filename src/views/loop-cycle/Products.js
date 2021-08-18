@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component,useRef, useState,useEffect} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
@@ -17,9 +17,11 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import {CSVLink} from "react-csv";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
+import {ref} from "yup";
 
 
 class Products extends Component {
+
 
 
     constructor(props) {
@@ -29,6 +31,9 @@ class Products extends Component {
             filterValue: 'name',
             selectedProducts: [],
             showMultiUpload: false,
+            isIntersecting:false,
+            intersectionRatio:0
+
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -46,17 +51,61 @@ class Products extends Component {
         this.setState({filterValue: filterValue});
     }
 
+
+    // Options
+     options = {
+        root: null, // Page as root
+        rootMargin: '0px',
+        threshold: 1.0
+    };
+
     componentDidMount() {
 
         this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent();
+        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-        this.interval = setInterval(() => {
-            this.props.dispatchLoadProductsWithoutParent();
-        }, 15000);
+        // this.interval = setInterval(() => {
+        //     this.props.dispatchLoadProductsWithoutParent();
+        // }, 15000);
+
+
+
+        // Create an observer
+        this.observer = new IntersectionObserver(
+            this.handleObserver.bind(this), //callback
+            this.options
+        );
+        //Observ the `loadingRef`
+        this.observer.observe(this.loadingRef);
 
 
     }
+
+
+    handleObserver=(entities, observer) =>{
+
+
+       let [entry] = entities
+
+        console.log(entry)
+
+
+        // if (!this.props.loading)
+        // console.log(entry.boundingClientRect.y)
+
+        if (entry.intersectionRatio>this.state.intersectionRatio&!this.props.loading){
+
+            this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
+
+        }
+
+
+        this.setState({
+            intersectionRatio:entry.intersectionRatio
+        })
+
+    }
+
 
     handleAddToProductsExportList = (returnedItem) => {
         // check if already exists
@@ -109,6 +158,8 @@ class Products extends Component {
         clearInterval(this.interval);
     }
 
+
+
     render() {
         const classesBottom = withStyles();
         const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
@@ -142,7 +193,7 @@ class Products extends Component {
                         </div>
                     </div> : null }
 
-                    <div className="container  pb-4 pt-4">
+                    <div className="container  mb-150  pb-5 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="My Products"
@@ -193,7 +244,7 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter((filterV) => {
+                        {this.props.productWithoutParentList.length > 0 && this.props.productWithoutParentList.filter((filterV) => {
                             return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         }).map((item, index) => (
                             <div key={index}>
@@ -209,7 +260,13 @@ class Products extends Component {
                                     showAddToListButton
                                 />
                             </div>
-                        )): <div>Loading products please wait ...</div>}
+                        ))}
+
+                        {!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">
+                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
+                                <div>Loading products please wait ...</div>
+                            </div>
+                        </div>}
                     </div>
 
                     <React.Fragment>
@@ -260,6 +317,7 @@ class Products extends Component {
 }
 
 
+
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
@@ -269,8 +327,10 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
-
         productWithoutParentList: state.productWithoutParentList,
+        productPageOffset:state.productPageOffset,
+        productPageSize:state.productPageSize,
+        lastPageReached:state.lastPageReached
     };
 };
 

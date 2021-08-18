@@ -12,3 +12,5 @@ window.chartColors = {
 window.randomScalingFactor = function() {
 	 return Math.round(Math.random() * 50);
 }
+
+

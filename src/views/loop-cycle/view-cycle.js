@@ -687,13 +687,12 @@ class ViewCycle extends Component {
                                                             {this.state.item.product.product.name}
                                                         </span>
                                                     </p>
-                                                    <p>
+                                                    <p className="text-caps">
                                                         Stage:
                                                         <span
                                                             className={
                                                                 "green-text text-heading text-caps"
-                                                            }>
-                                                            {this.state.item.cycle.stage}
+                                                            }> {this.state.item.cycle.stage}
                                                         </span>
                                                     </p>
                                                 </div>
@@ -766,11 +765,7 @@ class ViewCycle extends Component {
                                                     <p
                                                         style={{ fontSize: "18px" }}
                                                         className="  mb-1">
-                                                        {this.state.item.listing.category},
-                                                        {this.state.item.listing.type},
-                                                        {this.state.item.listing.state}
-                                                        {this.state.item.listing.volume}
-                                                        {this.state.item.listing.units}
+                                                        {this.state.item.listing.category}, {this.state.item.listing.type}, {this.state.item.listing.state}, {this.state.item.listing.volume}{this.state.item.listing.units}
                                                     </p>
                                                     {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
                                                     {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
@@ -898,8 +893,8 @@ class ViewCycle extends Component {
                                                                 Steps
                                                             </h5>
                                                         </div>
-                                                        <div className="col-8"></div>
-                                                        <div className="col-3">
+                                                        <div className="col-7"></div>
+                                                        <div className="col-4">
                                                             {this.state.item.cycle.stage ===
                                                                 "progress" &&
                                                                 (this.state.item.receiver._id ===
@@ -918,7 +913,8 @@ class ViewCycle extends Component {
                                                                                         "#27245C",
                                                                                 }}
                                                                             />
-                                                                            Add Step
+                                                                            {this.state.item.receiver._id==this.props.userDetail.orgId?"Request a Step":"Add Step"}
+
                                                                         </button>
                                                                     </div>
                                                                 )}

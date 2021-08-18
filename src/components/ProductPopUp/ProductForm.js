@@ -100,6 +100,17 @@ class ProductForm extends Component {
         this.showMoreDetails = this.showMoreDetails.bind(this);
     }
 
+    showSubmitSite=()=> {
+        this.setState({
+            errorRegister: null,
+        });
+
+        this.setState({
+            showSubmitSite: !this.state.showSubmitSite,
+        });
+    }
+
+
     getFiltersCategories() {
         axios
             .get(baseUrl + "category", {

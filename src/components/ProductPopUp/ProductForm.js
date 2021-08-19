@@ -100,6 +100,17 @@ class ProductForm extends Component {
         this.showMoreDetails = this.showMoreDetails.bind(this);
     }
 
+    showSubmitSite=()=> {
+        this.setState({
+            errorRegister: null,
+        });
+
+        this.setState({
+            showSubmitSite: !this.state.showSubmitSite,
+        });
+    }
+
+
     getFiltersCategories() {
         axios
             .get(baseUrl + "category", {
@@ -934,9 +945,9 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            {this.state.moreDetail && (
-                                <>
-                                    <div className="col-12 mt-4">
+
+
+                                    <div className={this.state.moreDetail?"col-12 mt-4": "d-none    "}>
                                         <div className="row">
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
@@ -977,8 +988,7 @@ class ProductForm extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                </>
-                            )}
+
 
                             <div className="col-12 mt-4">
                                 <div className={"custom-label text-bold text-blue mb-3"}>

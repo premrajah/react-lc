@@ -38,7 +38,7 @@ function CustomSnackbar(props) {
     return (
         <div className={classes.root}>
 
-            <Snackbar open={props.snackbarMessage.show} autoHideDuration={600000} onClose={()=> props.showSnackbar({show:false})}>
+            <Snackbar open={props.snackbarMessage.show} autoHideDuration={2000} onClose={()=> props.showSnackbar({show:false})}>
                 <Alert onClose={()=> props.showSnackbar({show:false})} severity={props.snackbarMessage.severity}>
                     {props.snackbarMessage.message}
                 </Alert>

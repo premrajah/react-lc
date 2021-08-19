@@ -100,6 +100,17 @@ class ProductForm extends Component {
         this.showMoreDetails = this.showMoreDetails.bind(this);
     }
 
+    showSubmitSite=()=> {
+        this.setState({
+            errorRegister: null,
+        });
+
+        this.setState({
+            showSubmitSite: !this.state.showSubmitSite,
+        });
+    }
+
+
     getFiltersCategories() {
         axios
             .get(baseUrl + "category", {
@@ -401,7 +412,7 @@ class ProductForm extends Component {
                 const state = data.get("state");
                 const is_listable = this.state.is_listable;
                 const site = data.get("deliver")
-                const year_of_making = data.get("manufacturedDate")
+                const year_of_making = data.get("manufacturedDate")?0:data.get("manufacturedDate")
 
                 const productData = {
                     purpose: purpose.toLowerCase(),
@@ -934,12 +945,13 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            {this.state.moreDetail && (
-                                <>
-                                    <div className="col-12 mt-4">
+
+
+                                    <div className={this.state.moreDetail?"col-12 mt-4": "d-none    "}>
                                         <div className="row">
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
+
 
                                                     initialValue={this.props.item&&this.props.item.product.year_of_making}
                                                     select={"Select"}
@@ -977,8 +989,7 @@ class ProductForm extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                </>
-                            )}
+
 
                             <div className="col-12 mt-4">
                                 <div className={"custom-label text-bold text-blue mb-3"}>

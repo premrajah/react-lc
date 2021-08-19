@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: loop-graph-api-${ENVIRONMENT}
+  annotations:
+    # If the class annotation is not specified it defaults to "gce".
+#    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+    - host: ${ENVIRONMENT}.ui.makealoop.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/*"
+            backend:
+              service:
+                name: loop-graph-api-${ENVIRONMENT}
+                port:
+                  number: 80

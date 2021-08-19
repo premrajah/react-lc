@@ -11,8 +11,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {TextField} from "formik-material-ui";
 import {MenuItem} from "@material-ui/core";
 import EditSite from "../Sites/EditSite";
-import products from '../../downloads/products.csv';
-import sites from '../../downloads/sites.csv';
+
 
 
 
@@ -166,7 +165,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
             <div className="col">
                 <h4>{isSite && 'Sites Upload'}{isProduct && 'Products Upload'}</h4>
                 <p className="green-link-url">
-                    <a href={isProduct ? products : sites} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "products" : "sites"} csv template</a>
+                    <a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "products" : "sites"} csv template</a>
                 </p>
             </div>
         </div>

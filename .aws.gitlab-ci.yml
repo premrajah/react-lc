@@ -21,7 +21,7 @@ variables:
 
 
 setup_aws:
-  stage: build
+  stage: setup
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
 
   before_script:

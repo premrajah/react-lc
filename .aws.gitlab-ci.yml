@@ -114,7 +114,7 @@ aws_build_dev:
 
 aws_deploy_dev:
   stage: dev_deploy
-  image: kiwigrid/gcloud-kubectl-helm
+  image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:
   - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
@@ -144,7 +144,7 @@ aws_build_prod:
 
 aws_deploy_prod:
   stage: prod_deploy
-  image: kiwigrid/gcloud-kubectl-helm
+  image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
@@ -173,7 +173,7 @@ aws_build_stage:
 
 aws_deploy_stage:
   stage: stage_deploy
-  image: kiwigrid/gcloud-kubectl-helm
+  image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:
     #  - apk add --update -t curl

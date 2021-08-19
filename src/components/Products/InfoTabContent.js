@@ -135,6 +135,66 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
+                {this.props.item &&
+                this.props.item.product.sku.sku && (
+                    <div className="row  justify-content-start search-container  pb-2 ">
+                        <div className={"col-auto"}>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="text-mute text-bold text-blue mb-1">
+                                Sku
+                            </p>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="  mb-1">
+                                {this.props.item &&
+                                this.props.item.product.sku
+                                    .sku}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {this.props.item &&
+                this.props.item.product.sku.upc && (
+                    <div className="row  justify-content-start search-container  pb-2 ">
+                        <div className={"col-auto"}>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="text-mute text-bold text-blue mb-1">
+                                UPC
+                            </p>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="  mb-1">
+                                {this.props.item &&
+                                this.props.item.product.sku
+                                    .upc}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {this.props.item &&
+                this.props.item.product.sku.part_no && (
+                    <div className="row  justify-content-start search-container  pb-2 ">
+                        <div className={"col-auto"}>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="text-mute text-bold text-blue mb-1">
+                                Part No.
+                            </p>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="  mb-1">
+                                {this.props.item &&
+                                this.props.item.product.sku
+                                    .part_no}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 <div className="row  justify-content-start search-container  pb-2 ">
                     <div className={"col-auto"}>
                         <p

@@ -308,124 +308,7 @@ class EditAccount extends Component {
                                             </div>
                                         </div>
                                     </form>
-                                    {/*<form onSubmit={this.handleSubmit}>*/}
-                                    {/*    <div className="row no-gutters justify-content-center ">*/}
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic"*/}
-                                    {/*                required*/}
-                                    {/*                value={this.state.firstName}*/}
-                                    {/*                label="First Name"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*                name={"firstName"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "firstName"*/}
-                                    {/*                )}*/}
-                                    {/*            />*/}
 
-                                    {/*            {this.state.errors["firstName"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["firstName"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic"*/}
-                                    {/*                required*/}
-                                    {/*                value={this.state.lastName}*/}
-                                    {/*                label="Last Name"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*                name={"lastName"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "lastName"*/}
-                                    {/*                )}*/}
-                                    {/*            />*/}
-
-                                    {/*            {this.state.errors["lastName"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["lastName"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic2"*/}
-                                    {/*                InputProps={{*/}
-                                    {/*                    readOnly: true,*/}
-                                    {/*                }}*/}
-                                    {/*                value={this.state.email}*/}
-                                    {/*                label="Email"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*                name={"email"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "email"*/}
-                                    {/*                )}*/}
-                                    {/*                disabled*/}
-                                    {/*            />*/}
-
-                                    {/*            {this.state.errors["email"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["email"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic3"*/}
-                                    {/*                value={this.state.phone}*/}
-                                    {/*                type={"number"}*/}
-                                    {/*                name={"phone"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "phone"*/}
-                                    {/*                )}*/}
-                                    {/*                label="Contact number"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*            />*/}
-
-                                    {/*            {this.state.errors["phone"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["phone"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <button*/}
-                                    {/*                type={"submit"}*/}
-                                    {/*                className={*/}
-                                    {/*                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
-                                    {/*                }>*/}
-                                    {/*                {this.state.loading && (*/}
-                                    {/*                    <Spinner*/}
-                                    {/*                        as="span"*/}
-                                    {/*                        animation="border"*/}
-                                    {/*                        size="sm"*/}
-                                    {/*                        role="status"*/}
-                                    {/*                        aria-hidden="true"*/}
-                                    {/*                    />*/}
-                                    {/*                )}*/}
-
-                                    {/*                {this.state.loading ? "Wait.." : "Save"}*/}
-                                    {/*            </button>*/}
-                                    {/*        </div>*/}
-                                    {/*    </div>*/}
-                                    {/*</form>*/}
                                 </div>
                             </div>
                         )}
@@ -443,7 +326,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {};
 };
-export default connect(mapStateToProps, mapDispachToProps)(EditAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(EditAccount);

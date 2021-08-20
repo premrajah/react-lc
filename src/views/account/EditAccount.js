@@ -78,12 +78,7 @@ class EditAccount extends Component {
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
-            // validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
-            // validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
-            // validateFormatCreate("agree", [{check: Validators.requiredCheck, message: 'Required'}],fields),
-            // validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'This field should be a number.'}],fields),
         ]
-
 
 
         let {formIsValid,errors}= validateInputs(validations)

@@ -299,44 +299,6 @@ class EditAccount extends Component {
                                                 </div>
                                             </div>
 
-                                            {/*<div className="col-12 mt-4">*/}
-                                            {/*    <div className="row">*/}
-                                            {/*        <div className={this.state.reasonOtherShow?"col-6 ":"col-12"}>*/}
-                                            {/*            <SelectArrayWrapper*/}
-                                            {/*                initialValue={this.state.reason}*/}
-                                            {/*                onChange={(value)=> {*/}
-
-                                            {/*                    if (value==="Other"){*/}
-
-                                            {/*                        this.setState({*/}
-                                            {/*                            reasonOtherShow:true*/}
-                                            {/*                        })*/}
-                                            {/*                    }else{*/}
-                                            {/*                        this.setState({*/}
-                                            {/*                            reasonOtherShow:false*/}
-                                            {/*                        })*/}
-                                            {/*                    }*/}
-                                            {/*                }}*/}
-                                            {/*                select*/}
-                                            {/*                options={this.state.reasons} name={"reason"} label="Main Reason for using Loopcycle"*/}
-                                            {/*            />*/}
-                                            {/*        </div>*/}
-
-                                            {/*        <div className={this.state.reasonOtherShow?"col-6 append-animate":"d-none"}>*/}
-                                            {/*            <TextFieldWrapper*/}
-
-                                            {/*                onChange={(value)=>this.handleChange(value,"volume")}*/}
-                                            {/*                error={this.state.errors["reason"]}*/}
-                                            {/*                name="reason-other" label=" Specify here" />*/}
-                                            {/*        </div>*/}
-                                            {/*    </div>*/}
-
-                                            {/*</div>*/}
-
-
-
-
-
                                             <div className="col-auto mt-4 justify-content-center">
                                                 <button
                                                     type="submit"

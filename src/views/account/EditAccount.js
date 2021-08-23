@@ -41,6 +41,7 @@ class EditAccount extends Component {
             password: '',
             repeatPassword: '',
             missMatchPasswords: '',
+            passwordChangeErrors: '',
         };
 
     }
@@ -144,7 +145,7 @@ class EditAccount extends Component {
 
     handleShowPasswordFields = () => {
         this.setState(prevState => ({
-            showPasswordFields: !prevState.showPasswordFields
+            showPasswordFields: !prevState.showPasswordFields, passwordChangeErrors: ""
         }));
 
     }
@@ -152,6 +153,7 @@ class EditAccount extends Component {
     handleChangePassword = () => {
         let password = this.state.password
         let repeatPassword = this.state.repeatPassword;
+        this.setState({passwordChangeErrors:"", missMatchPasswords: ""}) // reset
 
         if(password.toLowerCase() !== repeatPassword.toLowerCase()) {
             this.setState({missMatchPasswords: "Passwords do not match."})
@@ -167,16 +169,15 @@ class EditAccount extends Component {
     postChangePassword = (payload) => {
         axios.post(`${baseUrl}user/change`, payload)
             .then(res => {
-                console.log("+++ ", res.data)
-                this.setState({showPasswordFields: false})
+                console.log("password change res ", res)
+                this.setState({showPasswordFields: false, password: '', repeatPassword: '', passwordChangeErrors: 'Password changed successfully.'})
             })
             .catch(error => {
-                console.log("password change error: ", error.message);
+                // console.log("password change error: ", error.message);
+                this.setState({passwordChangeErrors: error.message})
                 // console.log("error request ", error.request);
                 if(error.response) {
-                    error.response.data.errors.map(e => (
-                        console.log(e.message)
-                    ))
+                    this.setState({passwordChangeErrors: error.response.data.errors.map(e => e.message)})
                     console.log("error res ", error.response.data.errors);
                 }
             })
@@ -323,7 +324,8 @@ class EditAccount extends Component {
                                             <div className="col-12 mt-4">
                                                 <div className="row mb-2 d-flex flex-column">
                                                     <div className="green-link-url" onClick={() => this.handleShowPasswordFields()}>Change Password</div>
-                                                    <div className="text-warning"><b>{this.state.missMatchPasswords}</b></div>
+                                                    <div className="text-danger">{this.state.missMatchPasswords}</div>
+                                                    <div className="text-danger">{this.state.passwordChangeErrors}</div>
                                                 </div>
 
                                                 {this.state.showPasswordFields && <div className="row">
@@ -357,6 +359,7 @@ class EditAccount extends Component {
                                                             Update Password
                                                         </button>
                                                     </div>
+                                                    <small className="text-muted">Password should be at least 8 characters including at least 3 of the following 4 types of characters: a lower-case letter, an upper-case letter, a number, a special character (such as !@#$%^&*).</small>
                                                 </div>}
 
                                             </div>

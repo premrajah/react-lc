@@ -170,14 +170,14 @@ class EditAccount extends Component {
         axios.post(`${baseUrl}user/change`, payload)
             .then(res => {
                 console.log("password change res ", res)
-                this.setState({showPasswordFields: false, password: '', repeatPassword: '', passwordChangeErrors: 'Password changed successfully.'})
+                this.setState({showPasswordFields: false, password: '', repeatPassword: '', passwordChangeErrors: <span className="text-success">Password changed successfully.</span>})
             })
             .catch(error => {
                 // console.log("password change error: ", error.message);
                 this.setState({passwordChangeErrors: error.message})
                 // console.log("error request ", error.request);
                 if(error.response) {
-                    this.setState({passwordChangeErrors: error.response.data.errors.map(e => e.message)})
+                    this.setState({passwordChangeErrors: error.response.data.errors.map((e, i) => <div className="text-danger" key={i}>{e.message}</div>)})
                     console.log("error res ", error.response.data.errors);
                 }
             })
@@ -324,8 +324,8 @@ class EditAccount extends Component {
                                             <div className="col-12 mt-4">
                                                 <div className="row mb-2 d-flex flex-column">
                                                     <div className="green-link-url" onClick={() => this.handleShowPasswordFields()}>Change Password</div>
-                                                    <div className="text-danger">{this.state.missMatchPasswords}</div>
-                                                    <div className="text-danger">{this.state.passwordChangeErrors}</div>
+                                                    <div className="text-warning"><b>{this.state.missMatchPasswords}</b></div>
+                                                    <div>{this.state.passwordChangeErrors}</div>
                                                 </div>
 
                                                 {this.state.showPasswordFields && <div className="row">

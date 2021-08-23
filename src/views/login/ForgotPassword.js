@@ -17,6 +17,7 @@ class ForgotPassword extends Component {
             count: 0,
             nextIntervalFlag: false,
             active: 0, //0 logn. 1- sign up , 3 -search,
+            resetSubmitStatus: '',
         };
         this.goToSignUp = this.goToSignUp.bind(this);
         this.goToSignIn = this.goToSignIn.bind(this);
@@ -74,6 +75,7 @@ class ForgotPassword extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({resetSubmitStatus: ""})
 
         const form = event.currentTarget;
 
@@ -84,14 +86,18 @@ class ForgotPassword extends Component {
 
             const data = new FormData(event.target);
             const username = data.get("email");
+            const payload = {email: username}
 
             axios
-                .post(baseUrl + "user/reset", { email: data.email })
+                .post(`${baseUrl}user/reset`, payload)
                 .then((res) => {
+                    this.setState({resetSubmitStatus: <span className="text-success">Email reset link sent successfully. Please check your email.</span>});
+                    document.getElementById("email-reset-form").reset(); // reset form
                     document.body.classList.add("search-body");
                 })
-                .catch((error) => {});
-        } else {
+                .catch((error) => {
+                    this.setState({resetSubmitStatus: <span className="text-warning">{error.message}</span>})
+                });
         }
     };
 
@@ -147,13 +153,14 @@ class ForgotPassword extends Component {
                         </div>
                     </div>
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form id="email-reset-form" onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
                             <div className="col-12 ">
                                 <p className={"text-mute small fgt-password-text"}>
-                                    We’ll send a verification code to your email address. Click on
+                                    We’ll send a link to your email address. Click on
                                     the link in the email to reset your password.
                                 </p>
+                                <p>{this.state.resetSubmitStatus}</p>
                             </div>
 
                             <div className="col-12 mt-4">
@@ -177,11 +184,11 @@ class ForgotPassword extends Component {
 
                             <div className="col-12 mt-4 mb-4">
                                 <button
-                                    type={"submit"}
+                                    type="submit"
                                     className={
                                         "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                     }>
-                                    Get Verification Code
+                                    Submit email
                                 </button>
                             </div>
                         </div>

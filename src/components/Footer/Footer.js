@@ -61,7 +61,7 @@ class Footer extends React.Component {
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
-                                        href="https://loopcycle.io/about-us/"
+                                        href="https://loopcycle.io/about/"
                                         target="_blank"
                                         rel="noopener noreferrer">
                                         About
@@ -70,7 +70,7 @@ class Footer extends React.Component {
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
-                                        href="https://loopcycle.io/news/"
+                                        href="https://loopcycle.io/latest/"
                                         target="_blank"
                                         rel="noopener noreferrer">
                                         Latest
@@ -79,7 +79,7 @@ class Footer extends React.Component {
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
-                                        href="https://loopcycle.io/contact-us/"
+                                        href="https://loopcycle.io/contact/"
                                         target="_blank"
                                         rel="noopener noreferrer">
                                         Contact

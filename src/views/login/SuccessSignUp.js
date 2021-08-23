@@ -195,7 +195,7 @@ class RecoverPassword extends Component {
                                 className={
                                     "btn btn-default btn-lg btn-rounded shadow btn-block btn-green"
                                 }>
-                                Log In <NavigateNextIcon />
+                                Log in <NavigateNextIcon />
                             </button>
                         </div>
 

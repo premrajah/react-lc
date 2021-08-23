@@ -324,7 +324,13 @@ export const logInSync = (data) => (dispatch) => {
             }
         })
         .catch((error) => {
-            dispatch({ type: LOGIN_ERROR, value: error.response.data.errors ? error.response.data.errors[0].message : '' });
+            dispatch({ type: LOGIN_ERROR, value: error.response
+                                                    ? error.response.data.errors
+                                                    : "Login Error"
+                        ? error.response
+                            ? error.response.data.errors[0].message
+                            : "Login Error"
+                        : '' });
         });
 };
 

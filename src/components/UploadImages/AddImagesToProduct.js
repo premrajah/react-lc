@@ -188,7 +188,7 @@ class AddImagesToProduct extends Component {
                 <div className="col">
                     <div className="container-fluid">
                         <div className={"custom-label text-bold text-blue"}>
-                            Add Photos or Documents
+                            Attachment
                         </div>
 
                         <div className="row camera-grids   no-gutters   ">

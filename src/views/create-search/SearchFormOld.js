@@ -955,7 +955,6 @@ class SearchForm extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this, "title")}
                                         name={"title"}
-                                        placeholder={"Title"}
                                         id="outlined-basic"
                                         variant="outlined"
                                         fullWidth={true}
@@ -976,7 +975,6 @@ class SearchForm extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this, "description")}
                                         name={"description"}
-                                        placeholder={"Search description"}
                                         id="outlined-basic"
                                         multiline
                                         rows={4}
@@ -1712,7 +1710,7 @@ class SearchForm extends Component {
                                         <div className="col-12 mt-4">
                                             <div
                                                 className={"custom-label text-bold text-blue mb-1"}>
-                                                Give your product a title
+                                                Title
                                             </div>
 
                                             <TextField
@@ -1739,7 +1737,7 @@ class SearchForm extends Component {
                                         <div className="col-12 mt-4">
                                             <div
                                                 className={"custom-label text-bold text-blue mb-1"}>
-                                                Give it a description
+                                                Description
                                             </div>
 
                                             <TextField

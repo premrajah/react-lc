@@ -215,7 +215,7 @@ class Login extends Component {
                 <div className="container  ">
                     <div className="row no-gutters">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Log In</h3>
+                            <h3 className={"blue-text text-heading text-center"}>Log in</h3>
                         </div>
                     </div>
 
@@ -308,7 +308,7 @@ class Login extends Component {
                                         />
                                     )}
 
-                                    {this.props.loading ? "Wait.." : "Log In"}
+                                    {this.props.loading ? "Wait.." : "Log in"}
                                 </button>
                             </div>
 

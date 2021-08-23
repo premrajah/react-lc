@@ -228,7 +228,7 @@ class ComponentsNavbar extends React.Component {
                         {!this.props.isLoggedIn && (
                             <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
                                 <Link className="nav-link  d-lg-block  green-text " color="default">
-                                    Sign Up
+                                    Sign up
                                 </Link>
                             </NavItem>
                         )}
@@ -239,7 +239,7 @@ class ComponentsNavbar extends React.Component {
                                     onClick={this.showLoginPopUp}
                                     type="button"
                                     className="mt-1 btn topBtn ">
-                                    <Link>Log In</Link>
+                                    <Link>Log in</Link>
                                 </button>
                             )}
                         </NavItem>

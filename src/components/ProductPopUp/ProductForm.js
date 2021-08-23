@@ -682,7 +682,7 @@ class ProductForm extends Component {
                                      initialValue={this.props.item&&this.props.item.product.name}
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
-                                     name="title" title="Give your product a title" />
+                                     name="title" title="Title" />
 
                                 </div>
                             </div>
@@ -907,7 +907,7 @@ class ProductForm extends Component {
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
                                         multiline
-                                  rows={4} name="description" title="Give it a description" />
+                                  rows={4} name="description" title="Description" />
 
 
                                 </div>
@@ -977,7 +977,7 @@ class ProductForm extends Component {
 
                             <div className="col-12 mt-4">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
-                                    Add Photos or Documents
+                                    Attachment
                                 </div>
 
                                 <div className="container-fluid  pb-5 ">

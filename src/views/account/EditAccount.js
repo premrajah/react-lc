@@ -84,8 +84,6 @@ class EditAccount extends Component {
 
 
     handleChange(value,field ) {
-
-        console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -162,23 +160,17 @@ class EditAccount extends Component {
             let payload = { "password": password }
             this.postChangePassword(payload);
         }
-
-        console.log(">>> ", password, repeatPassword);
     }
 
     postChangePassword = (payload) => {
         axios.post(`${baseUrl}user/change`, payload)
             .then(res => {
-                console.log("password change res ", res)
                 this.setState({showPasswordFields: false, password: '', repeatPassword: '', passwordChangeErrors: <span className="text-success">Password changed successfully.</span>})
             })
             .catch(error => {
-                // console.log("password change error: ", error.message);
                 this.setState({passwordChangeErrors: error.message})
-                // console.log("error request ", error.request);
                 if(error.response) {
                     this.setState({passwordChangeErrors: error.response.data.errors.map((e, i) => <div className="text-danger" key={i}>{e.message}</div>)})
-                    console.log("error res ", error.response.data.errors);
                 }
             })
     }

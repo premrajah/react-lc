@@ -127,12 +127,6 @@ class ProductForm extends Component {
                         categories: responseAll,
                     });
 
-                   //  console.log("responseAll")
-                   //  console.log(responseAll)
-                   //  let types = responseAll.filter((item) => item.name === this.props.item.product.category)[0].types
-                   //  console.log("types")
-                   // console.log(types)
-
                     if (responseAll.length>0&&this.props.item){
 
                         this.setState({
@@ -340,17 +334,12 @@ class ProductForm extends Component {
 
         let {formIsValid,errors}= validateInputs(validations)
 
-        // console.log("title error",errors["title"])
-        //
-        // console.log(formIsValid,errors)
-
         this.setState({ errors: errors });
         return formIsValid;
     }
 
     handleChangeProduct(value,field ) {
 
-        // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -440,7 +429,6 @@ class ProductForm extends Component {
                 };
 
                 var completeData;
-               // console.log(productData)
 
                 if (this.props.parentProduct) {
                     completeData = {
@@ -501,7 +489,6 @@ class ProductForm extends Component {
 
         for (let k = 0; k < this.props.item.artifacts.length; k++) {
 
-           // console.log(this.props.item.artifacts[k].blob_url)
             var fileItem = {
                 status: 1,
                 id: this.props.item.artifacts[k]._key,
@@ -625,10 +612,6 @@ class ProductForm extends Component {
                 },
             };
 
-        //     console.log(productData)
-        //
-        //
-        // return
             axios
                 .post(
                     baseUrl + "product",

@@ -84,18 +84,6 @@ class SignUp extends Component {
                 isLoopCycleCompany:false,
                 companyNumber:detail.company
             })
-            // axios.get(baseUrl + "org/company/" + detail.company).then(
-            //     (response) => {
-            //         var responseAll = response.data.data;
-            //
-            //         // console.log(response.data.data)
-            //
-            //         this.setState({
-            //             org_id: responseAll._key,
-            //         });
-            //     },
-            //     (error) => {}
-            // );
         }
     };
 
@@ -117,8 +105,6 @@ class SignUp extends Component {
             }).then(
                 (response) => {
                     var responseAll = response.data.data;
-
-                    // console.log(response.data.data)
 
                     this.setState({
                         org_id: responseAll._key,
@@ -201,8 +187,6 @@ class SignUp extends Component {
 
         let {formIsValid,errors}= validateInputs(validations)
 
-        // console.log(formIsValid,errors)
-
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -211,7 +195,6 @@ class SignUp extends Component {
 
     handleChange(value,field ) {
 
-       // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -291,7 +274,6 @@ class SignUp extends Component {
                 };
             }
 
-            // console.log(dataSignUp)
             this.props.signUp(dataSignUp);
 
         } else {

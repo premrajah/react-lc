@@ -20,20 +20,6 @@ class AddImagesToProduct extends Component {
     }
 
 
-    componentDidMount() {
-        // this.setState({ productKey: this.props.match.params.slug });'
-        // console.log("image upload product")
-        // console.log(this.props.item)
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // let pathMatch = this.props.match.params.slug;
-        //
-        // if (prevProps.match.params.slug !== this.props.match.params.slug) {
-        //     this.setState({ productKey: pathMatch });
-        // }
-    }
-
     handleChangeFile = (event) => {
         if (!event) return;
 
@@ -132,7 +118,6 @@ class AddImagesToProduct extends Component {
                 }
             })
             .catch((error) => {
-                // console.log("upload artifact to product error ", error);
                 this.handleCallbackImagesUploadStatus("fail");
             });
     };
@@ -185,7 +170,7 @@ class AddImagesToProduct extends Component {
                                 })
 
                         } catch (e) {
-                            // console.log('catch Error ', e);
+
                         }
 
                     })

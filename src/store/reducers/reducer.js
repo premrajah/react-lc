@@ -214,10 +214,6 @@ const reducer = (state = initialState, action) => {
             if (action.value.val.length<state.productPageSize){
                 newState.lastPageReached=true
 
-                console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
-
-
-
             }else{
 
                 newState.lastPageReached=false

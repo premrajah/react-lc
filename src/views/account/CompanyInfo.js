@@ -119,8 +119,6 @@ class CompanyInfo extends Component {
                 },
                 (error) => {
 
-                    // console.log( error.response)
-
                     this.setState({
                         loading: false,
                         errorCompany:error.response.data.errors[0].message
@@ -187,8 +185,6 @@ class CompanyInfo extends Component {
 
         let {formIsValid,errors}= validateInputs(validations)
 
-        console.log(formIsValid,errors)
-
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -197,7 +193,6 @@ class CompanyInfo extends Component {
 
     handleChange(value,field ) {
 
-        console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -372,10 +367,6 @@ class CompanyInfo extends Component {
                         try {
                             axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
                                 .then(res => {
-
-
-                                    console.log(res.data.data.blob_url)
-
 
                                     this.setArtifactOrg(this.state.org._id, res.data.data._key)
                                     this.setState({

@@ -161,10 +161,7 @@ class ListForm extends Component {
                 (response) => {
                     var responseAll = response.data.data;
 
-                    console.log("images ")
-                    console.log(responseAll)
-
-                  let image=(responseAll.find(
+                    let image=(responseAll.find(
                         (item) =>
                             item.mime_type === "image/jpeg" || item.mime_type === "image/png"
                     ))

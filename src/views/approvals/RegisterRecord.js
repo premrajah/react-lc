@@ -11,7 +11,6 @@ import RequestReleaseItem from "../../components/RequestReleaseItem";
 
 const RegisterRecord = ({ productRegisterRequests, fetchRegisterRequest, history }) => {
     useEffect(() => {
-        console.log("running");
         fetchRegisterRequest();
     }, []);
 

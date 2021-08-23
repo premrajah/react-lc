@@ -36,18 +36,18 @@ class EditAccount extends Component {
             phone: null,
             loading: false,
             submitSuccess: false,
-            reason:null
+            reason:null,
+            showPasswordFields: false,
+            password: '',
+            repeatPassword: '',
+            missMatchPasswords: '',
         };
 
     }
 
     UserInfo=()=> {
         axios
-            .get(baseUrl + "user", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "user")
             .then(
                 (response) => {
                     var response = response.data;
@@ -68,23 +68,14 @@ class EditAccount extends Component {
     }
 
     handleValidation() {
-
-
         let fields = this.state.fields;
-
-
         let validations=[
             validateFormatCreate("firstName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
         ]
-
-
         let {formIsValid,errors}= validateInputs(validations)
-
-        console.log(formIsValid,errors)
-
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -151,6 +142,46 @@ class EditAccount extends Component {
         this.setState({ fields: fields });
     }
 
+    handleShowPasswordFields = () => {
+        this.setState(prevState => ({
+            showPasswordFields: !prevState.showPasswordFields
+        }));
+
+    }
+
+    handleChangePassword = () => {
+        let password = this.state.password
+        let repeatPassword = this.state.repeatPassword;
+
+        if(password.toLowerCase() !== repeatPassword.toLowerCase()) {
+            this.setState({missMatchPasswords: "Passwords do not match."})
+        } else {
+            this.setState({missMatchPasswords: ''});
+            let payload = { "password": password }
+            this.postChangePassword(payload);
+        }
+
+        console.log(">>> ", password, repeatPassword);
+    }
+
+    postChangePassword = (payload) => {
+        axios.post(`${baseUrl}user/change`, payload)
+            .then(res => {
+                console.log("+++ ", res.data)
+                this.setState({showPasswordFields: false})
+            })
+            .catch(error => {
+                console.log("password change error: ", error.message);
+                // console.log("error request ", error.request);
+                if(error.response) {
+                    error.response.data.errors.map(e => (
+                        console.log(e.message)
+                    ))
+                    console.log("error res ", error.response.data.errors);
+                }
+            })
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
 
@@ -180,11 +211,6 @@ class EditAccount extends Component {
                         user_details:{
                             reason_for_joining:data.get("reason")!="Other"?data.get("reason"):data.get("reason-other")
                         }
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
                     }
                 )
                 .then((res) => {
@@ -243,8 +269,8 @@ class EditAccount extends Component {
                         </div>
 
                         {this.state.user && (
-                            <div className={"row"}>
-                                <div className={"col-12"}>
+                            <div className="row">
+                                <div className="col-12">
 
 
                                     <form onSubmit={this.handleSubmit}>
@@ -285,13 +311,54 @@ class EditAccount extends Component {
                                             <div className="col-12 mt-4 ">
                                                 <div className="row">
                                                     <div className="col-12">
-                                                <TextFieldWrapper
-                                                    initialValue={this.state.reason}
-                                                    onChange={(value)=>this.handleChange(value,"reason")}
-                                                    error={this.state.errors["reason"]}
-                                                    name="reason" label="Main Reason for using Loopcycle" />
+                                                        <TextFieldWrapper
+                                                            initialValue={this.state.reason}
+                                                            onChange={(value)=>this.handleChange(value,"reason")}
+                                                            error={this.state.errors["reason"]}
+                                                            name="reason" label="Main Reason for using Loopcycle" />
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                            <div className="col-12 mt-4">
+                                                <div className="row mb-2 d-flex flex-column">
+                                                    <div className="green-link-url" onClick={() => this.handleShowPasswordFields()}>Change Password</div>
+                                                    <div className="text-warning"><b>{this.state.missMatchPasswords}</b></div>
                                                 </div>
+
+                                                {this.state.showPasswordFields && <div className="row">
+                                                    <div className="col-md-4">
+                                                        <TextFieldWrapper
+                                                            initialValue={this.state.password}
+                                                            name="password"
+                                                            label="Password"
+                                                            error={this.state.errors["password"]}
+                                                            onChange={(value) => this.setState({password: value})}
+                                                            type="password"
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <TextFieldWrapper
+                                                            initialValue={this.state.repeatPassword}
+                                                            name="repeatPassword"
+                                                            label="Repeat Password"
+                                                            error={this.state.errors["repeatPassword"]}
+                                                            onChange={(value) => this.setState({repeatPassword: value})}
+                                                            type="password"
+                                                        />
+                                                    </div>
+
+                                                    <div className="col-md-4">
+                                                        <button
+                                                            disabled={this.state.password === '' || this.state.repeatPassword === ''}
+                                                            onClick={() => this.handleChangePassword()}
+                                                            type="button"
+                                                            className="btn btn-block  btn-outline-warning sign-up-btn">
+                                                            Update Password
+                                                        </button>
+                                                    </div>
+                                                </div>}
+
                                             </div>
 
                                             <div className="col-auto mt-4 justify-content-center">

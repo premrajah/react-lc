@@ -1,0 +1,185 @@
+#cache:
+#  untracked: true
+#  key: "$CI_BUILD_REF_NAME"
+#  paths:
+#  - vendor/
+
+stages:
+- setup
+- dev_build
+- dev_deploy
+- stage_build
+- stage_deploy
+- prod_build
+- prod_deploy
+
+variables:
+#  CI_DEBUG_TRACE: "true"
+  CONTAINER_IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  CONTAINER_IMAGE_LATEST: ${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+  DOCKER_DRIVER: overlay2
+
+
+setup_aws:
+  stage: setup
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+
+  before_script:
+    - aws --version
+  script:
+    - export AWS_ACCESS_KEY_ID=${ECR_RW_AWS_ACCESS_KEY}
+    - export AWS_SECRET_ACCESS_KEY=${ECR_RW_AWS_SECRET_KEY}
+    #  - export default.region=${AWS_DEFAULT_REGION}
+    - aws configure set aws_access_key_id ${ECR_RW_AWS_ACCESS_KEY}
+    - aws configure set aws_secret_access_key ${ECR_RW_AWS_SECRET_KEY}
+    - aws configure set default.region ${AWS_DEFAULT_REGION}
+    - aws configure set default.output json
+    - export ECR_PASSWORD=`aws ecr get-login-password --region eu-west-2`
+    - echo $ECR_PASSWORD | tee ecr_passwd.txt
+  artifacts:
+    paths:
+      - ecr_passwd.txt
+
+.aws_registry_template: &docker_registry
+  image: docker:git
+  services:
+    - docker:dind
+  before_script:
+    - export ECR_PASSWORD=$(cat ecr_passwd.txt)
+    - export REVISION=$(git rev-parse --short HEAD)
+    - docker login -u AWS -p ${ECR_PASSWORD} https://${ECR_DOMAIN}
+  after_script:
+    - docker logout https://${ECR_DOMAIN}
+
+.aws_deploy_template: &aws_deploy
+  script:
+    - export IMAGE_TAG=$(cat aws_image_tag.txt)
+    - echo $IMAGE_TAG
+    - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/service.yaml
+
+    - curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
+    - chmod +x ./aws-iam-authenticator
+    - export PATH=$PATH:.
+
+    - mkdir -p ~/.aws
+    - echo ${AWS_CREDS} | base64 -d | tee ~/.aws/credentials
+    - cat ~/.aws/credentials
+
+    - echo ${KUBE_CONFIG} | base64 -d | tee kube_config
+    - export KUBECONFIG=kube_config
+    - ls -latr
+
+    - export AWS_ACCESS_KEY_ID=${AWS_EKS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_EKS_SECRET_ACCESS_KEY}
+    - export AWS_PROFILE=${AWS_EKS_PROFILE}
+
+    - aws --region eu-west-2 eks get-token --cluster-name production
+    - aws sts get-caller-identity
+
+    - kubectl get svc
+    - kubectl config view
+
+    - cat ./scripts/k8s/deployment.yaml
+    - cat ./scripts/k8s/service.yaml
+    - cat ./scripts/k8s/ingress.yaml
+
+    - kubectl apply -f ./scripts/k8s/deployment.yaml
+    - kubectl apply -f ./scripts/k8s/service.yaml
+  #     - kubectl apply -f ./scripts/k8s/ingress.yaml
+
+
+aws_build_dev:
+  stage: dev_build
+  <<: *docker_registry
+  script:
+    - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./.env
+
+    - export APP_NAME=parallelai/${CI_PROJECT_NAME}
+    - export IMAGE_TAG=${ECR_DOMAIN}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${ENVIRONMENT}.${CI_PIPELINE_IID}
+    - docker build -t ${APP_NAME} .
+    - docker tag ${APP_NAME} ${IMAGE_TAG}
+    - docker push ${IMAGE_TAG}
+    - echo ${IMAGE_TAG} | tee aws_image_tag.txt
+  artifacts:
+    paths:
+      - aws_image_tag.txt
+  only:
+    - develop
+    - develop_refactor
+    - develop-api2
+
+
+aws_deploy_dev:
+  stage: dev_deploy
+  image: jshimko/kube-tools-aws
+  <<: *aws_deploy
+  before_script:
+  - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+  only:
+    - develop
+    - develop_refactor
+    - develop-api2
+
+aws_build_prod:
+  stage: prod_build
+  <<: *docker_registry
+  script:
+    - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./.env
+
+    - export APP_NAME=parallelai/${CI_PROJECT_NAME}
+    - export IMAGE_TAG=${ECR_DOMAIN}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${ENVIRONMENT}.${CI_PIPELINE_IID}
+    - docker build -t ${APP_NAME} .
+    - docker tag ${APP_NAME} ${IMAGE_TAG}
+    - docker push ${IMAGE_TAG}
+    - echo ${IMAGE_TAG} | tee aws_image_tag.txt
+  artifacts:
+    paths:
+      - aws_image_tag.txt
+  only:
+    - master
+
+aws_deploy_prod:
+  stage: prod_deploy
+  image: jshimko/kube-tools-aws
+  <<: *aws_deploy
+  before_script:
+    - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+  only:
+    - master
+  when: manual
+
+aws_build_stage:
+  stage: stage_build
+  <<: *docker_registry
+  script:
+    - export ENVIRONMENT=stage
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./.env
+
+    - export APP_NAME=parallelai/${CI_PROJECT_NAME}
+    - export IMAGE_TAG=${ECR_DOMAIN}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${ENVIRONMENT}.${CI_PIPELINE_IID}
+    - docker build -t ${APP_NAME} .
+    - docker tag ${APP_NAME} ${IMAGE_TAG}
+    - docker push ${IMAGE_TAG}
+    - echo ${IMAGE_TAG} | tee aws_image_tag.txt
+  artifacts:
+    paths:
+      - aws_image_tag.txt
+  only:
+    - master
+
+aws_deploy_stage:
+  stage: stage_deploy
+  image: jshimko/kube-tools-aws
+  <<: *aws_deploy
+  before_script:
+    #  - apk add --update -t curl
+    - export ENVIRONMENT=stage
+  only:
+    - master
+
+
+

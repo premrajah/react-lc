@@ -276,7 +276,6 @@ class SearchForm extends Component {
     }
 
     createSearch() {
-        alert("search " + this.state.productSelected);
 
         var data = {
             search: {

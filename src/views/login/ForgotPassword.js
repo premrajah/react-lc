@@ -3,18 +3,8 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
 import history from "../../History/history";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios/index";
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -95,24 +85,12 @@ class ForgotPassword extends Component {
             const data = new FormData(event.target);
             const username = data.get("email");
 
-            // this.props.logIn({"email": username, "password": password})
-
             axios
                 .post(baseUrl + "user/reset", { email: data.email })
                 .then((res) => {
                     document.body.classList.add("search-body");
-
-                    if (res.data.status.code === 200) {
-                    } else {
-                    }
                 })
-                .catch((error) => {
-                    // dispatch({type: "LOGIN_FAILED", value : error})
-                    // dispatch(stopLoading())
-                    // dispatch(loginFailed(error.response.data.content.message))
-                    // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
-                    //
-                });
+                .catch((error) => {});
         } else {
         }
     };
@@ -131,11 +109,6 @@ class ForgotPassword extends Component {
 
     accountRecover() {
         this.props.setLoginPopUpStatus(3);
-
-        // this.setState({
-        //
-        //     active:3
-        // })
     }
 
     goToSuccess() {
@@ -149,16 +122,6 @@ class ForgotPassword extends Component {
             active: 2,
         });
     }
-
-    handleSongLoading() {}
-
-    handleSongFinishedPlaying() {}
-
-    handleSongPlaying() {}
-
-    interval;
-
-
 
     goToSignIn() {
         this.setState({
@@ -179,7 +142,7 @@ class ForgotPassword extends Component {
                     <div className="row no-gutters">
                         <div className="col-12">
                             <h3 className={"blue-text text-heading text-center"}>
-                                Forgot your password ?
+                                Forgot your password?
                             </h3>
                         </div>
                     </div>
@@ -188,7 +151,6 @@ class ForgotPassword extends Component {
                         <div className="row no-gutters justify-content-center ">
                             <div className="col-12 ">
                                 <p className={"text-mute small fgt-password-text"}>
-
                                     We’ll send a verification code to your email address. Click on
                                     the link in the email to reset your password.
                                 </p>
@@ -233,15 +195,11 @@ class ForgotPassword extends Component {
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

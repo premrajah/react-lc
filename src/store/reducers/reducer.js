@@ -87,6 +87,9 @@ export const initialState = {
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
+    signUpPageSubmitted:false
+
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -353,6 +356,7 @@ const reducer = (state = initialState, action) => {
         case SIGN_UP:
             newState.loginPopUpStatus = 5;
             newState.loading = false;
+            newState.signUpPageSubmitted=true
             break;
 
         case GET_MESSAGES:

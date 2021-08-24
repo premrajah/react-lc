@@ -144,19 +144,17 @@ const reducer = (state = initialState, action) => {
                 newState.isLoggedIn = false;
                 newState.loading = false;
             }
-
             break;
 
         case LOGIN:
             newState.loginFailed = false;
             newState.isLoggedIn = true;
             newState.loading = false;
+            newState.notifications = [];
+            newState.messages = [];
             newState.token = action.value.token;
             newState.showLoginPopUp = false;
             newState.userDetail = getKey("user");
-            //
-            //
-
             break;
 
         case LOGIN_ERROR:
@@ -164,7 +162,6 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = false;
             newState.loading = false;
             newState.loginFailed = true;
-
             break;
 
         case LOGOUT:
@@ -189,14 +186,10 @@ const reducer = (state = initialState, action) => {
             newState.productRegisterRequests = [];
             saveKey("user", null);
             saveKey("token", null);
-
-            // window.location.href=("/")
-
             break;
 
 
         case SHOW_SNACKBAR:
-
           newState.snackbarMessage=action.value
 
             break;

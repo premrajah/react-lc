@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import { Alert, Spinner } from "react-bootstrap";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -213,11 +214,18 @@ class Login extends Component {
         return (
             <>
                 <div className="container  ">
-                    <div className="row no-gutters">
+
+                    <div className="row justify-content-center ">
+                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
+
+                    <div className="row no-gutters ">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Log in</h3>
+                            <h3 className={"blue-text text-heading text-center"}>Log In</h3>
                         </div>
                     </div>
+
+                <div className="row justify-content-center no-gutters">
+                                <div className="col-12 mt-4">
 
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center">
@@ -275,11 +283,19 @@ class Login extends Component {
                             </div>
 
                             <div className="col-12 mt-4">
-                                <p
-                                    onClick={this.forGotPass}
-                                    className={"forgot-password-link text-mute small"}>
-                                    Forgot your password?
-                                </p>
+                                {this.props.isPage ?
+                                    <Link
+                                        to={"/forgot-password"}
+
+                                        className={"forgot-password-link text-mute small"}>
+                                        Forgot your password?
+                                    </Link> :
+                                    <p
+                                        onClick={this.forGotPass}
+                                        className={"forgot-password-link text-mute small"}>
+                                        Forgot your password?
+                                    </p>
+                                }
                             </div>
 
                             {this.props.loginFailed && (
@@ -308,7 +324,7 @@ class Login extends Component {
                                         />
                                     )}
 
-                                    {this.props.loading ? "Wait.." : "Log in"}
+                                    {this.props.loading ? "Wait.." : "Log In"}
                                 </button>
                             </div>
 
@@ -318,15 +334,28 @@ class Login extends Component {
                                 </p>
                             </div>
                             <div className="col-auto mt-4 justify-content-center">
-                                <button
+                                {this.props.isPage?
+                                    <Link
+                                        style={{padding: ".375rem .75rem"}}
+                                        to={"/sign-up"}
+                                        type="button"
+                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
+                                        Sign Up
+                                    </Link>
+
+                                    :  <button
                                     onClick={this.goToSignUp}
                                     type="button"
-                                    className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">
-                                    Sign up
-                                </button>
+                                    className="mt-1 mb-4 btn topBtn  sign-up-btn">
+                                    Sign Up
+                                </button>}
                             </div>
                         </div>
                     </form>
+                                </div>
+                            </div>
+                </div>
+                    </div>
                 </div>
             </>
         );

@@ -66,6 +66,10 @@ import RegisterRecord from "./views/approvals/RegisterRecord";
 import ServiceAgentRecord from "./views/approvals/ServiceAgentRecord";
 import SearchRecords from "./components/Searches/SearchRecords";
 import ListingRecord from "./components/Listings/ListingRecord";
+import SignUpPage from "./pages/sign-up/SignUpPage";
+import LoginPage from "./pages/login/LoginPage";
+import LoggedOutRoute from "./Util/LoggedOutRoute";
+import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 
 
 
@@ -119,6 +123,10 @@ class App extends Component {
                             path="/delivery-resource"
                             component={DeliveryResource}
                         />
+
+                        <LoggedOutRoute exact path="/sign-up" component={SignUpPage} />
+                        <LoggedOutRoute exact path="/login" component={LoginPage} />
+                        <LoggedOutRoute exact path="/forgot-password" component={ForgotPasswordPage} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />

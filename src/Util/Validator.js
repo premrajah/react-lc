@@ -31,7 +31,7 @@ export class Validators {
     }
 
     static confirmPassword(value, message,password) {
-        console.log(value, message,password)
+        // console.log(value, message,password)
 
         if (password&&value.toString().trim().length&&(password!==value)) {
 

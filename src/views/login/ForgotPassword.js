@@ -145,6 +145,9 @@ class ForgotPassword extends Component {
         return (
             <>
                 <div className="container  ">
+
+                    <div className="row justify-content-center ">
+                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
                         <div className="col-12">
                             <h3 className={"blue-text text-heading text-center"}>
@@ -193,6 +196,8 @@ class ForgotPassword extends Component {
                             </div>
                         </div>
                     </form>
+                </div>
+                    </div>
                 </div>
             </>
         );

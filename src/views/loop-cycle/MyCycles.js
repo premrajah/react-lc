@@ -72,7 +72,7 @@ class MyCycles extends Component {
                         <PageHeader
                             pageIcon={RingBlue}
                             pageTitle="My Cycles"
-                            subTitle="Cycles are transactions in progress. Keep track of cycles in progress as well as"
+                            subTitle="Cycles are transactions in progress."
                         />
 
 

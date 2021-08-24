@@ -14,10 +14,6 @@ class ArtifactProductsTab extends Component {
 
     }
 
-componentDidMount() {
-
-        console.log(this.props.item)
-}
 
     render() {
 

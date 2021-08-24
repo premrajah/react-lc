@@ -161,10 +161,7 @@ class ListForm extends Component {
                 (response) => {
                     var responseAll = response.data.data;
 
-                    console.log("images ")
-                    console.log(responseAll)
-
-                  let image=(responseAll.find(
+                    let image=(responseAll.find(
                         (item) =>
                             item.mime_type === "image/jpeg" || item.mime_type === "image/png"
                     ))
@@ -771,7 +768,6 @@ class ListForm extends Component {
                                                 <TextField
                                                     onChange={this.handleChange.bind(this, "title")}
                                                     name={"title"}
-                                                    placeholder={"Title"}
                                                     id="outlined-basic"
                                                     variant="outlined"
                                                     fullWidth={true}
@@ -798,7 +794,6 @@ class ListForm extends Component {
                                                         "description"
                                                     )}
                                                     name={"description"}
-                                                    placeholder={"Listing description"}
                                                     id="outlined-basic"
                                                     multiline
                                                     rows={4}

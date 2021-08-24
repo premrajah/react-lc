@@ -324,7 +324,19 @@ export const logInSync = (data) => (dispatch) => {
             }
         })
         .catch((error) => {
-            dispatch({ type: LOGIN_ERROR, value: error.response.data.errors ? error.response.data.errors[0].message : '' });
+
+
+            dispatch((
+                { type: LOGIN_ERROR, value: error.response&&error.response.data?error.response.data.errors[0].message:error.response.status+": "+error.response.statusText}
+               ));
+
+            // dispatch({ type: LOGIN_ERROR, value: error.response
+            //                                         ? error.response.data.errors
+            //                                         : "Login Error"
+            //             ? error.response
+            //                 ? error.response.data.errors[0].message
+            //                 : "Login Error"
+            //             : '' });
         });
 };
 
@@ -371,6 +383,17 @@ export const signUpHostSync = (data) => (dispatch) => {
 };
 
 export const signUpSync = (data) => (dispatch) => {
+
+    let type=null
+    if (data.type){
+        type=data.type
+        delete data.type
+
+
+        console.log(type)
+    }
+
+
     axios
         .post(
             baseUrl + "user/signup",
@@ -382,9 +405,12 @@ export const signUpSync = (data) => (dispatch) => {
         })
         .catch((error) => {
             // dispatch(stopLoading())
+// console.log(error.response)
 
-            dispatch(signUpFailed(error.response.data.errors[0].message));
+            if (error.response) {
 
+                dispatch(signUpFailed(error.response && error.response.data ? error.response.data.errors[0].message : error.response.status + ": " + error.response.statusText));
+            }
             // dispatch({ type: AUTH_FAILED });
             // dispatch({ type: ERROR, payload: error.data.error.message });
         });

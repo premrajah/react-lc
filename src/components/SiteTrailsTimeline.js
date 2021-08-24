@@ -61,15 +61,12 @@ function SiteTrailsTimeline(props) {
 
         let locationsList = []
 
-
-
         let sites =props.siteTrails
-        // console.log(sites)
 
         for (let i=0;i<sites.length;i++){
 
             let site = sites[i].site.site
-            // locationsList.push(site)
+
             try{
                 if (site&&site.geo_codes&&site.geo_codes[0])
                     locationsList.push(
@@ -83,7 +80,6 @@ function SiteTrailsTimeline(props) {
 
         }
 
-        console.log(locationsList)
 
         setLocations(locationsList)
 

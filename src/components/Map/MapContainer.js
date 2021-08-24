@@ -33,7 +33,6 @@ this.setState({
         return (
 
             <div style={{ height: this.props.height, width: this.props.width }}>
-                {console.log(this.props.siteName)}
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: "AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}}
                     defaultCenter={this.state.center}

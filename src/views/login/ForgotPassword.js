@@ -3,18 +3,8 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
 import history from "../../History/history";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios/index";
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -27,6 +17,7 @@ class ForgotPassword extends Component {
             count: 0,
             nextIntervalFlag: false,
             active: 0, //0 logn. 1- sign up , 3 -search,
+            resetSubmitStatus: '',
         };
         this.goToSignUp = this.goToSignUp.bind(this);
         this.goToSignIn = this.goToSignIn.bind(this);
@@ -84,6 +75,7 @@ class ForgotPassword extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({resetSubmitStatus: ""})
 
         const form = event.currentTarget;
 
@@ -94,26 +86,18 @@ class ForgotPassword extends Component {
 
             const data = new FormData(event.target);
             const username = data.get("email");
-
-            // this.props.logIn({"email": username, "password": password})
+            const payload = {email: username}
 
             axios
-                .post(baseUrl + "user/reset", { email: data.email })
+                .post(`${baseUrl}user/reset`, payload)
                 .then((res) => {
+                    this.setState({resetSubmitStatus: <span className="text-success">Email reset link sent successfully. Please check your email.</span>});
+                    document.getElementById("email-reset-form").reset(); // reset form
                     document.body.classList.add("search-body");
-
-                    if (res.data.status.code === 200) {
-                    } else {
-                    }
                 })
                 .catch((error) => {
-                    // dispatch({type: "LOGIN_FAILED", value : error})
-                    // dispatch(stopLoading())
-                    // dispatch(loginFailed(error.response.data.content.message))
-                    // dispatch({type: "LOGIN_ERROR", value : res.data.content.message})
-                    //
+                    this.setState({resetSubmitStatus: <span className="text-warning">{error.message}</span>})
                 });
-        } else {
         }
     };
 
@@ -131,11 +115,6 @@ class ForgotPassword extends Component {
 
     accountRecover() {
         this.props.setLoginPopUpStatus(3);
-
-        // this.setState({
-        //
-        //     active:3
-        // })
     }
 
     goToSuccess() {
@@ -149,16 +128,6 @@ class ForgotPassword extends Component {
             active: 2,
         });
     }
-
-    handleSongLoading() {}
-
-    handleSongFinishedPlaying() {}
-
-    handleSongPlaying() {}
-
-    interval;
-
-
 
     goToSignIn() {
         this.setState({
@@ -176,22 +145,25 @@ class ForgotPassword extends Component {
         return (
             <>
                 <div className="container  ">
+
+                    <div className="row justify-content-center ">
+                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
                         <div className="col-12">
                             <h3 className={"blue-text text-heading text-center"}>
-                                Forgot your password ?
+                                Forgot your password?
                             </h3>
                         </div>
                     </div>
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form id="email-reset-form" onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
                             <div className="col-12 ">
                                 <p className={"text-mute small fgt-password-text"}>
-
-                                    We’ll send a verification code to your email address. Click on
+                                    We’ll send a link to your email address. Click on
                                     the link in the email to reset your password.
                                 </p>
+                                <p>{this.state.resetSubmitStatus}</p>
                             </div>
 
                             <div className="col-12 mt-4">
@@ -215,15 +187,17 @@ class ForgotPassword extends Component {
 
                             <div className="col-12 mt-4 mb-4">
                                 <button
-                                    type={"submit"}
+                                    type="submit"
                                     className={
                                         "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                     }>
-                                    Get Verification Code
+                                    Submit email
                                 </button>
                             </div>
                         </div>
                     </form>
+                </div>
+                    </div>
                 </div>
             </>
         );
@@ -233,15 +207,11 @@ class ForgotPassword extends Component {
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

@@ -72,8 +72,6 @@ class SignUp extends Component {
                 (response) => {
                     var responseAll = response.data.data;
 
-                    // console.log(response.data.data)
-
                     this.setState({
                         org_id: responseAll._key,
                     });
@@ -268,7 +266,7 @@ class SignUp extends Component {
                 <div className="container  ">
                     <div className="row no-gutters">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Sign Up</h3>
+                            <h3 className={"blue-text text-heading text-center"}>Sign up</h3>
                         </div>
                     </div>
 
@@ -580,7 +578,7 @@ class SignUp extends Component {
                                     onClick={this.goToSignIn}
                                     type="button"
                                     className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">
-                                    Log In
+                                    Log in
                                 </button>
                             </div>
                         </div>

@@ -17,8 +17,6 @@ import {Badge, Snackbar} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 
-
-
 class ComponentsNavbar extends React.Component {
     constructor(props) {
         super(props);

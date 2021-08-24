@@ -393,45 +393,6 @@ class ListForm extends Component {
         this.props.loadSites(this.props.userDetail.token);
     }
 
-    createListingOld() {
-        var data = {};
-
-        data = {
-            name: this.state.fields["title"],
-            description: this.state.fields["description"],
-            available_from_epoch_ms: new Date(this.state.startDate).getTime(),
-            expire_after_epoch_ms: new Date(this.state.endDate).getTime(),
-
-            price: {
-                value: this.state.free ? 0 : this.state.fields["price"],
-                currency: "gbp",
-            },
-        };
-
-        axios
-            .put(
-                baseUrl + "listing",
-                {
-                    listing: data,
-                    site_id: this.state.fields["deliver"],
-                    product_id: this.state.fields["product"],
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
-            .then((res) => {
-                this.setState({
-                    listResourceData: res.data.data,
-                    page: 4,
-                });
-
-                // this.props.history.push("/"+res.data.data._key)
-            })
-            .catch((error) => {});
-    }
 
     createListing() {
         var data = {};
@@ -860,12 +821,12 @@ class ListForm extends Component {
                                                     Link a product
                                                 </div>
 
-                                                <ProductTreeView
+                                                {this.props.productWithoutParentList.length >0&&<ProductTreeView
                                                     triggerCallback={(productId) =>
                                                         this.productSelected(productId)
                                                     }
                                                     className={"mb-4"}
-                                                />
+                                                />}
 
                                                 <TextField
                                                     value={this.state.selectedProductId}
@@ -1406,6 +1367,8 @@ const mapStateToProps = (state) => {
         showProductView: state.loginPopUpStatus,
         productList: state.productList,
         siteList: state.siteList,
+        productWithoutParentList: state.productWithoutParentList,
+
     };
 };
 
@@ -1416,7 +1379,6 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };

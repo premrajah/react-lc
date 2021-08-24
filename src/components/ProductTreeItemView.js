@@ -54,21 +54,21 @@ class ProductTreeItemView extends Component {
         let tree = this.state.tree;
 
         for (let i = 0; i < list.length; i++) {
-            if (list[i].product.is_listable) {
+            if (list[i].is_listable) {
                 var treeItem;
 
                 // treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
 
                 treeItem = {
-                    id: list[i].product._key,
+                    id: list[i]._key,
                     // name: list[i].listing ? list[i].product.name + "(NA)" : list[i].product.name,
-                    name: list[i].listing ? list[i].product.name : list[i].product.name,
+                    name: list[i].listing ? list[i].name : list[i].name,
 
                     sub_products: [],
                     canSelect: list[i].listing ? false : true,
                 };
 
-                if (list[i].sub_products.length > 0) {
+                if (list[i].sub_products&&list[i].sub_products.length > 0) {
                     var sub_products = [];
 
                     for (let k = 0; k < list[i].sub_products.length; k++) {
@@ -101,7 +101,7 @@ class ProductTreeItemView extends Component {
             var currentProductId = event.currentTarget.dataset.id;
 
             axios
-                .get(baseUrl + "product/" + currentProductId + "/sub-product/expand", {
+                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
                     headers: {
                         Authorization: "Bearer " + this.props.token,
                     },
@@ -132,7 +132,7 @@ class ProductTreeItemView extends Component {
             <>
                 <div className={"tree-item-container"} style={{ padding: "5px" }}>
                     <p>
-                        {this.props.item.sub_products.length > 0 ? (
+                        {
                             this.state.open ? (
                                 <MinusSquare
                                     data-id={this.props.item.id}
@@ -146,9 +146,8 @@ class ProductTreeItemView extends Component {
                                     className="mr-2"
                                 />
                             )
-                        ) : (
-                            <span className={"mr-4"}></span>
-                        )}
+
+                            }
                         <span
                             data-id={this.props.item.id}
                             onClick={this.props.item.canSelect && this.setSelected}

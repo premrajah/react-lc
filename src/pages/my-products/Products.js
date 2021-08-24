@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import {withStyles} from "@material-ui/core/styles/index";
-import ProductItem from "../../components/ProductItemNew";
+import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
@@ -57,24 +57,28 @@ class Products extends Component {
         threshold: 1.0
     };
 
-    componentDidMount() {
-
-        this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
-
+    loadNewPageSetUp=()=>{
 
         // Create an observer
         this.observer = new IntersectionObserver(
             this.handleObserver.bind(this), //callback
             this.options
         );
-        //Observ the `loadingRef`
 
-        window.onload = function() {
-            if (this.loadingRef)
+
+        // window.onload = function() {
+        if (this.loadingRef)
             this.observer.observe(this.loadingRef);
 
-        }
+        // }
+    }
+    componentDidMount() {
+
+        this.props.loadSites();
+        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
+// this.loadNewPageSetUp()
+
     }
 
 
@@ -89,9 +93,9 @@ class Products extends Component {
         // if (!this.props.loading)
         // console.log(entry.boundingClientRect.y)
 
-        if (entry.intersectionRatio>this.state.intersectionRatio&!this.props.loading){
+        if (entry.intersectionRatio>this.state.intersectionRatio){
 
-            // this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
+            this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
 
         }
 
@@ -227,7 +231,7 @@ class Products extends Component {
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
                                         this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
-                                            (item) => item.product.is_listable === true
+                                            (item) => item.is_listable === true
                                         ).length : "... "
                                     }
                                     <span className="ml-1">Listable Products</span>
@@ -240,12 +244,13 @@ class Products extends Component {
                         <div className={"listing-row-border mb-3"}></div>
 
                         {this.props.productWithoutParentList.length > 0 &&
-                        this.props.productWithoutParentList.filter((filterV) => {
-                            return filterV.product[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
+                        this.props.productWithoutParentList.filter((item) => item.is_listable === true).filter((filterV) => {
+                            return filterV[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         })
                             .map((item, index) => (
-                            <div key={item.product._key}>
+                            <div key={item._key}>
                                 <ProductItem
+                                    index={index}
                                     goToLink={true}
                                     delete={false}
                                     edit={false}
@@ -259,11 +264,11 @@ class Products extends Component {
                             </div>
                         ))}
 
-                        {!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>}
+                        {/*{!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
+                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
+                        {/*        <div>Loading products please wait ...</div>*/}
+                        {/*    </div>*/}
+                        {/*</div>}*/}
                     </div>
 
                     <React.Fragment>

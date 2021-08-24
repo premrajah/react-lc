@@ -411,9 +411,8 @@ class ProductForm extends Component {
                 const part_no = data.get("part_no");
                 const state = data.get("state");
                 const is_listable = this.state.is_listable;
-                const site = data.get("deliver");
-                const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0;
-
+                const site = data.get("deliver")
+                const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0
 
                 const productData = {
                     purpose: purpose.toLowerCase(),

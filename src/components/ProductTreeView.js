@@ -76,25 +76,26 @@ class ProductTreeView extends Component {
 
 
     setTree() {
-        let list = this.state.products;
+        let list = this.props.productWithoutParentList
+
+         console.log(list)
 
         let tree = this.state.tree;
 
         for (let i = 0; i < list.length; i++) {
             // if (!list[i].parent_product&&!list[i].listing) {
-            if (!list[i].parent_product && list[i].product.is_listable) {
+            if ( list[i].is_listable) {
                 var treeItem;
 
                 // treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
                 treeItem = {
-                    id: list[i].product._key,
-                    name: list[i].listing ? list[i].product.name : list[i].product.name,
-
+                    id: list[i]._key,
+                    name: list[i].listing ? list[i].name : list[i].name,
                     sub_products: [],
                     canSelect: list[i].listing ? false : true,
                 };
 
-                if (list[i].sub_products.length > 0) {
+                if (list[i].sub_products&&list[i].sub_products.length > 0) {
                     var sub_products = [];
 
                     for (let k = 0; k < list[i].sub_products.length; k++) {
@@ -110,7 +111,8 @@ class ProductTreeView extends Component {
                 tree.push(treeItem);
             }
         }
-
+        console.log("tree")
+console.log(tree)
         this.setState({
             tree: tree,
             filteredList: tree,
@@ -118,11 +120,13 @@ class ProductTreeView extends Component {
     }
 
     componentDidMount() {
-        this.getItems();
+        // this.getItems();
+
+        this.setTree()
     }
 
     getItems() {
-        axios.get(baseUrl + "product/expand").then(
+        axios.get(baseUrl + "product/no-parent").then(
             (response) => {
                 var responseAll = response.data.data;
 
@@ -191,7 +195,7 @@ class ProductTreeView extends Component {
                                     name={"name"}
                                     onChange={this.handleSearch.bind(this, "name")}
                                 />
-                                {this.props.productList.length===0&&   <Spinner
+                                {this.props.productWithoutParentList.length===0&&   <Spinner
                                     as="span"
                                     animation="border"
                                     size="sm"
@@ -416,8 +420,8 @@ const mapStateToProps = (state) => {
         showCreateProduct: state.showCreateProduct,
         showCreateSubProduct: state.showCreateSubProduct,
         showProductView: state.loginPopUpStatus,
-        productList: state.productList,
         siteList: state.siteList,
+        productWithoutParentList: state.productWithoutParentList,
     };
 };
 
@@ -428,7 +432,6 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };

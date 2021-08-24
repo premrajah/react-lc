@@ -79,7 +79,7 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset:0,
+    productPageOffset:-1,
     productPageSize:20,
     lastPageReached:false,
     serviceAgentRequests: [],
@@ -211,21 +211,23 @@ const reducer = (state = initialState, action) => {
             break;
 
         case PRODUCT_NPARENT_LIST:
-            if (action.value.val.length<state.productPageSize){
-                newState.lastPageReached=true
 
-                console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
-
-
-
-            }else{
-
-                newState.lastPageReached=false
-            }
-
+            // if (action.value.val.length<state.productPageSize){
+            //     newState.lastPageReached=true
+            //
+            //     console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
+            //
+            //
+            //
+            // }else{
+            //
+            //     newState.lastPageReached=false
+            // }
+            newState.lastPageReached=false
 
             let prevList= state.productWithoutParentList
             // newState.productWithoutParentList= prevList.concat(action.value.val);
+
 
             newState.productWithoutParentList= (action.value.val);
 

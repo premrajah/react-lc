@@ -890,7 +890,7 @@ class SearchForm extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.loadProducts(this.props.userDetail.token);
+        this.props.loadProducts();
 
         this.getFiltersCategories();
     }
@@ -1396,10 +1396,9 @@ class SearchForm extends Component {
                                                     {/*{this.props.productList.filter((item)=> item.listing_id === null &&item.product.is_listable=== true ).map((item) =>*/}
 
                                                     {this.props.productList.map((item) => (
-                                                        <option value={item.product._key}>
-                                                            {item.product.name} (
-                                                            {item.sub_product_ids.length} Sub
-                                                            Products)
+                                                        <option value={item._key}>
+                                                            {item.name}
+                                                            {/*({item.sub_product_ids.length} Sub Products)*/}
                                                         </option>
                                                     ))}
                                                 </Select>

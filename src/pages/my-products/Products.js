@@ -10,17 +10,16 @@ import {withStyles} from "@material-ui/core/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import RemoveIcon from '@material-ui/icons/Remove';
 import {CSVLink} from "react-csv";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import Layout from "../../components/Layout/Layout";
-
+import axios from "axios";
+import {CURRENT_PRODUCT} from "../../store/types";
 
 class Products extends Component {
-
-
 
     constructor(props) {
         super(props);
@@ -77,7 +76,7 @@ class Products extends Component {
         this.props.loadSites();
         this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-// this.loadNewPageSetUp()
+    // this.loadNewPageSetUp()
 
     }
 
@@ -95,7 +94,7 @@ class Products extends Component {
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
-            this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
+            this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
 
         }
 
@@ -108,9 +107,32 @@ class Products extends Component {
 
 
     handleAddToProductsExportList = (returnedItem) => {
-        // check if already exists
-        let filteredProduct = this.state.selectedProducts.filter(product => product.product._key !== returnedItem.product._key);
-        this.setState({selectedProducts: [...filteredProduct, returnedItem]});
+
+        axios
+            .get(baseUrl + "product/" + returnedItem._key+ "/expand"
+            )
+            .then(
+                (response) => {
+
+                    // console.log(response.data.data)
+
+
+                    let productSelected=response.data.data
+
+                    // check if already exists
+                    let filteredProduct = this.state.selectedProducts.filter(product => product.product._key !== productSelected.product._key);
+                    this.setState({selectedProducts: [...filteredProduct, productSelected]});
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            );
+
+
+
     }
 
     removeFromSelectedProducts = (i) => {
@@ -123,6 +145,7 @@ class Products extends Component {
     }
 
     handleSaveCSV = () => {
+
 
         const csvData = [];
         this.state.selectedProducts.forEach(item => {
@@ -185,7 +208,7 @@ class Products extends Component {
                             <div className="row">
                                 <div className="col">
                                     {this.state.selectedProducts.map((product, index) => (
-                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.product.name}</div>
+                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.name}</div>
                                     ))}
                                 </div>
                             </div>
@@ -329,6 +352,7 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
+        productWithoutParentListPage: state.productWithoutParentListPage,
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
@@ -345,6 +369,9 @@ const mapDispatchToProps = (dispatch) => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        dispatchLoadProductsWithoutParentPage: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
+
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),

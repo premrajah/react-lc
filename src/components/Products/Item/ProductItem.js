@@ -197,6 +197,8 @@ class ProductItemNew extends Component {
     }
 
     handleAddToProductList = (item) => {
+
+
         this.props.listOfProducts(item)
     }
 
@@ -205,19 +207,25 @@ class ProductItemNew extends Component {
             <>
 
                     <>
-                        <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
+
                             <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
                                 <div className={"col-2 "}>
+                                    <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
+                                        <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
                                     ) : (
                                         <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                     )}
+                                    </>
+                                    </Link>
                                 </div>
                                 <div className={"col-7 pl-2  content-box-listing"}>
-                                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                        {this.props.item.name}, {this.props.index},{this.props.item._key}
-                                    </p>
+
+                                        <p style={{ fontSize: "18px" }} className="text-caps mb-1">
+                                            <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name} </Link>
+                                      </p>
+
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
                                         {this.props.item.purpose}
                                     </p>
@@ -228,6 +236,8 @@ class ProductItemNew extends Component {
                                         <span>{this.props.item.volume}</span>
                                         <span>{this.props.item.units}</span>
                                     </p>
+                                    {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-bold"}>{this.props.item.sku.brand}</p>}
+
                                     {this.props.item.search_ids && (
                                         <p
                                             style={{ fontSize: "16px" }}
@@ -249,16 +259,28 @@ class ProductItemNew extends Component {
                                     <p className={"text-gray-light small"}>
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
-                                    <MoreMenu
-                                        triggerCallback={(action) => this.callBackResult(action)}
-                                        delete={this.props.delete}
-                                        edit={this.props.edit}
-                                        remove={this.props.remove}
-                                        duplicate={this.props.duplicate}
-                                    />
+
+                                    {this.props.showAddToListButton && <div>
+                                        <Add onClick={() => {
+
+                                            this.handleAddToProductList(this.props.item)
+
+                                        }}
+                                             style={{cursor: 'pointer'}}/>
+                                    </div>}
+
+                                    {!this.props.hideMore && (
+                                        <MoreMenu
+                                            triggerCallback={(action) => this.callBackResult(action)}
+                                            delete={this.props.delete}
+                                            edit={this.props.edit}
+                                            remove={this.props.remove}
+                                            duplicate={this.props.duplicate}
+                                        />
+                                    )}
                                 </div>
                             </div>
-                        </Link>
+
                     </>
 
 

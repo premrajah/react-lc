@@ -213,7 +213,7 @@ class ComponentsNavbar extends React.Component {
                         )}
 
                         {!this.props.isLoggedIn && (
-                            <NavItem className="mr-5">
+                            <NavItem className="mr-5 d-none">
                                 <a
                                     className="nav-link  d-lg-block"
                                     color="default"

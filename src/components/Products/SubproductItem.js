@@ -9,8 +9,14 @@ import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import {capitalize} from "../../Util/GlobalFunctions";
+import {
+    useHistory,
+    BrowserRouter,
+    Route,
+} from "react-router-dom";
 
 const SubproductItem = (props) => {
+    const history = useHistory()
 
     const item=props.item
     const parentId= props.parentId
@@ -18,18 +24,24 @@ const SubproductItem = (props) => {
     const [artifacts, setArtifacts] = useState([]);
 
     useEffect(() => {
-        if(item) {
+        // return history.listen((location) => {
+
             getArtifactsForProduct(item._key)
-        }
-    }, [])
+
+            // })
+    }, item._key)
 
     const getArtifactsForProduct = (key) => {
-        axios.get(`${baseUrl}product/${key}/artifact`)
-            .then(res => {
-                const data = res.data.data;
-                setArtifacts(data);
-            })
-            .catch(error => {})
+
+            axios.get(`${baseUrl}product/${key}/artifact`)
+                .then(res => {
+                    const data = res.data.data;
+                    setArtifacts(data);
+                })
+                .catch(error => {
+                })
+
+
     }
 
     const removeSubproductFromList = () => {

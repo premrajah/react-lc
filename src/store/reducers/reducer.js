@@ -14,6 +14,7 @@ import {
     PRODUCT_ID,
     PRODUCT_LIST,
     PRODUCT_NPARENT_LIST,
+    PRODUCT_NPARENT_LIST_PAGE,
     PRODUCT_POPUP,
     REVIEW_BOX_OPEN,
     REVIEW_SUBMIT,
@@ -68,6 +69,7 @@ export const initialState = {
     parentProduct: null,
     productList: [],
     productWithoutParentList: [],
+    productWithoutParentListPage: [],
     siteList: [],
     allListings: [],
     showSitePopUp: false,
@@ -202,6 +204,43 @@ const reducer = (state = initialState, action) => {
             newState.loading = false;
             break;
 
+
+        case PRODUCT_NPARENT_LIST_PAGE:
+
+            // if (action.value.val.length<state.productPageSize){
+            //     newState.lastPageReached=true
+            //
+            //     console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
+            //
+            //
+            //
+            // }else{
+            //
+            //     newState.lastPageReached=false
+            // }
+            // newState.lastPageReached=false
+
+
+            console.log("no parent page called")
+
+            let prevListPage= state.productWithoutParentListPage
+            prevListPage=prevListPage.concat(action.value.val)
+            // prevListPage=prevListPage.filter( (ele, ind) => ind === prevListPage.findIndex( elem => elem._key === ele._key ))
+
+
+            newState.productWithoutParentListPage= prevListPage;
+
+
+            console.log(action.value.val)
+
+            // newState.productWithoutParentList= (action.value.val);
+
+            newState.loading = false;
+
+            newState.productPageOffset=action.value.offset
+            newState.productPageSize=action.value.size
+
+            break;
         case PRODUCT_NPARENT_LIST:
 
             // if (action.value.val.length<state.productPageSize){
@@ -215,10 +254,10 @@ const reducer = (state = initialState, action) => {
             //
             //     newState.lastPageReached=false
             // }
-            newState.lastPageReached=false
-
-            let prevList= state.productWithoutParentList
-            // newState.productWithoutParentList= prevList.concat(action.value.val);
+            // newState.lastPageReached=false
+            //
+            // let prevList= state.productWithoutParentList
+            // // newState.productWithoutParentList= prevList.concat(action.value.val);
 
 
             newState.productWithoutParentList= (action.value.val);

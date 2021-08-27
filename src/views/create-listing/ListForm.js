@@ -151,8 +151,7 @@ class ListForm extends Component {
     }
 
     getPreviewImage(productSelectedKey) {
-        axios
-            .get(baseUrl + "product/" + productSelectedKey + "/artifact", {
+        axios.get(baseUrl + "product/" + productSelectedKey + "/artifact", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -588,8 +587,10 @@ class ListForm extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        this.props.loadProductsWithoutParent()
+
         this.props.loadSites(this.props.userDetail.token);
-        // this.props.loadProducts(this.props.userDetail.token)
     }
 
     classes = useStylesSelect;
@@ -816,7 +817,10 @@ class ListForm extends Component {
                                                     Link a product
                                                 </div>
 
-                                                {this.props.productWithoutParentList.length >0&&<ProductTreeView
+
+                                                {this.props.productWithoutParentList.length>0&&
+                                                <ProductTreeView
+                                                    items={this.props.productWithoutParentList}
                                                     triggerCallback={(productId) =>
                                                         this.productSelected(productId)
                                                     }
@@ -1375,6 +1379,8 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ListForm);

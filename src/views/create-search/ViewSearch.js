@@ -18,7 +18,7 @@ import Sidebar from "../menu/Sidebar";
 import moment from "moment";
 import NotFound from "../NotFound/index";
 import ProductExpandItem from "../../components/ProductExpandItem";
-import SearchEditForm from "../../components/SearchEditForm";
+import SearchEditForm from "../../components/Searches/SearchEditForm";
 import { Modal } from "react-bootstrap";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";
@@ -720,7 +720,7 @@ class ViewSearch extends Component {
                                     size="lg"
                                     show={this.state.showEdit}
                                     onHide={this.showEdit}
-                                    className={"custom-modal-popup popup-form"}>
+                                    className={"custom-modal-popup popup-form mb-5"}>
                                     <div className="">
                                         <button
                                             onClick={this.showEdit}
@@ -734,6 +734,7 @@ class ViewSearch extends Component {
                                     <SearchEditForm
                                         triggerCallback={this.showEdit}
                                         searchId={this.state.createSearchData.search._key}
+                                        item={this.state.createSearchData}
                                     />
                                 </Modal>
                             </>

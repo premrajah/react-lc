@@ -292,26 +292,26 @@ class ComponentsNavbar extends React.Component {
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
                                                     this.props.orgImage ? (
-                                                        <div
-                                                            style={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                            }}>
-                                                            <LightTooltip title={this.props.userDetail ? `${this.props.userDetail.email}` : "Menu"} arrow placement="left">
-                                                                <img
-                                                                    src={this.props.orgImage}
-                                                                    alt=""
-                                                                    style={{
-                                                                        maxHeight: "30px",
-                                                                        maxWidth: "30px",
-                                                                        objectFit: "contain",
-                                                                        width: "30px",
-                                                                        height: "30px",
-                                                                    }}
-                                                                />
-                                                            </LightTooltip>
-                                                        </div>
+                                                        <LightTooltip title={this.props.userDetail ? `${this.props.userDetail.email}` : "Menu"} arrow placement="left">
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center",
+                                                                }}>
+                                                                    <img
+                                                                        src={this.props.orgImage}
+                                                                        alt=""
+                                                                        style={{
+                                                                            maxHeight: "30px",
+                                                                            maxWidth: "30px",
+                                                                            objectFit: "contain",
+                                                                            width: "30px",
+                                                                            height: "30px",
+                                                                        }}
+                                                                    />
+                                                            </div>
+                                                        </LightTooltip>
                                                     ) : this.props.userDetail.firstName ? (
                                                         this.props.userDetail.firstName.substr(0, 2)
                                                     ) : (

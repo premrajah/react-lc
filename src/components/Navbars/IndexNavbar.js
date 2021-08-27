@@ -12,11 +12,19 @@ import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import {Badge, Snackbar} from "@material-ui/core";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
+import {Badge, Snackbar, Tooltip} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 
+const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(39, 36, 92, 1)',
+        boxShadow: theme.shadows[1.5],
+        fontSize: 14,
+    },
+}))(Tooltip);
 
 
 class ComponentsNavbar extends React.Component {
@@ -38,6 +46,7 @@ class ComponentsNavbar extends React.Component {
         this.showProductSelection = this.showProductSelection.bind(this);
 
     }
+
 
     showProductSelection() {
         this.props.showProductPopUp({ type: "create_product", show: true });
@@ -289,17 +298,19 @@ class ComponentsNavbar extends React.Component {
                                                                 justifyContent: "center",
                                                                 alignItems: "center",
                                                             }}>
-                                                            <img
-                                                                src={this.props.orgImage}
-                                                                alt=""
-                                                                style={{
-                                                                    maxHeight: "30px",
-                                                                    maxWidth: "30px",
-                                                                    objectFit: "contain",
-                                                                    width: "30px",
-                                                                    height: "30px",
-                                                                }}
-                                                            />
+                                                            <LightTooltip title={this.props.userDetail ? `${this.props.userDetail.email}` : "Menu"} arrow placement="left">
+                                                                <img
+                                                                    src={this.props.orgImage}
+                                                                    alt=""
+                                                                    style={{
+                                                                        maxHeight: "30px",
+                                                                        maxWidth: "30px",
+                                                                        objectFit: "contain",
+                                                                        width: "30px",
+                                                                        height: "30px",
+                                                                    }}
+                                                                />
+                                                            </LightTooltip>
                                                         </div>
                                                     ) : this.props.userDetail.firstName ? (
                                                         this.props.userDetail.firstName.substr(0, 2)

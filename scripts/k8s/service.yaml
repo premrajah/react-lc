@@ -8,7 +8,7 @@ metadata:
     service: nginx
 
 spec:
-  externalTrafficPolicy: Cluster
+#  externalTrafficPolicy: Cluster
   type: ClusterIP
   selector:
     app: loop-react-ui-${ENVIRONMENT}

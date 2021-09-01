@@ -1099,7 +1099,6 @@ class SearchForm extends Component {
                                                 <TextField
                                                     onChange={this.handleChange.bind(this, "title")}
                                                     name={"title"}
-                                                    placeholder={"Title"}
                                                     id="outlined-basic"
                                                     variant="outlined"
                                                     fullWidth={true}
@@ -1126,7 +1125,6 @@ class SearchForm extends Component {
                                                         "description"
                                                     )}
                                                     name={"description"}
-                                                    placeholder={"Search description"}
                                                     id="outlined-basic"
                                                     multiline
                                                     rows={4}

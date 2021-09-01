@@ -48,7 +48,6 @@ import {
 } from "../types";
 
 export const initialState = {
-
     loginPopUpStatus: 0,
     loading: false,
     isLoggedIn: false,
@@ -79,15 +78,18 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset:0,
-    productPageSize:20,
-    lastPageReached:false,
+    productPageOffset: 0,
+    productPageSize: 20,
+    lastPageReached: false,
     serviceAgentRequests: [],
     productReleaseRequests: [],
     productReleaseRequested: [],
     productRegisterRequests: [],
-    snackbarMessage: {show:false,message:"",severity:""},
-    currentProduct:null
+    snackbarMessage: { show: false, message: "", severity: "" },
+    currentProduct: null,
+    signUpPageSubmitted:false
+
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -112,10 +114,11 @@ const reducer = (state = initialState, action) => {
 
         case PRODUCT_RELEASE:
             newState.productReleaseRequests = action.value;
-            newState.productReleaseRequested=[]
-            newState.productReleaseRequested = action.value.filter((item) => item.Release.stage === "requested" );
+            newState.productReleaseRequested = [];
+            newState.productReleaseRequested = action.value.filter(
+                (item) => item.Release.stage === "requested"
+            );
             break;
-
 
         case PRODUCT_REGISTER:
             newState.productRegisterRequests = action.value;
@@ -124,8 +127,6 @@ const reducer = (state = initialState, action) => {
         case SERVICE_AGENT_REQUEST:
             newState.serviceAgentRequests = action.value;
             break;
-
-
 
         case REVIEW_BOX_OPEN:
             newState.reviewBoxOpen = action.value;
@@ -144,19 +145,17 @@ const reducer = (state = initialState, action) => {
                 newState.isLoggedIn = false;
                 newState.loading = false;
             }
-
             break;
 
         case LOGIN:
             newState.loginFailed = false;
             newState.isLoggedIn = true;
             newState.loading = false;
+            newState.notifications = [];
+            newState.messages = [];
             newState.token = action.value.token;
             newState.showLoginPopUp = false;
             newState.userDetail = getKey("user");
-            //
-            //
-
             break;
 
         case LOGIN_ERROR:
@@ -164,7 +163,6 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = false;
             newState.loading = false;
             newState.loginFailed = true;
-
             break;
 
         case LOGOUT:
@@ -176,7 +174,7 @@ const reducer = (state = initialState, action) => {
             newState.addressInput = false;
             newState.productWithoutParentList = [];
             newState.productList = [];
-            newState.siteList=[]
+            newState.siteList = [];
             newState.showLoginPopUp = false;
             newState.userDetail = null;
             newState.token = {};
@@ -189,20 +187,14 @@ const reducer = (state = initialState, action) => {
             newState.productRegisterRequests = [];
             saveKey("user", null);
             saveKey("token", null);
-
-            // window.location.href=("/")
-
             break;
 
-
         case SHOW_SNACKBAR:
-
-          newState.snackbarMessage=action.value
+            newState.snackbarMessage = action.value;
 
             break;
         case CURRENT_PRODUCT:
-
-            newState.currentProduct=action.value
+            newState.currentProduct = action.value;
 
             break;
         case PRODUCT_LIST:
@@ -211,28 +203,21 @@ const reducer = (state = initialState, action) => {
             break;
 
         case PRODUCT_NPARENT_LIST:
-            if (action.value.val.length<state.productPageSize){
-                newState.lastPageReached=true
-
-                console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
-
-
-
-            }else{
-
-                newState.lastPageReached=false
+            if (action.value.val.length < state.productPageSize) {
+                newState.lastPageReached = true;
+            } else {
+                newState.lastPageReached = false;
             }
 
-
-            let prevList= state.productWithoutParentList
+            let prevList = state.productWithoutParentList;
             // newState.productWithoutParentList= prevList.concat(action.value.val);
 
-            newState.productWithoutParentList= (action.value.val);
+            newState.productWithoutParentList = action.value.val;
 
             newState.loading = false;
 
-            newState.productPageOffset=action.value.offset
-            newState.productPageSize=action.value.size
+            newState.productPageOffset = action.value.offset;
+            newState.productPageSize = action.value.size;
 
             break;
 
@@ -311,8 +296,6 @@ const reducer = (state = initialState, action) => {
             newState.loading = true;
             break;
 
-
-
         case SLIDES_LOAD:
             newState.slides = action.value;
             break;
@@ -363,8 +346,7 @@ const reducer = (state = initialState, action) => {
             break;
 
         case USER_DETAIL:
-
-           newState.isLoggedIn = true;
+            newState.isLoggedIn = true;
 
             newState.userDetail = action.value;
             newState.loading = false;
@@ -372,10 +354,9 @@ const reducer = (state = initialState, action) => {
             break;
 
         case SIGN_UP:
-
-
             newState.loginPopUpStatus = 5;
             newState.loading = false;
+            newState.signUpPageSubmitted=true
             break;
 
         case GET_MESSAGES:

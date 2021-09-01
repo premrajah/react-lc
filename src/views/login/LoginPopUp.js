@@ -69,14 +69,14 @@ class LoginPopUp extends Component {
                 <div className={"body-overlay"}>
                     <div className={"modal-popup"}>
                         <div className=" text-right web-only">
-                            <Link to={"/"}>
+                            {/*<Link to={"/"}>*/}
 
                                 <Close
                                     onClick={this.hideLoginPopUp}
                                     className="blue-text"
                                     style={{ fontSize: 32 }}
                                 />
-                            </Link>
+                            {/*</Link>*/}
                         </div>
                         <div className="container  p-2 mobile-only"></div>
                         <div className="container  pt-2 pb-3 mobile-only">

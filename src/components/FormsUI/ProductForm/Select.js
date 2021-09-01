@@ -22,9 +22,6 @@ const SelectArrayWrapper = (props) => {
     const classes = useStyles();
     const handleChange = (event) => {
         setValue(event.target.value);
-
-        console.log(event.target.value)
-
            if (onChange)
             onChange(event.target.value)
     };

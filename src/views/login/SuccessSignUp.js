@@ -5,6 +5,7 @@ import SendIcon from "../../img/send-icon.png";
 import history from "../../History/history";
 import { makeStyles } from "@material-ui/core/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -169,7 +170,10 @@ class RecoverPassword extends Component {
         return (
             <>
                 <div className="container  ">
+                    <div className="row justify-content-center ">
+                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
+
                         <div className="col-12">
                             <h3 className={"green-text text-heading text-center"}>Success!</h3>
                         </div>
@@ -189,22 +193,33 @@ class RecoverPassword extends Component {
                             </p>
                         </div>
 
-                        <div className="col-4 mt-5">
-                            <button
+                        <div className="col-4 mt-5 mb-4 ">
+                            {this.props.isPage?
+
+                                <Link
+                                    to={"/login"}
+                                    className={
+                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green"
+                                    }>
+                                    Log In <NavigateNextIcon />
+                                </Link>
+                                : <button
                                 onClick={this.goToSignIn}
                                 className={
                                     "btn btn-default btn-lg btn-rounded shadow btn-block btn-green"
                                 }>
                                 Log In <NavigateNextIcon />
-                            </button>
+                            </button>}
                         </div>
 
-                        <div className="col-12 mt-4 mb-4">
+                        <div className="col-12 mt-4 mb-4 d-none">
                             <p style={{ textAlign: "center" }} className={"text-mute small"}>
                                 Didn’t get a link?
                                 <span className={"forgot-password-link"}> Resend Verification</span>
                             </p>
                         </div>
+                    </div>
+                </div>
                     </div>
                 </div>
             </>

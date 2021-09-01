@@ -34,9 +34,7 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
     const handleChange = (event) => {
 
            const {value} = event.target;
-            // console.log(value)
            setField(value)
-
 
             if (onChange)
              onChange(value)

@@ -83,15 +83,8 @@ class Products extends Component {
 
        let [entry] = entities
 
-        console.log(entry)
-
-
-        // if (!this.props.loading)
-        // console.log(entry.boundingClientRect.y)
-
         if (entry.intersectionRatio>this.state.intersectionRatio&!this.props.loading){
 
-            // this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
 
         }
 

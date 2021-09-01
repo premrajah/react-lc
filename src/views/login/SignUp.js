@@ -14,6 +14,7 @@ import {capitalize} from "../../Util/GlobalFunctions";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -84,18 +85,6 @@ class SignUp extends Component {
                 isLoopCycleCompany:false,
                 companyNumber:detail.company
             })
-            // axios.get(baseUrl + "org/company/" + detail.company).then(
-            //     (response) => {
-            //         var responseAll = response.data.data;
-            //
-            //         // console.log(response.data.data)
-            //
-            //         this.setState({
-            //             org_id: responseAll._key,
-            //         });
-            //     },
-            //     (error) => {}
-            // );
         }
     };
 
@@ -107,18 +96,16 @@ class SignUp extends Component {
 
                 "company_number":this.state.companyNumber,
                 "email":data.get("email"),
-                "details": {
+                "org_details": {
 
                     "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
                     "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),
-                    "no_of_staff": data.get("no_of_staff")
+                    "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
                 }
 
             }).then(
                 (response) => {
                     var responseAll = response.data.data;
-
-                    // console.log(response.data.data)
 
                     this.setState({
                         org_id: responseAll._key,
@@ -201,8 +188,6 @@ class SignUp extends Component {
 
         let {formIsValid,errors}= validateInputs(validations)
 
-        // console.log(formIsValid,errors)
-
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -211,7 +196,6 @@ class SignUp extends Component {
 
     handleChange(value,field ) {
 
-       // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -241,7 +225,7 @@ class SignUp extends Component {
             //update company details first
 
 
-            if (!this.state.isLoopCycleCompany){
+            if (this.state.companyNumber&&!this.state.isLoopCycleCompany){
 
                    await   this.createCompanyWithDetails(data)
             }
@@ -267,14 +251,11 @@ class SignUp extends Component {
                     user_details: {
                         reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
                     },
-                    org_details: {
-                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
-                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
-                        "no_of_staff": data.get("no_of_staff")
-                    }
+
                 };
             } else {
                 dataSignUp = {
+                    type:"page",
                     email: username,
                     password: password,
                     lastName: lastName,
@@ -283,15 +264,22 @@ class SignUp extends Component {
                     user_details: {
                         reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
                     },
-                    org_details: {
-                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
-                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
-                        "no_of_staff": data.get("no_of_staff")
-                    }
+
                 };
             }
 
-            // console.log(dataSignUp)
+
+            if (!this.state.org_id){
+                dataSignUp.org_details = {
+
+                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
+                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
+                        "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
+
+                }
+            }
+
+
             this.props.signUp(dataSignUp);
 
         } else {
@@ -302,12 +290,15 @@ class SignUp extends Component {
         return (
             <>
                 <div className="container  ">
+                    <div className="row justify-content-center ">
+                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
                         <div className="col-12">
                             <h3 className={"blue-text text-heading text-center"}>Sign Up</h3>
                         </div>
                     </div>
-
+                            <div className="row justify-content-center no-gutters">
+                                <div className="col-12 ">
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
                             <div className="col-6 pr-2 mt-4">
@@ -459,8 +450,15 @@ class SignUp extends Component {
                                     error={this.state.errors["no_of_staff"]}
                                     name="no_of_staff" label="No. of staff" />
                             </div>
+
                             </>}
 
+                            <div className="col-12 mt-4">
+                                <TextFieldWrapper
+                                    onChange={(value)=>this.handleChange(value,"referral")}
+                                    error={this.state.errors["referral"]}
+                                    name="referral" label="Referral Code (If Any)" />
+                            </div>
                             <div className="col-12 mt-4">
 
 
@@ -517,8 +515,7 @@ class SignUp extends Component {
                                 {/*<div className={"col-10"}>*/}
                                 <span className={"text-mute small"}>
 
-                                    I agree to the
-                                    <span className={"forgot-password-link"}>
+                                    I agree to the <span className={"forgot-password-link"}>
                                         <a href="/terms" target="_blank" rel="noopener noreferrer">
                                             Terms and Conditions
                                         </a>
@@ -546,21 +543,42 @@ class SignUp extends Component {
                                 </button>
                             </div>
 
-                            <div className="col-12 mt-4">
-                                <p className={"or-text-divider"}>
-                                    <span>or</span>
-                                </p>
-                            </div>
-                            <div className="col-auto mt-4 justify-content-center">
-                                <button
-                                    onClick={this.goToSignIn}
-                                    type="button"
-                                    className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">
-                                    Log In
-                                </button>
-                            </div>
+
                         </div>
                     </form>
+                                </div>
+                            </div>
+
+                            <div className="row justify-content-center no-gutters">
+                                <div className="col-12 mt-4">
+                                    <p className={"or-text-divider"}>
+                                        <span>or</span>
+                                    </p>
+                                </div>
+                            <div className="col-12 mt-4 justify-content-center text-center">
+
+                                {/*<div className="col-auto  ">*/}
+                                {this.props.isPage?
+                                    <Link
+                                        style={{padding: ".375rem .75rem"}}
+                                       to={"/login"}
+                                        type="button"
+                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
+                                     Log In
+                                    </Link>
+
+                                    :<button
+                                        onClick={this.goToSignIn}
+                                        type="button"
+                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
+                                        Log In
+                                    </button>}
+                                {/*</div>*/}
+                            </div>
+                            </div>
+
+                    </div>
+                    </div>
                 </div>
             </>
         );
@@ -582,6 +600,7 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        signUpPageSubmitted: state.signUpPageSubmitted,
     };
 };
 

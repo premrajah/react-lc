@@ -74,8 +74,7 @@ class Loops extends Component {
                         <div className="row  pb-4 pt-2 ">
                             <div className="col-auto">
                                 <p className={"text-gray-light "}>
-                                    Cycles are transactions in progress. Keep track of cycles in
-                                    progress as well as
+                                    Cycles are transactions in progress.
                                 </p>
                             </div>
                         </div>

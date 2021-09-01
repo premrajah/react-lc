@@ -958,7 +958,7 @@ class ListingForm extends Component {
                                             onClick={this.nextClick}
                                             type="button"
                                             className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                            Sign Up
+                                            Sign up
                                         </button>
                                     </div>
                                 </div>

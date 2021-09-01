@@ -36,18 +36,19 @@ class EditAccount extends Component {
             phone: null,
             loading: false,
             submitSuccess: false,
-            reason:null
+            reason:null,
+            showPasswordFields: false,
+            password: '',
+            repeatPassword: '',
+            missMatchPasswords: '',
+            passwordChangeErrors: '',
         };
 
     }
 
     UserInfo=()=> {
         axios
-            .get(baseUrl + "user", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "user")
             .then(
                 (response) => {
                     var response = response.data;
@@ -68,28 +69,14 @@ class EditAccount extends Component {
     }
 
     handleValidation() {
-
-
         let fields = this.state.fields;
-
-
         let validations=[
             validateFormatCreate("firstName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
-            // validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
-            // validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
-            // validateFormatCreate("agree", [{check: Validators.requiredCheck, message: 'Required'}],fields),
-            // validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'This field should be a number.'}],fields),
         ]
-
-
-
         let {formIsValid,errors}= validateInputs(validations)
-
-        console.log(formIsValid,errors)
-
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -97,8 +84,6 @@ class EditAccount extends Component {
 
 
     handleChange(value,field ) {
-
-        console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -156,6 +141,40 @@ class EditAccount extends Component {
         this.setState({ fields: fields });
     }
 
+    handleShowPasswordFields = () => {
+        this.setState(prevState => ({
+            showPasswordFields: !prevState.showPasswordFields, passwordChangeErrors: ""
+        }));
+
+    }
+
+    handleChangePassword = () => {
+        let password = this.state.password
+        let repeatPassword = this.state.repeatPassword;
+        this.setState({passwordChangeErrors:"", missMatchPasswords: ""}) // reset
+
+        if(password.toLowerCase() !== repeatPassword.toLowerCase()) {
+            this.setState({missMatchPasswords: "Passwords do not match."})
+        } else {
+            this.setState({missMatchPasswords: ''});
+            let payload = { "password": password }
+            this.postChangePassword(payload);
+        }
+    }
+
+    postChangePassword = (payload) => {
+        axios.post(`${baseUrl}user/change`, payload)
+            .then(res => {
+                this.setState({showPasswordFields: false, password: '', repeatPassword: '', passwordChangeErrors: <span className="text-success">Password changed successfully.</span>})
+            })
+            .catch(error => {
+                this.setState({passwordChangeErrors: error.message})
+                if(error.response) {
+                    this.setState({passwordChangeErrors: error.response.data.errors.map((e, i) => <div className="text-danger" key={i}>{e.message}</div>)})
+                }
+            })
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
 
@@ -185,11 +204,6 @@ class EditAccount extends Component {
                         user_details:{
                             reason_for_joining:data.get("reason")!="Other"?data.get("reason"):data.get("reason-other")
                         }
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
                     }
                 )
                 .then((res) => {
@@ -248,8 +262,8 @@ class EditAccount extends Component {
                         </div>
 
                         {this.state.user && (
-                            <div className={"row"}>
-                                <div className={"col-12"}>
+                            <div className="row">
+                                <div className="col-12">
 
 
                                     <form onSubmit={this.handleSubmit}>
@@ -290,52 +304,57 @@ class EditAccount extends Component {
                                             <div className="col-12 mt-4 ">
                                                 <div className="row">
                                                     <div className="col-12">
-                                                <TextFieldWrapper
-                                                    initialValue={this.state.reason}
-                                                    onChange={(value)=>this.handleChange(value,"reason")}
-                                                    error={this.state.errors["reason"]}
-                                                    name="reason" label="Main Reason for using Loopcycle" />
-                                                </div>
+                                                        <TextFieldWrapper
+                                                            initialValue={this.state.reason}
+                                                            onChange={(value)=>this.handleChange(value,"reason")}
+                                                            error={this.state.errors["reason"]}
+                                                            name="reason" label="Main Reason for using Loopcycle" />
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            {/*<div className="col-12 mt-4">*/}
-                                            {/*    <div className="row">*/}
-                                            {/*        <div className={this.state.reasonOtherShow?"col-6 ":"col-12"}>*/}
-                                            {/*            <SelectArrayWrapper*/}
-                                            {/*                initialValue={this.state.reason}*/}
-                                            {/*                onChange={(value)=> {*/}
+                                            <div className="col-12 mt-4">
+                                                <div className="row mb-2 d-flex flex-column">
+                                                    <div className="green-link-url" onClick={() => this.handleShowPasswordFields()}>Change Password</div>
+                                                    <div className="text-warning"><b>{this.state.missMatchPasswords}</b></div>
+                                                    <div>{this.state.passwordChangeErrors}</div>
+                                                </div>
 
-                                            {/*                    if (value==="Other"){*/}
+                                                {this.state.showPasswordFields && <div className="row">
+                                                    <div className="col-md-4">
+                                                        <TextFieldWrapper
+                                                            initialValue={this.state.password}
+                                                            name="password"
+                                                            label="Password"
+                                                            error={this.state.errors["password"]}
+                                                            onChange={(value) => this.setState({password: value})}
+                                                            type="password"
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <TextFieldWrapper
+                                                            initialValue={this.state.repeatPassword}
+                                                            name="repeatPassword"
+                                                            label="Repeat Password"
+                                                            error={this.state.errors["repeatPassword"]}
+                                                            onChange={(value) => this.setState({repeatPassword: value})}
+                                                            type="password"
+                                                        />
+                                                    </div>
 
-                                            {/*                        this.setState({*/}
-                                            {/*                            reasonOtherShow:true*/}
-                                            {/*                        })*/}
-                                            {/*                    }else{*/}
-                                            {/*                        this.setState({*/}
-                                            {/*                            reasonOtherShow:false*/}
-                                            {/*                        })*/}
-                                            {/*                    }*/}
-                                            {/*                }}*/}
-                                            {/*                select*/}
-                                            {/*                options={this.state.reasons} name={"reason"} label="Main Reason for using Loopcycle"*/}
-                                            {/*            />*/}
-                                            {/*        </div>*/}
+                                                    <div className="col-md-4">
+                                                        <button
+                                                            disabled={this.state.password === '' || this.state.repeatPassword === ''}
+                                                            onClick={() => this.handleChangePassword()}
+                                                            type="button"
+                                                            className="btn btn-block  btn-outline-warning sign-up-btn">
+                                                            Update Password
+                                                        </button>
+                                                    </div>
+                                                    <small className="text-muted">Password should be at least 8 characters including at least 3 of the following 4 types of characters: a lower-case letter, an upper-case letter, a number, a special character (such as !@#$%^&*).</small>
+                                                </div>}
 
-                                            {/*        <div className={this.state.reasonOtherShow?"col-6 append-animate":"d-none"}>*/}
-                                            {/*            <TextFieldWrapper*/}
-
-                                            {/*                onChange={(value)=>this.handleChange(value,"volume")}*/}
-                                            {/*                error={this.state.errors["reason"]}*/}
-                                            {/*                name="reason-other" label=" Specify here" />*/}
-                                            {/*        </div>*/}
-                                            {/*    </div>*/}
-
-                                            {/*</div>*/}
-
-
-
-
+                                            </div>
 
                                             <div className="col-auto mt-4 justify-content-center">
                                                 <button
@@ -346,124 +365,7 @@ class EditAccount extends Component {
                                             </div>
                                         </div>
                                     </form>
-                                    {/*<form onSubmit={this.handleSubmit}>*/}
-                                    {/*    <div className="row no-gutters justify-content-center ">*/}
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic"*/}
-                                    {/*                required*/}
-                                    {/*                value={this.state.firstName}*/}
-                                    {/*                label="First Name"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*                name={"firstName"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "firstName"*/}
-                                    {/*                )}*/}
-                                    {/*            />*/}
 
-                                    {/*            {this.state.errors["firstName"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["firstName"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic"*/}
-                                    {/*                required*/}
-                                    {/*                value={this.state.lastName}*/}
-                                    {/*                label="Last Name"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*                name={"lastName"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "lastName"*/}
-                                    {/*                )}*/}
-                                    {/*            />*/}
-
-                                    {/*            {this.state.errors["lastName"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["lastName"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic2"*/}
-                                    {/*                InputProps={{*/}
-                                    {/*                    readOnly: true,*/}
-                                    {/*                }}*/}
-                                    {/*                value={this.state.email}*/}
-                                    {/*                label="Email"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*                name={"email"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "email"*/}
-                                    {/*                )}*/}
-                                    {/*                disabled*/}
-                                    {/*            />*/}
-
-                                    {/*            {this.state.errors["email"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["email"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <TextField*/}
-                                    {/*                id="outlined-basic3"*/}
-                                    {/*                value={this.state.phone}*/}
-                                    {/*                type={"number"}*/}
-                                    {/*                name={"phone"}*/}
-                                    {/*                onChange={this.handleChangeSite.bind(*/}
-                                    {/*                    this,*/}
-                                    {/*                    "phone"*/}
-                                    {/*                )}*/}
-                                    {/*                label="Contact number"*/}
-                                    {/*                variant="outlined"*/}
-                                    {/*                fullWidth={true}*/}
-                                    {/*            />*/}
-
-                                    {/*            {this.state.errors["phone"] && (*/}
-                                    {/*                <span className={"text-mute small"}>*/}
-                                    {/*                    <span style={{ color: "red" }}>* </span>*/}
-                                    {/*                    {this.state.errors["phone"]}*/}
-                                    {/*                </span>*/}
-                                    {/*            )}*/}
-                                    {/*        </div>*/}
-
-                                    {/*        <div className="col-12 mt-4">*/}
-                                    {/*            <button*/}
-                                    {/*                type={"submit"}*/}
-                                    {/*                className={*/}
-                                    {/*                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
-                                    {/*                }>*/}
-                                    {/*                {this.state.loading && (*/}
-                                    {/*                    <Spinner*/}
-                                    {/*                        as="span"*/}
-                                    {/*                        animation="border"*/}
-                                    {/*                        size="sm"*/}
-                                    {/*                        role="status"*/}
-                                    {/*                        aria-hidden="true"*/}
-                                    {/*                    />*/}
-                                    {/*                )}*/}
-
-                                    {/*                {this.state.loading ? "Wait.." : "Save"}*/}
-                                    {/*            </button>*/}
-                                    {/*        </div>*/}
-                                    {/*    </div>*/}
-                                    {/*</form>*/}
                                 </div>
                             </div>
                         )}
@@ -481,7 +383,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {};
 };
-export default connect(mapStateToProps, mapDispachToProps)(EditAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(EditAccount);

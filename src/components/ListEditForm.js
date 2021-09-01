@@ -1124,7 +1124,6 @@ class ListEditForm extends Component {
                                         }
                                         onChange={this.handleChange.bind(this, "title")}
                                         name={"title"}
-                                        placeholder={"Title"}
                                         id="outlined-basic"
                                         variant="outlined"
                                         fullWidth={true}
@@ -1150,7 +1149,6 @@ class ListEditForm extends Component {
                                         }
                                         onChange={this.handleChange.bind(this, "description")}
                                         name={"description"}
-                                        placeholder={"Search description"}
                                         id="outlined-basic"
                                         multiline
                                         rows={4}

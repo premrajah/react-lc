@@ -10,7 +10,7 @@ spec:
   tls:
     - hosts:
         - ui${INGRESS_SUFFIX}.makealoop.io
-      secretName: letsencrypt-prod
+      secretName: loop-react-ui-${ENVIRONMENT}
   rules:
     - host: ui${INGRESS_SUFFIX}.makealoop.io
       http:

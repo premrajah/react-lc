@@ -4,6 +4,12 @@
     --primary-heading: "poppins-semi-bold", sans-serif !important;
     --secondary-heading: "nunito-sans-reg", sans-serif !important;
     --body-text: "nunito-sans-reg", sans-serif !important;
+
+    --lc-purple: #27245C;
+    --lc-pale-purple: #EAEAEF;
+    --lc-green: #07AD89;
+    --lc-pink: #D31169;
+    --lc-yellow: #D1E534;
 }
 
 .primary-heading {

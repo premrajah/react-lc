@@ -78,7 +78,6 @@ class Notifications extends Component {
         this.props.trackingCallback('');
 
         if(message.entity_as_json) {
-            console.log('+++ ', message.entity_as_json._key)
             this.unTrackProduct(message.entity_as_json._key);
         }
     }

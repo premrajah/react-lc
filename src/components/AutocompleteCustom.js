@@ -83,7 +83,6 @@ class AutocompleteCustom extends Component {
         const { suggestions } = this.props;
         const userInput = e.currentTarget.value;
 
-        // alert(userInput)
         this.setState({
             activeSuggestion: 0,
             filteredSuggestions:[],

@@ -273,7 +273,7 @@ class CreateProduct extends Component {
                                 </div>
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
-                                        Give your product a title
+                                        Title
                                     </div>
 
                                     <TextField
@@ -296,7 +296,7 @@ class CreateProduct extends Component {
 
                                 <div className="col-12 mt-4">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
-                                        Give it a description
+                                        Description
                                     </div>
 
                                     <TextField

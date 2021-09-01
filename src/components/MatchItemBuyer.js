@@ -66,8 +66,6 @@ class MatchItemBuyer extends Component {
 
     showPopUp=(showListedPrice)=> {
 
-        // console.log(showListedPrice)
-
         this.setState({
             showPopUp: !this.state.showPopUp,
             price:showListedPrice?this.props.item.listing.listing.price:null

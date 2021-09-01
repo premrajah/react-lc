@@ -56,6 +56,8 @@ setup_aws:
     - export IMAGE_TAG=$(cat aws_image_tag.txt)
     - echo $IMAGE_TAG
 
+    - ls -latr ./scripts/k8s
+
     - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
     - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
 
@@ -74,7 +76,6 @@ setup_aws:
 
     - echo ${KUBE_CONFIG} | base64 -d | tee kube_config
     - export KUBECONFIG=kube_config
-    - ls -latr
 
     - export AWS_ACCESS_KEY_ID=${AWS_EKS_ACCESS_KEY_ID}
     - export AWS_SECRET_ACCESS_KEY=${AWS_EKS_SECRET_ACCESS_KEY}

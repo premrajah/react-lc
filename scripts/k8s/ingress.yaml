@@ -1,19 +1,24 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: loop-graph-api-${ENVIRONMENT}
+  name: loop-react-ui-${ENVIRONMENT}
   annotations:
-    # If the class annotation is not specified it defaults to "gce".
-#    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+
 spec:
+  tls:
+    - hosts:
+        - ui${INGRESS_SUFFIX}.makealoop.io
+      secretName: loop-react-ui-${ENVIRONMENT}
   rules:
-    - host: ${ENVIRONMENT}.ui.makealoop.io
+    - host: ui${INGRESS_SUFFIX}.makealoop.io
       http:
         paths:
-          - pathType: Prefix
-            path: "/*"
+          - path: /
+            pathType: Prefix
             backend:
               service:
-                name: loop-graph-api-${ENVIRONMENT}
+                name: loop-react-ui-${ENVIRONMENT}
                 port:
                   number: 80

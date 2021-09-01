@@ -9,7 +9,7 @@ metadata:
 
 spec:
   externalTrafficPolicy: Cluster
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: loop-react-ui-${ENVIRONMENT}
     role: frontend

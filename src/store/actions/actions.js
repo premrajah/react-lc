@@ -264,7 +264,8 @@ export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
                 if(response.status === 200) {
                     dispatch(loading(false));
                 }
-                dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: {val:response.data.data,offset:data.offset, size:data.size}});
+                console.log(data)
+                dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: {val:response.data.data,offset:data.offset, size:data.size, refresh:data.refresh}});
             },
             (error) => {
                 dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: [] });

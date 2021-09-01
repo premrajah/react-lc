@@ -80,7 +80,7 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset:-1,
+    productPageOffset:0,
     productPageSize:20,
     lastPageReached:false,
     serviceAgentRequests: [],
@@ -207,29 +207,44 @@ const reducer = (state = initialState, action) => {
 
         case PRODUCT_NPARENT_LIST_PAGE:
 
-            // if (action.value.val.length<state.productPageSize){
-            //     newState.lastPageReached=true
-            //
-            //     console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
-            //
-            //
-            //
-            // }else{
-            //
-            //     newState.lastPageReached=false
-            // }
-            // newState.lastPageReached=false
+            newState.lastPageReached=false
 
+            let initialLength=state.productWithoutParentListPage.length
 
-            console.log("no parent page called")
+            if (action.value.size) {
+                newState.productPageOffset = action.value.offset + action.value.size
+            }
+            else{
+                newState.productPageSize = state.productPageSize
+                newState.productPageOffset = state.productPageOffset+state.productPageSize
+            }
 
-            let prevListPage= state.productWithoutParentListPage
-            prevListPage=prevListPage.concat(action.value.val)
-            // prevListPage=prevListPage.filter( (ele, ind) => ind === prevListPage.findIndex( elem => elem._key === ele._key ))
+            let prevListPage = []
+            if (!action.value.refresh) {
+                prevListPage = state.productWithoutParentListPage
+            }else{
+                newState.productPageSize=20
+                newState.productPageOffset = 20+ 20
+            }
+
+            let concatList=(action.value.val).filter((item)=> item.is_listable===true)
+
+            prevListPage=prevListPage.concat(concatList)
+            prevListPage=prevListPage.filter( (ele, ind) => ind === prevListPage.findIndex( elem => elem._key === ele._key ))
 
 
             newState.productWithoutParentListPage= prevListPage;
 
+
+            let newLength=prevListPage.length
+
+            if (newLength===initialLength){
+
+                newState.lastPageReached=true
+                console.log("last page reached")
+            }else{
+                newState.lastPageReached=false
+            }
 
             console.log(action.value.val)
 
@@ -237,8 +252,7 @@ const reducer = (state = initialState, action) => {
 
             newState.loading = false;
 
-            newState.productPageOffset=action.value.offset
-            newState.productPageSize=action.value.size
+
 
             break;
         case PRODUCT_NPARENT_LIST:

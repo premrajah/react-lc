@@ -360,7 +360,7 @@ class SearchEditForm extends Component {
                 },
             })
             .then((res) => {
-                this.triggerCallback();
+                // this.triggerCallback();
                 this.updateProduct(this.props.item.search._key,dataFORM.get("product"))
                 this.updateSite(this.props.item.search._key,dataFORM.get("deliver"))
 
@@ -373,7 +373,7 @@ class SearchEditForm extends Component {
 updateSite=(search,site)=>{
 
     axios
-        .post(baseUrl + "search/site", {"search_id":search,site_id:site}, {
+        .post(baseUrl + "search/site", {"id":search,site_id:site}, {
             headers: {
                 Authorization: "Bearer " + this.props.userDetail.token,
             },
@@ -394,7 +394,7 @@ updateSite=(search,site)=>{
     updateProduct=(search,product)=>{
 
         axios
-            .post(baseUrl + "search/product", {"search_id":search,product_id:product}, {
+            .post(baseUrl + "search/product", {"id":search,product_id:product}, {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -441,9 +441,9 @@ updateSite=(search,site)=>{
                     if (responseAll.length>0&&this.props.item){
 
                         this.setState({
-                            subCategories:responseAll.filter((item) => item.name === this.props.item.search.category)[0].types,
-                            states : responseAll.filter((item) => item.name === this.props.item.search.category)[0].types.filter((item) => item.name === this.props.item.search.type)[0].state,
-                            units : responseAll.filter((item) => item.name === this.props.item.search.category)[0].types.filter((item) => item.name === this.props.item.search.type)[0].units
+                            subCategories:responseAll.find((item) => item.name === this.props.item.search.category)&&responseAll.find((item) => item.name === this.props.item.search.category).types,
+                            states : responseAll.find((item) => item.name === this.props.item.search.category)&&responseAll.find((item) => item.name === this.props.item.search.category).types.find((item) => item.name === this.props.item.search.type).state,
+                            units :responseAll.find((item) => item.name === this.props.item.search.category)&&responseAll.find((item) => item.name === this.props.item.search.category).types.find((item) => item.name === this.props.item.search.type).units
                         })
 
                     }

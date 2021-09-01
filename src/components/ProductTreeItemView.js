@@ -218,6 +218,7 @@ class ProductTreeItemView extends Component {
                     {this.state.open &&
                         this.state.tree.map((item) => (
                             <>
+
                                 <div
                                     style={{
                                         marginLeft: "25px",

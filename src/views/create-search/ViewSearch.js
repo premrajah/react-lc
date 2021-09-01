@@ -142,10 +142,11 @@ class ViewSearch extends Component {
     }
 
     showEdit() {
-        this.getSearch();
         this.setState({
             showEdit: !this.state.showEdit,
         });
+        this.getSearch();
+
     }
 
     getPreviewImage(productSelectedKey) {

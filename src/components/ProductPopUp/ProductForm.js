@@ -354,10 +354,13 @@ class ProductForm extends Component {
         } else {
         }
 
-        this.props.loadProducts(this.props.userDetail.token);
-        this.props.loadProductsWithoutParent(this.props.userDetail.token);
+        // this.props.loadProducts(this.props.userDetail.token);
+        // this.props.loadProductsWithoutParent(this.props.userDetail.token);
 
         this.props.showProductPopUp({ type: "sub_product_view", show: true });
+
+        this.props.loadProductsWithoutParent({offset:0,size:this.props.productPageSize, refresh:true});
+
     }
 
     handleSubmit = (event) => {
@@ -471,8 +474,10 @@ class ProductForm extends Component {
 
                         this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
                         this.showProductSelection();
-                        this.props.loadProducts(this.props.userDetail.token);
-                        this.props.loadProductsWithoutParent();
+                        // this.props.loadProducts(this.props.userDetail.token);
+                        // this.props.loadProductsWithoutParent();
+
+
 
                     })
                     .catch((error) => {
@@ -1186,6 +1191,8 @@ const mapStateToProps = (state) => {
         siteList: state.siteList,
 
         productWithoutParentList: state.productWithoutParentList,
+        productPageOffset:state.productPageOffset,
+        productPageSize:state.productPageSize,
     };
 };
 
@@ -1204,6 +1211,8 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadCurrentProduct(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadProductsWithoutParentPagination: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };

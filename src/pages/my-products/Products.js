@@ -94,7 +94,7 @@ class Products extends Component {
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
-            this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset+1,size:this.props.productPageSize});
+            this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
         }
 
@@ -208,7 +208,7 @@ class Products extends Component {
                             <div className="row">
                                 <div className="col">
                                     {this.state.selectedProducts.map((product, index) => (
-                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.name}</div>
+                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.product.name}</div>
                                     ))}
                                 </div>
                             </div>
@@ -253,7 +253,7 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
+                                        this.props.productWithoutParentListPage.length > 0 ? this.props.productWithoutParentListPage.filter(
                                             (item) => item.is_listable === true
                                         ).length : "... "
                                     }
@@ -266,12 +266,12 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.length > 0 &&
-                        this.props.productWithoutParentList.filter((item) => item.is_listable === true).filter((filterV) => {
+                        {this.props.productWithoutParentListPage.length > 0 &&
+                        this.props.productWithoutParentListPage.filter((item) => item.is_listable === true).filter((filterV) => {
                             return filterV[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         })
                             .map((item, index) => (
-                            <div key={item._key}>
+                            <div id={item._key} key={item._key}>
                                 <ProductItem
                                     index={index}
                                     goToLink={true}
@@ -287,11 +287,11 @@ class Products extends Component {
                             </div>
                         ))}
 
-                        {/*{!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
-                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
-                        {/*        <div>Loading products please wait ...</div>*/}
-                        {/*    </div>*/}
-                        {/*</div>}*/}
+                        {!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">
+                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
+                                <div>Loading products please wait ...</div>
+                            </div>
+                        </div>}
                     </div>
 
                     <React.Fragment>

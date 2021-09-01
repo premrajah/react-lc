@@ -55,9 +55,14 @@ setup_aws:
   script:
     - export IMAGE_TAG=$(cat aws_image_tag.txt)
     - echo $IMAGE_TAG
+
     - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
     - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
+
     - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/service.yaml
+
+      sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/ingress.yaml
+      sed -i.bak "s#\\\${INGRESS_SUFFIX}#$INGRESS_SUFFIX#" ./scripts/k8s/ingress.yaml
 
     - curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
     - chmod +x ./aws-iam-authenticator
@@ -87,7 +92,7 @@ setup_aws:
 
     - kubectl apply -f ./scripts/k8s/deployment.yaml
     - kubectl apply -f ./scripts/k8s/service.yaml
-  #     - kubectl apply -f ./scripts/k8s/ingress.yaml
+    - kubectl apply -f ./scripts/k8s/ingress.yaml
 
 
 aws_build_dev:
@@ -118,6 +123,7 @@ aws_deploy_dev:
   <<: *aws_deploy
   before_script:
   - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+  - export INGRESS_SUFFIX="-${ENVIRONMENT}"
   only:
     - develop
     - develop_refactor
@@ -148,6 +154,7 @@ aws_deploy_prod:
   <<: *aws_deploy
   before_script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
+    - export INGRESS_SUFFIX=""
   only:
     - master
   when: manual
@@ -176,8 +183,8 @@ aws_deploy_stage:
   image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:
-    #  - apk add --update -t curl
     - export ENVIRONMENT=stage
+    - export INGRESS_SUFFIX="-${ENVIRONMENT}"
   only:
     - master
 

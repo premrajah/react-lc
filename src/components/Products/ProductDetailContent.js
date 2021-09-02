@@ -26,6 +26,7 @@ import SubProductsTab from "./SubProductsTab";
 import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
+import OrgFull from "../Org/OrgFull";
 
 class ProductDetailContent extends Component {
     slug;
@@ -682,7 +683,7 @@ class ProductDetailContent extends Component {
                                     <div className="col-12">
                                         <div className="row">
                                             <div className="col-7">
-                                                <Org orgId={this.state.item.org._id} />
+                                                <OrgFull org={this.state.item.org} />
                                             </div>
                                         </div>
                                     </div>

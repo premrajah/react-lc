@@ -31,6 +31,7 @@ import NotFound from "../NotFound/index";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import ProductExpandItem from "../../components/ProductExpandItem";
 import Org from "../../components/Org/Org";
+import OrgFull from "../../components/Org/OrgFull";
 
 class ViewCycle extends Component {
     slug;
@@ -712,9 +713,9 @@ class ViewCycle extends Component {
                                                         <div className="col-7">
                                                             {/*<p> <span className={"green-text"}>{this.state.item.sender.name}</span></p>*/}
                                                             <div>
-                                                                <Org
-                                                                    orgId={
-                                                                        this.state.item.sender._id
+                                                                <OrgFull
+                                                                    org={
+                                                                        this.state.item.sender
                                                                     }
                                                                 />
                                                             </div>

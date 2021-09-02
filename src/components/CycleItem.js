@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import moment from "moment/moment";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
+import OrgFull from "./Org/OrgFull";
 
 class CycleItem extends Component {
     constructor(props) {
@@ -222,8 +223,8 @@ class CycleItem extends Component {
                     </Link>
 
                     <div style={{ fontSize: "16px" }} className=" mb-1">
-                        <Org orgId={this.props.item.sender._id} /> →
-                        <Org orgId={this.props.item.receiver._id} />
+                        <OrgFull org={this.props.item.sender} /> →
+                        <OrgFull org={this.props.item.receiver} />
                     </div>
 
                     {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}

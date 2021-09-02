@@ -1229,70 +1229,7 @@ class ProductDetailContent extends Component {
     }
 }
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
-function BottomAppBar(props) {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <Link
-                                to={"/message-seller/" + props.slug}
-                                type="button"
-                                className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Message Seller
-                            </Link>
-                        </div>
-                        <div className="col-auto">
-                            <Link
-                                to={"/make-offer/" + props.slug}
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Make Offer
-                            </Link>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

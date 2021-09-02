@@ -1,17 +1,17 @@
 import React, {Component} from "react";
-import PlaceholderImg from "../img/place-holder-lc.png";
+import PlaceholderImg from "../../../img/place-holder-lc.png";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
+import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../../store/actions/actions";
 import {Modal} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
-import MoreMenu from "./MoreMenu";
-import ProductDetail from "./Products/ProductDetail";
-import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
+import MoreMenu from "../../MoreMenu";
+import ProductDetail from "../ProductDetail";
+import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
-import {capitalize} from "../Util/GlobalFunctions";
+import {capitalize} from "../../../Util/GlobalFunctions";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -44,6 +44,10 @@ class ProductItemNew extends Component {
         this.callBackSubmit = this.callBackSubmit.bind(this);
         this.showProductHide = this.showProductHide.bind(this);
         this.goToProduct = this.goToProduct.bind(this);
+    }
+
+    componentDidMount() {
+        this.getArtifacts()
     }
 
     callBackSubmit() {
@@ -112,6 +116,28 @@ class ProductItemNew extends Component {
         this.props.triggerCallback();
     }
 
+
+    getArtifacts=() =>{
+        axios
+            .get(baseUrl + "product/" + this.props.item._key+"/artifact", {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    var res = response.data.data;
+
+                    console.log(res)
+                    this.setState({
+                        images: res,
+                    });
+                },
+                (error) => {
+                    var status = error.response.status;
+                }
+            );
+    }
     removeItem() {
         let data = {
             product_id: this.props.parentId,
@@ -171,104 +197,35 @@ class ProductItemNew extends Component {
     }
 
     handleAddToProductList = (item) => {
+
+
         this.props.listOfProducts(item)
     }
 
     render() {
         return (
             <>
-                {this.props.item && this.props.item.product ? (
-                    <>
-                        <div className="row no-gutters justify-content-center mt-4 mb-4 ">
-                            <div className={"col-2 "}>
-                                {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />
-                                ) : (
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
-                                )}
-                            </div>
-                            <div className={"col-7 pl-2  content-box-listing"}>
 
-                                <p style={{ fontSize: "18px" }} className=" mb-1 text-caps">
-                                    <Link
-                                        onClick={this.goToProduct}
-                                        to={"/product/" + this.props.item.product._key}>
-                                        {this.props.item.product.name}
-                                    </Link>
-                                </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span className={"text-caps"}>{this.props.item.product.purpose}, </span>
-                                    {this.props.item.product.condition && (
-                                        <span className={"text-bold text-caps"}>
-                                            {this.props.item.product.condition}
-                                        </span>
-                                    )}
-                                </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span className="mr-1">
-                                        {this.props.item.product.category},
-                                    </span>
-                                    <span className="mr-1 text-capitalize">{this.props.item.product.type},</span>
-                                    <span className="mr-1 text-capitalize">{this.props.item.product.state},</span>
-                                    <span>{this.props.item.product.volume}</span>
-                                    <span >{this.props.item.product.units}</span>
-                                    <p className={"text-capitalize text-bold"}>{this.props.item.product.sku.brand}</p>
 
-                                </p>
-                                {this.props.item.search_ids && (
-                                    <p
-                                        style={{ fontSize: "16px" }}
-                                        className="text-mute mb-1 bottom-tag-p">
-                                        {this.props.item.search_ids.length} Searches
-                                    </p>
-                                )}
-                                {this.props.item.sub_product_ids &&
-                                    this.props.item.sub_product_ids.length > 0 && (
-                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                            {this.props.item.sub_product_ids.length} Sub Products
-                                        </p>
-                                    )}
-                            </div>
-                            <div style={{ textAlign: "right" }} className={"col-3"}>
-                                <p className={"text-gray-light small"}>
-                                    {moment(this.props.item.product._ts_epoch_ms).format(
-                                        "DD MMM YYYY"
-                                    )}
-                                </p>
-
-                                {this.props.showAddToListButton && <div>
-                                    <Add onClick={() => this.handleAddToProductList(this.props.item)}
-                                         style={{cursor: 'pointer'}}/>
-                                </div>}
-
-                                {!this.props.hideMore && (
-                                    <MoreMenu
-                                        triggerCallback={(action) => this.callBackResult(action)}
-                                        delete={this.props.delete}
-                                        edit={this.props.edit}
-                                        remove={this.props.remove}
-                                        duplicate={this.props.duplicate}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
-                            <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-                                <div className={"col-2 "}>
+                            <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+                                <div key={this.props.item._key+"-product-item-bpx"} className={"col-2 "}>
+                                    <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
+                                        <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
                                     ) : (
                                         <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                     )}
+                                    </>
+                                    </Link>
                                 </div>
                                 <div className={"col-7 pl-2  content-box-listing"}>
-                                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                        {this.props.item.name}
-                                    </p>
+
+                                        <p style={{ fontSize: "18px" }} className="text-caps mb-1">
+                                            <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name} </Link>
+                                      </p>
+
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
                                         {this.props.item.purpose}
                                     </p>
@@ -279,6 +236,8 @@ class ProductItemNew extends Component {
                                         <span>{this.props.item.volume}</span>
                                         <span>{this.props.item.units}</span>
                                     </p>
+                                    {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-bold"}>{this.props.item.sku.brand}</p>}
+
                                     {this.props.item.search_ids && (
                                         <p
                                             style={{ fontSize: "16px" }}
@@ -287,31 +246,42 @@ class ProductItemNew extends Component {
                                         </p>
                                     )}
                                     {this.props.item.sub_products &&
-                                        this.props.item.sub_products.length > 0 && (
-                                            <p
-                                                style={{ fontSize: "16px" }}
-                                                className="text-mute mb-1">
-                                                {this.props.item.sub_product_ids.length} Sub
-                                                Products
-                                            </p>
-                                        )}
+                                    this.props.item.sub_products.length > 0 && (
+                                        <p
+                                            style={{ fontSize: "16px" }}
+                                            className="text-mute mb-1">
+                                            {this.props.item.sub_product_ids.length} Sub
+                                            Products
+                                        </p>
+                                    )}
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
                                     <p className={"text-gray-light small"}>
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
-                                    <MoreMenu
-                                        triggerCallback={(action) => this.callBackResult(action)}
-                                        delete={this.props.delete}
-                                        edit={this.props.edit}
-                                        remove={this.props.remove}
-                                        duplicate={this.props.duplicate}
-                                    />
+
+                                    {this.props.showAddToListButton && <div>
+                                        <Add onClick={() => {
+
+                                            this.handleAddToProductList(this.props.item)
+
+                                        }}
+                                             style={{cursor: 'pointer'}}/>
+                                    </div>}
+
+                                    {!this.props.hideMore && (
+                                        <MoreMenu
+                                            triggerCallback={(action) => this.callBackResult(action)}
+                                            delete={this.props.delete}
+                                            edit={this.props.edit}
+                                            remove={this.props.remove}
+                                            duplicate={this.props.duplicate}
+                                        />
+                                    )}
                                 </div>
                             </div>
-                        </Link>
-                    </>
-                )}
+
+
 
                 <Modal
                     size="lg"

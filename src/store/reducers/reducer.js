@@ -14,6 +14,7 @@ import {
     PRODUCT_ID,
     PRODUCT_LIST,
     PRODUCT_NPARENT_LIST,
+    PRODUCT_NPARENT_LIST_PAGE,
     PRODUCT_POPUP,
     REVIEW_BOX_OPEN,
     REVIEW_SUBMIT,
@@ -68,6 +69,7 @@ export const initialState = {
     parentProduct: null,
     productList: [],
     productWithoutParentList: [],
+    productWithoutParentListPage: [],
     siteList: [],
     allListings: [],
     showSitePopUp: false,
@@ -78,9 +80,9 @@ export const initialState = {
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset: 0,
-    productPageSize: 20,
-    lastPageReached: false,
+    productPageOffset:0,
+    productPageSize:20,
+    lastPageReached:false,
     serviceAgentRequests: [],
     productReleaseRequests: [],
     productReleaseRequested: [],
@@ -202,22 +204,82 @@ const reducer = (state = initialState, action) => {
             newState.loading = false;
             break;
 
-        case PRODUCT_NPARENT_LIST:
-            if (action.value.val.length < state.productPageSize) {
-                newState.lastPageReached = true;
-            } else {
-                newState.lastPageReached = false;
+
+        case PRODUCT_NPARENT_LIST_PAGE:
+
+            newState.lastPageReached=false
+
+            let initialLength=state.productWithoutParentListPage.length
+
+            if (action.value.size) {
+                newState.productPageOffset = action.value.offset + action.value.size
+            }
+            else{
+                newState.productPageSize = state.productPageSize
+                newState.productPageOffset = state.productPageOffset+state.productPageSize
             }
 
-            let prevList = state.productWithoutParentList;
-            // newState.productWithoutParentList= prevList.concat(action.value.val);
+            let prevListPage = []
+            if (!action.value.refresh) {
+                prevListPage = state.productWithoutParentListPage
+            }else{
+                newState.productPageSize=20
+                newState.productPageOffset = 20+ 20
+            }
 
-            newState.productWithoutParentList = action.value.val;
+            let concatList=(action.value.val).filter((item)=> item.is_listable===true)
+
+            prevListPage=prevListPage.concat(concatList)
+            prevListPage=prevListPage.filter( (ele, ind) => ind === prevListPage.findIndex( elem => elem._key === ele._key ))
+
+
+            newState.productWithoutParentListPage= prevListPage;
+
+
+            let newLength=prevListPage.length
+
+            if (newLength===initialLength){
+
+                newState.lastPageReached=true
+                console.log("last page reached")
+            }else{
+                newState.lastPageReached=false
+            }
+
+            console.log(action.value.val)
+
+            // newState.productWithoutParentList= (action.value.val);
 
             newState.loading = false;
 
-            newState.productPageOffset = action.value.offset;
-            newState.productPageSize = action.value.size;
+
+
+            break;
+        case PRODUCT_NPARENT_LIST:
+
+            // if (action.value.val.length<state.productPageSize){
+            //     newState.lastPageReached=true
+            //
+            //     console.log("lst page reached "+action.value.offest+"   "+action.value.val.length)
+            //
+            //
+            //
+            // }else{
+            //
+            //     newState.lastPageReached=false
+            // }
+            // newState.lastPageReached=false
+            //
+            // let prevList= state.productWithoutParentList
+            // // newState.productWithoutParentList= prevList.concat(action.value.val);
+
+
+            newState.productWithoutParentList= (action.value.val);
+
+            newState.loading = false;
+
+            newState.productPageOffset=action.value.offset
+            newState.productPageSize=action.value.size
 
             break;
 
@@ -295,6 +357,8 @@ const reducer = (state = initialState, action) => {
         case LOADING:
             newState.loading = true;
             break;
+
+
 
         case SLIDES_LOAD:
             newState.slides = action.value;

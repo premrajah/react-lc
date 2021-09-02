@@ -17,6 +17,7 @@ import {Badge, Snackbar, Tooltip} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 
+
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
         backgroundColor: theme.palette.common.white,
@@ -224,7 +225,7 @@ class ComponentsNavbar extends React.Component {
                         )}
 
                         {!this.props.isLoggedIn && (
-                            <NavItem className="mr-5">
+                            <NavItem className="mr-5 d-none">
                                 <a
                                     className="nav-link  d-lg-block"
                                     color="default"

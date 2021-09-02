@@ -76,53 +76,59 @@ class ProductTreeView extends Component {
 
 
     setTree() {
-        let list = this.state.products;
 
-        let tree = this.state.tree;
+            let list = this.props.items
 
-        for (let i = 0; i < list.length; i++) {
-            // if (!list[i].parent_product&&!list[i].listing) {
-            if (!list[i].parent_product && list[i].product.is_listable) {
-                var treeItem;
+            console.log(list)
 
-                // treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
-                treeItem = {
-                    id: list[i].product._key,
-                    name: list[i].listing ? list[i].product.name : list[i].product.name,
+            let tree = this.state.tree;
 
-                    sub_products: [],
-                    canSelect: list[i].listing ? false : true,
-                };
+            for (let i = 0; i < list.length; i++) {
+                // if (!list[i].parent_product&&!list[i].listing) {
+                if (list[i].is_listable) {
+                    var treeItem;
 
-                if (list[i].sub_products.length > 0) {
-                    var sub_products = [];
+                    // treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
+                    treeItem = {
+                        id: list[i]._key,
+                        name: list[i].listing ? list[i].name : list[i].name,
+                        sub_products: [],
+                        canSelect: list[i].listing ? false : true,
+                    };
 
-                    for (let k = 0; k < list[i].sub_products.length; k++) {
-                        sub_products.push({
-                            id: list[i].sub_products[k]._key,
-                            name: list[i].sub_products[k].name,
-                        });
+                    if (list[i].sub_products && list[i].sub_products.length > 0) {
+                        var sub_products = [];
+
+                        for (let k = 0; k < list[i].sub_products.length; k++) {
+                            sub_products.push({
+                                id: list[i].sub_products[k]._key,
+                                name: list[i].sub_products[k].name,
+                            });
+                        }
+
+                        treeItem.sub_products = sub_products;
                     }
 
-                    treeItem.sub_products = sub_products;
+                    tree.push(treeItem);
                 }
-
-                tree.push(treeItem);
             }
-        }
+            console.log("tree")
+            console.log(tree)
+            this.setState({
+                tree: tree,
+                filteredList: tree,
+            });
 
-        this.setState({
-            tree: tree,
-            filteredList: tree,
-        });
     }
 
     componentDidMount() {
-        this.getItems();
+        // this.getItems();
+
+        this.setTree()
     }
 
     getItems() {
-        axios.get(baseUrl + "product/expand").then(
+        axios.get(baseUrl + "product/no-parent").then(
             (response) => {
                 var responseAll = response.data.data;
 
@@ -191,7 +197,7 @@ class ProductTreeView extends Component {
                                     name={"name"}
                                     onChange={this.handleSearch.bind(this, "name")}
                                 />
-                                {this.props.productList.length===0&&   <Spinner
+                                {this.props.items.length===0&&   <Spinner
                                     as="span"
                                     animation="border"
                                     size="sm"
@@ -416,8 +422,8 @@ const mapStateToProps = (state) => {
         showCreateProduct: state.showCreateProduct,
         showCreateSubProduct: state.showCreateSubProduct,
         showProductView: state.loginPopUpStatus,
-        productList: state.productList,
         siteList: state.siteList,
+        productWithoutParentList: state.productWithoutParentList,
     };
 };
 
@@ -428,8 +434,9 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductTreeView);

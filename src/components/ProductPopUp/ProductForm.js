@@ -354,10 +354,13 @@ class ProductForm extends Component {
         } else {
         }
 
-        this.props.loadProducts(this.props.userDetail.token);
-        this.props.loadProductsWithoutParent(this.props.userDetail.token);
+        // this.props.loadProducts(this.props.userDetail.token);
+        // this.props.loadProductsWithoutParent(this.props.userDetail.token);
 
         this.props.showProductPopUp({ type: "sub_product_view", show: true });
+
+        this.props.loadProductsWithoutParent({offset:0,size:this.props.productPageSize, refresh:true});
+
     }
 
     handleSubmit = (event) => {
@@ -400,9 +403,8 @@ class ProductForm extends Component {
                 const part_no = data.get("part_no");
                 const state = data.get("state");
                 const is_listable = this.state.is_listable;
-                const site = data.get("deliver");
-                const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0;
-
+                const site = data.get("deliver")
+                const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0
 
                 const productData = {
                     purpose: purpose.toLowerCase(),
@@ -472,8 +474,10 @@ class ProductForm extends Component {
 
                         this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
                         this.showProductSelection();
-                        this.props.loadProducts(this.props.userDetail.token);
-                        this.props.loadProductsWithoutParent();
+                        // this.props.loadProducts(this.props.userDetail.token);
+                        // this.props.loadProductsWithoutParent();
+
+
 
                     })
                     .catch((error) => {
@@ -1187,6 +1191,8 @@ const mapStateToProps = (state) => {
         siteList: state.siteList,
 
         productWithoutParentList: state.productWithoutParentList,
+        productPageOffset:state.productPageOffset,
+        productPageSize:state.productPageSize,
     };
 };
 
@@ -1205,6 +1211,8 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadCurrentProduct(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadProductsWithoutParentPagination: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };

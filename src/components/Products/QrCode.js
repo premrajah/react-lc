@@ -102,18 +102,22 @@ class QrCode extends Component {
     getQrCode=()=> {
         if(!this.props.item.product._key) return;
 
-        axios.get(`${baseUrl}product/${this.props.item.product._key}/code-artifact?u=${frontEndUrl}p`)
-            .then(response => {
-                this.setState({productQrCode: response.data.data})
-            })
-            .catch(error => {
 
-            })
+        this.setState({productQrCode: this.props.item.qr_artifact})
+
+        // axios.get(`${baseUrl}product/${this.props.item.product._key}/code-artifact?u=${frontEndUrl}p`)
+        //     .then(response => {
+        //         this.setState({productQrCode: response.data.data})
+        //     })
+        //     .catch(error => {
+        //
+        //     })
     }
 
 
     componentDidMount() {
-       this.getQrCode()
+
+       // this.getQrCode()
     }
 
     loadInfo() {
@@ -194,10 +198,10 @@ class QrCode extends Component {
                     <div className="row justify-content-center ">
                         <div className="col-12 border-box">
                             <div className="d-flex flex-column justify-content-center align-items-center">
-                                {this.state.productQrCode && (
+                                {this.props.item&&this.props.item.qr_artifact && (
                                     <img
                                         className=""
-                                        src={this.state.productQrCode.blob_url}
+                                        src={this.props.item.qr_artifact.blob_url}
                                         alt={this.state.item.product.name}
                                         title={this.state.item.product.name}
                                         style={{ width: "90%" }}

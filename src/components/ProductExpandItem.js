@@ -11,6 +11,8 @@ import { makeStyles, withStyles } from "@material-ui/core/styles/index";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {Spinner} from "react-bootstrap";
+import {PRODUCT_NPARENT_LIST} from "../store/types";
+import {loading} from "../store/actions/actions";
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {
@@ -39,6 +41,7 @@ class ProductExpandItem extends Component {
             addCount: [],
             count: 0,
             showExisting: false,
+            productList:[]
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -126,12 +129,15 @@ class ProductExpandItem extends Component {
 
         if (field === "product") {
             this.setState({
-                subProductSelected: this.props.productWithoutParentList.filter(
-                    (item) => item.product._key == e.target.value
+                subProductSelected: this.props.productList.filter(
+                    (item) => item._key == e.target.value
                 )[0],
             });
         }
     }
+
+
+
 
     showProductSelection(event) {
         // this.props.setProduct(this.props.currentProduct)
@@ -210,6 +216,7 @@ class ProductExpandItem extends Component {
         });
 
         this.props.loadProducts(this.props.userDetail.token);
+
 
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
     }
@@ -331,22 +338,21 @@ class ProductExpandItem extends Component {
                                                         {this.props.productList
                                                             .filter(
                                                                 (item) =>
-                                                                    item.product._key !==
+                                                                    item._key !==
                                                                         this.props.currentProduct.product
                                                                             ._key &&
                                                                     !(
                                                                         this.props.currentProduct.sub_products.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
-                                                                                item.product._key
+                                                                                item._key
                                                                         ).length > 0
                                                                     )
                                                             )
                                                             .map((item) => (
-                                                                <option value={item.product._key}>
-                                                                    {item.product.name} (
-                                                                    {item.sub_product_ids.length}
-                                                                    Sub Products)
+                                                                <option value={item._key}>
+                                                                    {item.name}
+                                                                    {/*({item.sub_product_ids.length}Sub Products)*/}
                                                                 </option>
                                                             ))}
 

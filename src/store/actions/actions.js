@@ -36,8 +36,8 @@ import {
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
-    PRODUCT_REGISTER,PRODUCT_RELEASE,SERVICE_AGENT_REQUEST,SHOW_SNACKBAR,CURRENT_PRODUCT,
-    GET_LISTINGS,
+    PRODUCT_REGISTER, PRODUCT_RELEASE, SERVICE_AGENT_REQUEST, SHOW_SNACKBAR, CURRENT_PRODUCT,
+    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,
 } from "../types";
 import {load} from "dotenv";
 
@@ -154,6 +154,15 @@ export const loadProductsWithoutParent = (data) => {
     };
 };
 
+
+export const loadProductsWithoutParentPagination = (data) => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(loadProductsWithoutParentPaginationSync(data));
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+    };
+};
 export const loadSites = (data) => {
     return (dispatch) => {
         dispatch(loading());
@@ -219,7 +228,7 @@ export const loadProductsSync = (data) => (dispatch) => {
 
 
     axios
-        .get(baseUrl + "product", {
+        .get(baseUrl + "product/no-links", {
             headers: {
                 Authorization: "Bearer " + data,
             },
@@ -242,13 +251,38 @@ export const loadProductsSync = (data) => (dispatch) => {
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
-export const loadProductsWithoutParentSync = (data) => (dispatch) => {
 
+export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
+    console.log(data)
 
     axios
-        .get(`${baseUrl}product/no-parent/expand`)
-        // .get(`${baseUrl}product/no-parent/expand?offset=${data.offset}&size=${data.size}`)
+        // .get(`${baseUrl}product/no-parent/no-links`)
+        .get(`${baseUrl}product/no-parent/no-links?offset=${data.offset}&size=${data.size}`)
+        .then(
+            (response) => {
+                if(response.status === 200) {
+                    dispatch(loading(false));
+                }
+                console.log(data)
+                dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: {val:response.data.data,offset:data.offset, size:data.size, refresh:data.refresh}});
+            },
+            (error) => {
+                dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: [] });
+            }
+        )
+        .catch(error => {});
+
+};
+
+
+export const loadProductsWithoutParentSync = (data) => (dispatch) => {
+
+console.log(data)
+
+    axios
+        .get(`${baseUrl}product/no-parent/no-links`)
+        // .get(`${baseUrl}product/no-parent/no-links?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
                 if(response.status === 200) {
@@ -325,7 +359,7 @@ export const logInSync = (data) => (dispatch) => {
         })
         .catch((error) => {
 
-
+            if (error.response)
             dispatch((
                 { type: LOGIN_ERROR, value: error.response&&error.response.data?error.response.data.errors[0].message:error.response.status+": "+error.response.statusText}
                ));

@@ -38,7 +38,8 @@ class ProductTreeItemView extends Component {
         // })
     }
 
-    setOpen() {
+    setOpen=()=> {
+        console.log(this.state.open)
         this.setState({
             open: !this.state.open,
         });
@@ -54,21 +55,21 @@ class ProductTreeItemView extends Component {
         let tree = this.state.tree;
 
         for (let i = 0; i < list.length; i++) {
-            if (list[i].product.is_listable) {
+            if (list[i].is_listable) {
                 var treeItem;
 
                 // treeItem={id:list[i].product._key,name:list[i].product.name, sub_products:[]}
 
                 treeItem = {
-                    id: list[i].product._key,
+                    id: list[i]._key,
                     // name: list[i].listing ? list[i].product.name + "(NA)" : list[i].product.name,
-                    name: list[i].listing ? list[i].product.name : list[i].product.name,
+                    name: list[i].listing ? list[i].name : list[i].name,
 
-                    sub_products: [],
+                      sub_products: [],
                     canSelect: list[i].listing ? false : true,
                 };
 
-                if (list[i].sub_products.length > 0) {
+                if (list[i].sub_products&&list[i].sub_products.length > 0) {
                     var sub_products = [];
 
                     for (let k = 0; k < list[i].sub_products.length; k++) {
@@ -84,15 +85,56 @@ class ProductTreeItemView extends Component {
                 tree.push(treeItem);
             }
 
+            console.log(tree)
+
             this.setState({
                 tree: tree,
             });
         }
     }
 
-    componentDidMount() {}
 
-    getSubProducts(event) {
+
+
+    componentDidMount() {
+
+
+    this.getSubProducts()
+    }
+
+    getSubProducts() {
+
+
+
+        if (this.props.item) {
+            let currentProductId = this.props.item.id;
+
+            axios
+                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
+                    headers: {
+                        Authorization: "Bearer " + this.props.token,
+                    },
+                })
+                .then(
+                    (response) => {
+                        var responseAll = response.data.data;
+
+                        this.setState({
+                            products: responseAll,
+                        });
+
+                        this.setTree();
+                    },
+                    (error) => {
+                        // var status = error.response.status
+                    }
+                );
+        }
+
+    }
+
+
+    getListing(event) {
         event.stopPropagation();
 
         this.setOpen();
@@ -101,7 +143,7 @@ class ProductTreeItemView extends Component {
             var currentProductId = event.currentTarget.dataset.id;
 
             axios
-                .get(baseUrl + "product/" + currentProductId + "/sub-product/expand", {
+                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
                     headers: {
                         Authorization: "Bearer " + this.props.token,
                     },
@@ -130,25 +172,30 @@ class ProductTreeItemView extends Component {
 
         return (
             <>
-                <div className={"tree-item-container"} style={{ padding: "5px" }}>
+                <div className={"tree-item-container"} style={{ padding: "2px" }}>
                     <p>
-                        {this.props.item.sub_products.length > 0 ? (
-                            this.state.open ? (
-                                <MinusSquare
-                                    data-id={this.props.item.id}
-                                    onClick={this.getSubProducts.bind(this)}
-                                    className="mr-2"
-                                />
-                            ) : (
-                                <PlusSquare
-                                    data-id={this.props.item.id}
-                                    onClick={this.getSubProducts.bind(this)}
-                                    className="mr-2"
-                                />
-                            )
-                        ) : (
-                            <span className={"mr-4"}></span>
-                        )}
+                        <div className={"expand-square"}>
+                        {this.state.tree.length > 0 &&
+                        <>
+                            {
+                                this.state.open ? (
+                                    <MinusSquare
+                                        data-id={this.props.item.id}
+                                        onClick={this.setOpen}
+                                        className="mr-2"
+                                    />
+                                ) : (
+                                    <PlusSquare
+                                        data-id={this.props.item.id}
+                                        onClick={this.setOpen}
+                                        className="mr-2"
+                                    />
+                                )
+
+                            }
+                        </>
+                        }
+                        </div>
                         <span
                             data-id={this.props.item.id}
                             onClick={this.props.item.canSelect && this.setSelected}
@@ -160,18 +207,23 @@ class ProductTreeItemView extends Component {
                                     : "tree-view-item text-mute"
                             }>
                             <span className="mr-1">{this.props.item.name}</span>
+                            {this.state.tree.length>0 &&
+                            <>
                             <span className="mr-1">-</span>
-                            <span>{this.props.item.sub_products.length + " Sub Products"}</span>
+                            <span>{this.state.tree.length + " Sub Products"}</span>
+                            </>
+                            }
                         </span>
                     </p>
                     {this.state.open &&
                         this.state.tree.map((item) => (
                             <>
+
                                 <div
                                     style={{
                                         marginLeft: "25px",
-                                        padding: "5px",
-                                        marginBottom: "5px",
+                                        padding: "0px",
+                                        // marginBottom: "5px",
                                     }}>
                                     <ProductTreeItemView
                                         selected={this.props.selected}

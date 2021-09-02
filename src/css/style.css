@@ -3478,3 +3478,13 @@ a.page-link:hover {
         opacity: 1;
     }
 }
+.tree-view-item:hover {
+    background: #eee;
+    width: 100%;
+    color: black;
+}
+.expand-square{
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+}

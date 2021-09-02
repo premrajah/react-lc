@@ -287,11 +287,11 @@ class Products extends Component {
                             </div>
                         ))}
 
-                        {!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>}
+                        {/*{!this.props.lastPageReached &&<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
+                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
+                        {/*        <div>Loading products please wait ...</div>*/}
+                        {/*    </div>*/}
+                        {/*</div>}*/}
                     </div>
 
                     <React.Fragment>

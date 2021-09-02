@@ -223,7 +223,7 @@ class ProductItemNew extends Component {
                                 <div className={"col-7 pl-2  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                            <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name},{this.props.item.is_listable?"yes":"np"}  {this.props.item._key},  </Link>
+                                            <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name} </Link>
                                       </p>
 
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">

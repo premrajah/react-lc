@@ -2,12 +2,15 @@ import React, {useState} from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import Close from "@material-ui/icons/Close";
 import EditSite from "./EditSite";
+import DeleteIcon from '@material-ui/icons/Delete'
 import {GoogleMap} from "../Map/MapsContainer";
 import MapIcon from '@material-ui/icons/Place';
 import {Link} from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 const SitePageItem = (props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
     const [showModal, setShowModal] = useState(false);
@@ -38,6 +41,26 @@ const SitePageItem = (props) => {
 
         props.setSiteForm({show:true,
             item:props.item,type:"edit", heading:"Edit Site"});
+
+    }
+
+    const deleteSiteSelection=(event)=> {
+
+        axios.delete(`${baseUrl}site/${props.item._key}`)
+            .then(res => {
+                if (res.status === 200) {
+
+
+                      this.props.loadSites()
+                    this.hidePopUp()
+                    this.props.showSnackbar({show: true, severity: "success", message: "Site Deleted successfully. Thanks"})
+
+                }
+            })
+            .catch(error => {
+
+            })
+
 
     }
 
@@ -90,6 +113,8 @@ const SitePageItem = (props) => {
                      <div>
                          <MapIcon className={"mr-2 click-item"} fontSize="small" onClick={() => handleMapModal()} />
                          {props.showEdit &&  <EditIcon className={" click-item"}  fontSize="small" onClick={() => editSiteSelection()} />}
+
+                         {/*<DeleteIcon className={" click-item"}  fontSize="small" onClick={() => deleteSiteSelection()} />*/}
                      </div>
 
 

@@ -267,6 +267,8 @@ class SiteForm extends Component {
                     if (data.get("parent")) {
                         this.updateParentSite(data.get("parent"), res.data.data._key,item)
 
+                    }else{
+                        this.props.loadSites()
                     }
                     this.hidePopUp()
                     this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
@@ -295,7 +297,9 @@ class SiteForm extends Component {
 
 
                 if (item) {
+                    this.props.loadSites()
                     this.props.loadCurrentSite(item._key)
+
                 }
 
             })

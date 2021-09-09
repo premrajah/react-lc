@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import PlaceholderImg from "../../../img/place-holder-lc.png";
+import MoreMenu from "../../MoreMenu";
+
 import axios from "axios/index";
 import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
@@ -7,7 +9,6 @@ import * as actionCreator from "../../../store/actions/actions";
 import {Modal} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
-import MoreMenu from "../../MoreMenu";
 import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";

@@ -70,6 +70,9 @@ import SignUpPage from "./pages/sign-up/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
 import LoggedOutRoute from "./Util/LoggedOutRoute";
 import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
+import Sites from "./pages/sites/Sites";
+import Site from "./pages/site-detail/Site";
+import SiteForm from "./components/Sites/SiteForm";
 
 
 
@@ -101,6 +104,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
+                        <LoggedInRoute exact path="/sites" component={Sites} />
+
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
@@ -141,6 +146,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <LoggedInRoute exact path="/site/:slug" component={Site} />
                         <LoggedInRoute
                             exact
                             path="/sub-product-view/:slug"
@@ -170,6 +176,7 @@ class App extends Component {
 
                     {this.props.showLoginPopUp && <LoginPopUp />}
                     {this.props.showProductPopUp && <ProductPopUp />}
+                    {this.props.isLoggedIn&& <SiteForm />}
                     <CustomSnackbar />
                 </BrowserRouter>
             </>
@@ -191,6 +198,7 @@ const mapStateToProps = (state) => {
         showCreateSubProduct: state.showCreateSubProduct,
         showProductView: state.loginPopUpStatus,
         showProductPopUp: state.showProductPopUp,
+        showSiteForm: state.showSiteForm,
     };
 };
 

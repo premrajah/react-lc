@@ -45,7 +45,9 @@ import {
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
     CURRENT_PRODUCT,
+    CURRENT_SITE,
     GET_LISTINGS,
+    SITE_FORM_SHOW
 } from "../types";
 
 export const initialState = {
@@ -65,6 +67,7 @@ export const initialState = {
     showCreateSubProduct: false,
     showProductView: false,
     showSubProductView: false,
+    showSiteProductView:false,
     product: null,
     parentProduct: null,
     productList: [],
@@ -89,7 +92,14 @@ export const initialState = {
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
-    signUpPageSubmitted:false
+    currentProductLoading: false,
+    currentSite: null,
+    currentSiteLoading: false,
+    signUpPageSubmitted:false,
+    showSiteForm:{
+        show:false,
+        item:null
+    }
 
 
 };
@@ -112,6 +122,10 @@ const reducer = (state = initialState, action) => {
 
         case SITE_POPUP:
             newState.showSitePopUp = action.value;
+            break;
+
+        case SITE_FORM_SHOW:
+            newState.showSiteForm = action.value;
             break;
 
         case PRODUCT_RELEASE:
@@ -197,6 +211,11 @@ const reducer = (state = initialState, action) => {
             break;
         case CURRENT_PRODUCT:
             newState.currentProduct = action.value;
+
+            break;
+
+        case CURRENT_SITE:
+            newState.currentSite = action.value;
 
             break;
         case PRODUCT_LIST:
@@ -299,6 +318,7 @@ const reducer = (state = initialState, action) => {
         case PRODUCT_POPUP:
             newState.loginFailed = false;
             newState.showSubProductView = false;
+            newState.showSiteProductView = false;
             newState.showCreateProduct = false;
             newState.showCreateSubProduct = false;
             newState.showProductView = false;
@@ -320,9 +340,15 @@ const reducer = (state = initialState, action) => {
                 // newState.parentProduct = "product-1612062286992-ad2bHnLWqF"
             } else if (type === "product_view") {
                 newState.showProductView = true;
-            } else if (type === "sub_product_view") {
+            }
+            else if (type === "sub_product_view") {
                 newState.showSubProductView = true;
             }
+
+            else if (type === "site_product_view") {
+                newState.showSiteProductView = true;
+            }
+
 
             break;
 

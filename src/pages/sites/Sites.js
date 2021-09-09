@@ -18,8 +18,10 @@ import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiS
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {CURRENT_PRODUCT} from "../../store/types";
+import SiteItem from "../../components/SiteItem";
+import SitePageItem from "../../components/Sites/SitePageItem";
 
-class Products extends Component {
+class Sites extends Component {
 
     constructor(props) {
         super(props);
@@ -74,11 +76,10 @@ class Products extends Component {
     componentDidMount() {
 
         this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-    // this.loadNewPageSetUp()
 
     }
+
 
 
     handleObserver=(entities, observer) =>{
@@ -192,55 +193,33 @@ class Products extends Component {
 
                 <div className="wrapper">
 
-                    {this.state.selectedProducts.length > 0 ?
-                        <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
-                            <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
-                                <div className="col d-flex justify-content-end">
-                                    <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>
-                                    <button className="btn btn-sm btn-pink ml-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
-                                </div>
-                            </div>
-                            <div className="row mb-1">
-                                <div className="col blue-text">Selected Products</div>
-                            </div>
 
-                            <div className="row">
-                                <div className="col">
-                                    {this.state.selectedProducts.map((product, index) => (
-                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.product.name}</div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div> : null }
 
                     <div className="container  mb-150  pb-5 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle="My Products"
-                            subTitle="All products created can be found here"
+                            pageTitle="Sites"
+                            subTitle="All sites created can be found here"
                         />
 
                         <div className="row">
                             <div className="col-md-9 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
-                                    Product Service
+                                <Link onClick={()=> {
+                                    this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
+                                }}  className="btn btn-sm blue-btn mr-2 click-item">
+                                   Add Sites/Address
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
-                                    Records
+                                <Link  className="btn btn-sm blue-btn mr-2 click-item">
+                                    Bulk Upload Sites/Address(CSV)
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
-                                    Tracked
-                                </Link>
                             </div>
 
-                            <div className="col-md-3 d-flex justify-content-end">
-                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
-                            </div>
+
                         </div>
+
+
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
@@ -253,11 +232,9 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
-                                            (item) => item.is_listable === true
-                                        ).length : "... "
+                                        this.props.siteList.length > 0 ? this.props.siteList.length : "... "
                                     }
-                                    <span className="ml-1">Listable Products</span>
+                                    <span className="ml-1">Sites</span>
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">
@@ -266,58 +243,15 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.length > 0 &&
-                        this.props.productWithoutParentList.filter((item) => item.is_listable === true).filter((filterV) => {
-                            return filterV[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
-                        })
-                            .map((item, index) => (
-                            <div id={item._key} key={item._key}>
-                                <ProductItem
-                                    index={index}
-                                    goToLink={true}
-                                    delete={false}
-                                    edit={false}
-                                    remove={false}
-                                    duplicate={false}
-                                    item={item}
-                                    hideMore
-                                    listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
-                                    showAddToListButton
-                                />
-                            </div>
+                        {this.props.siteList.map((site, index) => (
+                            <React.Fragment key={index}>
+                                <SitePageItem  showEdit={true} item={site}/>
+                            </React.Fragment>
                         ))}
 
-                        {!this.props.lastPageReached &&
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>
-                        }
                     </div>
 
-                    <React.Fragment>
-                        <CssBaseline />
 
-                        <AppBar
-                            position="fixed"
-                            style={{backgroundColor: "#ffffff"}}
-                            className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div
-                                    className="row  justify-content-center search-container "
-                                    style={{ margin: "auto" }}>
-                                    <div className="col-auto" style={{cursor: 'pointer' }}>
-                                        <a onClick={this.showProductSelection}>
-                                            <p className={"green-text bottom-bar-text"}>
-                                                <b>Add New Product</b>
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </Toolbar>
-                        </AppBar>
-                    </React.Fragment>
                 </div>
 
                 {this.state.showMultiUpload && (
@@ -358,6 +292,8 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
+        siteList: state.siteList,
+
         lastPageReached:state.lastPageReached
     };
 };
@@ -377,6 +313,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Sites);

@@ -27,7 +27,7 @@ class QrCode extends Component {
             subProducts: [],
             listingLinked: null,
             searches: [],
-            productQrCode: null,
+            siteQrCode: null,
             showRegister: false,
             sites: [],
             fieldsSite: {},
@@ -68,9 +68,9 @@ class QrCode extends Component {
 
 
 
-    handlePrintPdf = (productItem, productQRCode, QRCodeOuterImage, LoopcycleLogo) => {
+    handlePrintPdf = (productItem, siteQrCode, QRCodeOuterImage, LoopcycleLogo) => {
         const { _key, name } = productItem;
-        if (!_key || !productQRCode) {
+        if (!_key || !siteQrCode) {
             return;
         }
 
@@ -81,9 +81,9 @@ class QrCode extends Component {
         pdf.setDrawColor(7, 173, 136);
         pdf.line(0, 38, 1000, 38);
 
-        pdf.addImage(productQRCode, "PNG", 10, 40, 80, 80, "largeQR");
-        pdf.addImage(productQRCode, "PNG", 100, 57.5, 45, 45, "mediumQR");
-        pdf.addImage(productQRCode, "PNG", 160, 64.5, 30, 30, "smallQR");
+        pdf.addImage(siteQrCode, "PNG", 10, 40, 80, 80, "largeQR");
+        pdf.addImage(siteQrCode, "PNG", 100, 57.5, 45, 45, "mediumQR");
+        pdf.addImage(siteQrCode, "PNG", 160, 64.5, 30, 30, "smallQR");
 
         pdf.setDrawColor(7, 173, 136);
         pdf.line(0, 122, 1000, 122);
@@ -100,43 +100,27 @@ class QrCode extends Component {
 
 
     getQrCode=()=> {
-        if(!this.props.item.product._key) return;
+        if(!this.props.item._key) return;
 
 
-        this.setState({productQrCode: this.props.item.qr_artifact})
+        // this.setState({siteQrCode: this.props.item.qr_artifact})
 
-        // axios.get(`${baseUrl}product/${this.props.item.product._key}/code-artifact?u=${frontEndUrl}p`)
-        //     .then(response => {
-        //         this.setState({productQrCode: response.data.data})
-        //     })
-        //     .catch(error => {
-        //
-        //     })
+        axios.get(`${baseUrl}site/${this.props.item._key}/code-artifact?u=${frontEndUrl}p`)
+            .then(response => {
+                this.setState({siteQrCode: response.data.data})
+            })
+            .catch(error => {
+
+            })
     }
 
 
     componentDidMount() {
 
-       // this.getQrCode()
+       this.getQrCode()
     }
 
-    loadInfo() {
-        if (this.props.item) {
-            this.getOrgs();
-            this.getQrCode();
 
-            if (this.props.item.listing && this.props.isLoggedIn) {
-                this.getListing();
-            }
-
-            if (this.props.item && this.props.item.searches.length > 0) {
-                this.getSearches();
-            }
-
-            if (this.props.showRegister && this.props.isLoggedIn && this.props.userDetail)
-                this.getSites();
-        }
-    }
 
     handleCallBackImagesUploadStatus = (status) => {
         this.setState({deleteDocumentStatus: ""})
@@ -177,12 +161,12 @@ class QrCode extends Component {
 
 
         return (
-            <>
+            <div className={"row"}>
                 <div className={"col-12 pb-5 mb-5"}>
                     <div className="row justify-content-start pb-3 pt-3 ">
                         <div className="col-12 ">
                             <h5 className={"text-bold blue-text"}>
-                                Cyclecode
+                                QrCode
                             </h5>
                         </div>
 
@@ -190,7 +174,7 @@ class QrCode extends Component {
                             <p
                                 style={{ fontSize: "16px" }}
                                 className={"text-gray-light "}>
-                                Scan the QR code below to view this product
+                                Scan the QR code below to view this site
                             </p>
                         </div>
                     </div>
@@ -198,12 +182,12 @@ class QrCode extends Component {
                     <div className="row justify-content-center ">
                         <div className="col-12 border-box">
                             <div className="d-flex flex-column justify-content-center align-items-center">
-                                {this.props.item&&this.props.item.qr_artifact && (
+                                {this.state.siteQrCode&&this.state.siteQrCode && (
                                     <img
                                         className=""
-                                        src={this.props.item.qr_artifact.blob_url}
-                                        alt={this.state.item.product.name}
-                                        title={this.state.item.product.name}
+                                        src={this.state.siteQrCode.blob_url}
+                                        alt={this.state.item.name}
+                                        title={this.state.item.name}
                                         style={{ width: "100%" }}
                                     />
                                 )}
@@ -211,22 +195,15 @@ class QrCode extends Component {
                                 <div className="d-flex justify-content-center w-100">
                                     {this.props.hideRegister && (
                                         <p className={"green-text"}>
-                                            <Link
-                                                className={"mr-3"}
-                                                to={
-                                                   getProductProvenanceSlug(this.props.item.product._key)
 
-                                                }>
-                                                [Provenance]
-                                            </Link>
                                             <span
-                                                to={`/product/${this.props.item.product._key}`}
+                                                to={`/site/${this.props.item._key}`}
                                                 className={"mr-3 click-item"}
                                                 onClick={() =>
                                                     this.handlePrintPdf(
-                                                        this.props.item.product,
+                                                        this.props.item,
                                                         this.state
-                                                            .productQrCode.blob_url,
+                                                            .siteQrCode.blob_url,
                                                         QrCodeBg,
                                                         LoopcycleLogo
                                                     )
@@ -236,21 +213,23 @@ class QrCode extends Component {
                                             <a
                                                 className={"mr-3"}
                                                 href={
-                                                    baseUrl + "product/" + this.props.item.product._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
-                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Alt]</a>
+                                                    baseUrl + "site/" + this.props.item._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
+                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item._key + ".png" }>[Alt]</a>
                                             <a
                                                 className={"mr-3"}
                                                 href={
-                                                    baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Mono]</a>
+                                                    baseUrl + "site/" + this.props.item._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item._key + ".png" }>[Mono]</a>
                                         </p>
                                     )}
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 }

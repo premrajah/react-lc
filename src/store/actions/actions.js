@@ -37,7 +37,8 @@ import {
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
     PRODUCT_REGISTER, PRODUCT_RELEASE, SERVICE_AGENT_REQUEST, SHOW_SNACKBAR, CURRENT_PRODUCT,
-    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,
+    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,CURRENT_SITE,
+    SITE_FORM_SHOW
 } from "../types";
 import {load} from "dotenv";
 
@@ -52,6 +53,14 @@ export const loadingSpinner = () => {
 export const loading = () => {
     return {
         type: LOADING,
+    };
+};
+
+
+export const setSiteForm = (data) => {
+    return {
+        type: SITE_FORM_SHOW,
+        value: data,
     };
 };
 
@@ -221,6 +230,35 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
 
 };
 
+
+export const loadCurrentSite = (data) => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(loadCurrentSiteSync(data));
+    };
+};
+
+export const loadCurrentSiteSync = (data) => (dispatch) => {
+
+    axios
+        // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+        .get(baseUrl + "site/" + encodeUrl(data))
+        .then(
+            (response) => {
+                var responseAll = response.data;
+
+                dispatch({ type: CURRENT_SITE, value: responseAll.data });
+
+
+            },
+            (error) => {
+                // this.setState({
+                //     notFound: true,
+                // });
+            }
+        );
+
+};
 
 
 export const loadProductsSync = (data) => (dispatch) => {

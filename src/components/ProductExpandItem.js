@@ -216,9 +216,8 @@ class ProductExpandItem extends Component {
         });
 
         this.props.loadProducts(this.props.userDetail.token);
-
-
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
+
     }
 
 

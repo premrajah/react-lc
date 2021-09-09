@@ -1156,7 +1156,7 @@ h5 {
 /* Nav tabs  */
 
 .nav-tabs {
-    z-index: 17;
+    /*z-index: 17;*/
     border: 0;
     margin-bottom: 0px;
     position: relative;
@@ -2987,6 +2987,16 @@ pre {
     border: 2px solid #eee;
     border-radius: 5px;
     padding: 10px;
+}
+.nav.nav-tabs{
+    z-index: 0;
+}
+.tab-content{
+    z-index: 0;
+}
+.body-overlay{
+
+    z-index: 100;
 }
 
 .MuiFormControl-root {

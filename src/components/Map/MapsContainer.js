@@ -53,7 +53,7 @@ import GoogleMapReact from "google-map-react";
 
     render() {
         return (
-     <div style={{width:this.props.width, height:this.props.height}}>
+     <div style={{width:this.props.width, height:this.props.height,position:"relative"}}>
          {this.props.locations.length>0 &&
          <Map
                 onClick={this.onMapClicked}

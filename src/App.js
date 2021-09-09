@@ -73,6 +73,7 @@ import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 import Sites from "./pages/sites/Sites";
 import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
+import CyclesRecords from "./components/Cycles/CyclesRecords";
 
 
 
@@ -117,6 +118,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
+                        <LoggedInRoute exact path="/cycles-record" component={CyclesRecords} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />

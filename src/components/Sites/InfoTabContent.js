@@ -101,7 +101,6 @@ class InfoTabContent extends Component {
                                 style={{ fontSize: "18px" }}
                                 className="text-mute text-bold text-blue mb-1">
                                 Other
-                                Other
                             </p>
                             <p
                                 style={{ fontSize: "18px" }}

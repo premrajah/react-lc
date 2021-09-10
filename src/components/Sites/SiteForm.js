@@ -463,7 +463,7 @@ class SiteForm extends Component {
                             <Close />
                         </button>
                     </div>
-                    <div className="row py-3 justify-content-center mobile-menu-row pt-3 m-2">
+                    <div className="row  justify-content-center mobile-menu-row pt-3 m-2">
 
                     <div className="col-12  ">
                         <h3 className={"blue-text text-heading text-center"}>{this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
@@ -477,7 +477,7 @@ class SiteForm extends Component {
                         <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
 
                             <div className="row no-gutters">
-                                <div className="col-12 mt-1">
+                                <div className="col-12 ">
 
                                     <TextFieldWrapper
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.name}
@@ -488,7 +488,7 @@ class SiteForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row  mt-1">
+                            <div className="row  ">
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
@@ -508,7 +508,7 @@ class SiteForm extends Component {
 
                                 </div>
                             </div>
-                            <div className="row no-gutters mt-1">
+                            <div className="row no-gutters ">
                                 <div className="col-12">
                                     <div className="row no-gutters justify-content-center ">
 
@@ -533,7 +533,7 @@ class SiteForm extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row no-gutters mt-1">
+                            <div className="row no-gutters ">
                                 <div className="col-12">
 
                                     <TextFieldWrapper
@@ -546,7 +546,7 @@ class SiteForm extends Component {
 
                                 </div>
                             </div>
-                            <div className="row no-gutters mt-1">
+                            <div className="row no-gutters ">
                                 <div className="col-12">
 
                                     <TextFieldWrapper
@@ -558,7 +558,7 @@ class SiteForm extends Component {
 
                                 </div>
                             </div>
-                            <div className="row no-gutters mt-1">
+                            <div className="row no-gutters ">
                             <div className="col-md-12 col-sm-12 col-xs-12 ">
                                 <SelectArrayWrapper
                                     initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item._key}

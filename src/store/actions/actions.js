@@ -266,7 +266,7 @@ export const loadProductsSync = (data) => (dispatch) => {
 
 
     axios
-        .get(baseUrl + "product/no-links", {
+        .get(baseUrl + "product/no-links?agg", {
             headers: {
                 Authorization: "Bearer " + data,
             },

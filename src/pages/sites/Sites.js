@@ -175,7 +175,8 @@ class Sites extends Component {
     }
 
     handleMultiUploadCallback = () => {
-        this.props.dispatchLoadProductsWithoutParent();
+
+        this.props.loadSites();
     }
 
 
@@ -210,7 +211,7 @@ class Sites extends Component {
                                    Add Sites/Address
                                 </Link>
 
-                                <Link  className="btn btn-sm blue-btn mr-2 click-item">
+                                <Link onClick={this.toggleMultiSite} className="btn btn-sm blue-btn mr-2 click-item">
                                     Bulk Upload Sites/Address(CSV)
                                 </Link>
 

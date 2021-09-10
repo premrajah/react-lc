@@ -81,16 +81,17 @@ class SubSitesTab extends Component {
                     className={
                         "green-text forgot-password-link text-mute small"
                     }>
-                                 <span  data-parent={this.props.item._key}
+                    {this.props.isLoggedIn&& <span  data-parent={this.props.item._key}
                                                         onClick={this.showSiteSelection}
                                                     >
                                                         Link Sub Sites
-                                                    </span>
+                                                    </span>}
                 </p>
 
                         {this.state.subSites.map(
                             (item, index) => (
                                 <SitePageItem
+
 
                                     key={index}
                                     item={item}

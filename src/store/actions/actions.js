@@ -514,7 +514,7 @@ export const getListings = (data) => {
 }
 
 export const getListingsSync = (data) => (dispatch) => {
-    axios.get(`${baseUrl}listing`)
+    axios.get(`${baseUrl}listing?m=a`)
         .then(res => {
             dispatch({type: GET_LISTINGS, value: res.data.data})
             dispatch(loading(false));

@@ -69,7 +69,7 @@ const SitePageItem = (props) => {
 
                <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
                 <div key={props.item._key+"-product-item-bpx"} className={"col-2 "}>
-                    <Link to={props.isLoggedIn?"/site/" + props.item._key:"#"}>
+                    <Link to={props.isLoggedIn?"/ps/" + props.item._key:"#"}>
                         <>
 
                             {props.item.geo_codes && props.item.geo_codes[0] ?
@@ -84,7 +84,7 @@ const SitePageItem = (props) => {
                 <div className={"col-7 pl-2  content-box-listing"}>
 
                     <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                        <Link  to={props.isLoggedIn?"/site/" + props.item._key:"#"}> {props.item.name} {is_head_office&& <span className="mr-2 text-bold text-mute"><small>(Head Office)</small></span>}</Link>
+                        <Link  to={props.isLoggedIn?"/ps/" + props.item._key:"#"}> {props.item.name} {is_head_office&& <span className="mr-2 text-bold text-mute"><small>(Head Office)</small></span>}</Link>
                     </p>
 
                     {email &&    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">

@@ -107,7 +107,7 @@ class QrCode extends Component {
 
         // axios.get(`${baseUrl}site/${this.props.item._key}/code-artifact?u=${frontEndUrl}site/${this.props.item._key}`)
 
-        axios.get(`${baseUrl}site/${this.props.item._key}/code-artifact?u=${frontEndUrl}site/${this.props.item._key}`)
+        axios.get(`${baseUrl}site/${this.props.item._key}/code-artifact?u=${frontEndUrl}`)
 
             .then(response => {
                 this.setState({siteQrCode: response.data.data})

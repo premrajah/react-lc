@@ -138,7 +138,7 @@ class Footer extends React.Component {
                     </Row>
                <div className="row no-gutters    justify-content-center">
                         <div className="col-auto copright-text">
-                            <ul>
+                            <ul className={"nav"}>
                                 <li>
                                     <p>
                                         &copy; {new Date().getFullYear()} Loopcycle

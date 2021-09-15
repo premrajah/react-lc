@@ -69,7 +69,7 @@ class Home extends Component {
         return (
             <Layout>
 
-                <div className="wrapper homepage">
+                <div className="wrapper ">
                     <div className="container-fluid  pt-5">
 
                         <div className="container   ">

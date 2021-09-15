@@ -113,7 +113,7 @@ class SiteForm extends Component {
             validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
             validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("phone", [{check: Validators.required, message: 'Required'}, {
+            validateFormatCreate("phone", [ {
                 check: Validators.number,
                 message: 'This field should be a number.'
             }], fields),

@@ -10,6 +10,7 @@
     --lc-green: #07AD89;
     --lc-pink: #D31169;
     --lc-yellow: #D1E534;
+    --lc-bg-gray: #EAEAEF;
 }
 
 .primary-heading {
@@ -3590,9 +3591,18 @@ a.page-link:hover {
     margin-left: 15px;
 }
 .container-light-gray{
-    background:  #EAEAEF;
+    background:  var(--lc-bg-gray);
 }
 
 .text-pink{
-    color:  #D31169;
+    color:var(--lc-pink)
+}
+.footer a{
+    float: left;
+    text-align: left;
+}
+
+.footer .social-icons a{
+    float: none;
+    text-align: center;
 }

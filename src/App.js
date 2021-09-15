@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./css/style.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
-import Home from "./views/LoopHome/Home";
+import Home from "./pages/home/Home";
 import LoginPopUp from "./views/login/LoginPopUp";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
@@ -141,7 +141,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
-                        <LoggedInRoute exact path="/addresses" component={Address} />
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />

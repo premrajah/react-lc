@@ -100,6 +100,8 @@ class ProductTreeItemView extends Component {
 
 
     this.getSubProducts()
+
+        this.getListing()
     }
 
     getSubProducts() {
@@ -143,7 +145,7 @@ class ProductTreeItemView extends Component {
             var currentProductId = event.currentTarget.dataset.id;
 
             axios
-                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
+                .get(baseUrl + "product/" + currentProductId + "/listing", {
                     headers: {
                         Authorization: "Bearer " + this.props.token,
                     },
@@ -152,11 +154,11 @@ class ProductTreeItemView extends Component {
                     (response) => {
                         var responseAll = response.data.data;
 
-                        this.setState({
-                            products: responseAll,
-                        });
-
-                        this.setTree();
+                        // this.setState({
+                        //     products: responseAll,
+                        // });
+                        //
+                        // this.setTree();
                     },
                     (error) => {
                         // var status = error.response.status

@@ -102,7 +102,7 @@ class Home extends Component {
                                                 rel="noopener noreferrer"
                                                 type="button"
                                                 style={{ textDecoration: "none" }}
-                                                className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
+                                                className="mr-2  blue-btn-border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />
                                             </a>
                                         </div>

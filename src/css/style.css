@@ -195,7 +195,7 @@ sup {
 }
 .home-section-icons p{
     width: 95%;
-    min-height: 80px;
+    min-height: 90px;
 }
 .background + div {
     position: relative;
@@ -2082,7 +2082,7 @@ pre {
     width: auto;
 }
 
-.blue-btn-border
+a.blue-btn-border
  {
     border: 2px solid #3c3972;
     color: #3c3972;
@@ -2101,6 +2101,29 @@ pre {
     text-transform: uppercase;
     line-height: 1.4em;
     letter-spacing: 1px;
+    height: 48px;
+}
+
+button.blue-btn-border
+{
+    border: 2px solid #3c3972;
+    color: #3c3972;
+    text-decoration: none!important;
+    border-radius: 24px;
+    height: 48px;
+    /*min-width: 150px;*/
+    /*line-height: 30px;*/
+
+    padding: 0em 2.500em;
+    min-width: 14.000em;
+    transition: color .5s ease, background-color .5s ease, border-color .5s ease;
+    font-weight: 700 !important;
+    font-style: normal;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    line-height: 1.4em;
+    letter-spacing: 1px;
+
 }
 
 
@@ -3045,7 +3068,7 @@ pre {
     padding: 10px;
 }
 .nav.nav-tabs{
-    z-index: 0;
+    z-index: 1;
 }
 .tab-content{
     z-index: 0;
@@ -3594,9 +3617,11 @@ a.page-link:hover {
     background:  var(--lc-bg-gray);
 }
 
-.text-pink{
+.navbar .text-pink,.navbar .nav-link:hover{
     color:var(--lc-pink)
 }
+
+
 .footer a{
     float: left;
     text-align: left;
@@ -3605,4 +3630,20 @@ a.page-link:hover {
 .footer .social-icons a{
     float: none;
     text-align: center;
+}
+.site-item-list>.col-9{
+    display: flex;
+}
+.content-box-image{
+    width: 185px;
+}
+.navbar .nav-link svg{
+    /*color:var(--lc-pink) !important;*/
+    fill:white !important;
+    background: white !important;
+    color:white !important;
+}
+.navbar .nav-link:hover, .navbar .nav-link svg:hover{
+    color:var(--lc-pink) !important;
+    fill:var(--lc-pink) !important;
 }

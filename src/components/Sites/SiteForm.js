@@ -213,6 +213,8 @@ class SiteForm extends Component {
                     if (this.props.showSiteForm.item) {
                         this.props.loadCurrentSite(item._key)
                     }
+
+                    this.props.loadSites()
                 }
                 this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})

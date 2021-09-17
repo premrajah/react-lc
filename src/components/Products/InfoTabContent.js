@@ -35,17 +35,23 @@ class InfoTabContent extends Component {
                                                                 {this.props.item.product.type},
                                                             </span>
                             <span className="text-caps mr-1">
-                                                                {capitalize(this.props.item.product.state)},
+                                                                {capitalize(this.props.item.product.state)}
                                                             </span>
-                            <span>
-                                                                {this.props.item.product.volume}
-                                                            </span>
-                            <span>
+                            {this.props.item.product.purpose!=="aggregate"&&  <span>
+                                                                {this.props.item.product.volume} </span>}
+                            {this.props.item.product.purpose!=="aggregate"&&  <span>
                                                                 {this.props.item.product.units}
-                                                            </span>
+                                                            </span>}
                         </p>
                     </div>
                 </div>
+
+                {(this.props.item && this.props.item.product.purpose) && <div className="row justify-content-start search-container  pb-2">
+                    <div className="col-auto">
+                        <p style={{fontSize: "18px"}} className="text-mute text-bold text-blue mb-1">Purpose</p>
+                        <p style={{fontSize: "18px"}}>{capitalizeFirstLetter(this.props.item.product.purpose)}</p>
+                    </div>
+                </div> }
 
                 {(this.props.item && this.props.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
                     <div className="col-auto">

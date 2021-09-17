@@ -253,9 +253,11 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
-                                            (item) => item.is_listable === true
-                                        ).length : "... "
+                                        // this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
+                                        //     (item) => item.is_listable === true
+                                        // ).length : "... "
+
+                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.length : "... "
                                     }
                                     <span className="ml-1">Listable Products</span>
                                 </p>
@@ -267,7 +269,7 @@ class Products extends Component {
                         <div className={"listing-row-border mb-3"}></div>
 
                         {this.props.productWithoutParentList.length > 0 &&
-                        this.props.productWithoutParentList.filter((item) => item.is_listable === true).filter((filterV) => {
+                        this.props.productWithoutParentList.filter((filterV) => {
                             return filterV[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
                         })
                             .map((item, index) => (

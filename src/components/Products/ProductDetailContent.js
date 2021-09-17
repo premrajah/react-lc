@@ -1,11 +1,7 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
 import {Link} from "react-router-dom";
-import {makeStyles} from "@material-ui/core/styles";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
@@ -15,7 +11,6 @@ import {withStyles} from "@material-ui/core/styles/index";
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
-import Org from "../Org/Org";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
@@ -717,9 +712,17 @@ class ProductDetailContent extends Component {
 
                                             {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&    <Tab eventKey="maps" title="Site">
 
-                                                <GoogleMap width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+                                                <GoogleMap siteId={this.props.item.site._key} width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
 
                                             </Tab>}
+                                            {/*{this.state.searches.length > 0 && (*/}
+
+                                            {this.props.item && (this.props.item.product.purpose=="aggregate") &&
+                                            <Tab eventKey="search" title="Conversion">
+
+                                                </Tab>
+                                            }
+                                            {/*)}*/}
 
                                             {this.state.searches.length > 0 && (
                                                 <Tab eventKey="search" title="Searches">

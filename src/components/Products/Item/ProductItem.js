@@ -233,9 +233,9 @@ class ProductItemNew extends Component {
                                     <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
                                         <span className="mr-1">{this.props.item.category},</span>
                                         <span className="mr-1">{this.props.item.type},</span>
-                                        <span className="mr-1 ">{capitalize(this.props.item.state)},</span>
-                                        <span>{this.props.item.volume}</span>
-                                        <span>{this.props.item.units}</span>
+                                        <span className="mr-1 ">{capitalize(this.props.item.state)} </span>
+                                        {this.props.item.purpose!=="aggregate"&&  <span>{this.props.item.volume} </span>}
+                                        {this.props.item.purpose!=="aggregate"&&     <span>{this.props.item.units}</span>}
                                     </p>
                                     {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-bold"}>{this.props.item.sku.brand}</p>}
 

@@ -1,25 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 // reactstrap components
-import {
-    Button,
-    Col,
-    Container,
-    Nav,
-    NavItem,
-    NavLink,
-    Row,
-    UncontrolledTooltip,
-} from "reactstrap";
-import LogoNew from "../../img/logo-cropped.png";
-
-import LogoText from "../../img/logo-text.png";
+import {Button, Col, Nav, NavItem, NavLink, Row, UncontrolledTooltip,} from "reactstrap";
 import styles from "./Footer.module.css";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 // // import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
 // import HeaderLogoSvg from '../../img/Logo-white.svg';
-import HeaderLogoSvg from '../../img/Logo-white.svg';
 import LogoSymbol from "../../img/Symbol-white.svg";
 
 class Footer extends React.Component {

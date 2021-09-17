@@ -67,8 +67,9 @@ const SitePageItem = (props) => {
     return (
         <>
 
-               <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-                <div key={props.item._key+"-product-item-bpx"} className={"col-2 "}>
+               <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters site-item-list justify-content-center mt-4 mb-4  pb-4">
+                <div key={props.item._key+"-product-item-bpx"} className={"col-9 "}>
+                    <div className={"content-site   content-box-image"}>
                     <Link to={props.isLoggedIn?"/ps/" + props.item._key:"#"}>
                         <>
 
@@ -80,8 +81,9 @@ const SitePageItem = (props) => {
 
                         </>
                     </Link>
-                </div>
-                <div className={"col-7 pl-2  content-box-listing"}>
+                    </div>
+                {/*</div>*/}
+                <div className={" pl-2  content-site content-box-listing"}>
 
                     <p style={{ fontSize: "18px" }} className="text-caps mb-1">
                         <Link  to={props.isLoggedIn?"/ps/" + props.item._key:"#"}> {props.item.name} {is_head_office&& <span className="mr-2 text-bold text-mute"><small>(Head Office)</small></span>}</Link>
@@ -102,7 +104,7 @@ const SitePageItem = (props) => {
                     </p>}
 
                     <div>{errorMsg}</div>
-
+                </div>
 
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-3"}>
@@ -166,7 +168,7 @@ const SitePageItem = (props) => {
                             <div className={"row"}>
                                 <div className={"col-12"}>
                                     {props.item.geo_codes&&props.item.geo_codes[0] &&
-                                    <GoogleMap width={"100%"}  height={"300px"}
+                                    <GoogleMap siteId={props.item._key} width={"100%"}  height={"300px"}
                                                locations={[{name:name,location:props.item.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
                                     }
                                 </div>

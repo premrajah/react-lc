@@ -74,6 +74,7 @@ import Sites from "./pages/sites/Sites";
 import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./components/Cycles/CyclesRecords";
+import {GoogleMap} from "./components/Map/MapsContainer";
 
 
 
@@ -173,6 +174,9 @@ class App extends Component {
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />
+
+
+
                     </Switch>
 
                     {this.props.showLoginPopUp && <LoginPopUp />}

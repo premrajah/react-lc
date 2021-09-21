@@ -59,6 +59,7 @@ import IssueDetail from "./views/issues/IssueDetail";
 import ApprovedReleases from "./pages/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
+import Messeges from "./pages/message/MessagePage";
 import TrackedProducts from "./components/Products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
@@ -97,6 +98,7 @@ class App extends Component {
                         <Route exact path="/acceptable" component={AcceptableUse} />
                         <LoggedInRoute exact path="/notifications" component={NotificationPage} />
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
+                        <LoggedInRoute exact path="/messages-new" component={Messeges} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/my-search-records" component={SearchRecords} />

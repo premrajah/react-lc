@@ -101,7 +101,7 @@ class ProductTreeItemView extends Component {
 
     this.getSubProducts()
 
-        this.getListing()
+        // this.getListing()
     }
 
     getSubProducts() {

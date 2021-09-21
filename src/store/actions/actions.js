@@ -211,7 +211,7 @@ export const loadCurrentProduct = (data) => {
 export const loadCurrentProductSync = (data) => (dispatch) => {
 
     axios
-        .get(baseUrl + "product/" + encodeUrl(data) + "/expand"
+        .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
         )
         .then(
             (response) => {

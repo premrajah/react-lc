@@ -3,6 +3,7 @@ import Messages from "./Messages";
 import Sidebar from "../../views/menu/Sidebar";
 import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../PageHeader";
+import MessengerMessages from "../Messages/MessengerMessages";
 
 function MessagePage () {
     return (
@@ -20,7 +21,8 @@ function MessagePage () {
 
                     <div className="row no-gutters">
                         <div className="col">
-                            <Messages />
+                            {/*<Messages />*/}
+                            <MessengerMessages />
                         </div>
                     </div>
                 </div>

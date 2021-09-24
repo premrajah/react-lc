@@ -37,7 +37,7 @@ class SiteDetailContent extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: this.props.item,
+            item: this.props.item.site,
             showPopUp: false,
             subProducts: [],
             listingLinked: null,
@@ -258,14 +258,14 @@ class SiteDetailContent extends Component {
     }
 
     showProductSelection(event) {
-        this.props.setProduct(this.props.item);
+        this.props.setProduct(this.props.item.site);
         // this.props.setParentProduct(this.state.parentProduct)
 
         this.props.showProductPopUp({ type: "sub_product_view", show: true });
     }
 
     UNSAFE_componentWillReceiveProps(newProps) {
-        if (!this.props.item) {
+        if (!this.props.item.site) {
             this.loadProduct(this.props.productId);
         } else {
             this.setState({
@@ -291,7 +291,7 @@ class SiteDetailContent extends Component {
         if (action === "edit") {
 
             this.props.setSiteForm({show:true,
-                item:this.props.item,type:"edit", heading:"Edit Site"});
+                item:this.props.item.site,type:"edit", heading:"Edit Site"});
 
         } else if (action === "delete") {
             this.deleteItem();
@@ -387,7 +387,7 @@ class SiteDetailContent extends Component {
 
                 {
                     org_id: site,
-                    // product_id: this.props.item.product._key,
+                    // product_id: this.props.item.site.product._key,
                 }
             )
             .then((res) => {
@@ -426,7 +426,7 @@ class SiteDetailContent extends Component {
 
                 {
                     org_id: site,
-                    // product_id: this.props.item.product._key,
+                    // product_id: this.props.item.site.product._key,
                 }
             )
             .then((res) => {
@@ -466,7 +466,7 @@ class SiteDetailContent extends Component {
 
 
     getListing() {
-        // var siteKey = (this.props.item.site_id).replace("Site/","")
+        // var siteKey = (this.props.item.site.site_id).replace("Site/","")
 
         axios.get(baseUrl + "listing/" + this.state.item.listing.replace("Listing/", "")).then(
             (response) => {
@@ -552,11 +552,11 @@ class SiteDetailContent extends Component {
 
 
     componentDidMount() {
-        if (!this.props.item) {
+        if (!this.props.item.site) {
             this.loadProduct(this.props.productId);
         } else {
             this.setState({
-                item: this.props.item,
+                item: this.props.item.site,
             });
 
             this.loadInfo();
@@ -596,12 +596,12 @@ class SiteDetailContent extends Component {
 
 
                                   {/*<ImageHeader images={this.state.item.artifacts} />*/}
-                                    {this.props.item.geo_codes && this.props.item.geo_codes[0] &&
+                                    {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
 
 
                                     <GoogleMap width={"100%"} height={"300px"} locations={[{
-                                        name: this.props.item.name,
-                                        location: this.props.item.geo_codes[0].address_info.geometry.location,
+                                        name: this.props.item.site.name,
+                                        location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                         isCenter: true
                                     }]}/>
 
@@ -689,17 +689,17 @@ class SiteDetailContent extends Component {
                                             <Tab eventKey="productinfo" title=" Info">
                                                <InfoTabContent
 
-                                                   item={this.props.item} />
+                                                   item={this.props.item.site} />
 
                                             </Tab>
 
-                                            {this.props.item &&   <Tab eventKey="subsites" title="Sub Sites">
+                                            {this.props.item.site &&   <Tab eventKey="subsites" title="Sub Sites">
                                                 <SubSitesTab  item={this.props.item} />
                                             </Tab>}
 
 
-                                            {this.props.isLoggedIn && this.props.item &&      <Tab eventKey="subproducts" title="Products">
-                                              <SubProductsTab item={this.props.item} />
+                                            {this.props.isLoggedIn && this.props.item.site &&      <Tab eventKey="subproducts" title="Products">
+                                              <SubProductsTab item={this.props.item.site} />
                                             </Tab>}
 
 
@@ -723,7 +723,7 @@ class SiteDetailContent extends Component {
                                             {/*    </Tab>*/}
                                             {/*)}*/}
                                             {/*<Tab eventKey="artifacts" title="Artifacts">*/}
-                                            {/*    /!*<ArtifactProductsTab item={this.props.item} />*!/*/}
+                                            {/*    /!*<ArtifactProductsTab item={this.props.item.site} />*!/*/}
                                             {/*</Tab>*/}
                                         </Tabs>
                                     </div>

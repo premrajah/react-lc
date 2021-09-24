@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
-import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
-import PlaceholderImg from "../../img/place-holder-lc.png";
+import {baseUrl} from "../../../Util/Constants";
+import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
+import PlaceholderImg from "../../../img/place-holder-lc.png";
 import moment from "moment/moment";
-import MoreMenu from "../MoreMenu";
+import MoreMenu from "../../MoreMenu";
 import {Link} from "react-router-dom";
-import * as actionCreator from "../../store/actions/actions";
+import * as actionCreator from "../../../store/actions/actions";
 import {connect} from "react-redux";
-import {capitalize} from "../../Util/GlobalFunctions";
+import {capitalize} from "../../../Util/GlobalFunctions";
 import {
     useHistory,
     BrowserRouter,
     Route,
 } from "react-router-dom";
 
-const SubproductItem = (props) => {
+const AggregateItem = (props) => {
     const history = useHistory()
 
     const item=props.item
@@ -26,20 +26,20 @@ const SubproductItem = (props) => {
     useEffect(() => {
         // return history.listen((location) => {
 
-            getArtifactsForProduct(item._key)
+        getArtifactsForProduct(item._key)
 
-            // })
+        // })
     }, item._key)
 
     const getArtifactsForProduct = (key) => {
 
-            axios.get(`${baseUrl}product/${key}/artifact`)
-                .then(res => {
-                    const data = res.data.data;
-                    setArtifacts(data);
-                })
-                .catch(error => {
-                })
+        axios.get(`${baseUrl}product/${key}/artifact`)
+            .then(res => {
+                const data = res.data.data;
+                setArtifacts(data);
+            })
+            .catch(error => {
+            })
 
 
     }
@@ -76,45 +76,52 @@ const SubproductItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-            <div className="col-sm-2">
+        <div className="row no-gutters justify-content-start ">
+            <div className="col-sm-2 aggregate-img">
                 {
                     artifacts.length > 0
-                    ? <ImageOnlyThumbnail images={artifacts} />
-                    : <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                        ? <ImageOnlyThumbnail images={artifacts} />
+                        : <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                 }
             </div>
 
-            <div className="col-sm-7 pl-2">
+            <div className="col-sm-10 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item._key}`}>
-                        <h5>{item.name}</h5>
+                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.name}(<span>{item.volume} </span>
+                            <span>{item.units}</span>)</p>
                     </Link>
                 </div>
-                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
-                <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
-                    <span className="mr-1">{item.category},</span>
-                    <span className="mr-1">{item.type},</span>
-                    <span className="mr-1 ">{capitalize(item.state)},</span>
-                    <span>{item.volume}</span>
-                    <span>{item.units}</span>
-                </div>
-                {
-                    item.search_ids && <div className="text-muted">
-                        <span className="mr-1">{item.search_ids.length}</span>
-                        <span>Searches</span>
+                {!props.aggregate &&
+                <>
+                    <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
+                    <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
+
+                        <span className="mr-1">{item.category},</span>
+                        <span className="mr-1">{item.type},</span>
+                        <span className="mr-1 ">{capitalize(item.state)},</span>
+                        <span>{item.volume}</span>
+                        <span>{item.units}</span>
+
                     </div>
+                    {
+                        item.search_ids && <div className="text-muted">
+                            <span className="mr-1">{item.search_ids.length}</span>
+                            <span>Searches</span>
+                        </div>
+                    }
+                </>
                 }
             </div>
 
-            <div className="col-sm-3 d-flex justify-content-end">
+            {!props.aggregate &&  <div className="col-sm-3 d-flex justify-content-end">
                 <div>
                     <div className={"text-gray-light small "}>
                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                     </div>
                     {!props.hideMoreMenu&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
                 </div>
-            </div>
+            </div>}
         </div>
     </>
 }
@@ -151,4 +158,4 @@ const mapDispachToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(SubproductItem);
+export default connect(mapStateToProps, mapDispachToProps)(AggregateItem);

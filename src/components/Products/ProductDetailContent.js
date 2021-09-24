@@ -22,6 +22,8 @@ import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
 import OrgFull from "../Org/OrgFull";
+import AggregatesTab from "./AggregatesTab";
+import ConversionsTab from "./ConversionsTab";
 
 class ProductDetailContent extends Component {
     slug;
@@ -706,6 +708,10 @@ class ProductDetailContent extends Component {
 
                                             </Tab>
 
+                                            {(this.props.item.product.purpose=="aggregate") &&
+                                            <Tab eventKey="aggregates" title="Aggregations">
+                                                <AggregatesTab item={this.props.item} />
+                                            </Tab>}
                                             <Tab eventKey="subproducts" title="Subproducts">
                                               <SubProductsTab item={this.props.item} />
                                             </Tab>
@@ -715,14 +721,15 @@ class ProductDetailContent extends Component {
                                                 <GoogleMap siteId={this.props.item.site._key} width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
 
                                             </Tab>}
-                                            {/*{this.state.searches.length > 0 && (*/}
 
-                                            {this.props.item && (this.props.item.product.purpose=="aggregate") &&
-                                            <Tab eventKey="search" title="Conversion">
+                                            {/*{this.props.item && (this.props.item.product.purpose=="aggregate") &&*/}
+                                            {/*<Tab eventKey="search" title="Conversion">*/}
+                                            {/*    <ConversionsTab item={this.props.item} />*/}
+                                            {/*    </Tab>*/}
+                                            {/*}*/}
 
-                                                </Tab>
-                                            }
-                                            {/*)}*/}
+
+
 
                                             {this.state.searches.length > 0 && (
                                                 <Tab eventKey="search" title="Searches">

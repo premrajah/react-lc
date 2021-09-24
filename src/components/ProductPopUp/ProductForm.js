@@ -1188,6 +1188,8 @@ const mapStateToProps = (state) => {
         parentProduct: state.parentProduct,
         product: state.product,
         showProductPopUp: state.showProductPopUp,
+
+
         siteList: state.siteList,
 
         productWithoutParentList: state.productWithoutParentList,

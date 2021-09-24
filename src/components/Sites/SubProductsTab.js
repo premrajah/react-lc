@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import SubproductItem from "../Products/SubproductItem";
+import SubproductItem from "../Products/Item/SubproductItem";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 

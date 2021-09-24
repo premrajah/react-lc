@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import SubproductItem from "./SubproductItem";
+import SubproductItem from "./Item/SubproductItem";
 
 class SubProductsTab extends Component {
     slug;
@@ -17,7 +17,6 @@ class SubProductsTab extends Component {
     }
 
     render() {
-
 
         return (
             <>

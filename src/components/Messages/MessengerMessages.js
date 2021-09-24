@@ -12,16 +12,20 @@ import {
     TextField
 } from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
-import {value} from "lodash/seq";
 
-const MessengerMessages = ({ messages, getMessages }) => {
+const MessengerMessages = ({userDetail, messages, getMessages }) => {
     const [allOrgs, setAllOrgs] = useState([]);
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
+    const [userOrg, setUserOrg] = useState("");
 
     useEffect(() => {
         getAllOrgs();
         getMessages();
     }, []);
+
+    useEffect(() => {
+        setUserOrg(userDetail.orgId);
+    },[])
 
     const getAllOrgs = () => {
         axios
@@ -36,12 +40,19 @@ const MessengerMessages = ({ messages, getMessages }) => {
 
     const autoCompleteOnChange = (e, value) => {
         setAutoCompleteOrg(value);
+
+        if(autoCompleteOrg) {
+            const filtered = allOrgs.find(f => f.email === autoCompleteOrg);
+            console.log("--- ", filtered)
+        }
     }
 
     return (
+        <>
         <div className="row">
             {/*Messenger messages*/}
-            {console.log(">>> ", allOrgs, messages)}
+            {console.log(">>> ", messages)}
+            {console.log("=== ", allOrgs)}
             <div className="col-md-5">
                 <div className="message-search-field mb-3">
                     <Autocomplete
@@ -59,7 +70,7 @@ const MessengerMessages = ({ messages, getMessages }) => {
                         )}
                     />
                 </div>
-                <List className="message-orgs">
+                <List className="message-orgs" style={{maxHeight: "550px", overflow: "auto"}}>
                     {allOrgs.length > 0
                         ? allOrgs.map((item) => (
                               <div>
@@ -78,15 +89,23 @@ const MessengerMessages = ({ messages, getMessages }) => {
                         : ""}
                 </List>
             </div>
-            <div className="col-md-7">
+            <div className="col-md-7" style={{maxHeight: "550px", overflow: "auto"}}>
                 <div className="message-window">
                     {messages.length > 0 ? messages.map((m, i) => (
-                        <div>{m.message.text}</div>
+                        <div>
+                            <div>{m.message.text}</div>
+                        </div>
                     )) : ""}
                 </div>
-                <div className="message-reply">text {autoCompleteOrg}</div>
             </div>
         </div>
+
+            <div className="row mt-5">
+                <div className="col">
+                    <div className="message-reply col">text {autoCompleteOrg} {console.log("<< ", userOrg)}</div>
+                </div>
+            </div>
+        </>
     );
 };
 

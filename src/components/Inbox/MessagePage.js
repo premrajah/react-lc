@@ -19,11 +19,9 @@ function MessagePage () {
                         </div>
                     </div>
 
-                    <div className="row no-gutters">
-                        <div className="col">
-                            {/*<Messages />*/}
-                            <MessengerMessages />
-                        </div>
+                    <div>
+                        {/*<Messages />*/}
+                        <MessengerMessages />
                     </div>
                 </div>
             </div>

@@ -241,8 +241,8 @@ export const loadCurrentSite = (data) => {
 export const loadCurrentSiteSync = (data) => (dispatch) => {
 
     axios
-        // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
-        .get(baseUrl + "site/" + encodeUrl(data))
+        .get(baseUrl + "site/code/" + encodeUrl(data) + "/expand")
+        // .get(baseUrl + "site/code/" + encodeUrl(data))
         .then(
             (response) => {
                 var responseAll = response.data;

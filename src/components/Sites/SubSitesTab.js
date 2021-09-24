@@ -66,7 +66,15 @@ class SubSitesTab extends Component {
 
     componentDidMount() {
 
+
+        if (!this.props.item.children_sites)
     this.getSubSites()
+
+        else{
+            this.setState({
+                subSites:this.props.item.children_sites
+            })
+        }
 
 
     }

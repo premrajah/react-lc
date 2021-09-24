@@ -26,7 +26,7 @@ import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
 import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
 import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
-import SubproductItem from "./SubproductItem";
+import SubproductItem from "./Item/SubproductItem";
 import ImageHeader from "../UIComponents/ImageHeader";
 import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
 import MapContainer from "../Map/MapContainer";

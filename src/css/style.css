@@ -3621,7 +3621,9 @@ a.page-link:hover {
     color:var(--lc-pink)
 }
 
-
+.aggregate-img img{
+    border-radius: 4px;
+}
 .footer a{
     float: left;
     text-align: left;

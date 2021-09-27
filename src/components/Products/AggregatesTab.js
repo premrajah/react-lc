@@ -106,7 +106,8 @@ class AggregatesTab extends Component {
         const data = new FormData(event.target);
         const factor = data.get("factor");
 
-        let unit_conversions=this.props.item.product.unit_conversions
+
+        let  unit_conversions= this.props.item.product.unit_conversions?this.props.item.product.unit_conversions:[]
         unit_conversions.push({units:this.state.selectedUnit, factor:factor})
 
 
@@ -184,9 +185,9 @@ class AggregatesTab extends Component {
                                                     </span>
 
 
-                    <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
+                    {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&     <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
                            onClick={this.editConversion}
-                    >Edit Conversions</span>
+                    >Edit Conversions</span>}
                 </p>}
 
                 <div className={" row"}>
@@ -231,7 +232,7 @@ class AggregatesTab extends Component {
 
                             </div>
                             <div className={" col-1 text-capitalize text-mute small"}>
-                                {(this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?
+                                {(this.props.item.product.units!=aggregate.units&&!this.props.item.product.unit_conversions)||(this.props.item.product.units!=aggregate.units&&this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?
                                     <LightTooltip title={"Add Conversion"}>
                                         <AddIcon className={"click-item"} onClick={()=> this.updateUnitConversions(aggregate.units)}/>
                                     </LightTooltip>:null}
@@ -241,9 +242,7 @@ class AggregatesTab extends Component {
                 )}
      </>:
 
-
                <ConversionsTab goBack={this.editConversion} item={this.props.item} />}
-
 
                 <Modal
                     // size="lg"

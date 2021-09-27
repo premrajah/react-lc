@@ -292,7 +292,7 @@ export const loadProductsSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
-    console.log(data)
+    // console.log(data)
 
     axios
         // .get(`${baseUrl}product/no-parent/no-links`)
@@ -302,7 +302,7 @@ export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
                 if(response.status === 200) {
                     dispatch(loading(false));
                 }
-                console.log(data)
+                // console.log(data)
                 dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: {val:response.data.data,offset:data.offset, size:data.size, refresh:data.refresh}});
             },
             (error) => {
@@ -316,7 +316,7 @@ export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentSync = (data) => (dispatch) => {
 
-console.log(data)
+// console.log(data)
 
     axios
         .get(`${baseUrl}product/no-parent/no-links`)
@@ -462,7 +462,7 @@ export const signUpSync = (data) => (dispatch) => {
         delete data.type
 
 
-        console.log(type)
+        // console.log(type)
     }
 
 
@@ -520,7 +520,7 @@ export const getListingsSync = (data) => (dispatch) => {
             dispatch(loading(false));
         })
         .catch(error => {
-            console.log('listing error ', error.message);
+            // console.log('listing error ', error.message);
         })
 }
 

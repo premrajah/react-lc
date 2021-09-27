@@ -28,7 +28,7 @@ class SearchBar extends Component {
                         <FormControl className={"filter-box"} style={{width:  '10.5%'}}  component="div">
 
 
-                            <NativeSelect label="Filter" className="search-filter"  labelId="filterLabel"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                            <NativeSelect label="Filter" className="search-filter"    value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >
                                     Filter By
                                 </option>

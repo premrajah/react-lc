@@ -83,8 +83,8 @@ class ComponentsNavbar extends React.Component {
 
     componentDidMount() {
 
-        window.removeEventListener("scroll", this.changeColor);
-        window.addEventListener("scroll", this.changeColor);
+        // window.removeEventListener("scroll", this.changeColor);
+        // window.addEventListener("scroll", this.changeColor);
         this.dispatchMessagesAndNotifications();
 
         if (this.props.isLoggedIn) {

@@ -76,6 +76,7 @@ import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./components/Cycles/CyclesRecords";
 import {GoogleMap} from "./components/Map/MapsContainer";
+import Header from "./components/Header/Header";
 
 
 
@@ -89,6 +90,7 @@ class App extends Component {
         return (
             <>
                 <BrowserRouter>
+                    {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/terms" component={TermsAndConditions} />

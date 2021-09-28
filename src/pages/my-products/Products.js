@@ -257,7 +257,7 @@ class Products extends Component {
                                         //     (item) => item.is_listable === true
                                         // ).length : "... "
 
-                                        this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.length : "... "
+                                        this.props.productWithoutParentList.length
                                     }
                                     <span className="ml-1">Listable Products</span>
                                 </p>
@@ -289,7 +289,15 @@ class Products extends Component {
                             </div>
                         ))}
 
-                        {!this.props.lastPageReached &&
+                        {this.props.productWithoutParentList.length==0 &&
+                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                            <div   className="col">
+                                <div>No products found!</div>
+                            </div>
+                        </div>
+                        }
+
+                        {this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
                                 <div>Loading products please wait ...</div>

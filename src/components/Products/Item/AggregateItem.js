@@ -24,9 +24,8 @@ const AggregateItem = (props) => {
     const [artifacts, setArtifacts] = useState([]);
 
     useEffect(() => {
-        // return history.listen((location) => {
 
-        getArtifactsForProduct(item._key)
+        getArtifactsForProduct(item.product_id.replace("Product/",""))
 
         // })
     }, item._key)
@@ -44,35 +43,6 @@ const AggregateItem = (props) => {
 
     }
 
-    const removeSubproductFromList = () => {
-        if(!parentId) return;
-
-        const payload = {
-            product_id: parentId,
-            sub_products_ids: [
-                item && item.product
-                    ? item.product._key
-                    : item._key,
-            ]
-        };
-        //
-        axios
-            .post(`${baseUrl}product/sub-product/remove`, payload)
-            .then((res) => {
-
-                props.loadCurrentProduct(parentId)
-                props.showSnackbar({show:true,severity:"success",message:"Subproduct removed successfully from product. Thanks"})
-
-            })
-            .catch((error) => {});
-    }
-
-
-    const removeProduct = (action) => {
-        if(action === 'remove') {
-            removeSubproductFromList();
-        }
-    }
 
 
     return <>
@@ -87,73 +57,35 @@ const AggregateItem = (props) => {
 
             <div className="col-sm-10 pl-2">
                 <div>
-                    <Link  to={props.noLinking?"#":`/product/${item._key}`}>
-                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.name}(<span>{item.volume} </span>
-                            <span>{item.units}</span>)</p>
+                    <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>
+                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}(<span>{item.volume} </span><span>{props.aggregate.units}</span>)</p>
                     </Link>
                 </div>
-                {!props.aggregate &&
-                <>
-                    <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
-                    <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
 
-                        <span className="mr-1">{item.category},</span>
-                        <span className="mr-1">{item.type},</span>
-                        <span className="mr-1 ">{capitalize(item.state)},</span>
-                        <span>{item.volume}</span>
-                        <span>{item.units}</span>
-
-                    </div>
-                    {
-                        item.search_ids && <div className="text-muted">
-                            <span className="mr-1">{item.search_ids.length}</span>
-                            <span>Searches</span>
-                        </div>
-                    }
-                </>
-                }
             </div>
 
-            {!props.aggregate &&  <div className="col-sm-3 d-flex justify-content-end">
-                <div>
-                    <div className={"text-gray-light small "}>
-                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
-                    </div>
-                    {!props.hideMoreMenu&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
-                </div>
-            </div>}
+
         </div>
     </>
 }
 
 const mapStateToProps = (state) => {
     return {
-        loginError: state.loginError,
-        // cartItems: state.cartItems,
-        loading: state.loading,
-        isLoggedIn: state.isLoggedIn,
-        loginFailed: state.loginFailed,
-        showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
+
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
-        loginPopUpStatus: state.loginPopUpStatus,
+
         showSubProductView: state.showSubProductView,
     };
 };
 
 const mapDispachToProps = (dispatch) => {
     return {
-        logIn: (data) => dispatch(actionCreator.logIn(data)),
-        signUp: (data) => dispatch(actionCreator.signUp(data)),
-        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
-        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadCurrentProduct: (data) =>
             dispatch(actionCreator.loadCurrentProduct(data)),
-        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
     };

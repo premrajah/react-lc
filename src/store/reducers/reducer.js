@@ -15,6 +15,7 @@ import {
     PRODUCT_LIST,
     PRODUCT_NPARENT_LIST,
     PRODUCT_NPARENT_LIST_PAGE,
+    PRODUCT_NPARENT_NO_LIST,
     PRODUCT_POPUP,
     REVIEW_BOX_OPEN,
     REVIEW_SUBMIT,
@@ -72,6 +73,7 @@ export const initialState = {
     parentProduct: null,
     productList: [],
     productWithoutParentList: [],
+    productWithoutParentNoList: [],
     productWithoutParentListPage: [],
     siteList: [],
     allListings: [],
@@ -301,6 +303,18 @@ const reducer = (state = initialState, action) => {
             newState.productPageSize=action.value.size
 
             break;
+
+        case PRODUCT_NPARENT_NO_LIST:
+
+
+            newState.productWithoutParentNoList= (action.value.val);
+
+            newState.loading = false;
+
+
+            break;
+
+
 
         case SITE_LIST:
             newState.siteList = action.value;

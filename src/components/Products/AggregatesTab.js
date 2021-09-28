@@ -190,6 +190,7 @@ class AggregatesTab extends Component {
                     >Edit Conversions</span>}
                 </p>}
 
+                   {this.props.item.product.aggregations.length>0    &&  <>
                 <div className={" row"}>
                     <div className={" col-3 text-bold"}>Info</div>
                     <div className={" col-5 text-bold"}>Products</div>
@@ -207,7 +208,7 @@ class AggregatesTab extends Component {
                             </div>
                             <div className={" col-5"}>
 
-                        {this.props.item.sub_products.filter((subProduct)=> aggregate.product_info.filter((product)=> product.product_id==subProduct._id ).length>0 ).map(
+                        { aggregate.product_info.map(
                             (item, index2) =>
                    <>
                                 {/*{index2>0 &&  <div className=" text-center">+</div>}*/}
@@ -219,6 +220,7 @@ class AggregatesTab extends Component {
                                     key={index2+1}
                                     item={item}
                                     parentId={this.props.item.product._key}
+                                    aggregate={aggregate}
                                     remove={true}
                                 />
                                 </>
@@ -240,6 +242,8 @@ class AggregatesTab extends Component {
                         </div>
                     </>
                 )}
+
+                </>}
      </>:
 
                <ConversionsTab goBack={this.editConversion} item={this.props.item} />}

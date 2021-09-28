@@ -50,7 +50,7 @@ class ConversionsTab extends Component {
 
         let validations=[
 
-            validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
+            validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a number.'}],fields),
 
 
         ]
@@ -169,7 +169,7 @@ class ConversionsTab extends Component {
                         " small"
                     }>
                    <span onClick={this.props.goBack} className={"text-blue"}><BackIcon /> Aggregations</span>
-                   
+
                 </p>}
 
                 {this.props.item.sub_products.length > 0 && (

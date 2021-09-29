@@ -37,7 +37,7 @@ import {
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
     PRODUCT_REGISTER, PRODUCT_RELEASE, SERVICE_AGENT_REQUEST, SHOW_SNACKBAR, CURRENT_PRODUCT,
-    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,CURRENT_SITE,PRODUCT_NPARENT_NO_LIST,
+    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,CURRENT_SITE,PRODUCT_NPARENT_NO_LIST,SHOW_MULTIPLE_POP_UP,
     SITE_FORM_SHOW
 } from "../types";
 import {load} from "dotenv";
@@ -56,6 +56,15 @@ export const loading = () => {
     };
 };
 
+
+export const setMultiplePopUp = (data) => {
+
+    console.log("action called")
+    return {
+        type: SHOW_MULTIPLE_POP_UP,
+        value: data,
+    };
+};
 
 export const setSiteForm = (data) => {
     return {
@@ -789,5 +798,7 @@ export const fetchRegisterRequestSync = () => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
+
+
 
 

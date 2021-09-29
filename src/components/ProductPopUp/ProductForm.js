@@ -660,6 +660,16 @@ class ProductForm extends Component {
     }
 
 
+    showMultipleUpload=()=>{
+
+        this.props.setMultiplePopUp(true)
+            this.props.showProductPopUp({ action: "hide_all", show: false });
+
+
+
+    }
+
+
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -668,8 +678,11 @@ class ProductForm extends Component {
         return (
             <>
                 <div className="row   pt-2 ">
-                    <div className="col-12  ">
+                    <div className="col-7  ">
                         <h3 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
+                    </div>
+                    <div className="col-5  ">
+                        <button className="btn btn-sm blue-btn" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
                     </div>
                 </div>
 
@@ -1205,6 +1218,7 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),

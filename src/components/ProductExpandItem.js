@@ -373,11 +373,7 @@ class ProductExpandItem extends Component {
                                                         </span>
                                                     )}
 
-                                                    {/*<FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?*/}
 
-                                                    {/*<span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>*/}
-
-                                                    {/*</FormHelperText>*/}
                                                 </FormControl>
 
 

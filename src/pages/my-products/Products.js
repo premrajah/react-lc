@@ -18,6 +18,7 @@ import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiS
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {CURRENT_PRODUCT} from "../../store/types";
+import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
 
 class Products extends Component {
 
@@ -171,6 +172,8 @@ class Products extends Component {
 
     toggleMultiSite = () => {
         this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        this.props.setMultiplePopUp(true)
     }
 
     handleMultiUploadCallback = () => {
@@ -330,24 +333,10 @@ class Products extends Component {
                     </React.Fragment>
                 </div>
 
-                {this.state.showMultiUpload && (
-                    <>
-                        <Modal size="lg" show={this.state.showMultiUpload} backdrop="static" onHide={() => this.toggleMultiSite()}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>
-                                    <div className="row">
-                                        <div className="col">
-                                            <h4 className="text-center green-text">Upload Multiple</h4>
-                                        </div>
-                                    </div>
-                                </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <UploadMultiSiteOrProduct isProduct multiUploadCallback={() => this.handleMultiUploadCallback()} />
-                            </Modal.Body>
-                        </Modal>
-                    </>
-                )}
+                {/*{this.state.showMultiUpload && (*/}
+                {/*    <UploadMultiplePopUp showMultiUpload={this.state.showMultiUpload} handleMultiUploadCallback={this.handleMultiUploadCallback} toggleMultiSite={this.toggleMultiSite}  />*/}
+
+                {/*)}*/}
             </Layout>
         );
     }
@@ -383,7 +372,7 @@ const mapDispatchToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
-
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),

@@ -48,7 +48,8 @@ import {
     CURRENT_PRODUCT,
     CURRENT_SITE,
     GET_LISTINGS,
-    SITE_FORM_SHOW
+    SITE_FORM_SHOW,
+    SHOW_MULTIPLE_POP_UP
 } from "../types";
 
 export const initialState = {
@@ -98,6 +99,7 @@ export const initialState = {
     currentSite: null,
     currentSiteLoading: false,
     signUpPageSubmitted:false,
+    showMultiplePopUp:false,
     showSiteForm:{
         show:false,
         item:null
@@ -118,6 +120,10 @@ const reducer = (state = initialState, action) => {
             newState.orgImage = action.value;
             break;
 
+        case SHOW_MULTIPLE_POP_UP:
+            console.log("shpw mulitp;l")
+            newState.showMultiplePopUp = action.value;
+            break;
         case LOADING_SPINNER:
             newState.reviewLoading = true;
             break;

@@ -5,6 +5,8 @@ import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import PlaceholderImg from "../../../img/place-holder-lc.png";
 import moment from "moment/moment";
 import MoreMenu from "../../MoreMenu";
+import AddCircle from "@material-ui/icons/AddCircle";
+import RemoveCircle from "@material-ui/icons/RemoveCircle";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../../store/actions/actions";
 import {connect} from "react-redux";
@@ -14,6 +16,7 @@ import {
     BrowserRouter,
     Route,
 } from "react-router-dom";
+import Add from "../../Sites/AddSite";
 
 const AggregateItem = (props) => {
     const history = useHistory()
@@ -28,7 +31,7 @@ const AggregateItem = (props) => {
         getArtifactsForProduct(item.product_id.replace("Product/",""))
 
         // })
-    }, item._key)
+    }, [])
 
     const getArtifactsForProduct = (key) => {
 
@@ -55,13 +58,16 @@ const AggregateItem = (props) => {
                 }
             </div>
 
-            <div className="col-sm-10 pl-2">
+            <div className="col-sm-8 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>
                         <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}(<span>{item.volume} </span><span>{props.aggregate.units}</span>)</p>
                     </Link>
                 </div>
 
+            </div>
+            <div className="col-sm-2 ">
+                {item.direction=="additive"?<AddCircle />:<RemoveCircle />}
             </div>
 
 

@@ -96,7 +96,7 @@ class SignUp extends Component {
 
                 "company_number":this.state.companyNumber,
                 "email":data.get("email"),
-                "org_details": {
+                "details": {
 
                     "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
                     "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),

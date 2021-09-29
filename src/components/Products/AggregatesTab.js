@@ -225,6 +225,8 @@ class AggregatesTab extends Component {
                                 />
                                 </>
 
+
+
                         ) }
 
                             </div>

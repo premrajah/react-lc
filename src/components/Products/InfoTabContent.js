@@ -39,9 +39,9 @@ class InfoTabContent extends Component {
                                                             </span>
                             {this.props.item.product.purpose!=="aggregate"&&  <span>
                                                                 {this.props.item.product.volume} </span>}
-                            {this.props.item.product.purpose!=="aggregate"&&  <span>
+                              <span>
                                                                 {this.props.item.product.units}
-                                                            </span>}
+                                                            </span>
                         </p>
                     </div>
                 </div>

@@ -193,6 +193,7 @@ class ConversionsTab extends Component {
 
                 <Modal
                     // size="lg"
+                    centered
                     show={this.state.conversionPopUp}
                     onHide={this.updateUnitConversions}
                     className={"custom-modal-popup popup-form"}>

@@ -17,6 +17,7 @@ import {
     Route,
 } from "react-router-dom";
 import Add from "../../Sites/AddSite";
+import _ from "lodash";
 
 const AggregateItem = (props) => {
     const history = useHistory()
@@ -25,7 +26,8 @@ const AggregateItem = (props) => {
     const parentId= props.parentId
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
-
+    const [categories, setCategories] = useState([]);
+    const [units, setUnits] = useState([]);
     useEffect(() => {
 
         getArtifactsForProduct(item.product_id.replace("Product/",""))
@@ -45,6 +47,9 @@ const AggregateItem = (props) => {
 
 
     }
+
+
+
 
 
 

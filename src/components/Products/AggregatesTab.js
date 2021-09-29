@@ -13,6 +13,7 @@ import {baseUrl} from "../../Util/Constants";
 import {withStyles} from "@material-ui/core/styles";
 import {Tooltip} from "@material-ui/core";
 import ConversionsTab from "./ConversionsTab";
+import _ from "lodash";
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -37,7 +38,8 @@ class AggregatesTab extends Component {
             fields: {},
             errors: {},
             fieldsSite: {},
-            showConversion:false
+            showConversion:false,
+            units:[]
         }
 
     }
@@ -163,8 +165,39 @@ class AggregatesTab extends Component {
 
     }
 
+componentDidMount() {
+this.getFiltersCategories()
+}
+
+      getFiltersCategories=()=> {
+        axios
+            .get(baseUrl + "category")
+            .then(
+                (response) => {
+                    let   responseAll=[]
+                    responseAll = _.sortBy(response.data.data, ["name"]);
 
 
+        let units=responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+
+                    this.setState({
+                        units:units
+                    })
+
+                    console.log(units)
+
+
+                    // subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
+                    // states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
+                    // units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+
+
+
+
+                },
+                (error) => {}
+            );
+    }
 
     render() {
 
@@ -236,10 +269,36 @@ class AggregatesTab extends Component {
 
                             </div>
                             <div className={" col-1 text-capitalize text-mute small"}>
-                                {(this.props.item.product.units!=aggregate.units&&!this.props.item.product.unit_conversions)||(this.props.item.product.units!=aggregate.units&&this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?
-                                    <LightTooltip title={"Add Conversion"}>
-                                        <AddIcon className={"click-item"} onClick={()=> this.updateUnitConversions(aggregate.units)}/>
-                                    </LightTooltip>:null}
+
+                                {(this.props.item.product.units != aggregate.units && this.props.item.product.category == aggregate.category && this.props.item.product.state == aggregate.state && this.props.item.product.type == aggregate.type) &&
+
+                                    <>
+
+                                        {!this.props.item.product.unit_conversions &&
+                                            <LightTooltip title={"Add Conversion"}>
+                                                <AddIcon className={"click-item"}
+                                                         onClick={() => this.updateUnitConversions(aggregate.units)}/>
+                                            </LightTooltip>
+                                        }
+
+                                        {this.props.item.product.unit_conversions &&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units) &&
+                                        <LightTooltip title={"Add Conversion"}>
+                                            <AddIcon className={"click-item"}
+                                                     onClick={() => this.updateUnitConversions(aggregate.units)}/>
+                                        </LightTooltip>
+                                        }
+
+
+
+                                </>
+                                }
+
+
+
+
+
+                                {/*{(this.props.item.product.units!=aggregate.units&&!this.props.item.product.unit_conversions)||(this.props.item.product.units!=aggregate.units&&this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?*/}
+                                {/*   :null}*/}
                             </div>
                         </div>
                     </>
@@ -252,6 +311,7 @@ class AggregatesTab extends Component {
 
                 <Modal
                     // size="lg"
+                    centered
                     show={this.state.conversionPopUp}
                     onHide={this.updateUnitConversions}
                     className={"custom-modal-popup popup-form"}>
@@ -266,9 +326,8 @@ class AggregatesTab extends Component {
                     {/*</div>*/}
                     <div className={"row justify-content-center"}>
                         <div className={"col-10 text-center"}>
-                            <p className={"text-bold text-blue"}>
-                                Add Unit Conversion For
-                                {this.state.selectedUnit?this.state.selectedUnit:""}
+                            <p className={" text-blue"}>
+                                Add Unit Conversion For <span className={"text-bold text-capitalize"}>{this.state.selectedUnit?this.state.selectedUnit:""}</span>
                             </p>
                         </div>
                     </div>

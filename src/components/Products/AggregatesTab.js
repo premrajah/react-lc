@@ -78,7 +78,7 @@ class AggregatesTab extends Component {
 
         let validations=[
 
-            validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
+            validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a number.'}],fields),
 
 
         ]

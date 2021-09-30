@@ -225,23 +225,23 @@ this.getFiltersCategories()
 
                    {this.props.item.product.aggregations.length>0    &&  <>
                 <div className={" row"}>
-                    <div className={" col-3 text-bold"}>Info</div>
-                    <div className={" col-5 text-bold"}>Products</div>
-                    <div className={" col-3 text-bold"}>Total Volume</div>
+                    <div className={" col-4 text-bold"}>Info</div>
+                    <div className={" col-7 text-bold"}>Products</div>
+                    {/*<div className={" col-3 text-bold"}>Total Volume</div>*/}
                     <div className={" col-1 text-bold"}></div>
                 </div>
                 <div className="listing-row-border "></div>
                 {this.props.item.product.aggregations&&this.props.item.product.aggregations.length > 0 &&this.props.item.product.aggregations.map((aggregate,index)=>
                     <>{index>0 &&  <div className="listing-row-border "></div>}
                         <div className={aggregate.units===this.props.item.product.units?" row bg-grey":"row"}>
-                            <div className={" col-3"}>
-                                <span className={"small "}>Category: <span className={"text-capitalize text-mute"}>{aggregate.category}</span></span><br/>
-                                <span className={"small "}>Type: <span className={"text-capitalize text-mute"}>{aggregate.type}</span></span><br/>
-                                <span className={"small "}>State: <span className={"text-capitalize text-mute"}>{aggregate.state}</span></span><br/>
+                            <div className={" col-4"}>
+                                <span className={"small "}>Category: <span className={"text-capitalize text-mute"}>{aggregate.category}, {aggregate.type}, {aggregate.state}</span></span><br/>
+                                <span className={"small "}>Volume: <span className={"text-capitalize text-mute"}>{aggregate.volume}</span></span><br/>
+                                {/*<span className={"small "}>State: <span className={"text-capitalize text-mute"}>{aggregate.state}</span></span><br/>*/}
                                 <span className={"small "}>Unit: <span className={"text-capitalize text-mute"}>{aggregate.units}</span></span><br/>
 
                             </div>
-                            <div className={" col-5"}>
+                            <div className={" col-7"}>
 
                         { aggregate.product_info.map(
                             (item, index2) =>
@@ -262,11 +262,11 @@ this.getFiltersCategories()
                         ) }
 
                             </div>
-                            <div className={" col-3"}>
-                                <span className={"text-capitalize text-mute small"}>{aggregate.volume}</span>
-                                <span className={"text-capitalize text-mute small"}> {aggregate.units}</span>
+                            {/*<div className={" col-3"}>*/}
+                            {/*    <span className={"text-capitalize text-mute small"}>{aggregate.volume}</span>*/}
+                            {/*    <span className={"text-capitalize text-mute small"}> {aggregate.units}</span>*/}
 
-                            </div>
+                            {/*</div>*/}
                             <div className={" col-1 text-capitalize text-mute small"}>
 
                                 {(this.props.item.product.units != aggregate.units && this.props.item.product.category == aggregate.category && this.props.item.product.type == aggregate.type) &&
@@ -310,7 +310,7 @@ this.getFiltersCategories()
                     <div className={"row justify-content-center pt-3"}>
                         <div className={"col-10 text-center"}>
                             <p className={" text-blue text-capitalize"}>
-                                Add Unit Conversion for State:{this.state.selectedState} From <span className={"text-bold text-capitalize"}>{this.props.item.product.units}</span> to  <span className={"text-bold text-capitalize"}>{this.state.selectedUnit?this.state.selectedUnit:""}</span>
+                                Add Conversion from<span className={"text-bold text-capitalize"}> {this.props.item.product.units}, {this.props.item.product.state}</span> to  <span className={"text-bold text-capitalize"}>{this.state.selectedUnit?this.state.selectedUnit:""}, {this.state.selectedState}</span>
                             </p>
                         </div>
                     </div>
@@ -334,7 +334,7 @@ this.getFiltersCategories()
                                         }
                                         // disabled={this.state.isSubmitButtonPressed}
                                     >
-                                        Add Conversion
+                                        Save Conversion
                                     </button>
                                     </div>
                                     </div>

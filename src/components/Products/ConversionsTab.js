@@ -228,7 +228,7 @@ class ConversionsTab extends Component {
                             <p
                                 style={{ textTransform: "Capitalize" }}
                                 className={"text-bold text-blue"}>
-                                {this.state.type=="edit"?"Edit Conversion For "+this.state.selectedUnit:"Delete "+this.state.selectedUnit}
+                                {this.state.type=="edit"?"Edit Conversion For "+this.state.selectedUnit+", "+this.state.stateSelected:"Delete Conversion for "+this.state.selectedUnit+", "+this.state.stateSelected}
                             </p>
                         </div>
                     </div>

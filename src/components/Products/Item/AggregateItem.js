@@ -54,7 +54,7 @@ const AggregateItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters justify-content-start ">
+        <div className="row no-gutters justify-content-start mt-2">
             <div className="col-sm-2 aggregate-img">
                 {
                     artifacts.length > 0
@@ -66,13 +66,13 @@ const AggregateItem = (props) => {
             <div className="col-sm-8 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>
-                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}(<span>{item.volume} </span><span>{props.aggregate.units}</span>)</p>
+                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}(<span> {item.direction=="additive"? "+":"-"}{item.volume} </span><span>{item.units}</span>)</p>
                     </Link>
                 </div>
 
             </div>
             <div className="col-sm-2 ">
-                {item.direction=="additive"?<AddCircle />:<RemoveCircle />}
+                <span className={"text-blue text-capitalize text-mute small"}>State:{item.state}</span>
             </div>
 
 

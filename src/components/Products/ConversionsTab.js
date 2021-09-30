@@ -18,6 +18,7 @@ class ConversionsTab extends Component {
         super(props);
         this.state = {
             unitConversions:[],
+            stateSelected:null,
             conversionPopUp:false,
             selectedUnit:null,factor:null,
             fields: {},
@@ -27,14 +28,15 @@ class ConversionsTab extends Component {
         }
     }
 
-    updateUnitConversions=(type,units,factor)=>{
+    updateUnitConversions=(type,units,factor,state)=>{
 
-        // alert(type+units+factor)
+        // alert(type+units+factor+state)
         this.setState({
             conversionPopUp:!this.state.conversionPopUp,
             selectedUnit:units,
             factor:factor,
-            type:type
+            type:type,
+            stateSelected:state
         })
 
     }
@@ -44,8 +46,6 @@ class ConversionsTab extends Component {
 
 
         let fields = this.state.fields;
-
-
 
 
         let validations=[
@@ -87,12 +87,12 @@ class ConversionsTab extends Component {
        let updateConversions=[]
 
         for (let i=0;i<unit_conversions.length;i++){
-            if(this.state.type==="edit"&&unit_conversions[i].units==this.state.selectedUnit){
+            if(this.state.type==="edit"&&unit_conversions[i].units==this.state.selectedUnit&&unit_conversions[i].state==this.state.stateSelected){
 
-                updateConversions.push({units:this.state.selectedUnit,factor:factor})
+                updateConversions.push({units:this.state.selectedUnit,factor:factor,state:this.state.stateSelected})
 
             }
-            else if (this.state.type==="delete"&&unit_conversions[i].units==this.state.selectedUnit){
+            else if (this.state.type==="delete"&&unit_conversions[i].units==this.state.selectedUnit&&unit_conversions[i].state==this.state.stateSelected){
 
             }
             else{
@@ -110,6 +110,7 @@ class ConversionsTab extends Component {
             update: {
 
                 purpose:  this.props.item.product.purpose.toLowerCase(),
+                condition:   this.props.item.product.condition,
                 name:  this.props.item.product.name,
                 description:  this.props.item.product.description,
                 category:  this.props.item.product.category,
@@ -173,7 +174,23 @@ class ConversionsTab extends Component {
                 </p>}
 
                 {this.props.item.sub_products.length > 0 && (
-                    <>
+                    <>   <div className="row text-bold">
+
+                        <div className="col-3  ">
+                           State
+                        </div>
+                        <div className="col-3 ">
+                            Unit
+                        </div>
+                        <div className="col-3 ">
+                            Factor
+                        </div>
+                        <div className="col-3 ">
+                            Edit/Delete
+                        </div>
+                    </div>
+
+
                         {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.map(
                             (item, index) => (
                                 <ConversionItem
@@ -183,7 +200,7 @@ class ConversionsTab extends Component {
                                     item={item}
                                     parentId={this.props.item.product._key}
                                     remove={true}
-                                    onEdit={(type,units,factor)=>this.updateUnitConversions(type,units,factor)}
+                                    onEdit={(type,units,factor,state)=>this.updateUnitConversions(type,units,factor,state)}
                                 />
                             )
                         )}

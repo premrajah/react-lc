@@ -440,6 +440,8 @@ class ListForm extends Component {
         var action = event.currentTarget.dataset.id;
 
         this.props.showProductPopUp({ type: "create_product", show: true });
+
+
     }
 
     handleValidationProduct() {
@@ -815,6 +817,13 @@ class ListForm extends Component {
                                                         "custom-label text-bold text-blue mb-1"
                                                     }>
                                                     Link a product
+                                                    <span onClick={this.showProductSelection}
+                                                        style={{float:"right"}}
+                                                        className={
+                                                            "green-text forgot-password-link text-mute small"
+                                                        }>
+                                                    Add New product
+                                                </span>
                                                 </div>
 
 
@@ -825,7 +834,8 @@ class ListForm extends Component {
                                                         this.productSelected(productId)
                                                     }
                                                     className={"mb-4"}
-                                                />}
+                                                />
+                                                }
 
                                                 <TextField
                                                     value={this.state.selectedProductId}

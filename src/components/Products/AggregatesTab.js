@@ -39,7 +39,8 @@ class AggregatesTab extends Component {
             errors: {},
             fieldsSite: {},
             showConversion:false,
-            units:[]
+            units:[],
+            selectedState:null
         }
 
     }
@@ -55,12 +56,13 @@ class AggregatesTab extends Component {
     }
 
 
-    updateUnitConversions=(unit)=>{
+    updateUnitConversions=(unit,state)=>{
 
 
         this.setState({
             conversionPopUp:!this.state.conversionPopUp,
-            selectedUnit:unit?unit:null
+            selectedUnit:unit?unit:null,
+            selectedState:state
         })
 
     }
@@ -108,17 +110,15 @@ class AggregatesTab extends Component {
         const data = new FormData(event.target);
         const factor = data.get("factor");
 
-
         let  unit_conversions= this.props.item.product.unit_conversions?this.props.item.product.unit_conversions:[]
-        unit_conversions.push({units:this.state.selectedUnit, factor:factor})
-
-
+        unit_conversions.push({units:this.state.selectedUnit,state:this.state.selectedState, factor:factor})
 
         const productData = {
             id: this.props.item.product._key,
             update: {
 
                 purpose:  this.props.item.product.purpose.toLowerCase(),
+                condition:   this.props.item.product.condition,
                 name:  this.props.item.product.name,
                 description:  this.props.item.product.description,
                 category:  this.props.item.product.category,
@@ -233,11 +233,13 @@ this.getFiltersCategories()
                 <div className="listing-row-border "></div>
                 {this.props.item.product.aggregations&&this.props.item.product.aggregations.length > 0 &&this.props.item.product.aggregations.map((aggregate,index)=>
                     <>{index>0 &&  <div className="listing-row-border "></div>}
-                        <div className={" row"}>
+                        <div className={aggregate.units===this.props.item.product.units?" row bg-grey":"row"}>
                             <div className={" col-3"}>
                                 <span className={"small "}>Category: <span className={"text-capitalize text-mute"}>{aggregate.category}</span></span><br/>
                                 <span className={"small "}>Type: <span className={"text-capitalize text-mute"}>{aggregate.type}</span></span><br/>
                                 <span className={"small "}>State: <span className={"text-capitalize text-mute"}>{aggregate.state}</span></span><br/>
+                                <span className={"small "}>Unit: <span className={"text-capitalize text-mute"}>{aggregate.units}</span></span><br/>
+
                             </div>
                             <div className={" col-5"}>
 
@@ -257,9 +259,6 @@ this.getFiltersCategories()
                                     remove={true}
                                 />
                                 </>
-
-
-
                         ) }
 
                             </div>
@@ -270,32 +269,24 @@ this.getFiltersCategories()
                             </div>
                             <div className={" col-1 text-capitalize text-mute small"}>
 
-                                {(this.props.item.product.units != aggregate.units && this.props.item.product.category == aggregate.category && this.props.item.product.state == aggregate.state && this.props.item.product.type == aggregate.type) &&
+                                {(this.props.item.product.units != aggregate.units && this.props.item.product.category == aggregate.category && this.props.item.product.type == aggregate.type) &&
 
                                     <>
-
                                         {!this.props.item.product.unit_conversions &&
                                             <LightTooltip title={"Add Conversion"}>
                                                 <AddIcon className={"click-item"}
-                                                         onClick={() => this.updateUnitConversions(aggregate.units)}/>
+                                                         onClick={() => this.updateUnitConversions(aggregate.units,aggregate.state)}/>
                                             </LightTooltip>
                                         }
 
-                                        {this.props.item.product.unit_conversions &&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units) &&
+                                        {this.props.item.product.unit_conversions &&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units&& conversionUnit.state===aggregate.state) &&
                                         <LightTooltip title={"Add Conversion"}>
                                             <AddIcon className={"click-item"}
-                                                     onClick={() => this.updateUnitConversions(aggregate.units)}/>
+                                                     onClick={() => this.updateUnitConversions(aggregate.units,aggregate.state)}/>
                                         </LightTooltip>
                                         }
-
-
-
                                 </>
                                 }
-
-
-
-
 
                                 {/*{(this.props.item.product.units!=aggregate.units&&!this.props.item.product.unit_conversions)||(this.props.item.product.units!=aggregate.units&&this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?*/}
                                 {/*   :null}*/}
@@ -315,42 +306,38 @@ this.getFiltersCategories()
                     show={this.state.conversionPopUp}
                     onHide={this.updateUnitConversions}
                     className={"custom-modal-popup popup-form"}>
-                    {/*<div className="row">*/}
-                    {/*    <button*/}
-                    {/*        onClick={this.updateUnitConversions}*/}
-                    {/*        className="btn-close close"*/}
-                    {/*        data-dismiss="modal"*/}
-                    {/*        aria-label="Close">*/}
-                    {/*        <i className="fas fa-times"></i>*/}
-                    {/*    </button>*/}
-                    {/*</div>*/}
-                    <div className={"row justify-content-center"}>
+
+                    <div className={"row justify-content-center pt-3"}>
                         <div className={"col-10 text-center"}>
-                            <p className={" text-blue"}>
-                                Add Unit Conversion For <span className={"text-bold text-capitalize"}>{this.state.selectedUnit?this.state.selectedUnit:""}</span>
+                            <p className={" text-blue text-capitalize"}>
+                                Add Unit Conversion for State:{this.state.selectedState} From <span className={"text-bold text-capitalize"}>{this.props.item.product.units}</span> to  <span className={"text-bold text-capitalize"}>{this.state.selectedUnit?this.state.selectedUnit:""}</span>
                             </p>
                         </div>
                     </div>
-                    <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
+                    <div className="row py-3 justify-content-center mobile-menu-row pt-1 ">
                         <div className="col mobile-menu">
-                            <div className="form-col-left col-12">
+                            <div className="form-col-left col-12 ">
                                 <form onSubmit={this.handleSubmit}>
-
-                                    <TextFieldWrapper
+                                    <div className="row  ">
+                                        <div className=" col-12 ">
+                                            <TextFieldWrapper
                                         // initialValue={this.props.item&&this.props.item.product.sku.brand}
                                         onChange={(value)=>this.handleChangeProduct(value,"factor")}
                                         error={this.state.errors["factor"]}
                                         name="factor" title="Factor" />
-
+                                    </div>
+                                    <div className=" col-12 text-center ">
                                     <button
                                         type={"submit"}
                                         className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                            "btn btn-default mt-2 btn-lg btn-rounded shadow  btn-green login-btn"
                                         }
                                         // disabled={this.state.isSubmitButtonPressed}
                                     >
                                         Add Conversion
                                     </button>
+                                    </div>
+                                    </div>
                                 </form>
 
                             </div>

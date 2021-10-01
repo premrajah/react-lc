@@ -21,6 +21,7 @@ class ProductTreeItemView extends Component {
             tree: [],
             open: false,
             selected: false,
+            listingExist:false
         };
 
         this.getSubProducts = this.getSubProducts.bind(this);
@@ -93,18 +94,15 @@ class ProductTreeItemView extends Component {
         }
     }
 
-
-
-
     componentDidMount() {
 
 
     this.getSubProducts()
+
+        this.getListing()
     }
 
     getSubProducts() {
-
-
 
         if (this.props.item) {
             let currentProductId = this.props.item.id;
@@ -135,15 +133,14 @@ class ProductTreeItemView extends Component {
 
 
     getListing(event) {
-        event.stopPropagation();
 
-        this.setOpen();
 
-        if (!this.state.open) {
-            var currentProductId = event.currentTarget.dataset.id;
+
+
+            var currentProductId = this.props.item.id;
 
             axios
-                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
+                .get(baseUrl + "product/" + currentProductId + "/listing", {
                     headers: {
                         Authorization: "Bearer " + this.props.token,
                     },
@@ -153,16 +150,18 @@ class ProductTreeItemView extends Component {
                         var responseAll = response.data.data;
 
                         this.setState({
-                            products: responseAll,
+                            listingExist: responseAll?true:false,
                         });
-
-                        this.setTree();
+                        //
+                        // this.setTree();
+                        console.log("getting listing")
+                        console.log(responseAll)
                     },
                     (error) => {
                         // var status = error.response.status
                     }
                 );
-        }
+
     }
 
     render() {
@@ -198,9 +197,9 @@ class ProductTreeItemView extends Component {
                         </div>
                         <span
                             data-id={this.props.item.id}
-                            onClick={this.props.item.canSelect && this.setSelected}
+                            onClick={!this.state.listingExist && this.setSelected}
                             className={
-                                this.props.item.canSelect
+                                !this.state.listingExist
                                     ? this.props.selected === this.props.item.id
                                         ? "tree-view-item-selected tree-view-item"
                                         : "tree-view-item"

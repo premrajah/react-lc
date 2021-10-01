@@ -16,6 +16,9 @@ import * as actionCreator from "../../store/actions/actions";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import {getListings} from "../../store/actions/actions";
 
+
+const currentTime = new Date();
+
 class FindResourcePage extends Component {
     state = {
         search: "",
@@ -58,6 +61,7 @@ class FindResourcePage extends Component {
                           return item;
                       }
                   })
+                .filter(item => item.listing.available_from_epoch_ms < currentTime.getTime() && item.listing.expire_after_epoch_ms > currentTime.getTime())
                   .map((item, index) => (
                       <ErrorBoundary key={index}>
                           <FindResourceListingItem key={item.listing._id} item={item} />

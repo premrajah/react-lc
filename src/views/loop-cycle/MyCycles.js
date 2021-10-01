@@ -75,6 +75,13 @@ class MyCycles extends Component {
                             subTitle="Cycles are transactions in progress."
                         />
 
+                        <div className="row mb-3">
+                            <div className="col-12 d-flex justify-content-end">
+                                <Link to="/cycles-record" className="btn btn-sm blue-btn">
+                                    Cycles Record
+                                </Link>
+                            </div>
+                        </div>
 
                         <div className="row   search-container  pt-3 pb-4">
                             <div className={"col-12"}>
@@ -103,9 +110,11 @@ class MyCycles extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.loops.map((item, index) => (
+                        {this.state.loops.length > 0 ? this.state.loops.filter(c => c.cycle.stage !== "closed").map((item, index) => (
                             <CycleItem item={item} key={index} />
-                        ))}
+                        )) : <div>...</div>}
+
+                        {this.state.loops.length === 0 ? <div>No cycles yet...</div> : <div></div>}
                     </div>
                 </div>
             </div>

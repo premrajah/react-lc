@@ -43,7 +43,7 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
     return(
         <>
 
-            {title&& <div className={"custom-label text-bold text-blue mb-3"}>
+            {title&& <div className={"custom-label text-bold text-blue mb-1"}>
                 {title}
             </div>}
 

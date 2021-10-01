@@ -333,7 +333,7 @@ class ProductForm extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-
+        console.log(errors)
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -348,6 +348,11 @@ class ProductForm extends Component {
 
 
     showProductSelection=() =>{
+
+
+        this.props.loadProductsWithoutParentNoListing({offset:0,size:this.props.productPageSize, refresh:true});
+
+
         if (!this.props.parentProduct) {
             this.props.setProduct(this.state.product);
             this.props.setParentProduct(this.state.parentProduct);
@@ -660,6 +665,16 @@ class ProductForm extends Component {
     }
 
 
+    showMultipleUpload=()=>{
+
+        this.props.setMultiplePopUp(true)
+            this.props.showProductPopUp({ action: "hide_all", show: false });
+
+
+
+    }
+
+
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -668,8 +683,11 @@ class ProductForm extends Component {
         return (
             <>
                 <div className="row   pt-2 ">
-                    <div className="col-12  ">
+                    <div className="col-7  ">
                         <h3 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
+                    </div>
+                    <div className="col-5  ">
+                        <button className="btn btn-sm blue-btn" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
                     </div>
                 </div>
 
@@ -705,7 +723,7 @@ class ProductForm extends Component {
 
                                     <SelectArrayWrapper
 
-                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
+                                        initialValue={this.props.item&&(this.props.item.product.condition)}
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
                                         options={this.state.condition}
@@ -823,7 +841,7 @@ class ProductForm extends Component {
                                         <div className="col-6 pl-2">
 
                                             <TextFieldWrapper
-                                                initialValue={this.props.item&&this.props.item.product.volume}
+                                                initialValue={this.props.item&&this.props.item.product.volume+""}
                                                 onChange={(value)=>this.handleChangeProduct(value,"volume")}
                                                 error={this.state.errors["volume"]}
                                                 name="volume" title="(Volume)" />
@@ -1188,6 +1206,8 @@ const mapStateToProps = (state) => {
         parentProduct: state.parentProduct,
         product: state.product,
         showProductPopUp: state.showProductPopUp,
+
+
         siteList: state.siteList,
 
         productWithoutParentList: state.productWithoutParentList,
@@ -1203,6 +1223,7 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
@@ -1211,6 +1232,9 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadCurrentProduct(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadProductsWithoutParentNoListing: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParentNoListing(data)),
+
         loadProductsWithoutParentPagination: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),

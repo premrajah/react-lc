@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./css/style.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
-import Home from "./views/LoopHome/Home";
+import Home from "./pages/home/Home";
 import LoginPopUp from "./views/login/LoginPopUp";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./views/loop-cycle/MySearch";
@@ -59,6 +59,7 @@ import IssueDetail from "./views/issues/IssueDetail";
 import ApprovedReleases from "./pages/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
+import Messeges from "./pages/message/MessagePage";
 import TrackedProducts from "./components/Products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
@@ -70,6 +71,13 @@ import SignUpPage from "./pages/sign-up/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
 import LoggedOutRoute from "./Util/LoggedOutRoute";
 import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
+import Sites from "./pages/sites/Sites";
+import Site from "./pages/site-detail/Site";
+import SiteForm from "./components/Sites/SiteForm";
+import CyclesRecords from "./components/Cycles/CyclesRecords";
+import {GoogleMap} from "./components/Map/MapsContainer";
+import Header from "./components/Header/Header";
+import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 
 
 
@@ -83,6 +91,7 @@ class App extends Component {
         return (
             <>
                 <BrowserRouter>
+                    {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/terms" component={TermsAndConditions} />
@@ -92,6 +101,7 @@ class App extends Component {
                         <Route exact path="/acceptable" component={AcceptableUse} />
                         <LoggedInRoute exact path="/notifications" component={NotificationPage} />
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
+                        <LoggedInRoute exact path="/messages-new" component={Messeges} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/my-search-records" component={SearchRecords} />
@@ -101,6 +111,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
+                        <LoggedInRoute exact path="/sites" component={Sites} />
+
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
@@ -112,6 +124,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
+                        <LoggedInRoute exact path="/cycles-record" component={CyclesRecords} />
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
@@ -134,13 +147,13 @@ class App extends Component {
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
-                        <LoggedInRoute exact path="/addresses" component={Address} />
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <Route exact path="/ps/:slug" component={Site} />
                         <LoggedInRoute
                             exact
                             path="/sub-product-view/:slug"
@@ -166,10 +179,15 @@ class App extends Component {
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />
+
                     </Switch>
 
                     {this.props.showLoginPopUp && <LoginPopUp />}
                     {this.props.showProductPopUp && <ProductPopUp />}
+                    {this.props.isLoggedIn&& <SiteForm />}
+                <UploadMultiplePopUp />
+
+
                     <CustomSnackbar />
                 </BrowserRouter>
             </>
@@ -191,6 +209,8 @@ const mapStateToProps = (state) => {
         showCreateSubProduct: state.showCreateSubProduct,
         showProductView: state.loginPopUpStatus,
         showProductPopUp: state.showProductPopUp,
+        showSiteForm: state.showSiteForm,
+        showMultiplePopUp: state.showMultiplePopUp,
     };
 };
 
@@ -200,6 +220,7 @@ const mapDispatchToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         logOut: (data) => dispatch(actionCreator.logOut(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App);

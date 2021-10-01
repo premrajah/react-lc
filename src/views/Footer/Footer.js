@@ -4,7 +4,9 @@ import FooterNew from "../../components/Footer/Footer";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 
-class Footer extends Component {
+class
+
+Footer extends Component {
     interval;
 
 

@@ -235,8 +235,8 @@ class CompanyInfo extends Component {
             });
 
             const data = new FormData(event.target);
-            const name = this.state.companyName;
-            const description = this.state.description;
+            const name =data.get("companyName");
+            const description = data.get("description")
 
             axios
                 .post(`${baseUrl}org`,

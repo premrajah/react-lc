@@ -1,11 +1,7 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
 import {Link} from "react-router-dom";
-import {makeStyles} from "@material-ui/core/styles";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
@@ -15,7 +11,6 @@ import {withStyles} from "@material-ui/core/styles/index";
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
-import Org from "../Org/Org";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
 import Close from "@material-ui/icons/Close";
@@ -26,6 +21,9 @@ import SubProductsTab from "./SubProductsTab";
 import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
+import OrgFull from "../Org/OrgFull";
+import AggregatesTab from "./AggregatesTab";
+import ConversionsTab from "./ConversionsTab";
 
 class ProductDetailContent extends Component {
     slug;
@@ -682,7 +680,7 @@ class ProductDetailContent extends Component {
                                     <div className="col-12">
                                         <div className="row">
                                             <div className="col-7">
-                                                <Org orgId={this.state.item.org._id} />
+                                                <OrgFull org={this.state.item.org} />
                                             </div>
                                         </div>
                                     </div>
@@ -710,15 +708,28 @@ class ProductDetailContent extends Component {
 
                                             </Tab>
 
+                                            {(this.props.item.product.purpose=="aggregate") &&
+                                            <Tab eventKey="aggregates" title="Aggregations">
+                                                <AggregatesTab item={this.props.item} />
+                                            </Tab>}
                                             <Tab eventKey="subproducts" title="Subproducts">
                                               <SubProductsTab item={this.props.item} />
                                             </Tab>
 
                                             {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&    <Tab eventKey="maps" title="Site">
 
-                                                <GoogleMap width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+                                                <GoogleMap siteId={this.props.item.site._key} width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
 
                                             </Tab>}
+
+                                            {/*{this.props.item && (this.props.item.product.purpose=="aggregate") &&*/}
+                                            {/*<Tab eventKey="search" title="Conversion">*/}
+                                            {/*    <ConversionsTab item={this.props.item} />*/}
+                                            {/*    </Tab>*/}
+                                            {/*}*/}
+
+
+
 
                                             {this.state.searches.length > 0 && (
                                                 <Tab eventKey="search" title="Searches">

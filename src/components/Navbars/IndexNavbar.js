@@ -83,8 +83,8 @@ class ComponentsNavbar extends React.Component {
 
     componentDidMount() {
 
-        window.removeEventListener("scroll", this.changeColor);
-        window.addEventListener("scroll", this.changeColor);
+        // window.removeEventListener("scroll", this.changeColor);
+        // window.addEventListener("scroll", this.changeColor);
         this.dispatchMessagesAndNotifications();
 
         if (this.props.isLoggedIn) {
@@ -185,7 +185,7 @@ class ComponentsNavbar extends React.Component {
                     <Nav className={"justify-content-end menu-align-right"}>
                         {this.props.isLoggedIn && (
                             <>
-                                <NavItem className={"web-only"}>
+                                <NavItem className={"web-only mr-3"}>
                                     <Link
                                         className="nav-link d-none d-lg-block wl-link-white "
                                         color="default"
@@ -194,7 +194,7 @@ class ComponentsNavbar extends React.Component {
                                     </Link>
                                 </NavItem>
 
-                                <NavItem className={"web-only"}>
+                                <NavItem className={"web-only mr-3"}>
                                     <Link
                                         onClick={this.showProductSelection}
                                         to={"/my-products"}
@@ -204,28 +204,28 @@ class ComponentsNavbar extends React.Component {
                                     </Link>
                                 </NavItem>
 
-                                <NavItem className={"web-only"}>
+                                <NavItem className={"web-only mr-3"}>
                                     <Link
                                         to={"/search-form"}
-                                        className="nav-link d-none d-lg-block green-link "
+                                        className="nav-link d-none d-lg-block wl-link-white mr-3 "
                                         color="default">
-                                        Create Search
+                                        New Search
                                     </Link>
                                 </NavItem>
 
-                                <NavItem className={"web-only"}>
+                                <NavItem className={"web-only mr-3"}>
                                     <Link
                                         to={"/list-form"}
-                                        className="nav-link d-none d-lg-block green-link "
+                                        className="nav-link d-none d-lg-block wl-link-white  "
                                         color="default">
-                                        Create Listing
+                                        New Listing
                                     </Link>
                                 </NavItem>
                             </>
                         )}
 
                         {!this.props.isLoggedIn && (
-                            <NavItem className="mr-5 d-none">
+                            <NavItem className="mr-3 ">
                                 <a
                                     className="nav-link  d-lg-block"
                                     color="default"
@@ -237,8 +237,8 @@ class ComponentsNavbar extends React.Component {
 
                         {!this.props.isLoggedIn && (
                             <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
-                                <Link className="nav-link  d-lg-block  green-text " color="default">
-                                    Sign up
+                                <Link className="nav-link mr-3  d-lg-block  green-text " color="default">
+                                    Sign Up
                                 </Link>
                             </NavItem>
                         )}
@@ -248,7 +248,7 @@ class ComponentsNavbar extends React.Component {
                                 <button
                                     onClick={this.showLoginPopUp}
                                     type="button"
-                                    className="mt-1 btn topBtn ">
+                                    className=" btn topBtn ">
                                     <Link>Log in</Link>
                                 </button>
                             )}
@@ -279,7 +279,7 @@ class ComponentsNavbar extends React.Component {
                         )}
 
                         {this.props.isLoggedIn && (
-                            <NavItem className={"web-only"}>
+                            <NavItem className={"web-only padding-0"}>
                                 <UncontrolledDropdown nav>
                                     <DropdownToggle
                                         caret
@@ -289,7 +289,7 @@ class ComponentsNavbar extends React.Component {
                                         nav
                                         onClick={(e) => e.preventDefault()}
                                         className={"wl-link-white "}>
-                                        <figure className="avatar avatar-60 border-0">
+                                        <figure className="avatar avatar-60 ">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
                                                     this.props.orgImage ? (
@@ -306,7 +306,7 @@ class ComponentsNavbar extends React.Component {
                                                                         style={{
                                                                             maxHeight: "30px",
                                                                             maxWidth: "30px",
-                                                                            objectFit: "contain",
+                                                                            objectFit: "cover",
                                                                             width: "30px",
                                                                             height: "30px",
                                                                         }}
@@ -337,7 +337,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Products
                                         </Link>
-
+                                        <Link className={"dropdown-item"} to="/sites">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Sites
+                                        </Link>
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
                                             My Searches

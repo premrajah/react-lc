@@ -8,14 +8,16 @@ import MoreMenu from "../MoreMenu";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import Close from "@material-ui/icons/Close";
 import {capitalize} from "../../Util/GlobalFunctions";
 import {
     useHistory,
     BrowserRouter,
     Route,
 } from "react-router-dom";
+import EditIcon from "@material-ui/icons/Edit";
 
-const SubproductItem = (props) => {
+const ConversionItem = (props) => {
     const history = useHistory()
 
     const item=props.item
@@ -26,23 +28,10 @@ const SubproductItem = (props) => {
     useEffect(() => {
         // return history.listen((location) => {
 
-            getArtifactsForProduct(item._key)
 
             // })
-    }, item._key)
+    }, item)
 
-    const getArtifactsForProduct = (key) => {
-
-            axios.get(`${baseUrl}product/${key}/artifact`)
-                .then(res => {
-                    const data = res.data.data;
-                    setArtifacts(data);
-                })
-                .catch(error => {
-                })
-
-
-    }
 
     const removeSubproductFromList = () => {
         if(!parentId) return;
@@ -75,45 +64,35 @@ const SubproductItem = (props) => {
     }
 
 
+   const handleUpdate=(type,units,factor,state)=>{
+
+        props.onEdit(type,units,factor,state)
+    }
+
+
     return <>
         <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-            <div className="col-sm-2">
-                {
-                    artifacts.length > 0
-                    ? <ImageOnlyThumbnail images={artifacts} />
-                    : <img className={"img-fluid"} src={PlaceholderImg} alt="" />
-                }
+            <div className="col-3 text-capitalize">
+                {props.item.state}
+            </div>
+            <div className="col-3 text-capitalize">
+                {props.item.units}
             </div>
 
-            <div className="col-sm-7 pl-2">
-                <div>
-                    <Link  to={props.noLinking?"#":`/product/${item._key}`}>
-                        <h5>{item.name}</h5>
-                    </Link>
-                </div>
-                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
-                <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
-                    <span className="mr-1">{item.category},</span>
-                    <span className="mr-1">{item.type},</span>
-                    <span className="mr-1 ">{capitalize(item.state)},</span>
-                    <span>{item.volume}</span>
-                    <span>{item.units}</span>
-                </div>
-                {
-                    item.search_ids && <div className="text-muted">
-                        <span className="mr-1">{item.search_ids.length}</span>
-                        <span>Searches</span>
-                    </div>
-                }
-            </div>
+            <div className="col-sm-3 pl-2">
 
-            <div className="col-sm-3 d-flex justify-content-end">
-                <div>
-                    <div className={"text-gray-light small "}>
-                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
-                    </div>
-                    {!props.hideMoreMenu&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
-                </div>
+                {props.item.factor}
+
+            </div>
+            <div className="col-sm-3 text-right">
+
+              <EditIcon className={" click-item"}  fontSize="small"
+                        onClick={() => handleUpdate("edit",props.item.units,props.item.factor,props.item.state)}
+              />
+              <Close className={" click-item"}  fontSize="small"
+                     onClick={() => handleUpdate("delete",props.item.units,null,props.item.state)}
+              />
+
             </div>
         </div>
     </>
@@ -151,4 +130,4 @@ const mapDispachToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(SubproductItem);
+export default connect(mapStateToProps, mapDispachToProps)(ConversionItem);

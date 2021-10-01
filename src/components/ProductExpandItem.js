@@ -216,9 +216,8 @@ class ProductExpandItem extends Component {
         });
 
         this.props.loadProducts(this.props.userDetail.token);
-
-
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
+
     }
 
 
@@ -374,11 +373,7 @@ class ProductExpandItem extends Component {
                                                         </span>
                                                     )}
 
-                                                    {/*<FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?*/}
 
-                                                    {/*<span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>*/}
-
-                                                    {/*</FormHelperText>*/}
                                                 </FormControl>
 
 

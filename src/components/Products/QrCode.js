@@ -204,7 +204,7 @@ class QrCode extends Component {
                                         src={this.props.item.qr_artifact.blob_url}
                                         alt={this.state.item.product.name}
                                         title={this.state.item.product.name}
-                                        style={{ width: "90%" }}
+                                        style={{ width: "100%" }}
                                     />
                                 )}
 

@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import PlaceholderImg from "../../../img/place-holder-lc.png";
+import MoreMenu from "../../MoreMenu";
+
 import axios from "axios/index";
 import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
@@ -7,7 +9,6 @@ import * as actionCreator from "../../../store/actions/actions";
 import {Modal} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
-import MoreMenu from "../../MoreMenu";
 import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
@@ -128,7 +129,7 @@ class ProductItemNew extends Component {
                 (response) => {
                     var res = response.data.data;
 
-                    console.log(res)
+                    // console.log(res)
                     this.setState({
                         images: res,
                     });
@@ -232,9 +233,9 @@ class ProductItemNew extends Component {
                                     <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
                                         <span className="mr-1">{this.props.item.category},</span>
                                         <span className="mr-1">{this.props.item.type},</span>
-                                        <span className="mr-1 ">{capitalize(this.props.item.state)},</span>
-                                        <span>{this.props.item.volume}</span>
-                                        <span>{this.props.item.units}</span>
+                                        <span className="mr-1 ">{capitalize(this.props.item.state)} </span>
+                                        {this.props.item.purpose!=="aggregate"&&  <span>{this.props.item.volume} </span>}
+                                        {this.props.item.purpose!=="aggregate"&&     <span>{this.props.item.units}</span>}
                                     </p>
                                     {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-bold"}>{this.props.item.sku.brand}</p>}
 

@@ -53,7 +53,7 @@ import GoogleMapReact from "google-map-react";
 
     render() {
         return (
-     <div style={{width:this.props.width, height:this.props.height}}>
+     <div style={{width:this.props.width, height:this.props.height,position:"relative"}}>
          {this.props.locations.length>0 &&
          <Map
                 onClick={this.onMapClicked}
@@ -90,7 +90,7 @@ import GoogleMapReact from "google-map-react";
                     visible={this.state.showingInfoWindow}>
 
                     <div>
-                        <span>{this.state.selectedPlace.name}</span>
+                        <span><a href={"/ps/"+this.props.siteId}>{this.state.selectedPlace.name}</a></span>
                     </div>
                 </InfoWindow>
                 <Polyline

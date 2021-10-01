@@ -1,25 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 // reactstrap components
-import {
-    Button,
-    Col,
-    Container,
-    Nav,
-    NavItem,
-    NavLink,
-    Row,
-    UncontrolledTooltip,
-} from "reactstrap";
-import LogoNew from "../../img/logo-cropped.png";
-
-import LogoText from "../../img/logo-text.png";
+import {Button, Col, Nav, NavItem, NavLink, Row, UncontrolledTooltip,} from "reactstrap";
 import styles from "./Footer.module.css";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 // // import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
 // import HeaderLogoSvg from '../../img/Logo-white.svg';
-import HeaderLogoSvg from '../../img/Logo-white.svg';
 import LogoSymbol from "../../img/Symbol-white.svg";
 
 class Footer extends React.Component {
@@ -37,17 +24,17 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <footer style={{padding: ".5rem 1rem"}} className="footer pt-4">
-                    <Row className={""}>
-                        <Col md="4">
-                            <img className="header-logo mobile-only" src={LogoSymbol} alt=""/>
-                            <img
-                                className="text-logo-home web-only"
-                                src={HeaderLogoSvg}
-                                alt=""
-                            />
-                        </Col>
-                        <Col md="2">
+            <footer style={{padding: ".5rem 1rem"}} className="footer pt-4 ">
+
+                <Row className={"text-center    mt-4"}>
+                    <Col md="12">
+                        <img className="footer-logo " src={LogoSymbol} alt=""/>
+
+                    </Col>
+                </Row>
+                    <Row className={"text-center mt-4"}>
+
+                        <Col md="12">
                             <Nav>
                                 <NavItem>
                                     <a
@@ -57,7 +44,7 @@ class Footer extends React.Component {
                                         rel="noopener noreferrer">
                                         <b>Company</b>
                                     </a>
-                                </NavItem>
+                                </NavItem>|
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
@@ -87,19 +74,30 @@ class Footer extends React.Component {
                                 </NavItem>
                             </Nav>
                         </Col>
-                        <Col md="2">
+                    </Row>
+                <Row className={"text-center  "}>
+                        <Col md="12">
                             <Nav>
                                 <NavItem>
                                     <NavLink className={styles.footerlink} to="/" tag={Link}>
-                                        <b>Resources</b>
+                                        <b>Platform</b>
+                                    </NavLink>
+                                </NavItem>|
+
+                                <NavItem>
+                                    <NavLink className={styles.footerlink}
+                                             onClick={this.showLoginPopUp}
+                                             to={this.props.isLoggedIn && "/find-resources"}
+                                             tag={Link}>
+                                        Browse All
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink className={styles.footerlink}
                                         onClick={this.showLoginPopUp}
-                                        to={this.props.isLoggedIn && "/find-resources"}
+                                        to={this.props.isLoggedIn && "/my-products"}
                                         tag={Link}>
-                                        Browse All
+                                        Products
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
@@ -120,81 +118,82 @@ class Footer extends React.Component {
                                         Listings
                                     </NavLink>
                                 </NavItem>
-                                {/*<NavItem>*/}
-                                {/*  <NavLink onClick={this.showLoginPopUp} to={this.props.isLoggedIn&&"/"} tag={Link}>*/}
-                                {/*    Deliver*/}
-                                {/*  </NavLink>*/}
-                                {/*</NavItem>*/}
+
                             </Nav>
                         </Col>
-                        <Col md="4">
-                            <div className="btn-wrapper profile">
-                                <Button
-                                    className="btn-icon btn-neutral btn-round btn-simple"
-                                    color="default"
-                                    href="https://www.linkedin.com/company/loopcycle"
-                                    id="tooltip230450809"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                    <i className="fab fa-linkedin" />
-                                </Button>
-                                <UncontrolledTooltip delay={0} target="tooltip230450809">
-                                    Connect
-                                </UncontrolledTooltip>
 
-                                <Button
-                                    className="btn-icon btn-neutral btn-round btn-simple"
-                                    color="default"
-                                    href="https://twitter.com/loopcycle_"
-                                    id="tooltip622135962"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                    <i className="fab fa-twitter" />
-                                </Button>
-                                <UncontrolledTooltip delay={0} target="tooltip622135962">
-                                    Follow us
-                                </UncontrolledTooltip>
-                                <Button
-                                    className="btn-icon btn-neutral btn-round btn-simple"
-                                    color="default"
-                                    href="https://www.youtube.com/channel/UCzXmbG1RV2ejUlIgRytdFfw"
-                                    id="tooltip230450801"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                    <i className="fab fa-youtube" />
-                                </Button>
-                                <UncontrolledTooltip delay={0} target="tooltip230450801">
-                                    View Content
-                                </UncontrolledTooltip>
-                            </div>
-                        </Col>
                     </Row>
-                    <div className="row no-gutters mt-3 mb-3 justify-content-center">
+               <div className="row no-gutters    justify-content-center">
                         <div className="col-auto copright-text">
-                            <ul>
+                            <ul className={"nav"}>
                                 <li>
                                     <p>
                                         &copy; {new Date().getFullYear()} Loopcycle
                                     </p>
-                                </li>
+                                </li>|
                                 <li>
                                     <Link to="/terms">Terms and Conditions</Link>
-                                </li>
+                                </li>|
                                 <li>
                                     <Link to="/privacy">Privacy</Link>
-                                </li>
+                                </li>|
                                 <li>
                                     <Link to="/cookie">Cookies</Link>
-                                </li>
+                                </li>|
                                 <li>
                                     <Link to="/service">Terms and Services</Link>
-                                </li>
+                                </li>|
                                 <li>
                                     <Link to="/acceptable">Acceptable Use</Link>
                                 </li>
                             </ul>
                         </div>
                     </div>
+
+                <Row className={"text-center    mt-2 mb-4"}>
+                    <Col md="12">
+                        <div className="btn-wrapper profile social-icons">
+                            <Button
+                                className="btn-icon btn-neutral btn-round btn-simple"
+                                color="default"
+                                href="https://www.linkedin.com/company/loopcycle"
+                                id="tooltip230450809"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <i className="fab fa-linkedin" />
+                            </Button>
+                            <UncontrolledTooltip delay={0} target="tooltip230450809">
+                                Connect
+                            </UncontrolledTooltip>
+
+                            <Button
+                                className="btn-icon btn-neutral btn-round btn-simple"
+                                color="default"
+                                href="https://twitter.com/loopcycle_"
+                                id="tooltip622135962"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <i className="fab fa-twitter" />
+                            </Button>
+                            <UncontrolledTooltip delay={0} target="tooltip622135962">
+                                Follow us
+                            </UncontrolledTooltip>
+                            <Button
+                                className="btn-icon btn-neutral btn-round btn-simple"
+                                color="default"
+                                href="https://www.youtube.com/channel/UCzXmbG1RV2ejUlIgRytdFfw"
+                                id="tooltip230450801"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <i className="fab fa-youtube" />
+                            </Button>
+                            <UncontrolledTooltip delay={0} target="tooltip230450801">
+                                View Content
+                            </UncontrolledTooltip>
+                        </div>
+
+                    </Col>
+                </Row>
 
             </footer>
         );

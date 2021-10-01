@@ -233,7 +233,7 @@ class Sites extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.siteList.length > 0 ? this.props.siteList.length : "... "
+                                        this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).length > 0 ? this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).length : "... "
                                     }
                                     <span className="ml-1">Sites</span>
                                 </p>

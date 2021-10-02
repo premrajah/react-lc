@@ -13,6 +13,7 @@ import {baseUrl} from "../../Util/Constants";
 import {withStyles} from "@material-ui/core/styles";
 import {Tooltip} from "@material-ui/core";
 import ConversionsTab from "./ConversionsTab";
+import _ from "lodash";
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -37,7 +38,9 @@ class AggregatesTab extends Component {
             fields: {},
             errors: {},
             fieldsSite: {},
-            showConversion:false
+            showConversion:false,
+            units:[],
+            selectedState:null
         }
 
     }
@@ -53,12 +56,13 @@ class AggregatesTab extends Component {
     }
 
 
-    updateUnitConversions=(unit)=>{
+    updateUnitConversions=(unit,state)=>{
 
 
         this.setState({
             conversionPopUp:!this.state.conversionPopUp,
-            selectedUnit:unit?unit:null
+            selectedUnit:unit?unit:null,
+            selectedState:state
         })
 
     }
@@ -74,7 +78,7 @@ class AggregatesTab extends Component {
 
         let validations=[
 
-            validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
+            validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a number.'}],fields),
 
 
         ]
@@ -106,16 +110,15 @@ class AggregatesTab extends Component {
         const data = new FormData(event.target);
         const factor = data.get("factor");
 
-        let unit_conversions=this.props.item.product.unit_conversions
-        unit_conversions.push({units:this.state.selectedUnit, factor:factor})
-
-
+        let  unit_conversions= this.props.item.product.unit_conversions?this.props.item.product.unit_conversions:[]
+        unit_conversions.push({units:this.state.selectedUnit,state:this.state.selectedState, factor:factor})
 
         const productData = {
             id: this.props.item.product._key,
             update: {
 
                 purpose:  this.props.item.product.purpose.toLowerCase(),
+                condition:   this.props.item.product.condition,
                 name:  this.props.item.product.name,
                 description:  this.props.item.product.description,
                 category:  this.props.item.product.category,
@@ -162,8 +165,39 @@ class AggregatesTab extends Component {
 
     }
 
+componentDidMount() {
+this.getFiltersCategories()
+}
+
+      getFiltersCategories=()=> {
+        axios
+            .get(baseUrl + "category")
+            .then(
+                (response) => {
+                    let   responseAll=[]
+                    responseAll = _.sortBy(response.data.data, ["name"]);
 
 
+        let units=responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+
+                    this.setState({
+                        units:units
+                    })
+
+                    console.log(units)
+
+
+                    // subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
+                    // states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
+                    // units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+
+
+
+
+                },
+                (error) => {}
+            );
+    }
 
     render() {
 
@@ -184,29 +218,32 @@ class AggregatesTab extends Component {
                                                     </span>
 
 
-                    <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
+                    {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&     <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
                            onClick={this.editConversion}
-                    >Edit Conversions</span>
+                    >Edit Conversions</span>}
                 </p>}
 
+                   {this.props.item.product.aggregations.length>0    &&  <>
                 <div className={" row"}>
-                    <div className={" col-3 text-bold"}>Info</div>
-                    <div className={" col-5 text-bold"}>Products</div>
-                    <div className={" col-3 text-bold"}>Total Volume</div>
+                    <div className={" col-4 text-bold"}>Info</div>
+                    <div className={" col-7 text-bold"}>Products</div>
+                    {/*<div className={" col-3 text-bold"}>Total Volume</div>*/}
                     <div className={" col-1 text-bold"}></div>
                 </div>
                 <div className="listing-row-border "></div>
                 {this.props.item.product.aggregations&&this.props.item.product.aggregations.length > 0 &&this.props.item.product.aggregations.map((aggregate,index)=>
                     <>{index>0 &&  <div className="listing-row-border "></div>}
-                        <div className={" row"}>
-                            <div className={" col-3"}>
-                                <span className={"small "}>Category: <span className={"text-capitalize text-mute"}>{aggregate.category}</span></span><br/>
-                                <span className={"small "}>Type: <span className={"text-capitalize text-mute"}>{aggregate.type}</span></span><br/>
-                                <span className={"small "}>State: <span className={"text-capitalize text-mute"}>{aggregate.state}</span></span><br/>
-                            </div>
-                            <div className={" col-5"}>
+                        <div className={aggregate.units===this.props.item.product.units?" row bg-grey":"row"}>
+                            <div className={" col-4"}>
+                                <span className={"small "}>Category: <span className={"text-capitalize text-mute"}>{aggregate.category}, {aggregate.type}, {aggregate.state}</span></span><br/>
+                                <span className={"small "}>Volume: <span className={"text-capitalize text-mute"}>{aggregate.volume}</span></span><br/>
+                                {/*<span className={"small "}>State: <span className={"text-capitalize text-mute"}>{aggregate.state}</span></span><br/>*/}
+                                <span className={"small "}>Unit: <span className={"text-capitalize text-mute"}>{aggregate.units}</span></span><br/>
 
-                        {this.props.item.sub_products.filter((subProduct)=> aggregate.product_info.filter((product)=> product.product_id==subProduct._id ).length>0 ).map(
+                            </div>
+                            <div className={" col-7"}>
+
+                        { aggregate.product_info.map(
                             (item, index2) =>
                    <>
                                 {/*{index2>0 &&  <div className=" text-center">+</div>}*/}
@@ -218,75 +255,89 @@ class AggregatesTab extends Component {
                                     key={index2+1}
                                     item={item}
                                     parentId={this.props.item.product._key}
+                                    aggregate={aggregate}
                                     remove={true}
                                 />
                                 </>
-
                         ) }
 
                             </div>
-                            <div className={" col-3"}>
-                                <span className={"text-capitalize text-mute small"}>{aggregate.volume}</span>
-                                <span className={"text-capitalize text-mute small"}> {aggregate.units}</span>
+                            {/*<div className={" col-3"}>*/}
+                            {/*    <span className={"text-capitalize text-mute small"}>{aggregate.volume}</span>*/}
+                            {/*    <span className={"text-capitalize text-mute small"}> {aggregate.units}</span>*/}
 
-                            </div>
+                            {/*</div>*/}
                             <div className={" col-1 text-capitalize text-mute small"}>
-                                {(this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?
-                                    <LightTooltip title={"Add Conversion"}>
-                                        <AddIcon className={"click-item"} onClick={()=> this.updateUnitConversions(aggregate.units)}/>
-                                    </LightTooltip>:null}
+
+                                {(this.props.item.product.units != aggregate.units && this.props.item.product.category == aggregate.category && this.props.item.product.type == aggregate.type) &&
+
+                                    <>
+                                        {!this.props.item.product.unit_conversions &&
+                                            <LightTooltip title={"Add Conversion"}>
+                                                <AddIcon className={"click-item"}
+                                                         onClick={() => this.updateUnitConversions(aggregate.units,aggregate.state)}/>
+                                            </LightTooltip>
+                                        }
+
+                                        {this.props.item.product.unit_conversions &&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units&& conversionUnit.state===aggregate.state) &&
+                                        <LightTooltip title={"Add Conversion"}>
+                                            <AddIcon className={"click-item"}
+                                                     onClick={() => this.updateUnitConversions(aggregate.units,aggregate.state)}/>
+                                        </LightTooltip>
+                                        }
+                                </>
+                                }
+
+                                {/*{(this.props.item.product.units!=aggregate.units&&!this.props.item.product.unit_conversions)||(this.props.item.product.units!=aggregate.units&&this.props.item.product.units!=aggregate.units)&&(this.props.item.product.unit_conversions&&!this.props.item.product.unit_conversions.find((conversionUnit)=> conversionUnit.units===aggregate.units ))?*/}
+                                {/*   :null}*/}
                             </div>
                         </div>
                     </>
                 )}
-     </>:
 
+                </>}
+     </>:
 
                <ConversionsTab goBack={this.editConversion} item={this.props.item} />}
 
-
                 <Modal
                     // size="lg"
+                    centered
                     show={this.state.conversionPopUp}
                     onHide={this.updateUnitConversions}
                     className={"custom-modal-popup popup-form"}>
-                    {/*<div className="row">*/}
-                    {/*    <button*/}
-                    {/*        onClick={this.updateUnitConversions}*/}
-                    {/*        className="btn-close close"*/}
-                    {/*        data-dismiss="modal"*/}
-                    {/*        aria-label="Close">*/}
-                    {/*        <i className="fas fa-times"></i>*/}
-                    {/*    </button>*/}
-                    {/*</div>*/}
-                    <div className={"row justify-content-center"}>
+
+                    <div className={"row justify-content-center pt-3"}>
                         <div className={"col-10 text-center"}>
-                            <p className={"text-bold text-blue"}>
-                                Add Unit Conversion For
-                                {this.state.selectedUnit?this.state.selectedUnit:""}
+                            <p className={" text-blue text-capitalize"}>
+                                Add Conversion from<span className={"text-bold text-capitalize"}> {this.props.item.product.units}, {this.props.item.product.state}</span> to  <span className={"text-bold text-capitalize"}>{this.state.selectedUnit?this.state.selectedUnit:""}, {this.state.selectedState}</span>
                             </p>
                         </div>
                     </div>
-                    <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
+                    <div className="row py-3 justify-content-center mobile-menu-row pt-1 ">
                         <div className="col mobile-menu">
-                            <div className="form-col-left col-12">
+                            <div className="form-col-left col-12 ">
                                 <form onSubmit={this.handleSubmit}>
-
-                                    <TextFieldWrapper
+                                    <div className="row  ">
+                                        <div className=" col-12 ">
+                                            <TextFieldWrapper
                                         // initialValue={this.props.item&&this.props.item.product.sku.brand}
                                         onChange={(value)=>this.handleChangeProduct(value,"factor")}
                                         error={this.state.errors["factor"]}
                                         name="factor" title="Factor" />
-
+                                    </div>
+                                    <div className=" col-12 text-center ">
                                     <button
                                         type={"submit"}
                                         className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                            "btn btn-default mt-2 btn-lg btn-rounded shadow  btn-green login-btn"
                                         }
                                         // disabled={this.state.isSubmitButtonPressed}
                                     >
-                                        Add Conversion
+                                        Save Conversion
                                     </button>
+                                    </div>
+                                    </div>
                                 </form>
 
                             </div>

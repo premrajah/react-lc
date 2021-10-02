@@ -179,6 +179,8 @@ class SiteForm extends Component {
 
             site: {
                 name: data.get("name"),
+                description: data.get("description"),
+                // siteId: data.get("siteId"),
                 email: data.get("email"),
                 address: data.get("address"),
                 contact: data.get("contact"),
@@ -252,6 +254,7 @@ class SiteForm extends Component {
             id:item._key,
             update: {
                 name: data.get("name"),
+                description: data.get("description"),
                 email: data.get("email"),
                 address: data.get("address"),
                 contact: data.get("contact"),
@@ -489,6 +492,31 @@ class SiteForm extends Component {
 
                                 </div>
                             </div>
+
+                            <div className="row no-gutters">
+                                <div className="col-12 ">
+
+                                    <TextFieldWrapper
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.description}
+                                        onChange={(value)=>this.handleChange(value,"description")}
+                                        error={this.state.errors["description"]}
+                                        name="description" title="Description" />
+
+                                </div>
+                            </div>
+                            <div className="row no-gutters">
+                                <div className="col-12 ">
+
+                                    <TextFieldWrapper
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.sideId}
+                                        onChange={(value)=>this.handleChange(value,"siteId")}
+                                        error={this.state.errors["siteId"]}
+                                        name="siteId" title="Site Id" />
+
+                                </div>
+                            </div>
+
+
 
                             <div className="row  ">
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">

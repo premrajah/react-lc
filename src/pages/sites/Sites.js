@@ -10,7 +10,7 @@ import {withStyles} from "@material-ui/core/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES, SITES_FILTER_VALUES} from "../../Util/Constants";
 import RemoveIcon from '@material-ui/icons/Remove';
 import {CSVLink} from "react-csv";
 import {Modal} from "react-bootstrap";
@@ -224,7 +224,7 @@ class Sites extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={SITES_FILTER_VALUES} />
                             </div>
                         </div>
                         <div className={"listing-row-border "}></div>
@@ -233,7 +233,7 @@ class Sites extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {
-                                        this.props.siteList.length > 0 ? this.props.siteList.length : "... "
+                                        this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).length > 0 ? this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).length : "... "
                                     }
                                     <span className="ml-1">Sites</span>
                                 </p>
@@ -244,7 +244,7 @@ class Sites extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.siteList.map((site, index) => (
+                        {this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).map((site, index) => (
                             <React.Fragment key={index}>
                                 <SitePageItem  showEdit={true} item={site}/>
                             </React.Fragment>

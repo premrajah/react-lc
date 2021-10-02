@@ -161,7 +161,7 @@ class Home extends Component {
                                 </p>
                                 <Link
                                     onClick={this.showLoginPopUp}
-                                    to={this.props.isLoggedIn && "/search-form"}
+                                    to={this.props.isLoggedIn && "/my-products"}
                                     className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                    Add Product
                                 </Link>

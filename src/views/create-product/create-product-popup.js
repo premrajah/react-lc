@@ -57,6 +57,8 @@ class ProductPopUp extends Component {
                             )}
 
                         </div>
+
+
                     </div>
                 </div>
 

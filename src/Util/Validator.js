@@ -3,6 +3,7 @@ const regex = {
         '^(([^<>()\\[\\]\\\\.,;:\\s@]+(\\.[^<>()\\[\\]\\\\.,;:\\s@]+)*)|(.+))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
     ),
     number: new RegExp('^[0-9]+$'),
+
 };
 
 export class Validators {
@@ -33,10 +34,27 @@ export class Validators {
     static confirmPassword(value, message,password) {
         // console.log(value, message,password)
 
-        if (password&&value.toString().trim().length&&(password!==value)) {
+        if (password&&value&&value.toString().trim().length&&(password!==value)) {
 
             return { error: true, message };
         }
+        return false;
+    }
+
+    static decimal(value, message) {
+        const length = value ? value.toString().length : 0;
+
+        if (length > 0) {
+
+            const decimalCheck=value.replace(".","")
+            console.log(decimalCheck)
+            const result = regex.number.test(decimalCheck);
+            console.log(result)
+            if (!result) {
+                return { error: true, message };
+            }
+        }
+
         return false;
     }
 

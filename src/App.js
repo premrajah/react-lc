@@ -76,6 +76,8 @@ import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./components/Cycles/CyclesRecords";
 import {GoogleMap} from "./components/Map/MapsContainer";
+import Header from "./components/Header/Header";
+import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 
 
 
@@ -89,6 +91,7 @@ class App extends Component {
         return (
             <>
                 <BrowserRouter>
+                    {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/terms" component={TermsAndConditions} />
@@ -177,13 +180,14 @@ class App extends Component {
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />
 
-
-
                     </Switch>
 
                     {this.props.showLoginPopUp && <LoginPopUp />}
                     {this.props.showProductPopUp && <ProductPopUp />}
                     {this.props.isLoggedIn&& <SiteForm />}
+                <UploadMultiplePopUp />
+
+
                     <CustomSnackbar />
                 </BrowserRouter>
             </>
@@ -206,6 +210,7 @@ const mapStateToProps = (state) => {
         showProductView: state.loginPopUpStatus,
         showProductPopUp: state.showProductPopUp,
         showSiteForm: state.showSiteForm,
+        showMultiplePopUp: state.showMultiplePopUp,
     };
 };
 
@@ -215,6 +220,7 @@ const mapDispatchToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         logOut: (data) => dispatch(actionCreator.logOut(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App);

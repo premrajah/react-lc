@@ -77,9 +77,11 @@ class ProductTreeView extends Component {
 
     setTree() {
 
+
+        console.log("called")
+
             let list = this.props.items
 
-            console.log(list)
 
             let tree = this.state.tree;
 
@@ -124,7 +126,16 @@ class ProductTreeView extends Component {
     componentDidMount() {
         // this.getItems();
 
+
         this.setTree()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!=this.props){
+            console.log("change detected")
+            this.setTree()
+        }
     }
 
     getItems() {

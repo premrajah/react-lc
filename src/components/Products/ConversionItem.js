@@ -64,30 +64,33 @@ const ConversionItem = (props) => {
     }
 
 
-   const handleUpdate=(type,units,factor)=>{
+   const handleUpdate=(type,units,factor,state)=>{
 
-        props.onEdit(type,units,factor)
+        props.onEdit(type,units,factor,state)
     }
 
 
     return <>
         <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-            <div className="col-4 text-capitalize">
+            <div className="col-3 text-capitalize">
+                {props.item.state}
+            </div>
+            <div className="col-3 text-capitalize">
                 {props.item.units}
             </div>
 
-            <div className="col-sm-4 pl-2">
+            <div className="col-sm-3 pl-2">
 
                 {props.item.factor}
 
             </div>
-            <div className="col-sm-4 text-right">
+            <div className="col-sm-3 text-right">
 
               <EditIcon className={" click-item"}  fontSize="small"
-                        onClick={() => handleUpdate("edit",props.item.units,props.item.factor)}
+                        onClick={() => handleUpdate("edit",props.item.units,props.item.factor,props.item.state)}
               />
               <Close className={" click-item"}  fontSize="small"
-                     onClick={() => handleUpdate("delete",props.item.units)}
+                     onClick={() => handleUpdate("delete",props.item.units,null,props.item.state)}
               />
 
             </div>

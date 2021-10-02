@@ -15,6 +15,7 @@ import {
     PRODUCT_LIST,
     PRODUCT_NPARENT_LIST,
     PRODUCT_NPARENT_LIST_PAGE,
+    PRODUCT_NPARENT_NO_LIST,
     PRODUCT_POPUP,
     REVIEW_BOX_OPEN,
     REVIEW_SUBMIT,
@@ -47,7 +48,8 @@ import {
     CURRENT_PRODUCT,
     CURRENT_SITE,
     GET_LISTINGS,
-    SITE_FORM_SHOW
+    SITE_FORM_SHOW,
+    SHOW_MULTIPLE_POP_UP
 } from "../types";
 
 export const initialState = {
@@ -72,6 +74,7 @@ export const initialState = {
     parentProduct: null,
     productList: [],
     productWithoutParentList: [],
+    productWithoutParentNoList: [],
     productWithoutParentListPage: [],
     siteList: [],
     allListings: [],
@@ -96,6 +99,7 @@ export const initialState = {
     currentSite: null,
     currentSiteLoading: false,
     signUpPageSubmitted:false,
+    showMultiplePopUp:false,
     showSiteForm:{
         show:false,
         item:null
@@ -116,6 +120,10 @@ const reducer = (state = initialState, action) => {
             newState.orgImage = action.value;
             break;
 
+        case SHOW_MULTIPLE_POP_UP:
+            console.log("shpw mulitp;l")
+            newState.showMultiplePopUp = action.value;
+            break;
         case LOADING_SPINNER:
             newState.reviewLoading = true;
             break;
@@ -301,6 +309,18 @@ const reducer = (state = initialState, action) => {
             newState.productPageSize=action.value.size
 
             break;
+
+        case PRODUCT_NPARENT_NO_LIST:
+
+
+            newState.productWithoutParentNoList= (action.value.val);
+
+            newState.loading = false;
+
+
+            break;
+
+
 
         case SITE_LIST:
             newState.siteList = action.value;

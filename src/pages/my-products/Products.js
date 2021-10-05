@@ -284,10 +284,13 @@ class Products extends Component {
                                 <button className=" btn-pink " onClick={() => this.setState({selectedProducts: []})}><>Clear</></button>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{overflowY:"auto",maxHeight:"250px",}}>
                                 <div className="col">
                                     {this.state.selectedProducts.map((product, index) => (
-                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer'}}><RemoveIcon color="secondary" /> {product.product.name}</div>
+                                            <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer',
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden"}}><RemoveIcon color="secondary" /> {product.product.name}</div>
                                     ))}
                                 </div>
                             </div>

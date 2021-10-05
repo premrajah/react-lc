@@ -315,8 +315,6 @@ class ProductForm extends Component {
         let fields = this.state.fields;
 
 
-
-
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),

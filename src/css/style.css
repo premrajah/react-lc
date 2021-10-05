@@ -2267,6 +2267,7 @@ button.blue-btn-border
     background: #d31169;
     color: white;
     border: 2px solid #d31169;
+    border-radius: 7px;
 }
 
 .or-text-divider {

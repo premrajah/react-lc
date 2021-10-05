@@ -12,13 +12,20 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import RemoveIcon from '@material-ui/icons/Remove';
+import DownloadIcon from '@material-ui/icons/GetApp';
+import MapIcon from '@material-ui/icons/Map';
+
 import {CSVLink} from "react-csv";
-import {Modal} from "react-bootstrap";
+import {Modal, ModalBody} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {CURRENT_PRODUCT} from "../../store/types";
+import {CURRENT_PRODUCT, LOGIN, LOGIN_ERROR} from "../../store/types";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
+import {saveKey, saveUserToken} from "../../LocalStorage/user";
+import {getMessages, getNotifications} from "../../store/actions/actions";
+import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
+import Close from "@material-ui/icons/Close";
 
 class Products extends Component {
 
@@ -30,12 +37,16 @@ class Products extends Component {
             selectedProducts: [],
             showMultiUpload: false,
             isIntersecting:false,
-            intersectionRatio:0
+            intersectionRatio:0,
+            mapData:[],
+            showMap:false
 
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
     }
+
+
 
     showProductSelection() {
         this.props.showProductPopUp({ type: "create_product", show: true });
@@ -78,6 +89,8 @@ class Products extends Component {
         this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
     // this.loadNewPageSetUp()
+
+        // this.getSitesForProducts()
 
     }
 
@@ -185,6 +198,64 @@ class Products extends Component {
         window.scrollTo(0, 0);
     }
 
+    toggleMap=()=>{
+        this.setState({
+            showMap:!this.state.showMap,
+
+        })
+    }
+    getSitesForProducts=()=>{
+
+
+        let products=[]
+
+        let mapData=[]
+
+        this.state.selectedProducts.forEach(item => {
+
+            mapData.push({_key:item.product._key,name:item.product.name})
+            return products.push(item.product._key)
+        })
+
+        axios
+            .post(baseUrl + "product/site/get-many", { product_ids:products })
+            .then((res) => {
+
+                if (res.status === 200) {
+                   // console.log(res)
+
+                    let sites=res.data.data
+
+
+                    for (let i=0;i<mapData.length;i++){
+                        let site=sites.find((site)=>site.product_id.replace("Product/","")==mapData[i]._key)
+
+                        mapData[i].site=site.site
+
+                    }
+
+
+                    this.setState({
+                        showMap:!this.state.showMap,
+                        mapData: mapData
+                    })
+
+                } else {
+
+                }
+            })
+            .catch((error) => {
+
+                if (error.response)
+                    console.log(error)
+
+
+
+            });
+
+    }
+
+
     render() {
         const classesBottom = withStyles();
         const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
@@ -197,15 +268,20 @@ class Products extends Component {
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
-                            <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
-                                <div className="col d-flex justify-content-end">
-                                    <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>
-                                    <button className="btn btn-sm btn-pink ml-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
+                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
+                            <div className="row no-gutters mb-2 pb-2 " style={{borderBottom: '1px solid #70707062'}}>
+                                <div className="col-7  ">
+                                    <a onClick={this.getSitesForProducts}  className="btn btn-sm btn-green"><MapIcon style={{fontSize:"20px"}} /> Locations</a>
                                 </div>
+                                <div className="col-5 text-right">
+                                    <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><><DownloadIcon  style={{fontSize:"20px"}} /> CSV</></CSVLink>
+                                </div>
+
                             </div>
-                            <div className="row mb-1">
+                            <div className="row  no-gutters mb-1">
                                 <div className="col blue-text">Selected Products</div>
+
+                                <button className=" btn-pink " onClick={() => this.setState({selectedProducts: []})}><>Clear</></button>
                             </div>
 
                             <div className="row">
@@ -333,10 +409,31 @@ class Products extends Component {
                     </React.Fragment>
                 </div>
 
-                {/*{this.state.showMultiUpload && (*/}
-                {/*    <UploadMultiplePopUp showMultiUpload={this.state.showMultiUpload} handleMultiUploadCallback={this.handleMultiUploadCallback} toggleMultiSite={this.toggleMultiSite}  />*/}
+                <Modal
+                    // className={"loop-popup"}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    show={this.state.showMap}
+                    centered
+                    size={"lg"}
+                    onHide={this.toggleMap}
+                    animation={false}>
+                    <ModalBody>
+                        <div className=" text-right web-only">
+                            <Close
+                                onClick={this.toggleMap}
+                                className="blue-text click-item"
+                                style={{ fontSize: 32 }}
+                            />
+                        </div>
 
-                {/*)}*/}
+                        <div className={"row justify-content-center"}>
+                <ProductsGoogleMap mapData={this.state.mapData} width="700px" height="400px"/>
+
+                        </div>
+                    </ModalBody>
+                </Modal>
+                }
+
             </Layout>
         );
     }

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialValue, ...otherProps}) => {
+const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
     // const [field, mata] = useField(name)
     const classes = useStyles();
@@ -49,7 +49,9 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
 
            <div className={"field-box mb-1"}>
 
-               <TextField  variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
+               <TextField
+
+                  variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
 
            </div>
             {error && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{error.message}</span>}

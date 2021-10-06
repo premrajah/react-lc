@@ -3,12 +3,14 @@ import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import { Divider, List, ListItem, ListItemIcon } from "@material-ui/core";
+import { Button, Divider, List, ListItem, ListItemIcon } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import MessageIcon from "@material-ui/icons/Message";
 import CreateIcon from "@material-ui/icons/Create";
+import SendIcon from "@material-ui/icons/Send";
 import TextField from "../FormsUI/ProductForm/TextField";
-import {useRouteMatch} from "react-router-dom";
+import moment from "moment/moment";
+import Select from "react-select";
 
 const msgWindowHeight = "500px";
 
@@ -18,10 +20,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
+    const [reactSelectValues, setReactSelectValues] = useState([]);
+    const [reactSelectedValues, setReactSelectedValues] = useState([]);
+    const [messageText, setMessageText] = useState("");
 
     const [msgDisplay, setMsgDisplay] = useState(true);
     const [matchDisplay, setMatchDisplay] = useState(false);
     const [cycleDisplay, setCycleDisplay] = useState(false);
+    const [newMsgDisplay, setNewMsgDisplay] = useState(false);
 
     useEffect(() => {
         getAllOrgs();
@@ -37,7 +43,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         axios
             .get(`${baseUrl}org/all`)
             .then((response) => {
-                setAllOrgs(response.data.data);
+                const res = response.data.data;
+                setAllOrgs(res);
+
+                const temp = [];
+                res.map((r) => {
+                    if (r.email !== null) {
+                        temp.push({ value: r._id, label: r.email });
+                    }
+                });
+                setReactSelectValues(temp);
             })
             .catch((error) => {
                 console.log("all orgs errors ", error.message);
@@ -56,21 +71,92 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const getGroupMessageWithId = (id) => {
-        if(!id) return;
+        if (!id) return;
         axios
             .get(`${baseUrl}message-group/${id}/message`)
-            .then(response => {
-                console.log('gm ', response.data.data)
+            .then((response) => {
                 setSelectedMsgGroup(response.data.data);
             })
-            .catch(error => {
-                console.log('group message error ', error.message);
-            })
-    }
+            .catch((error) => {
+                console.log("group message error ", error.message);
+            });
+    };
+
+    const handleNewMessageSelect = (e) => {
+        if (!e) return;
+        const temp = [];
+        e.map((v) => {
+            temp.push(v.value);
+        });
+        setReactSelectedValues(temp);
+    };
 
     const handleGroupClick = (groupId) => {
-        if(!groupId) return;
+        if (!groupId) return;
         getGroupMessageWithId(groupId);
+    };
+
+    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
+        if (!text) return;
+
+        let payload = {};
+
+        switch (messageType) {
+            case "new_message":
+                payload = {
+                    message: {
+                        type: "message",
+                        text: text,
+                    },
+                    to_org_ids: toOrgIds,
+                };
+                break;
+            case "group_message":
+                payload = {
+                    message: {
+                        type: "message",
+                        text: text,
+                    },
+                    to_org_ids: [],
+                    message_group_id: messageGroupId,
+                };
+                break;
+        }
+
+        // const payload = {
+        //     message: {
+        //         type: "message",
+        //         text: text,
+        //     },
+        //     to_org_ids: toOrgIds ? [toOrgIds] : [],
+        //     message_group_id: messageGroupId ? messageGroupId : "",
+        //     linked_msg_id: linkedMessageId ? linkedMessageId : "",
+        // };
+
+        postMessage(payload);
+    };
+
+    const postMessage = (payload) => {
+        axios
+            .post(`${baseUrl}message/chat`, payload)
+            .then((response) => {
+                console.log("postMessage response ", response);
+                if (response.status === 200) {
+                    // getMessages();
+                    setMessageText("");
+                    setReactSelectedValues([]);
+                    getAllMessageGroups();
+                }
+            })
+            .catch((error) => {
+                console.log("postMessage error ", error.message);
+            });
+    };
+
+    const handleSendMessage = () => {
+        if (reactSelectedValues.length > 0) {
+            sendMessage(messageText, reactSelectedValues, "", "", "new_message");
+        }
     };
 
     const handleColumnDisplay = (value) => {
@@ -79,37 +165,62 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             case "message":
                 setMatchDisplay(false);
                 setCycleDisplay(false);
+                setNewMsgDisplay(false);
                 setMsgDisplay(true);
                 break;
             case "match":
                 setMsgDisplay(false);
                 setCycleDisplay(false);
+                setNewMsgDisplay(false);
                 setMatchDisplay(true);
                 break;
             case "cycle":
                 setMsgDisplay(false);
                 setMatchDisplay(false);
+                setNewMsgDisplay(false);
                 setCycleDisplay(true);
                 break;
             case "new":
                 setMsgDisplay(false);
                 setMatchDisplay(false);
                 setCycleDisplay(false);
+                setNewMsgDisplay(true);
         }
     };
 
     return (
         <>
             <div className="row mb-2">
-                <div className="col-md-2">
-                    <CreateIcon fontSize="large" style={{ cursor: "pointer" }} onClick={() => handleColumnDisplay("new")} />
+                <div className="col-md-1 d-flex">
+                    <CreateIcon
+                        fontSize="large"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleColumnDisplay("new")}
+                    />
                 </div>
+                {newMsgDisplay && (
+                    <div className="col">
+                        {reactSelectValues.length > 0 ? (
+                            <Select
+                                options={reactSelectValues}
+                                isMulti
+                                name="orgs"
+                                className="react-multi-select"
+                                classNamePrefix="select"
+                                onChange={(e) => handleNewMessageSelect(e)}
+                            />
+                        ) : (
+                            ""
+                        )}
+                    </div>
+                )}
             </div>
             <Divider />
             <div className="row mt-2">
                 {/*{console.log("Mes ", messages)}*/}
                 {/*{console.log("Orgs ", allOrgs)}*/}
                 {/*{console.log("MG ", allMessageGroups)}*/}
+                {/*{console.log('rsv ', reactSelectedValues)}*/}
                 <div className="row">
                     <div className="col-md-1">
                         <List>
@@ -129,7 +240,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 </div>
                 {msgDisplay && (
                     <div className="col-md-4">
-                        <div className="message-search-field mb-3">
+                        <h5 style={{ color: "var(--lc-purple)" }}>Group Messages</h5>
+                        <div className="message-search-field mb-1">
                             <Autocomplete
                                 freeSolo
                                 onChange={(e, value) => setAutoCompleteOrg(value)}
@@ -152,11 +264,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             />
                         </div>
 
-                        <h5 style={{ color: "var(--lc-purple)" }}>Group Messages</h5>
                         {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
                         <List
                             className="message-groups"
-                            style={{ height: msgWindowHeight, maxHeight: msgWindowHeight, overflow: "auto" }}>
+                            style={{
+                                height: msgWindowHeight,
+                                maxHeight: msgWindowHeight,
+                                overflow: "auto",
+                            }}>
                             {allMessageGroups.length > 0 ? (
                                 allMessageGroups
                                     .filter((val) => {
@@ -181,7 +296,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     })
                                     .map((group, i) => (
                                         <div key={i}>
-                                            <ListItem button divider onClick={() => handleGroupClick(group._key)}>
+                                            <ListItem
+                                                button
+                                                divider
+                                                onClick={() => handleGroupClick(group._key)}>
                                                 {group.name}
                                             </ListItem>
                                         </div>
@@ -193,45 +311,69 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     </div>
                 )}
 
-                {
-                    matchDisplay && <div className="col-md-4">
-                        Match
-                    </div>
-                }
+                {matchDisplay && <div className="col-md-4">Match</div>}
 
-                {
-                    cycleDisplay && <div className="col-md-4">
-                        cycle
-                    </div>
-                }
+                {cycleDisplay && <div className="col-md-4">cycle</div>}
 
-
-                {(msgDisplay || matchDisplay || cycleDisplay) && <div className="col-md-7">
-                    <div
-                        className="row"
-                        style={{height: msgWindowHeight, maxHeight: msgWindowHeight, overflow: "auto"}}>
-                        <div className="col">
-                            {selectedMsgGroup.length > 0 ? <div
-                                className="message-window p-3"
-                                style={{background: "var(--lc-bg-gray)", height: msgWindowHeight}}>
-                                {selectedMsgGroup.length > 0
-                                    ? selectedMsgGroup.map((m, i) => (
-                                        <div key={i} className="d-flex">
-                                            <div>{m.message.text}</div>
-                                        </div>
-                                    ))
-                                    : ""}
-                            </div> : <div></div>}
+                {(msgDisplay || matchDisplay || cycleDisplay) && (
+                    <div className="col-md-7">
+                        <div
+                            className="row"
+                            style={{
+                                height: msgWindowHeight,
+                                maxHeight: msgWindowHeight,
+                                overflow: "auto",
+                            }}>
+                            <div className="col">
+                                {selectedMsgGroup.length > 0 ? (
+                                    <div
+                                        className="message-window p-3"
+                                        style={{ height: msgWindowHeight }}>
+                                        {selectedMsgGroup.map((m, i) => (
+                                            <div key={i} className="d-flex">
+                                                <div
+                                                    className="w-75 p-2 mb-1 border-rounded"
+                                                    style={{ background: "rgba(39, 36, 92, 0.3)" }}>
+                                                    <div>{m.message.text}</div>
+                                                    <div className="float-right">
+                                                        {moment(m.message._ts_epoch_ms).fromNow()}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div>click on a group to view messages.</div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>}
-
-
+                )}
             </div>
 
-            <div className="row" style={{ height: "60px", background: "red" }}>
-                <div className="col d-flex align-items-center">
-                    <div className="message-reply col">text {autoCompleteOrg}</div>
+            <Divider />
+
+            <div className="row mt-2" style={{ height: "60px" }}>
+                <div className="col-11 p-0">
+                    <TextField
+                        id="send-new-msg"
+                        label="Send new message"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(text) => setMessageText(text)}
+                    />
+                </div>
+                <div className="col-1 d-flex justify-content-center align-items-center p-0">
+                    <Button
+                        type="button"
+                        disabled={messageText ? false : true}
+                        fullWidth
+                        onClick={() => handleSendMessage()}>
+                        <SendIcon
+                            fontSize="large"
+                            style={{ color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)" }}
+                        />
+                    </Button>
                 </div>
             </div>
         </>

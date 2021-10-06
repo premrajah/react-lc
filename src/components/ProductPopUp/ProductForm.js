@@ -88,6 +88,7 @@ class ProductForm extends Component {
             is_listable: false,
             moreDetail: false,
             isSubmitButtonPressed: false,
+            disableVolume:false
         };
 
 
@@ -315,13 +316,10 @@ class ProductForm extends Component {
         let fields = this.state.fields;
 
 
-
-
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
             validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
@@ -329,6 +327,11 @@ class ProductForm extends Component {
             validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),
 
         ]
+
+        if (!this.state.disableVolume){
+            validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
+            )
+        }
 
 
 
@@ -343,6 +346,21 @@ class ProductForm extends Component {
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
+
+console.log(field,value)
+        if (field==="purpose"&&value==="Aggregate"){
+
+            this.setState({
+                disableVolume:true
+            })
+        }
+       else if (field==="purpose"&&value!=="Aggregate"){
+
+            this.setState({
+                disableVolume:false
+            })
+        }
+
 
     }
 
@@ -818,38 +836,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-4">
-                                <div className="col-12">
-                                    <div className="row no-gutters justify-content-center ">
-                                        <div className="col-12 ">
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-1"}>
-                                                Quantity
-                                            </div>
-                                        </div>
 
-                                        <div className="col-6 pr-2">
-                                            <SelectArrayWrapper
-                                                select={"Select"}
-                                                initialValue={this.props.item&&this.props.item.product.units}
-                                                onChange={(value)=>this.handleChangeProduct(value,"units")}
-                                                error={this.state.errors["units"]}
-
-                                                disabled={ (this.state.units.length > 0) ? false : true}
-                                                options={this.state.units} name={"units"} title="(Units)"/>
-                                        </div>
-                                        <div className="col-6 pl-2">
-
-                                            <TextFieldWrapper
-                                                initialValue={this.props.item&&this.props.item.product.volume+""}
-                                                onChange={(value)=>this.handleChangeProduct(value,"volume")}
-                                                error={this.state.errors["volume"]}
-                                                name="volume" title="(Volume)" />
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div className="row no-gutters mt-4">
                                 <div className="col-12">
@@ -860,6 +847,7 @@ class ProductForm extends Component {
 
                                                 initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
                                                 onChange={(value)=> {
+                                                    this.handleChangeProduct(value,"purpose")
 
                                                 }}
                                                options={this.state.purpose} name={"purpose"} title="Purpose"/>
@@ -920,6 +908,40 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
                             </div>
+                                <div className="row no-gutters mt-4">
+                                    <div className="col-12">
+                                        <div className="row no-gutters justify-content-center ">
+                                            <div className="col-12 ">
+                                                <div
+                                                    className={"custom-label text-bold text-blue mb-1"}>
+                                                    Quantity
+                                                </div>
+                                            </div>
+
+                                            <div className="col-6 pr-2">
+                                                <SelectArrayWrapper
+                                                    select={"Select"}
+                                                    initialValue={this.props.item&&this.props.item.product.units}
+                                                    onChange={(value)=>this.handleChangeProduct(value,"units")}
+                                                    error={this.state.errors["units"]}
+
+                                                    disabled={ (this.state.units.length > 0) ? false : true}
+                                                    options={this.state.units} name={"units"} title="(Units)"/>
+                                            </div>
+                                            <div className="col-6 pl-2">
+
+                                                {!this.state.disableVolume&&   <TextFieldWrapper
+                                                    // readonly ={this.state.disableVolume}
+                                                    initialValue={this.props.item&&this.props.item.product.volume+""}
+                                                    // value={this.state.disableVolume?"0":""}
+                                                    onChange={(value)=>this.handleChangeProduct(value,"volume")}
+                                                    error={this.state.errors["volume"]}
+                                                    name="volume" title="(Volume)" />}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             <div className="row no-gutters mt-4">
                                 <div className="col-12">

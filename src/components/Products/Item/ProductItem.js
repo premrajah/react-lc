@@ -135,7 +135,7 @@ class ProductItemNew extends Component {
                     });
                 },
                 (error) => {
-                    var status = error.response.status;
+                    // var status = error.response.status;
                 }
             );
     }

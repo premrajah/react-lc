@@ -140,7 +140,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
-                console.log("postMessage response ", response);
                 if (response.status === 200) {
                     // getMessages();
                     setMessageText("");
@@ -217,10 +216,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             </div>
             <Divider />
             <div className="row mt-2">
-                {/*{console.log("Mes ", messages)}*/}
-                {/*{console.log("Orgs ", allOrgs)}*/}
-                {/*{console.log("MG ", allMessageGroups)}*/}
-                {/*{console.log('rsv ', reactSelectedValues)}*/}
                 <div className="row">
                     <div className="col-md-1">
                         <List>
@@ -250,7 +245,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         ? allMessageGroups.map((option) =>
                                               option.name ? option.name : ""
                                           )
-                                        : ""
+                                        : []
                                 }
                                 renderInput={(params) => (
                                     <TextField

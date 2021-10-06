@@ -2278,6 +2278,10 @@ button.blue-btn-border
     margin: 10px 0 20px;
 }
 
+.disable-text input{
+    cursor: not-allowed;
+}
+
 .or-text-divider span {
     background: #fff;
     padding: 0 10px;

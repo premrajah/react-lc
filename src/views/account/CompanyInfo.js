@@ -502,7 +502,10 @@ class CompanyInfo extends Component {
                                 </div>
                             </div>
                         </div>
-
+<hr />
+                        <div className={"row"}>
+                            <div className={"col-6 mt-4 text-left"}>
+                                <h5>Company Info</h5>
                         {this.state.org && (
                             <div className={"row"}>
                                 <div className={"col-12"}>
@@ -566,7 +569,7 @@ class CompanyInfo extends Component {
                                                 <button
                                                     type={"submit"}
                                                     className={
-                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                        "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
                                                     }>
                                                     {this.state.loading && (
                                                         <Spinner
@@ -604,7 +607,7 @@ class CompanyInfo extends Component {
                                         <button
                                             onClick={this.submitCompanyNumber}
                                             className={
-                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
                                             }>
                                             {this.state.loading && (
                                                 <Spinner
@@ -629,6 +632,93 @@ class CompanyInfo extends Component {
                                 </div>
                             </>
                         )}
+                            </div>
+                            <div className={"col-6  mt-4 text-left"}>
+                                <h5>Transfer Scaling</h5>
+
+                                <div className={"row"}>
+                                    <div className={"col-12"}>
+                                        <form onSubmit={this.handleSubmitSite}>
+                                            <div className="row no-gutters justify-content-center ">
+                                                <div className="col-12 mt-4">
+
+                                                    <TextFieldWrapper
+                                                        initialValue={this.state.companyName}
+                                                        onChange={(value)=>this.handleChange(value,"companyName")}
+                                                        error={this.state.errors["companyName"]}
+                                                        name="companyName" label="Company Name" />
+
+
+                                                </div>
+
+                                                <div className="col-12 mt-4">
+
+                                                    <TextFieldWrapper
+                                                        initialValue={this.state.description}
+                                                        onChange={(value)=>this.handleChange(value,"description")}
+                                                        error={this.state.errors["description"]}
+                                                        name="description" label="Description" />
+
+
+                                                </div>
+
+                                                <div className="col-12 mt-4">
+
+                                                    <TextFieldWrapper
+                                                        initialValue={this.state.industry}
+                                                        onChange={(value)=>this.handleChange(value,"industry")}
+                                                        error={this.state.errors["industry"]}
+                                                        name="industry" label="Industry" />
+
+
+                                                </div>
+                                                <div className="col-12 mt-4">
+
+                                                    <TextFieldWrapper
+                                                        initialValue={this.state.sector}
+                                                        onChange={(value)=>this.handleChange(value,"businessField")}
+                                                        error={this.state.errors["businessField"]}
+                                                        name="businessField" label="Field of Business" />
+
+
+                                                </div>
+                                                <div className="col-12 mt-4">
+
+                                                    <TextFieldWrapper
+                                                        initialValue={this.state.no_of_staff}
+                                                        onChange={(value)=>this.handleChange(value,"no_of_staff")}
+                                                        error={this.state.errors["no_of_staff"]}
+                                                        name="no_of_staff" label="No of staff" />
+
+
+                                                </div>
+
+
+                                                <div className="col-12 mt-4">
+                                                    <button
+                                                        type={"submit"}
+                                                        className={
+                                                            "btn btn-default btn-lg btn-rounded shadow btn-green login-btn"
+                                                        }>
+                                                        {this.state.loading && (
+                                                            <Spinner
+                                                                as="span"
+                                                                animation="border"
+                                                                size="sm"
+                                                                role="status"
+                                                                aria-hidden="true"
+                                                            />
+                                                        )}
+
+                                                        {this.state.loading ? "Wait.." : "Save"}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

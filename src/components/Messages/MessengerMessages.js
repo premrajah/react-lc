@@ -356,6 +356,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         variant="outlined"
                         fullWidth
                         onChange={(text) => setMessageText(text)}
+                        value={messageText || ""}
                     />
                 </div>
                 <div className="col-1 d-flex justify-content-center align-items-center p-0">

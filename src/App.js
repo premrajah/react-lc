@@ -78,6 +78,7 @@ import CyclesRecords from "./components/Cycles/CyclesRecords";
 import {GoogleMap} from "./components/Map/MapsContainer";
 import Header from "./components/Header/Header";
 import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
+import TransferScaling from "./views/account/TransferScaling";
 
 
 
@@ -147,6 +148,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
+                        <LoggedInRoute exact path="/transfer-scaling" component={TransferScaling} />
                         <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />

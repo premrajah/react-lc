@@ -62,6 +62,12 @@ class MyAccount extends Component {
                                         className="list-group-item list-group-item-action ">
                                         Company Info <NavigateNextIcon />
                                     </Link>
+                                    <Link
+                                        to="/transfer-scaling"
+                                        className="list-group-item list-group-item-action "
+                                    >
+                                        Transfer Scaling <NavigateNextIcon />
+                                    </Link>
 
                                     <Link
                                         to="/statistics"

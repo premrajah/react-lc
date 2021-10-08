@@ -254,7 +254,7 @@ const reducer = (state = initialState, action) => {
                 newState.productPageOffset = 20+ 20
             }
 
-            let concatList=(action.value.val).filter((item)=> item.is_listable===true)
+            let concatList=(action.value.val)
 
             prevListPage=prevListPage.concat(concatList)
             prevListPage=prevListPage.filter( (ele, ind) => ind === prevListPage.findIndex( elem => elem._key === ele._key ))

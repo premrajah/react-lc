@@ -1007,11 +1007,14 @@ class ProductDetailContent extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <button
+                                                    onClick={this.showReleaseProduct}
                                                     style={{ minWidth: "120px" }}
                                                     className={
                                                         "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                     }>
-                                                    <Link to={"/approve"}>Check Approval</Link>
+                                                    {/*<Link to={"/approve"}>Check Approval</Link>*/}
+
+                                                    Ok
                                                 </button>
                                             </div>
                                             <div

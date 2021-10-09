@@ -41,14 +41,30 @@ export class Validators {
         return false;
     }
 
-    static decimal(value, message) {
+    static decimal(value, message,password, min,max) {
+        console.log("min,max")
+        console.log(min,max)
         const length = value ? value.toString().length : 0;
 
         if (length > 0) {
 
             const decimalCheck=value.replace(".","")
-            console.log(decimalCheck)
-            const result = regex.number.test(decimalCheck);
+
+            let result = regex.number.test(decimalCheck);
+
+
+                if (min&&min>value){
+
+                    console.log("less than  min")
+                    result=false
+                }
+
+                if (max&&value>max){
+                    console.log("greater than  max")
+                    result=false
+                }
+
+
             console.log(result)
             if (!result) {
                 return { error: true, message };
@@ -101,8 +117,10 @@ export const validateInputs = (validations) => {
 
             if (inputField && inputField.validations.length) {
                 for (let i = 0; i < inputField.validations.length; i++) {
+                    console.log(inputField.validations)
 
-                    const error = inputField.validations[i].check(inputField.value, inputField.validations[i].message,inputField.password);
+                    const error = inputField.validations[i].check(inputField.value, inputField.validations[i].message,inputField.password,
+                        inputField.validations[i].min,inputField.validations[i].max);
                     if (error) {
 
                         formIsValid=false

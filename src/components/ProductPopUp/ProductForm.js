@@ -347,7 +347,6 @@ class ProductForm extends Component {
         fields[field] = value;
         this.setState({ fields });
 
-console.log(field,value)
         if (field==="purpose"&&value==="Aggregate"){
 
             this.setState({

@@ -620,7 +620,7 @@ class SiteDetailContent extends Component {
                                         <div className="row">
                                             <div className="col-8">
                                                 <h4 className="blue-text text-heading text-caps">
-                                                    {this.state.item.name}
+                                                    {this.props.item.site.name}
                                                 </h4>
                                             </div>
 

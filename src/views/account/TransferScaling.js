@@ -6,7 +6,7 @@ import Sidebar from "../menu/Sidebar";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
-import {Modal, Spinner} from "react-bootstrap";
+import {Modal, ModalBody, Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
@@ -20,6 +20,7 @@ import _ from "lodash";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import ConversionItem from "../../components/Products/ConversionItem";
 import TransferScalingItem from "./TransferScalingItem";
+import Close from "@material-ui/icons/Close";
 
 class TransferScaling extends Component {
     constructor(props) {
@@ -55,6 +56,7 @@ class TransferScaling extends Component {
             transferScaling:[],
             selectedItem:null,
             org_id:null,
+            org_name:null,
             type:null
 
 
@@ -111,6 +113,7 @@ class TransferScaling extends Component {
         if (detail.org) {
             this.setState({
                 org_id: detail.org,
+                org_name: detail.name,
             });
         } else {
             axios.get(baseUrl + "org/company/" + detail.company).then(
@@ -234,15 +237,15 @@ class TransferScaling extends Component {
                         categories: responseAll,
                     });
 
-                    if (responseAll.length>0&&this.state.selectedItem){
-
-                        this.setState({
-                            subCategories:responseAll.filter((item) => item.name === this.state.selectedItem.category)[0].types,
-                            states : responseAll.filter((item) => item.name === this.state.selectedItem.category)[0].types.filter((item) => item.name === this.state.selectedItem.type)[0].state,
-                            units : responseAll.filter((item) => item.name === this.state.selectedItem.category)[0].types.filter((item) => item.name === this.state.selectedItem.type)[0].units
-                        })
-
-                    }
+                    // if (responseAll.length>0&&this.state.selectedItem){
+                    //
+                    //     this.setState({
+                    //         subCategories:responseAll.filter((item) => item.name === this.state.selectedItem.category)[0].types,
+                    //         states : responseAll.filter((item) => item.name === this.state.selectedItem.category)[0].types.filter((item) => item.name === this.state.selectedItem.type)[0].state,
+                    //         units : responseAll.filter((item) => item.name === this.state.selectedItem.category)[0].types.filter((item) => item.name === this.state.selectedItem.type)[0].units
+                    //     })
+                    //
+                    // }
 
                 },
                 (error) => {}
@@ -266,7 +269,7 @@ class TransferScaling extends Component {
         ]
 
         if (!this.state.disableVolume){
-            validations.push( validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a number.'}],fields),
+            validations.push( validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'All transfer scaling factors have to be greater than 0 and less than or equal to 1',min:0.0000001,max:1}],fields),
             )
         }
 
@@ -346,125 +349,7 @@ class TransferScaling extends Component {
     };
 
 
-    addTransferScaling = (event) => {
 
-        event.preventDefault();
-
-        if (this.state.type!="delete"&&!this.handleValidationScaling()){
-
-            return
-
-        }
-
-        this.setState({
-            loading: true,
-        });
-
-            const form = event.currentTarget;
-
-            this.setState({
-                btnLoading: true,
-            });
-
-            const data = new FormData(event.target);
-            const category = data.get("category");
-            const type = data.get("type");
-            const units = data.get("units");
-            const factor = data.get("factor");
-            const state = data.get("state");
-            const orgId =  "Org/"+this.state.org_id;
-
-
-            let transferScaling = this.state.transferScaling
-
-
-        if (transferScaling.length==0) {
-
-
-                transferScaling.push({
-
-                    org_id: orgId,
-                    category: category,
-                    type: type,
-                    state: state,
-                    units: units,
-                    factor: factor
-                })
-
-        }
-
-
-        let exists=false
-        for (let i=0;i<transferScaling.length;i++){
-
-            if(transferScaling[i].units==units&&
-                transferScaling[i].state==state&&
-                transferScaling[i].type==type&&
-                transferScaling[i].category==category&&
-                transferScaling[i].org_id==orgId){
-
-
-                exists=true
-
-                if  (this.state.type==="delete"){
-
-                }else{
-                    transferScaling.push({units:units,factor:factor,state:state,
-                        category:category, org_id:orgId,type:type })
-
-                }
-
-            }
-        }
-
-
-        if (!exists){
-
-            transferScaling.push({
-
-                org_id: orgId,
-                category: category,
-                type: type,
-                state: state,
-                units: units,
-                factor: factor
-            })
-        }
-
-
-            axios
-                .post(`${baseUrl}org`,
-                    {
-                        id: "Org/"+this.state.org._key,
-                        update: {
-                            transfer_scaling:transferScaling
-                        },
-                    }
-                )
-                .then((res) => {
-
-
-                    if(res.status === 200) {
-                        this.setState({
-                            loading: false,
-                            submitSuccess: true,
-                        });
-                  console.log(res)
-                    }
-
-                    this.updateUnitConversions(null)
-                    this.companyInfo()
-                })
-                .catch((error) => {
-
-                    this.setState({
-                        loading: false,
-
-                    });
-                });
-
-
-    };
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -591,13 +476,163 @@ class TransferScaling extends Component {
 
     updateUnitConversions=(item,type)=>{
 
-        // alert(type+units+factor+state)
+
+
+        if (item)
         this.setState({
-            conversionPopUp:!this.state.conversionPopUp,
+            subCategories:this.state.categories.filter((filterItem) => filterItem.name === item.category)[0].types,
+            states : this.state.categories.filter((filterItem) => filterItem.name === item.category)[0].types.filter((filterItem) => filterItem.name === item.type)[0].state,
+            units : this.state.categories.filter((filterItem) => filterItem.name === item.category)[0].types.filter((filterItem) => filterItem.name === item.type)[0].units
+        })
+
+
+        // if (this.state.type=="edit")
+        // this.setState({
+        //     subCategories:[],
+        //     catSelected:null,
+        //     units:[],
+        //     states:[],
+        // })
+
+
+        this.setState({
             selectedItem:item,
-            type:type
+            conversionPopUp:!this.state.conversionPopUp,
+            type:type,
 
         })
+
+
+    }
+
+    addTransferScaling = (event) => {
+
+        event.preventDefault();
+
+
+        console.log("submit called")
+
+        if (this.state.type!="delete"&&!this.handleValidationScaling()){
+
+            return
+
+        }
+
+        this.setState({
+            loading: true,
+        });
+
+        const form = event.currentTarget;
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+        const category = data.get("category");
+        const type = data.get("type");
+        const units = data.get("units");
+        const factor = data.get("factor");
+        const state = data.get("state");
+        const orgId =  this.state.org_id.replace("Org/","");
+        const orgName =  this.state.org_name;
+
+        let transferScaling = []
+
+        let transferScalingObject= {
+
+            org_id: "Org/"+orgId,
+            org_name: orgName,
+            category: category,
+            type: type,
+            state: state,
+            units: units,
+            factor: factor
+        }
+        console.log("transferScalingObject")
+        console.log(transferScalingObject)
+
+
+
+        if (!this.state.transferScaling||this.state.transferScaling.length==0) {
+
+            transferScaling.push(transferScalingObject)
+
+        }else {
+
+
+
+            let exists = false
+
+            console.log( this.state.transferScaling.length)
+            for (let i = 0; i < this.state.transferScaling.length; i++) {
+                console.log(this.state.transferScaling[i])
+                console.log(this.state.transferScaling[i].units,units)
+                console.log(this.state.transferScaling[i].state,state)
+                console.log(this.state.transferScaling[i].type,type)
+                console.log(this.state.transferScaling[i].category,category)
+                console.log(this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId))
+
+                if (this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId)&&this.state.transferScaling[i].units == units &&
+                    this.state.transferScaling[i].state == state &&
+                    this.state.transferScaling[i].type == type &&
+                    this.state.transferScaling[i].category === category
+                    ) {
+
+
+                    exists = true
+
+
+                }else{
+
+
+                    transferScaling.push(this.state.transferScaling[i])
+                }
+            }
+
+
+
+            if (this.state.type!="delete")
+                transferScaling.push(transferScalingObject)
+
+
+        }
+
+
+        console.log("final data")
+        console.log(transferScaling)
+
+        axios
+            .post(`${baseUrl}org`,
+                {
+                    id: "Org/" + this.state.org._key,
+                    update: {
+                        transfer_scaling: transferScaling
+                    },
+                }
+            )
+            .then((res) => {
+
+
+                if (res.status === 200) {
+                    this.setState({
+                        loading: false,
+                        submitSuccess: true,
+                    });
+                    console.log(res)
+                }
+
+                this.updateUnitConversions(null,null)
+                this.companyInfo()
+            })
+            .catch((error) => {
+
+                this.setState({
+                    loading: false,
+
+                });
+            });
+
 
     }
 
@@ -628,35 +663,26 @@ class TransferScaling extends Component {
 
                         <div className={"row"}>
 
-                            <div className={"col-10  mt-4 text-left"}>
-                                <h5> <span onClick={()=>{
+                            <div className={"col-12  mt-0 text-left"}>
+                                <h5> <button onClick={()=> {
 
                                 this.updateUnitConversions(null,"add")}}
-                                           style={{float:"right"}} className={"green-text forgot-password-link text-mute small"}>Add</span></h5>
+                                           style={{float:"right"}} className={"mr-2  blue-btn-border  mb-2"}>Add</button></h5>
 
-                                {this.state.transferScaling.length > 0 && (
+                                {this.state.transferScaling&&this.state.transferScaling.length > 0 && (
                                     <>
-                                        <div className="row text-bold">
-                                            <div className="col-2  ">
-                                                Org
-                                            </div>
-                                            <div className="col-2  ">
-                                                Category
-                                            </div>
-                                        <div className="col-2  ">
-                                            State
-                                        </div>
-                                        <div className="col-2 ">
-                                            Unit
-                                        </div>
-                                        <div className="col-2 ">
-                                            Factor
-                                        </div>
-                                        <div className="col-2 ">
-                                            Edit/Delete
-                                        </div>
-                                    </div>
+                                        <table className={"table-scaling"} >
 
+                                            <tr className=" text-bold">
+                                                <th>Org</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th>State</th>
+
+                                                <th>Unit</th>
+                                                <th>Factor</th>
+                                                <th>Edit/Delete</th>
+                                            </tr>
 
                                         {this.state.transferScaling&&this.state.transferScaling.map(
                                             (item, index) => (
@@ -673,34 +699,42 @@ class TransferScaling extends Component {
                                                 </>
                                             )
                                         )}
+
+                                        </table>
+
                                     </>
                                 )}
 
 
+
                                 <Modal
-                                    // size="lg"
-                                    centered
+                                    className={"loop-popup"}
+                                    aria-labelledby="contained-modal-title-vcenter"
                                     show={this.state.conversionPopUp}
+                                    centered
                                     onHide={this.updateUnitConversions}
-                                    className={"custom-modal-popup popup-form"}>
-                                    <div className="">
-                                        <button
-                                            onClick={this.updateUnitConversions}
-                                            className="btn-close close"
-                                            data-dismiss="modal"
-                                            aria-label="Close">
-                                            <i className="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-10 text-center mt-2"}>
-                                            <p
-                                                style={{ textTransform: "Capitalize" }}
-                                                className={"text-bold text-blue"}>
-                                                {this.state.type=="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
-                                            </p>
+                                    animation={false}>
+                                    <ModalBody>
+                                        <div style={{position: "absolute",
+                                            right: "20px"}} className=" text-right web-only">
+                                            <Close
+                                                onClick={()=>{this.updateUnitConversions(null,null)}}
+                                                className="blue-text click-item"
+                                                style={{ fontSize: 32 }}
+                                            />
                                         </div>
-                                    </div>
+
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-10 text-center"}>
+                                                <p
+                                                    style={{ textTransform: "Capitalize" }}
+                                                    className={"text-bold text-blue"}>
+                                                    {this.state.type=="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+
                                     <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
                                         <div className="col mobile-menu">
                                             <div className="form-col-left ">
@@ -710,9 +744,11 @@ class TransferScaling extends Component {
                                                       <div className={this.state.type!="delete"?"row":"d-none"}>
                                                         <div className={"col-12"}>
 
-                                                                <div className="row mt-4">
-                                                                    <div className="col-12 mt-4">
+                                                                <div className="row ">
+                                                                    <div className="col-12 mb-2 ">
                                                                         <AutocompleteCustom
+                                                                            initialOrgId={this.state.selectedItem&&this.state.selectedItem.org_id.replace("Org/","")}
+                                                                            initialOrgName={this.state.selectedItem&&this.state.selectedItem.org_name}
                                                                             orgs={true}
                                                                             companies={false}
                                                                             suggestions={this.state.orgNames}
@@ -722,7 +758,7 @@ class TransferScaling extends Component {
                                                                         />
                                                                     </div>
 
-                                                                    <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                                                    <div className={"col-md-4 col-sm-12 col-xs-12 mb-2"}>
                                                                         <SelectArrayWrapper
                                                                             initialValue={this.state.selectedItem&&this.state.selectedItem.category}
                                                                             option={"name"}
@@ -746,12 +782,13 @@ class TransferScaling extends Component {
                                                                                     units: [],
 
                                                                                 })
+
                                                                             }}
-                                                                            options={this.state.categories} name={"category"} title="Resource Category"/>
+                                                                            options={this.state.categories} name={"category"} title="Category"/>
 
                                                                     </div>
 
-                                                                    <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                                                    <div className={"col-md-4 col-sm-12 col-xs-12 mb-2"}>
                                                                         <SelectArrayWrapper
                                                                             initialValue={this.state.selectedItem&&this.state.selectedItem.type}
                                                                             option={"name"}
@@ -761,18 +798,19 @@ class TransferScaling extends Component {
                                                                             onChange={(value)=> {
                                                                                 this.handleChangeProduct(value,"type")
 
-                                                                                this.setState({
-                                                                                    subCatSelected:  this.state.subCategories.length>0? this.state.subCategories.filter(
-                                                                                        (item) => item.name === value
-                                                                                    )[0]:null,
+                                                                               let subCatSelected = this.state.subCategories&& this.state.subCategories.length>0?this.state.subCategories.filter((item) => item.name === value)[0]:null
 
-                                                                                    states: this.state.subCategories.length>0?this.state.subCategories.filter(
-                                                                                        (item) => item.name === value
-                                                                                    )[0].state:[],
-                                                                                    units: this.state.subCategories.length>0?this.state.subCategories.filter(
-                                                                                        (item) => item.name === value
-                                                                                    )[0].units:[]
+                                                                               let states= subCatSelected?subCatSelected.state:[]
+
+                                                                              let  units=subCatSelected?subCatSelected.units:[]
+
+                                                                                this.setState({
+                                                                                    subCatSelected:subCatSelected,
+                                                                                    states:states,
+                                                                                    units:units
                                                                                 })
+
+
                                                                             }}
 
                                                                             disabled={
@@ -781,7 +819,7 @@ class TransferScaling extends Component {
 
                                                                     </div>
 
-                                                                    <div className={"col-md-4 col-sm-12 col-xs-12"}>
+                                                                    <div className={"col-md-4 col-sm-12 col-xs-12 mb-2"}>
                                                                         <SelectArrayWrapper
                                                                             initialValue={this.state.selectedItem&&this.state.selectedItem.state}
 
@@ -794,7 +832,7 @@ class TransferScaling extends Component {
 
                                                                     </div>
                                                                 </div>
-                                                                <div className="row mt-4">
+                                                                <div className="row mb-2">
                                                                     <div className="col-6 pr-2">
                                                                         <SelectArrayWrapper
                                                                             select={"Select"}
@@ -852,6 +890,7 @@ class TransferScaling extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                    </ModalBody>
 
                                 </Modal>
 

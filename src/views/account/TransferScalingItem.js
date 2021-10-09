@@ -69,26 +69,30 @@ const TransferScalingItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-            <div className="col-2 text-capitalize">
-                {props.item.org_id}
-            </div>
-            <div className="col-2 text-capitalize">
+        <tr className="">
+            <td className=" text-capitalize">
+                {props.item.org_name}
+            </td>
+            <td className=" text-capitalize">
                 {props.item.category}
-            </div>
-            <div className="col-2 text-capitalize">
+            </td>
+            <td className="">
+                {props.item.type}
+            </td>
+            <td className="">
                 {props.item.state}
-            </div>
-            <div className="col-2 text-capitalize">
-                {props.item.units}
-            </div>
+            </td>
 
-            <div className="col-2 pl-2">
+            <td className="">
+                {props.item.units}
+            </td>
+
+            <td className="">
 
                 {props.item.factor}
 
-            </div>
-            <div className="col-2 text-right">
+            </td>
+            <td className="">
 
               <EditIcon className={" click-item"}  fontSize="small"
                         onClick={() => handleUpdate("edit")}
@@ -97,8 +101,8 @@ const TransferScalingItem = (props) => {
                      onClick={() => handleUpdate("delete")}
               />
 
-            </div>
-        </div>
+            </td>
+        </tr>
     </>
 }
 

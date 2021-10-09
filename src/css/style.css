@@ -3654,3 +3654,30 @@ a.page-link:hover {
     color:var(--lc-pink) !important;
     fill:var(--lc-pink) !important;
 }
+
+
+/*table*/
+
+.table-scaling {
+
+
+    width: 100%;
+
+}
+
+.table-scaling td, .table-scaling th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.table-scaling tr:nth-child(even){background-color: #f2f2f2;}
+
+.table-scaling tr:hover {background-color: #ddd;}
+
+.table-scaling th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #27245c;
+    color: white;
+}

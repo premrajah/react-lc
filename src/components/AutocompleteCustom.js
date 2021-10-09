@@ -16,6 +16,33 @@ class AutocompleteCustom extends Component {
         suggestions: [],
     };
 
+
+
+
+    componentDidMount() {
+
+        if (this.props.initialOrgId){
+
+            console.log(this.props.initialOrgId,this.props.initialOrgName)
+
+            this.setState({
+                selectedOrgId:this.props.initialOrgId,
+                selectedOrgName:this.props.initialOrgName,
+                selected:true,
+                image:LoopcycleLogo,
+                userInput:this.props.initialOrgName
+            })
+
+
+            this.props.selectedCompany({
+                name: this.props.initialOrgName,
+                // company: e.currentTarget.dataset.company,
+                org: this.props.initialOrgId,
+            })
+
+        }
+    }
+
     changeInput = (key) => {
         axios.get(baseUrl + "org/search?page=1&size=10&q=" + key).then(
             (response) => {
@@ -76,6 +103,8 @@ class AutocompleteCustom extends Component {
             userInput: "",
             orgs: [],
             orgNames: [],
+            selectedOrgId:null,
+            selectedOrgName:null,
         };
     }
 
@@ -122,6 +151,7 @@ class AutocompleteCustom extends Component {
             name: e.currentTarget.innerText,
             company: e.currentTarget.dataset.company,
             org: e.currentTarget.dataset.org,
+
         });
     };
 
@@ -254,7 +284,8 @@ class AutocompleteCustom extends Component {
                 {this.state.selected &&  <div className=" search-card m-1" style={{width: "100%"}}>
                     <div className={"col-2"}>
                     <div className={"img-left p-1"}>
-                        <img style={{height:"32px!important", width:"32px!important"}} className="card-img-top" src={this.state.image} alt="Card image cap" />
+                        <img style={{height:"32px!important", width:"32px!important"}} className="card-img-top"
+                             src={this.state.image} alt="Image" />
 
                     </div>
                     </div>

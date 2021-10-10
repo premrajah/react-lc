@@ -21,10 +21,6 @@ const TermsAndService = ({ title, header, footer }) => {
                     <div className="col">
 
                         <section className="mb-4">
-                            <h4 className="text-capitalize">Our Terms of Service</h4>
-                        </section>
-
-                        <section className="mb-4">
                             <p><b>What these terms cover.</b> These are the terms and conditions on which we supply our Services and digital content to you.</p>
                         </section>
 

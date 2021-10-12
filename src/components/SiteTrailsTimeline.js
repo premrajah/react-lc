@@ -158,8 +158,8 @@ function SiteTrailsTimeline(props) {
                                         component="h1"
                                         style={{ color: "#05AD88" }}>
                                         <span className={"text-caps"}>
-                                            {item.site.org.name}
-                                            {item.site.org.description &&
+                                            {item.site.org&&item.site.org.name}
+                                            {item.site.org&&item.site.org.description &&
                                                 ", " + item.site.org.description}
                                         </span>
 

@@ -11,7 +11,7 @@ import GoogleMapReact from "google-map-react";
         this.state = {
             center:null,
             zoom:15,
-            showingInfoWindow: false,
+            showingInfoWindow: true,
             activeMarker: {},
             selectedPlace: {},
         }
@@ -71,6 +71,7 @@ import GoogleMapReact from "google-map-react";
 
 
                  <Marker
+                     // label={"som label"}
                     onClick={this.onMarkerClick}
                   icon={{
                       url :item.isCenter?"/icon/blue-marker.png":"/icon/green-marker.png",
@@ -86,6 +87,7 @@ import GoogleMapReact from "google-map-react";
 
                 )}
                 <InfoWindow
+
                     marker={this.state.activeMarker}
                     visible={this.state.showingInfoWindow}>
 

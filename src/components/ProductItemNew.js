@@ -300,13 +300,13 @@ class ProductItemNew extends Component {
                                     <p className={"text-gray-light small"}>
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
-                                    <MoreMenu
+                                    {!this.props.hideMore && (       <MoreMenu
                                         triggerCallback={(action) => this.callBackResult(action)}
                                         delete={this.props.delete}
                                         edit={this.props.edit}
                                         remove={this.props.remove}
                                         duplicate={this.props.duplicate}
-                                    />
+                                    />)}
                                 </div>
                             </div>
                         </Link>

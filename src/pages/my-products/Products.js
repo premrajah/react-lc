@@ -16,7 +16,7 @@ import DownloadIcon from '@material-ui/icons/GetApp';
 import MapIcon from '@material-ui/icons/Map';
 
 import {CSVLink} from "react-csv";
-import {Modal, ModalBody} from "react-bootstrap";
+import {Modal, ModalBody, Spinner} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
@@ -26,6 +26,10 @@ import {saveKey, saveUserToken} from "../../LocalStorage/user";
 import {getMessages, getNotifications} from "../../store/actions/actions";
 import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
 import Close from "@material-ui/icons/Close";
+import AutocompleteCustom from "../../components/AutocompleteCustom";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 
 class Products extends Component {
 
@@ -39,7 +43,11 @@ class Products extends Component {
             isIntersecting:false,
             intersectionRatio:0,
             mapData:[],
-            showMap:false
+            showMap:false,
+            showDownloadQrCodes:false,
+            fields: {},
+            errors: {},
+            loading:false
 
         }
 
@@ -60,6 +68,14 @@ class Products extends Component {
         this.setState({filterValue: filterValue});
     }
 
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
 
     // Options
      options = {
@@ -204,6 +220,17 @@ class Products extends Component {
 
         })
     }
+
+
+    toggleDownloadQrCodes=()=>{
+
+        this.setState({
+            showDownloadQrCodes:!this.state.showDownloadQrCodes,
+
+        })
+    }
+
+
     getSitesForProducts=()=>{
 
 
@@ -256,6 +283,62 @@ class Products extends Component {
     }
 
 
+    handleValidationScaling() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations=[
+            validateFormatCreate("count", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields)
+
+        ]
+
+
+
+
+
+        let {formIsValid,errors}= validateInputs(validations)
+        console.log(errors)
+        this.setState({ errors: errors });
+        return formIsValid;
+    }
+
+    downloadMultipleQrCodes = (event) => {
+
+        event.preventDefault();
+
+
+        console.log("submit called")
+
+        if (this.state.type!="delete"&&!this.handleValidationScaling()){
+
+            return
+
+        }
+
+        this.setState({
+            loading: true,
+        });
+
+        const form = event.currentTarget;
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+        const count = data.get("count");
+
+        window.location.href = `${baseUrl}product/multi-qr?count=${count}`;
+
+        this.toggleDownloadQrCodes()
+
+
+
+
+    }
+
     render() {
         const classesBottom = withStyles();
         const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
@@ -305,7 +388,7 @@ class Products extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-md-9 d-flex justify-content-start">
+                            <div className="col-md-8 d-flex justify-content-start">
                                 <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
                                     Product Service
                                 </Link>
@@ -319,8 +402,10 @@ class Products extends Component {
                                 </Link>
                             </div>
 
-                            <div className="col-md-3 d-flex justify-content-end">
-                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+
+                            <div className="col-md-4 d-flex justify-content-end">
+                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleDownloadQrCodes()} type="button">Download QR Codes</button>
+                                <button className="btn btn-sm blue-btn ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
                         </div>
 
@@ -339,7 +424,7 @@ class Products extends Component {
                                         //     (item) => item.is_listable === true
                                         // ).length : "... "
 
-                                        this.props.productWithoutParentList.length
+                                        this.props.productWithoutParentList.length > 0?this.props.productWithoutParentList.length:0
                                     }
                                     <span className="ml-1">Listable Products</span>
                                 </p>
@@ -436,6 +521,73 @@ class Products extends Component {
                     </ModalBody>
                 </Modal>
                 }
+
+
+                <Modal
+                    // className={"loop-popup"}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    show={this.state.showDownloadQrCodes}
+                    centered
+                    // size={"lg"}
+                    onHide={this.toggleDownloadQrCodes}
+                    animation={false}>
+                    <ModalBody>
+                        <div className=" text-right web-only">
+                            <Close
+                                onClick={this.toggleDownloadQrCodes}
+                                className="blue-text click-item"
+                                style={{ fontSize: 32 }}
+                            />
+                        </div>
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <h5
+                                    style={{ textTransform: "Capitalize" }}
+                                    className={"text-bold text-blue"}>
+                                  Download Multiple QR Codes
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div className={"row justify-content-center"}>
+                            <form onSubmit={this.downloadMultipleQrCodes}>
+
+                                        <div className="row mb-2 text-center">
+
+
+                                            <div className="col-12 ">
+
+                                                <TextFieldWrapper
+                                                    // readonly ={this.state.disableVolume}
+                                                    initialValue={this.state.selectedItem&&this.state.selectedItem.factor+""}
+                                                    // value={this.state.disableVolume?"0":""}
+                                                    onChange={(value)=>this.handleChange(value,"count")}
+                                                    error={this.state.errors["count"]}
+                                                    name="count" title="Enter required number of Qr codes to be downloaded" />
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+                                <div className={"row"}>
+                                    <div className="col-12 mt-4">
+                                        <button
+                                            type={"submit"}
+                                            className={
+                                                "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
+                                            }>
+                                            {"Download"}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </ModalBody>
+                </Modal>
 
             </Layout>
         );

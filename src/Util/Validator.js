@@ -12,7 +12,6 @@ export class Validators {
             const result = regex.email.test(value);
             if (!result) return { error: true, message };
         }
-        // return false;
     }
 
     static required(value, message) {
@@ -20,6 +19,7 @@ export class Validators {
 
             return { error: true, message };
         }
+
         return false;
     }
 
@@ -32,7 +32,6 @@ export class Validators {
     }
 
     static confirmPassword(value, message,password) {
-        // console.log(value, message,password)
 
         if (password&&value&&value.toString().trim().length&&(password!==value)) {
 

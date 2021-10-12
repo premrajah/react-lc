@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
@@ -23,7 +22,6 @@ import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
 import OrgFull from "../Org/OrgFull";
 import AggregatesTab from "./AggregatesTab";
-import ConversionsTab from "./ConversionsTab";
 
 class ProductDetailContent extends Component {
     slug;
@@ -65,7 +63,7 @@ class ProductDetailContent extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             initialValues:{},
-            activeTab:"productinfo"
+            activeKey:"productinfo"
 
         };
 
@@ -91,6 +89,16 @@ class ProductDetailContent extends Component {
         this.loadProduct = this.loadProduct.bind(this);
 
         this.phonenumber = this.phonenumber.bind(this);
+    }
+
+    setActiveKey=(key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
     }
 
     actionSubmit = () => {
@@ -264,6 +272,7 @@ class ProductDetailContent extends Component {
         if (prevProps!=this.props) {
 
 
+            this.setActiveKey("productinfo")
         }
     }
 
@@ -716,8 +725,9 @@ class ProductDetailContent extends Component {
                                     <div className="col-12 mt-2">
                                         <Tabs
 
-                                            defaultActiveKey={this.state.activeTab}
-
+                                            onSelect={(k) => this.setActiveKey(k)}
+                                            // defaultActiveKey={this.state.activeTab}
+                                            activeKey={this.state.activeKey}
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title="Product Info">
                                                 <InfoTabContent item={this.props.item}/>
@@ -1030,7 +1040,6 @@ class ProductDetailContent extends Component {
                                                     className={
                                                         "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                     }>
-                                                    {/*<Link to={"/approve"}>Check Approval</Link>*/}
 
                                                     Ok
                                                 </button>

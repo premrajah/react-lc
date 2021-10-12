@@ -11,6 +11,7 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import ProductItemNew from "../ProductItemNew";
 import moment from "moment";
 import Org from "../Org/Org";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 const ResourceItem = () => {
     const { slug } = useParams();
@@ -60,7 +61,7 @@ const ResourceItem = () => {
                                 <div className="col-md-8">
                                     <div className="row">
                                         <div className="col">
-                                            <h4 className="blue-text text-heading">
+                                            <h4 className="blue-text text-capitalize text-heading">
                                                 {listing.listing.name}
                                             </h4>
                                         </div>
@@ -100,10 +101,10 @@ const ResourceItem = () => {
                                                 </p>
                                                 <p
                                                     style={{fontSize: "18px"}}
-                                                    className="  mb-1">
-                                                    <span className="mr-1">{listing.listing.category},</span>
-                                                    <span className="mr-1">{listing.listing.type},</span>
-                                                    <span>{listing.listing.state}</span>
+                                                    className="text-capitalize  mb-1">
+                                                    <span className="mr-1">{capitalize(listing.listing.category)},</span>
+                                                    <span className="mr-1">{capitalize(listing.listing.type)},</span>
+                                                    <span>{capitalize(listing.listing.state)}</span>
                                                 </p>
                                             </div>
                                         </div>}
@@ -164,7 +165,7 @@ const ResourceItem = () => {
                                             <h5 className="blue-text text-heading">Product Linked</h5>
                                             <ProductItemNew
                                                 item={listing.product}
-                                                hideMore
+                                                hideMore={true}
                                                 goToLink
                                                 parentId={listing.product._key}
                                             />

@@ -171,6 +171,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 break;
             case "new":
                 setNewMsgDisplay(true);
+                break;
         }
     };
 
@@ -212,11 +213,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                         <div className="row">
                             <div className="col">
+
                                 <Autocomplete
                                     freeSolo
                                     onChange={(e, value) => setAutoCompleteOrg(value)}
                                     options={
-                                        allOrgs.length > 0
+                                        allMessageGroups.length > 0
                                             ? allMessageGroups.map((option) =>
                                                 option.name ? option.name : ""
                                             )
@@ -294,18 +296,15 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         <div className="col-md-7">
                             {newMsgDisplay && <div className="row">
                                 <div className="col">
-                                    {reactSelectValues.length > 0 ? (
                                         <Select
-                                            options={reactSelectValues}
+                                            options={reactSelectValues.length > 0 ? reactSelectValues : []}
                                             isMulti
+                                            placeholder="Select orgs to send messages"
                                             name="orgs"
                                             className="react-multi-select"
                                             classNamePrefix="select"
                                             onChange={(e) => handleNewMessageSelect(e)}
                                         />
-                                    ) : (
-                                        ""
-                                    )}
                                 </div>
                             </div>}
 
@@ -339,7 +338,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <div>click on a group to view messages.</div>
+                                        <div></div>
                                     )}
                                 </div>
                             </div>

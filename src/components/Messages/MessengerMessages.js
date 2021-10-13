@@ -3,11 +3,11 @@ import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Button, Divider, List, ListItem, ListItemIcon, Tooltip} from "@material-ui/core";
+import {Button, List, ListItem, Tooltip} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import MessageIcon from "@material-ui/icons/Message";
 import CreateIcon from "@material-ui/icons/Create";
 import SendIcon from "@material-ui/icons/Send";
+import FilterListIcon from '@material-ui/icons/FilterList';
 import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
@@ -25,16 +25,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);
     const [messageText, setMessageText] = useState("");
+    const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
+    const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
-    const [msgDisplay, setMsgDisplay] = useState(true);
-    const [matchDisplay, setMatchDisplay] = useState(false);
-    const [cycleDisplay, setCycleDisplay] = useState(false);
-    const [newMsgDisplay, setNewMsgDisplay] = useState(false);
 
     useEffect(() => {
         getAllOrgs();
         getAllMessageGroups();
-        // getMessages();
     }, []);
 
     useEffect(() => {
@@ -95,8 +92,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleGroupClick = (groupId) => {
         if (!groupId) return;
+        setShowHideGroupFilter(false);
+        setShowHideOrgSearch(false);
         getGroupMessageWithId(groupId);
     };
+
 
     const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
         if (!text) return;
@@ -135,6 +135,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
                     // getMessages();
                     setMessageText("");
+                    setReactSelectValues([])
                     getAllMessageGroups();
                     getAllOrgs();
                 }
@@ -150,81 +151,17 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         }
     };
 
-    const handleColumnDisplay = (value) => {
-        setSelectedMsgGroup([]);
-        switch (value) {
-            case "message":
-                setMatchDisplay(false);
-                setCycleDisplay(false);
-                setNewMsgDisplay(false);
-                setMsgDisplay(true);
-                break;
-            case "match":
-                setMsgDisplay(false);
-                setCycleDisplay(false);
-                setNewMsgDisplay(false);
-                setMatchDisplay(true);
-                break;
-            case "cycle":
-                setMsgDisplay(false);
-                setMatchDisplay(false);
-                setNewMsgDisplay(false);
-                setCycleDisplay(true);
-                break;
-            case "new":
-                setNewMsgDisplay(true);
-                break;
-        }
-    };
 
     return (
         <>
-            <div className="row mt-2">
-                <div className="row">
-                    <div className="col-md-1">
-                        <List>
-                            <ListItem button onClick={() => handleColumnDisplay("message")}>
-                                <Tooltip title="Group messages">
-                                    <ListItemIcon>
-                                        <MessageIcon fontSize="large" />
-                                    </ListItemIcon>
-                                </Tooltip>
-                            </ListItem>
-                            <ListItem button onClick={() => handleColumnDisplay("match")}>
-                                <Tooltip title="Match messages">
-                                    <ListItemIcon>Match</ListItemIcon>
-                                </Tooltip>
-                            </ListItem>
-                            <ListItem button onClick={() => handleColumnDisplay("cycle")}>
-                                <Tooltip title="Cycle messages">
-                                    <ListItemIcon>Cycle</ListItemIcon>
-                                </Tooltip>
-                            </ListItem>
-                        </List>
-                    </div>
-                </div>
-                {msgDisplay && (
+            <div className="row">
+                {
                     <div className="col-md-4">
-                        <div className="row">
-                            <div className="col">
-                                <div className="d-flex justify-content-around align-items-center">
-                                    <h5 style={{ width: "80%", color: "var(--lc-purple)" }}>
-                                        Group Messages
-                                    </h5>
-                                    <Tooltip title="New Message">
-                                        <Button onClick={() => handleColumnDisplay("new")}>
-                                            <CreateIcon />
-                                        </Button>
-                                    </Tooltip>
-                                </div>
-                            </div>
-                        </div>
-
 
                         <div className="row">
-                            <div className="col">
-
-                                <Autocomplete
+                             <div className="col-md-8">
+                                 {showHideGroupFilter && <Autocomplete
+                                     size="small"
                                     freeSolo
                                     onChange={(e, value) => setAutoCompleteOrg(value)}
                                     options={
@@ -246,7 +183,23 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             }}
                                         />
                                     )}
-                                />
+                                />}
+                            </div>
+
+                            <div className="col-md-2 d-flex justify-content-center align-items-center">
+                                <Tooltip title="Filter groups">
+                                    <Button onClick={() => setShowHideGroupFilter(!showHideGroupFilter)}>
+                                        <FilterListIcon fontSize="large" />
+                                    </Button>
+                                </Tooltip>
+                            </div>
+
+                            <div className="col-md-2 d-flex justify-content-center align-items-center">
+                                <Tooltip title="New Message">
+                                    <Button onClick={() => setShowHideOrgSearch(!showHideOrgSearch)}>
+                                        <CreateIcon />
+                                    </Button>
+                                </Tooltip>
                             </div>
                         </div>
 
@@ -296,16 +249,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             )}
                         </List>
                     </div>
-                )}
+                }
 
-                {matchDisplay && <div className="col-md-4">Match</div>}
 
-                {cycleDisplay && <div className="col-md-4">cycle</div>}
-
-                {(msgDisplay || matchDisplay || cycleDisplay) && (
+                {
                     <>
                         <div className="col-md-7">
-                            {newMsgDisplay && <div className="row">
+                            {showHideOrgSearch && <div className="row">
                                 <div className="col">
                                         <Select
                                             options={reactSelectValues.length > 0 ? reactSelectValues : []}
@@ -380,7 +330,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             </div>
                         </div>
                     </>
-                )}
+                }
             </div>
 
         </>

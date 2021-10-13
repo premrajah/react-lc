@@ -36,6 +36,7 @@ export const PRODUCT_POPUP = "PRODUCT_POPUP";
 export const LOGIN_POPUP_STATUS = "LOGIN_POPUP_STATUS";
 export const SET_CITY = "SET_CITY";
 export const SITE_LIST = "SITE_LIST";
+export const SITE_PARENT_LIST = "SITE_PARENT_LIST";
 export const PRODUCT_LIST = "PRODUCT_LIST";
 export const PRODUCT_NPARENT_LIST = "PRODUCT_NPARENT_LIST";
 export const LOGIN = "LOGIN";

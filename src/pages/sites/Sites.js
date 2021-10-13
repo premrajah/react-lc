@@ -77,9 +77,9 @@ class Sites extends Component {
     }
     componentDidMount() {
 
-        this.props.loadSites();
+        // this.props.loadSites();
 
-
+        this.props.loadParentSites();
     }
 
 
@@ -234,7 +234,7 @@ class Sites extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.props.siteList.filter((site)=>
+                                    {this.props.siteParentList.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue=="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                             this.state.filterValue=="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -257,7 +257,7 @@ class Sites extends Component {
                         <div className={"listing-row-border mb-3"}></div>
 
 
-                        {this.props.siteList.filter((site)=>
+                        {this.props.siteParentList.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue=="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue=="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -320,7 +320,7 @@ const mapStateToProps = (state) => {
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
         siteList: state.siteList,
-
+        siteParentList: state.siteParentList,
         lastPageReached:state.lastPageReached
     };
 };
@@ -340,6 +340,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
     };
 };

@@ -27,6 +27,7 @@ import {
     SIGN_UP,
     SIGN_UP_FAILED,
     SITE_LIST,
+    SITE_PARENT_LIST,
     SITE_POPUP,
     STOP_LOADING,
     USER_DETAIL,
@@ -196,6 +197,14 @@ export const loadSites = (data) => {
         // return  { type: "PRODUCT_LIST", value: [] }
     };
 };
+export const loadParentSites = (data) => {
+    return (dispatch) => {
+        dispatch(loading());
+        dispatch(loadParentSitesSync(data));
+
+        // return  { type: "PRODUCT_LIST", value: [] }
+    };
+};
 
 export const loadSitesSync = (data) => (dispatch) => {
     axios.get(baseUrl + "site").then(
@@ -203,6 +212,25 @@ export const loadSitesSync = (data) => (dispatch) => {
             let responseAll = response.data.data;
 
             dispatch({ type: SITE_LIST, value: responseAll });
+
+            // dispatch()
+        },
+        (error) => {
+            // let status = error.response.status
+            // dispatch({ type: "PRODUCT_LIST", value: [] })
+        }
+    )
+        .catch(error => {});
+
+    // dispatch({ type: "PRODUCT_LIST", value: [] })
+};
+
+export const loadParentSitesSync = (data) => (dispatch) => {
+    axios.get(baseUrl + "site/no-parent").then(
+        (response) => {
+            let responseAll = response.data.data;
+
+            dispatch({ type: SITE_PARENT_LIST, value: responseAll });
 
             // dispatch()
         },

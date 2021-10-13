@@ -180,7 +180,7 @@ class SiteForm extends Component {
             site: {
                 name: data.get("name"),
                 description: data.get("description"),
-                // siteId: data.get("siteId"),
+                external_reference: data.get("external_reference"),
                 email: data.get("email"),
                 address: data.get("address"),
                 contact: data.get("contact"),
@@ -213,6 +213,7 @@ class SiteForm extends Component {
                 }else{
 
                     if (this.props.showSiteForm.item) {
+
                         this.props.loadCurrentSite(item._key)
                     }
 
@@ -254,6 +255,7 @@ class SiteForm extends Component {
             id:item._key,
             update: {
                 name: data.get("name"),
+                external_reference: data.get("external_reference"),
                 description: data.get("description"),
                 email: data.get("email"),
                 address: data.get("address"),
@@ -364,7 +366,7 @@ class SiteForm extends Component {
                     })
                     .then((res) => {
 
-                        if (this.props.showSiteForm.item) {
+                        if (item) {
                             this.props.loadCurrentSite(item._key)
                         }
 
@@ -509,10 +511,10 @@ class SiteForm extends Component {
                                 <div className="col-12 ">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.sideId}
-                                        onChange={(value)=>this.handleChange(value,"siteId")}
-                                        error={this.state.errors["siteId"]}
-                                        name="siteId" title="Site Id" />
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.external_reference}
+                                        onChange={(value)=>this.handleChange(value,"external_reference")}
+                                        error={this.state.errors["external_reference"]}
+                                        name="external_reference" title="Site Id" />
 
                                 </div>
                             </div>

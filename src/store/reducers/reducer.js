@@ -28,6 +28,7 @@ import {
     SIGN_UP,
     SIGN_UP_FAILED,
     SITE_LIST,
+    SITE_PARENT_LIST,
     SITE_POPUP,
     SLIDES_LOAD,
     SOCIAL_LOGIN_POPUP,
@@ -77,6 +78,7 @@ export const initialState = {
     productWithoutParentNoList: [],
     productWithoutParentListPage: [],
     siteList: [],
+    siteParentList: [],
     allListings: [],
     showSitePopUp: false,
     orgImage: null,
@@ -324,6 +326,11 @@ const reducer = (state = initialState, action) => {
 
         case SITE_LIST:
             newState.siteList = action.value;
+            newState.loading = false;
+            break;
+
+        case SITE_PARENT_LIST:
+            newState.siteParentList = action.value;
             newState.loading = false;
             break;
 

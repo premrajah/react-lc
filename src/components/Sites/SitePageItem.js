@@ -89,17 +89,20 @@ const SitePageItem = (props) => {
                         <Link  to={props.isLoggedIn?"/ps/" + props.item._key:"#"}> {props.item.name} {is_head_office&& <span className="mr-2 text-bold text-mute"><small>(Head Office)</small></span>}</Link>
                     </p>
 
-                    {email &&    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
+                    {props.item.external_reference &&    <p  className="text-mute mb-1 text-caps ">
+                        Site Id: {props.item.external_reference}
+                    </p>}
+                    {email &&    <p  className="text-mute mb-1 text-caps small">
                        email
                     </p>}
-                    {phone &&    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
+                    {phone &&    <p  className="text-mute mb-1 text-caps small">
                         {phone}
                     </p>}
-                    {contact &&    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
+                    {contact &&    <p  className="text-mute mb-1 text-caps small">
                         {contact}
                     </p>}
 
-                    {address &&    <p style={{ fontSize: "16px" }} className="text-mute mb-1  text-caps">
+                    {address &&    <p  className="text-mute mb-1  text-caps small">
                         {address}
                     </p>}
 
@@ -120,13 +123,6 @@ const SitePageItem = (props) => {
                      </div>
 
 
-                        {/*<MoreMenu*/}
-                        {/*    // triggerCallback={(action) => this.callBackResult(action)}*/}
-                        {/*    // delete={props.delete}*/}
-                        {/*    // edit={props.edit}*/}
-                        {/*    // remove={props.remove}*/}
-                        {/*    // duplicate={props.duplicate}*/}
-                        {/*/>*/}
 
                 </div>
             </div>

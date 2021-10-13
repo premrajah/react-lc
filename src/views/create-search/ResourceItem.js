@@ -7,7 +7,7 @@ import { baseUrl } from "../../Util/Constants";
 import moment from "moment";
 import MoreMenu from "../../components/MoreMenu";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
-
+import {Link} from "react-router-dom";
 class ResourceItem extends Component {
     constructor(props) {
         super(props);
@@ -74,6 +74,7 @@ class ResourceItem extends Component {
             <>
                 {this.props.item.listing.listing ? (
                     <>
+                        <h1>here</h1>
                         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
                         <div
                             onClick={this.goToPage}
@@ -137,11 +138,13 @@ class ResourceItem extends Component {
                     </>
                 ) : (
                     <>
-                        {/*<Link to={"/"+ this.props.item.listing._key }>*/}
+
+
+                        <Link to={"/"+ this.props.item.listing._key }>
 
                         <div
-                            onClick={this.goToPage}
-                            className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
+                            // onClick={this.goToPage}
+                            className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
                             <div className={"col-2"}>
                                 {this.props.item.artifacts &&
                                 this.props.item.artifacts.length > 0 ? (
@@ -193,16 +196,16 @@ class ResourceItem extends Component {
                                         "DD MMM YYYY"
                                     )}
                                 </p>
-                                <MoreMenu
+                                {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
                                     delete={true}
                                     edit={false}
                                     remove={false}
                                     duplicate={false}
-                                />
+                                />}
                             </div>
                         </div>
-                        {/*</Link>*/}
+                        </Link>
                     </>
                 )}
             </>

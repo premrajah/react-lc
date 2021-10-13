@@ -191,7 +191,7 @@ class ProductItemNew extends Component {
 
                                 <p style={{ fontSize: "18px" }} className=" mb-1 text-caps">
                                     <Link
-                                        onClick={this.goToProduct}
+                                        // onClick={this.goToProduct}
                                         to={"/product/" + this.props.item.product._key}>
                                         {this.props.item.product.name}
                                     </Link>

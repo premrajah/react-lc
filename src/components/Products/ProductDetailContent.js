@@ -6,7 +6,7 @@ import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
 import {withStyles} from "@material-ui/core/styles/index";
-
+import {Link} from "react-router-dom";
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
@@ -769,6 +769,8 @@ class ProductDetailContent extends Component {
                                                         <ResourceItem
                                                             history={this.props.history}
                                                             item={this.state.listingLinked}
+
+                                                            hideMoreMenu={true}
                                                         />
                                                     )}
                                                 </Tab>

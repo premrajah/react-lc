@@ -2747,13 +2747,14 @@ button.blue-btn-border
         width: 100%;
         margin: auto;
         background: #ffffff;
-        margin-top: 0%;
+        margin-top: 15%;
         height: 100%;
     }
 
     .body-overlay {
         overflow: hidden;
-        width: auto;
+        /*width: auto;*/
+
     }
 
     .body-overlay > div {
@@ -3680,4 +3681,16 @@ a.page-link:hover {
     text-align: left;
     background-color: #27245c;
     color: white;
+}
+
+
+/*scrollable tabs*/
+
+.tabs-detail>div>.nav-tabs {
+    overflow-x: auto;
+    overflow-y:hidden;
+    flex-wrap: nowrap;
+}
+.tabs-detail  .nav-tabs .nav-link {
+    white-space: nowrap;
 }

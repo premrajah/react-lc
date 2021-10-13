@@ -649,7 +649,7 @@ class ProductDetailCycle extends Component {
                         </div>
                     </div>
 
-                    <div className={"col-md-8 col-sm-12 col-xs-12 pl-5"}>
+                    <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left"}>
                         <div className="row justify-content-start pb-3  ">
                             <div className="col-12 mt-2">
                                 <div className="row">

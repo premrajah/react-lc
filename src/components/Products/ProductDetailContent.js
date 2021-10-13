@@ -742,17 +742,20 @@ class ProductDetailContent extends Component {
                                                 <SubProductsTab item={this.props.item}/>
                                             </Tab>
 
-                                            {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
                                             <Tab eventKey="maps" title="Site">
+
+                                                <p>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
+                                                {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
+
 
                                                 <GoogleMap siteId={this.props.item.site._key} width={"100%"}
                                                            height={"300px"} locations={[{
                                                     name: this.props.item.site.name,
                                                     location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                                     isCenter: true
-                                                }]}/>
+                                                }]}/>}
 
-                                            </Tab>}
+                                            </Tab>
 
 
                                             {this.state.searches.length > 0 && (

@@ -332,9 +332,10 @@ class SiteForm extends Component {
 
     linkSubSites = async (event) => {
 
-        let item=this.props.showSiteForm.item
+        let item=this.props.showSiteForm.item.site
 
-        console.log("link child sites")
+        // console.log("link child sites")
+        // console.log(item)
 
         event.preventDefault();
 
@@ -728,7 +729,7 @@ class SiteForm extends Component {
                                     <span
                                         onClick={this.addCount}
                                         className={
-                                            "btn btn-default click-item btn-rounded shadow  blue-btn-border"
+                                            "btn  click-item btn-rounded shadow  blue-btn-border"
                                         }>
                                         <AddIcon />
                                         Add
@@ -865,7 +866,7 @@ class SiteForm extends Component {
                                     <span
                                         onClick={this.addCount}
                                         className={
-                                            "btn btn-default click-item btn-rounded shadow  blue-btn-border"
+                                            "btn  click-item btn-rounded shadow  blue-btn-border"
                                         }>
                                         <AddIcon />
                                         Add

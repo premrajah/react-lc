@@ -2567,7 +2567,18 @@ button.blue-btn-border
     padding-left: 30px !important;
 }
 
+
+.custom-pl-5{
+
+    padding-left: 3rem;
+}
+
 @media only screen and (max-width: 991px) {
+
+    .custom-pl-5{
+
+        padding-left: 0rem;
+    }
     .desktop-padding-left {
         padding-left: 0px !important;
     }

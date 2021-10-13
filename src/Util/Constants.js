@@ -36,7 +36,7 @@ export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 export const PRODUCTS_FILTER_VALUES = ["name", "description", "purpose", "category"];
-export const SITES_FILTER_VALUES = ["name"];
+export const SITES_FILTER_VALUES = ["name","site id","address"];
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];
 export const MERGE_STRATEGY_OPTIONS = ["always_new", "always_fail", "pick_first", "pick_any"];

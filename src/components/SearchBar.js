@@ -15,7 +15,7 @@ class SearchBar extends Component {
 
     handleSearchFilter = (value) => {
         this.setState({filterDefaultValue: value});
-        return this.props.onSearch(value);
+        return this.props.onSearchFilter(value);
     }
 
     render() {

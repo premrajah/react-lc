@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import { Button, Divider, List, ListItem, ListItemIcon } from "@material-ui/core";
+import {Button, Divider, List, ListItem, ListItemIcon, Tooltip} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import MessageIcon from "@material-ui/icons/Message";
 import CreateIcon from "@material-ui/icons/Create";
@@ -135,8 +135,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
                     // getMessages();
                     setMessageText("");
-                    setReactSelectedValues([]);
                     getAllMessageGroups();
+                    getAllOrgs();
                 }
             })
             .catch((error) => {
@@ -184,15 +184,21 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     <div className="col-md-1">
                         <List>
                             <ListItem button onClick={() => handleColumnDisplay("message")}>
-                                <ListItemIcon>
-                                    <MessageIcon fontSize="large" />
-                                </ListItemIcon>
+                                <Tooltip title="Group messages">
+                                    <ListItemIcon>
+                                        <MessageIcon fontSize="large" />
+                                    </ListItemIcon>
+                                </Tooltip>
                             </ListItem>
                             <ListItem button onClick={() => handleColumnDisplay("match")}>
-                                <ListItemIcon>Match</ListItemIcon>
+                                <Tooltip title="Match messages">
+                                    <ListItemIcon>Match</ListItemIcon>
+                                </Tooltip>
                             </ListItem>
                             <ListItem button onClick={() => handleColumnDisplay("cycle")}>
-                                <ListItemIcon>Cycle</ListItemIcon>
+                                <Tooltip title="Cycle messages">
+                                    <ListItemIcon>Cycle</ListItemIcon>
+                                </Tooltip>
                             </ListItem>
                         </List>
                     </div>
@@ -205,9 +211,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     <h5 style={{ width: "80%", color: "var(--lc-purple)" }}>
                                         Group Messages
                                     </h5>
-                                    <Button onClick={() => handleColumnDisplay("new")}>
-                                        <CreateIcon />
-                                    </Button>
+                                    <Tooltip title="New Message">
+                                        <Button onClick={() => handleColumnDisplay("new")}>
+                                            <CreateIcon />
+                                        </Button>
+                                    </Tooltip>
                                 </div>
                             </div>
                         </div>
@@ -302,7 +310,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         <Select
                                             options={reactSelectValues.length > 0 ? reactSelectValues : []}
                                             isMulti
-                                            placeholder="Select orgs to send messages"
+                                            placeholder="Search orgs to send messages"
                                             name="orgs"
                                             className="react-multi-select"
                                             classNamePrefix="select"

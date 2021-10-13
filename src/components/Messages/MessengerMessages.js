@@ -12,9 +12,11 @@ import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
 
-const msgWindowHeight = "500px";
+const msgWindowHeight = "560px";
 
 const MessengerMessages = ({ userDetail, messages, getMessages }) => {
+
+
     const [allOrgs, setAllOrgs] = useState([]);
     const [allMessageGroups, setAllMessageGroups] = useState([]);
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
@@ -123,16 +125,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 break;
         }
 
-        // const payload = {
-        //     message: {
-        //         type: "message",
-        //         text: text,
-        //     },
-        //     to_org_ids: toOrgIds ? [toOrgIds] : [],
-        //     message_group_id: messageGroupId ? messageGroupId : "",
-        //     linked_msg_id: linkedMessageId ? linkedMessageId : "",
-        // };
-
         postMessage(payload);
     };
 
@@ -180,41 +172,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 setCycleDisplay(true);
                 break;
             case "new":
-                setMsgDisplay(false);
-                setMatchDisplay(false);
-                setCycleDisplay(false);
                 setNewMsgDisplay(true);
+                break;
         }
     };
 
     return (
         <>
-            <div className="row mb-2">
-                <div className="col-md-1 d-flex">
-                    <CreateIcon
-                        fontSize="large"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleColumnDisplay("new")}
-                    />
-                </div>
-                {newMsgDisplay && (
-                    <div className="col">
-                        {reactSelectValues.length > 0 ? (
-                            <Select
-                                options={reactSelectValues}
-                                isMulti
-                                name="orgs"
-                                className="react-multi-select"
-                                classNamePrefix="select"
-                                onChange={(e) => handleNewMessageSelect(e)}
-                            />
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                )}
-            </div>
-            <Divider />
             <div className="row mt-2">
                 <div className="row">
                     <div className="col-md-1">
@@ -235,28 +199,47 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 </div>
                 {msgDisplay && (
                     <div className="col-md-4">
-                        <h5 style={{ color: "var(--lc-purple)" }}>Group Messages</h5>
-                        <div className="message-search-field mb-1">
-                            <Autocomplete
-                                freeSolo
-                                onChange={(e, value) => setAutoCompleteOrg(value)}
-                                options={
-                                    allOrgs.length > 0
-                                        ? allMessageGroups.map((option) =>
-                                              option.name ? option.name : ""
-                                          )
-                                        : []
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Search for group"
-                                        margin="normal"
-                                        variant="outlined"
-                                        InputProps={{ ...params.InputProps, type: "search" }}
-                                    />
-                                )}
-                            />
+                        <div className="row">
+                            <div className="col">
+                                <div className="d-flex justify-content-around align-items-center">
+                                    <h5 style={{ width: "80%", color: "var(--lc-purple)" }}>
+                                        Group Messages
+                                    </h5>
+                                    <Button onClick={() => handleColumnDisplay("new")}>
+                                        <CreateIcon />
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div className="row">
+                            <div className="col">
+
+                                <Autocomplete
+                                    freeSolo
+                                    onChange={(e, value) => setAutoCompleteOrg(value)}
+                                    options={
+                                        allMessageGroups.length > 0
+                                            ? allMessageGroups.map((option) =>
+                                                option.name ? option.name : ""
+                                            )
+                                            : []
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Search for group"
+                                            margin="normal"
+                                            variant="outlined"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                type: "search",
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </div>
                         </div>
 
                         {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
@@ -290,11 +273,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         }
                                     })
                                     .map((group, i) => (
-                                        <div key={i}>
+                                        <div key={i} >
                                             <ListItem
                                                 button
                                                 divider
                                                 onClick={() => handleGroupClick(group._key)}>
+                                                {/*{group.name.replace(/\W/g, " ")}*/}
                                                 {group.name}
                                             </ListItem>
                                         </div>
@@ -311,66 +295,86 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 {cycleDisplay && <div className="col-md-4">cycle</div>}
 
                 {(msgDisplay || matchDisplay || cycleDisplay) && (
-                    <div className="col-md-7">
-                        <div
-                            className="row"
-                            style={{
-                                height: msgWindowHeight,
-                                maxHeight: msgWindowHeight,
-                                overflow: "auto",
-                            }}>
-                            <div className="col">
-                                {selectedMsgGroup.length > 0 ? (
-                                    <div
-                                        className="message-window p-3"
-                                        style={{ height: msgWindowHeight }}>
-                                        {selectedMsgGroup.map((m, i) => (
-                                            <div key={i} className="d-flex">
-                                                <div
-                                                    className="w-75 p-2 mb-1 border-rounded"
-                                                    style={{ background: "rgba(39, 36, 92, 0.3)" }}>
-                                                    <div>{m.message.text}</div>
-                                                    <div className="float-right">
-                                                        {moment(m.message._ts_epoch_ms).fromNow()}
+                    <>
+                        <div className="col-md-7">
+                            {newMsgDisplay && <div className="row">
+                                <div className="col">
+                                        <Select
+                                            options={reactSelectValues.length > 0 ? reactSelectValues : []}
+                                            isMulti
+                                            placeholder="Select orgs to send messages"
+                                            name="orgs"
+                                            className="react-multi-select"
+                                            classNamePrefix="select"
+                                            onChange={(e) => handleNewMessageSelect(e)}
+                                        />
+                                </div>
+                            </div>}
+
+                            <div
+                                className="row"
+                                style={{
+                                    height: msgWindowHeight,
+                                    maxHeight: msgWindowHeight,
+                                    overflow: "auto",
+                                }}>
+                                <div className="col">
+                                    {selectedMsgGroup.length > 0 ? (
+                                        <div
+                                            className="message-window p-3"
+                                            style={{ height: msgWindowHeight }}>
+                                            {selectedMsgGroup.map((m, i) => (
+                                                <div key={i} className="d-flex">
+                                                    <div
+                                                        className="w-75 p-2 mb-1 border-rounded"
+                                                        style={{
+                                                            background: "rgba(39, 36, 92, 0.3)",
+                                                        }}>
+                                                        <div>{m.message.text}</div>
+                                                        <div className="float-right">
+                                                            {moment(
+                                                                m.message._ts_epoch_ms
+                                                            ).fromNow()}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div>click on a group to view messages.</div>
-                                )}
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div></div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="row mt-2" style={{ height: "60px" }}>
+                                <div className="col-11 p-0">
+                                    <TextField
+                                        id="send-new-msg"
+                                        label="Send new message"
+                                        variant="outlined"
+                                        fullWidth
+                                        onChange={(text) => setMessageText(text)}
+                                        value={messageText || ""}
+                                    />
+                                </div>
+                                <div className="col-1 d-flex justify-content-center align-items-center p-0">
+                                    <Button
+                                        type="button"
+                                        disabled={messageText ? false : true}
+                                        fullWidth
+                                        onClick={() => handleSendMessage()}>
+                                        <SendIcon
+                                            fontSize="large"
+                                            style={{ color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)" }}
+                                        />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
 
-            <Divider />
-
-            <div className="row mt-2" style={{ height: "60px" }}>
-                <div className="col-11 p-0">
-                    <TextField
-                        id="send-new-msg"
-                        label="Send new message"
-                        variant="outlined"
-                        fullWidth
-                        onChange={(text) => setMessageText(text)}
-                    />
-                </div>
-                <div className="col-1 d-flex justify-content-center align-items-center p-0">
-                    <Button
-                        type="button"
-                        disabled={messageText ? false : true}
-                        fullWidth
-                        onClick={() => handleSendMessage()}>
-                        <SendIcon
-                            fontSize="large"
-                            style={{ color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)" }}
-                        />
-                    </Button>
-                </div>
-            </div>
         </>
     );
 };

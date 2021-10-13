@@ -11,6 +11,7 @@ import {Link} from "react-router-dom";
 import * as actionCreator from "../../../store/actions/actions";
 import {connect} from "react-redux";
 import {capitalize} from "../../../Util/GlobalFunctions";
+
 import {
     useHistory,
     BrowserRouter,
@@ -18,6 +19,16 @@ import {
 } from "react-router-dom";
 import Add from "../../Sites/AddSite";
 import _ from "lodash";
+import {withStyles} from "@material-ui/core/styles";
+import {Tooltip} from "@material-ui/core";
+const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.black,
+        color: '#ffffff',
+        boxShadow: theme.shadows[1.5],
+        fontSize: 14,
+    },
+}))(Tooltip);
 
 const AggregateItem = (props) => {
     const history = useHistory()
@@ -49,10 +60,6 @@ const AggregateItem = (props) => {
     }
 
 
-
-
-
-
     return <>
         <div className="row no-gutters justify-content-start mt-2">
             <div className="col-sm-2 aggregate-img">
@@ -66,7 +73,7 @@ const AggregateItem = (props) => {
             <div className="col-sm-10 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>
-                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}<br/> <span style={{whiteSpace: "pre-line"}} className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> <span> {item.direction=="additive"? "+":"-"}{item.volume} </span><span >{item.units}, {item.state}</span></span></p>
+                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}<br/> <span style={{whiteSpace: "pre-line"}} className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> <LightTooltip title={"Conversion "+item.factor_used+" x "+item.volume}><span> {item.direction=="additive"? "+":"-"}{item.volume} </span></LightTooltip><span >{item.units}, {item.state}</span></span></p>
 
                     </Link>
                 </div>

@@ -15,6 +15,8 @@ import Select from "react-select";
 const msgWindowHeight = "560px";
 
 const MessengerMessages = ({ userDetail, messages, getMessages }) => {
+
+
     const [allOrgs, setAllOrgs] = useState([]);
     const [allMessageGroups, setAllMessageGroups] = useState([]);
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
@@ -271,11 +273,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         }
                                     })
                                     .map((group, i) => (
-                                        <div key={i}>
+                                        <div key={i} >
                                             <ListItem
                                                 button
                                                 divider
                                                 onClick={() => handleGroupClick(group._key)}>
+                                                {/*{group.name.replace(/\W/g, " ")}*/}
                                                 {group.name}
                                             </ListItem>
                                         </div>

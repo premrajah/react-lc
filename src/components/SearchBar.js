@@ -3,6 +3,7 @@ import {FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} fr
 import SearchGray from "@material-ui/icons/Search";
 import NativeSelect from '@material-ui/core/NativeSelect';
 import NativeSelectInput from "@material-ui/core/NativeSelect/NativeSelectInput";
+import {capitalize} from "../Util/GlobalFunctions";
 class SearchBar extends Component {
 
     state = {
@@ -15,7 +16,7 @@ class SearchBar extends Component {
 
     handleSearchFilter = (value) => {
         this.setState({filterDefaultValue: value});
-        return this.props.onSearch(value);
+        return this.props.onSearchFilter(value);
     }
 
     render() {
@@ -33,7 +34,7 @@ class SearchBar extends Component {
                                     Filter By
                                 </option>
                                 {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
-                                    return <option  key={index} value={drop}>{drop}</option>
+                                    return <option   key={index} value={drop}>{capitalize(drop)}</option>
                                 }) : null}
                             </NativeSelect>
                         </FormControl>

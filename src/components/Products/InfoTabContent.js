@@ -31,10 +31,10 @@ class InfoTabContent extends Component {
                                                             <span className="mr-1">
                                                                 {this.props.item.product.category},
                                                             </span>
-                            <span className="mr-1">
-                                                                {this.props.item.product.type},
+                            <span className="mr-1 text-caps">
+                                                                {capitalize(this.props.item.product.type)},
                                                             </span>
-                            <span className="text-caps mr-1">
+                            <span className=" mr-1 text-caps">
                                                                 {capitalize(this.props.item.product.state)}
                                                             </span>
                             {this.props.item.product.purpose!=="aggregate"&&  <span>

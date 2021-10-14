@@ -8,6 +8,9 @@
 .no-suggestions {
     color: #999;
     padding: 0.5rem;
+    opacity: 1;
+    background: white;
+    z-index: 1;
 }
 
 .suggestions {

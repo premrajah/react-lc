@@ -191,27 +191,31 @@ class ProductItemNew extends Component {
 
                                 <p style={{ fontSize: "18px" }} className=" mb-1 text-caps">
                                     <Link
-                                        onClick={this.goToProduct}
+                                        // onClick={this.goToProduct}
                                         to={"/product/" + this.props.item.product._key}>
                                         {this.props.item.product.name}
                                     </Link>
                                 </p>
 
                                 <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span className={"text-caps"}>{this.props.item.product.purpose}, </span>
-                                    {this.props.item.product.condition && (
-                                        <span className={"text-bold text-caps"}>
-                                            {this.props.item.product.condition}
-                                        </span>
-                                    )}
+                                    {/*<span className={"text-caps"}>{this.props.item.product.purpose}, </span>*/}
+                                    {/*{this.props.item.product.condition && (*/}
+                                    {/*    <span className={"text-bold text-caps"}>*/}
+                                    {/*        {this.props.item.product.condition}*/}
+                                    {/*    </span>*/}
+                                    {/*)}*/}
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
                                     <span className="mr-1">
                                         {this.props.item.product.category},
                                     </span>
                                     <span className="mr-1 text-capitalize">{this.props.item.product.type},</span>
-                                    <span className="mr-1 text-capitalize">{this.props.item.product.state},</span>
-                                    <span>{this.props.item.product.volume}</span>
+                                    <span className="mr-1 text-capitalize">{this.props.item.product.state}</span><br/>
+                                    {this.props.item.product.condition && (
+                                        <span className={"text-bold text-caps"}>
+                                            {this.props.item.product.condition}
+                                        </span>
+                                    )} <span>{this.props.item.product.volume}</span>
                                     <span >{this.props.item.product.units}</span>
                                     <p className={"text-capitalize text-bold"}>{this.props.item.product.sku.brand}</p>
 
@@ -300,13 +304,13 @@ class ProductItemNew extends Component {
                                     <p className={"text-gray-light small"}>
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
-                                    <MoreMenu
+                                    {!this.props.hideMore && (       <MoreMenu
                                         triggerCallback={(action) => this.callBackResult(action)}
                                         delete={this.props.delete}
                                         edit={this.props.edit}
                                         remove={this.props.remove}
                                         duplicate={this.props.duplicate}
-                                    />
+                                    />)}
                                 </div>
                             </div>
                         </Link>

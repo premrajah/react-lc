@@ -6,7 +6,7 @@ import axios from "axios/index";
 import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../../store/actions/actions";
-import {Modal} from "react-bootstrap";
+import {Modal, ModalBody} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import ProductDetail from "../ProductDetail";
@@ -30,6 +30,7 @@ class ProductItemNew extends Component {
             showProductEdit: false,
             productDuplicate: false,
             showProductHide: false,
+            showTrackPopUp:false
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -97,12 +98,44 @@ class ProductItemNew extends Component {
             this.deleteItem();
         } else if (action === "duplicate") {
             // this.showProductDuplicate()
-
             this.submitDuplicateProduct();
-        } else if (action === "remove") {
+        }
+        else if (action === "remove") {
             this.removeItem();
         }
+
+        else if (action === "untrack") {
+
+    this.toggleTrackPopUp()
+
+
+
+        }
     }
+
+
+    toggleTrackPopUp=()=>{
+        this.setState({
+            showTrackPopUp:!this.state.showTrackPopUp
+
+        })
+
+    }
+
+     handleUnTrackProduct = () => {
+
+        axios.delete(`${baseUrl}product/track/${ this.props.item._key}`)
+            .then(res => {
+
+                this.props.reload()
+
+            })
+            .catch(error => {
+
+            })
+    }
+
+
 
     submitDuplicateProduct = (event) => {
         axios
@@ -205,13 +238,9 @@ class ProductItemNew extends Component {
 
     render() {
         return (
-            <>
-
-
-
-                            <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-                                <div key={this.props.item._key+"-product-item-bpx"} className={"col-2 "}>
-                                    <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
+            <> <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-4":"col-2 "}>
+                                    <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
@@ -221,10 +250,10 @@ class ProductItemNew extends Component {
                                     </>
                                     </Link>
                                 </div>
-                                <div className={"col-7 pl-2  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-2  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                            <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name} </Link>
+                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}> {this.props.item.name} </Link>
                                       </p>
 
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
@@ -261,7 +290,7 @@ class ProductItemNew extends Component {
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
 
-                                    {this.props.showAddToListButton && <div>
+                                    {!this.props.hideAdd&&this.props.showAddToListButton && <div>
                                         <Add onClick={() => {
 
                                             this.handleAddToProductList(this.props.item)
@@ -276,6 +305,7 @@ class ProductItemNew extends Component {
                                             delete={this.props.delete}
                                             edit={this.props.edit}
                                             remove={this.props.remove}
+                                            untrack={this.props.untrack}
                                             duplicate={this.props.duplicate}
                                         />
                                     )}
@@ -340,6 +370,54 @@ class ProductItemNew extends Component {
                         </div>
                     </div>
                 )}
+
+
+                <Modal
+                    className={"loop-popup"}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.showTrackPopUp}
+                    onHide={this.toggleTrackPopUp}
+                    animation={false}>
+                    <ModalBody>
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <p className={"text-bold"}>Untrack Product</p>
+                                <p>Are you sure you want to untrack ?</p>
+                            </div>
+                        </div>
+
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-12 text-center mt-2"}>
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-6"} style={{ textAlign: "center" }}>
+                                        <button
+                                            onClick={()=>{
+                                                this.toggleTrackPopUp()
+                                                this.handleUnTrackProduct()
+
+                                            }}
+                                            className={
+                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                            }
+                                            type={"submit"}>
+                                            Submit
+                                        </button>
+                                    </div>
+                                    <div className={"col-6"} style={{ textAlign: "center" }}>
+                                        <p
+                                            onClick={this.toggleTrackPopUp}
+                                            className={
+                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                            }>
+                                            Cancel
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ModalBody>
+                </Modal>
             </>
         );
     }

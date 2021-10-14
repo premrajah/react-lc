@@ -7,7 +7,7 @@ import { baseUrl } from "../../Util/Constants";
 import moment from "moment";
 import MoreMenu from "../../components/MoreMenu";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
-
+import {Link} from "react-router-dom";
 class ResourceItem extends Component {
     constructor(props) {
         super(props);
@@ -17,12 +17,26 @@ class ResourceItem extends Component {
             count: 0,
             nextIntervalFlag: false,
             image: null,
+            artifacts:[]
         };
 
         this.callBackResult = this.callBackResult.bind(this);
         this.showEdit = this.showEdit.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.goToPage = this.goToPage.bind(this);
+    }
+
+    componentDidMount() {
+
+
+
+        // console.log(this.props.artifacts)
+        // if (!this.props.item.listing.artifacts&&this.props.artifacts){
+        //
+        //         this.setState({
+        //             artifacts:this.props.images
+        //         })
+        // }
     }
 
 
@@ -74,6 +88,7 @@ class ResourceItem extends Component {
             <>
                 {this.props.item.listing.listing ? (
                     <>
+                        <h1>here</h1>
                         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
                         <div
                             onClick={this.goToPage}
@@ -85,6 +100,8 @@ class ResourceItem extends Component {
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}
+
+
                             </div>
                             <div className={"col-4 pl-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
@@ -137,18 +154,20 @@ class ResourceItem extends Component {
                     </>
                 ) : (
                     <>
-                        {/*<Link to={"/"+ this.props.item.listing._key }>*/}
+
+
+                        <Link to={"/"+ this.props.item.listing._key }>
 
                         <div
-                            onClick={this.goToPage}
-                            className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
+                            // onClick={this.goToPage}
+                            className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
                             <div className={"col-2"}>
                                 {this.props.item.artifacts &&
-                                this.props.item.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />
-                                ) : (
+                                this.props.item.artifacts.length > 0 ?
+                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />:
+                                    this.props.artifacts && this.props.artifacts.length > 0?<ImageOnlyThumbnail images={this.props.artifacts} />:
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
-                                )}
+                                }
                             </div>
                             <div className={"col-4 pl-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className="text-caps mb-1 list-title">
@@ -193,16 +212,16 @@ class ResourceItem extends Component {
                                         "DD MMM YYYY"
                                     )}
                                 </p>
-                                <MoreMenu
+                                {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
                                     delete={true}
                                     edit={false}
                                     remove={false}
                                     duplicate={false}
-                                />
+                                />}
                             </div>
                         </div>
-                        {/*</Link>*/}
+                        </Link>
                     </>
                 )}
             </>

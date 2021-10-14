@@ -65,6 +65,11 @@ class Home extends Component {
         }
     }
 
+
+    showProductSelection=()=> {
+        this.props.showProductPopUp({ type: "create_product", show: true });
+    }
+
     render() {
         return (
             <Layout>
@@ -160,7 +165,7 @@ class Home extends Component {
                                     Start building your digital inventory to list the products for sale or manage your assets effectively across multiple sites.
                                 </p>
                                 <Link
-                                    onClick={this.showLoginPopUp}
+                                    onClick={this.showProductSelection}
                                     to={this.props.isLoggedIn && "/my-products"}
                                     className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
                                    Add Product
@@ -234,12 +239,15 @@ class Home extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
+
     };
 };
 
 const mapDispachToProps = (dispatch) => {
     return {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(Home);

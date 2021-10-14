@@ -620,7 +620,7 @@ class SiteDetailContent extends Component {
                                         <div className="row">
                                             <div className="col-8">
                                                 <h4 className="blue-text text-heading text-caps">
-                                                    {this.state.item.name}
+                                                    {this.props.item.site.name}
                                                 </h4>
                                             </div>
 
@@ -693,9 +693,9 @@ class SiteDetailContent extends Component {
 
                                             </Tab>
 
-                                            {this.props.item.site &&   <Tab eventKey="subsites" title="Sub Sites">
+                                            <Tab eventKey="subsites" title="Sub Sites">
                                                 <SubSitesTab  item={this.props.item} />
-                                            </Tab>}
+                                            </Tab>
 
 
                                             {this.props.isLoggedIn && this.props.item.site &&      <Tab eventKey="subproducts" title="Products">

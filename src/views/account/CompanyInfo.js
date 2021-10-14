@@ -16,6 +16,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import {Publish} from "@material-ui/icons";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import _ from "lodash";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -38,7 +40,17 @@ class CompanyInfo extends Component {
             companyNumber: null,
             submitSuccess: false,
             file:null,
-            errorCompany:null
+            errorCompany:null,
+            categories: [],
+            subCategories: [],
+            catSelected: {},
+            subCatSelected: {},
+            stateSelected: null,
+            states: [],
+            sites: [],
+            page: 1,
+            units: [],
+
 
         };
 
@@ -188,8 +200,65 @@ class CompanyInfo extends Component {
         this.setState({ errors: errors });
         return formIsValid;
     }
+    getFiltersCategories() {
+        axios
+            .get(baseUrl + "category", {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    let   responseAll=[]
+                    responseAll = _.sortBy(response.data.data, ["name"]);
+
+                    this.setState({
+                        categories: responseAll,
+                    });
+
+                    if (responseAll.length>0&&this.props.item){
+
+                        this.setState({
+                            subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
+                            states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
+                            units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+                        })
+
+                    }
+
+                },
+                (error) => {}
+            );
+    }
 
 
+    handleValidationScaling() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations=[
+
+            validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),
+
+        ]
+
+        if (!this.state.disableVolume){
+            validations.push( validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a number.'}],fields),
+            )
+        }
+
+
+
+        let {formIsValid,errors}= validateInputs(validations)
+        console.log(errors)
+        this.setState({ errors: errors });
+        return formIsValid;
+    }
 
     handleChange(value,field ) {
 
@@ -198,22 +267,6 @@ class CompanyInfo extends Component {
         this.setState({ fields });
     }
 
-    // handleChange(field, e) {
-    //     let fields = this.state.fields;
-    //     fields[field] = e.target.value;
-    //     this.setState({ fields: fields });
-    //
-    //     if (field === "companyName") {
-    //         this.setState({
-    //             companyName: e.target.value,
-    //         });
-    //     } else if (field === "description") {
-    //         this.setState({
-    //             description: e.target.value,
-    //         });
-    //     }
-    //
-    // }
 
     _handleReaderLoaded = (readerEvent) => {
         let binaryString = readerEvent.target.result;
@@ -274,12 +327,85 @@ class CompanyInfo extends Component {
         }
     };
 
+
+    addTransferScaling = (event) => {
+        event.preventDefault();
+
+
+        event.preventDefault();
+        if (!this.handleValidationScaling()){
+
+            return
+
+        }
+
+        this.setState({
+            loading: true,
+        });
+
+            const form = event.currentTarget;
+
+            this.setState({
+                btnLoading: true,
+            });
+
+            const data = new FormData(event.target);
+            const category = data.get("category");
+            const type = data.get("type");
+            const units = data.get("units");
+            const factor = data.get("factor");
+            const state = data.get("state");
+
+            axios
+                .post(`${baseUrl}org`,
+                    {
+                        id: "Org/"+this.state.org._key,
+                        update: {
+                            transfer_scaling:[{
+
+                                org_id:  "Org/"+this.state.org._key,
+                                category: category,
+                                type: type,
+                                state: state,
+                                units: units,
+                                factor: factor
+                            }]
+                        },
+                    }
+                )
+                .then((res) => {
+                    if(res.status === 200) {
+                        this.setState({
+                            loading: false,
+                            submitSuccess: true,
+                        });
+             console.log(res)
+                    }
+                })
+                .catch((error) => {
+
+                    this.setState({
+                        loading: false,
+
+                    });
+                });
+
+
+    };
+
     componentDidMount() {
         window.scrollTo(0, 0);
         this.companyInfo();
+        this.getFiltersCategories()
     }
 
+    handleChangeProduct(value,field ) {
 
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
     handleChangeFile(event) {
         let file = this.state.file;
         // var filesUrl = this.state.filesUrl
@@ -502,7 +628,10 @@ class CompanyInfo extends Component {
                                 </div>
                             </div>
                         </div>
-
+<hr />
+                        <div className={"row"}>
+                            <div className={"col-6 mt-4 text-left"}>
+                                <h5>Company Info</h5>
                         {this.state.org && (
                             <div className={"row"}>
                                 <div className={"col-12"}>
@@ -566,7 +695,7 @@ class CompanyInfo extends Component {
                                                 <button
                                                     type={"submit"}
                                                     className={
-                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                        "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
                                                     }>
                                                     {this.state.loading && (
                                                         <Spinner
@@ -604,7 +733,7 @@ class CompanyInfo extends Component {
                                         <button
                                             onClick={this.submitCompanyNumber}
                                             className={
-                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
                                             }>
                                             {this.state.loading && (
                                                 <Spinner
@@ -629,6 +758,9 @@ class CompanyInfo extends Component {
                                 </div>
                             </>
                         )}
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>

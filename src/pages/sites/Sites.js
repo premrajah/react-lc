@@ -27,7 +27,7 @@ class Sites extends Component {
         super(props);
         this.state = {
             searchValue: '',
-            filterValue: 'name',
+            filterValue: '',
             selectedProducts: [],
             showMultiUpload: false,
             isIntersecting:false,
@@ -43,10 +43,12 @@ class Sites extends Component {
     }
 
     handleSearch = (searchValue) => {
+        console.log("searchValue ",searchValue)
         this.setState({searchValue: searchValue});
     }
 
     handleSearchFilter = (filterValue) => {
+        console.log("filtervalue ",filterValue)
         this.setState({filterValue: filterValue});
     }
 
@@ -75,9 +77,9 @@ class Sites extends Component {
     }
     componentDidMount() {
 
-        this.props.loadSites();
+        // this.props.loadSites();
 
-
+        this.props.loadParentSites();
     }
 
 
@@ -232,8 +234,18 @@ class Sites extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {
-                                        this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).length > 0 ? this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).length : "... "
+                                    {this.props.siteParentList.filter((site)=>
+                                        this.state.filterValue?( this.state.filterValue=="name"?
+                                            site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                            this.state.filterValue=="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                this.state.filterValue=="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
+                                            (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+
+
+                                    ).length
                                     }
                                     <span className="ml-1">Sites</span>
                                 </p>
@@ -244,7 +256,19 @@ class Sites extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.siteList.filter((site)=> site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())).map((site, index) => (
+
+                        {this.props.siteParentList.filter((site)=>
+                                this.state.filterValue?( this.state.filterValue=="name"?
+                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                this.state.filterValue=="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                this.state.filterValue=="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
+                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                            site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                            site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                            )
+
+                            .map((site, index) => (
                             <React.Fragment key={index}>
                                 <SitePageItem  showEdit={true} item={site}/>
                             </React.Fragment>
@@ -294,7 +318,7 @@ const mapStateToProps = (state) => {
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
         siteList: state.siteList,
-
+        siteParentList: state.siteParentList,
         lastPageReached:state.lastPageReached
     };
 };
@@ -314,6 +338,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
     };
 };

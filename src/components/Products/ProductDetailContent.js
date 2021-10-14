@@ -1,13 +1,12 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
 import {withStyles} from "@material-ui/core/styles/index";
-
+import {Link} from "react-router-dom";
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
@@ -23,7 +22,6 @@ import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
 import OrgFull from "../Org/OrgFull";
 import AggregatesTab from "./AggregatesTab";
-import ConversionsTab from "./ConversionsTab";
 
 class ProductDetailContent extends Component {
     slug;
@@ -64,7 +62,8 @@ class ProductDetailContent extends Component {
             org_id: null,
             currentReleaseId: null,
             cancelReleaseSuccess: false,
-            initialValues:{}
+            initialValues:{},
+            activeKey:"productinfo"
 
         };
 
@@ -90,6 +89,16 @@ class ProductDetailContent extends Component {
         this.loadProduct = this.loadProduct.bind(this);
 
         this.phonenumber = this.phonenumber.bind(this);
+    }
+
+    setActiveKey=(key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
     }
 
     actionSubmit = () => {
@@ -256,6 +265,17 @@ class ProductDetailContent extends Component {
         clearInterval(this.interval);
     }
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        console.log("udpate")
+        if (prevProps!=this.props) {
+
+
+            this.setActiveKey("productinfo")
+        }
+    }
+
     showProductSelection(event) {
         this.props.setProduct(this.props.item);
         // this.props.setParentProduct(this.state.parentProduct)
@@ -277,6 +297,8 @@ class ProductDetailContent extends Component {
             this.loadInfo();
         }
     }
+
+
 
     callBackSubmit(action) {
         if (action === "edit") {
@@ -698,43 +720,48 @@ class ProductDetailContent extends Component {
                                 </div>
                                 <div className={"listing-row-border "}></div>
 
+                                {this.props.item &&
                                 <div className="row justify-content-start pb-3 pt-3 tabs-detail">
                                     <div className="col-12 mt-2">
                                         <Tabs
-                                            defaultActiveKey="productinfo"
+
+                                            onSelect={(k) => this.setActiveKey(k)}
+                                            // defaultActiveKey={this.state.activeTab}
+                                            activeKey={this.state.activeKey}
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title="Product Info">
-                                               <InfoTabContent item={this.props.item} />
+                                                <InfoTabContent item={this.props.item}/>
 
                                             </Tab>
 
-                                            {(this.props.item.product.purpose=="aggregate") &&
+                                            {(this.props.item.product.purpose == "aggregate") &&
                                             <Tab eventKey="aggregates" title="Aggregations">
-                                                <AggregatesTab item={this.props.item} />
+                                                <AggregatesTab item={this.props.item}/>
                                             </Tab>}
                                             <Tab eventKey="subproducts" title="Subproducts">
-                                              <SubProductsTab item={this.props.item} />
+                                                <SubProductsTab item={this.props.item}/>
                                             </Tab>
 
-                                            {this.props.item.site.geo_codes&&this.props.item.site.geo_codes[0]&&    <Tab eventKey="maps" title="Site">
+                                            <Tab eventKey="maps" title="Site">
 
-                                                <GoogleMap siteId={this.props.item.site._key} width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
-
-                                            </Tab>}
-
-                                            {/*{this.props.item && (this.props.item.product.purpose=="aggregate") &&*/}
-                                            {/*<Tab eventKey="search" title="Conversion">*/}
-                                            {/*    <ConversionsTab item={this.props.item} />*/}
-                                            {/*    </Tab>*/}
-                                            {/*}*/}
+                                                <p>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
+                                                {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
 
 
+                                                <GoogleMap siteId={this.props.item.site._key} width={"100%"}
+                                                           height={"300px"} locations={[{
+                                                    name: this.props.item.site.name,
+                                                    location: this.props.item.site.geo_codes[0].address_info.geometry.location,
+                                                    isCenter: true
+                                                }]}/>}
+
+                                            </Tab>
 
 
                                             {this.state.searches.length > 0 && (
                                                 <Tab eventKey="search" title="Searches">
                                                     {this.state.searches.map((item) => (
-                                                        <SearchItem item={item} />
+                                                        <SearchItem item={item}/>
                                                     ))}
                                                 </Tab>
                                             )}
@@ -745,16 +772,21 @@ class ProductDetailContent extends Component {
                                                         <ResourceItem
                                                             history={this.props.history}
                                                             item={this.state.listingLinked}
+                                                            artifacts={this.state.item.artifacts}
+                                                            hideMoreMenu={true}
                                                         />
                                                     )}
                                                 </Tab>
                                             )}
                                             <Tab eventKey="artifacts" title="Artifacts">
-                                                <ArtifactProductsTab item={this.props.item} />
+                                                <ArtifactProductsTab item={this.props.item}/>
                                             </Tab>
                                         </Tabs>
                                     </div>
                                 </div>
+                                }
+
+
                             </div>
                         </div>
 
@@ -796,7 +828,8 @@ class ProductDetailContent extends Component {
                             onHide={this.showReleaseProduct}
                             animation={false}>
                             <ModalBody>
-                                <div className=" text-right web-only">
+                                <div style={{position: "absolute",
+                                    right: "20px"}} className=" text-right web-only">
                                     <Close
                                         onClick={this.showReleaseProduct}
                                         className="blue-text click-item"
@@ -1007,11 +1040,13 @@ class ProductDetailContent extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <button
+                                                    onClick={this.showReleaseProduct}
                                                     style={{ minWidth: "120px" }}
                                                     className={
                                                         "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                     }>
-                                                    <Link to={"/approve"}>Check Approval</Link>
+
+                                                    Ok
                                                 </button>
                                             </div>
                                             <div

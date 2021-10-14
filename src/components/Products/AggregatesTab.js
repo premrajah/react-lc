@@ -166,7 +166,7 @@ class AggregatesTab extends Component {
     }
 
 componentDidMount() {
-this.getFiltersCategories()
+// this.getFiltersCategories()
 }
 
       getFiltersCategories=()=> {

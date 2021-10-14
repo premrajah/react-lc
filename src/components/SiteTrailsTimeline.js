@@ -15,6 +15,7 @@ import {showSiteModal} from "../store/actions/actions";
 import Close from "@material-ui/icons/Close";
 import {MapContainer} from "./Map/MapContainer";
 import {GoogleMap} from "./Map/MapsContainer";
+import {Modal, ModalBody} from "react-bootstrap";
 const useStyles = makeStyles((theme) => ({
     text: {
         padding: theme.spacing(2, 2, 0),
@@ -158,8 +159,8 @@ function SiteTrailsTimeline(props) {
                                         component="h1"
                                         style={{ color: "#05AD88" }}>
                                         <span className={"text-caps"}>
-                                            {item.site.org.name}
-                                            {item.site.org.description &&
+                                            {item.site.org&&item.site.org.name}
+                                            {item.site.org&&item.site.org.description &&
                                                 ", " + item.site.org.description}
                                         </span>
 
@@ -207,17 +208,43 @@ function SiteTrailsTimeline(props) {
                     ))}
             </Timeline>
 
-            {(showMap &&locations.length>0)&& (
                 <>
-                    <div className={"body-overlay"}>
-                        <div className={"modal-popup site-popup"}>
-                            <div className=" text-right ">
+
+                    <Modal
+                        className={"loop-popup"}
+                        aria-labelledby="contained-modal-title-vcenter"
+                        show={showMap &&locations.length>0}
+                        centered
+                        onHide={handleMapModal}
+                        animation={false}>
+                        <ModalBody>
+                            <div style={{position: "absolute",
+                                right: "5px",top:"5px",zIndex:1}} className=" text-right web-only">
                                 <Close
-                                    onClick={() => handleMapModal()}
+                                    onClick={()=>{handleMapModal()}}
                                     className="blue-text click-item"
                                     style={{ fontSize: 32 }}
                                 />
                             </div>
+
+                            {/*<div className={"row justify-content-center"}>*/}
+                            {/*    <div className={"col-10 text-center"}>*/}
+                            {/*        <p*/}
+                            {/*            style={{ textTransform: "Capitalize" }}*/}
+                            {/*            className={"text-bold text-blue"}>*/}
+                            {/*            {this.state.type=="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}*/}
+                            {/*        </p>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                    {/*<div className={"body-overlay"}>*/}
+                    {/*    <div className={"modal-popup site-popup"}>*/}
+                    {/*        <div className=" text-right ">*/}
+                    {/*            <Close*/}
+                    {/*                onClick={() => handleMapModal()}*/}
+                    {/*                className="blue-text click-item"*/}
+                    {/*                style={{ fontSize: 32 }}*/}
+                    {/*            />*/}
+                    {/*        </div>*/}
 
                             <div className={"row"}>
                                 <div className={"col-12"}>
@@ -228,10 +255,12 @@ function SiteTrailsTimeline(props) {
                                     />
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ModalBody>
+                    </Modal>
+                        {/*</div>*/}
+                    {/*</div>*/}
                 </>
-            )}
+
 
 
         </div>

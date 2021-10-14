@@ -2567,7 +2567,18 @@ button.blue-btn-border
     padding-left: 30px !important;
 }
 
+
+.custom-pl-5{
+
+    padding-left: 3rem;
+}
+
 @media only screen and (max-width: 991px) {
+
+    .custom-pl-5{
+
+        padding-left: 0rem;
+    }
     .desktop-padding-left {
         padding-left: 0px !important;
     }
@@ -2747,13 +2758,14 @@ button.blue-btn-border
         width: 100%;
         margin: auto;
         background: #ffffff;
-        margin-top: 0%;
+        margin-top: 15%;
         height: 100%;
     }
 
     .body-overlay {
         overflow: hidden;
-        width: auto;
+        /*width: auto;*/
+
     }
 
     .body-overlay > div {
@@ -3653,4 +3665,51 @@ a.page-link:hover {
 .navbar .nav-link:hover, .navbar .nav-link svg:hover{
     color:var(--lc-pink) !important;
     fill:var(--lc-pink) !important;
+}
+
+
+/*table*/
+
+.table-scaling {
+
+
+    width: 100%;
+
+}
+
+.table-scaling td, .table-scaling th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.table-scaling tr:nth-child(even){background-color: #f2f2f2;}
+
+.table-scaling tr:hover {background-color: #ddd;}
+
+.table-scaling th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #27245c;
+    color: white;
+}
+
+
+/*scrollable tabs*/
+
+.tabs-detail>div>.nav-tabs {
+    overflow-x: auto;
+    overflow-y:hidden;
+    flex-wrap: nowrap;
+}
+.tabs-detail  .nav-tabs .nav-link {
+    white-space: nowrap;
+}
+.tree-view-menu{
+    direction: rtl;
+    margin-left: 0px;
+}
+
+.tree-view-menu div {
+    direction:ltr;
 }

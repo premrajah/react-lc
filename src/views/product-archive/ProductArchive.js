@@ -4,16 +4,33 @@ import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import { connect } from "react-redux";
-import ProductRecordItem from "../../components/ProductRecordItem";
+// import ProductRecordItem from "../../components/ProductRecordItem";
 import { Link } from "react-router-dom";
 import ErrorBoundary from "../../components/ErrorBoundary";
+import ProductItem from "../../components/Products/Item/ProductItem";
+import SearchBar from "../../components/SearchBar";
 
 class ProductArchive extends Component {
-    state = {
-        allArchivedProducts: [],
-    };
+
+
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            timerEnd: false,
+            count: 0,
+            nextIntervalFlag: false,
+
+            searchValue: '',
+            filterValue: '',
+            products: [],
+        };
+
+
+    }
 
     getAllPreviouslyOwnedProducts = () => {
         axios
@@ -21,18 +38,27 @@ class ProductArchive extends Component {
                 headers: { Authorization: "Bearer " + this.props.userDetail.token },
             })
             .then((response) => {
-                this.setState({ allArchivedProducts: response.data.data });
+                this.setState({ products: response.data.data });
             })
             .catch((error) => {});
     };
 
     displayArchivedProducts = () => {
-        if (this.state.allArchivedProducts !== null && this.state.allArchivedProducts.length > 0) {
-            return this.state.allArchivedProducts.map((item, index) => {
+        if (this.state.products !== null && this.state.products.length > 0) {
+            return this.state.products.map((item, index) => {
                 return (
                     <Link to={`/p/${item.product._key}`} key={index}>
                         <ErrorBoundary>
-                            <ProductRecordItem item={item} />
+                            {/*<ProductRecordItem item={item.product} />*/}
+                            <ProductItem
+                                goToLink={true}
+                                delete={false}
+                                hideMore={true}
+                                edit={true}
+                                remove={false}
+                                duplicate={true}
+                                item={item.product}
+                            />
                         </ErrorBoundary>
                     </Link>
                 );
@@ -45,6 +71,16 @@ class ProductArchive extends Component {
     componentDidMount() {
         this.getAllPreviouslyOwnedProducts();
     }
+
+
+    handleSearch = (searchValue) => {
+        this.setState({searchValue: searchValue});
+    }
+
+    handleSearchFilter = (filterValue) => {
+        this.setState({filterValue: filterValue});
+    }
+
 
     render() {
         return (
@@ -76,10 +112,101 @@ class ProductArchive extends Component {
                                 </Link>
                             </div>
                         </div>
+                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                            <div className={"col-12"}>
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
 
-                        <div className="row">
-                            <div className="col-12">{this.displayArchivedProducts()}</div>
+                            </div>
                         </div>
+
+                        <div className={"listing-row-border "}></div>
+
+                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                            <div className="col">
+                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
+                                    {this.state.products.filter((item)=> {
+
+                                        let site = item.product
+
+                                        return this.state.filterValue ? (this.state.filterValue == "name" ?
+                                            site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue == "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue == "brand" ? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue == "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue == "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue == "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                this.state.filterValue == "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                                    this.state.filterValue == "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                        this.state.filterValue == "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+
+
+                                                                            null) :
+                                            (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                                    }).length} Products
+                                </p>
+                            </div>
+                            <div className="text-mute col-auto pl-0">
+                                <span style={{ fontSize: "18px" }}>Created</span>
+                            </div>
+                        </div>
+                        <div className={"listing-row-border mb-3"}></div>
+
+                        {this.state.products.filter((item)=> {
+
+                            let site=item.product
+
+
+                            return    this.state.filterValue ? (this.state.filterValue == "name" ?
+                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                this.state.filterValue == "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                    this.state.filterValue == "brand" ? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                        this.state.filterValue == "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue == "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue == "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue == "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue == "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue == "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+
+
+                                                                null) :
+                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                        } ).map((item) => (
+                            <>
+
+                                <ErrorBoundary>
+                                <ProductItem
+                                    goToLink={true}
+                                    delete={false}
+                                    edit={true}
+                                    remove={false}
+                                    duplicate={true}
+                                    item={item.product}
+                                    hideMore={true}
+                                />
+                                </ErrorBoundary>
+
+                            </>
+                        ))}
+
+                      
                     </div>
                 </div>
             </div>

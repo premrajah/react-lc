@@ -210,6 +210,7 @@ class ProductsService extends Component {
                                     remove={false}
                                     duplicate={true}
                                     item={item.product}
+                                    hideMore={true}
                                 />
 
                                 {/*</Link>*/}

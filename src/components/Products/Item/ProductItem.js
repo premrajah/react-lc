@@ -211,7 +211,7 @@ class ProductItemNew extends Component {
 
                             <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-4":"col-2 "}>
-                                    <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
+                                    <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
@@ -224,7 +224,7 @@ class ProductItemNew extends Component {
                                 <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-2  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                            <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name} </Link>
+                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}> {this.props.item.name} </Link>
                                       </p>
 
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">

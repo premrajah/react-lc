@@ -210,7 +210,7 @@ class ProductItemNew extends Component {
 
 
                             <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
-                                <div key={this.props.item._key+"-product-item-bpx"} className={"col-2 "}>
+                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-4":"col-2 "}>
                                     <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
@@ -221,7 +221,7 @@ class ProductItemNew extends Component {
                                     </>
                                     </Link>
                                 </div>
-                                <div className={"col-7 pl-2  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-2  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-caps mb-1">
                                             <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}> {this.props.item.name} </Link>
@@ -261,7 +261,7 @@ class ProductItemNew extends Component {
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
 
-                                    {this.props.showAddToListButton && <div>
+                                    {!this.props.hideAdd&&this.props.showAddToListButton && <div>
                                         <Add onClick={() => {
 
                                             this.handleAddToProductList(this.props.item)

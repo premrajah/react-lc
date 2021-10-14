@@ -3705,3 +3705,11 @@ a.page-link:hover {
 .tabs-detail  .nav-tabs .nav-link {
     white-space: nowrap;
 }
+.tree-view-menu{
+    direction: rtl;
+    margin-left: 0px;
+}
+
+.tree-view-menu div {
+    direction:ltr;
+}

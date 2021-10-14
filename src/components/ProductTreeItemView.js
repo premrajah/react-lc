@@ -40,7 +40,7 @@ class ProductTreeItemView extends Component {
     }
 
     setOpen=()=> {
-        console.log(this.state.open)
+        // // console.log(this.state.open)
         this.setState({
             open: !this.state.open,
         });
@@ -86,7 +86,7 @@ class ProductTreeItemView extends Component {
                 tree.push(treeItem);
             }
 
-            console.log(tree)
+            // // console.log(tree)
 
             this.setState({
                 tree: tree,
@@ -154,8 +154,8 @@ class ProductTreeItemView extends Component {
                         });
                         //
                         // this.setTree();
-                        console.log("getting listing")
-                        console.log(responseAll)
+                        // console.log("getting listing")
+                        // console.log(responseAll)
                     },
                     (error) => {
                         // var status = error.response.status

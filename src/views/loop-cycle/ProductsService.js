@@ -10,11 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from "@material-ui/core/TextField";
 import SearchGray from "@material-ui/icons/Search";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import axios from "axios/index";
 import { withStyles } from "@material-ui/core/styles/index";
-import ProductItem from "../../components/ProductItemNew";
+// import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
+import SearchBar from "../../components/SearchBar";
+import ProductItem from "../../components/Products/Item/ProductItem";
 
 class ProductsService extends Component {
     constructor(props) {
@@ -25,6 +27,8 @@ class ProductsService extends Component {
             count: 0,
             nextIntervalFlag: false,
             products: [],
+            searchValue: '',
+            filterValue: '',
         };
 
         this.getProducts = this.getProducts.bind(this);
@@ -39,7 +43,7 @@ class ProductsService extends Component {
     getProducts() {
         this.props.showLoading(true);
         axios
-            .get(baseUrl + "product/service-agent/expand", {
+            .get(baseUrl + "product/service-agent", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -74,6 +78,18 @@ class ProductsService extends Component {
     componentWillUnmount() {
         clearInterval(this.interval);
     }
+
+
+    handleSearch = (searchValue) => {
+        this.setState({searchValue: searchValue});
+    }
+
+    handleSearchFilter = (filterValue) => {
+        this.setState({filterValue: filterValue});
+    }
+
+
+
 
     render() {
         const classes = withStyles();
@@ -110,7 +126,8 @@ class ProductsService extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
-                                <SearchField />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
+
                             </div>
                         </div>
                         <div className={"listing-row-border "}></div>
@@ -118,7 +135,34 @@ class ProductsService extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.state.products.length} Products
+                                    {this.state.products.filter((item)=> {
+
+                                        let site = item.product
+
+                                        return this.state.filterValue ? (this.state.filterValue == "name" ?
+                                            site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue == "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue == "brand" ? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue == "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue == "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue == "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                this.state.filterValue == "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                                    this.state.filterValue == "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                        this.state.filterValue == "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+
+
+                                                                            null) :
+                                            (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                                site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                                    }).length} Products
                                 </p>
                             </div>
                             <div className="text-mute col-auto pl-0">
@@ -127,7 +171,35 @@ class ProductsService extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.products.map((item) => (
+                        {this.state.products.filter((item)=> {
+
+                            let site=item.product
+
+
+                        return    this.state.filterValue ? (this.state.filterValue == "name" ?
+                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                this.state.filterValue == "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                    this.state.filterValue == "brand" ? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                        this.state.filterValue == "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue == "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue == "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue == "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue == "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue == "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+
+
+                                                                null) :
+                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                                    site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                        } ).map((item) => (
                             <>
                                 {/*<Link to={"/product/" + item.product._key}>*/}
 
@@ -137,7 +209,7 @@ class ProductsService extends Component {
                                     edit={true}
                                     remove={false}
                                     duplicate={true}
-                                    item={item}
+                                    item={item.product}
                                 />
 
                                 {/*</Link>*/}

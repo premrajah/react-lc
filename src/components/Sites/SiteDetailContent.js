@@ -693,9 +693,9 @@ class SiteDetailContent extends Component {
 
                                             </Tab>
 
-                                            {this.props.item.site &&   <Tab eventKey="subsites" title="Sub Sites">
+                                            <Tab eventKey="subsites" title="Sub Sites">
                                                 <SubSitesTab  item={this.props.item} />
-                                            </Tab>}
+                                            </Tab>
 
 
                                             {this.props.isLoggedIn && this.props.item.site &&      <Tab eventKey="subproducts" title="Products">

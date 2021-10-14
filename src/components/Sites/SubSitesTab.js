@@ -38,6 +38,9 @@ class SubSitesTab extends Component {
     }
 
     getSubSites=()=>{
+        // this.setState({
+        //     subSites:[]
+        // })
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .get(baseUrl + "site/" + this.props.item._key+"/child")
@@ -67,14 +70,14 @@ class SubSitesTab extends Component {
     componentDidMount() {
 
 
-        if (!this.props.item.children_sites)
-    this.getSubSites()
-
-        else{
+        // if (!this.props.item.children_sites)
+        // this.getSubSites()
+        //
+        // else{
             this.setState({
                 subSites:this.props.item.children_sites
             })
-        }
+        // }
 
 
     }
@@ -96,7 +99,7 @@ class SubSitesTab extends Component {
                                                     </span>}
                 </p>
 
-                        {this.state.subSites.map(
+                        {this.props.item.children_sites.map(
                             (item, index) => (
                                 <SitePageItem
 

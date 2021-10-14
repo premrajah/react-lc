@@ -266,8 +266,6 @@ class Sites extends Component {
                             site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                             site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-
-
                             )
 
                             .map((site, index) => (

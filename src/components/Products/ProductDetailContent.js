@@ -772,7 +772,7 @@ class ProductDetailContent extends Component {
                                                         <ResourceItem
                                                             history={this.props.history}
                                                             item={this.state.listingLinked}
-
+                                                            artifacts={this.state.item.artifacts}
                                                             hideMoreMenu={true}
                                                         />
                                                     )}

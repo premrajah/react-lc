@@ -17,12 +17,26 @@ class ResourceItem extends Component {
             count: 0,
             nextIntervalFlag: false,
             image: null,
+            artifacts:[]
         };
 
         this.callBackResult = this.callBackResult.bind(this);
         this.showEdit = this.showEdit.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.goToPage = this.goToPage.bind(this);
+    }
+
+    componentDidMount() {
+
+
+
+        // console.log(this.props.artifacts)
+        // if (!this.props.item.listing.artifacts&&this.props.artifacts){
+        //
+        //         this.setState({
+        //             artifacts:this.props.images
+        //         })
+        // }
     }
 
 
@@ -86,6 +100,8 @@ class ResourceItem extends Component {
                                 ) : (
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}
+
+
                             </div>
                             <div className={"col-4 pl-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
@@ -147,11 +163,11 @@ class ResourceItem extends Component {
                             className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
                             <div className={"col-2"}>
                                 {this.props.item.artifacts &&
-                                this.props.item.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />
-                                ) : (
+                                this.props.item.artifacts.length > 0 ?
+                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />:
+                                    this.props.artifacts && this.props.artifacts.length > 0?<ImageOnlyThumbnail images={this.props.artifacts} />:
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
-                                )}
+                                }
                             </div>
                             <div className={"col-4 pl-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className="text-caps mb-1 list-title">

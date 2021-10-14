@@ -37,7 +37,7 @@ class Products extends Component {
         super(props);
         this.state = {
             searchValue: '',
-            filterValue: 'name',
+            filterValue: '',
             selectedProducts: [],
             showMultiUpload: false,
             isIntersecting:false,
@@ -67,6 +67,11 @@ class Products extends Component {
     handleSearchFilter = (filterValue) => {
         this.setState({filterValue: filterValue});
     }
+
+
+
+
+
 
 
     handleChange(value,field ) {
@@ -419,12 +424,32 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {
-                                        // this.props.productWithoutParentList.length > 0 ? this.props.productWithoutParentList.filter(
-                                        //     (item) => item.is_listable === true
-                                        // ).length : "... "
+                                    {this.props.productWithoutParentList.filter((site)=>
+                                            this.state.filterValue?( this.state.filterValue=="name"?
+                                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                this.state.filterValue=="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                    this.state.filterValue=="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue=="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue=="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                this.state.filterValue=="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                    this.state.filterValue=="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                                        this.state.filterValue=="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                            this.state.filterValue=="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
 
-                                        this.props.productWithoutParentList.length > 0?this.props.productWithoutParentList.length:0
+
+                                                            null):
+                                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase())||
+                                                    site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.sku.serial&&site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                                        ).length
+
                                     }
                                     <span className="ml-1">Listable Products</span>
                                 </p>
@@ -435,10 +460,32 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList.length > 0 &&
-                        this.props.productWithoutParentList.filter((filterV) => {
-                            return filterV[this.state.filterValue].toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1
-                        })
+                        {
+                        this.props.productWithoutParentList.filter((site)=>
+                            this.state.filterValue?( this.state.filterValue=="name"?
+                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                this.state.filterValue=="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                    this.state.filterValue=="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                        this.state.filterValue=="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue=="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue=="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue=="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue=="model"?site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue=="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+
+
+                                                                null):
+                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.year_of_making&&  site.year_of_making.toString().includes(this.state.searchValue.toLowerCase())||
+                                    site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                        )
                             .map((item, index) => (
                             <div id={item._key} key={item._key}>
                                 <ProductItem
@@ -456,21 +503,47 @@ class Products extends Component {
                             </div>
                         ))}
 
-                        {this.props.productWithoutParentList.length==0 &&
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div   className="col">
-                                <div>No products found!</div>
+
+                        {this.props.productWithoutParentList.filter((site)=>
+                                this.state.filterValue?( this.state.filterValue=="name"?
+                                    site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                    this.state.filterValue=="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                        this.state.filterValue=="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue=="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue=="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue=="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue=="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue=="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                this.state.filterValue=="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+
+
+                                                                    null):
+                                    (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase())||
+                                        site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.sku.serial&&site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+
+                            ).length==0&&
+                            <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                                <div   className="col">
+                                    <div>No products found!</div>
+                                </div>
                             </div>
-                        </div>
+
                         }
 
-                        {this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>
-                        }
+                        {/*{this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&*/}
+                        {/*<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
+                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
+                        {/*        <div>Loading products please wait ...</div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*}*/}
                     </div>
 
                     <React.Fragment>

@@ -27,6 +27,8 @@ import AddSite from "../../components/AddSite";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import PageHeader from "../../components/PageHeader";
 import EditSite from "../../components/Sites/EditSite";
+import {load} from "dotenv";
+import ProductItem from "../../components/Products/Item/ProductItem";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,6 +105,8 @@ class ListForm extends Component {
             purpose: ["defined", "prototype", "aggregate"],
             previewImage: null,
             selectedProductId: null,
+            previewProduct:null,
+            selectedLoading:false
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -123,6 +127,8 @@ class ListForm extends Component {
     }
 
     productSelected(productId) {
+        this.loadSelectedProduct(productId)
+
         this.setState({
             selectedProductId: productId,
         });
@@ -135,6 +141,39 @@ class ListForm extends Component {
 
         this.setState({ fields });
     }
+
+
+    loadSelectedProduct = (id) =>  {
+
+        this.setState({
+            selectedLoading:true
+        })
+
+        axios
+            .get(baseUrl + "product/" + (id)
+            )
+            .then(
+                (response) => {
+                    var responseAll = response.data;
+
+                    this.setState({
+                        previewProduct:responseAll.data.product
+                    })
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            ).finally(()=>{
+
+            this.setState({
+                selectedLoading:false
+            })
+        });
+
+    };
 
     phonenumber(inputtxt) {
         var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
@@ -812,6 +851,7 @@ class ListForm extends Component {
                                             </div>
 
                                             <div className="col-12 mt-4 mb-4">
+
                                                 <div
                                                     className={
                                                         "custom-label text-bold text-blue mb-1"
@@ -826,7 +866,8 @@ class ListForm extends Component {
                                                 </span>
                                                 </div>
 
-
+                                                <div className="row">
+                                                    <div className="col-4">
                                                 {this.props.productWithoutParentNoList.length>0&&
                                                 <ProductTreeView
                                                     items={this.props.productWithoutParentNoList}
@@ -836,6 +877,30 @@ class ListForm extends Component {
                                                     className={"mb-4"}
                                                 />
                                                 }
+                                                    </div>
+                                                    <div className="col-8  mt-5 pt-2">
+
+                                                        {!this.state.selectedLoading&&this.state.previewProduct&&
+                                                        <ProductItem
+                                                            biggerImage={true}
+                                                            index={22111}
+                                                            goToLink={true}
+                                                            delete={false}
+                                                            edit={false}
+                                                            remove={false}
+                                                            duplicate={false}
+                                                            hideAdd={true}
+                                                            item={this.state.previewProduct}
+                                                            hideMore
+                                                            listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
+                                                            showAddToListButton
+                                                        />}
+                                                        {this.state.selectedLoading&&
+                                                        <div>Loading.....</div>
+                                                        }
+
+                                                    </div>
+                                                </div>
 
                                                 <TextField
                                                     value={this.state.selectedProductId}

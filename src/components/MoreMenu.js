@@ -105,6 +105,7 @@ class MoreMenu extends Component {
 
             this.showDuplicatePopUp();
         } else {
+
             this.props.triggerCallback(action);
         }
     }
@@ -182,6 +183,11 @@ class MoreMenu extends Component {
                             {this.props.register && (
                                 <MenuItem data-action={"register"} onClick={this.handleClose}>
                                     Register
+                                </MenuItem>
+                            )}
+                            {this.props.untrack && (
+                                <MenuItem data-action={"untrack"} onClick={this.handleClose}>
+                                    Untrack
                                 </MenuItem>
                             )}
                             {this.props.report && (

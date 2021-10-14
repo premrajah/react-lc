@@ -35,7 +35,7 @@ console.log("frontEndUrl" + frontEndUrl);
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-export const PRODUCTS_FILTER_VALUES = ["name", "description", "purpose", "category"];
+export const PRODUCTS_FILTER_VALUES = ["name", "condition", "brand", "category","type","state","year of manufacture","model","serial no."];
 export const SITES_FILTER_VALUES = ["name","site id","address"];
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];

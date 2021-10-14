@@ -193,6 +193,7 @@ class ProductArchive extends Component {
 
                                 <ErrorBoundary>
                                 <ProductItem
+                                    toProvenance={true}
                                     goToLink={true}
                                     delete={false}
                                     edit={true}
@@ -206,7 +207,7 @@ class ProductArchive extends Component {
                             </>
                         ))}
 
-                      
+
                     </div>
                 </div>
             </div>

@@ -1,16 +1,14 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { connect } from "react-redux";
-import { baseUrl } from "../../Util/Constants";
-import NotificationItem from "./NotificationItem";
-import _ from "lodash";
+import {connect} from "react-redux";
+import {baseUrl} from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
 import reactStringReplace from "react-string-replace";
 import {Card, CardContent, Snackbar} from "@material-ui/core";
 import NotIcon from "@material-ui/icons/Notifications";
 import moment from "moment/moment";
 import Org from "../Org/Org";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;

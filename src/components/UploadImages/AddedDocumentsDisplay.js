@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import {Modal, Tab} from "react-bootstrap";
+import React, {useState} from "react";
+import {Modal} from "react-bootstrap";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import { useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 

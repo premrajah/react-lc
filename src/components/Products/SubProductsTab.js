@@ -7,10 +7,6 @@ class SubProductsTab extends Component {
     slug;
     search;
 
-    constructor(props) {
-        super(props);
-
-    }
     showProductSelection=(event)=> {
         this.props.setProduct(this.props.item);
         this.props.showProductPopUp({ type: "sub_product_view", show: true });

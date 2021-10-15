@@ -130,7 +130,7 @@ class ProductExpandItem extends Component {
         if (field === "product") {
             this.setState({
                 subProductSelected: this.props.productList.filter(
-                    (item) => item._key == e.target.value
+                    (item) => item._key === e.target.value
                 )[0],
             });
         }

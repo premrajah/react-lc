@@ -138,6 +138,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     message_group_id: messageGroupId,
                 };
                 break;
+            default:
+                return;
         }
 
         postMessage(payload);

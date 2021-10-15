@@ -268,7 +268,7 @@ class ProductDetailContent extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        if (prevProps!=this.props) {
+        if (prevProps!==this.props) {
 
 
             this.setActiveKey("productinfo")
@@ -733,7 +733,7 @@ class ProductDetailContent extends Component {
 
                                             </Tab>
 
-                                            {(this.props.item.product.purpose == "aggregate") &&
+                                            {(this.props.item.product.purpose === "aggregate") &&
                                             <Tab eventKey="aggregates" title="Aggregations">
                                                 <AggregatesTab item={this.props.item}/>
                                             </Tab>}

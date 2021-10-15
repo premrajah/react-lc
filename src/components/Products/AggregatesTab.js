@@ -269,7 +269,7 @@ componentDidMount() {
                             {/*</div>*/}
                             <div className={" col-1 text-capitalize text-mute small"}>
 
-                                {(this.props.item.product.units != aggregate.units && this.props.item.product.category == aggregate.category && this.props.item.product.type == aggregate.type) &&
+                                {(this.props.item.product.units !== aggregate.units && this.props.item.product.category === aggregate.category && this.props.item.product.type === aggregate.type) &&
 
                                     <>
                                         {!this.props.item.product.unit_conversions &&

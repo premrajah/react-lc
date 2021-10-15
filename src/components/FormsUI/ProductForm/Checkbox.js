@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel} from '@material-ui/core'
-import {useField, useFormikContext} from 'formik'
+import {Checkbox} from '@material-ui/core'
 
 const CheckboxWrapper = ({name, title,onChange, legend,initialValue,error, ...otherProps}) => {
 

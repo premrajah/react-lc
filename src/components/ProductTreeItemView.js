@@ -413,9 +413,6 @@ const useStyles = makeStyles({
     },
 });
 
-function GmailTreeView() {
-    return <></>;
-}
 
 const mapStateToProps = (state) => {
     return {

@@ -12,6 +12,7 @@ import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
+import {Editor, EditorState} from 'draft-js';
 
 const msgWindowHeight = "560px";
 const useStyles = makeStyles({
@@ -267,7 +268,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 {/*{group.name.replace(/\W/g, " ")}*/}
                                                 {group.name}
                                             </ListItem>
-                                            {console.log(group, i)}
                                         </div>
                                     ))
                             ) : (
@@ -341,6 +341,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         onChange={(text) => setMessageText(text)}
                                         value={messageText || ""}
                                     />
+
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button

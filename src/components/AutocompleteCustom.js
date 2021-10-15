@@ -285,7 +285,7 @@ class AutocompleteCustom extends Component {
                     <div className={"col-2"}>
                     <div className={"img-left p-1"}>
                         <img style={{height:"32px!important", width:"32px!important"}} className="card-img-top"
-                             src={this.state.image} alt="Image" />
+                             src={this.state.image} alt="" />
 
                     </div>
                     </div>

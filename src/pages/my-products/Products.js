@@ -425,16 +425,16 @@ class Products extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {this.props.productWithoutParentList.filter((site)=>
-                                            this.state.filterValue?( this.state.filterValue=="name"?
+                                            this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                this.state.filterValue=="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                    this.state.filterValue=="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue=="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue=="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                this.state.filterValue=="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                    this.state.filterValue=="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                                        this.state.filterValue=="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                            this.state.filterValue=="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                    this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                    this.state.filterValue==="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                                        this.state.filterValue==="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                            this.state.filterValue==="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
 
 
                                                             null):
@@ -462,16 +462,16 @@ class Products extends Component {
 
                         {
                         this.props.productWithoutParentList.filter((site)=>
-                            this.state.filterValue?( this.state.filterValue=="name"?
+                            this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                this.state.filterValue=="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue=="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                        this.state.filterValue=="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue=="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue=="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue=="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue=="model"?site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue=="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                    this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                        this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue==="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue==="model"?site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue==="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
 
 
                                                                 null):
@@ -505,16 +505,16 @@ class Products extends Component {
 
 
                         {this.props.productWithoutParentList.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue=="name"?
+                                this.state.filterValue?( this.state.filterValue==="name"?
                                     site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue=="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                        this.state.filterValue=="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue=="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue=="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue=="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue=="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue=="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                this.state.filterValue=="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                    this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                        this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                            this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                        this.state.filterValue==="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
+                                                            this.state.filterValue==="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                                this.state.filterValue==="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
 
 
                                                                     null):
@@ -528,7 +528,7 @@ class Products extends Component {
                                         site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.sku.serial&&site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                            ).length==0&&
+                            ).length===0&&
                             <div className="row  justify-content-center filter-row    pt-3 pb-3">
                                 <div   className="col">
                                     <div>No products found!</div>

@@ -268,7 +268,6 @@ class ProductDetailContent extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log("udpate")
         if (prevProps!=this.props) {
 
 

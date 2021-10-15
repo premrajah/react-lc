@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect} from 'react'
-import {Formik, Form, Field} from 'formik'
+import React, {useCallback} from 'react'
+import {Field, Form, Formik} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "../FormsUI/TextField";
-import ButtonWrapper from "../FormsUI/Button";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import axios from "axios/index";

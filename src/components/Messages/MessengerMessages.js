@@ -11,11 +11,18 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
+import {makeStyles} from "@material-ui/core";
 
 const msgWindowHeight = "560px";
+const useStyles = makeStyles({
+    active: {
+        background: "red"
+    }
+});
 
 const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
+    const classes = useStyles()
     const reactSelectRef = useRef([]);
 
     const [allOrgs, setAllOrgs] = useState([]);
@@ -260,6 +267,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 {/*{group.name.replace(/\W/g, " ")}*/}
                                                 {group.name}
                                             </ListItem>
+                                            {console.log(group, i)}
                                         </div>
                                     ))
                             ) : (

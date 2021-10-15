@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
@@ -16,14 +16,17 @@ const msgWindowHeight = "560px";
 
 const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
+    const reactSelectRef = useRef([]);
 
     const [allOrgs, setAllOrgs] = useState([]);
     const [allMessageGroups, setAllMessageGroups] = useState([]);
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
+
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);
+
     const [messageText, setMessageText] = useState("");
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
@@ -92,6 +95,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleGroupClick = (groupId) => {
         if (!groupId) return;
+        setSelectedMsgGroup([]);
+        if(reactSelectedValues.length > 0   ) {
+            reactSelectRef.current.clearValue();
+        }
         setShowHideGroupFilter(false);
         setShowHideOrgSearch(false);
         getGroupMessageWithId(groupId);
@@ -133,9 +140,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    // getMessages();
+
                     setMessageText("");
-                    setReactSelectValues([])
+                    reactSelectRef.current.clearValue();
                     getAllMessageGroups();
                     getAllOrgs();
                 }
@@ -146,8 +153,19 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleSendMessage = () => {
-        if (reactSelectedValues.length > 0) {
+        if (messageText && reactSelectedValues.length > 0) {
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
+            console.log("new message")
+
+
+        } else if (messageText) {
+            let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
+            console.log("message reply ", messageGroupId)
+
+            if(messageGroupId) {
+                sendMessage(messageText, [], messageGroupId, "", "group_message");
+            }
+
         }
     };
 
@@ -265,6 +283,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             className="react-multi-select"
                                             classNamePrefix="select"
                                             onChange={(e) => handleNewMessageSelect(e)}
+                                            ref={reactSelectRef}
                                         />
                                 </div>
                             </div>}

@@ -226,7 +226,7 @@ class Notifications extends Component {
 
                 <h5 className="blue-text mb-4">
                     <span className="mr-3">Total {this.props.notifications.length <= 0 ? "..." : this.props.notifications.length}</span>
-                    <span className="text-muted">Read {this.props.notifications.length > 0 && this.handleReadUnreadLength(this.props.notifications)}</span>
+                    <span className="text-muted">Read {this.props.notifications.length <= 0 ? "..." : this.handleReadUnreadLength(this.props.notifications)}</span>
                 </h5>
                 <div className="notification-content">
                     {this.props.notifications.length > 0

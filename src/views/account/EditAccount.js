@@ -202,7 +202,7 @@ class EditAccount extends Component {
                         lastName: lastName,
                         phone: phone,
                         user_details:{
-                            reason_for_joining:data.get("reason")!="Other"?data.get("reason"):data.get("reason-other")
+                            reason_for_joining:data.get("reason")!=="Other"?data.get("reason"):data.get("reason-other")
                         }
                     }
                 )

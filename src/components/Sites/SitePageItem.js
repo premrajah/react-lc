@@ -11,7 +11,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-const SitePageItem = (props) => {
+const SitePageItem = (  props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
     const [showModal, setShowModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');

@@ -1,12 +1,8 @@
 import React, {Component} from "react";
 import * as actionCreator from "../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
 import {Link} from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {makeStyles} from "@material-ui/core/styles";
 import {baseUrl, frontEndUrl} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider";
@@ -32,8 +28,8 @@ import LinkIcon from '@material-ui/icons/Link';
 import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
 import ArtifactProductsTab from "./Products/ArtifactProductsTab";
-import MapContainer from "./Map/MapContainer";
 import {GoogleMap} from "./Map/MapsContainer";
+import AggregatesTab from "./Products/AggregatesTab";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -633,12 +629,12 @@ class ProductDetailCycle extends Component {
                                                             className={"mr-3"}
                                                             href={
                                                                 baseUrl + "product/" + this.props.item.product._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
-                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Alt]</a>
+                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" } rel="noreferrer" >[Alt]</a>
                                                         <a
                                                             className={"mr-3"}
                                                             href={
                                                                 baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>[Mono]</a>
+                                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" } rel="noreferrer" >[Mono]</a>
                                                     </p>
                                                 )}
                                             </div>
@@ -730,6 +726,11 @@ class ProductDetailCycle extends Component {
                                     <Tab eventKey="productinfo" title="Product Info">
                                         <InfoTabContent item={this.props.item} />
                                     </Tab>
+
+                                    {(this.props.item.product.purpose === "aggregate") &&
+                                    <Tab eventKey="aggregates" title="Aggregations">
+                                        <AggregatesTab item={this.props.item}/>
+                                    </Tab>}
 
                                     {this.state.subProducts.length > 0 && (
                                         <Tab eventKey="subproducts" title="Subproducts">

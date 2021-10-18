@@ -48,6 +48,8 @@ class SiteForm extends Component {
             moreDetail: false,
             isSubmitButtonPressed: false,
             addCount: [],
+            createNew:false,
+            addExisting:false
 
         };
 
@@ -83,6 +85,23 @@ class SiteForm extends Component {
                 });
         }
     }
+
+    toggleCreateNew = () => {
+
+        this.setState({
+            createNew: !this.state.createNew,
+            addExisting: false,
+
+        });
+    }
+    toggleAddExisting = () => {
+
+        this.setState({
+            addExisting: !this.state.addExisting,
+            createNew: false,
+        });
+    }
+
     showSubmitSite = () => {
         this.setState({
             errorRegister: null,
@@ -159,7 +178,7 @@ class SiteForm extends Component {
     handleSubmit = (event) => {
 
 
-        let item=this.props.showSiteForm.item
+        let parentId;
         event.preventDefault();
         if (!this.handleValidation()) {
 
@@ -191,6 +210,8 @@ class SiteForm extends Component {
             }
         };
 
+        parentId=data.get("parent")
+
         this.setState({isSubmitButtonPressed: true})
 
         // return false
@@ -207,18 +228,21 @@ class SiteForm extends Component {
             .then((res) => {
 
 
-                if (data.get("parent")) {
-                    this.updateParentSite(data.get("parent"), res.data.data._key,item)
+                if (parentId) {
+
+                    this.updateParentSite(parentId, res.data.data._key)
 
                 }else{
 
-                    if (this.props.showSiteForm.item) {
 
-                        this.props.loadCurrentSite(item._key)
-                    }
 
-                    this.props.loadSites()
+
+                        this.props.loadCurrentSite(parentId)
+
+
                 }
+                this.props.loadSites()
+                this.props.loadParentSites()
                 this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
@@ -233,7 +257,7 @@ class SiteForm extends Component {
 
 
     updateSite = (event) => {
-        let item=this.props.showSiteForm.item
+        let item=this.props.showSiteForm.item.site
 
         event.preventDefault();
         if (!this.handleValidation()) {
@@ -271,12 +295,30 @@ class SiteForm extends Component {
                 if (res.status === 200) {
 
 
-                    if (data.get("parent")) {
-                        this.updateParentSite(data.get("parent"), res.data.data._key,item)
+                    // if (data.get("parent")) {
 
+
+                    if (this.props.showSiteForm.item.parent_site&&!data.get("parent")){
+
+                        //removal of parent site id
+                        this.updateParentSite(data.get("parent"), res.data.data._key,item._key,true)
                     }else{
-                        this.props.loadSites()
+
+                        this.updateParentSite(data.get("parent"), res.data.data._key,item._key,false)
                     }
+
+
+
+
+
+                    //
+                    // }else{
+                    //
+                    //     this.props.loadCurrentSite(item._key)
+                    // }
+                    // else{
+                    //     this.props.loadSites()
+                    // }
                     this.hidePopUp()
                     this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
 
@@ -290,10 +332,12 @@ class SiteForm extends Component {
 
     promisesCall = []
 
-    updateParentSite = (parent, site,item) => {
+    updateParentSite = (parent, site,currentSite,removeParent) => {
 
-        console.log("parent site linked called")
 
+
+
+        if (!removeParent){
         axios
             .post(baseUrl + "site/parent", {"parent_site_id": parent, site_id: site}, {
                 headers: {
@@ -302,12 +346,11 @@ class SiteForm extends Component {
             })
             .then((res) => {
 
-
-                if (item) {
                     this.props.loadSites()
-                    this.props.loadCurrentSite(item._key)
 
-                }
+                   if (currentSite)
+                    this.props.loadCurrentSite(currentSite)
+
 
             })
             .catch((error) => {
@@ -315,16 +358,54 @@ class SiteForm extends Component {
 
 
 
+        }else {
+
+            axios
+                .delete(baseUrl + "site/"+ site+"/parent" )
+                .then((res) => {
+
+                    this.props.loadSites()
+
+                    if (currentSite)
+                    this.props.loadCurrentSite(currentSite)
+
+
+                })
+                .catch((error) => {
+                });
+        }
+
+
 }
 
 
+componentDidUpdate(prevProps, prevState, snapshot) {
 
+        if (prevProps!==this.props){
+
+            console.log(this.props.showSiteForm)
+            this.setState({
+                count:0,
+                createNew:false,
+                addExisting:false
+            })
+        }
+}
 
     componentDidMount() {
 
         window.scrollTo(0, 0);
         this.props.loadProducts();
         this.props.loadSites();
+
+
+
+        if (this.props.showSiteForm.type==="new")
+        this.setState({
+            createNew:!this.state.createNew
+        })
+
+
 
     }
 
@@ -334,7 +415,7 @@ class SiteForm extends Component {
 
     linkSubSites = async (event) => {
 
-        let item=this.props.showSiteForm.item.site
+        let parentId=this.props.showSiteForm.parent
 
         // console.log("link child sites")
         // console.log(item)
@@ -355,26 +436,26 @@ class SiteForm extends Component {
         for (let i = 0; i < this.state.addCount.length; i++) {
 
             console.log(data.get(`site[${i}]`))
-            if (item) {
+
                  // this.updateParentSite(this.props.showSiteForm.item._key, data.get(`site[${i}]`))
 
              await   axios
-                    .post(baseUrl + "site/parent", {"parent_site_id":item._key,site_id:data.get(`site[${i}]`)}, {
+                    .post(baseUrl + "site/parent", {"parent_site_id":parentId,site_id:data.get(`site[${i}]`)}, {
                         headers: {
                             Authorization: "Bearer " + this.props.userDetail.token,
                         },
                     })
                     .then((res) => {
 
-                        if (item) {
-                            this.props.loadCurrentSite(item._key)
-                        }
+
+                            this.props.loadCurrentSite(parentId)
+
 
                     })
                     .catch((error) => {});
             }
 
-        }
+
 
 
         console.log("clear called")
@@ -459,6 +540,7 @@ class SiteForm extends Component {
             <>
                 <Modal
                     // size="lg"
+                    centered
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
@@ -474,58 +556,46 @@ class SiteForm extends Component {
                     <div className="row  justify-content-center mobile-menu-row pt-3 m-2">
 
                     <div className="col-12  ">
-                        <h3 className={"blue-text text-heading text-center"}>{this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
+                        <h3 className={"blue-text text-heading text-center"}>
+                            {this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
                     </div>
+
+                        {/*link existing or new site*/}
+
+                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className=" text-mute small">
+                                <span onClick={this.toggleCreateNew} className="forgot-password-link green-text mr-2 "
+                                      data-parent="cWkY0KVYEM">Create New</span>:<span
+                            onClick={this.toggleAddExisting}
+                            className="forgot-password-link green-text ml-2"
+                            data-parent="cWkY0KVYEM">Add Existing</span></p>
+                        }
+
+
                         <div className="col-12  ">
 
-                        {(this.props.showSiteForm.type==="new"||this.props.showSiteForm.type==="edit") &&
+                        {(this.state.createNew||this.props.showSiteForm.type==="new"||this.props.showSiteForm.type==="edit") &&
                         <div className={"row justify-content-center create-product-row"}>
 
-
                         <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
+
+
 
                             <div className="row no-gutters">
                                 <div className="col-12 ">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.name}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.name}
                                         onChange={(value)=>this.handleChange(value,"name")}
                                         error={this.state.errors["name"]}
                                         name="name" title="Name" />
 
                                 </div>
                             </div>
-
-                            <div className="row no-gutters">
-                                <div className="col-12 ">
-
-                                    <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.description}
-                                        onChange={(value)=>this.handleChange(value,"description")}
-                                        error={this.state.errors["description"]}
-                                        name="description" title="Description" />
-
-                                </div>
-                            </div>
-                            <div className="row no-gutters">
-                                <div className="col-12 ">
-
-                                    <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.external_reference}
-                                        onChange={(value)=>this.handleChange(value,"external_reference")}
-                                        error={this.state.errors["external_reference"]}
-                                        name="external_reference" title="Site Id" />
-
-                                </div>
-                            </div>
-
-
-
                             <div className="row  ">
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.isHeadOffice}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.is_head_office}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
                                         name={"isHeadOffice"} title="Head Office ?" />
 
@@ -534,13 +604,54 @@ class SiteForm extends Component {
                                 <div className="col-md-8 col-sm-12">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.contact}
                                         onChange={(value)=>this.handleChange(value,"contact")}
                                         error={this.state.errors["contact"]}
                                         name="contact" title="Contact" />
 
                                 </div>
                             </div>
+
+                            <div className="row no-gutters">
+                                <div className="col-12 ">
+
+                                    <TextFieldWrapper
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.description}
+                                        onChange={(value)=>this.handleChange(value,"description")}
+                                        error={this.state.errors["description"]}
+                                        name="description" title="Description" />
+
+                                </div>
+                            </div>
+
+                            <div className="row no-gutters">
+                                <div className="col-6 pr-1">
+
+
+                                    <TextFieldWrapper
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.external_reference}
+                                        onChange={(value)=>this.handleChange(value,"external_reference")}
+                                        error={this.state.errors["external_reference"]}
+                                        name="external_reference" title="Site Id" />
+                                </div>
+
+                                <div className="col-6 pl-1 ">
+                                    <SelectArrayWrapper
+                                        initialValue={this.props.showSiteForm.type==="edit"?
+                                            (this.props.showSiteForm.item&&this.props.showSiteForm.item.parent_site&&this.props.showSiteForm.item.parent_site._key)
+                                            :this.props.showSiteForm.parent}
+                                        option={"name"}
+                                        valueKey={"_key"}
+                                        error={this.state.errors["parent"]}
+                                        onChange={(value)=> {
+                                            this.handleChange(value,"parent")
+                                        }}
+                                        select={"Select"} options={this.props.siteList}
+                                        name={"parent"} title="Select parent site/address"/>
+
+                                </div>
+                            </div>
+
                             <div className="row no-gutters ">
                                 <div className="col-12">
                                     <div className="row no-gutters justify-content-center ">
@@ -548,7 +659,7 @@ class SiteForm extends Component {
                                         <div className="col-6 pr-2">
 
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
+                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.phone}
                                                     onChange={(value)=>this.handleChange(value,"phone")}
                                                     error={this.state.errors["phone"]}
                                                     name="phone" title="Phone" />
@@ -557,7 +668,7 @@ class SiteForm extends Component {
                                         <div className="col-6 pl-2">
 
                                             <TextFieldWrapper
-                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.email}
+                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.email}
                                                 onChange={(value)=>this.handleChange(value,"email")}
                                                 error={this.state.errors["email"]}
                                                 name="email" title="Email" />
@@ -570,7 +681,7 @@ class SiteForm extends Component {
                                 <div className="col-12">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}
 
@@ -583,7 +694,7 @@ class SiteForm extends Component {
                                 <div className="col-12">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.others}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.others}
                                         onChange={(value)=>this.handleChange(value,"other")}
                                         error={this.state.errors["description"]}
                                         name="other" title="Other" />
@@ -592,17 +703,7 @@ class SiteForm extends Component {
                                 </div>
                             </div>
                             <div className="row no-gutters ">
-                            <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                <SelectArrayWrapper
-                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item._key}
-                                    option={"name"}
-                                    valueKey={"_key"}
-                                    error={this.state.errors["parent"]}
-                                    onChange={(value)=> {
-                                        this.handleChange(value,"parent")
-                                    }} select={"Select"} options={this.props.siteList} name={"parent"} title="Select parent site/address"/>
 
-                            </div>
                             </div>
                             <div className={"row"}>
                             <div className="col-12 mt-4 mb-2">
@@ -623,10 +724,12 @@ class SiteForm extends Component {
 
                 </div>}
 
-                        { this.props.showSiteForm.type==="link" &&
+                        {this.state.addExisting &&
                         <div className="row   justify-content-left">
+
                             <div className="col-12 " style={{ padding: "0!important" }}>
-                            <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
+
+                                   <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
 
                                 <div className="row   ">
                                 <div className="col-12" style={{ padding: "0!important" }}>
@@ -657,18 +760,19 @@ class SiteForm extends Component {
                                                             .filter(
                                                                 (item) =>
                                                                     item._key !==
-                                                                    this.props.showSiteForm.item._key
+                                                                    this.props.showSiteForm.parent
                                                                          &&
                                                                     !(
-                                                                        this.props.showSiteForm.subSites.filter(
+                                                                        this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
                                                                                 item._key
                                                                         ).length > 0
                                                                     )
                                                             )
+
                                                             .map((item) => (
-                                                                <option value={item._key}>
+                                                                <option  value={item._key}>
                                                                     {item.name}
                                                                 </option>
                                                             ))}
@@ -756,8 +860,14 @@ class SiteForm extends Component {
                                 </div>
                                 </div>
                             </form>
+
                             </div>
                         </div>}
+
+
+
+
+
 
 
                             { this.props.showSiteForm.type==="link-product" &&
@@ -952,6 +1062,8 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
+        loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
+
 
     };
 };

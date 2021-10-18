@@ -268,8 +268,7 @@ class ProductDetailContent extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log("udpate")
-        if (prevProps!=this.props) {
+        if (prevProps!==this.props) {
 
 
             this.setActiveKey("productinfo")
@@ -726,7 +725,6 @@ class ProductDetailContent extends Component {
                                         <Tabs
 
                                             onSelect={(k) => this.setActiveKey(k)}
-                                            // defaultActiveKey={this.state.activeTab}
                                             activeKey={this.state.activeKey}
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title="Product Info">
@@ -734,7 +732,7 @@ class ProductDetailContent extends Component {
 
                                             </Tab>
 
-                                            {(this.props.item.product.purpose == "aggregate") &&
+                                            {(this.props.item.product.purpose === "aggregate") &&
                                             <Tab eventKey="aggregates" title="Aggregations">
                                                 <AggregatesTab item={this.props.item}/>
                                             </Tab>}

@@ -1,12 +1,7 @@
-import React, {useState, Component} from "react";
-import {Map, InfoWindow, Marker, GoogleApiWrapper, Polygon, Polyline} from 'google-maps-react';
+import React, {Component} from "react";
+import {GoogleApiWrapper, InfoWindow, Map, Marker} from 'google-maps-react';
 
-import MapIcon from '@material-ui/icons/Place';
-import Tooltip from '@material-ui/core/Tooltip';
-import GoogleMapReact from "google-map-react";
-import {Tab, Tabs} from "react-bootstrap";
-import {GoogleMap} from "./MapsContainer";
- class ProductsMapContainer extends Component {
+class ProductsMapContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -95,8 +90,8 @@ locations.push({name:this.props.mapData[j].name, subTitle:site.name,location:sit
                 google={this.props.google}
                 style={{margin:"0",width: "100%"}}
                 initialCenter={{
-                    lat: this.state.locations.find((item)=> item.isCenter==true).location.lat,
-                    lng: this.state.locations.find((item)=> item.isCenter==true).location.lng,
+                    lat: this.state.locations.find((item)=> item.isCenter===true).location.lat,
+                    lng: this.state.locations.find((item)=> item.isCenter===true).location.lng,
                 }}
 
                 zoom={2}

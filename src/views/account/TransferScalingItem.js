@@ -23,12 +23,6 @@ const TransferScalingItem = (props) => {
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
 
-    useEffect(() => {
-        // return history.listen((location) => {
-
-
-            // })
-    }, item)
 
 
     const removeSubproductFromList = () => {

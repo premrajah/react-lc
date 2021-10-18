@@ -1,9 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
 import IndexNavbar from "../Navbars/IndexNavbar";
 import history from "../../History/history";
 import Sidebar from "../Sidebar/Sidebar";

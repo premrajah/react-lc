@@ -66,7 +66,7 @@ class ConversionsTab extends Component {
     handleSubmit = (event) => {
 
         event.preventDefault();
-        if (this.state.type=="edit"&&!this.handleValidation()){
+        if (this.state.type==="edit"&&!this.handleValidation()){
 
             return
 
@@ -87,12 +87,12 @@ class ConversionsTab extends Component {
        let updateConversions=[]
 
         for (let i=0;i<unit_conversions.length;i++){
-            if(this.state.type==="edit"&&unit_conversions[i].units==this.state.selectedUnit&&unit_conversions[i].state==this.state.stateSelected){
+            if(this.state.type==="edit"&&unit_conversions[i].units===this.state.selectedUnit&&unit_conversions[i].state===this.state.stateSelected){
 
                 updateConversions.push({units:this.state.selectedUnit,factor:factor,state:this.state.stateSelected})
 
             }
-            else if (this.state.type==="delete"&&unit_conversions[i].units==this.state.selectedUnit&&unit_conversions[i].state==this.state.stateSelected){
+            else if (this.state.type==="delete"&&unit_conversions[i].units===this.state.selectedUnit&&unit_conversions[i].state===this.state.stateSelected){
 
             }
             else{
@@ -228,7 +228,7 @@ class ConversionsTab extends Component {
                             <p
                                 style={{ textTransform: "Capitalize" }}
                                 className={"text-bold text-blue"}>
-                                {this.state.type=="edit"?"Edit Conversion For "+this.state.selectedUnit+", "+this.state.stateSelected:"Delete Conversion for "+this.state.selectedUnit+", "+this.state.stateSelected}
+                                {this.state.type==="edit"?"Edit Conversion For "+this.state.selectedUnit+", "+this.state.stateSelected:"Delete Conversion for "+this.state.selectedUnit+", "+this.state.stateSelected}
                             </p>
                         </div>
                     </div>
@@ -238,7 +238,7 @@ class ConversionsTab extends Component {
 
                                 <form onSubmit={this.handleSubmit}>
 
-                                    {this.state.type=="edit"?  <TextFieldWrapper
+                                    {this.state.type==="edit"?  <TextFieldWrapper
                                         initialValue={this.state.factor&&this.state.factor}
                                         onChange={(value)=>this.handleChangeProduct(value,"factor")}
                                         error={this.state.errors["factor"]}
@@ -251,7 +251,7 @@ class ConversionsTab extends Component {
                                         }
                                         // disabled={this.state.isSubmitButtonPressed}
                                     >
-                                        {this.state.type=="edit"? "Edit Conversion":"Delete Conversion"}
+                                        {this.state.type==="edit"? "Edit Conversion":"Delete Conversion"}
                                     </button>
                                 </form>
 

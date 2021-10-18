@@ -19,7 +19,25 @@ class InfoTabContent extends Component {
         return (
             <>
 
-
+                {this.props.item &&
+                (this.props.item.external_reference) && (
+                    <div className="row  justify-content-start search-container  pb-2">
+                        <div className={"col-auto"}>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="text-mute text-bold text-blue mb-1">
+                                Site ID
+                            </p>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="  mb-1">
+                                {
+                                    this.props.item.external_reference
+                                }
+                            </p>
+                        </div>
+                    </div>
+                )}
                 {this.props.item &&
                 (this.props.item.email) && (
                     <div className="row  justify-content-start search-container  pb-2">

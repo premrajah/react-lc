@@ -173,7 +173,7 @@ class ItemCycleDetail extends Component {
     }
 
     getResources() {
-        var url = baseUrl + "code/" + this.slug + "/expand";
+        var url = baseUrl + "code/" + this.slug + "/expand?agg";
 
         axios
             .get(

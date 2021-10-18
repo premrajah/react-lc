@@ -291,7 +291,7 @@ class SiteDetailContent extends Component {
         if (action === "edit") {
 
             this.props.setSiteForm({show:true,
-                item:this.props.item.site,type:"edit", heading:"Edit Site"});
+                item:this.props.item,type:"edit", heading:"Edit Site"});
 
         } else if (action === "delete") {
             this.deleteItem();

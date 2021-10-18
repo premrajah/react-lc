@@ -29,6 +29,7 @@ import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
 import ArtifactProductsTab from "./Products/ArtifactProductsTab";
 import {GoogleMap} from "./Map/MapsContainer";
+import AggregatesTab from "./Products/AggregatesTab";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -725,6 +726,11 @@ class ProductDetailCycle extends Component {
                                     <Tab eventKey="productinfo" title="Product Info">
                                         <InfoTabContent item={this.props.item} />
                                     </Tab>
+
+                                    {(this.props.item.product.purpose === "aggregate") &&
+                                    <Tab eventKey="aggregates" title="Aggregations">
+                                        <AggregatesTab item={this.props.item}/>
+                                    </Tab>}
 
                                     {this.state.subProducts.length > 0 && (
                                         <Tab eventKey="subproducts" title="Subproducts">

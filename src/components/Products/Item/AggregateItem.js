@@ -60,10 +60,19 @@ const AggregateItem = (props) => {
 
             <div className="col-sm-10 pl-2">
                 <div>
+                    <LightTooltip title={"Conversion: "+item.factor_used+" x "+item.volume+" "+item.units}>
                     <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>
-                        <p className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}<br/> <span style={{whiteSpace: "pre-line"}} className={"text-blue text-capitalize text-mute small"}> <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> <LightTooltip title={"Conversion: "+item.factor_used+" x "+item.volume+" "+item.units}><span> {item.direction==="additive"? "+":"-"}{item.volume} </span></LightTooltip><span >{item.units}, {item.state}</span></span></p>
+                        <p className={"text-blue text-capitalize text-mute small"}>
+                            <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}<br/>
+                        <span style={{whiteSpace: "pre-line"}} className={"text-blue text-capitalize text-mute small"}>
+                            <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span>
+
+                                <span> {item.direction==="additive"? "+":"-"}{item.volume} </span>
+
+                            <span >{item.units}, {item.state}</span></span></p>
 
                     </Link>
+                    </LightTooltip>
                 </div>
 
             </div>

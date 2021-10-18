@@ -725,7 +725,6 @@ class ProductDetailContent extends Component {
                                         <Tabs
 
                                             onSelect={(k) => this.setActiveKey(k)}
-                                            // defaultActiveKey={this.state.activeTab}
                                             activeKey={this.state.activeKey}
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title="Product Info">

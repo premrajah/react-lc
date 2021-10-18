@@ -10,6 +10,7 @@ import moment from "moment/moment";
 import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
+import _ from 'lodash';
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
@@ -93,6 +94,23 @@ class Notifications extends Component {
             })
     }
 
+    handleReadUnreadLength = (notifications) => {
+        if(notifications.length > 0) {
+
+            let isRead = [];
+            _.forEach(notifications, function(item){
+                let read_flag = item.orgs[0].read_flag;
+                if(read_flag) {
+                    isRead.push(read_flag.flag);
+                }
+            })
+            return isRead.length;
+        } else {
+            return;
+        }
+
+    }
+
 
     checkNotifications = (item, index) => {
         if (!item) return;
@@ -158,7 +176,7 @@ class Notifications extends Component {
                         <div className="col-12">
                             <NotIcon
                                 style={{
-                                    color: "#eee",
+                                    color: flags ? "#eee" : "var(--lc-pink)",
                                     float: "left",
                                     marginRight: "15px",
                                     marginTop: "3px",
@@ -207,9 +225,8 @@ class Notifications extends Component {
                 </Snackbar>
 
                 <h5 className="blue-text mb-4">
-                    Notifications (
-                    {this.props.notifications.length <= 0 ? "..." : this.props.notifications.length}
-                    )
+                    <span className="mr-3">Total {this.props.notifications.length <= 0 ? "..." : this.props.notifications.length}</span>
+                    <span className="text-muted">Read {this.props.notifications.length <= 0 ? "..." : this.handleReadUnreadLength(this.props.notifications)}</span>
                 </h5>
                 <div className="notification-content">
                     {this.props.notifications.length > 0

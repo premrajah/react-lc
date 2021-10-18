@@ -234,13 +234,15 @@ class SiteForm extends Component {
 
                 }else{
 
-                    if (this.props.showSiteForm.item) {
+
+
 
                         this.props.loadCurrentSite(parentId)
-                    }
 
-                    this.props.loadSites()
+
                 }
+                this.props.loadSites()
+                this.props.loadParentSites()
                 this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
@@ -345,6 +347,8 @@ class SiteForm extends Component {
             .then((res) => {
 
                     this.props.loadSites()
+
+                   if (currentSite)
                     this.props.loadCurrentSite(currentSite)
 
 
@@ -361,6 +365,8 @@ class SiteForm extends Component {
                 .then((res) => {
 
                     this.props.loadSites()
+
+                    if (currentSite)
                     this.props.loadCurrentSite(currentSite)
 
 
@@ -1056,6 +1062,8 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
+        loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
+
 
     };
 };

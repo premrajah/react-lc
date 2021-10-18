@@ -429,7 +429,7 @@ class MatchItemBuyer extends Component {
 
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
-                    this.props.item.listing.org._id != this.props.userDetail.orgId && (
+                    this.props.item.listing.org._id !== this.props.userDetail.orgId && (
                         <div className={"row justify-content-center"}>
                             <div className="col-auto ">
                                 <button
@@ -447,7 +447,7 @@ class MatchItemBuyer extends Component {
 
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
-                        this.props.item.listing.org._id != this.props.userDetail.orgId && (
+                        this.props.item.listing.org._id !== this.props.userDetail.orgId && (
                             <div className={"row justify-content-center"}>
                                 <div className="col-auto ">
                                     <button

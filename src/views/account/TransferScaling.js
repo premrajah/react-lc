@@ -512,7 +512,7 @@ class TransferScaling extends Component {
 
         console.log("submit called")
 
-        if (this.state.type!="delete"&&!this.handleValidationScaling()){
+        if (this.state.type!=="delete"&&!this.handleValidationScaling()){
 
             return
 
@@ -554,7 +554,7 @@ class TransferScaling extends Component {
 
 
 
-        if (!this.state.transferScaling||this.state.transferScaling.length==0) {
+        if (!this.state.transferScaling||this.state.transferScaling.length===0) {
 
             transferScaling.push(transferScalingObject)
 
@@ -573,9 +573,9 @@ class TransferScaling extends Component {
                 console.log(this.state.transferScaling[i].category,category)
                 console.log(this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId))
 
-                if (this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId)&&this.state.transferScaling[i].units == units &&
-                    this.state.transferScaling[i].state == state &&
-                    this.state.transferScaling[i].type == type &&
+                if (this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId)&&this.state.transferScaling[i].units === units &&
+                    this.state.transferScaling[i].state === state &&
+                    this.state.transferScaling[i].type === type &&
                     this.state.transferScaling[i].category === category
                     ) {
 
@@ -592,7 +592,7 @@ class TransferScaling extends Component {
 
 
 
-            if (this.state.type!="delete")
+            if (this.state.type!=="delete")
                 transferScaling.push(transferScalingObject)
 
 
@@ -729,7 +729,7 @@ class TransferScaling extends Component {
                                                 <p
                                                     style={{ textTransform: "Capitalize" }}
                                                     className={"text-bold text-blue"}>
-                                                    {this.state.type=="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
+                                                    {this.state.type==="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
                                                 </p>
                                             </div>
                                         </div>

@@ -227,8 +227,13 @@ class ProductForm extends Component {
                     .then(data => {
                         const payload = data;
 
+                        console.log(data)
+
+
+
+
                         try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
+                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
                                 .then(res => {
 
                                     let images = [...this.state.images];

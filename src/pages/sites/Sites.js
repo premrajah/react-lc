@@ -235,10 +235,10 @@ class Sites extends Component {
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {this.props.siteParentList.filter((site)=>
-                                        this.state.filterValue?( this.state.filterValue=="name"?
+                                        this.state.filterValue?( this.state.filterValue==="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                            this.state.filterValue=="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                this.state.filterValue=="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
+                                            this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                this.state.filterValue==="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
                                             (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                 site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                 site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))
@@ -258,10 +258,10 @@ class Sites extends Component {
 
 
                         {this.props.siteParentList.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue=="name"?
+                                this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                this.state.filterValue=="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                this.state.filterValue=="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
+                                this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                this.state.filterValue==="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
                                 (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                             site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                             site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))

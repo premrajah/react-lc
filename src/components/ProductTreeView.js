@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl} from "../Util/Constants";
 import PropTypes from "prop-types";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Typography from "@material-ui/core/Typography";
 import ProductTreeItemView from "./ProductTreeItemView";
@@ -132,7 +132,7 @@ class ProductTreeView extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        if (prevProps!=this.props){
+        if (prevProps!==this.props){
             console.log("change detected")
             this.setTree()
         }
@@ -159,7 +159,7 @@ class ProductTreeView extends Component {
         // fields[field] = e.target.value;
         // this.setState({ fields: fields });
 
-        var products = this.state.tree.filter((item) => {
+        let products = this.state.tree.filter((item) => {
             if (e.target.value.length === 0) {
                 return item;
             } else if (item.name.toLowerCase().includes(e.target.value.toLowerCase())) {
@@ -416,9 +416,6 @@ const useStyles = makeStyles({
     },
 });
 
-function GmailTreeView() {
-    return <></>;
-}
 
 const mapStateToProps = (state) => {
     return {

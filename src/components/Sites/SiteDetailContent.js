@@ -66,6 +66,7 @@ class SiteDetailContent extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             initialValues:{},
+            activeKey:"productinfo",
 
 
         };
@@ -291,7 +292,7 @@ class SiteDetailContent extends Component {
         if (action === "edit") {
 
             this.props.setSiteForm({show:true,
-                item:this.props.item.site,type:"edit", heading:"Edit Site"});
+                item:this.props.item,type:"edit", heading:"Edit Site"});
 
         } else if (action === "delete") {
             this.deleteItem();
@@ -549,7 +550,15 @@ class SiteDetailContent extends Component {
         );
     }
 
+    setActiveKey=(key)=>{
 
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
 
     componentDidMount() {
         if (!this.props.item.site) {
@@ -560,6 +569,14 @@ class SiteDetailContent extends Component {
             });
 
             this.loadInfo();
+        }
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!==this.props) {
+
+
+            this.setActiveKey("productinfo")
         }
     }
 
@@ -684,7 +701,9 @@ class SiteDetailContent extends Component {
                                 <div className="row justify-content-start pb-3 pt-3 tabs-detail">
                                     <div className="col-12 mt-2">
                                         <Tabs
-                                            defaultActiveKey="productinfo"
+
+                                            onSelect={(k) => this.setActiveKey(k)}
+                                            activeKey={this.state.activeKey}
                                             id="uncontrolled-tab-example">
                                             <Tab eventKey="productinfo" title=" Info">
                                                <InfoTabContent

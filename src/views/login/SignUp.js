@@ -98,8 +98,8 @@ class SignUp extends Component {
                 "email":data.get("email"),
                 "details": {
 
-                    "industry": data.get("industry")!="Other"?data.get("industry"):data.get("industry-other"),
-                    "sector": data.get("businessField")!="Other"?data.get("businessField"):data.get("businessField-other"),
+                    "industry": data.get("industry")!=="Other"?data.get("industry"):data.get("industry-other"),
+                    "sector": data.get("businessField")!=="Other"?data.get("businessField"):data.get("businessField-other"),
                     "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
                 }
 
@@ -249,7 +249,7 @@ class SignUp extends Component {
                     phone: phone,
                     org_id: this.state.org_id,
                     user_details: {
-                        reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
+                        reason_for_joining: data.get("reason") !== "Other" ? data.get("reason") : data.get("reason-other")
                     },
 
                 };
@@ -262,7 +262,7 @@ class SignUp extends Component {
                     firstName: firstName,
                     phone: phone,
                     user_details: {
-                        reason_for_joining: data.get("reason") != "Other" ? data.get("reason") : data.get("reason-other")
+                        reason_for_joining: data.get("reason") !== "Other" ? data.get("reason") : data.get("reason-other")
                     },
 
                 };
@@ -272,8 +272,8 @@ class SignUp extends Component {
             if (!this.state.org_id){
                 dataSignUp.org_details = {
 
-                        "industry": data.get("industry") != "Other" ? data.get("industry") : data.get("industry-other"),
-                        "sector": data.get("businessField") != "Other" ? data.get("businessField") : data.get("businessField-other"),
+                        "industry": data.get("industry") !== "Other" ? data.get("industry") : data.get("industry-other"),
+                        "sector": data.get("businessField") !== "Other" ? data.get("businessField") : data.get("businessField-other"),
                         "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
 
                 }

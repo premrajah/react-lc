@@ -404,7 +404,7 @@ class MatchItemSeller extends Component {
                 </div>
                 <div style={{ textAlign: "right" }} className={"col-8"}>
                     {this.props.item.match.stage === "created" &&
-                        this.props.item.listing.org._id == this.props.userDetail.orgId && (
+                        this.props.item.listing.org._id === this.props.userDetail.orgId && (
                             <div className={"row"}>
                                 <div className="col-auto">
                                     <button
@@ -431,7 +431,7 @@ class MatchItemSeller extends Component {
 
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
-                        this.props.item.listing.org._id != this.props.userDetail.orgId && (
+                        this.props.item.listing.org._id !== this.props.userDetail.orgId && (
                             <div className={"row"}>
                                 <div className="col-auto">
                                     <button
@@ -467,15 +467,6 @@ class MatchItemSeller extends Component {
                                         GBP {item.offer.amount.value}
                                     </span>
 
-                                    {/*<button data-id={item.offer._key} onClick={this.acceptOffer.bind(this)} type="button"*/}
-                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
-                                    {/*Accept*/}
-                                    {/*</button>*/}
-
-                                    {/*<button data-id={item.offer._key} onClick={this.editPopUp.bind(this)} type="button"*/}
-                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
-                                    {/*Counter offer*/}
-                                    {/*</button>*/}
 
                                     {item.next_action.is_mine && (
                                         <>

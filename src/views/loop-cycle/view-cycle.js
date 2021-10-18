@@ -914,7 +914,7 @@ class ViewCycle extends Component {
                                                                                         "#27245C",
                                                                                 }}
                                                                             />
-                                                                            {this.state.item.receiver._id==this.props.userDetail.orgId?"Request a Step":"Add Step"}
+                                                                            {this.state.item.receiver._id===this.props.userDetail.orgId?"Request a Step":"Add Step"}
 
                                                                         </button>
                                                                     </div>
@@ -1079,7 +1079,7 @@ class ViewCycle extends Component {
 
                                 {this.state.item &&
                                     this.state.item.cycle &&
-                                    this.state.item.cycle.stage != "closed" && (
+                                    this.state.item.cycle.stage !== "closed" && (
                                         <React.Fragment>
                                             <CssBaseline />
 
@@ -1209,7 +1209,7 @@ class ViewCycle extends Component {
                                     <ModalBody>
                                         <div className={"row justify-content-center"}>
                                             <div className={"col-4"}>
-                                                <img className={"ring-pop-pup"} src={GrayLoop} />
+                                                <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
                                             </div>
                                         </div>
 

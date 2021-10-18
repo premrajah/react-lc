@@ -40,7 +40,6 @@ import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
 import EditAccount from "./views/account/EditAccount";
 import CompanyInfo from "./views/account/CompanyInfo";
-import Address from "./views/account/Address";
 import PaymentMethod from "./views/account/PaymentMethod";
 import MyAccount from "./views/account/MyAccount";
 import ProductPopUp from "./views/create-product/create-product-popup";
@@ -75,11 +74,8 @@ import Sites from "./pages/sites/Sites";
 import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./components/Cycles/CyclesRecords";
-import {GoogleMap} from "./components/Map/MapsContainer";
-import Header from "./components/Header/Header";
 import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 import TransferScaling from "./views/account/TransferScaling";
-
 
 
 class App extends Component {

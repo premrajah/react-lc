@@ -5,6 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/issuer: "letsencrypt-prod"
+    ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.org/client-max-body-size: "50m"
 
 spec:
   tls:
@@ -13,6 +15,33 @@ spec:
       secretName: loop-react-ui-${ENVIRONMENT}
   rules:
     - host: ui${INGRESS_SUFFIX}.makealoop.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: loop-react-ui-${ENVIRONMENT}
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loop-react-ui-lpcy-${ENVIRONMENT}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+    ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.org/client-max-body-size: "50m"
+
+spec:
+  tls:
+    - hosts:
+        - ${LPCY_PREFIX}.lpcy.uk
+      secretName: loop-react-ui-lpcy-${ENVIRONMENT}
+  rules:
+    - host: ${LPCY_PREFIX}.lpcy.uk
       http:
         paths:
           - path: /

@@ -34,7 +34,7 @@ metadata:
 spec:
   tls:
     - hosts:
-        - ui${INGRESS_SUFFIX}.makealoop.io
+        - ${LPCY_PREFIX}.lpcy.uk
       secretName: loop-react-ui-lpcy-${ENVIRONMENT}
   rules:
     - host: ${LPCY_PREFIX}.lpcy.uk

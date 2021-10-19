@@ -71,9 +71,6 @@ class Products extends Component {
 
 
 
-
-
-
     handleChange(value,field ) {
 
         let fields = this.state.fields;

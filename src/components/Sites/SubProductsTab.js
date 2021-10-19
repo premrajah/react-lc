@@ -112,14 +112,12 @@ class SubProductsTab extends Component {
     }
 
 
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //
-    //     console.log("udpate")
-    //     if (prevProps!=this.props) {
-    //         console.log("props changed")
-    //         this.getProducts()
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!=this.props) {
+            this.getProducts()
+        }
+    }
 
 
 
@@ -129,6 +127,59 @@ class SubProductsTab extends Component {
 
 
         this.props.loadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
+    }
+
+    linkSubProducts = async (event) => {
+
+        let item=this.props.item
+
+        event.preventDefault();
+
+        // if (this.handleValidationSite()){
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+
+        for (let i = 0; i < this.state.addCount.length; i++) {
+
+
+                axios
+                    .post(
+                        baseUrl + "product/site",
+
+                        {
+                            product_id: data.get(`product[${i}]`),
+                            site_id: item._key,
+                        },
+                    )
+                    .then((res) => {
+
+
+                        this.props.loadCurrentSite(item._key)
+                        // }
+
+                    })
+                    .catch((error) => {
+
+                    });
+
+
+
+        }
+
+
+        this.toggleSelection()
+        this.setState({
+            addCount:[],
+            count:0
+        })
+
+
 
     }
 
@@ -186,7 +237,7 @@ class SubProductsTab extends Component {
                             <h3 className={"blue-text text-heading text-center"}>
                                Link Products</h3>
                         </div>
-    
+
                         <div className="row   justify-content-left">
                             <div className="col-12 " style={{ padding: "0!important" }}>
                                 <form style={{ width: "100%" }} onSubmit={this.linkSubProducts}>
@@ -216,14 +267,14 @@ class SubProductsTab extends Component {
                                                                 }}>
                                                                 <option value={null}>Select</option>
                                                                 {this.props.productWithoutParentList
-                                                                //     .filter(
-                                                                //     (item) =>
-                                                                //         !this.props.showSiteForm.subProducts.filter(
-                                                                //             (subItem) =>
-                                                                //                 subItem._key ===
-                                                                //                 item._key
-                                                                //         ).length > 0
-                                                                // )
+                                                                    .filter(
+                                                                    (item) =>
+                                                                        !this.state.products.filter(
+                                                                            (subItem) =>
+                                                                                subItem._key ===
+                                                                                item._key
+                                                                        ).length > 0
+                                                                )
                                                                     .map((item) => (
                                                                         <option value={item._key}>
                                                                             {item.name}
@@ -346,7 +397,7 @@ const mapDispachToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
-
+        loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),

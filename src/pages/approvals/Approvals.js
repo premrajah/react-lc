@@ -106,6 +106,8 @@ class Approvals extends Component {
 
         this.refreshItems()
         this.props.loadSites()
+        this.props.loadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
 
     }
 
@@ -558,6 +560,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchServiceAgentRequest: () => dispatch(actionCreator.fetchServiceAgentRequest()),
         fetchRegisterRequest: () => dispatch(actionCreator.fetchRegisterRequest()),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadProductsWithoutParent: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParent(data)),
 
     };
 };

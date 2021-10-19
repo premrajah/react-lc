@@ -12,9 +12,9 @@ import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
-import {Editor, EditorState} from 'draft-js';
+import RichTextEditor from "./RichTextEditor";
 
-const msgWindowHeight = "560px";
+const msgWindowHeight = "520px";
 const useStyles = makeStyles({
     active: {
         background: "red"
@@ -111,6 +111,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setShowHideOrgSearch(false);
         getGroupMessageWithId(groupId);
     };
+
+    const handleRichTextCallback = (value) => {
+        console.log('rt ', value)
+    }
 
 
     const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
@@ -335,15 +339,15 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="row mt-2" style={{ height: "60px" }}>
                                 <div className="col-11 p-0">
-                                    <TextField
-                                        id="send-new-msg"
-                                        label="Send new message"
-                                        variant="outlined"
-                                        fullWidth
-                                        onChange={(text) => setMessageText(text)}
-                                        value={messageText || ""}
-                                    />
-
+                                    {/*<TextField*/}
+                                    {/*    id="send-new-msg"*/}
+                                    {/*    label="Send new message"*/}
+                                    {/*    variant="outlined"*/}
+                                    {/*    fullWidth*/}
+                                    {/*    onChange={(text) => setMessageText(text)}*/}
+                                    {/*    value={messageText || ""}*/}
+                                    {/*/>*/}
+                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} />
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button

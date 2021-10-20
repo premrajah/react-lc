@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip} from "@material-ui/core";
@@ -13,6 +13,7 @@ import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
 import RichTextEditor from "./RichTextEditor";
+
 
 const msgWindowHeight = "520px";
 const useStyles = makeStyles({
@@ -114,6 +115,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleRichTextCallback = (value) => {
         console.log('rt ', value)
+        setMessageText(value);
     }
 
 
@@ -321,7 +323,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                         style={{
                                                             background: "rgba(39, 36, 92, 0.3)",
                                                         }}>
-                                                        <div>{m.message.text}</div>
+                                                        <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
                                                         <div className="float-right">
                                                             {moment(
                                                                 m.message._ts_epoch_ms

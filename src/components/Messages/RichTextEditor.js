@@ -1,5 +1,6 @@
 import React from 'react'
-import {Editor, EditorState, getDefaultKeyBinding, RichUtils, convertToRaw} from 'draft-js'
+import {Editor, EditorState, getDefaultKeyBinding, RichUtils, convertToRaw } from 'draft-js'
+import { convertToHTML } from 'draft-convert';
 import './RichText.css';
 import '../../../node_modules/draft-js/dist/Draft.css';
 
@@ -18,11 +19,12 @@ class RichTextEditor extends React.Component {
         this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
     }
 
-    handleOnChange = (editorState) => {
-        this.setState({editorState})
-
-        this.props.richTextHandleCallback(editorState);
+    handleOnChange = (es) => {
+        this.setState({editorState: es})
+        this.props.richTextHandleCallback(convertToHTML(this.state.editorState.getCurrentContent()));
     }
+
+
 
     _handleKeyCommand(command, editorState) {
         const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -96,7 +98,7 @@ class RichTextEditor extends React.Component {
                         editorState={editorState}
                         handleKeyCommand={this.handleKeyCommand}
                         keyBindingFn={this.mapKeyToEditorCommand}
-                        onChange={(editorState) => this.handleOnChange(editorState)}
+                        onChange={(es) => this.handleOnChange(es)}
                         placeholder="Type your message..."
                         ref="editor"
                         spellCheck={true}

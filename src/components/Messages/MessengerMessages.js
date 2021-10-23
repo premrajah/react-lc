@@ -70,6 +70,28 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             });
     };
 
+    const getAllOrgsOffsetAndSize = (offset, size) => {
+        if(!offset || !size) return;
+
+        axios
+            .get(`${baseUrl}org/all/?${offset}=${offset}&${size}=${size}`)
+            .then((response) => {
+                const res = response.data.data;
+                setAllOrgs(res);
+
+                const temp = [];
+                res.map((r) => {
+                    if (r.email !== null) {
+                        temp.push({ value: r._id, label: r.email });
+                    }
+                });
+                setReactSelectValues(temp);
+            })
+            .catch((error) => {
+                console.log("all orgs errors ", error.message);
+            });
+    };
+
     const getAllMessageGroups = () => {
         axios
             .get(`${baseUrl}message-group`)
@@ -80,6 +102,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 console.log("message-group-error ", error.message);
             });
     };
+
+
 
     const getGroupMessageWithId = (id) => {
         if (!id) return;
@@ -104,17 +128,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleGroupClick = (groupId) => {
         if (!groupId) return;
-        setSelectedMsgGroup([]);
+        console.log('gc')
+
         if(reactSelectedValues.length > 0   ) {
             reactSelectRef.current.clearValue();
         }
         setShowHideGroupFilter(false);
         setShowHideOrgSearch(false);
         getGroupMessageWithId(groupId);
+        setSelectedMsgGroup([]);
     };
 
     const handleRichTextCallback = (value) => {
-        console.log('rt ', value)
         setMessageText(value);
     }
 
@@ -158,7 +183,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
 
                     setMessageText("");
-                    reactSelectRef.current.clearValue();
+                    if(reactSelectedValues.length > 0   ) {
+                        reactSelectRef.current.clearValue();
+                    }
                     getAllMessageGroups();
                     getAllOrgs();
                 }
@@ -171,12 +198,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
-            console.log("new message")
-
 
         } else if (messageText) {
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
-            console.log("message reply ", messageGroupId)
 
             if(messageGroupId) {
                 sendMessage(messageText, [], messageGroupId, "", "group_message");
@@ -273,8 +297,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 button
                                                 divider
                                                 onClick={() => handleGroupClick(group._key)}>
-                                                {/*{group.name.replace(/\W/g, " ")}*/}
-                                                {group.name}
+                                                {group.name.replace(/\W/g, " ")}
+                                                {/*{group.name}*/}
                                             </ListItem>
                                         </div>
                                     ))

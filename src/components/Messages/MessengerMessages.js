@@ -32,6 +32,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);
@@ -126,9 +127,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setReactSelectedValues(temp);
     };
 
-    const handleGroupClick = (groupId) => {
+    const handleGroupClick = (groupId, selectedIndex) => {
         if (!groupId) return;
-        console.log('gc')
+        updateSelected(selectedIndex);
 
         if(reactSelectedValues.length > 0   ) {
             reactSelectRef.current.clearValue();
@@ -141,6 +142,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleRichTextCallback = (value) => {
         setMessageText(value);
+    }
+
+    const  updateSelected = (selectedIndex) => {
+        setSelectedItem(selectedIndex);
     }
 
 
@@ -294,9 +299,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     .map((group, i) => (
                                         <div key={i} >
                                             <ListItem
+                                                selected={selectedItem === i}
                                                 button
                                                 divider
-                                                onClick={() => handleGroupClick(group._key)}>
+                                                onClick={() => handleGroupClick(group._key, i)}>
                                                 {group.name.replace(/\W/g, " ")}
                                                 {/*{group.name}*/}
                                             </ListItem>

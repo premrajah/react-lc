@@ -17,9 +17,17 @@ import RichTextEditor from "./RichTextEditor";
 
 const msgWindowHeight = "520px";
 const useStyles = makeStyles({
-    active: {
-        background: "red"
-    }
+    root: {
+        '&$selected': {
+            backgroundColor: 'var(--lc-purple)',
+            color: '#ffffff',
+            '&:hover': {
+                backgroundColor: 'var(--lc-pink)',
+                color: '#ffffff',
+            }
+        },
+    },
+    selected: {},
 });
 
 const MessengerMessages = ({ userDetail, messages, getMessages }) => {
@@ -299,6 +307,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     .map((group, i) => (
                                         <div key={i} >
                                             <ListItem
+                                                classes={{root: classes.root, selected: classes.selected}}
                                                 selected={selectedItem === i}
                                                 button
                                                 divider

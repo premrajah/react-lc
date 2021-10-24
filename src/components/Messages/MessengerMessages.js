@@ -156,6 +156,19 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setSelectedItem(selectedIndex);
     }
 
+    const checkWhoseMessage = (orgs) => {
+        if(orgs.length > 0) {
+            if(orgs[0].actor === "message_from"){
+                if(orgs[0].org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        }
+    }
+
 
     const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
         if (!text) return;
@@ -356,11 +369,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             className="message-window p-3"
                                             style={{ height: msgWindowHeight }}>
                                             {selectedMsgGroup.map((m, i) => (
-                                                <div key={i} className="d-flex">
+                                                <div key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-end' : 'justify-content-start'}`}>
                                                     <div
                                                         className="w-75 p-2 mb-1 border-rounded"
                                                         style={{
-                                                            background: "rgba(39, 36, 92, 0.3)",
+                                                            background: checkWhoseMessage(m.orgs) ? "var(--lc-purple)" : "var(--lc-green)",
+                                                            color: "#ffffff",
                                                         }}>
                                                         <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
                                                         <div className="float-right">

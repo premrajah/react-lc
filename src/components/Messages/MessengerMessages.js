@@ -377,10 +377,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                             color: "#ffffff",
                                                         }}>
                                                         <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
-                                                        <div className="float-right">
-                                                            {moment(
-                                                                m.message._ts_epoch_ms
-                                                            ).fromNow()}
+                                                        <div className="d-flex align-items-end flex-column">
+                                                            <div style={{opacity: '0.5'}}>
+                                                                {moment(
+                                                                    m.message._ts_epoch_ms
+                                                                ).fromNow()}
+                                                            </div>
+                                                            <div style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</div>
                                                         </div>
                                                     </div>
                                                 </div>

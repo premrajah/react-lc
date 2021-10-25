@@ -6,18 +6,20 @@ import Sidebar from "../menu/Sidebar";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
 import TextField from "@material-ui/core/TextField";
-import { Spinner } from "react-bootstrap";
+import {Modal, ModalBody, Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
-import PlaceholderImg from "../../../src/img/place-holder-lc.png";
+import PlaceholderImg from "../../../src/img/sq_placeholder.png";
 import EditIcon from "@material-ui/icons/Edit";
 import {Publish} from "@material-ui/icons";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import _ from "lodash";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import ImageCropper from "../../components/Cropper/ImageCropper";
+import Close from "@material-ui/icons/Close";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -50,6 +52,10 @@ class CompanyInfo extends Component {
             sites: [],
             page: 1,
             units: [],
+            croppedImageData:null,
+            showCropper:false,
+            files:[]
+
 
 
         };
@@ -79,6 +85,21 @@ class CompanyInfo extends Component {
             loading: false,
         });
 
+    }
+
+
+    setCropData=(data,name)=>{
+
+
+        console.log(data)
+        this.setState({
+
+            croppedImageData:data
+        })
+
+        this.toggleCropper()
+
+        this.uploadCroppedImage(data,name)
     }
     getArtifactForOrg = () => {
         let url = `${baseUrl}org/${encodeURIComponent(this.state.org._id)}/artifact`;
@@ -268,6 +289,7 @@ class CompanyInfo extends Component {
     }
 
 
+
     _handleReaderLoaded = (readerEvent) => {
         let binaryString = readerEvent.target.result;
         this.setState({ base64Data: btoa(binaryString) });
@@ -420,9 +442,12 @@ class CompanyInfo extends Component {
 
         this.setState({
             file: file,
+            files: event.target.files
         });
 
-        this.uploadImage(file);
+        // this.uploadImage(file);
+
+        this.toggleCropper()
     }
 
     handleCancel(e) {
@@ -518,6 +543,54 @@ class CompanyInfo extends Component {
     }
 
 
+     _base64ToArrayBuffer=(base64) =>{
+        let binary_string = window.atob(base64);
+         let len = binary_string.length;
+         let bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes;
+    }
+
+     getJpegBytes(base64Data)
+    {
+        base64Data = base64Data.replace('data:image/png;base64,', '');
+
+        return this._base64ToArrayBuffer(base64Data);
+    }
+
+    uploadCroppedImage(base64Data,name) {
+
+                try {
+                    axios.post(`${baseUrl}artifact/load?name=${name.toLowerCase()}`, this.getJpegBytes(base64Data))
+                        .then(res => {
+
+                            this.setArtifactOrg(this.state.org._id, res.data.data._key)
+                            this.setState({
+                                orgImage: res.data.data.blob_url,
+                            });
+
+                        })
+                        .catch(error => {
+
+                        })
+
+                } catch (e) {
+                    console.log('catch Error ', e);
+                }
+
+        }
+
+
+    toggleCropper=()=>{
+
+        this.setState({
+
+            showCropper:!this.state.showCropper
+        })
+    }
+
     render() {
         return (
             <div>
@@ -535,6 +608,31 @@ class CompanyInfo extends Component {
                             subTitle="Add your company information on this page"
                             bottomLine={<hr />}
                         />
+                        <Modal
+                            className={"loop-popup"}
+                            aria-labelledby="contained-modal-title-vcenter"
+                            show={this.state.showCropper}
+                            centered
+                            onHide={this.toggleCropper}
+                            animation={false}>
+                            <ModalBody>
+                                <div className=" text-right web-only">
+                                    <Close
+                                        onClick={this.toggleCropper}
+                                        className="blue-text click-item"
+                                        style={{ fontSize: 32 }}
+                                    />
+                                </div>
+                        <div className="row no-gutters">
+
+                            <div style={{display: "flex",position:"relative"}} className="col-12 ">
+
+                            <ImageCropper files={this.state.files} setCropData={(data,name)=>this.setCropData(data,name)} />
+
+                            </div>
+                        </div>
+                            </ModalBody>
+                        </Modal>
 
                         {this.state.submitSuccess && (
                             <Alert key={"alert"} variant={"success"}>
@@ -550,6 +648,8 @@ class CompanyInfo extends Component {
                                     <img
                                         // src={this.state.orgImage}
                                         src={this.state.orgImage? this.state.orgImage:URL.createObjectURL(this.state.file.file)}
+                                        // src={this.state.orgImage? this.state.orgImage:this.state.croppedImageData}
+                                        // src={this.state.croppedImageData? this.state.croppedImageData:this.state.orgImage}
                                         alt="logo"
                                         style={{ maxHeight: "150px", objectFit:"contain" }}
                                     />

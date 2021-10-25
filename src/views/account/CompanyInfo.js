@@ -616,7 +616,14 @@ class CompanyInfo extends Component {
                             onHide={this.toggleCropper}
                             animation={false}>
                             <ModalBody>
-                                <div className=" text-right web-only">
+                                <div style={{    position: "absolute",
+                                    background: "white",
+                                    zIndex: 1,
+                                    borderRadius: "50%",
+                                    padding: "1px",
+                                    marginTop: "15px",
+                                    marginLeft: "5px"
+                                }} className=" text-right web-only">
                                     <Close
                                         onClick={this.toggleCropper}
                                         className="blue-text click-item"

@@ -252,7 +252,7 @@ class RequestReleaseItem extends Component {
             id: this.state.item.Release._key,
             new_stage: this.state.initiateAction,
             site_id: this.state.fields["site"],
-            new_parent_id:this.state.fields["parent_parent_id"]
+            parent_product_id:this.state.fields["parent_parent_id"]
         };
 
         // console.log(data)

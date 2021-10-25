@@ -31,7 +31,7 @@ import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 
-class Products extends Component {
+class MyCampaigns extends Component {
 
     constructor(props) {
         super(props);
@@ -700,4 +700,4 @@ const mapDispatchToProps = (dispatch) => {
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(MyCampaigns);

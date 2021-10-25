@@ -76,6 +76,8 @@ import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./components/Cycles/CyclesRecords";
 import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 import TransferScaling from "./views/account/TransferScaling";
+import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
+import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
 
 
 class App extends Component {
@@ -125,6 +127,9 @@ class App extends Component {
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
+                        <LoggedInRoute exact path="/list-form" component={ListForm} />
+                        <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
+                        <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
 
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />

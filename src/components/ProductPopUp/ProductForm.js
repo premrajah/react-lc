@@ -68,6 +68,7 @@ class ProductForm extends Component {
             siteSelected: null,
             files: [],
             filesStatus: [],
+            images: [],
             free: false,
             price: null,
             brand: null,
@@ -76,7 +77,7 @@ class ProductForm extends Component {
             serial: null,
             startDate: null,
             endDate: null,
-            images: [],
+
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],

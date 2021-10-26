@@ -600,12 +600,12 @@ class CompanyInfo extends Component {
 
                     <div className="container pb-4 pt-4">
                         <div>
-                            <Link to={"/account"}>Account </Link> > Company Information
+                            <Link to={"/account"}>Account </Link> > Company Info
                         </div>
 
                         <PageHeader
-                            pageTitle="Company Information"
-                            subTitle="Add your company information on this page"
+                            pageTitle="Company Info"
+                            subTitle="Add and change your company details here"
                             bottomLine={<hr />}
                         />
                         <Modal

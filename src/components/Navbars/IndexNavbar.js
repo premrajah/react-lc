@@ -331,24 +331,24 @@ class ComponentsNavbar extends React.Component {
                                     <DropdownMenu className="dropdown-with-icons">
                                         <Link className={"dropdown-item"} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Account
+                                            Account
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Products
+                                            Products
                                         </Link>
                                         <Link className={"dropdown-item"} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Sites
+                                            Sites
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
-                                            My Searches
+                                            Searches
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Listings
+                                            Listings
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-cycles">
                                             <i className="tim-icons icon-bullet-list-67" />

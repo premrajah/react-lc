@@ -385,8 +385,8 @@ class Products extends Component {
                     <div className="container  mb-150  pb-5 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle="My Products"
-                            subTitle="All products created can be found here"
+                            pageTitle="Products"
+                            subTitle="All your added products can be found here"
                         />
 
                         <div className="row">

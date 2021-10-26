@@ -58,7 +58,7 @@ class MyListingsOld extends Component {
                         </div>
                         <div className="row justify-content-center pb-2 pt-4 ">
                             <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>My Listings</h3>
+                                <h3 className={"blue-text text-heading"}>Listings</h3>
                             </div>
                         </div>
 

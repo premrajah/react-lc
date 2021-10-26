@@ -111,7 +111,7 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/account"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Account
+                                            Account
                                         </Link>
 
                                         <Link
@@ -145,7 +145,7 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-listings"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Listings
+                                                Listings
                                             </Link>
 
 
@@ -153,7 +153,7 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-searches"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Searches
+                                                Searches
                                             </Link>
 
 
@@ -161,7 +161,7 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-products"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Products
+                                                Products
                                             </Link>
 
                                             <Link

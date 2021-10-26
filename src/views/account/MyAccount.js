@@ -43,8 +43,8 @@ class MyAccount extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={SettingsWhite}
-                            pageTitle="My Account"
-                            subTitle="User account settings"
+                            pageTitle="Account"
+                            subTitle="Finish setting up your account here"
                             bottomLine={<hr />}
                         />
 

@@ -88,7 +88,7 @@ class Account extends Component {
                                             className={"account-icons truck-icon "}
                                             alt=""
                                         />
-                                        My Searches <NavigateNextIcon />
+                                        Searches <NavigateNextIcon />
                                     </Link>
 
                                     <Link
@@ -99,7 +99,7 @@ class Account extends Component {
                                             className={"account-icons truck-icon "}
                                             alt=""
                                         />
-                                        My Listings <NavigateNextIcon />
+                                        Listings <NavigateNextIcon />
                                     </Link>
 
                                     <Link

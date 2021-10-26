@@ -62,7 +62,7 @@ const TrackedProductsOld = () => {
                             </Link>
 
                             <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
-                                My Products
+                                Products
                             </Link>
 
                             <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
@@ -156,7 +156,7 @@ class TrackedProducts extends Component {
                                 </Link>
 
                                 <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
-                                    My Products
+                                    Products
                                 </Link>
 
                                 <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">

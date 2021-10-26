@@ -110,7 +110,7 @@ class Account extends Component {
                                             className={"account-icons truck-icon "}
                                             alt=""
                                         />
-                                        My Cycles <NavigateNextIcon />
+                                        Cycles <NavigateNextIcon />
                                     </Link>
                                 </div>
                             </div>

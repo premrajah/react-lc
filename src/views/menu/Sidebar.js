@@ -137,7 +137,7 @@ class Sidebar extends Component {
                                                 onClick={this.toggleMenu}
                                                 to={"/my-cycles"}
                                                 className="white-text list-group-item list-group-item-action">
-                                                My Cycles
+                                                Cycles
                                             </Link>
 
 

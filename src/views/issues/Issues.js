@@ -41,7 +41,7 @@ class Issues extends Component {
                 <div className="wrapper">
                     <HeaderDark />
                     <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle="Issues" subTitle="Issues related to products" />
+                        <PageHeader pageTitle="Issues" subTitle="Find product related issues here" />
 
                         <div className="row">
                             <div className="col">
@@ -55,7 +55,7 @@ class Issues extends Component {
                                               />
                                           );
                                       })
-                                    : "No issues yet..."}
+                                    : "Good one! There hasn't been any issues so far"}
                             </div>
                         </div>
                     </div>

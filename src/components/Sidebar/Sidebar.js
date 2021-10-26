@@ -217,7 +217,7 @@ class Sidebar extends Component {
                                             onClick={this.logOut}
                                             to={""}
                                             className="list-group-item list-group-item-action green-text">
-                                            Log out
+                                            Log Out
                                         </Link>
                                     )}
                                     <Link

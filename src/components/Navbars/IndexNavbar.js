@@ -207,7 +207,7 @@ class ComponentsNavbar extends React.Component {
                                 <NavItem className={"web-only mr-3"}>
                                     <Link
                                         to={"/search-form"}
-                                        className="nav-link d-none d-lg-block wl-link-white mr-3 "
+                                        className="nav-link d-none d-lg-block wl-link-white"
                                         color="default">
                                         New Search
                                     </Link>

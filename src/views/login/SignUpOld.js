@@ -266,7 +266,7 @@ class SignUp extends Component {
                 <div className="container  ">
                     <div className="row no-gutters">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Sign up</h3>
+                            <h3 className={"blue-text text-heading text-center"}>Sign Up</h3>
                         </div>
                     </div>
 

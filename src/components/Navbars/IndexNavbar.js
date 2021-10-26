@@ -190,7 +190,7 @@ class ComponentsNavbar extends React.Component {
                                         className="nav-link d-none d-lg-block wl-link-white "
                                         color="default"
                                         to={"/find-resources"}>
-                                        Browse Listings
+                                        Marketplace
                                     </Link>
                                 </NavItem>
 
@@ -200,7 +200,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/my-products"}
                                         className="nav-link d-none d-lg-block wl-link-white"
                                         color="default">
-                                        Add Product
+                                        Add Products
                                     </Link>
                                 </NavItem>
 

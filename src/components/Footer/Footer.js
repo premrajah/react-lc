@@ -48,6 +48,15 @@ class Footer extends React.Component {
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
+                                        href="https://loopcycle.io/meet-the-team/"
+                                        target="_blank"
+                                        rel="noopener noreferrer">
+                                        Meet the team
+                                    </a>
+                                </NavItem>
+                                <NavItem>
+                                    <a
+                                        className={styles.footerlink}
                                         href="https://loopcycle.io/about/"
                                         target="_blank"
                                         rel="noopener noreferrer">
@@ -89,7 +98,7 @@ class Footer extends React.Component {
                                              onClick={this.showLoginPopUp}
                                              to={this.props.isLoggedIn && "/find-resources"}
                                              tag={Link}>
-                                        Browse All
+                                        Browse all Listings
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
@@ -97,7 +106,7 @@ class Footer extends React.Component {
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-products"}
                                         tag={Link}>
-                                        Products
+                                        Add Products
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
@@ -106,7 +115,7 @@ class Footer extends React.Component {
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-search"}
                                         tag={Link}>
-                                        Search
+                                        New Search
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
@@ -115,7 +124,7 @@ class Footer extends React.Component {
                                         onClick={this.showLoginPopUp}
                                         to={this.props.isLoggedIn && "/my-listings"}
                                         tag={Link}>
-                                        Listings
+                                        New Listing
                                     </NavLink>
                                 </NavItem>
 

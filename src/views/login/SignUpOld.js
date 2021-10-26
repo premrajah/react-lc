@@ -578,7 +578,7 @@ class SignUp extends Component {
                                     onClick={this.goToSignIn}
                                     type="button"
                                     className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">
-                                    Log in
+                                    Log In
                                 </button>
                             </div>
                         </div>

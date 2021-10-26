@@ -200,7 +200,7 @@ class Sidebar extends Component {
                                                 onClick={this.showLoginPopUp}
                                                 to={""}
                                                 className="list-group-item list-group-item-action green-text">
-                                                Log in
+                                                Log In
                                             </Link>
 
                                             <Link

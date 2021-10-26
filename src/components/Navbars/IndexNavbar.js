@@ -249,7 +249,7 @@ class ComponentsNavbar extends React.Component {
                                     onClick={this.showLoginPopUp}
                                     type="button"
                                     className=" btn topBtn ">
-                                    <Link>Log in</Link>
+                                    <Link>Log In</Link>
                                 </button>
                             )}
                         </NavItem>

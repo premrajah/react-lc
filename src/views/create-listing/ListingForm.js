@@ -949,7 +949,7 @@ class ListingForm extends Component {
                                         <button
                                             type="button"
                                             className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                            Log in
+                                            Log In
                                         </button>
                                     </div>
 

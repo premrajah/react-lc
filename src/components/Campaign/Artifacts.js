@@ -209,9 +209,6 @@ class Artifacts extends Component {
 componentDidUpdate(prevProps, prevState, snapshot) {
 
 
-
-
-
 }
 
     componentDidMount() {
@@ -221,6 +218,123 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
     }
+
+    handleSubmit = (event) => {
+
+
+        let parentId;
+        event.preventDefault();
+        if (!this.handleValidation()) {
+
+            return
+
+        }
+
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+
+        const formData = {
+
+            site: {
+                name: data.get("name"),
+                description: data.get("description"),
+                external_reference: data.get("external_reference"),
+                email: data.get("email"),
+                address: data.get("address"),
+                contact: data.get("contact"),
+                others: data.get("other"),
+                phone: data.get("phone"),
+                is_head_office: this.state.isHeadOffice,
+                parent_id: data.get("parent")
+            }
+        };
+
+        parentId=data.get("parent")
+
+        this.setState({isSubmitButtonPressed: true})
+
+        // return false
+        axios
+            .put(
+                baseUrl + "site",
+                formData,
+                {
+                    headers: {
+                        Authorization: "Bearer " + this.props.userDetail.token,
+                    },
+                }
+            )
+            .then((res) => {
+
+
+                if (parentId) {
+
+                    this.updateParentSite(parentId, res.data.data._key)
+
+                }else{
+
+
+
+
+                    this.props.loadCurrentSite(parentId)
+
+
+                }
+                this.props.loadSites()
+                this.props.loadParentSites()
+                this.hidePopUp()
+                this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            });
+
+
+    };
+
+
+
+    handleValidation() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("phone", [ {
+                check: Validators.number,
+                message: 'This field should be a number.'
+            }], fields),
+            validateFormatCreate("contact", [{check: Validators.required, message: 'Required'}], fields),
+
+
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+    handleChange(value, field) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({fields});
+
+    }
+
 
 
     render() {
@@ -236,12 +350,58 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                         <div className="col-12 mt-3 ">
 
                             <div className="col-12 mt-4">
-                                <div className={"custom-label text-bold text-blue mb-3"}>
-                                    Attachment
-                                </div>
 
+                                <div className="row camera-grids   no-gutters   ">
+
+
+
+
+
+                                    <div className="col-12  text-left ">
                                 <div className="container-fluid  pb-5 ">
+
+                                    <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
+
+                                        <div className="row no-gutters">
+                                            <div className="col-12 ">
+
+                                                <TextFieldWrapper
+                                                    multiline
+                                                    rows={4}
+                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.description}
+                                                    onChange={(value)=>this.handleChange(value,"description")}
+                                                    error={this.state.errors["description"]}
+                                                    name="description" title="Description" />
+
+                                            </div>
+                                        </div>
+
+
+                                        <div className={"row d-none"}>
+                                            <div className="col-12 mt-4 mb-2">
+
+                                                <button
+                                                    type={"submit"}
+                                                    className={
+                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                    }
+                                                    disabled={this.state.isSubmitButtonPressed}>
+                                                    {this.props.item?"Update Site":"Add Site"}
+                                                </button>
+
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                    </div>
+
                                     <div className="row camera-grids   no-gutters   ">
+
+
+
+
+
                                         <div className="col-12  text-left ">
                                             <div className="">
                                                 <div className={""}>
@@ -386,9 +546,15 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
+
+
+                                </div>
+
+                            </div>
+                            <div className={"custom-label text-bold text-blue mb-3"}>
+                                Attachment
+                            </div>
                             <div className="col-12 mt-4 mb-5">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >

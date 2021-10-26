@@ -153,14 +153,9 @@ class GeneralSettings extends Component {
 
         let validations = [
             validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("phone", [ {
-                check: Validators.number,
-                message: 'This field should be a number.'
-            }], fields),
-            validateFormatCreate("contact", [{check: Validators.required, message: 'Required'}], fields),
-
+            validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("startData", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("endDate", [{check: Validators.required, message: 'Required'}], fields),
 
         ]
 
@@ -178,8 +173,6 @@ class GeneralSettings extends Component {
         this.setState({fields});
 
     }
-
-
 
 
     handleSubmit = (event) => {
@@ -300,7 +293,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {/*<div className={"row justify-content-center create-product-row"}>*/}
 
-                        <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
+                        <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
                             <div className="row no-gutters">
                                 <div className="col-12 ">
@@ -351,9 +344,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                             label="Available From"
                                             format="DD/MM/yyyy"
                                             value={this.state.startDate}
-                                            onChange={this.handleChangeDateStartDate.bind(
-                                                this
-                                            )}
+                                            // onChange={this.handleChangeDateStartDate.bind(
+                                            //     this
+                                            // )}
+                                            onChange={(value)=>this.handleChange(value,"startDate")}
+
                                         />
                                     </MuiPickersUtilsProvider>
 
@@ -380,9 +375,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                             label="Available From"
                                             format="DD/MM/yyyy"
                                             value={this.state.startDate}
-                                            onChange={this.handleChangeDateStartDate.bind(
-                                                this
-                                            )}
+                                            onChange={(value)=>this.handleChange(value,"endDate")}
+
+                                            // onChange={this.handleChangeDateStartDate.bind(
+                                            //     this
+                                            // )}
                                         />
                                     </MuiPickersUtilsProvider>
                                 </div>

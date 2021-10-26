@@ -110,6 +110,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
+                        <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/sites" component={Sites} />
 
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />

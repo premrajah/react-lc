@@ -37,8 +37,6 @@ class CreateCampaign extends Component {
             errors: {},
             loading:false,
             activeStep:0,
-            // skipped:null,
-            // steps:[],
             skipped:new Set(),
             steps:getSteps()
 
@@ -68,11 +66,6 @@ class CreateCampaign extends Component {
     }
     componentDidMount() {
 
-        //
-        // this.setState({
-        //     skipped:new Set(),
-        //     steps:getSteps()
-        // })
     }
 
 
@@ -176,57 +169,6 @@ class CreateCampaign extends Component {
     }
 
 
-    getSitesForProducts=()=>{
-
-
-        let products=[]
-
-        let mapData=[]
-
-        this.state.selectedProducts.forEach(item => {
-
-            mapData.push({_key:item.product._key,name:item.product.name})
-            return products.push(item.product._key)
-        })
-
-        axios
-            .post(baseUrl + "product/site/get-many", { product_ids:products })
-            .then((res) => {
-
-                if (res.status === 200) {
-                   // console.log(res)
-
-                    let sites=res.data.data
-
-
-                    for (let i=0;i<mapData.length;i++){
-                        let site=sites.find((site)=>site.product_id.replace("Product/","")==mapData[i]._key)
-
-                        mapData[i].site=site.site
-
-                    }
-
-
-                    this.setState({
-                        showMap:!this.state.showMap,
-                        mapData: mapData
-                    })
-
-                } else {
-
-                }
-            })
-            .catch((error) => {
-
-                if (error.response)
-                    console.log(error)
-
-
-
-            });
-
-    }
-
 
     handleValidation() {
 
@@ -238,9 +180,6 @@ class CreateCampaign extends Component {
             validateFormatCreate("count", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields)
 
         ]
-
-
-
 
 
         let {formIsValid,errors}= validateInputs(validations)

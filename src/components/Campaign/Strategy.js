@@ -36,10 +36,7 @@ class Strategy extends Component {
 
         this.state = {
 
-            countAll: 0,
-            countAny: 0,
-            addCountAll: [],
-            addCountAny: [],
+
             fields: {},
             errors: {},
             fieldsLink: {},
@@ -53,6 +50,10 @@ class Strategy extends Component {
             isSubmitButtonPressed: false,
             createNew:false,
             addExisting:false,
+            countAll: 0,
+            countAny: 0,
+            addCountAll: [],
+            addCountAny: [],
             properties: [ "brand","category", "type","state","model","serial","sku","upc","part_no","line","condition","stage",
             "purpose","units","year_of_making"],
             operators: [
@@ -376,8 +377,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                         </form>
 
                      </div>
-
-
                 <div className="col-12 mt-3 p-3 mb-4 container-light-gray">
                     <p className={"text-bold "}>Choose optional conditions </p>
                     <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
@@ -466,11 +465,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     </form>
 
                 </div>
-
-
-                        {/*</div>*/}
-
-                    {/*</div>*/}
 
 
             </>

@@ -41,7 +41,7 @@ class Statistics extends Component {
                         <PageHeader
                             pageIcon={StatBLue}
                             pageTitle="Statistics"
-                            subTitle="View all your inventory statistics here"
+                            subTitle="View your inventory statistics here"
                             bottomLine={<hr />}
                         />
 

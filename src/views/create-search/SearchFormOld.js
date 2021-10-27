@@ -1196,7 +1196,7 @@ class SearchForm extends Component {
                     <div className="container pt-4  pl-2 mt-3 mb-5 pb-5">
                         <div className="row no-gutters">
                             <div className="col-auto">
-                                <h5 className={"blue-text text-heading"}>Create Search</h5>
+                                <h5 className={"blue-text text-heading"}>New Search</h5>
                             </div>
                         </div>
 

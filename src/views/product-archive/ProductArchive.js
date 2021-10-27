@@ -104,7 +104,7 @@ class ProductArchive extends Component {
                                 </Link>
 
                                 <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
-                                    My Products
+                                    Products
                                 </Link>
 
                                 <Link to="/product-tracked" className="btn btn-sm blue-btn">

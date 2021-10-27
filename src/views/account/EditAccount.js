@@ -236,12 +236,12 @@ class EditAccount extends Component {
 
                     <div className="container pb-4 pt-4">
                         <div>
-                            <Link to={"/account"}>Account </Link> > Personal Information
+                            <Link to={"/account"}>Account </Link> > Personal Info
                         </div>
 
                         <PageHeader
-                            pageTitle="Personal Information"
-                            subTitle="Add your personal information on this page"
+                            pageTitle="Personal Info"
+                            subTitle="Add and change your personal details here"
                             bottomLine={<hr />}
                         />
 
@@ -308,7 +308,7 @@ class EditAccount extends Component {
                                                             initialValue={this.state.reason}
                                                             onChange={(value)=>this.handleChange(value,"reason")}
                                                             error={this.state.errors["reason"]}
-                                                            name="reason" label="Main Reason for using Loopcycle" />
+                                                            name="reason" label="Tell us, what’s the main reason for using Loopcycle?" />
                                                     </div>
                                                 </div>
                                             </div>

@@ -202,7 +202,7 @@ class Sites extends Component {
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="Sites"
-                            subTitle="All sites created can be found here"
+                            subTitle="All your added sites can be found here"
                         />
 
                         <div className="row">
@@ -210,11 +210,11 @@ class Sites extends Component {
                                 <Link onClick={()=> {
                                     this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
                                 }}  className="btn btn-sm blue-btn mr-2 click-item">
-                                   Add Sites/Address
+                                    Add Sites / Address
                                 </Link>
 
                                 <Link onClick={this.toggleMultiSite} className="btn btn-sm blue-btn mr-2 click-item">
-                                    Bulk Upload Sites/Address(CSV)
+                                    Upload Multiple Sites / Addresses (CSV)
                                 </Link>
 
                             </div>

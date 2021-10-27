@@ -570,6 +570,8 @@ class SiteDetailContent extends Component {
 
             this.loadInfo();
         }
+
+
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
 
@@ -1262,7 +1264,8 @@ const mapDispachToProps = (dispatch) => {
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
-
+        loadProductsWithoutParent: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParent(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(SiteDetailContent);

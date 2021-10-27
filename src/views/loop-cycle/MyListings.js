@@ -77,8 +77,8 @@ class MyListings extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ProductBlue}
-                            pageTitle="My Listings"
-                            subTitle="Accept or decline a match to start a loop."
+                            pageTitle="Listings"
+                            subTitle="All your created listings can be found here. You can accept or decline a match to complete a loop"
                         />
 
                         <div className="row mb-3">

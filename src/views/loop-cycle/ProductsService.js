@@ -111,7 +111,7 @@ class ProductsService extends Component {
                         <div className="row">
                             <div className="col-12 d-flex justify-content-start">
                                 <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
-                                    My Products
+                                    Products
                                 </Link>
 
                                 <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">

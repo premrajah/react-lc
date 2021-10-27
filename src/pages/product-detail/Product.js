@@ -7,6 +7,8 @@ import { withStyles } from "@material-ui/core/styles/index";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
 import ProductDetailContent from "../../components/Products/ProductDetailContent";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 
 class ProductView extends Component {
     slug;
@@ -58,6 +60,21 @@ class ProductView extends Component {
 
     componentDidMount() {
         this.props.loadCurrentProduct(encodeUrl(this.slug));
+        console.log(this.props.location.search)
+
+
+        if (this.props.location.search.includes("r=true")){
+
+            axios.get(baseUrl + "product/" + this.slug + "/code?r=true").then(
+                (response) => {
+                    var responseAll = response.data;
+
+                  console.log(responseAll)
+
+                },
+                (error) => {}
+            );
+        }
     }
 
     render() {

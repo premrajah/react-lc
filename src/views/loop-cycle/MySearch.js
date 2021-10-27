@@ -70,8 +70,8 @@ class MySearch extends Component {
 
                     <div className="container  pb-4 pt-4">
                         <PageHeader
-                            subTitle={"Accept or decline a match to start a loop."}
-                            pageTitle={"My Searches"}
+                            subTitle="All your searches can be found here. You can accept or decline a match to complete a loop"
+                            pageTitle="Searches"
                             pageIcon={SearchIcon}
                         />
 

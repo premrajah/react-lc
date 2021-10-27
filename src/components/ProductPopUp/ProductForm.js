@@ -68,6 +68,7 @@ class ProductForm extends Component {
             siteSelected: null,
             files: [],
             filesStatus: [],
+            images: [],
             free: false,
             price: null,
             brand: null,
@@ -76,7 +77,7 @@ class ProductForm extends Component {
             serial: null,
             startDate: null,
             endDate: null,
-            images: [],
+
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
@@ -227,10 +228,7 @@ class ProductForm extends Component {
                     .then(data => {
                         const payload = data;
 
-                        console.log(data)
-
-
-
+                        // console.log(data)
 
                         try {
                             axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
@@ -457,6 +455,11 @@ class ProductForm extends Component {
                     year_of_making: year_of_making,
                 };
 
+                if (this.props.createProductId){
+
+                    productData._id="Product/"+this.props.createProductId
+                }
+
                 var completeData;
 
                 if (this.props.parentProduct) {
@@ -480,6 +483,7 @@ class ProductForm extends Component {
 
                 this.setState({isSubmitButtonPressed: true})
 
+                // console.log(completeData)
                 // return false
                 axios
                     .put(
@@ -667,7 +671,9 @@ class ProductForm extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        console.log("this.props")
 
+        console.log(this.props)
         this.getFiltersCategories();
 
 
@@ -1239,6 +1245,7 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
+        createProductId:state.createProductId
     };
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip} from "@material-ui/core";
@@ -12,13 +12,22 @@ import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
-import {Editor, EditorState} from 'draft-js';
+import RichTextEditor from "./RichTextEditor";
 
-const msgWindowHeight = "560px";
+
+const msgWindowHeight = "520px";
 const useStyles = makeStyles({
-    active: {
-        background: "red"
-    }
+    root: {
+        '&$selected': {
+            backgroundColor: 'var(--lc-purple)',
+            color: '#ffffff',
+            '&:hover': {
+                backgroundColor: 'var(--lc-pink)',
+                color: '#ffffff',
+            }
+        },
+    },
+    selected: {},
 });
 
 const MessengerMessages = ({ userDetail, messages, getMessages }) => {
@@ -31,6 +40,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);
@@ -69,6 +79,28 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             });
     };
 
+    const getAllOrgsOffsetAndSize = (offset, size) => {
+        if(!offset || !size) return;
+
+        axios
+            .get(`${baseUrl}org/all/?${offset}=${offset}&${size}=${size}`)
+            .then((response) => {
+                const res = response.data.data;
+                setAllOrgs(res);
+
+                const temp = [];
+                res.map((r) => {
+                    if (r.email !== null) {
+                        temp.push({ value: r._id, label: r.email });
+                    }
+                });
+                setReactSelectValues(temp);
+            })
+            .catch((error) => {
+                console.log("all orgs errors ", error.message);
+            });
+    };
+
     const getAllMessageGroups = () => {
         axios
             .get(`${baseUrl}message-group`)
@@ -79,6 +111,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 console.log("message-group-error ", error.message);
             });
     };
+
+
 
     const getGroupMessageWithId = (id) => {
         if (!id) return;
@@ -101,16 +135,39 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setReactSelectedValues(temp);
     };
 
-    const handleGroupClick = (groupId) => {
+    const handleGroupClick = (groupId, selectedIndex) => {
         if (!groupId) return;
-        setSelectedMsgGroup([]);
+        updateSelected(selectedIndex);
+
         if(reactSelectedValues.length > 0   ) {
             reactSelectRef.current.clearValue();
         }
         setShowHideGroupFilter(false);
         setShowHideOrgSearch(false);
         getGroupMessageWithId(groupId);
+        setSelectedMsgGroup([]);
     };
+
+    const handleRichTextCallback = (value) => {
+        setMessageText(value);
+    }
+
+    const  updateSelected = (selectedIndex) => {
+        setSelectedItem(selectedIndex);
+    }
+
+    const checkWhoseMessage = (orgs) => {
+        if(orgs.length > 0) {
+            if(orgs[0].actor === "message_from"){
+                if(orgs[0].org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        }
+    }
 
 
     const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
@@ -152,7 +209,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
 
                     setMessageText("");
-                    reactSelectRef.current.clearValue();
+                    if(reactSelectedValues.length > 0   ) {
+                        reactSelectRef.current.clearValue();
+                    }
                     getAllMessageGroups();
                     getAllOrgs();
                 }
@@ -165,12 +224,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
-            console.log("new message")
-
 
         } else if (messageText) {
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
-            console.log("message reply ", messageGroupId)
 
             if(messageGroupId) {
                 sendMessage(messageText, [], messageGroupId, "", "group_message");
@@ -264,11 +320,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     .map((group, i) => (
                                         <div key={i} >
                                             <ListItem
+                                                classes={{root: classes.root, selected: classes.selected}}
+                                                selected={selectedItem === i}
                                                 button
                                                 divider
-                                                onClick={() => handleGroupClick(group._key)}>
-                                                {/*{group.name.replace(/\W/g, " ")}*/}
-                                                {group.name}
+                                                onClick={() => handleGroupClick(group._key, i)}>
+                                                {group.name.replace(/\W/g, " ")}
+                                                {/*{group.name}*/}
                                             </ListItem>
                                         </div>
                                     ))
@@ -311,17 +369,21 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             className="message-window p-3"
                                             style={{ height: msgWindowHeight }}>
                                             {selectedMsgGroup.map((m, i) => (
-                                                <div key={i} className="d-flex">
+                                                <div key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-end' : 'justify-content-start'}`}>
                                                     <div
                                                         className="w-75 p-2 mb-1 border-rounded"
                                                         style={{
-                                                            background: "rgba(39, 36, 92, 0.3)",
+                                                            background: checkWhoseMessage(m.orgs) ? "var(--lc-purple)" : "var(--lc-green)",
+                                                            color: "#ffffff",
                                                         }}>
-                                                        <div>{m.message.text}</div>
-                                                        <div className="float-right">
-                                                            {moment(
-                                                                m.message._ts_epoch_ms
-                                                            ).fromNow()}
+                                                        <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
+                                                        <div className="d-flex align-items-end flex-column">
+                                                            <div style={{opacity: '0.5'}}>
+                                                                {moment(
+                                                                    m.message._ts_epoch_ms
+                                                                ).fromNow()}
+                                                            </div>
+                                                            <div style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -335,15 +397,15 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="row mt-2" style={{ height: "60px" }}>
                                 <div className="col-11 p-0">
-                                    <TextField
-                                        id="send-new-msg"
-                                        label="Send new message"
-                                        variant="outlined"
-                                        fullWidth
-                                        onChange={(text) => setMessageText(text)}
-                                        value={messageText || ""}
-                                    />
-
+                                    {/*<TextField*/}
+                                    {/*    id="send-new-msg"*/}
+                                    {/*    label="Send new message"*/}
+                                    {/*    variant="outlined"*/}
+                                    {/*    fullWidth*/}
+                                    {/*    onChange={(text) => setMessageText(text)}*/}
+                                    {/*    value={messageText || ""}*/}
+                                    {/*/>*/}
+                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} />
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button

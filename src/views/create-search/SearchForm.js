@@ -1081,7 +1081,7 @@ class SearchForm extends Component {
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle="Create Search" />
+                        <PageHeader pageTitle="New Search" />
 
                         <div className={this.state.active === 0 ? "mb-5 pb-5" : "d-none"}>
                             <div className="row">
@@ -1881,7 +1881,7 @@ class SearchForm extends Component {
                                                                 ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 "
                                                                 : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "
                                                         }>
-                                                        Create Search
+                                                        New Search
                                                     </button>
                                                 )}
 

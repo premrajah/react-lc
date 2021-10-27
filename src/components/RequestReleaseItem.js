@@ -38,6 +38,7 @@ class RequestReleaseItem extends Component {
             site: null,
             siteSelected: null,
             fieldsSite: {},
+            fields:{},
             errorsSite: {},
             isLoading:false
         };
@@ -149,7 +150,11 @@ class RequestReleaseItem extends Component {
     }
 
     handleChange(field, e) {
-        this.setState({ site: e.target.value });
+        // this.setState({ site: e.target.value });
+
+        let fields = this.state.fields;
+        fields[field] = e.target.value;
+        this.setState({ fields: fields })
     }
 
     handleSubmitSite = (event) => {
@@ -246,8 +251,12 @@ class RequestReleaseItem extends Component {
         let data = {
             id: this.state.item.Release._key,
             new_stage: this.state.initiateAction,
-            site_id: this.state.site,
+            site_id: this.state.fields["site"],
+            parent_product_id:this.state.fields["parent_parent_id"]
         };
+
+        // console.log(data)
+
 
 
         this.setState({
@@ -425,6 +434,36 @@ class RequestReleaseItem extends Component {
                                         <FormControl
                                             variant="outlined"
                                             className={classes.formControl}>
+
+                                            <div
+                                                className={"custom-label text-bold text-blue mb-3"}>
+                                                Parent Product
+                                            </div>
+
+
+                                            <Select
+                                                name={`parent_parent_id}]`}
+                                                // label={"Link a product"}
+                                                required={true}
+                                                native
+                                                onChange={this.handleChange.bind(
+                                                    this,
+                                                    "parent_parent_id"
+                                                )}
+                                                inputProps={{
+                                                    // name: {`product[${index}]`},
+                                                    id: "outlined-age-native-simple",
+                                                }}>
+                                                <option value={null}>Select</option>
+                                                {this.props.productWithoutParentList.map((item) => (
+                                                        <option value={item._key}>
+                                                            {item.name}
+                                                        </option>
+                                                    ))}
+
+
+                                            </Select>
+
                                             <div
                                                 className={"custom-label text-bold text-blue mb-3"}>
                                                 Select the location of product
@@ -509,6 +548,9 @@ class RequestReleaseItem extends Component {
                                                     <form onSubmit={this.handleSubmitSite}>
                                                         <div className="row no-gutters justify-content-center ">
                                                             <div className="col-12 mt-4">
+
+
+
                                                                 <TextField
                                                                     id="outlined-basic"
                                                                     label=" Name"
@@ -707,6 +749,7 @@ const mapStateToProps = (state) => {
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
         siteList: state.siteList,
+        productWithoutParentList: state.productWithoutParentList,
 
     };
 };

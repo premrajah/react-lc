@@ -106,6 +106,8 @@ class Approvals extends Component {
 
         this.refreshItems()
         this.props.loadSites()
+        this.props.loadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
 
     }
 
@@ -149,7 +151,7 @@ render() {
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle="Approvals" subTitle="Approve" />
+                        <PageHeader pageTitle="Approvals" subTitle="Yay! Someone has released an item to you. You just need to approve it here" />
 
                         <div className={"tab-content-listing col-12"}>
                             <div>
@@ -558,6 +560,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchServiceAgentRequest: () => dispatch(actionCreator.fetchServiceAgentRequest()),
         fetchRegisterRequest: () => dispatch(actionCreator.fetchRegisterRequest()),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadProductsWithoutParent: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParent(data)),
 
     };
 };

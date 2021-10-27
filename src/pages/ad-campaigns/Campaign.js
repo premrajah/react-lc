@@ -31,7 +31,7 @@ import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 
-class Products extends Component {
+class Campaign extends Component {
 
     constructor(props) {
         super(props);
@@ -421,7 +421,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.props.productWithoutParentList&&this.props.productWithoutParentList.filter((site)=>
+                                    {this.props.productWithoutParentList.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -457,7 +457,7 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList&&
+                        {
                         this.props.productWithoutParentList.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -501,7 +501,7 @@ class Products extends Component {
                         ))}
 
 
-                        {this.props.productWithoutParentList&&this.props.productWithoutParentList.filter((site)=>
+                        {this.props.productWithoutParentList.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                     site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                     this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -700,4 +700,4 @@ const mapDispatchToProps = (dispatch) => {
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Campaign);

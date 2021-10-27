@@ -1,4 +1,7 @@
+import DOMPurify from 'dompurify'
+
 export const { REACT_APP_BRANCH_ENV } = process.env;
+
 
 export const baseUrl =
     REACT_APP_BRANCH_ENV === "master"
@@ -58,5 +61,11 @@ export const getImageAsBytes = (file) => {
         };
         reader.onerror = (error) => reject(error);
     });
+}
+
+export const createMarkup = (html) => {
+    return  {
+        __html: DOMPurify.sanitize(html)
+    }
 }
 

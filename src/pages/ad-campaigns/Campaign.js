@@ -406,7 +406,7 @@ class Campaign extends Component {
 
 
                             <div className="col-md-4 d-flex justify-content-end">
-                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleDownloadQrCodes()} type="button">Download QR Codes</button>
+                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button>
                                 <button className="d-none btn btn-sm blue-btn ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
                         </div>

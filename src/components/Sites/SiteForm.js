@@ -383,7 +383,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props){
 
-            console.log(this.props.showSiteForm)
             this.setState({
                 count:0,
                 createNew:false,
@@ -433,8 +432,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
         let parentId=this.props.showSiteForm.parent
 
-        // console.log("link child sites")
-        // console.log(item)
 
         event.preventDefault();
 
@@ -450,8 +447,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         var arraySites = [];
 
         for (let i = 0; i < this.state.addCount.length; i++) {
-
-            console.log(data.get(`site[${i}]`))
 
                  // this.updateParentSite(this.props.showSiteForm.item._key, data.get(`site[${i}]`))
 
@@ -472,9 +467,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
             }
 
 
-
-
-        console.log("clear called")
 
         this.setState({
             addCount:[],
@@ -504,7 +496,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
         for (let i = 0; i < this.state.addCount.length; i++) {
 
-            console.log(data.get(`product[${i}]`))
             if (item) {
 
                     axios
@@ -519,11 +510,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                         .then((res) => {
 
 
-                            // if (this.props.showSiteForm.item) {
-                               console.log(item)
-                                console.log("update current site")
                                 this.props.loadCurrentSite(item._key)
-                            // }
+
 
                         })
                         .catch((error) => {
@@ -535,7 +523,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         }
 
 
-        console.log("clear called")
 
         this.setState({
             addCount:[],

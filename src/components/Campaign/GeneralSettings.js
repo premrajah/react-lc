@@ -286,12 +286,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         return (
             <>
 
-                    {/*<div className="row  justify-content-center mobile-menu-row ">*/}
-
                         <div className="col-12 mt-3 ">
 
-
-                        {/*<div className={"row justify-content-center create-product-row"}>*/}
 
                         <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
@@ -405,12 +401,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                         </form>
 
                      </div>
-
-
-                        {/*</div>*/}
-
-                    {/*</div>*/}
-
 
             </>
         );

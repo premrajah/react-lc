@@ -47,7 +47,7 @@ const SearchRecords = () => {
                     <div className="row mb-3">
                         <div className="col-12 d-flex justify-content-end">
                             <Link to="/my-search" className="btn btn-sm blue-btn mr-2">
-                                My Searches
+                                Searches
                             </Link>
                         </div>
                     </div>

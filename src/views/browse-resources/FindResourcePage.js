@@ -79,24 +79,23 @@ class FindResourcePage extends Component {
                             <div className="icon-holder">
                                 <Image className="p-4" src={SearchIcon} rounded height="240px" />
                             </div>
-                            <h1 className="mt-3 blue-text">Find Products</h1>
+                            <h1 className="mt-3 blue-text">Buy Products</h1>
                             <p>
-                                Have specific requirements? Create a search. We’ll notify you when
-                                you receive a match.
+                                Search for a specific product and we’ll notify you <br/>when you get a match.
                             </p>
                             <Link to="/search-form" className="btn btn-green">
-                                Create a search
+                                New search
                             </Link>
                         </div>
                         <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
                             <Image className="p-4" src={BottleDollarIcon} rounded height="240px" />
                             <h1 className="mt-3 blue-text">Sell Products</h1>
                             <p>
-                                Have a resource to sell? Create a new listing and we’ll notify you
-                                when you receive a match.
+                                List a new product for sale and we’ll notify you <br/>when you get a match.
+
                             </p>
                             <Link to="/list-form" className="btn btn-green">
-                                Create a Listing
+                                New Listing
                             </Link>
                         </div>
                     </div>
@@ -105,7 +104,7 @@ class FindResourcePage extends Component {
 
                     <div className="row mt-5 mb-2">
                         <div className="col">
-                            <h2 className="text-md-center blue-text">View all Listings</h2>
+                            <h2 className="text-md-center blue-text">Browse all Listings</h2>
                         </div>
                     </div>
 

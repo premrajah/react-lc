@@ -137,8 +137,7 @@ class Home extends Component {
                             <div className="col-auto">
                                 <h2 className={"text-pink text-center "}>
                                     <b>
-                                        View all resources on the <br />
-                                        Loopcycle Platform
+                                        View all products on the platform
                                     </b>
                                 </h2>
                             </div>

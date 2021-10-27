@@ -102,6 +102,7 @@ export const initialState = {
     currentSiteLoading: false,
     signUpPageSubmitted:false,
     showMultiplePopUp:false,
+    createProductId:null,
     showSiteForm:{
         show:false,
         item:null
@@ -343,6 +344,8 @@ const reducer = (state = initialState, action) => {
             break;
 
         case PRODUCT_POPUP:
+
+
             newState.loginFailed = false;
             newState.showSubProductView = false;
             newState.showSiteProductView = false;
@@ -354,6 +357,10 @@ const reducer = (state = initialState, action) => {
             let type = action.value.type;
 
             if (type === "create_product") {
+
+                if ( action.value.id)
+                newState.createProductId = action.value.id;
+
                 newState.showCreateProduct = true;
                 newState.showCreateSubProduct = false;
 

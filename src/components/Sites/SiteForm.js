@@ -389,13 +389,24 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 createNew:false,
                 addExisting:false
             })
+
+            if (this.props.showSiteForm.type==="link-product"){
+
+                // alert("load products")
+                // this.props.loadProductsWithoutParent()
+                this.props.loadProductsWithoutParent()
+
+
+            }
         }
+
+
+
 }
 
     componentDidMount() {
 
         window.scrollTo(0, 0);
-        this.props.loadProducts();
         this.props.loadSites();
 
 
@@ -404,7 +415,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         this.setState({
             createNew:!this.state.createNew
         })
+       // else if (this.props.showSiteForm.type==="link-product"){
 
+            // this.props.loadProducts()
+        this.props.loadProductsWithoutParent()
+
+        // }
 
 
     }
@@ -899,20 +915,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                                         id: "outlined-age-native-simple",
                                                                     }}>
                                                                     <option value={null}>Select</option>
-
-                                                                    {this.props.productList
-                                                                        .filter(
+                                                                    {this.props.productWithoutParentList.filter(
                                                                             (item) =>
-                                                                                item._key !==
-                                                                                this.props.showSiteForm.item._key
-                                                                                &&
-                                                                                !(
-                                                                                    this.props.showSiteForm.subProducts.filter(
+                                                                                !this.props.showSiteForm.subProducts.filter(
                                                                                         (subItem) =>
                                                                                             subItem._key ===
                                                                                             item._key
                                                                                     ).length > 0
-                                                                                )
                                                                         )
                                                                         .map((item) => (
                                                                             <option value={item._key}>
@@ -922,7 +931,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                                                                 </Select>
-                                                                {this.props.productList.length===0&&
+                                                                {this.props.productWithoutParentList.length===0&&
                                                                 <Spinner
                                                                     as="span"
                                                                     animation="border"
@@ -938,12 +947,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                                         {this.state.errorsLink["site"]}
                                                         </span>
                                                                 )}
-
-                                                                {/*<FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?*/}
-
-                                                                {/*<span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>*/}
-
-                                                                {/*</FormHelperText>*/}
                                                             </FormControl>
 
 
@@ -1022,11 +1025,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 const mapStateToProps = (state) => {
     return {
-        loginError: state.loginError,
-        loading: state.loading,
-        isLoggedIn: state.isLoggedIn,
-        loginFailed: state.loginFailed,
-        showLoginPopUp: state.showLoginPopUp,
+
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
         parentProduct: state.parentProduct,
@@ -1045,21 +1044,13 @@ const mapStateToProps = (state) => {
 
 const mapDispachToProps = (dispatch) => {
     return {
-        logIn: (data) => dispatch(actionCreator.logIn(data)),
-        signUp: (data) => dispatch(actionCreator.signUp(data)),
-        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
-        setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-        setParentProduct: (data) => dispatch(actionCreator.setParentProduct(data)),
-        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
-        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
+
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-        loadCurrentProduct: (data) =>
-            dispatch(actionCreator.loadCurrentProduct(data)),
+
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
-        loadProductsWithoutParentPagination: (data) =>
-            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
+
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),

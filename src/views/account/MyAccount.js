@@ -43,8 +43,8 @@ class MyAccount extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={SettingsWhite}
-                            pageTitle="My Account"
-                            subTitle="User account settings"
+                            pageTitle="Account"
+                            subTitle="Finish setting up your account here"
                             bottomLine={<hr />}
                         />
 
@@ -69,12 +69,12 @@ class MyAccount extends Component {
                                         Transfer Scaling <NavigateNextIcon />
                                     </Link>
 
-                                    <Link
-                                        to="/statistics"
-                                        className="list-group-item list-group-item-action "
-                                    >
-                                        Statistics <NavigateNextIcon />
-                                    </Link>
+                                    {/*<Link*/}
+                                    {/*    to="/statistics"*/}
+                                    {/*    className="list-group-item list-group-item-action "*/}
+                                    {/*>*/}
+                                    {/*    Statistics <NavigateNextIcon />*/}
+                                    {/*</Link>*/}
                                 </div>
 
                                 <div className="row d-none">

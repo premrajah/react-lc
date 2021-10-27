@@ -47,7 +47,7 @@ class ProductPopUp extends Component {
                             )}
 
                             {this.props.showCreateProduct && (
-                                <ProductForm heading={"Add Product"} />
+                                <ProductForm id={this.props.id} heading={"Add Product"} />
                             )}
                             {this.props.showSubProductView && (
                                 <ProductExpandItem

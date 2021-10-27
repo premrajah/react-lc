@@ -71,8 +71,8 @@ class MyCycles extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={RingBlue}
-                            pageTitle="My Cycles"
-                            subTitle="Cycles are transactions in progress."
+                            pageTitle="Cycles"
+                            subTitle="Cycles are your transactions in progress. View your created cycles here"
                         />
 
                         <div className="row mb-3">
@@ -114,7 +114,7 @@ class MyCycles extends Component {
                             <CycleItem item={item} key={index} />
                         )) : <div>...</div>}
 
-                        {this.state.loops.length === 0 ? <div>No cycles yet...</div> : <div></div>}
+                        {this.state.loops.length === 0 ? <div>Hurry up! You haven’t made any cycles yet</div> : <div></div>}
                     </div>
                 </div>
             </div>

@@ -21,8 +21,8 @@ class ForgotPasswordPage extends Component {
 
                 <PageHeader
                     pageIcon={CubeBlue}
-                    pageTitle="My Products"
-                    subTitle="All products created can be found here"
+                    pageTitle="Products"
+                    subTitle="All your added products can be found here"
                 />
                <ForgotPassword isPage={true} parentClass={"col-8"} />
 

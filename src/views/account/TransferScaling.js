@@ -651,7 +651,7 @@ class TransferScaling extends Component {
 
                         <PageHeader
                             pageTitle="Transfer Scaling"
-                            subTitle="Add transfer scaling information on this page"
+                            subTitle="Add your transfer scaling details here"
                             bottomLine={<hr />}
                         />
 

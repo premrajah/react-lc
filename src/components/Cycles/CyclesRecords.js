@@ -34,12 +34,12 @@ const CyclesRecords = () => {
                 <HeaderDark />
 
                 <div className="container pb-4 pt-4">
-                    <PageHeader pageTitle="Cycles Record" subTitle="My Cycles records" />
+                    <PageHeader pageTitle="Cycles Record" subTitle="Cycles records" />
 
                     <div className="no-gutters">
                         <div className="col-12 d-flex justify-content-end">
                             <Link to="/my-cycles" className="btn btn-sm blue-btn">
-                                My Cycles
+                                Cycles
                             </Link>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ProductDetailCycle from "../../components/ProductDetailCycle";
 import PageHeader from "../../components/PageHeader";
+import NotFound from "../NotFound";
 
 class ItemCycleDetail extends Component {
     slug;
@@ -29,6 +30,7 @@ class ItemCycleDetail extends Component {
             errors: {},
             active: 0, //0 logn. 1- sign up , 3 -search,
             formValid: false,
+            notFoundError:false
         };
 
         this.slug = props.match.params.slug;
@@ -173,6 +175,10 @@ class ItemCycleDetail extends Component {
     }
 
     getResources() {
+
+
+        // Su1t75s7hz
+
         var url = baseUrl + "code/" + this.slug + "/expand?agg";
 
         axios
@@ -196,12 +202,25 @@ class ItemCycleDetail extends Component {
                     // this.loadSearches()
                     // this.getQrCode()
                 },
-                (error) => {}
+                (error) => {
+
+
+                    if (error&&error.response&&error.response.status==404){
+
+                   this.setState({
+                       notFoundError:true
+                   })
+                    }
+
+
+                }
             );
     }
 
 
-
+    showProductSelection=()=> {
+        this.props.showProductPopUp({ type: "create_product", show: true });
+    }
     componentDidMount() {
         window.scrollTo(0, 0);
         this.getResources();
@@ -215,7 +234,7 @@ class ItemCycleDetail extends Component {
                     <HeaderDark />
 
                     <div className="container ">
-                        <div>
+                        {!this.state.notFoundError? <div>
                             <PageHeader
                                 pageTitle="Product Details (Provenance)"
                                 subTitle="See product details and Provenance."
@@ -229,7 +248,9 @@ class ItemCycleDetail extends Component {
                                     />
                                 </>
                             )}
-                        </div>
+                        </div>:
+                        <NotFound slug={this.slug} qrCodeNotFound={true} />
+                        }
                     </div>
                 </div>
             </div>

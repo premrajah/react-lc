@@ -204,42 +204,39 @@ class Home extends Component {
                             <div className="col-4">
                                 <img className={"search-icon"} src={SearchIcon} alt="search" />
                                 <p className={"blue-text mt-4"}>
-                                    Need resources to make your product? Start a search and enter
-                                    your requirements.
+                                    Search for a specific product and we’ll notify you when you get a match.
                                 </p>
                                 <Link
                                     onClick={this.showLoginPopUp}
                                     to={this.props.isLoggedIn && "/search-form"}
                                     className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                    Create a search
+                                    New Search
                                 </Link>
                             </div>
 
                             <div className="col-4">
                                 <img className={"home-icon"} src={HandIcon} alt="listing" />
                                 <p className={"blue-text mt-4"}>
-                                    Do you have used resources to offer? Start listing any used
-                                    resources.
+                                    List a new product for sale and we’ll notify you when you get a match.
                                 </p>
                                 <Link
                                     onClick={this.showLoginPopUp}
                                     to={this.props.isLoggedIn && "/list-form"}
                                     className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                    Create a listing
+                                    New Listing
                                 </Link>
                             </div>
 
                             <div className="col-4">
                                 <img className={"home-icon"} src={ShippingIcon} alt="resources" />
                                 <p className={"blue-text mt-4"}>
-                                    Able to collect and deliver resources? Register your company on
-                                    the platform.
+                                    Start building your digital inventory to list the products for sale or manage your assets cost-effectively across multiple sites.
                                 </p>
                                 <Link
                                     onClick={this.showLoginPopUp}
-                                    to={this.props.isLoggedIn && "/"}
+                                    to={this.props.isLoggedIn && "/my-products"}
                                     className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                    Deliver Resources
+                                    Add Products
                                 </Link>
                             </div>
                         </div>

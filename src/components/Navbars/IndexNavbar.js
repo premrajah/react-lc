@@ -190,7 +190,7 @@ class ComponentsNavbar extends React.Component {
                                         className="nav-link d-none d-lg-block wl-link-white "
                                         color="default"
                                         to={"/find-resources"}>
-                                        Browse Listings
+                                        Marketplace
                                     </Link>
                                 </NavItem>
 
@@ -200,14 +200,14 @@ class ComponentsNavbar extends React.Component {
                                         to={"/my-products"}
                                         className="nav-link d-none d-lg-block wl-link-white"
                                         color="default">
-                                        Add Product
+                                        Add Products
                                     </Link>
                                 </NavItem>
 
                                 <NavItem className={"web-only mr-3"}>
                                     <Link
                                         to={"/search-form"}
-                                        className="nav-link d-none d-lg-block wl-link-white mr-3 "
+                                        className="nav-link d-none d-lg-block wl-link-white"
                                         color="default">
                                         New Search
                                     </Link>
@@ -249,7 +249,7 @@ class ComponentsNavbar extends React.Component {
                                     onClick={this.showLoginPopUp}
                                     type="button"
                                     className=" btn topBtn ">
-                                    <Link>Log in</Link>
+                                    <Link>Log In</Link>
                                 </button>
                             )}
                         </NavItem>
@@ -331,28 +331,28 @@ class ComponentsNavbar extends React.Component {
                                     <DropdownMenu className="dropdown-with-icons">
                                         <Link className={"dropdown-item"} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Account
+                                            Account
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Products
+                                            Products
                                         </Link>
                                         <Link className={"dropdown-item"} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Sites
+                                            Sites
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
-                                            My Searches
+                                            Searches
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Listings
+                                            Listings
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-cycles">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Cycles
+                                            Cycles
                                         </Link>
 
 

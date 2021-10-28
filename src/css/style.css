@@ -3713,3 +3713,9 @@ a.page-link:hover {
 .tree-view-menu div {
     direction:ltr;
 }
+.container-light-border{
+
+    border: 1px solid #eee;
+
+    border-radius: 7px;
+}

@@ -91,7 +91,11 @@ class NotFound extends Component {
                                                 </div>
                                                 <div className="col-6 ">
                                                     <Link
+<<<<<<< HEAD
                                                         
+=======
+
+>>>>>>> develop-api2
                                                         onClick={this.showLoginPopUp}
                                                         className={
                                                             "  blue-btn-border mt-2 mb-2"

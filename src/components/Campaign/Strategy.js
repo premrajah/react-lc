@@ -36,10 +36,14 @@ class Strategy extends Component {
 
         this.state = {
 
+<<<<<<< HEAD
             countAll: 0,
             countAny: 0,
             addCountAll: [],
             addCountAny: [],
+=======
+
+>>>>>>> develop-api2
             fields: {},
             errors: {},
             fieldsLink: {},
@@ -53,6 +57,13 @@ class Strategy extends Component {
             isSubmitButtonPressed: false,
             createNew:false,
             addExisting:false,
+<<<<<<< HEAD
+=======
+            countAll: 0,
+            countAny: 0,
+            addCountAll: [],
+            addCountAny: [],
+>>>>>>> develop-api2
             properties: [ "brand","category", "type","state","model","serial","sku","upc","part_no","line","condition","stage",
             "purpose","units","year_of_making"],
             operators: [
@@ -376,8 +387,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                         </form>
 
                      </div>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> develop-api2
                 <div className="col-12 mt-3 p-3 mb-4 container-light-gray">
                     <p className={"text-bold "}>Choose optional conditions </p>
                     <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
@@ -468,11 +482,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 </div>
 
 
+<<<<<<< HEAD
                         {/*</div>*/}
 
                     {/*</div>*/}
 
 
+=======
+>>>>>>> develop-api2
             </>
         );
     }

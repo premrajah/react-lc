@@ -169,6 +169,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         }
     }
 
+<<<<<<< HEAD
+=======
+    const handleFilterGroupsButton = () => {
+        setAutoCompleteOrg("");
+        setShowHideGroupFilter(!showHideGroupFilter);
+    }
+
+>>>>>>> develop-api2
 
     const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
         if (!text) return;
@@ -272,7 +280,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="col-md-2 d-flex justify-content-center align-items-center">
                                 <Tooltip title="Filter groups">
-                                    <Button onClick={() => setShowHideGroupFilter(!showHideGroupFilter)}>
+                                    <Button onClick={() => handleFilterGroupsButton()}>
                                         <FilterListIcon fontSize="large" />
                                     </Button>
                                 </Tooltip>

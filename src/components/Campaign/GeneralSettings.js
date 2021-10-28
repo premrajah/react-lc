@@ -286,6 +286,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         return (
             <>
 
+<<<<<<< HEAD
                     {/*<div className="row  justify-content-center mobile-menu-row ">*/}
 
                         <div className="col-12 mt-3 ">
@@ -293,6 +294,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {/*<div className={"row justify-content-center create-product-row"}>*/}
 
+=======
+                        <div className="col-12 mt-3 ">
+
+
+>>>>>>> develop-api2
                         <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
                             <div className="row no-gutters">
@@ -406,12 +412,15 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                      </div>
 
+<<<<<<< HEAD
 
                         {/*</div>*/}
 
                     {/*</div>*/}
 
 
+=======
+>>>>>>> develop-api2
             </>
         );
     }

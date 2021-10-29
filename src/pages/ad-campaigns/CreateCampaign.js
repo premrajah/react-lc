@@ -6,11 +6,7 @@ import {Link} from "react-router-dom";
 import {withStyles} from "@material-ui/core/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-<<<<<<< HEAD
-import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-=======
 import {baseUrl, MIME_TYPES_ACCEPT, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
->>>>>>> develop-api2
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
@@ -22,8 +18,6 @@ import Typography from '@material-ui/core/Typography';
 import GeneralSettings from "../../components/Campaign/GeneralSettings";
 import Strategy from "../../components/Campaign/Strategy";
 import Artifacts from "../../components/Campaign/Artifacts";
-<<<<<<< HEAD
-=======
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
@@ -34,7 +28,6 @@ import {Cancel, Check, Error, Publish} from "@material-ui/icons";
 import {Spinner} from "react-bootstrap";
 import Select from "@material-ui/core/Select";
 import {createCampaignUrl, createProductUrl} from "../../Util/Api";
->>>>>>> develop-api2
 
 class CreateCampaign extends Component {
 
@@ -52,12 +45,6 @@ class CreateCampaign extends Component {
             showDownloadQrCodes:false,
             fields: {},
             errors: {},
-<<<<<<< HEAD
-            loading:false,
-            activeStep:0,
-            skipped:new Set(),
-            steps:getSteps()
-=======
             files: [],
             filesStatus: [],
             images: [],
@@ -80,26 +67,11 @@ class CreateCampaign extends Component {
                 {name:">=",value:"greater_than_equals"},
                 {name:"<=",value:"less_than_equals"}
             ],
->>>>>>> develop-api2
 
         }
 
     }
 
-<<<<<<< HEAD
-
-
-
-
-    handleSearch = (searchValue) => {
-        this.setState({searchValue: searchValue});
-    }
-
-    handleSearchFilter = (filterValue) => {
-        this.setState({filterValue: filterValue});
-    }
-
-=======
     addCountAny = () => {
         var array = this.state.addCountAny;
 
@@ -153,7 +125,6 @@ class CreateCampaign extends Component {
                 });
         }
     }
->>>>>>> develop-api2
 
     handleChange(value,field ) {
 
@@ -164,58 +135,28 @@ class CreateCampaign extends Component {
     }
     componentDidMount() {
 
-<<<<<<< HEAD
-    }
-
-
-
-    toggleMultiSite = () => {
-        this.setState({showMultiUpload: !this.state.showMultiUpload});
-
-        this.props.setMultiplePopUp(true)
-=======
         this.setState({
             countAll: 0,
             countAny: 0,
         })
->>>>>>> develop-api2
     }
 
 
 
-     isStepOptional = (step) => {
+    isStepOptional = (step) => {
         // return step === 1;
 
-         return false
+        return false
     };
 
-     isStepSkipped = (step) => {
+    isStepSkipped = (step) => {
         return this.state.skipped.has(step);
     };
 
-     handleNext = () => {
-
-<<<<<<< HEAD
-        let newSkipped = this.state.skipped;
-        if (this.isStepSkipped(this.state.activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(this.state.activeStep);
-        }
+    handleNext = () => {
 
 
-         this.setState({
-             activeStep:this.state.activeStep+1
-         });
-
-        this.setState({
-            skipped:newSkipped
-        });
-    };
-
-     handleBack = () => {
-=======
-
-         if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
+        if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
 
 
             let newSkipped = this.state.skipped;
@@ -238,7 +179,7 @@ class CreateCampaign extends Component {
 
 
             console.log(this.state.fields)
-             this.handleSubmit()
+            this.handleSubmit()
 
         }
 
@@ -249,11 +190,11 @@ class CreateCampaign extends Component {
 
         let fields=this.state.fields
 
-            const name = fields["name"];
-            const description = fields["description"];
-            const startDate = new Date(fields["startDate"]).getTime() ;
-            const endDate =  new Date(fields["endDate"]).getTime();
-            const messageTemplate = fields["condition"];
+        const name = fields["name"];
+        const description = fields["description"];
+        const startDate = new Date(fields["startDate"]).getTime() ;
+        const endDate =  new Date(fields["endDate"]).getTime();
+        const messageTemplate = fields["condition"];
 
         let conditionAll=[]
         let conditionAny=[]
@@ -280,67 +221,66 @@ class CreateCampaign extends Component {
         }
 
 
-            const campaignData = {
+        const campaignData = {
 
-                campaign:{
-                    name:name,
-                    description:description,
-                    start_ts:startDate,
-                    end_ts:endDate,
-                    all_of:conditionAll,
-                    any_of:conditionAny
-                },
-                message_template:messageTemplate,
-                artifact_ids:this.state.images,
-            };
+            campaign:{
+                name:name,
+                description:description,
+                start_ts:startDate,
+                end_ts:endDate,
+                all_of:conditionAll,
+                any_of:conditionAny
+            },
+            message_template:messageTemplate,
+            artifact_ids:this.state.images,
+        };
 
-            this.setState({isSubmitButtonPressed: true})
+        this.setState({isSubmitButtonPressed: true})
 
-            axios
-                .put(
-                    createCampaignUrl,
-                    campaignData,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    }
-                )
-                .then((res) => {
+        axios
+            .put(
+                createCampaignUrl,
+                campaignData,
+                {
+                    headers: {
+                        Authorization: "Bearer " + this.props.userDetail.token,
+                    },
+                }
+            )
+            .then((res) => {
 
-                    //
-                    // if (!this.props.parentProduct) {
-                    //     this.setState({
-                    //         product: res.data.data,
-                    //         parentProduct: res.data.data,
-                    //     });
-                    // }
+                //
+                // if (!this.props.parentProduct) {
+                //     this.setState({
+                //         product: res.data.data,
+                //         parentProduct: res.data.data,
+                //     });
+                // }
 
-                    this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
+                this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
 
 
-                })
-                .catch((error) => {
-                    this.setState({isSubmitButtonPressed: false})
-                });
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            });
 
 
     };
 
 
     handleBack = () => {
->>>>>>> develop-api2
 
-         this.setState({
-             activeStep:this.state.activeStep-1
-         });
+        this.setState({
+            activeStep:this.state.activeStep-1
+        });
 
-         this.setState({
-             activeStep:0
-         });
+        this.setState({
+            activeStep:0
+        });
     };
 
-     handleSkip = () => {
+    handleSkip = () => {
         if (!this.isStepOptional(this.state.activeStep)) {
             // You probably want to guard against something like this,
             // it should never occur unless someone's actively trying to break something.
@@ -348,54 +288,28 @@ class CreateCampaign extends Component {
         }
 
 
-         this.setState({
-             activeStep:this.state.activeStep+1
-         });
+        this.setState({
+            activeStep:this.state.activeStep+1
+        });
 
 
-         const newSkipped = new Set(this.state.skipped.values());
-         newSkipped.add(this.state.activeStep);
+        const newSkipped = new Set(this.state.skipped.values());
+        newSkipped.add(this.state.activeStep);
 
 
-         this.setState({
-             skipped:newSkipped
-         });
+        this.setState({
+            skipped:newSkipped
+        });
 
 
     };
 
-     handleReset = () => {
+    handleReset = () => {
         this.setState({
             activeStep:0
         });
     };
 
-<<<<<<< HEAD
-
-    UNSAFE_componentWillMount() {
-        window.scrollTo(0, 0);
-    }
-
-    toggleMap=()=>{
-        this.setState({
-            showMap:!this.state.showMap,
-
-        })
-    }
-
-
-    toggleDownloadQrCodes=()=>{
-
-        this.setState({
-            showDownloadQrCodes:!this.state.showDownloadQrCodes,
-
-        })
-    }
-
-
-
-    handleValidation() {
-=======
     handleChangeFile(event) {
         let files = this.state.files;
         // var filesUrl = this.state.filesUrl
@@ -544,24 +458,10 @@ class CreateCampaign extends Component {
 
 
     handleValidation(activeStep) {
->>>>>>> develop-api2
 
 
         let fields = this.state.fields;
 
-<<<<<<< HEAD
-
-        let validations=[
-            validateFormatCreate("count", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields)
-
-        ]
-
-
-        let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
-        this.setState({ errors: errors });
-        return formIsValid;
-=======
         let validations=[]
 
 
@@ -582,7 +482,7 @@ class CreateCampaign extends Component {
 
             for (let i=0;i<this.state.countAll;i++){
 
-             validations.push(validateFormatCreate(`propertyAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
+                validations.push(validateFormatCreate(`propertyAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`operatorAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`valueAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
 
@@ -612,7 +512,6 @@ class CreateCampaign extends Component {
         console.log(errors,formIsValid)
         return formIsValid;
 
->>>>>>> develop-api2
     }
 
 
@@ -654,46 +553,33 @@ class CreateCampaign extends Component {
                             </Stepper>
                             <div>
                                 {this.state.activeStep === this.state.steps.length ? (
-<<<<<<< HEAD
-                                    <div>
-                                        <Typography className={classes.instructions}>
-                                            All steps completed - you&apos;re finished
-                                        </Typography>
-                                        <Button onClick={this.handleReset} className={classes.button}>
-                                            Reset
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <Typography className={classes.instructions}>{getStepContent(this.state.activeStep)}</Typography>
-=======
                                     <>
 
                                         <div className="row no-gutters mt-5 pt-5 justify-content-center text-center">
                                             <div className="col-12">
-                                        <Typography className={classes.instructions}>
+                                                <Typography className={classes.instructions}>
 
-                                            Campaign Create Successfully
+                                                    Campaign Create Successfully
 
 
-                                        </Typography>
+                                                </Typography>
                                             </div>
                                         </div>
-                                    <div className="row no-gutters mt-2 pt-2 justify-content-center text-center">
+                                        <div className="row no-gutters mt-2 pt-2 justify-content-center text-center">
 
-                                    <div className="col-3">
+                                            <div className="col-3">
                                                 <a   className={"  blue-btn-border mt-2 mb-2"}>
                                                     View All
                                                 </a>
                                             </div>
-                                                <div className="col-3">
-                                        <button  onClick={this.handleReset} className={"  blue-btn-border mt-2 mb-2"}>
-                                            Create New
-                                        </button>
+                                            <div className="col-3">
+                                                <button  onClick={this.handleReset} className={"  blue-btn-border mt-2 mb-2"}>
+                                                    Create New
+                                                </button>
                                             </div>
                                         </div>
 
-                                        </>
+                                    </>
                                 ) : (
                                     <div>
                                         <Typography className={classes.instructions}>
@@ -811,94 +697,94 @@ class CreateCampaign extends Component {
 
                                             </form>}
                                             {this.state.activeStep===1&&
-                                                <>
-                                            <div className="col-12 mt-3 p-3 container-light-border ">
+                                            <>
+                                                <div className="col-12 mt-3 p-3 container-light-border ">
 
-                                                <p className={"text-bold "}>Choose must conditions </p>
+                                                    <p className={"text-bold "}>Choose must conditions </p>
 
-                                                <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                                                    <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
 
 
-                                                     {this.state.addCountAll.map((item, index) =>
-                                                        <div className="row no-gutters mt-4">
-                                                            <div className="col-4">
-                                                                <div className="row camera-grids   no-gutters   ">
-                                                                    <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
+                                                        {this.state.addCountAll.map((item, index) =>
+                                                            <div className="row no-gutters mt-4">
+                                                                <div className="col-4">
+                                                                    <div className="row camera-grids   no-gutters   ">
+                                                                        <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
 
-                                                                        <SelectArrayWrapper
+                                                                            <SelectArrayWrapper
 
-                                                                            // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
-                                                                            onChange={(value)=> {
-                                                                                this.handleChange(value,`propertyAnd[${index}]`)
+                                                                                // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                                onChange={(value)=> {
+                                                                                    this.handleChange(value,`propertyAnd[${index}]`)
 
-                                                                            }}
-                                                                            select={"Select"}
-                                                                            error={this.state.errors[`propertyAnd[${index}]`]}
-                                                                            name={`propertyAnd[${index}]`}
-                                                                            options={this.state.properties}
-                                                                            title="Property"/>
+                                                                                }}
+                                                                                select={"Select"}
+                                                                                error={this.state.errors[`propertyAnd[${index}]`]}
+                                                                                name={`propertyAnd[${index}]`}
+                                                                                options={this.state.properties}
+                                                                                title="Property"/>
+
+                                                                        </div>
+
 
                                                                     </div>
+                                                                </div>
 
+                                                                <div className="col-1 pr-2">
+                                                                    <SelectArrayWrapper
+
+                                                                        // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                        onChange={(value)=> {
+                                                                            this.handleChange(value,`operatorAnd[${index}]`,)
+
+                                                                        }}
+
+                                                                        error={this.state.errors[`operatorAnd[${index}]`]}
+                                                                        select={"Select"}
+
+                                                                        option={"name"}
+                                                                        valueKey={"value"}
+                                                                        options={this.state.operators} name={`operatorAnd[${index}]`} title="Operator"/>
 
                                                                 </div>
-                                                            </div>
 
-                                                            <div className="col-1 pr-2">
-                                                                <SelectArrayWrapper
+                                                                <div className="col-5">
+                                                                    <TextFieldWrapper
+                                                                        error={this.state.errors[`valueAnd[${index}]`]}
 
-                                                                    // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
-                                                                    onChange={(value)=> {
-                                                                        this.handleChange(value,`operatorAnd[${index}]`,)
+                                                                        initialValue={this.props.item&&this.props.item.product.name}
+                                                                        onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
+                                                                        name={`valueAnd[${index}]`} title="Value" />
+                                                                </div>
 
-                                                                    }}
-
-                                                                    error={this.state.errors[`operatorAnd[${index}]`]}
-                                                                    select={"Select"}
-
-                                                                    option={"name"}
-                                                                    valueKey={"value"}
-                                                                    options={this.state.operators} name={`operatorAnd[${index}]`} title="Operator"/>
-
-                                                            </div>
-
-                                                            <div className="col-5">
-                                                                <TextFieldWrapper
-                                                                    error={this.state.errors[`valueAnd[${index}]`]}
-
-                                                                    initialValue={this.props.item&&this.props.item.product.name}
-                                                                    onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
-                                                                    name={`valueAnd[${index}]`} title="Value" />
-                                                            </div>
-
-                                                            <div  className="col-2 text-center"
-                                                                  style={{ display: "flex" }}>
+                                                                <div  className="col-2 text-center"
+                                                                      style={{ display: "flex" }}>
 
 
-                                                                <>
-                                                                    {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+                                                                    <>
+                                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                                                    <DeleteIcon
-                                                                        classname={"click-item"}
-                                                                        style={{
-                                                                            color: "#ccc",
-                                                                            margin: "auto",
-                                                                        }}
-                                                                        onClick={() => this.subtractCountAll(index)}
-                                                                    />
-                                                                </>
+                                                                        <DeleteIcon
+                                                                            classname={"click-item"}
+                                                                            style={{
+                                                                                color: "#ccc",
+                                                                                margin: "auto",
+                                                                            }}
+                                                                            onClick={() => this.subtractCountAll(index)}
+                                                                        />
+                                                                    </>
+
+                                                                </div>
+
 
                                                             </div>
 
-
-                                                        </div>
-
-                                                    ) }
+                                                        ) }
 
 
-                                                    <div className="row   pt-2 ">
-                                                        <div className="col-12 mt-2  pb-4">
+                                                        <div className="row   pt-2 ">
+                                                            <div className="col-12 mt-2  pb-4">
                                     <span
                                         onClick={this.addCountAll}
                                         className={
@@ -907,94 +793,94 @@ class CreateCampaign extends Component {
                                         <AddIcon />
                                         Add
                                     </span>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                </form>
+                                                    </form>
 
-                                            </div>
-                                            <div className="col-12 mt-3 p-3 mb-4 container-light-border">
-                                                <p className={"text-bold "}>Choose optional conditions </p>
-                                                <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                                                </div>
+                                                <div className="col-12 mt-3 p-3 mb-4 container-light-border">
+                                                    <p className={"text-bold "}>Choose optional conditions </p>
+                                                    <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
-                                                    {this.state.addCountAny.map((item, index) =>
-                                                        <div className="row no-gutters mt-4">
-                                                            <div className="col-4">
-                                                                <div className="row camera-grids   no-gutters   ">
-                                                                    <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
+                                                        {this.state.addCountAny.map((item, index) =>
+                                                            <div className="row no-gutters mt-4">
+                                                                <div className="col-4">
+                                                                    <div className="row camera-grids   no-gutters   ">
+                                                                        <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
 
-                                                                        <SelectArrayWrapper
+                                                                            <SelectArrayWrapper
 
-                                                                            // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
-                                                                            onChange={(value)=> {
-                                                                                this.handleChange(value,`propertyOr[${index}]`)
-                                                                            }}
+                                                                                // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                                onChange={(value)=> {
+                                                                                    this.handleChange(value,`propertyOr[${index}]`)
+                                                                                }}
 
-                                                                            select={"Select"}
+                                                                                select={"Select"}
 
-                                                                            error={this.state.errors[`propertyOr[${index}]`]}
+                                                                                error={this.state.errors[`propertyOr[${index}]`]}
 
-                                                                            options={this.state.properties} name={`propertyOr[${index}]`} title="Property"/>
+                                                                                options={this.state.properties} name={`propertyOr[${index}]`} title="Property"/>
+
+                                                                        </div>
+
 
                                                                     </div>
+                                                                </div>
 
+                                                                <div className="col-1 pr-2">
+                                                                    <SelectArrayWrapper
+
+                                                                        // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                        onChange={(value)=> {
+                                                                            this.handleChange(value,`operatorOr[${index}]`)
+
+                                                                        }}
+                                                                        error={this.state.errors[`operatorOr[${index}]`]}
+                                                                        select={"Select"}
+                                                                        option={"name"}
+                                                                        valueKey={"value"}
+                                                                        options={this.state.operators} name={`operatorOr[${index}]`} title="Operator"/>
 
                                                                 </div>
-                                                            </div>
 
-                                                            <div className="col-1 pr-2">
-                                                                <SelectArrayWrapper
+                                                                <div className="col-5">
+                                                                    <TextFieldWrapper
+                                                                        error={this.state.errors[`valueOr[${index}]`]}
 
-                                                                    // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
-                                                                    onChange={(value)=> {
-                                                                        this.handleChange(value,`operatorOr[${index}]`)
+                                                                        initialValue={this.props.item&&this.props.item.product.name}
+                                                                        onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}
+                                                                        name={`valueOr[${index}]`} title="Value" />
+                                                                </div>
 
-                                                                    }}
-                                                                    error={this.state.errors[`operatorOr[${index}]`]}
-                                                                    select={"Select"}
-                                                                    option={"name"}
-                                                                    valueKey={"value"}
-                                                                    options={this.state.operators} name={`operatorOr[${index}]`} title="Operator"/>
-
-                                                            </div>
-
-                                                            <div className="col-5">
-                                                                <TextFieldWrapper
-                                                                    error={this.state.errors[`valueOr[${index}]`]}
-
-                                                                    initialValue={this.props.item&&this.props.item.product.name}
-                                                                    onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}
-                                                                    name={`valueOr[${index}]`} title="Value" />
-                                                            </div>
-
-                                                            <div  className="col-2 text-center"
-                                                                  style={{ display: "flex" }}>
+                                                                <div  className="col-2 text-center"
+                                                                      style={{ display: "flex" }}>
 
 
-                                                                <>
-                                                                    {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+                                                                    <>
+                                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                                                    <DeleteIcon
-                                                                        classname={"click-item"}
-                                                                        style={{
-                                                                            color: "#ccc",
-                                                                            margin: "auto",
-                                                                        }}
-                                                                        onClick={() => this.subtractCountAny(index)}
-                                                                    />
-                                                                </>
+                                                                        <DeleteIcon
+                                                                            classname={"click-item"}
+                                                                            style={{
+                                                                                color: "#ccc",
+                                                                                margin: "auto",
+                                                                            }}
+                                                                            onClick={() => this.subtractCountAny(index)}
+                                                                        />
+                                                                    </>
+
+                                                                </div>
+
 
                                                             </div>
 
-
-                                                        </div>
-
-                                                    ) }
+                                                        ) }
 
 
-                                                    <div className="row   pt-2 ">
-                                                        <div className="col-12 mt-2 mb-4 pb-4">
+                                                        <div className="row   pt-2 ">
+                                                            <div className="col-12 mt-2 mb-4 pb-4">
                                     <span
                                         onClick={this.addCountAny}
                                         className={
@@ -1003,157 +889,157 @@ class CreateCampaign extends Component {
                                         <AddIcon />
                                         Add
                                     </span>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                </form>
+                                                    </form>
 
-                                            </div>
-                                           </>}
+                                                </div>
+                                            </>}
 
                                             {this.state.activeStep === 2 &&
                                             <><div className="col-12 mt-3 ">
-                                                    <div className="col-12 mt-4">
-                                                        <div className="row camera-grids   no-gutters   ">
-                                                            <div className="col-12  text-left ">
-                                                                <div className="container-fluid  pb-5 ">
+                                                <div className="col-12 mt-4">
+                                                    <div className="row camera-grids   no-gutters   ">
+                                                        <div className="col-12  text-left ">
+                                                            <div className="container-fluid  pb-5 ">
 
-                                                                    <form onSubmit={this.props.itemIndex?this.updateSite:this.handleSubmit}>
+                                                                <form onSubmit={this.props.itemIndex?this.updateSite:this.handleSubmit}>
 
-                                                                        <div className="row no-gutters">
-                                                                            <div className="col-12 ">
+                                                                    <div className="row no-gutters">
+                                                                        <div className="col-12 ">
 
-                                                                                <TextFieldWrapper
-                                                                                    multiline
-                                                                                    rows={4}
-                                                                                    initialValue={this.props.item&&this.props.item.message_template}
-                                                                                    onChange={(value)=>this.handleChange(value,"messageTemplate")}
-                                                                                    error={this.state.errors["messageTemplate"]}
-                                                                                    name="messageTemplate" title="Message Template" />
+                                                                            <TextFieldWrapper
+                                                                                multiline
+                                                                                rows={4}
+                                                                                initialValue={this.props.item&&this.props.item.message_template}
+                                                                                onChange={(value)=>this.handleChange(value,"messageTemplate")}
+                                                                                error={this.state.errors["messageTemplate"]}
+                                                                                name="messageTemplate" title="Message Template" />
 
-                                                                            </div>
                                                                         </div>
+                                                                    </div>
 
 
-                                                                        <div className={"row d-none"}>
-                                                                            <div className="col-12 mt-4 mb-2">
+                                                                    <div className={"row d-none"}>
+                                                                        <div className="col-12 mt-4 mb-2">
 
-                                                                                <button
-                                                                                    type={"submit"}
-                                                                                    className={
-                                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                                    }
-                                                                                    disabled={this.state.isSubmitButtonPressed}>
-                                                                                    {this.props.item?"Update Site":"Add Site"}
-                                                                                </button>
+                                                                            <button
+                                                                                type={"submit"}
+                                                                                className={
+                                                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                                                }
+                                                                                disabled={this.state.isSubmitButtonPressed}>
+                                                                                {this.props.item?"Update Site":"Add Site"}
+                                                                            </button>
 
-                                                                            </div>
                                                                         </div>
+                                                                    </div>
 
-                                                                    </form>
-                                                                </div>
+                                                                </form>
                                                             </div>
+                                                        </div>
 
-                                                            <div className="row camera-grids   no-gutters   ">
+                                                        <div className="row camera-grids   no-gutters   ">
 
-                                                                <div className="col-12  text-left ">
-                                                                    <div className="">
-                                                                        <div className={""}>
-                                                                            {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+                                                            <div className="col-12  text-left ">
+                                                                <div className="">
+                                                                    <div className={""}>
+                                                                        {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
 
-                                                                            <div className={"file-uploader-box"}>
+                                                                        <div className={"file-uploader-box"}>
+                                                                            <div
+                                                                                className={
+                                                                                    "file-uploader-thumbnail-container"
+                                                                                }>
                                                                                 <div
                                                                                     className={
                                                                                         "file-uploader-thumbnail-container"
                                                                                     }>
-                                                                                    <div
-                                                                                        className={
-                                                                                            "file-uploader-thumbnail-container"
-                                                                                        }>
-                                                                                        <label
-                                                                                            className={"label-file-input"}
-                                                                                            htmlFor="fileInput">
-                                                                                            <Publish
-                                                                                                style={{
-                                                                                                    fontSize: 32,
-                                                                                                    color: "#a8a8a8",
-                                                                                                    margin: "auto",
-                                                                                                }}
-                                                                                            />
-                                                                                        </label>
-                                                                                        <input
-                                                                                            accept={MIME_TYPES_ACCEPT}
-                                                                                            style={{ display: "none" }}
-                                                                                            id="fileInput"
-                                                                                            className={""}
-                                                                                            multiple
-                                                                                            type="file"
-                                                                                            onChange={this.handleChangeFile.bind(
-                                                                                                this
-                                                                                            )}
+                                                                                    <label
+                                                                                        className={"label-file-input"}
+                                                                                        htmlFor="fileInput">
+                                                                                        <Publish
+                                                                                            style={{
+                                                                                                fontSize: 32,
+                                                                                                color: "#a8a8a8",
+                                                                                                margin: "auto",
+                                                                                            }}
                                                                                         />
-                                                                                    </div>
+                                                                                    </label>
+                                                                                    <input
+                                                                                        accept={MIME_TYPES_ACCEPT}
+                                                                                        style={{ display: "none" }}
+                                                                                        id="fileInput"
+                                                                                        className={""}
+                                                                                        multiple
+                                                                                        type="file"
+                                                                                        onChange={this.handleChangeFile.bind(
+                                                                                            this
+                                                                                        )}
+                                                                                    />
+                                                                                </div>
 
-                                                                                    {this.state.files &&
-                                                                                    this.state.files.map(
-                                                                                        (item, index) => (
+                                                                                {this.state.files &&
+                                                                                this.state.files.map(
+                                                                                    (item, index) => (
+                                                                                        <div
+                                                                                            key={index}
+                                                                                            className={
+                                                                                                "file-uploader-thumbnail-container"
+                                                                                            }>
+
                                                                                             <div
-                                                                                                key={index}
+
+                                                                                                data-index={
+                                                                                                    index
+                                                                                                }
                                                                                                 className={
-                                                                                                    "file-uploader-thumbnail-container"
-                                                                                                }>
+                                                                                                    "file-uploader-thumbnail"
+                                                                                                }
 
-                                                                                                <div
+                                                                                                style={{
+                                                                                                    backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
 
-                                                                                                    data-index={
-                                                                                                        index
-                                                                                                    }
-                                                                                                    className={
-                                                                                                        "file-uploader-thumbnail"
-                                                                                                    }
+                                                                                                }}
+                                                                                            >
+                                                                                                {item.status ===
+                                                                                                0 && (
+                                                                                                    <Spinner
+                                                                                                        as="span"
+                                                                                                        animation="border"
+                                                                                                        size="sm"
+                                                                                                        role="status"
+                                                                                                        aria-hidden="true"
+                                                                                                        style={{
+                                                                                                            color:
+                                                                                                                "#cccccc",
+                                                                                                        }}
+                                                                                                        className={
+                                                                                                            "center-spinner"
+                                                                                                        }
+                                                                                                    />
+                                                                                                )}
 
-                                                                                                    style={{
-                                                                                                        backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
-
-                                                                                                    }}
-                                                                                                >
-                                                                                                    {item.status ===
-                                                                                                    0 && (
-                                                                                                        <Spinner
-                                                                                                            as="span"
-                                                                                                            animation="border"
-                                                                                                            size="sm"
-                                                                                                            role="status"
-                                                                                                            aria-hidden="true"
-                                                                                                            style={{
-                                                                                                                color:
-                                                                                                                    "#cccccc",
-                                                                                                            }}
-                                                                                                            className={
-                                                                                                                "center-spinner"
-                                                                                                            }
-                                                                                                        />
-                                                                                                    )}
-
-                                                                                                    {item.status ===
-                                                                                                    1 && (
-                                                                                                        <Check
-                                                                                                            style={{
-                                                                                                                color:
-                                                                                                                    "#cccccc",
-                                                                                                            }}
-                                                                                                            className={
-                                                                                                                " file-upload-img-thumbnail-check"
-                                                                                                            }
-                                                                                                        />
-                                                                                                    )}
-                                                                                                    {item.status ===
-                                                                                                    2 && (
-                                                                                                        <span
-                                                                                                            className={
-                                                                                                                "file-upload-img-thumbnail-error"
-                                                                                                            }>
+                                                                                                {item.status ===
+                                                                                                1 && (
+                                                                                                    <Check
+                                                                                                        style={{
+                                                                                                            color:
+                                                                                                                "#cccccc",
+                                                                                                        }}
+                                                                                                        className={
+                                                                                                            " file-upload-img-thumbnail-check"
+                                                                                                        }
+                                                                                                    />
+                                                                                                )}
+                                                                                                {item.status ===
+                                                                                                2 && (
+                                                                                                    <span
+                                                                                                        className={
+                                                                                                            "file-upload-img-thumbnail-error"
+                                                                                                        }>
                                                                                                 <Error
                                                                                                     style={{
                                                                                                         color:
@@ -1167,67 +1053,57 @@ class CreateCampaign extends Component {
                                                                                                     Error!
                                                                                                 </p>
                                                                                             </span>
-                                                                                                    )}
-                                                                                                    <Cancel
-                                                                                                        data-name={
-                                                                                                            item.file &&
-                                                                                                            item
+                                                                                                )}
+                                                                                                <Cancel
+                                                                                                    data-name={
+                                                                                                        item.file &&
+                                                                                                        item
+                                                                                                            .file[
+                                                                                                            "name"
+                                                                                                            ]
+                                                                                                            ? item
                                                                                                                 .file[
                                                                                                                 "name"
                                                                                                                 ]
-                                                                                                                ? item
-                                                                                                                    .file[
-                                                                                                                    "name"
-                                                                                                                    ]
-                                                                                                                : ""
-                                                                                                        }
-                                                                                                        data-index={
-                                                                                                            item.id
-                                                                                                        }
-                                                                                                        onClick={this.handleCancel.bind(
-                                                                                                            this
-                                                                                                        )}
-                                                                                                        className={
-                                                                                                            "file-upload-img-thumbnail-cancel"
-                                                                                                        }
-                                                                                                    />
-                                                                                                </div>
+                                                                                                            : ""
+                                                                                                    }
+                                                                                                    data-index={
+                                                                                                        item.id
+                                                                                                    }
+                                                                                                    onClick={this.handleCancel.bind(
+                                                                                                        this
+                                                                                                    )}
+                                                                                                    className={
+                                                                                                        "file-upload-img-thumbnail-cancel"
+                                                                                                    }
+                                                                                                />
                                                                                             </div>
-                                                                                        )
-                                                                                    )}
-                                                                                </div>
+                                                                                        </div>
+                                                                                    )
+                                                                                )}
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
 
                                                     </div>
-                                                    <div className={"custom-label text-bold text-blue mb-3"}>
-                                                        Attachment
-                                                    </div>
-                                                    <div className="col-12 mt-4 mb-5">
-                                                        {this.state.files.length > 0 ? (
-                                                            this.state.files.filter((item) => item.status === 0).length >
-                                                            0 ? (
-                                                                <button
-                                                                    className={
-                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
-                                                                    }>
-                                                                    Upload in progress ....
-                                                                </button>
-                                                            ) : (
-                                                                <button
-                                                                    type={"submit"}
-                                                                    className={
-                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                    }
-                                                                    disabled={this.state.isSubmitButtonPressed}>
-                                                                    {this.props.item?"Update Product":"Add Product"}
-                                                                </button>
-                                                            )
+
+                                                </div>
+                                                <div className={"custom-label text-bold text-blue mb-3"}>
+                                                    Attachment
+                                                </div>
+                                                <div className="col-12 mt-4 mb-5">
+                                                    {this.state.files.length > 0 ? (
+                                                        this.state.files.filter((item) => item.status === 0).length >
+                                                        0 ? (
+                                                            <button
+                                                                className={
+                                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
+                                                                }>
+                                                                Upload in progress ....
+                                                            </button>
                                                         ) : (
                                                             <button
                                                                 type={"submit"}
@@ -1237,17 +1113,26 @@ class CreateCampaign extends Component {
                                                                 disabled={this.state.isSubmitButtonPressed}>
                                                                 {this.props.item?"Update Product":"Add Product"}
                                                             </button>
-                                                        )}
-                                                    </div>
-
+                                                        )
+                                                    ) : (
+                                                        <button
+                                                            type={"submit"}
+                                                            className={
+                                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                            }
+                                                            disabled={this.state.isSubmitButtonPressed}>
+                                                            {this.props.item?"Update Product":"Add Product"}
+                                                        </button>
+                                                    )}
                                                 </div>
+
+                                            </div>
                                             </>
                                             }
 
 
 
                                         </Typography>
->>>>>>> develop-api2
                                         <div>
                                             <Button disabled={this.state.activeStep === 0} onClick={this.handleBack} className={classes.button}>
                                                 Back
@@ -1269,11 +1154,7 @@ class CreateCampaign extends Component {
                                                 onClick={this.handleNext}
                                                 className={classes.button}
                                             >
-<<<<<<< HEAD
-                                                {this.state.activeStep === this.state.steps.length - 1 ? 'Finish' : 'Next'}
-=======
                                                 {this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
->>>>>>> develop-api2
                                             </Button>
                                         </div>
                                     </div>

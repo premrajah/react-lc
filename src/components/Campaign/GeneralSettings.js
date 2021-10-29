@@ -237,7 +237,7 @@ class GeneralSettings extends Component {
 
 
 
-                        this.props.loadCurrentSite(parentId)
+                    this.props.loadCurrentSite(parentId)
 
 
                 }
@@ -262,13 +262,13 @@ class GeneralSettings extends Component {
 
 
 
-componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
 
 
 
 
-}
+    }
 
     componentDidMount() {
 
@@ -286,141 +286,122 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         return (
             <>
 
-<<<<<<< HEAD
-                    {/*<div className="row  justify-content-center mobile-menu-row ">*/}
-
-                        <div className="col-12 mt-3 ">
+                <div className="col-12 mt-3 ">
 
 
-                        {/*<div className={"row justify-content-center create-product-row"}>*/}
+                    <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
-=======
-                        <div className="col-12 mt-3 ">
+                        <div className="row no-gutters">
+                            <div className="col-12 ">
+
+                                <TextFieldWrapper
+                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.name}
+                                    onChange={(value)=>this.handleChange(value,"name")}
+                                    error={this.state.errors["name"]}
+                                    name="name" title="Name" />
+
+                            </div>
+                        </div>
 
 
->>>>>>> develop-api2
-                        <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                        <div className="row no-gutters">
+                            <div className="col-12 ">
 
-                            <div className="row no-gutters">
-                                <div className="col-12 ">
+                                <TextFieldWrapper
+                                    multiline
+                                    rows={4}
+                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.description}
+                                    onChange={(value)=>this.handleChange(value,"description")}
+                                    error={this.state.errors["description"]}
+                                    name="description" title="Description" />
 
-                                    <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.name}
-                                        onChange={(value)=>this.handleChange(value,"name")}
-                                        error={this.state.errors["name"]}
-                                        name="name" title="Name" />
+                            </div>
+                        </div>
 
+                        <div className="row no-gutters">
+                            <div className="col-6 pr-1">
+
+                                <div
+                                    className={
+                                        "custom-label text-bold text-blue "
+                                    }>
+                                    Start Date
                                 </div>
+
+                                <MuiPickersUtilsProvider
+                                    utils={MomentUtils}>
+                                    <DatePicker
+                                        minDate={new Date()}
+                                        // label="Required By"
+                                        inputVariant="outlined"
+                                        variant={"outlined"}
+                                        margin="normal"
+                                        id="date-picker-dialog"
+                                        label="Available From"
+                                        format="DD/MM/yyyy"
+                                        value={this.state.startDate}
+                                        // onChange={this.handleChangeDateStartDate.bind(
+                                        //     this
+                                        // )}
+                                        onChange={(value)=>this.handleChange(value,"startDate")}
+
+                                    />
+                                </MuiPickersUtilsProvider>
+
                             </div>
 
+                            <div className="col-6 pl-1 ">
 
-                            <div className="row no-gutters">
-                                <div className="col-12 ">
-
-                                    <TextFieldWrapper
-                                        multiline
-                                        rows={4}
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.description}
-                                        onChange={(value)=>this.handleChange(value,"description")}
-                                        error={this.state.errors["description"]}
-                                        name="description" title="Description" />
-
+                                <div
+                                    className={
+                                        "custom-label text-bold text-blue "
+                                    }>
+                                    End Date
                                 </div>
+
+                                <MuiPickersUtilsProvider
+                                    utils={MomentUtils}>
+                                    <DatePicker
+                                        minDate={new Date()}
+                                        // label="Required By"
+                                        inputVariant="outlined"
+                                        variant={"outlined"}
+                                        margin="normal"
+                                        id="date-picker-dialog"
+                                        label="Available From"
+                                        format="DD/MM/yyyy"
+                                        value={this.state.startDate}
+                                        onChange={(value)=>this.handleChange(value,"endDate")}
+
+                                        // onChange={this.handleChangeDateStartDate.bind(
+                                        //     this
+                                        // )}
+                                    />
+                                </MuiPickersUtilsProvider>
                             </div>
-
-                            <div className="row no-gutters">
-                                <div className="col-6 pr-1">
-
-                                    <div
-                                        className={
-                                            "custom-label text-bold text-blue "
-                                        }>
-                                        Start Date
-                                    </div>
-
-                                    <MuiPickersUtilsProvider
-                                        utils={MomentUtils}>
-                                        <DatePicker
-                                            minDate={new Date()}
-                                            // label="Required By"
-                                            inputVariant="outlined"
-                                            variant={"outlined"}
-                                            margin="normal"
-                                            id="date-picker-dialog"
-                                            label="Available From"
-                                            format="DD/MM/yyyy"
-                                            value={this.state.startDate}
-                                            // onChange={this.handleChangeDateStartDate.bind(
-                                            //     this
-                                            // )}
-                                            onChange={(value)=>this.handleChange(value,"startDate")}
-
-                                        />
-                                    </MuiPickersUtilsProvider>
-
-                                </div>
-
-                                <div className="col-6 pl-1 ">
-
-                                    <div
-                                        className={
-                                            "custom-label text-bold text-blue "
-                                        }>
-                                        End Date
-                                    </div>
-
-                                    <MuiPickersUtilsProvider
-                                        utils={MomentUtils}>
-                                        <DatePicker
-                                            minDate={new Date()}
-                                            // label="Required By"
-                                            inputVariant="outlined"
-                                            variant={"outlined"}
-                                            margin="normal"
-                                            id="date-picker-dialog"
-                                            label="Available From"
-                                            format="DD/MM/yyyy"
-                                            value={this.state.startDate}
-                                            onChange={(value)=>this.handleChange(value,"endDate")}
-
-                                            // onChange={this.handleChangeDateStartDate.bind(
-                                            //     this
-                                            // )}
-                                        />
-                                    </MuiPickersUtilsProvider>
-                                </div>
-                            </div>
+                        </div>
 
 
 
-                            <div className={"row d-none"}>
+                        <div className={"row d-none"}>
                             <div className="col-12 mt-4 mb-2">
 
-                                    <button
-                                        type={"submit"}
-                                        className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                        {this.props.item?"Update Site":"Add Site"}
-                                    </button>
+                                <button
+                                    type={"submit"}
+                                    className={
+                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                    }
+                                    disabled={this.state.isSubmitButtonPressed}>
+                                    {this.props.item?"Update Site":"Add Site"}
+                                </button>
 
                             </div>
-                            </div>
+                        </div>
 
-                        </form>
+                    </form>
 
-                     </div>
+                </div>
 
-<<<<<<< HEAD
-
-                        {/*</div>*/}
-
-                    {/*</div>*/}
-
-
-=======
->>>>>>> develop-api2
             </>
         );
     }

@@ -36,14 +36,7 @@ class Strategy extends Component {
 
         this.state = {
 
-<<<<<<< HEAD
-            countAll: 0,
-            countAny: 0,
-            addCountAll: [],
-            addCountAny: [],
-=======
 
->>>>>>> develop-api2
             fields: {},
             errors: {},
             fieldsLink: {},
@@ -57,15 +50,12 @@ class Strategy extends Component {
             isSubmitButtonPressed: false,
             createNew:false,
             addExisting:false,
-<<<<<<< HEAD
-=======
             countAll: 0,
             countAny: 0,
             addCountAll: [],
             addCountAny: [],
->>>>>>> develop-api2
             properties: [ "brand","category", "type","state","model","serial","sku","upc","part_no","line","condition","stage",
-            "purpose","units","year_of_making"],
+                "purpose","units","year_of_making"],
             operators: [
                 {name:"==",value:"equals "},
                 {name:"!=",value:"not equal "},
@@ -74,7 +64,7 @@ class Strategy extends Component {
 
                 {name:">=",value:"greater_than_equals"},
                 {name:"<=",value:"less_than_equals"}
-                ],
+            ],
 
         };
 
@@ -244,7 +234,7 @@ class Strategy extends Component {
 
 
 
-                        this.props.loadCurrentSite(parentId)
+                    this.props.loadCurrentSite(parentId)
 
 
                 }
@@ -269,11 +259,11 @@ class Strategy extends Component {
 
 
 
-componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
 
 
-}
+    }
 
     componentDidMount() {
 
@@ -294,15 +284,15 @@ componentDidUpdate(prevProps, prevState, snapshot) {
             <>
 
 
-              <div className="col-12 mt-3 p-3 container-light-gray ">
+                <div className="col-12 mt-3 p-3 container-light-gray ">
 
-                  <p className={"text-bold "}>Choose must conditions </p>
+                    <p className={"text-bold "}>Choose must conditions </p>
 
-                        <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
+                    <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
 
 
 
-                            {this.state.addCountAll.map((item, index) =>
+                        {this.state.addCountAll.map((item, index) =>
                             <div className="row no-gutters mt-4">
                                 <div className="col-4">
                                     <div className="row camera-grids   no-gutters   ">
@@ -349,29 +339,29 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                       style={{ display: "flex" }}>
 
 
-                                        <>
-                                            {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+                                    <>
+                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                            <DeleteIcon
-                                                classname={"click-item"}
-                                                style={{
-                                                    color: "#ccc",
-                                                    margin: "auto",
-                                                }}
-                                                onClick={() => this.subtractCountAll()}
-                                            />
-                                        </>
+                                        <DeleteIcon
+                                            classname={"click-item"}
+                                            style={{
+                                                color: "#ccc",
+                                                margin: "auto",
+                                            }}
+                                            onClick={() => this.subtractCountAll()}
+                                        />
+                                    </>
 
                                 </div>
 
 
                             </div>
 
-                            ) }
+                        ) }
 
 
-                            <div className="row   pt-2 ">
-                                <div className="col-12 mt-2  pb-4">
+                        <div className="row   pt-2 ">
+                            <div className="col-12 mt-2  pb-4">
                                     <span
                                         onClick={this.addCountAll}
                                         className={
@@ -380,18 +370,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <AddIcon />
                                         Add
                                     </span>
-                                </div>
                             </div>
+                        </div>
 
 
-                        </form>
+                    </form>
 
-                     </div>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> develop-api2
+                </div>
                 <div className="col-12 mt-3 p-3 mb-4 container-light-gray">
                     <p className={"text-bold "}>Choose optional conditions </p>
                     <form onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
@@ -442,18 +427,18 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                       style={{ display: "flex" }}>
 
 
-                                        <>
-                                            {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+                                    <>
+                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
-                                            <DeleteIcon
-                                                classname={"click-item"}
-                                                style={{
-                                                    color: "#ccc",
-                                                    margin: "auto",
-                                                }}
-                                                onClick={() => this.subtractCountAny()}
-                                            />
-                                        </>
+                                        <DeleteIcon
+                                            classname={"click-item"}
+                                            style={{
+                                                color: "#ccc",
+                                                margin: "auto",
+                                            }}
+                                            onClick={() => this.subtractCountAny()}
+                                        />
+                                    </>
 
                                 </div>
 
@@ -482,14 +467,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 </div>
 
 
-<<<<<<< HEAD
-                        {/*</div>*/}
-
-                    {/*</div>*/}
-
-
-=======
->>>>>>> develop-api2
             </>
         );
     }

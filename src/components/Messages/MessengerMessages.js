@@ -169,14 +169,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         }
     }
 
-<<<<<<< HEAD
-=======
     const handleFilterGroupsButton = () => {
         setAutoCompleteOrg("");
         setShowHideGroupFilter(!showHideGroupFilter);
     }
 
->>>>>>> develop-api2
 
     const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
         if (!text) return;
@@ -251,9 +248,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     <div className="col-md-4">
 
                         <div className="row">
-                             <div className="col-md-8">
-                                 {showHideGroupFilter && <Autocomplete
-                                     size="small"
+                            <div className="col-md-8">
+                                {showHideGroupFilter && <Autocomplete
+                                    size="small"
                                     freeSolo
                                     onChange={(e, value) => setAutoCompleteOrg(value)}
                                     options={
@@ -351,16 +348,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         <div className="col-md-7">
                             {showHideOrgSearch && <div className="row">
                                 <div className="col">
-                                        <Select
-                                            options={reactSelectValues.length > 0 ? reactSelectValues : []}
-                                            isMulti
-                                            placeholder="Search orgs to send messages"
-                                            name="orgs"
-                                            className="react-multi-select"
-                                            classNamePrefix="select"
-                                            onChange={(e) => handleNewMessageSelect(e)}
-                                            ref={reactSelectRef}
-                                        />
+                                    <Select
+                                        options={reactSelectValues.length > 0 ? reactSelectValues : []}
+                                        isMulti
+                                        placeholder="Search orgs to send messages"
+                                        name="orgs"
+                                        className="react-multi-select"
+                                        classNamePrefix="select"
+                                        onChange={(e) => handleNewMessageSelect(e)}
+                                        ref={reactSelectRef}
+                                    />
                                 </div>
                             </div>}
 

@@ -48,6 +48,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [messageText, setMessageText] = useState("");
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
+    const [textErrorDisplay, setTextErrorDisplay] = useState("");
 
 
     useEffect(() => {
@@ -227,18 +228,28 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleSendMessage = () => {
+        handleErrorTextDisplay(""); // reset text error field
         if (messageText && reactSelectedValues.length > 0) {
+            console.log("b")
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
 
-        } else if (messageText) {
+        } else if (messageText && selectedMsgGroup.length > 0) {
+            console.log("c")
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
 
             if(messageGroupId) {
                 sendMessage(messageText, [], messageGroupId, "", "group_message");
             }
 
+        } else {
+            console.log("d")
+            handleErrorTextDisplay("Please select a group or send to new orgs");
         }
     };
+
+    const handleErrorTextDisplay = (text) => {
+        setTextErrorDisplay(text);
+    }
 
 
     return (
@@ -400,16 +411,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                 </div>
                             </div>
 
+                            {textErrorDisplay && <div className="row">
+                                <div className="col">{textErrorDisplay}</div>
+                            </div>}
+
                             <div className="row mt-2" style={{ height: "60px" }}>
                                 <div className="col-11 p-0">
-                                    {/*<TextField*/}
-                                    {/*    id="send-new-msg"*/}
-                                    {/*    label="Send new message"*/}
-                                    {/*    variant="outlined"*/}
-                                    {/*    fullWidth*/}
-                                    {/*    onChange={(text) => setMessageText(text)}*/}
-                                    {/*    value={messageText || ""}*/}
-                                    {/*/>*/}
                                     <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} />
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">

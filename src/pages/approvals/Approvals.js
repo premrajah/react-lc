@@ -82,39 +82,29 @@ class Approvals extends Component {
             serviceAgentRequests: [],
             value: 0,
             loading: false,
+            tabQuery: 0,
         };
 
-        // this.fetchReleaseRequest = this.fetchReleaseRequest.bind(this);
-        // this.fetchServiceAgentRequest = this.fetchServiceAgentRequest.bind(this);
-        // this.fetchRegisterRequest = this.fetchRegisterRequest.bind(this);
     }
 
     handleChange = (event, newValue) => {
-
-
-        this.setState({
-            // loading: true,
-            value: newValue,
-        });
-
+        this.setState({value: newValue,});
     };
 
 
 
     componentDidMount() {
 
+        const query = new URLSearchParams(this.props.location.search);
+        query
+            ? this.setState({tabQuery: query.get('tab')})
+            : this.setState({tabQuery: 0});
 
         this.refreshItems()
         this.props.loadSites()
         this.props.loadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-
     }
-
-    refreshProductReleaseCallback = () => {
-        // this.fetchReleaseRequest()
-    }
-
 
 
     interval
@@ -203,7 +193,7 @@ render() {
                                     </StyledTabs>
                                 </AppBar>
 
-                                {this.state.value == 0 &&
+                                {this.state.value === 0 &&
                                 <div className={"row"} value={this.state.value} index={0}>
                                         <div className="col-12 mt-3 mb-3">
                                             <div className="col d-flex justify-content-end">
@@ -223,7 +213,6 @@ render() {
                                                     <RequestReleaseItem
                                                         history={this.props.history}
                                                         item={item}
-                                                        // refreshPageCallback={this.refreshProductReleaseCallback}
                                                     />
 
                                             </div>
@@ -240,7 +229,7 @@ render() {
 
                                 </div>
                                 }
-                                {this.state.value == 1 &&
+                                {this.state.value === 1 &&
                                 <div className={"row"} value={this.state.value} index={1}>
 
                                         <div className="col-12 mt-3 mb-3">
@@ -296,7 +285,7 @@ render() {
 
 
                                 </div>}
-                                {this.state.value == 2 &&
+                                {this.state.value === 2 &&
                                 <div className={"row"} value={this.state.value} index={2}>
 
                                     <div className="col-12 mt-3 mb-3">

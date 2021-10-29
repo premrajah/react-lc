@@ -150,19 +150,19 @@ class Notifications extends Component {
         ));
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 104} to="/approve" onClick={() => this.messageRead(messageId)}>
+            <Link key={i + Math.random() * 104} to="/approve?tab=0" onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">To Approvals Page</u>
             </Link>
         ));
 
         text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
-            <Link key={i + Math.random() * 105} to="/approve" onClick={() => this.messageRead(messageId)}>
+            <Link key={i + Math.random() * 105} to="/approve?tab=2" onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">To Approvals Page</u>
             </Link>
         ));
 
         text = reactStringReplace(text, PRODUCT_REGISTRATION, (match, i) => (
-            <Link key={i + Math.random() * 106} to="/approve" onClick={() => this.messageRead(messageId)}>
+            <Link key={i + Math.random() * 106} to="/approve?tab=1" onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">To Approvals Page</u>
             </Link>
         ));

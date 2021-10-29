@@ -60,6 +60,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setUserOrg(userDetail.orgId);
     }, []);
 
+
     const getAllOrgs = () => {
         axios
             .get(`${baseUrl}org/all`)

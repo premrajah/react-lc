@@ -165,6 +165,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setMessageText(value);
     }
 
+    const handleOrgSearchButton = () => {
+        setShowHideOrgSearch(!showHideOrgSearch);
+    }
+
     const  updateSelected = (selectedIndex) => {
         setSelectedItem(selectedIndex);
     }
@@ -299,7 +303,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="col-md-2 d-flex justify-content-center align-items-center">
                                 <Tooltip title="New Message">
-                                    <Button onClick={() => setShowHideOrgSearch(!showHideOrgSearch)}>
+                                    <Button onClick={() => handleOrgSearchButton()}>
                                         <CreateIcon />
                                     </Button>
                                 </Tooltip>

@@ -750,7 +750,7 @@ class ProductForm extends Component {
 
                                     <SelectArrayWrapper
 
-                                        initialValue={this.props.item&&(this.props.item.product.condition)}
+                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
                                         options={this.state.condition}

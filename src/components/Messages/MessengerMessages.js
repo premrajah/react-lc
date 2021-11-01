@@ -48,7 +48,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [messageText, setMessageText] = useState("");
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
-    const [textErrorDisplay, setTextErrorDisplay] = useState("");
 
 
     useEffect(() => {
@@ -229,7 +228,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleSendMessage = () => {
-        handleErrorTextDisplay(""); // reset text error field
         if (messageText && reactSelectedValues.length > 0) {
             console.log("b")
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
@@ -241,16 +239,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             if(messageGroupId) {
                 sendMessage(messageText, [], messageGroupId, "", "group_message");
             }
-
-        } else {
-            console.log("d")
-            handleErrorTextDisplay("Please select a group or send to new orgs");
         }
     };
 
-    const handleErrorTextDisplay = (text) => {
-        setTextErrorDisplay(text);
-    }
 
 
     return (
@@ -412,13 +403,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                 </div>
                             </div>
 
-                            {textErrorDisplay && <div className="row">
-                                <div className="col">{textErrorDisplay}</div>
+                            {<div className="row">
+                                <div className="col">
+                                    {reactSelectedValues.length > 0 && <span>{`Send message to selected orgs`}</span>}
+                                    {selectedMsgGroup.length > 0 && <span>{`Reply to the selected group`}</span>}
+                                </div>
                             </div>}
 
-                            <div className="row mt-2" style={{ height: "60px" }}>
+                            {(selectedMsgGroup.length > 0 || reactSelectedValues.length > 0) && <div className="row mt-2" style={{height: "60px"}}>
                                 <div className="col-11 p-0">
-                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} />
+                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)}/>
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button
@@ -428,11 +422,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         onClick={() => handleSendMessage()}>
                                         <SendIcon
                                             fontSize="large"
-                                            style={{ color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)" }}
+                                            style={{color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)"}}
                                         />
                                     </Button>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </>
                 }

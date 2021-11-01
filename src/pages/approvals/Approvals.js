@@ -17,6 +17,7 @@ import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
+import {toNumber} from "lodash";
 
 
 
@@ -88,7 +89,7 @@ class Approvals extends Component {
     }
 
     handleChange = (event, newValue) => {
-        this.setState({value: newValue,});
+        this.setState({value: newValue, tabQuery: newValue});
     };
 
 
@@ -99,6 +100,7 @@ class Approvals extends Component {
         query
             ? this.setState({tabQuery: query.get('tab')})
             : this.setState({tabQuery: 0});
+
 
         this.refreshItems()
         this.props.loadSites()
@@ -151,10 +153,8 @@ render() {
                                     elevation={0}
                                 >
 
-
-
                                     <StyledTabs
-                                        value={this.state.value}
+                                        value={toNumber(this.state.tabQuery) ? toNumber(this.state.tabQuery) : this.state.value}
                                         onChange={this.handleChange.bind(this)}
                                         aria-label="nav tabs example"
                                         scrollButtons="auto"

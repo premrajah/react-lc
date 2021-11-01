@@ -67,7 +67,7 @@ class ProductView extends Component {
 
             axios.get(baseUrl + "product/" + this.slug + "/code?r=true").then(
                 (response) => {
-                    var responseAll = response.data;
+                    let responseAll = response.data;
 
                   console.log(responseAll)
 

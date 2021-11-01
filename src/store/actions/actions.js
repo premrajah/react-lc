@@ -259,7 +259,7 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
         )
         .then(
             (response) => {
-                var responseAll = response.data;
+                let responseAll = response.data;
 
                 dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
 

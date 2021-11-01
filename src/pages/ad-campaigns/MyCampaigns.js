@@ -146,11 +146,6 @@ class MyCampaigns extends Component {
 
        let [entry] = entities
 
-        console.log(entry)
-
-
-        // if (!this.props.loading)
-        // console.log(entry.boundingClientRect.y)
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
@@ -173,8 +168,6 @@ class MyCampaigns extends Component {
             )
             .then(
                 (response) => {
-
-                    // console.log(response.data.data)
 
 
                     let productSelected=response.data.data
@@ -305,9 +298,6 @@ class MyCampaigns extends Component {
 
                 if (error.response)
                     console.log(error)
-
-
-
             });
 
     }
@@ -329,7 +319,7 @@ class MyCampaigns extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
+
         this.setState({ errors: errors });
         return formIsValid;
     }

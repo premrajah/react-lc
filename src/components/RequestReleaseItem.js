@@ -255,7 +255,6 @@ class RequestReleaseItem extends Component {
             parent_product_id:this.state.fields["parent_parent_id"]
         };
 
-        // console.log(data)
 
 
 

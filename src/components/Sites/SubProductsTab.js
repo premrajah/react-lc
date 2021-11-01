@@ -95,7 +95,6 @@ class SubProductsTab extends Component {
 
                     var responseAll = response.data;
 
-                    // console.log(responseAll)
 
                     this.setState({
                         products:responseAll.data

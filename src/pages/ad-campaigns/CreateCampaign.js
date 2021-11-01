@@ -84,7 +84,7 @@ class CreateCampaign extends Component {
     }
 
     subtractCountAny = (index) => {
-        console.log(index,)
+
         if (this.state.countAny > 0) {
             var array = this.state.addCountAny;
 
@@ -173,12 +173,9 @@ class CreateCampaign extends Component {
                 skipped:newSkipped
             });
 
-            // alert("valid  click "+this.state.activeStep)
 
         }else{
 
-
-            console.log(this.state.fields)
              this.handleSubmit()
 
         }
@@ -394,11 +391,6 @@ class CreateCampaign extends Component {
                     .then(data => {
                         const payload = data;
 
-                        console.log(data)
-
-
-
-
                         try {
                             axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
                                 .then(res => {
@@ -509,7 +501,7 @@ class CreateCampaign extends Component {
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
-        console.log(errors,formIsValid)
+
         return formIsValid;
 
     }

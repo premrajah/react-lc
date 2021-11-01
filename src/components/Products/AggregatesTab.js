@@ -184,15 +184,6 @@ componentDidMount() {
                         units:units
                     })
 
-                    console.log(units)
-
-
-                    // subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
-                    // states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
-                    // units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
-
-
-
 
                 },
                 (error) => {}

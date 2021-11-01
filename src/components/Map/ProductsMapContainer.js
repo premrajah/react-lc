@@ -37,18 +37,9 @@ class ProductsMapContainer extends Component {
      };
 
  componentDidMount() {
-     console.log("products map data")
-    console.log(this.props.mapData)
-
 
      let locations=[]
-     // {this.props.mapData.site.geo_codes&&this.props.item.site.geo_codes[0]&&
-     //
-     // <Tab eventKey="maps" title="Site">
-     //
-     //     <GoogleMap siteId={this.props.item.site._key} width={"100%"}  height={"300px"} locations={[{name:this.props.item.site.name, location:this.props.item.site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
-     //
-     // </Tab>}
+
      for (let j=0;j<this.props.mapData.length;j++) {
 
          let site=this.props.mapData[j].site
@@ -56,8 +47,6 @@ class ProductsMapContainer extends Component {
          if (site&&site.geo_codes&&site.geo_codes[0]) {
 
 locations.push({name:this.props.mapData[j].name, subTitle:site.name,location:site.geo_codes[0].address_info.geometry.location,isCenter:true,product:this.props.mapData[j]._key})
-
-
 
          }
 
@@ -77,8 +66,6 @@ locations.push({name:this.props.mapData[j].name, subTitle:site.name,location:sit
          locations:locations
      })
 
-     console.log("locations")
-     console.log(locations)
 }
 
     render() {

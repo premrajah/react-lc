@@ -23,8 +23,6 @@ class AutocompleteCustom extends Component {
 
         if (this.props.initialOrgId){
 
-            console.log(this.props.initialOrgId,this.props.initialOrgName)
-
             this.setState({
                 selectedOrgId:this.props.initialOrgId,
                 selectedOrgName:this.props.initialOrgName,

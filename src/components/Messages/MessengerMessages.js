@@ -127,6 +127,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             });
     };
 
+    const getSingleMessageGroupExpand = (id) => {
+        if (!id) return;
+        axios
+            .get(`${baseUrl}message-group/${id}/expand`)
+            .then((response) => {
+                setSelectedMsgGroup(response.data.data);
+            })
+            .catch((error) => {
+                console.log("group message error ", error.message);
+            });
+    };
+
     const handleNewMessageSelect = (e) => {
         if (!e) return;
         const temp = [];
@@ -165,7 +177,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 } else {
                     return false;
                 }
-
             }
         }
     }
@@ -405,8 +416,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             {<div className="row">
                                 <div className="col">
-                                    {reactSelectedValues.length > 0 && <span>{`Send message to selected orgs`}</span>}
-                                    {selectedMsgGroup.length > 0 && <span>{`Reply to the selected group`}</span>}
+                                    {reactSelectedValues.length > 0 && <div className="mr-2">{`Send message to selected orgs`}</div>}
+                                    {selectedMsgGroup.length > 0 && <div>{`Reply to the selected group`}</div>}
                                 </div>
                             </div>}
 

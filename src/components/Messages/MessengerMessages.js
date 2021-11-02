@@ -40,7 +40,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(0);
 
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);

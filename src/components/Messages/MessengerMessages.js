@@ -246,11 +246,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
-            console.log("b")
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
 
         } else if (messageText && selectedMsgGroup.length > 0) {
-            console.log("c")
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
 
             if(messageGroupId) {

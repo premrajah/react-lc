@@ -4,7 +4,7 @@ import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+import {Alert, Autocomplete} from "@material-ui/lab";
 import CreateIcon from "@material-ui/icons/Create";
 import SendIcon from "@material-ui/icons/Send";
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -106,7 +106,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         axios
             .get(`${baseUrl}message-group`)
             .then((response) => {
-                setAllMessageGroups(response.data.data);
+                const data = response.data.data;
+                setAllMessageGroups(data);
+                handleGroupClick(data[0]._key, 0);
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -420,12 +422,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             {<div className="row">
                                 <div className="col">
-                                    {reactSelectedValues.length > 0 && <div className="mr-2">{`Send message to selected orgs`}</div>}
-                                    {selectedMsgGroup.length > 0 && <div>{`Reply to the selected group`}</div>}
+                                    {reactSelectedValues.length > 0 && <Alert severity="info" className="mr-2">{`Send message to selected orgs`}</Alert>}
+                                    {reactSelectedValues.length > 0 || selectedMsgGroup.length > 0 && <Alert severity="info">{`Reply to the selected group`}</Alert>}
                                 </div>
                             </div>}
 
-                            {(selectedMsgGroup.length > 0 || reactSelectedValues.length > 0) && <div className="row mt-2" style={{height: "60px"}}>
+                            <div className="row mt-2" style={{height: "60px"}}>
                                 <div className="col-11 p-0">
                                     <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)}/>
                                 </div>
@@ -441,7 +443,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         />
                                     </Button>
                                 </div>
-                            </div>}
+                            </div>
                         </div>
                     </>
                 }

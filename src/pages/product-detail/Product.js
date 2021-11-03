@@ -65,7 +65,7 @@ class ProductView extends Component {
 
         if (this.props.location.search.includes("r=true")){
 
-            axios.get(baseUrl + "product/" + this.slug + "/code?r=true").then(
+            axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
                 (response) => {
                     var responseAll = response.data;
 

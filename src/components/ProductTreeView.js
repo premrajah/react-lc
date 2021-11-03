@@ -24,6 +24,7 @@ class ProductTreeView extends Component {
             tree: [],
             filteredList: [],
             selectedProductId: null,
+            uniqueItems:[]
         };
 
         this.getItems = this.getItems.bind(this);

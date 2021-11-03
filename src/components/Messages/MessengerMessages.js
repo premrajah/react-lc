@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import CreateIcon from "@material-ui/icons/Create";
+import CreateIcon from "@material-ui/icons/GroupAdd";
 import SendIcon from "@material-ui/icons/Send";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import TextField from "../FormsUI/ProductForm/TextField";
@@ -13,6 +13,7 @@ import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
 import RichTextEditor from "./RichTextEditor";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 
 const msgWindowHeight = "520px";
@@ -243,58 +244,83 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     return (
         <>
+
             <div className="row">
+                <div className="col-4">
+                    <div className="row">
+                    <div className="col-md-8">
+                        {showHideGroupFilter && <Autocomplete
+                            size="small"
+                            freeSolo
+                            onChange={(e, value) => setAutoCompleteOrg(value)}
+                            options={
+                                allMessageGroups.length > 0
+                                    ? allMessageGroups.map((option) =>
+                                        option.name ? option.name : ""
+                                    )
+                                    : []
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Search for group"
+                                    margin="normal"
+                                    variant="outlined"
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        type: "search",
+                                    }}
+                                />
+                            )}
+                        />}
+                    </div>
+
+                    <div className="col-md-2 d-flex justify-content-center align-items-center">
+                        <Tooltip title="Filter groups">
+                            <Button onClick={() => handleFilterGroupsButton()}>
+                                <FilterListIcon fontSize="large" />
+                            </Button>
+                        </Tooltip>
+                    </div>
+
+                    <div className="col-md-2 d-flex justify-content-center align-items-center">
+                        <Tooltip title="New Message">
+                            <Button onClick={() => setShowHideOrgSearch(!showHideOrgSearch)}>
+                                <CreateIcon fontSize="large" />
+                            </Button>
+                        </Tooltip>
+                    </div>
+                    </div>
+                </div>
+                <div className="col-8">
+                    {showHideOrgSearch &&
+                    <div className="row">
+                        <div className="col">
+                            <Select
+                                options={reactSelectValues.length > 0 ? reactSelectValues : []}
+                                isMulti
+                                placeholder="Search orgs to send messages"
+                                name="orgs"
+                                className="react-multi-select"
+                                classNamePrefix="select"
+                                onChange={(e) => handleNewMessageSelect(e)}
+                                ref={reactSelectRef}
+                            />
+                        </div>
+                    </div>}
+                </div>
+            </div>
+            <div className="row">
+
+
                 {
                     <div className="col-md-4">
 
-                        <div className="row">
-                             <div className="col-md-8">
-                                 {showHideGroupFilter && <Autocomplete
-                                     size="small"
-                                    freeSolo
-                                    onChange={(e, value) => setAutoCompleteOrg(value)}
-                                    options={
-                                        allMessageGroups.length > 0
-                                            ? allMessageGroups.map((option) =>
-                                                option.name ? option.name : ""
-                                            )
-                                            : []
-                                    }
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Search for group"
-                                            margin="normal"
-                                            variant="outlined"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                type: "search",
-                                            }}
-                                        />
-                                    )}
-                                />}
-                            </div>
 
-                            <div className="col-md-2 d-flex justify-content-center align-items-center">
-                                <Tooltip title="Filter groups">
-                                    <Button onClick={() => handleFilterGroupsButton()}>
-                                        <FilterListIcon fontSize="large" />
-                                    </Button>
-                                </Tooltip>
-                            </div>
-
-                            <div className="col-md-2 d-flex justify-content-center align-items-center">
-                                <Tooltip title="New Message">
-                                    <Button onClick={() => setShowHideOrgSearch(!showHideOrgSearch)}>
-                                        <CreateIcon />
-                                    </Button>
-                                </Tooltip>
-                            </div>
-                        </div>
 
                         {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
                         <List
-                            className="message-groups"
+                            className="message-groups text-capitalize"
                             style={{
                                 height: msgWindowHeight,
                                 maxHeight: msgWindowHeight,
@@ -325,12 +351,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     .map((group, i) => (
                                         <div key={i} >
                                             <ListItem
+
                                                 classes={{root: classes.root, selected: classes.selected}}
                                                 selected={selectedItem === i}
                                                 button
                                                 divider
                                                 onClick={() => handleGroupClick(group._key, i)}>
-                                                {group.name.replace(/\W/g, " ")}
+                                                {(group.name.replaceAll("+", " ,").replaceAll("-",""))}
                                                 {/*{group.name}*/}
                                             </ListItem>
                                         </div>
@@ -346,20 +373,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 {
                     <>
                         <div className="col-md-7">
-                            {showHideOrgSearch && <div className="row">
-                                <div className="col">
-                                        <Select
-                                            options={reactSelectValues.length > 0 ? reactSelectValues : []}
-                                            isMulti
-                                            placeholder="Search orgs to send messages"
-                                            name="orgs"
-                                            className="react-multi-select"
-                                            classNamePrefix="select"
-                                            onChange={(e) => handleNewMessageSelect(e)}
-                                            ref={reactSelectRef}
-                                        />
-                                </div>
-                            </div>}
+
 
                             <div
                                 className="row"

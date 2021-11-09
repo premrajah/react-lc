@@ -44,8 +44,6 @@ class MessageLayout extends Component {
 
         this.getAllOrgs();
 
-        console.log("old msghs");
-        console.log(this.props.messages);
     }
 
     chats = [
@@ -107,7 +105,6 @@ class MessageLayout extends Component {
     selectChat(event) {
         let chat = this.chats.filter((item) => item.id == event.currentTarget.dataset.id)[0];
 
-        console.log(chat);
 
         this.setState({
             openedChat: chat,

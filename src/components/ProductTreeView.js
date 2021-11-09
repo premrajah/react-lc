@@ -79,8 +79,6 @@ class ProductTreeView extends Component {
     setTree() {
 
 
-        console.log("called")
-
             let list = this.props.items
 
 
@@ -115,8 +113,7 @@ class ProductTreeView extends Component {
                     tree.push(treeItem);
                 }
             }
-            console.log("tree")
-            console.log(tree)
+
             this.setState({
                 tree: tree,
                 filteredList: tree,
@@ -134,7 +131,6 @@ class ProductTreeView extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props){
-            console.log("change detected")
             this.setTree()
         }
     }

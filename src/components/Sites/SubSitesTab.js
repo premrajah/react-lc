@@ -30,9 +30,7 @@ class SubSitesTab extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log("udpate")
         if (prevProps!=this.props) {
-            console.log("props changed")
             this.getSubSites()
         }
     }
@@ -53,7 +51,6 @@ class SubSitesTab extends Component {
                         subSites:responseAll
                     })
 
-                    console.log(responseAll)
 
                 },
                 (error) => {

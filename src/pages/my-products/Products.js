@@ -121,11 +121,6 @@ class Products extends Component {
 
        let [entry] = entities
 
-        console.log(entry)
-
-
-        // if (!this.props.loading)
-        // console.log(entry.boundingClientRect.y)
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
@@ -150,8 +145,6 @@ class Products extends Component {
             )
             .then(
                 (response) => {
-
-                    // console.log(response.data.data)
 
 
                     let productSelected=response.data.data
@@ -283,8 +276,6 @@ class Products extends Component {
                 if (error.response)
                     console.log(error)
 
-
-
             });
 
     }
@@ -306,7 +297,6 @@ class Products extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -315,8 +305,6 @@ class Products extends Component {
 
         event.preventDefault();
 
-
-        console.log("submit called")
 
         if (this.state.type!="delete"&&!this.handleValidationScaling()){
 

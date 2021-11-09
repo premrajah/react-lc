@@ -89,11 +89,7 @@ class CompanyInfo extends Component {
 
 
     setCropData=(data,name)=>{
-
-
-        console.log(data)
         this.setState({
-
             croppedImageData:data
         })
 
@@ -276,7 +272,6 @@ class CompanyInfo extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -401,7 +396,7 @@ class CompanyInfo extends Component {
                             loading: false,
                             submitSuccess: true,
                         });
-             console.log(res)
+
                     }
                 })
                 .catch((error) => {

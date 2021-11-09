@@ -4,8 +4,8 @@ import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import CreateIcon from "@material-ui/icons/GroupAdd";
+import {Alert, Autocomplete} from "@material-ui/lab";
+import CreateIcon from "@material-ui/icons/Create";
 import SendIcon from "@material-ui/icons/Send";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import TextField from "../FormsUI/ProductForm/TextField";
@@ -13,7 +13,6 @@ import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
 import RichTextEditor from "./RichTextEditor";
-import {capitalize} from "../../Util/GlobalFunctions";
 
 
 const msgWindowHeight = "520px";
@@ -41,7 +40,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(0);
 
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);
@@ -59,6 +58,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     useEffect(() => {
         setUserOrg(userDetail.orgId);
     }, []);
+
 
     const getAllOrgs = () => {
         axios
@@ -106,7 +106,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         axios
             .get(`${baseUrl}message-group`)
             .then((response) => {
-                setAllMessageGroups(response.data.data);
+                const data = response.data.data;
+                setAllMessageGroups(data);
+                handleGroupClick(data[0]._key, 0);
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -119,6 +121,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         if (!id) return;
         axios
             .get(`${baseUrl}message-group/${id}/message`)
+            .then((response) => {
+                setSelectedMsgGroup(response.data.data);
+            })
+            .catch((error) => {
+                console.log("group message error ", error.message);
+            });
+    };
+
+    const getSingleMessageGroupExpand = (id) => {
+        if (!id) return;
+        axios
+            .get(`${baseUrl}message-group/${id}/expand`)
             .then((response) => {
                 setSelectedMsgGroup(response.data.data);
             })
@@ -153,6 +167,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setMessageText(value);
     }
 
+    const handleOrgSearchButton = () => {
+        setShowHideOrgSearch(!showHideOrgSearch);
+    }
+
     const  updateSelected = (selectedIndex) => {
         setSelectedItem(selectedIndex);
     }
@@ -165,7 +183,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 } else {
                     return false;
                 }
-
             }
         }
     }
@@ -229,98 +246,75 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
+            console.log("b")
             sendMessage(messageText, reactSelectedValues, "", "", "new_message");
 
-        } else if (messageText) {
+        } else if (messageText && selectedMsgGroup.length > 0) {
+            console.log("c")
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
 
             if(messageGroupId) {
                 sendMessage(messageText, [], messageGroupId, "", "group_message");
             }
-
         }
     };
 
 
+
     return (
         <>
-
             <div className="row">
-                <div className="col-4">
-                    <div className="row">
-                    <div className="col-md-8">
-                        {showHideGroupFilter && <Autocomplete
-                            size="small"
-                            freeSolo
-                            onChange={(e, value) => setAutoCompleteOrg(value)}
-                            options={
-                                allMessageGroups.length > 0
-                                    ? allMessageGroups.map((option) =>
-                                        option.name ? option.name : ""
-                                    )
-                                    : []
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Search for group"
-                                    margin="normal"
-                                    variant="outlined"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        type: "search",
-                                    }}
-                                />
-                            )}
-                        />}
-                    </div>
-
-                    <div className="col-md-2 d-flex justify-content-center align-items-center">
-                        <Tooltip title="Filter groups">
-                            <Button onClick={() => handleFilterGroupsButton()}>
-                                <FilterListIcon fontSize="large" />
-                            </Button>
-                        </Tooltip>
-                    </div>
-
-                    <div className="col-md-2 d-flex justify-content-center align-items-center">
-                        <Tooltip title="New Message">
-                            <Button onClick={() => setShowHideOrgSearch(!showHideOrgSearch)}>
-                                <CreateIcon fontSize="large" />
-                            </Button>
-                        </Tooltip>
-                    </div>
-                    </div>
-                </div>
-                <div className="col-8">
-                    {showHideOrgSearch &&
-                    <div className="row">
-                        <div className="col">
-                            <Select
-                                options={reactSelectValues.length > 0 ? reactSelectValues : []}
-                                isMulti
-                                placeholder="Search orgs to send messages"
-                                name="orgs"
-                                className="react-multi-select"
-                                classNamePrefix="select"
-                                onChange={(e) => handleNewMessageSelect(e)}
-                                ref={reactSelectRef}
-                            />
-                        </div>
-                    </div>}
-                </div>
-            </div>
-            <div className="row">
-
-
                 {
                     <div className="col-md-4">
 
+                        <div className="row">
+                            <div className="col-md-8">
+                                {showHideGroupFilter && <Autocomplete
+                                    size="small"
+                                    freeSolo
+                                    onChange={(e, value) => setAutoCompleteOrg(value)}
+                                    options={
+                                        allMessageGroups.length > 0
+                                            ? allMessageGroups.map((option) =>
+                                                option.name ? option.name : ""
+                                            )
+                                            : []
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Search for group"
+                                            margin="normal"
+                                            variant="outlined"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                type: "search",
+                                            }}
+                                        />
+                                    )}
+                                />}
+                            </div>
 
+                            <div className="col-md-2 d-flex justify-content-center align-items-center">
+                                <Tooltip title="Filter groups">
+                                    <Button onClick={() => handleFilterGroupsButton()}>
+                                        <FilterListIcon fontSize="large" />
+                                    </Button>
+                                </Tooltip>
+                            </div>
+
+                            <div className="col-md-2 d-flex justify-content-center align-items-center">
+                                <Tooltip title="New Message">
+                                    <Button onClick={() => handleOrgSearchButton()}>
+                                        <CreateIcon />
+                                    </Button>
+                                </Tooltip>
+                            </div>
+                        </div>
 
                         {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
                         <List
-                            className="message-groups text-capitalize"
+                            className="message-groups"
                             style={{
                                 height: msgWindowHeight,
                                 maxHeight: msgWindowHeight,
@@ -351,13 +345,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     .map((group, i) => (
                                         <div key={i} >
                                             <ListItem
-
                                                 classes={{root: classes.root, selected: classes.selected}}
                                                 selected={selectedItem === i}
                                                 button
                                                 divider
                                                 onClick={() => handleGroupClick(group._key, i)}>
-                                                {(group.name.replaceAll("+", " ,").replaceAll("-",""))}
+                                                {group.name.replace(/\W/g, " ")}
                                                 {/*{group.name}*/}
                                             </ListItem>
                                         </div>
@@ -373,7 +366,20 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 {
                     <>
                         <div className="col-md-7">
-
+                            {showHideOrgSearch && <div className="row">
+                                <div className="col">
+                                    <Select
+                                        options={reactSelectValues.length > 0 ? reactSelectValues : []}
+                                        isMulti
+                                        placeholder="Search orgs to send messages"
+                                        name="orgs"
+                                        className="react-multi-select"
+                                        classNamePrefix="select"
+                                        onChange={(e) => handleNewMessageSelect(e)}
+                                        ref={reactSelectRef}
+                                    />
+                                </div>
+                            </div>}
 
                             <div
                                 className="row"
@@ -414,17 +420,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                 </div>
                             </div>
 
-                            <div className="row mt-2" style={{ height: "60px" }}>
+                            {<div className="row">
+                                <div className="col">
+                                    {reactSelectedValues.length > 0 && <Alert severity="info" className="mr-2">{`Send message to selected orgs`}</Alert>}
+                                    {reactSelectedValues.length > 0 || selectedMsgGroup.length > 0 && <Alert severity="info">{`Reply to the selected group`}</Alert>}
+                                </div>
+                            </div>}
+
+                            <div className="row mt-2" style={{height: "60px"}}>
                                 <div className="col-11 p-0">
-                                    {/*<TextField*/}
-                                    {/*    id="send-new-msg"*/}
-                                    {/*    label="Send new message"*/}
-                                    {/*    variant="outlined"*/}
-                                    {/*    fullWidth*/}
-                                    {/*    onChange={(text) => setMessageText(text)}*/}
-                                    {/*    value={messageText || ""}*/}
-                                    {/*/>*/}
-                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} />
+                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)}/>
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button
@@ -434,7 +439,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         onClick={() => handleSendMessage()}>
                                         <SendIcon
                                             fontSize="large"
-                                            style={{ color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)" }}
+                                            style={{color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)"}}
                                         />
                                     </Button>
                                 </div>

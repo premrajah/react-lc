@@ -228,7 +228,6 @@ class ProductForm extends Component {
                     .then(data => {
                         const payload = data;
 
-                        // console.log(data)
 
                         try {
                             axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
@@ -751,7 +750,7 @@ class ProductForm extends Component {
 
                                     <SelectArrayWrapper
 
-                                        initialValue={this.props.item&&(this.props.item.product.condition)}
+                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
                                         options={this.state.condition}

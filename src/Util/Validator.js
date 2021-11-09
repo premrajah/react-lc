@@ -112,7 +112,6 @@ export const validateInputs = (validations) => {
 
             if (inputField && inputField.validations.length) {
                 for (let i = 0; i < inputField.validations.length; i++) {
-                    // console.log(inputField.validations)
 
                     const error = inputField.validations[i].check(inputField.value, inputField.validations[i].message,inputField.password,
                         inputField.validations[i].min,inputField.validations[i].max);

@@ -108,7 +108,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .then((response) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
-                handleGroupClick(data[0]._key, 0);
+
+                if(!selectedItem) {
+                    handleGroupClick(data[0]._key, 0);
+                }
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -193,7 +196,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     }
 
 
-    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
+    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType, messageKey) => {
         if (!text) return;
 
         let payload = {};
@@ -237,6 +240,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     }
                     getAllMessageGroups();
                     getAllOrgs();
+
+                    if(payload.message_group_id) {
+                        console.log(payload, selectedItem);
+                        handleGroupClick(payload.message_group_id, selectedItem);
+                    }
+
                 }
             })
             .catch((error) => {
@@ -246,13 +255,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
-            sendMessage(messageText, reactSelectedValues, "", "", "new_message");
+            sendMessage(messageText, reactSelectedValues, "", "", "new_message", "");
 
         } else if (messageText && selectedMsgGroup.length > 0) {
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
+            let messageKey = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._key : null;
 
             if(messageGroupId) {
-                sendMessage(messageText, [], messageGroupId, "", "group_message");
+                sendMessage(messageText, [], messageGroupId, "", "group_message", messageKey);
             }
         }
     };

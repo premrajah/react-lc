@@ -253,7 +253,7 @@ class ProductItemNew extends Component {
                                 <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-2  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}> {this.props.item.name} </Link>
+                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}> {this.props.item.name}  <small className={"text-mute"}><small> - {this.props.item._key}</small></small></Link>
                                       </p>
 
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
@@ -288,6 +288,7 @@ class ProductItemNew extends Component {
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
                                     <p className={"text-gray-light small"}>
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
+
                                     </p>
 
                                     {!this.props.hideAdd&&this.props.showAddToListButton && <div>

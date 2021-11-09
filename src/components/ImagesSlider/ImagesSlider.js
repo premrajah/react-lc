@@ -2,6 +2,8 @@ import React from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
+import {ArrowBackRounded, ArrowForwardRounded} from "@material-ui/icons";
+
 class ImagesSlider extends React.Component {
     imagesArray = [];
 
@@ -38,6 +40,7 @@ class ImagesSlider extends React.Component {
 
     render() {
         return (
+            <>
             <ImageGallery
                 showThumbnails={false}
                 thumbnailClass={"custom-gallery-thumbnail"}
@@ -47,6 +50,22 @@ class ImagesSlider extends React.Component {
                 autoPlay={false}
                 items={this.imagesArray}
             />
+            <div className={"row image-gallery-bottom"}>
+                <div className={"col-6"}>
+
+                    <ArrowBackRounded  />
+                    <ArrowForwardRounded  />
+
+                </div>
+                <div className={"col-6"}>
+
+                    <ArrowBackRounded  />
+                    <ArrowForwardRounded  />
+
+                </div>
+
+            </div>
+                </>
         );
     }
 }

@@ -82,11 +82,11 @@ class ProductView extends Component {
         const classesBottom = withStyles();
 
         return (
-            <Layout hideFooter={true}>
-                <div className="accountpage">
-                    {this.state.notFound ? (
+
+                <>
+                    {this.props.productNotFound ? (
                         <NotFound />
-                    ) : (
+                    ) :  <Layout hideFooter={true}>
                         <div className={"container pb-5 mb-5"}>
                             {this.props.currentProduct && (
                                 <>
@@ -98,9 +98,10 @@ class ProductView extends Component {
                                 </>
                             )}
                         </div>
-                    )}
-                </div>
-            </Layout>
+                    </Layout>
+                    }
+                </>
+
         );
     }
 }
@@ -119,7 +120,9 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-        currentProduct:state.currentProduct
+        currentProduct:state.currentProduct,
+        productNotFound:state.productNotFound,
+
     };
 };
 

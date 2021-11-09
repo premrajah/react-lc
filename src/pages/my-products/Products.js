@@ -104,9 +104,12 @@ class Products extends Component {
     componentDidMount() {
 
         this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-    // this.loadNewPageSetUp()
+
+        this.props.resetProductPageOffset()
+        this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
+        this.loadNewPageSetUp()
 
         // this.getSitesForProducts()
 
@@ -125,6 +128,8 @@ class Products extends Component {
         // console.log(entry.boundingClientRect.y)
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
+
+            alert("called")
 
             this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
@@ -421,7 +426,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.props.productWithoutParentList&&this.props.productWithoutParentList.filter((site)=>
+                                    {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -457,8 +462,8 @@ class Products extends Component {
                         </div>
                         <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList&&
-                        this.props.productWithoutParentList.filter((site)=>
+                        {this.props.productWithoutParentListPage&&
+                        this.props.productWithoutParentListPage.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -501,7 +506,7 @@ class Products extends Component {
                         ))}
 
 
-                        {this.props.productWithoutParentList&&this.props.productWithoutParentList.filter((site)=>
+                        {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                     site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                     this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -534,13 +539,13 @@ class Products extends Component {
 
                         }
 
-                        {/*{this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&*/}
-                        {/*<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
-                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
-                        {/*        <div>Loading products please wait ...</div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*}*/}
+                        {this.props.productWithoutParentListPage.length!=0&&!this.props.lastPageReached &&
+                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
+                                <div>Loading products please wait ...</div>
+                            </div>
+                        </div>
+                        }
                     </div>
 
                     <React.Fragment>
@@ -694,6 +699,9 @@ const mapDispatchToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
+        resetProductPageOffset: (data) =>
+            dispatch(actionCreator.resetProductPageOffset(data)),
+
         setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),

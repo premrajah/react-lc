@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
-import "./css/style.css";
+import "./css/style-new.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
 import Home from "./pages/home/Home";
 import LoginPopUp from "./views/login/LoginPopUp";

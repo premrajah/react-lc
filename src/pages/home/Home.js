@@ -83,14 +83,16 @@ class Home extends Component {
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className="blue-text primary-heading" style={{fontSize: "3em"}}>
+                                            <h1 className="blue-text primary-heading"
+                                                // style={{fontSize: "3em"}}
+                                            >
                                                 Connect the dots
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className="blue-text" style={{fontSize: "1.3em"}}>
+                                                <p className="blue-text body-text-home" >
                                                     Loopcycle’s product traceability platform redefines the management,
                                                     recovery and resale of valuable secondary products, driving integrity
                                                     within the reuse market.
@@ -135,7 +137,7 @@ class Home extends Component {
 
                         <div className="row no-gutters justify-content-center  row no-gutters justify-content-center    pt-5 pb-2">
                             <div className="col-auto">
-                                <h2 className={"text-pink text-center "}>
+                                <h2 className={"text-pink-heading text-center primary-heading"}>
                                     <b>
                                         View all products on the platform
                                     </b>

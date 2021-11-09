@@ -162,7 +162,7 @@ class ComponentsNavbar extends React.Component {
                     <Alert  severity="success">You have new notifications.</Alert>
                 </Snackbar>
 
-                <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
+                <Navbar className={"container-blue "} color-on-scroll="100" expand="lg">
                     <Nav className={"justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
                             <div className="row no-gutters">

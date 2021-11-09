@@ -194,7 +194,7 @@ class CreateCampaign extends Component {
             const description = fields["description"];
             const startDate = new Date(fields["startDate"]).getTime() ;
             const endDate =  new Date(fields["endDate"]).getTime();
-            const messageTemplate = fields["condition"];
+            const messageTemplate = fields["messageTemplate"];
 
         let conditionAll=[]
         let conditionAny=[]

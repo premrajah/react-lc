@@ -9,7 +9,7 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import { makeStyles } from "@material-ui/core/styles";
 import {baseUrl, capitalizeFirstLetter, frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import ImagesSlider from "../ImagesSlider";
+import ImagesSlider from "../ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
 import { Alert, Modal, ModalBody, Tab, Tabs } from "react-bootstrap";
 import { withStyles } from "@material-ui/core/styles/index";

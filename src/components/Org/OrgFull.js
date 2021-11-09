@@ -33,11 +33,11 @@ const OrgFull = (props) => {
         <>
             <div style={{ display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
                 <div
-                    className="mr-1"
+                    className="mr-1 sub-title-text-pink"
                     style={{
                         textTransform: "capitalize",
                         fontWeight: "700",
-                        color : "#444",
+                        // color : "#444",
                     }}>
                     {props.org.name}
                 </div>
@@ -46,7 +46,7 @@ const OrgFull = (props) => {
                     placement={"right"}
                     overlay={orgPopover}>
                     <Info
-                        style={{ cursor: "pointer", color: "#cccccc" }}
+                        style={{ cursor: "pointer", color: "#EAEAEF" }}
                         fontSize={"small"}
                     />
                 </OverlayTrigger>

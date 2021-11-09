@@ -4,7 +4,7 @@ import HeaderDark from "../header/HeaderDark";
 import axios from "axios/index";
 import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
-import ImagesSlider from "../../components/ImagesSlider";
+import ImagesSlider from "../../components/ImagesSlider/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";

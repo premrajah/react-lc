@@ -6,7 +6,7 @@ import Sidebar from "../../views/menu/Sidebar";
 import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../PageHeader";
 import ProductBlue from "../../img/icons/product-128.svg";
-import ImagesSlider from "../ImagesSlider";
+import ImagesSlider from "../ImagesSlider/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import ProductItemNew from "../ProductItemNew";
 import moment from "moment";

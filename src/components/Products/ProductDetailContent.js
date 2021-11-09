@@ -621,6 +621,12 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
+                        <div className="row no-gutters pt-4 pb-4  justify-content-center">
+                            <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
+
+                            </div>
+                        </div>
                         <div className="row no-gutters  justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className=" stick-left-box  ">
@@ -634,7 +640,7 @@ class ProductDetailContent extends Component {
                                         this.state.userDetail.orgId !== this.state.item.org._id && (
                                             <>
                                                 <div className={"col-12 pb-5 mb-5"}>
-                                                    <div className="row justify-content-start pb-3 pt-3 ">
+                                                    <div className="row justify-content-start pb-3  ">
                                                         <div className="col-12 ">
                                                             <button
                                                                 onClick={this.showRegister}
@@ -652,13 +658,13 @@ class ProductDetailContent extends Component {
                                 </div>
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left pt-3 "}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left "}>
 
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-8">
-                                                <h4 className="blue-text text-heading text-caps">
+                                                <h4 className="text-capitalize product-title">
                                                     {this.state.item.product.name}
                                                 </h4>
                                             </div>
@@ -803,11 +809,7 @@ class ProductDetailContent extends Component {
                                 </button>
                             </div>
 
-                            {/*<ProductEditForm*/}
-                            {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
-                            {/*    isDuplicate={this.state.productDuplicate}*/}
-                            {/*    productId={this.state.item.product._key}*/}
-                            {/*/>*/}
+
                             <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
                                 <div className="col mobile-menu">
                                     <div className="form-col-left col-12">

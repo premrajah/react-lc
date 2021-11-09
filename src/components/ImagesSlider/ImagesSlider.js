@@ -1,8 +1,9 @@
 import React from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import styles from './image-slider.css'; // Import css modules stylesheet as styles
 
-import {ArrowBackRounded, ArrowForwardRounded} from "@material-ui/icons";
+import  ArrowBackRoundedIcon from '@mui/icons-material/ArrowCircleDown';
 
 class ImagesSlider extends React.Component {
     imagesArray = [];
@@ -53,14 +54,12 @@ class ImagesSlider extends React.Component {
             <div className={"row image-gallery-bottom"}>
                 <div className={"col-6"}>
 
-                    <ArrowBackRounded  />
-                    <ArrowForwardRounded  />
 
                 </div>
                 <div className={"col-6"}>
 
-                    <ArrowBackRounded  />
-                    <ArrowForwardRounded  />
+                    <ArrowBackRoundedIcon className={styles.turnLeft}  />
+                    <ArrowBackRoundedIcon className={styles.turnRight} />
 
                 </div>
 

@@ -78,7 +78,14 @@ import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 import TransferScaling from "./views/account/TransferScaling";
 import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
 import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
+import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
+const theme = createMuiTheme();
 
+const useStyles = makeStyles((theme) => {
+    root: {
+        // some css that access to theme
+    }
+});
 
 class App extends Component {
 
@@ -89,6 +96,7 @@ class App extends Component {
     render() {
         return (
             <>
+                <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     {/*<Header />*/}
                     <Switch>
@@ -194,6 +202,7 @@ class App extends Component {
 
                     <CustomSnackbar />
                 </BrowserRouter>
+                </ThemeProvider>
             </>
         );
     }

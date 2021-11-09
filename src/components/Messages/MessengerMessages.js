@@ -225,10 +225,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 return;
         }
 
-        postMessage(payload);
+        postMessage(payload, messageKey);
     };
 
-    const postMessage = (payload) => {
+    const postMessage = (payload, messageKey) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
@@ -242,8 +242,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     getAllOrgs();
 
                     if(payload.message_group_id) {
-                        console.log(payload, selectedItem);
-                        handleGroupClick(payload.message_group_id, selectedItem);
+                        handleGroupClick(messageKey, selectedItem);
                     }
 
                 }
@@ -274,7 +273,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             <div className="row">
                 {
                     <div className="col-md-4">
-
                         <div className="row">
                              <div className="col-md-8">
                                  {showHideGroupFilter && <Autocomplete

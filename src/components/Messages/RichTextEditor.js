@@ -1,5 +1,5 @@
 import React from 'react'
-import {Editor, EditorState, getDefaultKeyBinding, RichUtils, convertToRaw } from 'draft-js'
+import {Editor, EditorState, ContentState, getDefaultKeyBinding, RichUtils, convertToRaw } from 'draft-js'
 import { convertToHTML } from 'draft-convert';
 import './RichText.css';
 import '../../../node_modules/draft-js/dist/Draft.css';
@@ -22,6 +22,11 @@ class RichTextEditor extends React.Component {
     handleOnChange = (es) => {
         this.setState({editorState: es})
         this.props.richTextHandleCallback(convertToHTML(this.state.editorState.getCurrentContent()));
+    }
+
+    resetDraft = () => {
+        const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
+        this.setState({ editorState });
     }
 
 

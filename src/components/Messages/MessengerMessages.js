@@ -49,6 +49,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
+    const resetDraftRef = useRef();
+
 
     useEffect(() => {
         getAllOrgs();
@@ -245,6 +247,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         handleGroupClick(messageKey, selectedItem);
                     }
 
+                    resetDraftRef.current.resetDraft();
+
                 }
             })
             .catch((error) => {
@@ -435,7 +439,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="row mt-2" style={{height: "60px"}}>
                                 <div className="col-11 p-0">
-                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} allOrgs={allOrgs}/>
+                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} allOrgs={allOrgs} ref={resetDraftRef} />
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button

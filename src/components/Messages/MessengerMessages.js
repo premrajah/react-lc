@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { baseUrl, createMarkup } from "../../Util/Constants";
+import {baseUrl, createMarkup, useInterval} from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip} from "@material-ui/core";
@@ -60,6 +60,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     useEffect(() => {
         setUserOrg(userDetail.orgId);
     }, []);
+
+    useInterval(() => {
+        getAllOrgs();
+        getAllMessageGroups();
+    }, 1000 * 10);
 
 
     const getAllOrgs = () => {

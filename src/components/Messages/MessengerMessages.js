@@ -188,7 +188,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const checkWhoseMessage = (orgs) => {
         if(orgs.length > 0) {
             if(orgs[0].actor === "message_from"){
-                if(orgs[0].org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
+                if((orgs[0].org._id && orgs[0].org._id.toLowerCase()) === userDetail.orgId.toLowerCase()) {
                     return true;
                 } else {
                     return false;
@@ -416,15 +416,17 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                             background: checkWhoseMessage(m.orgs) ? "var(--lc-purple)" : "var(--lc-green)",
                                                             color: "#ffffff",
                                                         }}>
-                                                        <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
-                                                        <div className="d-flex align-items-end flex-column">
-                                                            <div style={{opacity: '0.5'}}>
-                                                                {moment(
-                                                                    m.message._ts_epoch_ms
-                                                                ).fromNow()}
-                                                            </div>
-                                                            <div style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</div>
+                                                        <div className="d-flex align-items-start">
+                                                            <small>
+                                                                <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</small>
+                                                                <small style={{opacity: '0.5'}}>
+                                                                    {moment(
+                                                                        m.message._ts_epoch_ms
+                                                                    ).fromNow()}
+                                                                </small>
+                                                            </small>
                                                         </div>
+                                                        <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
                                                     </div>
                                                 </div>
                                             ))}

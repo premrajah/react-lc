@@ -61,10 +61,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setUserOrg(userDetail.orgId);
     }, []);
 
-    useInterval(() => {
-        getAllOrgs();
-        getAllMessageGroups();
-    }, 1000 * 10);
+    // useInterval(() => {
+    //     getAllOrgs();
+    //     getAllMessageGroups();
+    // }, 1000 * 10);
 
 
     const getAllOrgs = () => {

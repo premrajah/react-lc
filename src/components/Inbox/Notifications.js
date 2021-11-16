@@ -188,7 +188,7 @@ class Notifications extends Component {
                                 <span className="mr-4">{moment(message._ts_epoch_ms).fromNow()}</span>
                                 <span className="">{readTime ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}` : ''}</span>
                                 {!readTime ? <span onClick={() => this.messageRead(messageId)} style={{cursor: 'pointer'}}>Mark as read</span> : null}
-                                { !item.options.is_owned && <React.Fragment>
+                                { (item.options && !item.options.is_owned) && <React.Fragment>
                                     {
                                         (message.text.match(PRODUCT_REGEX) && !item.options.is_tracked)
                                         ? <span className="ml-4 blue-text" style={{cursor: 'pointer'}}

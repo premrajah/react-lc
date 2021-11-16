@@ -41,6 +41,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
     const [selectedItem, setSelectedItem] = useState(0);
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const [selectedGroupKey, setSelectedGroupKey] = useState(null);
 
     const [reactSelectValues, setReactSelectValues] = useState([]);
     const [reactSelectedValues, setReactSelectedValues] = useState([]);
@@ -160,8 +162,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setReactSelectedValues(temp);
     };
 
-    const handleGroupClick = (groupId, selectedIndex) => {
-        if (!groupId) return;
+    const handleGroupClick = (e, group, selectedIndex) => {
+        if (!group._key) return;
+        setSelectedGroupId(group._id);
+        setSelectedGroupKey(group._key);
         updateSelected(selectedIndex);
 
         if(reactSelectedValues.length > 0   ) {
@@ -169,7 +173,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         }
         setShowHideGroupFilter(false);
         setShowHideOrgSearch(false);
-        getGroupMessageWithId(groupId);
+        getGroupMessageWithId(group._key);
         setSelectedMsgGroup([]);
     };
 
@@ -240,7 +244,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 if (response.status === 200) {
-
+                    console.log('msres ', response);
                     setMessageText("");
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
@@ -252,7 +256,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         handleGroupClick(messageKey, selectedItem);
                     }
 
-                    resetDraftRef.current.resetDraft();
+                    resetDraftRef.current.resetDraft(); // clear draftjs text field
 
                 }
             })
@@ -266,11 +270,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             sendMessage(messageText, reactSelectedValues, "", "", "new_message", "");
 
         } else if (messageText && selectedMsgGroup.length > 0) {
-            let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
-            let messageKey = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._key : null;
 
-            if(messageGroupId) {
-                sendMessage(messageText, [], messageGroupId, "", "group_message", messageKey);
+            if(selectedGroupId) {
+                sendMessage(messageText, [], selectedGroupId, "", "group_message", "");
             }
         }
     };
@@ -364,7 +366,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 selected={selectedItem === i}
                                                 button
                                                 divider
-                                                onClick={() => handleGroupClick(group._key, i)}>
+                                                onClick={(e) => handleGroupClick(e, group, i)}>
                                                 {group.name.replace(/\W/g, " ")}
                                                 {/*{group.name}*/}
                                             </ListItem>
@@ -439,7 +441,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                         <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            )).reverse()}
                                         </div>
                                     ) : (
                                         <div></div>

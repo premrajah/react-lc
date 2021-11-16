@@ -416,15 +416,25 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                             background: checkWhoseMessage(m.orgs) ? "var(--lc-purple)" : "var(--lc-green)",
                                                             color: "#ffffff",
                                                         }}>
-                                                        <div className="d-flex align-items-start">
-                                                            <small>
-                                                                <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</small>
-                                                                <small style={{opacity: '0.5'}}>
-                                                                    {moment(
-                                                                        m.message._ts_epoch_ms
-                                                                    ).fromNow()}
+                                                        <div className="d-flex justify-content-between">
+                                                            <div>
+                                                                <small>
+                                                                    <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</small>
+                                                                    <small style={{opacity: '0.5'}}>
+                                                                        {moment(
+                                                                            m.message._ts_epoch_ms
+                                                                        ).fromNow()}
+                                                                    </small>
                                                                 </small>
-                                                            </small>
+                                                            </div>
+                                                            <div>
+                                                                <small className="mr-2">
+                                                                    entity
+                                                                </small>
+                                                                <small>
+                                                                    artifacts
+                                                                </small>
+                                                            </div>
                                                         </div>
                                                         <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
                                                     </div>

@@ -34,6 +34,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const classes = useStyles()
     const reactSelectRef = useRef([]);
+    const resetDraftRef = useRef();
 
     const [allOrgs, setAllOrgs] = useState([]);
     const [allMessageGroups, setAllMessageGroups] = useState([]);
@@ -51,7 +52,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
-    const resetDraftRef = useRef();
+
 
 
     useEffect(() => {

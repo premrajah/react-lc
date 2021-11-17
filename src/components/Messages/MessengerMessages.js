@@ -250,7 +250,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    console.log('msres ', response.data.data);
+
+                    const data = response.data.data;
                     setMessageText("");
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
@@ -259,8 +260,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     getAllOrgs();
 
                     if(payload.message_group_id) {
-                        console.log('payload',payload, response.data.data, selectedMsgGroup[0])
-                        handleGroupClick(response.data.data.message_group, selectedItem);
+                        handleGroupClick(data.message_group, selectedItem);
                     }
 
                     resetDraftRef.current.resetDraft(); // clear draftjs text field
@@ -452,7 +452,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                     </div>
                                                 </div>
                                             )).reverse()}
-                                            <div className="dummy" ref={messagesEndRef}></div>
+                                            <div className="dummy" ref={messagesEndRef} />
                                         </div>
 
                                     ) : (

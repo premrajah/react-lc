@@ -35,6 +35,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const classes = useStyles()
     const reactSelectRef = useRef([]);
     const resetDraftRef = useRef();
+    const messagesEndRef = useRef(null)
 
     const [allOrgs, setAllOrgs] = useState([]);
     const [allMessageGroups, setAllMessageGroups] = useState([]);
@@ -52,8 +53,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
 
-
+    useEffect(() => {
+        scrollToBottom()
+    }, [selectedMsgGroup]);
 
     useEffect(() => {
         getAllOrgs();
@@ -120,7 +126,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 setAllMessageGroups(data);
 
                 if(!selectedItem) {
-                    handleGroupClick(data[0]._key, 0);
+                    handleGroupClick(data[0], 0);
                 }
             })
             .catch((error) => {
@@ -163,8 +169,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setReactSelectedValues(temp);
     };
 
-    const handleGroupClick = (e, group, selectedIndex) => {
-        if (!group._key) return;
+    const handleGroupClick = (group, selectedIndex) => {
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
         updateSelected(selectedIndex);
@@ -208,7 +213,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     }
 
 
-    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType, messageKey) => {
+    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
         if (!text) return;
 
         let payload = {};
@@ -237,7 +242,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 return;
         }
 
-        postMessage(payload, messageKey);
+        postMessage(payload);
     };
 
     const postMessage = (payload, messageKey) => {
@@ -245,7 +250,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    console.log('msres ', response);
+                    console.log('msres ', response.data.data);
                     setMessageText("");
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
@@ -254,7 +259,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     getAllOrgs();
 
                     if(payload.message_group_id) {
-                        handleGroupClick(messageKey, selectedItem);
+                        console.log('payload',payload, response.data.data, selectedMsgGroup[0])
+                        handleGroupClick(response.data.data.message_group, selectedItem);
                     }
 
                     resetDraftRef.current.resetDraft(); // clear draftjs text field
@@ -268,12 +274,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
-            sendMessage(messageText, reactSelectedValues, "", "", "new_message", "");
+            sendMessage(messageText, reactSelectedValues, "", "", "new_message");
 
         } else if (messageText && selectedMsgGroup.length > 0) {
 
+            console.log(selectedMsgGroup[0])
+
             if(selectedGroupId) {
-                sendMessage(messageText, [], selectedGroupId, "", "group_message", "");
+                sendMessage(messageText, [], selectedGroupId, "", "group_message");
             }
         }
     };
@@ -367,7 +375,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 selected={selectedItem === i}
                                                 button
                                                 divider
-                                                onClick={(e) => handleGroupClick(e, group, i)}>
+                                                onClick={() => handleGroupClick(group, i)}
+                                            >
                                                 {group.name.replace(/\W/g, " ")}
                                                 {/*{group.name}*/}
                                             </ListItem>
@@ -412,7 +421,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             className="message-window p-3"
                                             style={{ height: msgWindowHeight }}>
                                             {selectedMsgGroup.map((m, i) => (
-                                                <div key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-end' : 'justify-content-start'}`}>
+                                                <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-end' : 'justify-content-start'}`}>
                                                     <div
                                                         className="w-75 p-2 mb-1 border-rounded"
                                                         style={{
@@ -443,7 +452,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                     </div>
                                                 </div>
                                             )).reverse()}
+                                            <div className="dummy" ref={messagesEndRef}></div>
                                         </div>
+
                                     ) : (
                                         <div></div>
                                     )}

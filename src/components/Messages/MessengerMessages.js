@@ -8,6 +8,8 @@ import {Alert, Autocomplete} from "@material-ui/lab";
 import CreateIcon from "@material-ui/icons/Create";
 import SendIcon from "@material-ui/icons/Send";
 import FilterListIcon from '@material-ui/icons/FilterList';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import ExplicitIcon from '@material-ui/icons/Explicit';
 import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
@@ -440,12 +442,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                                 </small>
                                                             </div>
                                                             <div>
-                                                                <small className="mr-2">
-                                                                    entity
-                                                                </small>
-                                                                <small>
-                                                                    artifacts
-                                                                </small>
+                                                                {m.message.entity_as_json && <small className="mr-2" style={{cursor: "pointer"}}>
+                                                                    <ExplicitIcon fontSize="small"/>
+                                                                </small>}
+                                                                {m.artifacts.length > 0 && <small style={{cursor: "pointer"}}>
+                                                                    <PhotoLibraryIcon fontSize="small"/>
+                                                                </small>}
                                                             </div>
                                                         </div>
                                                         <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>

@@ -43,6 +43,7 @@
     "react-csv": "^2.0.3",
     "react-device-detect": "^1.15.0",
     "react-dom": "^16.14.0",
+    "react-draft-wysiwyg": "^1.14.7",
     "react-dropzone": "^11.2.4",
     "react-image-gallery": "^1.0.8",
     "react-image-lightbox": "^5.1.1",

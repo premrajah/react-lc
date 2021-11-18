@@ -29,9 +29,6 @@ import OrgComponent from "../Org/OrgComponent";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-
 
 class ProductDetailContent extends Component {
     slug;
@@ -73,8 +70,7 @@ class ProductDetailContent extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             initialValues:{},
-            activeKey:"1",
-            zoomQrCode:false
+            activeKey:"productinfo"
 
         };
 
@@ -102,7 +98,7 @@ class ProductDetailContent extends Component {
         this.phonenumber = this.phonenumber.bind(this);
     }
 
-    setActiveKey=(event,key)=>{
+    setActiveKey=(key)=>{
 
 
         this.setState({
@@ -282,13 +278,7 @@ class ProductDetailContent extends Component {
         if (prevProps!==this.props) {
 
 
-            if(this.props.item.product.purpose === "aggregate"){
-                this.setActiveKey(null,"1")
-            }else{
-                this.setActiveKey(null,"2")
-
-            }
-
+            this.setActiveKey("productinfo")
         }
     }
 
@@ -609,14 +599,6 @@ class ProductDetailContent extends Component {
 
             this.loadInfo();
         }
-
-
-        if(this.props.item.product.purpose === "aggregate"){
-            this.setActiveKey(null,"1")
-        }else{
-            this.setActiveKey(null,"2")
-
-        }
     }
 
     loadInfo() {
@@ -638,16 +620,6 @@ class ProductDetailContent extends Component {
 
 
 
-    callZoom=()=>{
-
-
-        this.setState({
-            zoomQrCode:!this.state.zoomQrCode
-
-
-        })
-    }
-
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -656,16 +628,6 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-
-                        {this.state.zoomQrCode&&  <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
-                            {this.props.item&&this.props.item.qr_artifact && (
-                                <img
-                                    className="img-fluid qr-code-zoom"
-                                    src={this.props.item.qr_artifact.blob_url}
-
-                                />
-                            )}
-                        </div>}
                         <div className="row no-gutters pt-4 pb-4  justify-content-center">
                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
                                 <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
@@ -674,9 +636,6 @@ class ProductDetailContent extends Component {
                         </div>
                         <div className="row no-gutters  justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
-
-                                <div className="row ">
-                                    <div className="col-12 ">
                                 <div className=" stick-left-box  ">
 
 
@@ -702,22 +661,8 @@ class ProductDetailContent extends Component {
                                                 </div>
                                             </>
                                         )}
-
-
-                                    <InfoTabContent item={this.props.item}/>
-
-
-                                    <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
-
-
-
-
+                                    <QrCode hideRegister={this.props.hideRegister}  item={this.state.item}/>
                                 </div>
-
-
-                                </div>
-                                </div>
-
                             </div>
 
                             <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left "}>
@@ -775,7 +720,7 @@ class ProductDetailContent extends Component {
                                     </div>
                                 </div>
 
-                                <div className="row justify-content-start pb-3 ">
+                                <div className="row justify-content-start pb-2 ">
                                     <div className="col-auto">
                                         <p
                                             style={{ fontSize: "16px" }}
@@ -789,107 +734,82 @@ class ProductDetailContent extends Component {
 
 
                                 {this.props.item &&
-                                <div className="row justify-content-start pb-3  tabs-detail">
-                                    <div className="col-12 ">
+                                <div className="row justify-content-start pb-3 pt-3 tabs-detail">
+                                    <div className="col-12 mt-2">
 
                                         <Box sx={{ width: '100%', typography: 'body1' }}>
-                                            <TabContext value={this.state.activeKey}>
-                                                <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
-                                                    <TabList
-                                                        variant="scrollable"
-                                                        scrollButtons="auto"
-                                                        textColor={"#27245C"}
-                                                        TabIndicatorProps={{
-                                                            style: {
-                                                                backgroundColor: "#27245C",
-                                                                padding: '2px',
-                                                            }
-                                                        }}
-                                                        onChange={this.setActiveKey}
-
-                                                        aria-label="lab API tabs example">
-                                                        {/*<Tab label="Info" value="1" />*/}
-
-
-                                                        {(this.props.item.product.purpose === "aggregate") &&
-                                                        <Tab label="Aggregation" value="1"/>
-                                                        }
-                                                            <Tab label="Sub Products" value="2" />
-
-                                                        <Tab label="Site" value="3" />
-                                                        {this.state.searches.length > 0 && (
-                                                        <Tab label="Searches" value="4" />
-                                                        )}
-
-                                                        {this.state.listingLinked &&
-                                                        <Tab label="Searches" value="5" />
-                                                            }
-                                                        {this.state.listingLinked && (   <Tab label="Listing" value="6" />)}
-                                                        <Tab label="Artifacts" value="6" />
-
-
+                                            <TabContext value={value}>
+                                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                                    <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                                        <Tab label="Item One" value="1" />
+                                                        <Tab label="Item Two" value="2" />
+                                                        <Tab label="Item Three" value="3" />
                                                     </TabList>
                                                 </Box>
-
-
-
-                                                {(this.props.item.product.purpose === "aggregate") &&
                                                 <TabPanel value="1">
-
-                                                    <AggregatesTab item={this.props.item}/>
-                                                </TabPanel>}
-                                                <TabPanel value="2">
-                                                    <SubProductsTab item={this.props.item}/>
-                                                </TabPanel>
-                                                <TabPanel value="3">
-                                                    <>
-
-                                                    <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
-                                                    {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
-
-                                                    <div className={"bg-white rad-8 p-2"}>
-                                                    <GoogleMap siteId={this.props.item.site._key} width={"100%"}
-                                                               height={"300px"} locations={[{
-                                                        name: this.props.item.site.name,
-                                                        location: this.props.item.site.geo_codes[0].address_info.geometry.location,
-                                                        isCenter: true
-                                                    }]}/>
-                                                    </div>
-
-                                                    }
-
-                                                    </>
-
-                                                </TabPanel>
-
-
-                                                {this.state.searches.length > 0 && (
-                                                    <TabPanel value="4">
-                                                        {this.state.searches.map((item) => (
-                                                            <SearchItem item={item}/>
-                                                        ))}
-                                                    </TabPanel>
-                                                )}
-
-                                                {this.state.listingLinked && (
-                                                    <TabPanel value="5">
-                                                        {this.state.listingLinked && (
-                                                            <ResourceItem
-                                                                history={this.props.history}
-                                                                item={this.state.listingLinked}
-                                                                artifacts={this.state.item.artifacts}
-                                                                hideMoreMenu={true}
-                                                            />
-                                                        )}
-                                                    </TabPanel>
-                                                )}
-                                                <TabPanel value="6">
-                                                    <ArtifactProductsTab item={this.props.item}/>
-                                                </TabPanel>
-
+                                                    <InfoTabContent item={this.props.item}/></TabPanel>
+                                                <TabPanel value="2">Item Two</TabPanel>
+                                                <TabPanel value="3">Item Three</TabPanel>
                                             </TabContext>
                                         </Box>
+                                        <Tabs
 
+                                            onSelect={(k) => this.setActiveKey(k)}
+                                            activeKey={this.state.activeKey}
+                                            id="uncontrolled-tab-example">
+                                            <Tab eventKey="productinfo" title="Product Info">
+                                                <InfoTabContent item={this.props.item}/>
+
+                                            </Tab>
+
+                                            {(this.props.item.product.purpose === "aggregate") &&
+                                            <Tab eventKey="aggregates" title="Aggregations">
+                                                <AggregatesTab item={this.props.item}/>
+                                            </Tab>}
+                                            <Tab eventKey="subproducts" title="Subproducts">
+                                                <SubProductsTab item={this.props.item}/>
+                                            </Tab>
+
+                                            <Tab eventKey="maps" title="Site">
+
+                                                <p>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
+                                                {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
+
+
+                                                <GoogleMap siteId={this.props.item.site._key} width={"100%"}
+                                                           height={"300px"} locations={[{
+                                                    name: this.props.item.site.name,
+                                                    location: this.props.item.site.geo_codes[0].address_info.geometry.location,
+                                                    isCenter: true
+                                                }]}/>}
+
+                                            </Tab>
+
+
+                                            {this.state.searches.length > 0 && (
+                                                <Tab eventKey="search" title="Searches">
+                                                    {this.state.searches.map((item) => (
+                                                        <SearchItem item={item}/>
+                                                    ))}
+                                                </Tab>
+                                            )}
+
+                                            {this.state.listingLinked && (
+                                                <Tab eventKey="listing" title="Listing">
+                                                    {this.state.listingLinked && (
+                                                        <ResourceItem
+                                                            history={this.props.history}
+                                                            item={this.state.listingLinked}
+                                                            artifacts={this.state.item.artifacts}
+                                                            hideMoreMenu={true}
+                                                        />
+                                                    )}
+                                                </Tab>
+                                            )}
+                                            <Tab eventKey="artifacts" title="Artifacts">
+                                                <ArtifactProductsTab item={this.props.item}/>
+                                            </Tab>
+                                        </Tabs>
                                     </div>
                                 </div>
                                 }

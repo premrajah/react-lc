@@ -49,12 +49,12 @@ const AggregateItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters justify-content-start mt-2">
+        <div className="row no-gutters justify-content-start mt-1 mb-1">
             <div className="col-sm-2 aggregate-img">
                 {
                     artifacts.length > 0
-                        ? <ImageOnlyThumbnail images={artifacts} />
-                        : <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                        ? <ImageOnlyThumbnail smallThumbnail={true} images={artifacts} />
+                        : <img className={"img-fluid small-thumbnail-img"} src={PlaceholderImg} alt="" />
                 }
             </div>
 
@@ -62,23 +62,22 @@ const AggregateItem = (props) => {
                 <div>
                     <LightTooltip title={"Conversion: "+item.factor_used+" x "+item.volume+" "+item.units}>
                     <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>
-                        <p className={"text-blue text-capitalize text-mute small"}>
-                            <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span> {item.product_name}<br/>
-                        <span style={{whiteSpace: "pre-line"}} className={"text-blue text-capitalize text-mute small"}>
-                            <span  className={"text-blue text-capitalize text-mute small"}>{props.key}</span>
+                        <p className={"text-blue text-capitalize  small"}>
+                            <span className={"text-bold"}>{item.product_name}</span>
+                            <br/>
+                        <span style={{whiteSpace: "pre-line", display:"block"}} className={"text-blue mt-2 text-capitalize text-mute small"}>
+                            <span  className={""}> {item.direction==="additive"? "+":"-"}{item.volume} </span>
 
-                                <span> {item.direction==="additive"? "+":"-"}{item.volume} </span>
-
-                            <span >{item.units}, {item.state}</span></span></p>
+                            <span >{item.units}, {item.state}</span>
+                        </span>
+                        </p>
 
                     </Link>
                     </LightTooltip>
                 </div>
 
             </div>
-            {/*<div className="col-sm-2 ">*/}
-            {/*    <span className={"text-blue text-capitalize text-mute small"}>State:{item.state}</span>*/}
-            {/*</div>*/}
+
 
 
         </div>

@@ -30,7 +30,7 @@ import AutocompleteCustom from "../../components/AutocompleteCustom";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 class Products extends Component {
 
     constructor(props) {
@@ -368,7 +368,7 @@ class Products extends Component {
                                             <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer',
                                                 textOverflow: "ellipsis",
                                                 whiteSpace: "nowrap",
-                                                overflow: "hidden"}}><RemoveIcon color="secondary" /> {product.product.name}</div>
+                                                overflow: "hidden"}}><IndeterminateCheckBoxIcon style={{opacity:"0.5"}} className={"text-blue"} /> {product.product.name}</div>
                                     ))}
                                 </div>
                             </div>
@@ -384,23 +384,23 @@ class Products extends Component {
 
                         <div className="row">
                             <div className="col-md-8 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
                                     Product Service
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/product-archive" className="btn btn-sm btn-gray-border mr-2">
                                     Records
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
                                     Tracked
                                 </Link>
                             </div>
 
 
                             <div className="col-md-4 d-flex justify-content-end">
-                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button>
-                                <button className="d-none btn btn-sm blue-btn ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+                                <button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button>
+                                <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
                         </div>
 
@@ -409,11 +409,10 @@ class Products extends Component {
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className={"listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
+                                <p  className="text-mute ml-2 mb-1">
                                     {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -441,14 +440,11 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1">Listable Products</span>
+                                    <span className="ml-1">Products Listed</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
-                            </div>
+
                         </div>
-                        <div className={"listing-row-border mb-3"}></div>
 
                         {this.props.productWithoutParentListPage&&
                         this.props.productWithoutParentListPage.filter((site)=>

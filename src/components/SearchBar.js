@@ -25,22 +25,21 @@ class SearchBar extends Component {
             <div className="row">
                 <div className="col d-flex">
 
-                    <div style={{width:  '100%'}} className={"search-container"}>
-                        <FormControl className={"filter-box"} style={{width:  '10.5%'}}  component="div">
-
-
-                            <NativeSelect label="Filter" className="search-filter"    value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                    <div style={{width:  '100%'}} className={"search-box custom-select  rad-8"}>
+                        {/*<FormControl className={"filter-box"}   component="div">*/}
+                            <select style={{width:  '10.5%'}} label="Filter" className="filter-box  rad-8"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >
                                     Filter By
                                 </option>
                                 {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
                                     return <option   key={index} value={drop}>{capitalize(drop)}</option>
                                 }) : null}
-                            </NativeSelect>
-                        </FormControl>
+                            </select>
+                        {/*</FormControl>*/}
 
-                        <TextField
+                        <input
                             id="searchBar"
+                            className={"rad-8"}
                             label={title ? title : ""}
                             variant="outlined"
                             className=""
@@ -50,11 +49,12 @@ class SearchBar extends Component {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
+
                                     </InputAdornment>
                                 ),
                             }}
                         />
+                        <SearchGray className={"search-icon"} style={{ fontSize: 24, color: "#B2B2B2" }} />
                     </div>
                 </div>
             </div>

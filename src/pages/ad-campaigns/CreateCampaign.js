@@ -15,9 +15,6 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import GeneralSettings from "../../components/Campaign/GeneralSettings";
-import Strategy from "../../components/Campaign/Strategy";
-import Artifacts from "../../components/Campaign/Artifacts";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
@@ -35,6 +32,7 @@ class CreateCampaign extends Component {
         super(props);
         this.state = {
             searchValue: '',
+            selectOptionError:false,
             filterValue: '',
             selectedProducts: [],
             showMultiUpload: false,
@@ -59,13 +57,18 @@ class CreateCampaign extends Component {
             properties: [ "brand","category", "type","state","model","serial","sku","upc","part_no","line","condition","stage",
                 "purpose","units","year_of_making"],
             operators: [
-                {name:"==",value:"equals "},
-                {name:"!=",value:"not equal "},
-                {name:">",value:"greater_than"},
-                {name:"<",value:"less_than "},
-
-                {name:">=",value:"greater_than_equals"},
-                {name:"<=",value:"less_than_equals"}
+                {name:"Equals",value:"equals"},
+                {name:"Not Equal",value:"not_equal"},
+                {name:"Less Than Equal To",value:"less_than_equals"},
+                {name:"Greater than equal to",value:"greater_than_equals"},
+                {name:"Less Than",value:"less_than"},
+                {name:"Greater Than",value:"greater_than"},
+                {name:"Like",value:"like"},
+                {name:"Not Like",value:"not_like"},
+                {name:"In",value:"in"},
+                {name:"Not In",value:"not_in"},
+                {name:"Matches",value:"matches"},
+                {name:"Not Matches",value:"not_matches"},
             ],
 
         }
@@ -139,6 +142,43 @@ class CreateCampaign extends Component {
             countAll: 0,
             countAny: 0,
         })
+
+
+        if (this.props.item){
+            this.loadImages()
+        }
+    }
+
+
+    loadImages=()=> {
+        let images = [];
+
+        let currentFiles = [];
+
+        for (let k = 0; k < this.props.item.artifacts.length; k++) {
+
+            var fileItem = {
+                status: 1,
+                id: this.props.item.artifacts[k]._key,
+                imgUrl: this.props.item.artifacts[k].blob_url,
+                file: {
+                    mime_type: this.props.item.artifacts[k].mime_type,
+                    name: this.props.item.artifacts[k].name,
+                },
+            };
+            // fileItem.status = 1  //success
+            // fileItem.id = this.state.item.artifacts[k]._key
+            // fileItem.url = this.state.item.artifacts[k].blob_url
+
+            images.push(this.props.item.artifacts[k]._key);
+
+            currentFiles.push(fileItem);
+        }
+
+        this.setState({
+            files: currentFiles,
+            images: images,
+        });
     }
 
 
@@ -159,7 +199,27 @@ class CreateCampaign extends Component {
          if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
 
 
-            let newSkipped = this.state.skipped;
+
+             if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
+
+                 this.setState({
+
+                     selectOptionError:true
+                 })
+
+                 return
+             }else{
+
+                 this.setState({
+
+                     selectOptionError:false
+                 })
+             }
+
+
+
+
+             let newSkipped = this.state.skipped;
             if (this.isStepSkipped(this.state.activeStep)) {
                 newSkipped = new Set(newSkipped.values());
                 newSkipped.delete(this.state.activeStep);
@@ -176,7 +236,17 @@ class CreateCampaign extends Component {
 
         }else{
 
-             this.handleSubmit()
+
+             if (this.props.item){
+
+                 this.handleUpdate()
+
+             }else{
+
+                 this.handleSubmit()
+
+             }
+
 
         }
 
@@ -266,15 +336,98 @@ class CreateCampaign extends Component {
     };
 
 
+    handleUpdate = () => {
+
+        let fields=this.state.fields
+
+        const name = fields["name"];
+        const description = fields["description"];
+        const startDate = new Date(fields["startDate"]).getTime() ;
+        const endDate =  new Date(fields["endDate"]).getTime();
+        const messageTemplate = fields["messageTemplate"];
+
+        let conditionAll=[]
+        let conditionAny=[]
+
+
+        for (let i=0;i<this.state.countAll;i++) {
+
+            conditionAll.push({
+                predicate: fields[`propertyAnd[${i}]`],
+                operator: fields[`operatorAnd[${i}]`],
+                value: fields[`valueAnd[${i}]`]
+
+            })
+        }
+
+        for (let i=0;i<this.state.countAny;i++) {
+
+            conditionAny.push({
+                predicate: fields[`propertyOr[${i}]`],
+                operator: fields[`operatorOr[${i}]`],
+                value: fields[`valueOr[${i}]`]
+
+            })
+        }
+
+
+        const campaignData = {
+
+            id:this.props.item._id,
+            update:{
+                name:name,
+                description:description,
+                start_ts:startDate,
+                end_ts:endDate,
+                all_of:conditionAll,
+                any_of:conditionAny
+            },
+            message_template:messageTemplate,
+            artifact_ids:this.state.images,
+        };
+
+        this.setState({isSubmitButtonPressed: true})
+
+        axios
+            .post(
+                createCampaignUrl,
+                campaignData,
+                {
+                    headers: {
+                        Authorization: "Bearer " + this.props.userDetail.token,
+                    },
+                }
+            )
+            .then((res) => {
+
+                //
+                // if (!this.props.parentProduct) {
+                //     this.setState({
+                //         product: res.data.data,
+                //         parentProduct: res.data.data,
+                //     });
+                // }
+
+                this.props.showSnackbar({show:true,severity:"success",message:"Campaign updated successfully. Thanks"})
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            });
+
+
+    };
+
     handleBack = () => {
 
          this.setState({
              activeStep:this.state.activeStep-1
          });
 
-         this.setState({
-             activeStep:0
-         });
+         // this.setState({
+         //     activeStep:0
+         // });
     };
 
      handleSkip = () => {
@@ -488,6 +641,9 @@ class CreateCampaign extends Component {
 
 
             }
+
+
+
         }
 
         else if (activeStep===2) {
@@ -521,12 +677,12 @@ class CreateCampaign extends Component {
                     <div className="container  mb-150  pb-5 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle="Create an Ad Campaign"
-                            subTitle="All products created can be found here"
+                            pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}
+                            subTitle="Define campaign parameters here"
                         />
 
                         <div className={classes.root}>
-                            <Stepper activeStep={this.state.activeStep}>
+                            <Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>
                                 {this.state.steps.map((label, index) => {
                                     const stepProps = {};
                                     const labelProps = {};
@@ -584,7 +740,7 @@ class CreateCampaign extends Component {
                                                     <div className="col-12 ">
 
                                                         <TextFieldWrapper
-                                                            // initialValue={this.props.item&&this.props.item.site.name}
+                                                            initialValue={this.props.item&&this.props.item.campaign.name}
                                                             onChange={(value)=>this.handleChange(value,"name")}
                                                             error={this.state.errors["name"]}
                                                             name="name" title="Name" />
@@ -599,7 +755,7 @@ class CreateCampaign extends Component {
                                                         <TextFieldWrapper
                                                             multiline
                                                             rows={4}
-                                                            // initialValue={this.props.item&&this.props.item.site.description}
+                                                            initialValue={this.props.item&&this.props.item.campaign.description}
                                                             onChange={(value)=>this.handleChange(value,"description")}
                                                             error={this.state.errors["description"]}
                                                             name="description" title="Description" />
@@ -628,7 +784,7 @@ class CreateCampaign extends Component {
                                                                 id="date-picker-dialog"
                                                                 label="Available From"
                                                                 format="DD/MM/yyyy"
-                                                                value={this.state.startDate}
+                                                                value={this.state.startDate?this.state.startDate:this.props.item&&this.props.item.campaign.start_ts}
                                                                 // onChange={this.handleChangeDateStartDate.bind(
                                                                 //     this
                                                                 // )}
@@ -659,7 +815,7 @@ class CreateCampaign extends Component {
                                                                 id="date-picker-dialog"
                                                                 label="Available From"
                                                                 format="DD/MM/yyyy"
-                                                                value={this.state.startDate}
+                                                                value={this.state.endDate?this.state.endDate:this.props.item&&this.props.item.campaign.end_ts}
                                                                 onChange={(value)=>this.handleChange(value,"endDate")}
 
                                                                 // onChange={this.handleChangeDateStartDate.bind(
@@ -700,7 +856,7 @@ class CreateCampaign extends Component {
 
                                                      {this.state.addCountAll.map((item, index) =>
                                                         <div className="row no-gutters mt-4">
-                                                            <div className="col-4">
+                                                            <div className="col-3">
                                                                 <div className="row camera-grids   no-gutters   ">
                                                                     <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
 
@@ -723,7 +879,7 @@ class CreateCampaign extends Component {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-1 pr-2">
+                                                            <div className="col-3 pr-2">
                                                                 <SelectArrayWrapper
 
                                                                     // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
@@ -745,12 +901,12 @@ class CreateCampaign extends Component {
                                                                 <TextFieldWrapper
                                                                     error={this.state.errors[`valueAnd[${index}]`]}
 
-                                                                    initialValue={this.props.item&&this.props.item.product.name}
+                                                                    // initialValue={this.props.item&&this.props.item.product.name}
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
                                                                     name={`valueAnd[${index}]`} title="Value" />
                                                             </div>
 
-                                                            <div  className="col-2 text-center"
+                                                            <div  className="col-1 text-center"
                                                                   style={{ display: "flex" }}>
 
 
@@ -841,7 +997,7 @@ class CreateCampaign extends Component {
                                                                 <TextFieldWrapper
                                                                     error={this.state.errors[`valueOr[${index}]`]}
 
-                                                                    initialValue={this.props.item&&this.props.item.product.name}
+                                                                    // initialValue={this.props.item&&this.props.item.product.name}
                                                                     onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}
                                                                     name={`valueOr[${index}]`} title="Value" />
                                                             </div>
@@ -891,11 +1047,11 @@ class CreateCampaign extends Component {
                                            </>}
 
                                             {this.state.activeStep === 2 &&
-                                            <><div className="col-12 mt-3 ">
+                                            <>
+                                                <div className="row mt-3 ">
                                                     <div className="col-12 mt-4">
                                                         <div className="row camera-grids   no-gutters   ">
                                                             <div className="col-12  text-left ">
-                                                                <div className="container-fluid  pb-5 ">
 
                                                                     <form onSubmit={this.props.itemIndex?this.updateSite:this.handleSubmit}>
 
@@ -905,7 +1061,7 @@ class CreateCampaign extends Component {
                                                                                 <TextFieldWrapper
                                                                                     multiline
                                                                                     rows={4}
-                                                                                    initialValue={this.props.item&&this.props.item.message_template}
+                                                                                    initialValue={this.props.item&&this.props.item.message_template.text}
                                                                                     onChange={(value)=>this.handleChange(value,"messageTemplate")}
                                                                                     error={this.state.errors["messageTemplate"]}
                                                                                     name="messageTemplate" title="Message Template" />
@@ -930,10 +1086,10 @@ class CreateCampaign extends Component {
                                                                         </div>
 
                                                                     </form>
-                                                                </div>
+
                                                             </div>
 
-                                                            <div className="row camera-grids   no-gutters   ">
+                                                            <div className="row camera-grids   no-gutters mb-4  ">
 
                                                                 <div className="col-12  text-left ">
                                                                     <div className="">
@@ -1083,40 +1239,7 @@ class CreateCampaign extends Component {
                                                         </div>
 
                                                     </div>
-                                                    <div className={"custom-label text-bold text-blue mb-3"}>
-                                                        Attachment
-                                                    </div>
-                                                    <div className="col-12 mt-4 mb-5">
-                                                        {this.state.files.length > 0 ? (
-                                                            this.state.files.filter((item) => item.status === 0).length >
-                                                            0 ? (
-                                                                <button
-                                                                    className={
-                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
-                                                                    }>
-                                                                    Upload in progress ....
-                                                                </button>
-                                                            ) : (
-                                                                <button
-                                                                    type={"submit"}
-                                                                    className={
-                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                    }
-                                                                    disabled={this.state.isSubmitButtonPressed}>
-                                                                    {this.props.item?"Update Product":"Add Product"}
-                                                                </button>
-                                                            )
-                                                        ) : (
-                                                            <button
-                                                                type={"submit"}
-                                                                className={
-                                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                }
-                                                                disabled={this.state.isSubmitButtonPressed}>
-                                                                {this.props.item?"Update Product":"Add Product"}
-                                                            </button>
-                                                        )}
-                                                    </div>
+
 
                                                 </div>
                                             </>
@@ -1146,9 +1269,18 @@ class CreateCampaign extends Component {
                                                 onClick={this.handleNext}
                                                 className={classes.button}
                                             >
-                                                {this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
+
+
+                                                {this.state.files.length > 0 ? (
+                                                    this.state.files.filter((item) => item.status === 0).length >
+                                                    0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
+                                                this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
                                             </Button>
+
+
                                         </div>
+
+                                        {this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}
                                     </div>
                                 )}
                             </div>
@@ -1166,18 +1298,7 @@ function getSteps() {
     return ['Settings', 'Strategy', 'Artifacts'];
 }
 
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return <GeneralSettings />;
-        case 1:
-            return <Strategy />;
-        case 2:
-            return <Artifacts />;
-        default:
-            return 'Unknown step';
-    }
-}
+
 
 
 
@@ -1213,6 +1334,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCampaign);

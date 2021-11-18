@@ -57,9 +57,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
-    const [openEntityModal, setOpenEntityModal] = useState(false);
-
-    const [listIndexData, setListIndexData] = useState([]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -83,13 +80,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     //     getAllOrgs();
     //     getAllMessageGroups();
     // }, 1000 * 10);
-
-    const handleOpenEntityModal = () => {
-        setOpenEntityModal(true);
-    }
-    const handleCloseEntityModal = () => {
-        setOpenEntityModal(false);
-    }
 
 
     const getAllOrgs = () => {

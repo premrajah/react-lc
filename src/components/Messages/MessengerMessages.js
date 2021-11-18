@@ -49,6 +49,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
+    const resetDraftRef = useRef();
+
 
     useEffect(() => {
         getAllOrgs();
@@ -108,7 +110,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .then((response) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
-                handleGroupClick(data[0]._key, 0);
+
+                if(!selectedItem) {
+                    handleGroupClick(data[0]._key, 0);
+                }
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -193,7 +198,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     }
 
 
-    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
+    const sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType, messageKey) => {
         if (!text) return;
 
         let payload = {};
@@ -222,10 +227,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 return;
         }
 
-        postMessage(payload);
+        postMessage(payload, messageKey);
     };
 
-    const postMessage = (payload) => {
+    const postMessage = (payload, messageKey) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
@@ -237,6 +242,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     }
                     getAllMessageGroups();
                     getAllOrgs();
+
+                    if(payload.message_group_id) {
+                        handleGroupClick(messageKey, selectedItem);
+                    }
+
+                    resetDraftRef.current.resetDraft();
+
                 }
             })
             .catch((error) => {
@@ -246,15 +258,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleSendMessage = () => {
         if (messageText && reactSelectedValues.length > 0) {
-            console.log("b")
-            sendMessage(messageText, reactSelectedValues, "", "", "new_message");
+            sendMessage(messageText, reactSelectedValues, "", "", "new_message", "");
 
         } else if (messageText && selectedMsgGroup.length > 0) {
-            console.log("c")
             let messageGroupId = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._id : null;
+            let messageKey = selectedMsgGroup.length > 0 ? selectedMsgGroup[0].message_groups[0]._key : null;
 
             if(messageGroupId) {
-                sendMessage(messageText, [], messageGroupId, "", "group_message");
+                sendMessage(messageText, [], messageGroupId, "", "group_message", messageKey);
             }
         }
     };
@@ -266,7 +277,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             <div className="row">
                 {
                     <div className="col-md-4">
-
                         <div className="row">
                             <div className="col-md-8">
                                 {showHideGroupFilter && <Autocomplete
@@ -429,7 +439,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="row mt-2" style={{height: "60px"}}>
                                 <div className="col-11 p-0">
-                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)}/>
+                                    <RichTextEditor richTextHandleCallback={(value) => handleRichTextCallback(value)} allOrgs={allOrgs} ref={resetDraftRef} />
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">
                                     <Button

@@ -143,7 +143,7 @@ render() {
                     <HeaderDark />
 
                     <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle="Approvals" subTitle="Yay! Someone has released an item to you. You just need to approve it here" />
+                        <PageHeader pageTitle="Approvals" subTitle="You can approve or decline a new product someone has released to you here" />
 
                         <div className={"tab-content-listing col-12"}>
                             <div>

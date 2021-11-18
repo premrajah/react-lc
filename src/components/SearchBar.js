@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import {FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import SearchGray from "@material-ui/icons/Search";
-import NativeSelect from '@material-ui/core/NativeSelect';
-import NativeSelectInput from "@material-ui/core/NativeSelect/NativeSelectInput";
+
 import {capitalize} from "../Util/GlobalFunctions";
 class SearchBar extends Component {
 

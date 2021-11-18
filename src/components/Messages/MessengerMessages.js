@@ -15,6 +15,7 @@ import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
 import RichTextEditor from "./RichTextEditor";
+import WysiwygEditor from "./WysiwygEditor";
 
 
 const msgWindowHeight = "520px";
@@ -57,6 +58,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const [openEntityModal, setOpenEntityModal] = useState(false);
 
+    const [listIndexData, setListIndexData] = useState([]);
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
@@ -68,6 +71,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     useEffect(() => {
         getAllOrgs();
         getAllMessageGroups();
+        // getAllMessageGroupsExpand();
     }, []);
 
     useEffect(() => {
@@ -145,6 +149,22 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             });
     };
 
+    const getAllMessageGroupsExpand = () => {
+        axios
+            .get(`${baseUrl}message-group/expand`)
+            .then((response) => {
+                const data = response.data.data;
+                setAllMessageGroups(data);
+
+                if(!selectedItem) {
+                    handleGroupClick(data[0], 0);
+                }
+            })
+            .catch((error) => {
+                console.log("message-group-error ", error.message);
+            });
+    };
+
 
 
     const getGroupMessageWithId = (id) => {
@@ -199,6 +219,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     }
 
     const handleOrgSearchButton = () => {
+        console.log('h ', showHideOrgSearch)
+        // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
+        if(showHideOrgSearch) {
+            if(allMessageGroups[0].id === "0") {
+                console.log("am ")
+                getAllMessageGroups();
+                handleGroupClick(allMessageGroups[0], 0);
+            }
+        } else {
+            allMessageGroups.unshift({id: "0", name: "New Message"});
+            handleGroupClick(allMessageGroups[0], 0);
+        }
         setShowHideOrgSearch(!showHideOrgSearch);
     }
 
@@ -268,6 +300,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         reactSelectRef.current.clearValue();
                     }
                     getAllMessageGroups();
+                    // getAllMessageGroupsExpand();
                     getAllOrgs();
 
                     if(payload.message_group_id) {
@@ -289,8 +322,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
         } else if (messageText && selectedMsgGroup.length > 0) {
 
-            console.log(selectedMsgGroup[0])
-
             if(selectedGroupId) {
                 sendMessage(messageText, [], selectedGroupId, "", "group_message");
             }
@@ -306,6 +337,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     <div className="col-md-4">
                         <div className="row">
                              <div className="col-md-8">
+                                 {!showHideGroupFilter && <div className="d-flex justify-content-start align-items-center h-100">Groups</div>}
                                  {showHideGroupFilter && <Autocomplete
                                      size="small"
                                     freeSolo
@@ -388,8 +420,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 divider
                                                 onClick={() => handleGroupClick(group, i)}
                                             >
-                                                {group.name.replace(/\W/g, " ")}
-                                                {/*{group.name}*/}
+                                                {/*{group.name.replace(/\W/g, " ")}*/}
+                                                {group.name}
                                             </ListItem>
                                         </div>
                                     ))
@@ -481,9 +513,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                             <div className="row mt-2" style={{height: "60px"}}>
                                 <div className="col-11 p-0">
-                                    <RichTextEditor
+                                    {/*<RichTextEditor*/}
+                                    {/*    richTextHandleCallback={(value) => handleRichTextCallback(value)}*/}
+                                    {/*    allOrgs={allOrgs} ref={resetDraftRef}*/}
+                                    {/*/>*/}
+                                    <WysiwygEditor
+                                        allOrgs={allOrgs}
+                                        ref={resetDraftRef}
                                         richTextHandleCallback={(value) => handleRichTextCallback(value)}
-                                        allOrgs={allOrgs} ref={resetDraftRef}
                                     />
                                 </div>
                                 <div className="col-1 d-flex justify-content-center align-items-center p-0">

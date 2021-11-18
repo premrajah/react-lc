@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PlaceholderImg from "../../../img/place-holder-lc.png";
 import MoreMenu from "../../MoreMenu";
-
+import {Tooltip} from "@material-ui/core";
 import axios from "axios/index";
 import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
@@ -13,6 +13,10 @@ import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add} from "@material-ui/icons";
 import {capitalize} from "../../../Util/GlobalFunctions";
+import { Info } from "@material-ui/icons";
+import {withStyles} from "@material-ui/core/styles";
+import { OverlayTrigger, Popover } from "react-bootstrap";
+
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -236,42 +240,77 @@ class ProductItemNew extends Component {
         this.props.listOfProducts(item)
     }
 
+     orgPopover = (
+        <Popover id="add-popover">
+            <div className={"p-3"}>
+
+                {/*<span className={"title-bold"} style={{ textTransform: "capitalize" }}>"Click"</span>*/}
+                {/*<br/>*/}
+
+                    <>
+                <span className={"text-gray-light"}>
+
+                                Click here for multiple selection
+                       </span>
+
+                    </>
+            </div>
+        </Popover>
+    );
+
     render() {
         return (
-            <> <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+            <> <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-4":"col-2 "}>
                                     <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
                                     ) : (
-                                        <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                        <img className={"img-fluid img-list rad-4"} src={PlaceholderImg} alt="" />
                                     )}
                                     </>
                                     </Link>
                                 </div>
-                                <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-2  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-4  content-box-listing"}>
 
-                                        <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}> {this.props.item.name}  <small className={"text-mute"}><small> - {this.props.item._key}</small></small></Link>
+                                        <p style={{ fontSize: "18px" }} className="text-capitalize mb-1">
+                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>  <small className={""}><small> - {this.props.item._key}</small></small></Link>
                                       </p>
 
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
-                                        {this.props.item.purpose}
+                                    <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                      Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>
                                     </p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
-                                        <span className="mr-1">{this.props.item.category},</span>
-                                        <span className="mr-1">{this.props.item.type},</span>
-                                        <span className="mr-1 ">{capitalize(this.props.item.state)} </span>
-                                        {this.props.item.purpose!=="aggregate"&&  <span>{this.props.item.volume} </span>}
-                                        {this.props.item.purpose!=="aggregate"&&     <span>{this.props.item.units}</span>}
+                                    <p className={"text-gray-light mt-2 "}>
+                                    Category:
+                                    <span
+
+                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                            <span className="text-capitlize">
+                                                                {capitalize(this.props.item.category)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className=" text-capitlize">
+                                                                {capitalize(this.props.item.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className="  text-capitlize">
+                                                                {capitalize(this.props.item.state)}
+                                                            </span>
+
+
+
+                                    </span>
                                     </p>
-                                    {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-bold"}>{this.props.item.sku.brand}</p>}
+                                    <p  className=" text-capitalize  text-gray-light">
+
+                                        {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}
+                                        {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}
+                                    </p>
+                                    {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
 
                                     {this.props.item.search_ids && (
                                         <p
                                             style={{ fontSize: "16px" }}
-                                            className="text-mute mb-1 bottom-tag-p">
+                                            className=" mb-1 bottom-tag-p">
                                             {this.props.item.search_ids.length} Searches
                                         </p>
                                     )}
@@ -279,26 +318,52 @@ class ProductItemNew extends Component {
                                     this.props.item.sub_products.length > 0 && (
                                         <p
                                             style={{ fontSize: "16px" }}
-                                            className="text-mute mb-1">
+                                            className=" mb-1">
                                             {this.props.item.sub_product_ids.length} Sub
                                             Products
                                         </p>
                                     )}
                                 </div>
                                 <div style={{ textAlign: "right" }} className={"col-3"}>
-                                    <p className={"text-gray-light small"}>
-                                        {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
 
-                                    </p>
 
-                                    {!this.props.hideAdd&&this.props.showAddToListButton && <div>
-                                        <Add onClick={() => {
+                                    {!this.props.hideAdd&&this.props.showAddToListButton &&
+
+                                    <><p className={"text-gray-light"}>
+                                        <Add
+                                            style={{ cursor: "pointer", fontSize:"1.2rem"}}
+                                            onClick={() => {
 
                                             this.handleAddToProductList(this.props.item)
 
                                         }}
-                                             style={{cursor: 'pointer'}}/>
-                                    </div>}
+                                             // style={{cursor: 'pointer'}}
+                                        />
+                                        <span  onClick={() => {
+
+                                            this.handleAddToProductList(this.props.item)
+
+                                        }} style={{verticalAlign: "middle"}} className={"plus-icon text-bold mr-2 click-item"}>Add</span>
+                                        <OverlayTrigger
+                                            trigger={ ["click", "focus"]}
+                                            placement={"bottom"}
+                                            overlay={this.orgPopover}
+                                        >
+                                            <Info
+                                                className={"text-gray-light"}
+                                            style={{ cursor: "pointer", color: "#d7d7d7",fontSize:"1.2rem" }}
+                                            fontSize={"small"}
+                                        />
+                                        </OverlayTrigger>
+                                    </p>
+                                    </>
+                                    }
+
+                                    <p className={"text-gray-light "}>
+                                        {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
+
+                                    </p>
+
 
                                     {!this.props.hideMore && (
                                         <MoreMenu

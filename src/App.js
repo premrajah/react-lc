@@ -79,6 +79,7 @@ import TransferScaling from "./views/account/TransferScaling";
 import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
 import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
 import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
 const theme = createMuiTheme();
 
 const useStyles = makeStyles((theme) => {
@@ -138,6 +139,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
+                        <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
 
@@ -165,6 +167,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />
                         <LoggedInRoute
                             exact
@@ -179,7 +182,7 @@ class App extends Component {
                         />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
-                        <Route exact path="/p/:slug" component={ItemCycleDetail} />
+
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
                         <LoggedInRoute
                             exact

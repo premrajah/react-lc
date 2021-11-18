@@ -20,7 +20,7 @@ class ArtifactProductsTab extends Component {
 
         return (
             <>
-                {!this.props.hideAdd && <AddImagesToProduct item={this.props.item}/>}
+                {!this.props.hideAdd && <AddImagesToProduct  hideAdd={this.props.hideAdd?this.props.hideAdd:false} item={this.props.item}/>}
 
                 <AddedDocumentsDisplay
                     hideAdd={this.props.hideAdd?this.props.hideAdd:false}

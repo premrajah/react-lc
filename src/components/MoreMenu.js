@@ -160,11 +160,19 @@ class MoreMenu extends Component {
                                     Edit
                                 </MenuItem>
                             )}
+                            {this.props.download && (
+                                <MenuItem data-action={"download"} onClick={this.handleClose}>
+                                    Download
+                                </MenuItem>
+                            )}
+
+
                             {this.props.delete && (
                                 <MenuItem data-action={"delete"} onClick={this.handleClose}>
                                     Delete
                                 </MenuItem>
                             )}
+
                             {this.props.duplicate && (
                                 <MenuItem data-action={"duplicate"} onClick={this.handleClose}>
                                     Duplicate

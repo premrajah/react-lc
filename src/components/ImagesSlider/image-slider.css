@@ -1,7 +1,0 @@
-.turn-left{
-    transform: rotate(90deg)
-}
-
-.turn-right{
-    transform: rotate(-90deg)
-}

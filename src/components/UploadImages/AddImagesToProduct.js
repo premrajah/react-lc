@@ -186,12 +186,8 @@ class AddImagesToProduct extends Component {
         return (
             <div className="row">
                 <div className="col">
-                    <div className="container-fluid">
-                        <div className={"custom-label text-bold text-blue"}>
-                            Attachment
-                        </div>
 
-                        <div className="row camera-grids   no-gutters   ">
+                    <div className="row camera-grids   no-gutters   ">
                             <div className="col-12  text-left ">
                                 <div className="">
                                     <div className={""}>
@@ -297,14 +293,14 @@ class AddImagesToProduct extends Component {
                                 <button
                                     disabled={this.state.files.length > 0 ? false : true}
                                     onClick={() => this.handleUploadImagesToServer()}
-                                    className={`btn btn-default btn-lg btn-rounded shadow login-btn ${
-                                        this.state.files.length > 0 ? "btn-green" : "btn-gray"
+                                    className={`btn btn-default   ${
+                                        this.state.files.length > 0 ? " blue-btn-border" : "btn-gray"
                                     }`}>
                                     Upload files
                                 </button>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
         );

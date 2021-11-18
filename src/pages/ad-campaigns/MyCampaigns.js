@@ -14,6 +14,7 @@ import {baseUrl, CAMPAIGN_FILTER_VALUES, PRODUCTS_FILTER_VALUES} from "../../Uti
 import RemoveIcon from '@material-ui/icons/Remove';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import MapIcon from '@material-ui/icons/Map';
+import moment from "moment/moment";
 
 import {CSVLink} from "react-csv";
 import {Modal, ModalBody, Spinner} from "react-bootstrap";
@@ -31,6 +32,11 @@ import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {createCampaignUrl} from "../../Util/Api";
+import CampaignItem from "../../components/Campaign/CampaignItem";
+import AddIcon from '@mui/icons-material/Add';
+import CreateCampaign from "./CreateCampaign";
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
 
 class MyCampaigns extends Component {
 
@@ -49,7 +55,8 @@ class MyCampaigns extends Component {
             fields: {},
             errors: {},
             loading:false,
-            items:[]
+            items:[],
+            createNew:false
 
         }
 
@@ -69,8 +76,6 @@ class MyCampaigns extends Component {
     handleSearchFilter = (filterValue) => {
         this.setState({filterValue: filterValue});
     }
-
-
 
 
     handleChange(value,field ) {
@@ -211,7 +216,7 @@ class MyCampaigns extends Component {
                 product.purpose,
                 product.units,
                 product.volume,
-                site.name,
+                site.campaign.name,
                 site.address,
                 service_agent.name,
                 qr_artifact.name,
@@ -244,6 +249,13 @@ class MyCampaigns extends Component {
         })
     }
 
+
+    toggleCreate=()=>{
+        this.setState({
+            createNew:!this.state.createNew,
+
+        })
+    }
 
     toggleDownloadQrCodes=()=>{
 
@@ -343,85 +355,152 @@ class MyCampaigns extends Component {
                             subTitle="All your ad campaigns can be found here"
                         />
 
-                        <div className="row d-none">
-                            <div className="col-md-8 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
-                                    Product Service
-                                </Link>
+                        <div className="row text-right">
+                            <div className="col-12 d-flex text-right">
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
-                                    Records
-                                </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
-                                    Tracked
-                                </Link>
+                                <div  className={
+                                    " mb-4  "}>
+                                    <button
+
+                                        onClick={this.toggleCreate}
+                                        className={
+                                            "btn-gray-border "
+                                        }>
+                                        <AddIcon />
+                                        <span>
+                                                        Create
+                                                    </span>
+                                    </button>
+
+                                </div>
+
                             </div>
 
 
                         </div>
+
+                        {this.state.createNew&&
+                        <CreateCampaign />
+                        }
 
                         <div className="row d-none  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={CAMPAIGN_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className={"listing-row-border "}></div>
+                        <div className={"d-none listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div className="col">
+                        <div className="row d-none justify-content-center filter-row    pt-3 pb-3">
+                            <div className="col-8">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {this.state.items.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
-                                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                this.state.filterValue==="description"? site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                this.state.filterValue==="description"?site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                     null):
-                                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                    site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+                                                (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                   site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
                                         ).length
 
                                     }
-                                    <span className="ml-1">Listable Products</span>
+                                    <span className="ml-1">Campaigns Found</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
+                            <div className="text-mute col-2 pl-0 text-right">
+                                <span style={{ fontSize: "18px" }}>Start Data</span>
+                            </div>
+                            <div className="text-mute col-2 pl-0 text-right">
+                                <span style={{ fontSize: "18px" }}>End Date</span>
                             </div>
                         </div>
-                        <div className={"listing-row-border mb-3"}></div>
+                        <div className={" d-none listing-row-border mb-3"}></div>
 
-                        {
-                            this.state.items.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="description"? site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                        null):
-                                    (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+                        <div className="row">
+                                <div className="col-md-12">
+                                    <div className="table-wrap">
+                                        <table className="table custom-table table-responsive-xl">
+                                            <thead>
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Campaign Name</th>
+                                                <th>Validity</th>
+                                                <th>Stage</th>
+                                                <th>Artifacts</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                this.state.items.filter((site)=>
+                                                    this.state.filterValue?( this.state.filterValue==="name"?
+                                                        site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                        this.state.filterValue==="description"?site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                            null):
+                                                        (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                           site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                            )
-                            .map((item, index) => (
-                            <div id={item._key} key={item._key}>
-                                <ProductItem
-                                    index={index}
-                                    goToLink={true}
-                                    delete={false}
-                                    edit={false}
-                                    remove={false}
-                                    duplicate={false}
-                                    item={item}
-                                    hideMore
-                                    listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
-                                    showAddToListButton
-                                />
+                                                )
+                                                    .map((item, index) => (
+
+
+                                                            <tr className="" role="alert">
+
+                                                                <td>{index+1}</td>
+
+                                                <td className="d-flex align-items-center">
+
+                                                    <Link to={"/campaign/"+item.campaign._key}>    <div className="pl-3 email">
+                                                        <span className={"title-bold text-capitlize"}>{item.campaign.name}</span>
+                                                        <span className={"text-gray-light"}>{moment(item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                                                    </div>
+                                                    </Link>
+                                                </td>
+                                                <td>{moment(item.start_ts).format("DD MMM YYYY")} - {moment(item.end_ts).format("DD MMM YYYY")}</td>
+                                                <td className="status text-capitlize"><span className={item.campaign.stage==="active"?"active":"waiting"}>{item.campaign.stage}</span></td>
+
+                                                                <td>
+                                                                    <ul className="persons">
+
+                                                                        {item.artifacts.map((artifact)=>
+
+                                                                            <li>
+                                                                                <a href="">
+                                                                                    <img
+                                                                                        src={artifact.blob_url}
+                                                                                         className="img-fluid"
+
+                                                                                    />
+                                                                                </a>
+                                                                            </li>
+
+                                                                        )}
+
+                                                                    </ul>
+                                                                </td>
+                                                       <td>
+                                                    {/*<button type="button" className="close" data-dismiss="alert"*/}
+                                                    {/*        aria-label="Close">*/}
+                                                    {/*    <span aria-hidden="true"><i className="fa fa-eye"></i></span>*/}
+                                                    {/*</button>*/}
+                                                </td>
+                                            </tr>
+
+                                                            ))}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                             </div>
-                        ))}
+                        </div>
 
 
-                        {this.props.productWithoutParentList.filter((site)=>
+
+                        {this.state.items.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                    site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                     this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                         this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                             this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -433,7 +512,7 @@ class MyCampaigns extends Component {
 
 
                                                                     null):
-                                    (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
@@ -446,43 +525,14 @@ class MyCampaigns extends Component {
                             ).length===0&&
                             <div className="row  justify-content-center filter-row    pt-3 pb-3">
                                 <div   className="col">
-                                    <div>No products found!</div>
+                                    <div>No campaigns found!</div>
                                 </div>
                             </div>
 
                         }
 
-                        {/*{this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&*/}
-                        {/*<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
-                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
-                        {/*        <div>Loading products please wait ...</div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*}*/}
                     </div>
 
-                    <React.Fragment>
-                        <CssBaseline />
-
-                        <AppBar
-                            position="fixed"
-                            style={{backgroundColor: "#ffffff"}}
-                            className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div
-                                    className="row  justify-content-center search-container "
-                                    style={{ margin: "auto" }}>
-                                    <div className="col-auto" style={{cursor: 'pointer' }}>
-                                        <a onClick={this.showProductSelection}>
-                                            <p className={"green-text bottom-bar-text"}>
-                                                <b>Add New Product</b>
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </Toolbar>
-                        </AppBar>
-                    </React.Fragment>
                 </div>
 
                 <Modal

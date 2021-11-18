@@ -76,12 +76,12 @@ const SubproductItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+        <div className="row no-gutters justify-content-center mb-2 white-bg p-2 rad-8">
             <div className="col-sm-2">
                 {
                     artifacts.length > 0
-                    ? <ImageOnlyThumbnail images={artifacts} />
-                    : <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                    ? <ImageOnlyThumbnail smallImage={props.smallImage} images={artifacts} />
+                    : <img className={"img-fluid img-list small-image"} src={PlaceholderImg} alt="" />
                 }
             </div>
 
@@ -94,8 +94,10 @@ const SubproductItem = (props) => {
                 {!props.aggregate &&
                 <>
 
-                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-caps">{item.purpose}</div>
-                <div className="text-muted text-caps" style={{lineHeight: '22px', fontSize:"12px"}}>
+                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-capitalize">{item.purpose}</div>
+                <div className="text-muted text-capitalize" style={{lineHeight: '22px', fontSize:"12px"}}>
+
+
 
                     <span className="mr-1">{item.category},</span>
                         <span className="mr-1">{item.type},</span>
@@ -104,8 +106,7 @@ const SubproductItem = (props) => {
                         <span>{item.units}</span>
 
                 </div>
-                {
-                    item.search_ids && <div className="text-muted">
+                {item.search_ids && <div className="text-muted">
                         <span className="mr-1">{item.search_ids.length}</span>
                         <span>Searches</span>
                     </div>

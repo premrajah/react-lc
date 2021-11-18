@@ -50,12 +50,12 @@ class MapsContainer extends Component {
 
     render() {
         return (
-     <div className={"mt-2"} style={{width:this.props.width, height:this.props.height,position:"relative"}}>
+     <div className={"m-0"} style={{width:this.props.width, height:this.props.height,position:"relative"}}>
          {this.props.locations.length>0 &&
          <Map
                 onClick={this.onMapClicked}
                 google={this.props.google}
-                style={{margin:"0",width: "95%"}}
+                style={{margin:"0",width: "100%"}}
                 initialCenter={{
                     lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
                     lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,

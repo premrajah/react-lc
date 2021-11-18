@@ -52,17 +52,19 @@ function OrgTrailsTimeline(props) {
                     .map((item, index) => (
                         <TimelineItem key={index}>
                             <TimelineOppositeContent>
-                                <Paper elevation={0} className={classes.paper}>
+                                {/*<Paper elevation={0} className={classes.paper}>*/}
                                     <Typography
-                                        variant="h6"
-                                        component="h1"
-                                        style={{ color: "#05AD88" }}>
-                                        <span className={"text-caps"}>
-                                            {item.org.name}
-                                            {item.org.description && ", " + item.org.description}
+                                        variant="p"
+                                        component="p"
+                                        // style={{ color: "#05AD88" }}
+                                    >
+                                        <span className={" "}>
+                                            <span className={"text-caps sub-title-text-pink"}>  {item.org.name}</span>
+                                            <br/>
+                                            <span className={" text-capitlize text-gray-light"}>{item.org.description}</span>
                                         </span>
                                     </Typography>
-                                </Paper>
+                                {/*</Paper>*/}
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
@@ -98,17 +100,17 @@ function OrgTrailsTimeline(props) {
                     .map((item, index) => (
                         <TimelineItem>
                             <TimelineOppositeContent>
-                                <Paper elevation={0} className={classes.paper}>
+                                {/*<Paper elevation={0} className={classes.paper}>*/}
                                     <Typography
-                                        variant="h6"
-                                        component="h1"
-                                        style={{ color: "#05AD88" }}>
-                                        <span className={"text-caps"}>
+                                        variant="p"
+                                        component="p"
+                                       >
+                                        <span className={"text-caps "}>
                                             {item.org.name}
                                             {item.org.description && ", " + item.org.description}
                                         </span>
                                     </Typography>
-                                </Paper>
+                                {/*</Paper>*/}
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>

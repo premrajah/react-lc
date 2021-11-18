@@ -33,6 +33,7 @@
     "google-map-react": "^2.1.10",
     "google-maps-react": "^2.0.6",
     "history": "^5.0.0",
+    "html-to-draftjs": "^1.5.0",
     "jspdf": "^2.2.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",

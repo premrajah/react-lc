@@ -16,6 +16,7 @@ import Select from "react-select";
 import {makeStyles} from "@material-ui/core";
 import RichTextEditor from "./RichTextEditor";
 import WysiwygEditor from "./WysiwygEditor";
+import styles from './MessengerMessage.module.css';
 
 
 const msgWindowHeight = "520px";
@@ -518,6 +519,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     {/*    allOrgs={allOrgs} ref={resetDraftRef}*/}
                                     {/*/>*/}
                                     <WysiwygEditor
+                                        wrapperClassName="wysiwyg-wrapper-class"
+                                        editorClassName="wysiwyg-editor-class"
                                         allOrgs={allOrgs}
                                         ref={resetDraftRef}
                                         richTextHandleCallback={(value) => handleRichTextCallback(value)}

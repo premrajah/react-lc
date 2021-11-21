@@ -17,6 +17,7 @@ import {makeStyles} from "@material-ui/core";
 import RichTextEditor from "./RichTextEditor";
 import WysiwygEditor from "./WysiwygEditor";
 import styles from './MessengerMessage.module.css';
+import MessageEntityDialog from "./MessageEntityDialog";
 
 
 const msgWindowHeight = "520px";
@@ -56,6 +57,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [messageText, setMessageText] = useState("");
     const [showHideGroupFilter, setShowHideGroupFilter] = useState(false);
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
+
+    const [openEntityDialog, setOpenEntityDialog] = useState(false);
+
+
+    const handleEntityDialogOpen = () => {
+        setOpenEntityDialog(true);
+    };
+
+    const handleEntityDialogClose = (value) => {
+        setOpenEntityDialog(false);
+        // setSelectedValue(value);
+    };
 
 
     const scrollToBottom = () => {
@@ -210,12 +223,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     }
 
     const handleOrgSearchButton = () => {
-        console.log('h ', showHideOrgSearch)
         // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
         if(showHideOrgSearch) {
             if(allMessageGroups[0].id === "0") {
-                console.log("am ")
                 getAllMessageGroups();
+                // getAllMessageGroupsExpand();
                 handleGroupClick(allMessageGroups[0], 0);
             }
         } else {
@@ -231,8 +243,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const checkWhoseMessage = (orgs) => {
         if(orgs.length > 0) {
-            if(orgs[0].actor === "message_from"){
-                if((orgs[0].org._id && orgs[0].org._id.toLowerCase()) === userDetail.orgId.toLowerCase()) {
+            if(orgs[0].actor === "message_to"){
+                if((orgs[0].org.org._id && orgs[0].org.org._id.toLowerCase()) === userDetail.orgId.toLowerCase()) {
                     return true;
                 } else {
                     return false;
@@ -286,6 +298,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
 
                     const data = response.data.data;
+                    console.log('re ', data)
                     setMessageText("");
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
@@ -296,6 +309,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                     if(payload.message_group_id) {
                         handleGroupClick(data.message_group, selectedItem);
+                    } else {
+
+                        if (allMessageGroups.length > 0) {
+                            const msgGroupIdCheck = allMessageGroups.filter(ag => ag._id === data.message_group._id);
+                            if (msgGroupIdCheck.length > 0) {
+                                const msgGroupId = msgGroupIdCheck[0]._id;
+                                console.log('m ', msgGroupId);
+
+                            }
+                        }
                     }
 
                     resetDraftRef.current.resetDraft(); // clear draftjs text field
@@ -455,7 +478,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             className="message-window p-3"
                                             style={{ height: msgWindowHeight }}>
                                             {selectedMsgGroup.map((m, i) => (
-                                                <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-end' : 'justify-content-start'}`}>
+                                                <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-start' : 'justify-content-end'}`}>
                                                     <div
                                                         className="w-75 p-2 mb-1 border-rounded"
                                                         style={{
@@ -465,7 +488,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                         <div className="d-flex justify-content-between">
                                                             <div>
                                                                 <small>
-                                                                    <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? "" : m.orgs[0].org.name}</small>
+                                                                    <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? m.orgs[0].org.org.name : ''}</small>
                                                                     <small style={{opacity: '0.5'}}>
                                                                         {moment(
                                                                             m.message._ts_epoch_ms
@@ -475,7 +498,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                             </div>
                                                             <div>
                                                                 {m.message.entity_as_json && <small className="mr-2" style={{cursor: "pointer"}}>
-                                                                    <ExplicitIcon fontSize="small"/>
+                                                                    <ExplicitIcon fontSize="small" onClick={handleEntityDialogOpen}/>
+                                                                    <MessageEntityDialog entity={m.message.entity_as_json} open={openEntityDialog} onClose={handleEntityDialogClose} />
+
                                                                 </small>}
                                                                 {m.artifacts.length > 0 && <small style={{cursor: "pointer"}}>
                                                                     <PhotoLibraryIcon fontSize="small"/>

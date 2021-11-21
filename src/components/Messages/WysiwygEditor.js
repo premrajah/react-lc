@@ -48,7 +48,6 @@ class WysiwygEditor extends Component{
     };
 
     resetDraft = () => {
-        console.log('reset ');
         const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
         this.setState({ editorState });
     }

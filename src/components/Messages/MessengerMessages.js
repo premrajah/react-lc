@@ -60,6 +60,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const [openEntityDialog, setOpenEntityDialog] = useState(false);
 
+    let trackedList = [];
+
 
     const handleEntityDialogOpen = () => {
         setOpenEntityDialog(true);
@@ -89,10 +91,28 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setUserOrg(userDetail.orgId);
     }, []);
 
+
     // useInterval(() => {
     //     getAllOrgs();
     //     getAllMessageGroups();
     // }, 1000 * 10);
+
+    const ListGroupDisplay = (group, i) => {
+        trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
+
+        return <div key={i} >
+            <ListItem
+                classes={{root: classes.root, selected: classes.selected}}
+                selected={selectedItem === i}
+                button
+                divider
+                onClick={() => handleGroupClick(group, i)}
+            >
+                {/*{group.name.replace(/\W/g, " ")}*/}
+                {group.name}
+            </ListItem>
+        </div>
+    }
 
 
     const getAllOrgs = () => {
@@ -144,9 +164,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
 
-                if(!selectedItem) {
-                    handleGroupClick(data[0], 0);
-                }
+                // if(!selectedItem) {
+                //     handleGroupClick(data[0], 0);
+                // }
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -205,6 +225,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleGroupClick = (group, selectedIndex) => {
+        console.log('g ', group, selectedIndex);
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
         updateSelected(selectedIndex);
@@ -298,7 +319,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
 
                     const data = response.data.data;
-                    console.log('re ', data)
                     setMessageText("");
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
@@ -311,12 +331,15 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         handleGroupClick(data.message_group, selectedItem);
                     } else {
 
-                        if (allMessageGroups.length > 0) {
-                            const msgGroupIdCheck = allMessageGroups.filter(ag => ag._id === data.message_group._id);
-                            if (msgGroupIdCheck.length > 0) {
-                                const msgGroupId = msgGroupIdCheck[0]._id;
-                                console.log('m ', msgGroupId);
-
+                        if(trackedList.length > 0) {
+                            const msgGroupIdCheck = trackedList.filter(g => g.groupId === data.message_group._id);
+                            if(msgGroupIdCheck) {
+                                console.log('mgix ', trackedList.length)
+                                const _id = msgGroupIdCheck[0].groupId;
+                                const _key = msgGroupIdCheck[0].groupKey;
+                                const name = msgGroupIdCheck[0].name;
+                                const index = msgGroupIdCheck[0].index - 1;
+                                handleGroupClick({_id, _key, name}, index);
                             }
                         }
                     }
@@ -425,20 +448,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             }
                                         }
                                     })
-                                    .map((group, i) => (
-                                        <div key={i} >
-                                            <ListItem
-                                                classes={{root: classes.root, selected: classes.selected}}
-                                                selected={selectedItem === i}
-                                                button
-                                                divider
-                                                onClick={() => handleGroupClick(group, i)}
-                                            >
-                                                {/*{group.name.replace(/\W/g, " ")}*/}
-                                                {group.name}
-                                            </ListItem>
-                                        </div>
-                                    ))
+                                    .map((group, i) => ListGroupDisplay(group, i))
                             ) : (
                                 <div>Loading...</div>
                             )}

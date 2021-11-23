@@ -43,7 +43,7 @@ class MyCampaigns extends Component {
             createNew:false,
             toggleBar:false,
             editItem:null,
-            editMode:false
+            campaignMode:0// 0 nothing,1- create,2-view,3 -edit
 
         }
 
@@ -238,7 +238,7 @@ class MyCampaigns extends Component {
 
     toggleCreate=()=>{
         this.setState({
-            createNew:!this.state.createNew,
+            campaignMode:1,
 
         })
     }
@@ -347,6 +347,13 @@ this.props.toggleRightBar()
         return formIsValid;
     }
 
+    toggleEditMode=(item)=> {
+
+        this.setState({
+            campaignMode:3
+        })
+
+    }
 
     render() {
         const classesBottom = withStyles();
@@ -360,8 +367,16 @@ this.props.toggleRightBar()
 
                     <RightSidebar  toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
-                        {!this.state.editMode && <CreateCampaign refreshData={()=> this.loadCampaigns()} />}
-                        {this.state.editMode && this.state.editItem && <CampaignDetailContent item={this.state.editItem} />}
+                        {this.state.campaignMode ==1 && <CreateCampaign  refreshData={
+
+                            ()=> {this.loadCampaigns()
+                                this.setState({
+                                    campaignMode:0
+                                });
+                            }} />}
+                        {this.state.campaignMode ==3 &&  this.state.editItem&& <CreateCampaign item={this.state.editItem} refreshData={()=> this.loadCampaigns()} />}
+
+                        {this.state.campaignMode ==2 && this.state.editItem && <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 
                     </RightSidebar>
                     <div className="container  mb-150  pb-5 pt-4">
@@ -379,7 +394,11 @@ this.props.toggleRightBar()
                                     " mb-4  "}>
                                     <button
 
-                                        onClick={()=>this.toggleRightBar()}
+                                        onClick={()=> {
+                                            this.setState({
+                                                campaignMode:1
+                                            })
+                                            this.toggleRightBar()}}
                                         className={
                                             "btn-gray-border "
                                         }>
@@ -499,7 +518,15 @@ this.props.toggleRightBar()
                                                        <td>
                                                            {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
 
-                                                           <span className={"text-bold"} onClick={()=>this.toggleRightBar(item)}  >
+                                                           <span className={"text-bold"} onClick={()=>
+                                                           {
+
+                                                           this.setState({
+                                                               campaignMode:2
+                                                           });
+                                                               this.toggleRightBar(item)
+
+                                                           } } >
                                                            View Details</span>
                                                 </td>
 

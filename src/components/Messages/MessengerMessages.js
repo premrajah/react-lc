@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import {baseUrl, createMarkup, useInterval} from "../../Util/Constants";
+import {baseUrl, createMarkup, randomColorGen, useInterval} from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Button, List, ListItem, Tooltip, TextField} from "@mui/material";
+import {Button, List, ListItem, Tooltip, TextField, Avatar} from "@mui/material";
 import {Alert, Autocomplete} from "@mui/lab";
 import CreateIcon from "@mui/icons-material/Create";
 import ExplicitIcon from '@mui/icons-material/Explicit';
@@ -17,6 +17,8 @@ import RichTextEditor from "./RichTextEditor";
 import WysiwygEditor from "./WysiwygEditor";
 import styles from './MessengerMessage.module.css';
 import MessageEntityDialog from "./MessageEntityDialog";
+import AvatarWithColours from "../Avatars/AvatarWithColours";
+import {purple} from "@mui/material/colors";
 
 
 
@@ -69,8 +71,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     useEffect(() => {
         getAllOrgs();
-        getAllMessageGroups();
-        // getAllMessageGroupsExpand();
+        // getAllMessageGroups();
+        getAllMessageGroupsExpand();
     }, []);
 
     useEffect(() => {
@@ -90,7 +92,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const ListGroupDisplay = (group, i) => {
         trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
 
-
         return <div key={i} >
             <ListItem
                 classes={{root: classes.root, selected: classes.selected}}
@@ -100,7 +101,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 onClick={() => handleGroupClick(group, i)}
             >
                 {/*{group.name.replace(/\W/g, " ")}*/}
-                {group.name}
+                 {group.orgs || group.orgs.length > 0 && group.orgs.map((g, i) => {
+                     return <div key={i} className="mr-2">
+                         <Tooltip arrow title={
+                             <div className="d-flex flex-column">
+                                 <div>{g.name ? g.name : ""}</div>
+                                 <small>{g.email ? g.email : ""}</small>
+                             </div>
+                         }>
+                            <Avatar style={{color: "#000", backgroundColor: "var(--lc-bg-gray)", border: "1px solid var(--lc-green)"}}>{g.name ? g.name.substr(0, 2) : ""}</Avatar>
+                         </Tooltip>
+                     </div>
+            })}
             </ListItem>
         </div>
     }
@@ -250,8 +262,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
         if(showHideOrgSearch) {
             if(allMessageGroups[0].id === "0") {
-                getAllMessageGroups();
-                // getAllMessageGroupsExpand();
+                // getAllMessageGroups();
+                getAllMessageGroupsExpand();
                 handleGroupClick(allMessageGroups[0], 0);
             }
         } else {
@@ -327,8 +339,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
                     }
-                    getAllMessageGroups();
-                    // getAllMessageGroupsExpand();
+                    // getAllMessageGroups();
+                    getAllMessageGroupsExpand();
                     getAllOrgs();
 
                     if(payload.message_group_id) {

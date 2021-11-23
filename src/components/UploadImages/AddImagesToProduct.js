@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
-import { Spinner } from "react-bootstrap";
-import { Cancel, Check, Error, Publish } from "@material-ui/icons";
+import React, {Component} from "react";
+import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {Spinner} from "react-bootstrap";
+import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import {connect} from "react-redux";
 import docs from '../../img/icons/docs.png';
 import * as actionCreator from "../../store/actions/actions";
 

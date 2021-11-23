@@ -1,7 +1,4 @@
 import React, {Component} from "react";
-import {capitalizeFirstLetter} from "../../Util/Constants";
-import Org from "../Org/Org";
-import {capitalize} from "../../Util/GlobalFunctions";
 
 class InfoTabContent extends Component {
     slug;

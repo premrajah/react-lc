@@ -1,10 +1,9 @@
 import React from "react";
-import { Card, Image } from "react-bootstrap";
+import {Card, Image} from "react-bootstrap";
 import moment from "moment/moment";
 import PlaceHolderImage from "../img/place-holder-lc.png";
-import Org from "./Org/Org";
-import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import PlaceholderImg from "../img/place-holder-lc.png";
+import Org from "./Org/Org";
 
 const ProductRecordItem = ({ item }) => {
     const { listing, product, site, org, artifacts } = item;

@@ -4,7 +4,7 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import PlaceHolderImage from "../../img/place-holder-lc.png";
 import Org from "../Org/Org";
 import moment from "moment/moment";
-import {Link} from "@material-ui/core";
+import {Link} from "@mui/material";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import {Link as RouterLink} from 'react-router-dom'

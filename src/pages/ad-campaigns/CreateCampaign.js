@@ -2,29 +2,36 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import {Link} from "react-router-dom";
-import {withStyles} from "@material-ui/core/styles/index";
+import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
-import {baseUrl, MIME_TYPES_ACCEPT, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+// import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DatePicker from '@mui/lab/DatePicker';
+
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+
+
 import MomentUtils from "@date-io/moment";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
-import {Cancel, Check, Error, Publish} from "@material-ui/icons";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import {Spinner} from "react-bootstrap";
-import Select from "@material-ui/core/Select";
-import {createCampaignUrl, createProductUrl} from "../../Util/Api";
+import Select from "@mui/material/Select";
+import {createCampaignUrl} from "../../Util/Api";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import TextField from "@mui/material/TextField";
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 
 class CreateCampaign extends Component {
 
@@ -58,7 +65,7 @@ class CreateCampaign extends Component {
                 "purpose","units","year_of_making"],
             operators: [
                 {name:"Equals",value:"equals"},
-                {name:"Not Equal",value:"not_equal"},
+                {name:"Not Equal",value:"not_equals"},
                 {name:"Less Than Equal To",value:"less_than_equals"},
                 {name:"Greater than equal to",value:"greater_than_equals"},
                 {name:"Less Than",value:"less_than"},
@@ -130,6 +137,8 @@ class CreateCampaign extends Component {
     }
 
     handleChange(value,field ) {
+
+        console.log(value,field)
 
         let fields = this.state.fields;
         fields[field] = value;
@@ -324,7 +333,8 @@ class CreateCampaign extends Component {
                     //     });
                     // }
 
-                    this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
+                    // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
+                    this.props.toggleRightBar()
 
 
                 })
@@ -669,7 +679,7 @@ class CreateCampaign extends Component {
 
 
         return (
-            <Layout>
+            <>
 
                 <div className="wrapper">
 
@@ -763,7 +773,7 @@ class CreateCampaign extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="row no-gutters">
+                                                <div className="row no-gutters mb-3">
                                                     <div className="col-6 pr-1">
 
                                                         <div
@@ -773,25 +783,28 @@ class CreateCampaign extends Component {
                                                             Start Date
                                                         </div>
 
-                                                        <MuiPickersUtilsProvider
-                                                            utils={MomentUtils}>
-                                                            <DatePicker
+
+
+                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                        <MobileDatePicker
                                                                 minDate={new Date()}
                                                                 // label="Required By"
                                                                 inputVariant="outlined"
                                                                 variant={"outlined"}
                                                                 margin="normal"
                                                                 id="date-picker-dialog"
-                                                                label="Available From"
+                                                                // label="Available From"
                                                                 format="DD/MM/yyyy"
-                                                                value={this.state.startDate?this.state.startDate:this.props.item&&this.props.item.campaign.start_ts}
+                                                                value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
                                                                 // onChange={this.handleChangeDateStartDate.bind(
                                                                 //     this
                                                                 // )}
+                                                                renderInput={(params) => <CustomizedInput {...params} />}
                                                                 onChange={(value)=>this.handleChange(value,"startDate")}
 
                                                             />
-                                                        </MuiPickersUtilsProvider>
+                                                        </LocalizationProvider>
 
                                                     </div>
 
@@ -803,45 +816,28 @@ class CreateCampaign extends Component {
                                                             }>
                                                             End Date
                                                         </div>
+                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                        <MuiPickersUtilsProvider
-                                                            utils={MomentUtils}>
-                                                            <DatePicker
+                                                            <MobileDatePicker
                                                                 minDate={new Date()}
                                                                 // label="Required By"
                                                                 inputVariant="outlined"
                                                                 variant={"outlined"}
                                                                 margin="normal"
                                                                 id="date-picker-dialog"
-                                                                label="Available From"
                                                                 format="DD/MM/yyyy"
-                                                                value={this.state.endDate?this.state.endDate:this.props.item&&this.props.item.campaign.end_ts}
+                                                                value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+
+                                                                renderInput={(params) => <CustomizedInput {...params} />}
                                                                 onChange={(value)=>this.handleChange(value,"endDate")}
 
-                                                                // onChange={this.handleChangeDateStartDate.bind(
-                                                                //     this
-                                                                // )}
                                                             />
-                                                        </MuiPickersUtilsProvider>
+                                                        </LocalizationProvider>
                                                     </div>
                                                 </div>
 
 
 
-                                                <div className={"row d-none"}>
-                                                    <div className="col-12 mt-4 mb-2">
-
-                                                        <button
-                                                            type={"submit"}
-                                                            className={
-                                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                            }
-                                                            disabled={this.state.isSubmitButtonPressed}>
-                                                            {this.props.item?"Update Site":"Add Site"}
-                                                        </button>
-
-                                                    </div>
-                                                </div>
 
                                             </form>}
                                             {this.state.activeStep===1&&
@@ -1288,7 +1284,7 @@ class CreateCampaign extends Component {
 
                     </div>
                 </div>
-            </Layout>
+            </>
         );
     }
 }
@@ -1315,14 +1311,15 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
-        lastPageReached:state.lastPageReached
+        lastPageReached:state.lastPageReached,
+        showRightBar:state.showRightBar,
+
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logIn: (data) => dispatch(actionCreator.logIn(data)),
-        signUp: (data) => dispatch(actionCreator.signUp(data)),
+
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
@@ -1335,6 +1332,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        toggleRightBar: (data) => dispatch(actionCreator.toggleRightBar(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCampaign);

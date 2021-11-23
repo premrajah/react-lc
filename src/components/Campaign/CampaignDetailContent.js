@@ -1,28 +1,10 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import {Link} from "react-router-dom";
-import {makeStyles} from "@material-ui/core/styles";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
-
-import SearchItem from "../../views/loop-cycle/search-item";
-import ResourceItem from "../../views/create-search/ResourceItem";
-import TextField from "@material-ui/core/TextField";
-import Org from "../Org/Org";
-import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteCustom";
-import Close from "@material-ui/icons/Close";
-import ImageHeader from "../UIComponents/ImageHeader";
-import InfoTabContent from "./InfoTabContent";
-import SubProductsTab from "./SubProductsTab";
-import {CURRENT_SITE} from "../../store/types";
+import {withStyles} from "@mui/styles/index";
 import CreateCampaign from "../../pages/ad-campaigns/CreateCampaign";
 import CampaignDetail from "./CampaignDetail";
 
@@ -40,29 +22,6 @@ class CampaignDetailContent extends Component {
 
         };
 
-        this.getSubProducts = this.getSubProducts.bind(this);
-        this.getMatches = this.getMatches.bind(this);
-        this.getSearches = this.getSearches.bind(this);
-        this.getListing = this.getListing.bind(this);
-        this.showRegister = this.showRegister.bind(this);
-        this.getSites = this.getSites.bind(this);
-        this.showSubmitSite = this.showSubmitSite.bind(this);
-        this.showProductEdit = this.showProductEdit.bind(this);
-        this.showProductDuplicate = this.showProductDuplicate.bind(this);
-
-        this.callBackResult = this.callBackResult.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
-        this.showProductSelection = this.showProductSelection.bind(this);
-        this.showReleaseProduct = this.showReleaseProduct.bind(this);
-        this.showServiceAgent = this.showServiceAgent.bind(this);
-        this.showOrgForm = this.showOrgForm.bind(this);
-        this.handleSubmitOrg = this.handleSubmitOrg.bind(this);
-        this.getOrgs = this.getOrgs.bind(this);
-        this.loadInfo = this.loadInfo.bind(this);
-
-        this.phonenumber = this.phonenumber.bind(this);
-
-        this.slug = props.match.params.slug;
     }
 
     actionSubmit = () => {
@@ -518,9 +477,13 @@ class CampaignDetailContent extends Component {
 
     componentDidMount() {
 
+
+        // console.log(this.props.item)
+
+
         axios
-            .get(baseUrl + "campaign/" + encodeUrl(this.slug))
-            // .get(baseUrl + "site/code/" + encodeUrl(data))
+            // .get(baseUrl + "campaign/" + encodeUrl(this.slug))
+            .get(baseUrl + "campaign/" + encodeUrl(this.props.item.campaign._key))
             .then(
                 (response) => {
                     var responseAll = response.data;

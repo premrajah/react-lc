@@ -7,7 +7,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import {Checkbox, FormLabel} from '@material-ui/core';
+import {Checkbox, FormLabel} from '@mui/material';
 
 
 const EditSite = ({editable, loadSites, site, submitCallback}) => {

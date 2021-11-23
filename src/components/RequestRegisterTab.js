@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from "react-bootstrap";
 import moment from "moment/moment";
-import { withStyles } from "@material-ui/core/styles/index";
+import { withStyles } from "@mui/styles/index";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 
 class RequestRegisterItem extends Component {

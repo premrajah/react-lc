@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import InfoIcon from "@material-ui/icons/Info";
-import { makeStyles } from "@material-ui/core/styles";
-import Popover from "@material-ui/core/Popover";
-import Typography from "@material-ui/core/Typography";
+import InfoIcon from "@mui/icons-material/Info";
+import { makeStyles } from "@mui/styles";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles((theme) => ({
     typography: {

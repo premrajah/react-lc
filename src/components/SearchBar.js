@@ -1,8 +1,10 @@
-import React, { Component } from "react";
-import {FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
-import SearchGray from "@material-ui/icons/Search";
+import React, {Component} from "react";
+import {InputAdornment} from "@mui/material";
+// import SearchGray from "@mui/icons-material/Search";
+import SearchGray from '@mui/icons-material/Search';
 
 import {capitalize} from "../Util/GlobalFunctions";
+
 class SearchBar extends Component {
 
     state = {

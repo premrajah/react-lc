@@ -2,9 +2,9 @@ import React, { Component } from "react";
 // import MarkerIcon from '../../img/icons/marker.png';
 // import CalIcon from '../../img/icons/calender-dgray.png';
 import PlaceholderImg from "../img/place-holder-lc.png";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import moment from "moment";
-import { withStyles } from "@material-ui/core/styles/index";
+import { withStyles } from "@mui/styles/index";
 import ProductExpandItem from "./ProductExpandItem";
 
 class ItemDetailPreview extends Component {

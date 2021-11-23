@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent } from "@material-ui/core";
+import { Card, CardContent } from "@mui/material";
 import PlaceHolderImg from "../../img/place-holder-lc.png";
 import moment from "moment/moment";
 import MoreMenu from "../../components/MoreMenu";

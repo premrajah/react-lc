@@ -3,15 +3,15 @@ import axios from "axios";
 import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Button, List, ListItem, Tooltip} from "@material-ui/core";
-import {Alert, Autocomplete} from "@material-ui/lab";
-import CreateIcon from "@material-ui/icons/Create";
-import SendIcon from "@material-ui/icons/Send";
-import FilterListIcon from '@material-ui/icons/FilterList';
+import {Button, List, ListItem, Tooltip} from "@mui/material";
+import {Alert, Autocomplete} from "@mui/lab";
+import CreateIcon from "@mui/icons-material/Create";
+import SendIcon from "@mui/icons-material/Send";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
-import {makeStyles} from "@material-ui/core";
+import {makeStyles} from "@mui/styles";
 import RichTextEditor from "./RichTextEditor";
 
 

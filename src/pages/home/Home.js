@@ -1,13 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import PhoneHome from "../../img/phone-home.png";
-
-import HandIcon from "../../img/icons/hand.png";
-import SearchIcon from "../../img/icons/search-icon.png";
-import ShippingIcon from "../../img/icons/shipping-icon.png";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 
 import FindProduct from "../../img/icons/Find-Product.svg";

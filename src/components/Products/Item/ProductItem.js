@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PlaceholderImg from "../../../img/place-holder-lc.png";
 import MoreMenu from "../../MoreMenu";
-import {Tooltip} from "@material-ui/core";
+import {Tooltip} from "@mui/material";
 import axios from "axios/index";
 import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
@@ -11,10 +11,10 @@ import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
-import {Add} from "@material-ui/icons";
+import {Add} from "@mui/icons-material";
 import {capitalize} from "../../../Util/GlobalFunctions";
-import { Info } from "@material-ui/icons";
-import {withStyles} from "@material-ui/core/styles";
+import { Info } from "@mui/icons-material";
+import {withStyles} from "@mui/styles";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 
 

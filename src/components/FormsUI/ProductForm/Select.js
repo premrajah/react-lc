@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import {makeStyles} from '@material-ui/core/styles';
-import {capitalize} from "../../../Util/GlobalFunctions";
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import {makeStyles} from '@mui/styles';
+import CustomizedSelect from "./CustomizedSelect";
+
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -34,18 +34,21 @@ const SelectArrayWrapper = (props) => {
 
     return (
         <>
-            {title&& <div className={"custom-label text-bold text-blue mb-1"}>
+            {title&& <div className={"custom-label text-bold text-blue mb-0"}>
                 {title}
             </div>}
-            <div className={"field-box"}>
-                <FormControl variant="outlined" className={classes.formControl}>
+            <div className={"field-box mb-2"}>
+                <FormControl variant="standard" >
                 {label && <InputLabel >{label}</InputLabel>}
-            <Select
+
+
+            <CustomizedSelect
+
                 native
+                variant="standard"
                 label={label}
                 value={defaultValue}
                 onChange={handleChange}
-                variant="outlined"
                 style={{width:"100%"}}
                 disabled={disabled}
                 name={name}
@@ -65,7 +68,7 @@ const SelectArrayWrapper = (props) => {
                         {(option?item[option]:item)}
                     </option>
                 ))}
-            </Select>
+            </CustomizedSelect>
                 </FormControl>
 
                 {error && <span style={{color:"#f44336",fontSize: "0.75rem"}} className={"text-danger"}> {error.message}</span>}

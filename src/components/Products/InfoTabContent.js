@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {capitalizeFirstLetter} from "../../Util/Constants";
-import Org from "../Org/Org";
 import {capitalize} from "../../Util/GlobalFunctions";
-import TabPanel from "@mui/lab/TabPanel";
 import OrgComponent from "../Org/OrgComponent";
 
 class InfoTabContent extends Component {

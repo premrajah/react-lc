@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 
 class Sidebar extends Component {
     constructor(props) {

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import HandBlue from "../../img/icons/hand.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
+import {makeStyles} from "@mui/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchGray from "@mui/icons-material/Search";
 
 class Home extends Component {
     interval;

@@ -11,7 +11,7 @@ import {
     InputLabel,
     MenuItem,
     Select,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Form } from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 

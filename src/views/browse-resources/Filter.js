@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import Slider from "@material-ui/core/Slider/index";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import Slider from "@mui/material/Slider/index";
 import Paper from "../../img/paper.png";
 import clsx from "clsx";
 import FilterImg from "../../img/icons/filter-icon.png";
@@ -14,20 +14,20 @@ import EditGray from "../../img/icons/edit-gray.png";
 import RingGray from "../../img/icons/ring-gray.png";
 import CalGrey from "../../img/icons/calender-dgray.png";
 import Sidebar from "../menu/Sidebar";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Close from "@material-ui/icons/Close";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Close from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import {makeStyles, withStyles} from "@mui/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchGray from "@mui/icons-material/Search";
 
 class Filter extends Component {
     constructor(props) {

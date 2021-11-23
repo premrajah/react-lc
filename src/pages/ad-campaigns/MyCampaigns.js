@@ -3,40 +3,24 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import {withStyles} from "@material-ui/core/styles/index";
-import ProductItem from "../../components/Products/Item/ProductItem";
+import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, CAMPAIGN_FILTER_VALUES, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-import RemoveIcon from '@material-ui/icons/Remove';
-import DownloadIcon from '@material-ui/icons/GetApp';
-import MapIcon from '@material-ui/icons/Map';
+import {baseUrl, CAMPAIGN_FILTER_VALUES} from "../../Util/Constants";
 import moment from "moment/moment";
-
-import {CSVLink} from "react-csv";
-import {Modal, ModalBody, Spinner} from "react-bootstrap";
-import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
+import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {CURRENT_PRODUCT, LOGIN, LOGIN_ERROR, PRODUCT_LIST} from "../../store/types";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
-import {getMessages, getNotifications} from "../../store/actions/actions";
 import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
-import Close from "@material-ui/icons/Close";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import EditIcon from "@mui/icons-material/Edit";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {createCampaignUrl} from "../../Util/Api";
-import CampaignItem from "../../components/Campaign/CampaignItem";
 import AddIcon from '@mui/icons-material/Add';
 import CreateCampaign from "./CreateCampaign";
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+import RightSidebar from "../../components/RightBar/RightSidebar";
+import CampaignDetailContent from "../../components/Campaign/CampaignDetailContent";
 
 class MyCampaigns extends Component {
 
@@ -56,7 +40,10 @@ class MyCampaigns extends Component {
             errors: {},
             loading:false,
             items:[],
-            createNew:false
+            createNew:false,
+            toggleBar:false,
+            editItem:null,
+            editMode:false
 
         }
 
@@ -257,6 +244,31 @@ class MyCampaigns extends Component {
         })
     }
 
+    toggleRightBar=(item)=>{
+
+        console.log(item)
+
+
+        if (item){
+            this.setState({
+                editMode:true,
+                editItem:item
+
+            })
+        }else{
+
+            this.setState({
+                editMode:false,
+                editItem:null
+
+            })
+        }
+
+this.props.toggleRightBar()
+
+
+    }
+
     toggleDownloadQrCodes=()=>{
 
         this.setState({
@@ -347,7 +359,12 @@ class MyCampaigns extends Component {
 
                 <div className="wrapper">
 
+                    <RightSidebar toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
+                        {!this.state.editMode && <CreateCampaign  />}
+                        {this.state.editMode && this.state.editItem && <CampaignDetailContent item={this.state.editItem} />}
+
+                    </RightSidebar>
                     <div className="container  mb-150  pb-5 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
@@ -363,7 +380,7 @@ class MyCampaigns extends Component {
                                     " mb-4  "}>
                                     <button
 
-                                        onClick={this.toggleCreate}
+                                        onClick={()=>this.toggleRightBar()}
                                         className={
                                             "btn-gray-border "
                                         }>
@@ -451,7 +468,8 @@ class MyCampaigns extends Component {
 
                                                 <td className="d-flex align-items-center">
 
-                                                    <Link to={"/campaign/"+item.campaign._key}>    <div className="pl-3 email">
+                                                    <Link to={"/campaign/"+item.campaign._key}>
+                                                        <div className="pl-3 email">
                                                         <span className={"title-bold text-capitlize"}>{item.campaign.name}</span>
                                                         <span className={"text-gray-light"}>{moment(item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>
                                                     </div>
@@ -480,11 +498,9 @@ class MyCampaigns extends Component {
                                                                     </ul>
                                                                 </td>
                                                        <td>
-                                                    {/*<button type="button" className="close" data-dismiss="alert"*/}
-                                                    {/*        aria-label="Close">*/}
-                                                    {/*    <span aria-hidden="true"><i className="fa fa-eye"></i></span>*/}
-                                                    {/*</button>*/}
+                                                           <EditIcon onClick={()=>this.toggleRightBar(item)}  />
                                                 </td>
+
                                             </tr>
 
                                                             ))}
@@ -535,97 +551,7 @@ class MyCampaigns extends Component {
 
                 </div>
 
-                <Modal
-                    // className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    show={this.state.showMap}
-                    centered
-                    size={"lg"}
-                    onHide={this.toggleMap}
-                    animation={false}>
-                    <ModalBody>
-                        <div className=" text-right web-only">
-                            <Close
-                                onClick={this.toggleMap}
-                                className="blue-text click-item"
-                                style={{ fontSize: 32 }}
-                            />
-                        </div>
 
-                        <div className={"row justify-content-center"}>
-                <ProductsGoogleMap mapData={this.state.mapData} width="700px" height="400px"/>
-
-                        </div>
-                    </ModalBody>
-                </Modal>
-                }
-
-
-                <Modal
-                    // className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    show={this.state.showDownloadQrCodes}
-                    centered
-                    // size={"lg"}
-                    onHide={this.toggleDownloadQrCodes}
-                    animation={false}>
-                    <ModalBody>
-                        <div className=" text-right web-only">
-                            <Close
-                                onClick={this.toggleDownloadQrCodes}
-                                className="blue-text click-item"
-                                style={{ fontSize: 32 }}
-                            />
-                        </div>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <h5
-                                    style={{ textTransform: "Capitalize" }}
-                                    className={"text-bold text-blue"}>
-                                  Download Multiple QR Codes
-                                </h5>
-                            </div>
-                        </div>
-
-                        <div className={"row justify-content-center"}>
-                            <form onSubmit={this.downloadMultipleQrCodes}>
-
-                                        <div className="row mb-2 text-center">
-
-
-                                            <div className="col-12 ">
-
-                                                <TextFieldWrapper
-                                                    // readonly ={this.state.disableVolume}
-                                                    initialValue={this.state.selectedItem&&this.state.selectedItem.factor+""}
-                                                    // value={this.state.disableVolume?"0":""}
-                                                    onChange={(value)=>this.handleChange(value,"count")}
-                                                    error={this.state.errors["count"]}
-                                                    name="count" title="Enter required number of Qr codes to be downloaded" />
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-                                <div className={"row"}>
-                                    <div className="col-12 mt-4">
-                                        <button
-                                            type={"submit"}
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
-                                            }>
-                                            {"Download"}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                    </ModalBody>
-                </Modal>
 
             </Layout>
         );
@@ -647,7 +573,10 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
-        lastPageReached:state.lastPageReached
+        lastPageReached:state.lastPageReached,
+        showRightBar:state.showRightBar,
+
+
     };
 };
 
@@ -666,6 +595,8 @@ const mapDispatchToProps = (dispatch) => {
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        toggleRightBar: (data) => dispatch(actionCreator.toggleRightBar(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MyCampaigns);

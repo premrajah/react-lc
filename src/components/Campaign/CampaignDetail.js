@@ -7,39 +7,22 @@ import {baseUrl, frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./../ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
+import {withStyles} from "@mui/styles/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../../img/qr-code-bg.png";
-import SearchItem from "../../views/loop-cycle/search-item";
-import ResourceItem from "../../views/create-search/ResourceItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import TextField from "@material-ui/core/TextField";
-import Org from "./../Org/Org";
 import LoopcycleLogo from "../../img/logo-text.png";
 import MoreMenu from "./../MoreMenu";
-import IssueSubmitForm from "./../IssueSubmitForm";
-import AutocompleteCustom from "./../AutocompleteCustom";
-import OrgTrailsTimeline from "./../OrgTrailsTimeline";
-import SiteTrailsTimeline from "./../SiteTrailsTimeline";
-import {FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
-import LinkIcon from '@material-ui/icons/Link';
-import InfoTabContent from "./../Products/InfoTabContent";
-import SubProductsTab from "./../Products/SubProductsTab";
-import ArtifactProductsTab from "./../Products/ArtifactProductsTab";
-import {GoogleMap} from "./../Map/MapsContainer";
-import AggregatesTab from "./../Products/AggregatesTab";
+import LinkIcon from '@mui/icons-material/Link';
 import PageHeader from "./../PageHeader";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import Layout from "./../Layout/Layout";
-import OrgComponent from "./../Org/OrgComponent";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import QrCode from "./../Products/QrCode";
+import InfoTabContent from "./InfoTabContent";
+import moment from "moment/moment";
+
 class CampaignDetail extends Component {
     slug;
     search;
@@ -541,12 +524,10 @@ class CampaignDetail extends Component {
         if (prevProps!==this.props) {
 
 
-            if(this.props.item.campaign.purpose === "aggregate"){
-                this.setActiveKey(null,"1")
-            }else{
-                this.setActiveKey(null,"2")
 
-            }
+                this.setActiveKey(null,"1")
+
+
 
         }
     }
@@ -560,12 +541,8 @@ class CampaignDetail extends Component {
 
         this.getProductTrails(this.props.item.campaign._key);
 
-        if(this.props.item.campaign.purpose === "aggregate"){
-            this.setActiveKey(null,"1")
-        }else{
-            this.setActiveKey(null,"2")
+                this.setActiveKey(null,"1")
 
-        }
     }
 
     getProductTrails(productKey) {
@@ -630,79 +607,12 @@ class CampaignDetail extends Component {
                                             <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                         )}
 
-                                        {/*<InfoTabContent item={this.props.item}/>*/}
 
 
-                                        {/*<QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.props.item}/>*/}
+
 
                                     </div>
 
-
-
-                                    <div className={"col-12 pb-5 mb-5 d-none"}>
-                                        <div className="row justify-content-start pb-3 pt-3 ">
-                                            <div className="col-12 ">
-                                                <h5 className={"text-bold blue-text"}>Cyclecode</h5>
-                                            </div>
-
-                                            <div className="col-12">
-                                                <p
-                                                    style={{ fontSize: "16px" }}
-                                                    className={"text-gray-light "}>
-                                                    Scan the QR code below to view this product
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div className="row justify-content-center ">
-                                            <div className="col-12 border-box">
-                                                <div className="d-flex flex-column justify-content-center align-items-center">
-                                                    {this.state.productQrCode && (<img
-                                                        className=""
-                                                        src={this.state.productQrCode.blob_url}
-                                                        alt={this.props.item.campaign.name}
-                                                        title={this.props.item.campaign.name}
-                                                        style={{ width: "90%" }}
-                                                    />)}
-
-                                                    <div className="d-flex justify-content-center w-100">
-                                                        {this.props.hideRegister && (
-                                                            <p className={"green-text"}>
-                                                                <Link
-                                                                    className={"mr-3"}
-                                                                    to={
-                                                                        "/p/" + this.props.item.campaign._key
-                                                                    }>
-                                                                    [Provenance]
-                                                                </Link>
-                                                                <Link
-                                                                    onClick={() =>
-                                                                        this.handlePrintPdf(
-                                                                            this.props.item.campaign,
-                                                                            this.state.productQrCode.blob_url,
-                                                                            QrCodeBg,
-                                                                            LoopcycleLogo
-                                                                        )
-                                                                    }>
-                                                                    [PDF]
-                                                                </Link>
-                                                                <a
-                                                                    className={"mr-3"}
-                                                                    href={
-                                                                        baseUrl + "product/" + this.props.item.campaign._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
-                                                                    } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.campaign._key + ".png" } rel="noreferrer" >[Alt]</a>
-                                                                <a
-                                                                    className={"mr-3"}
-                                                                    href={
-                                                                        baseUrl + "product/" + this.props.item.campaign._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                                    } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.campaign._key + ".png" } rel="noreferrer" >[Mono]</a>
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -714,10 +624,11 @@ class CampaignDetail extends Component {
                                                 <h4 className={"blue-text text-heading"}>
 
 
-                                                    <h4 className="text-capitalize product-title">  {this.props.isLoggedIn && <span className="mr-2">
-                                                <Link to={`/product/${this.props.item.campaign._key}`}><LinkIcon /></Link>
-                                            </span>}{this.props.item.campaign.name}</h4>
+                                                    <h4 className="text-capitalize product-title">
+                                            {this.props.item.campaign.name}</h4>
+
                                                 </h4>
+                                            {/*<span className={"text-gray-light small"}>    {moment(this.props.item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>*/}
                                             </div>
 
                                             <div className="col-4 text-right">
@@ -776,24 +687,12 @@ class CampaignDetail extends Component {
                                                         onChange={this.setActiveKey}
 
                                                         aria-label="lab API tabs example">
-                                                        {/*<Tab label="Info" value="1" />*/}
 
+                                                        <Tab label="Info" value="1" />
 
-                                                        {(this.props.item.campaign.purpose === "aggregate") &&
-                                                        <Tab label="Aggregation" value="1"/>
-                                                        }
-                                                        <Tab label="Sub Products" value="2" />
+                                                        <Tab label="Conditions" value="2" />
 
-                                                        <Tab label="Site" value="3" />
-                                                        {this.state.searches.length > 0 && (
-                                                            <Tab label="Searches" value="4" />
-                                                        )}
-
-                                                        {this.state.listingLinked &&
-                                                        <Tab label="Searches" value="5" />
-                                                        }
-                                                        {this.state.listingLinked && (   <Tab label="Listing" value="6" />)}
-                                                        <Tab label="Artifacts" value="6" />
+                                                        <Tab label="Message Template" value="3" />
 
 
 
@@ -801,17 +700,17 @@ class CampaignDetail extends Component {
                                                 </Box>
 
 
-
-                                                {(this.props.item.campaign.purpose === "aggregate") &&
                                                 <TabPanel value="1">
+                                                    <InfoTabContent  item={this.props.item} />
+                                                </TabPanel>
 
-                                                </TabPanel>}
                                                 <TabPanel value="2">
+                                                    <InfoTabContent  item={this.props.item} />
                                                 </TabPanel>
                                                 <TabPanel value="3">
                                                     <>
 
-
+                                                        <InfoTabContent  item={this.props.item} />
 
                                                     </>
 
@@ -829,17 +728,6 @@ class CampaignDetail extends Component {
                                     </div>
                                 </div>
 
-                                <div className="row justify-content-start  pt-3 no-gutters mt-4 ">
-                                    <div className="col-12">
-                                        <h5 className={"attribute-label col-12 p-0 text-blue "}>Product Provenance </h5>
-                                        <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
-                                            See where this product has travelled since the day it was
-                                            created.
-                                        </p>
-                                    </div>
-
-
-                                </div>
 
 
                             </div>

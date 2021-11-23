@@ -5,10 +5,9 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 // import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-
 import {Alert, Modal, ModalBody} from "react-bootstrap";
 
-import {withStyles} from "@material-ui/core/styles/index";
+import {withStyles} from "@mui/styles/index";
 import {Link} from "react-router-dom";
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
@@ -23,7 +22,6 @@ import SubProductsTab from "./SubProductsTab";
 import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
-import OrgFull from "../Org/OrgFull";
 import AggregatesTab from "./AggregatesTab";
 import OrgComponent from "../Org/OrgComponent";
 import Tab from '@mui/material/Tab';

@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {FormControl, MenuItem} from "@material-ui/core";
+import {FormControl, MenuItem} from "@mui/material";
 import axios from "axios/index";
 import {baseUrl, ISSUES_PRIORITY} from "../Util/Constants";
 import {connect} from "react-redux";
 import {Field, Form, Formik} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "./FormsUI/TextField";
-import {Select} from "formik-material-ui";
+// import {Select} from "formik-material-ui";
 
 class IssueSubmitForm extends Component {
     state = {
@@ -130,7 +130,7 @@ class IssueSubmitForm extends Component {
                                 <div className="col">
                                     <FormControl>
                                         <Field
-                                            component={Select}
+                                            // component={Select}
                                             name="priority"
                                             variant="outlined"
                                             label="Priority"

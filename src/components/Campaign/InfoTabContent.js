@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import {capitalizeFirstLetter} from "../../Util/Constants";
-import Org from "../Org/Org";
-import {capitalize} from "../../Util/GlobalFunctions";
+import moment from "moment/moment";
 
 class InfoTabContent extends Component {
     slug;
@@ -20,110 +18,75 @@ class InfoTabContent extends Component {
             <>
 
                 {this.props.item &&
-                (this.props.item.external_reference) && (
+                (this.props.item.campaign.stage) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="text-mute text-bold text-blue mb-1">
-                                Site ID
+                                Stage
                             </p>
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="  mb-1">
                                 {
-                                    this.props.item.external_reference
+                                    this.props.item.campaign.stage
                                 }
                             </p>
                         </div>
                     </div>
                 )}
                 {this.props.item &&
-                (this.props.item.email) && (
+                (this.props.item.campaign._ts_epoch_ms) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="text-mute text-bold text-blue mb-1">
-                                Email
+                                Created On
                             </p>
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="  mb-1">
-                                {
-                                    this.props.item.email
-                                }
-                            </p>
-                        </div>
-                    </div>
-                )}
-                {this.props.item &&
-                (this.props.item.phone) && (
-                    <div className="row  justify-content-start search-container  pb-2">
-                        <div className={"col-auto"}>
-                            <p
-                                style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
-                                Phone
-                            </p>
-                            <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
-                                {
-                                    this.props.item.phone
-                                }
-                            </p>
-                        </div>
-                    </div>
-                )}
-                {this.props.item &&
-                this.props.item.contact && (
-                    <div className="row  justify-content-start search-container  pb-2">
-                        <div className={"col-auto"}>
-                            <p
-                                style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
-                                Contact
-                            </p>
-                            <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
-                                {this.props.item.contact}
-                            </p>
-                        </div>
-                    </div>
-                )}
-                {this.props.item &&
-                this.props.item.address && (
-                    <div className="row  justify-content-start search-container  pb-2">
-                        <div className={"col-auto"}>
-                            <p
-                                style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
-                                Address
-                            </p>
-                            <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
-                                {this.props.item.address}
-                            </p>
-                        </div>
-                    </div>
-                )}
 
+                                {moment(this.props.item.campaign._ts_epoch_ms).format("DD MMM YYYY")}
+
+                            </p>
+                        </div>
+                    </div>
+                )}
                 {this.props.item &&
-                this.props.item.others && (
+                (this.props.item.campaign.start_ts) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="text-mute text-bold text-blue mb-1">
-                                Other
+                                Start Date
                             </p>
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="  mb-1">
-                                {this.props.item.others}
+                                {moment(this.props.item.campaign.start_ts).format("DD MMM YYYY")}
+
+
+                            </p>
+                        </div>
+                    </div>
+                )}
+                {this.props.item &&
+                (this.props.item.campaign.end_ts) && (
+                    <div className="row  justify-content-start search-container  pb-2">
+                        <div className={"col-auto"}>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="text-mute text-bold text-blue mb-1">
+                                End Date
+                            </p>
+                            <p
+                                style={{ fontSize: "18px" }}
+                                className="  mb-1">
+                                {moment(this.props.item.campaign.end_ts).format("DD MMM YYYY")}
                             </p>
                         </div>
                     </div>

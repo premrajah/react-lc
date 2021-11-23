@@ -1,18 +1,16 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import SubproductItem from "./Item/SubproductItem";
 import AggregateItem from "./Item/AggregateItem";
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import {Modal, ModalBody} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import axios from "axios";
-import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {baseUrl} from "../../Util/Constants";
-import {withStyles} from "@material-ui/core/styles";
-import {Tooltip} from "@material-ui/core";
+import {withStyles} from "@mui/styles";
+import {Tooltip} from "@mui/material";
 import ConversionsTab from "./ConversionsTab";
 import _ from "lodash";
 

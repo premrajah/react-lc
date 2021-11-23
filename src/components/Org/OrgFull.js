@@ -1,5 +1,5 @@
 import React from "react";
-import { Info } from "@material-ui/icons";
+import { Info } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 

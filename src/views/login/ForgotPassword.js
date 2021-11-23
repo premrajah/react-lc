@@ -3,7 +3,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
 import history from "../../History/history";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import axios from "axios/index";
 
 class ForgotPassword extends Component {

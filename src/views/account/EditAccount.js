@@ -1,21 +1,15 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import { Alert, Spinner } from "react-bootstrap";
-import {IconButton, InputAdornment, TextField, Typography} from "@material-ui/core";
+import {Alert} from "react-bootstrap";
+import {Typography} from "@mui/material";
 import PageHeader from "../../components/PageHeader";
-import StatBLue from "../../img/icons/stat-blue.png";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import {Visibility, VisibilityOff} from "@material-ui/icons";
-import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {capitalize} from "../../Util/GlobalFunctions";
 
 class EditAccount extends Component {
     constructor(props) {

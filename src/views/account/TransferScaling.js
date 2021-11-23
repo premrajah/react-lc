@@ -5,22 +5,22 @@ import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {Modal, ModalBody, Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import PlaceholderImg from "../../../src/img/place-holder-lc.png";
-import EditIcon from "@material-ui/icons/Edit";
-import {Publish} from "@material-ui/icons";
+import EditIcon from "@mui/icons-material/Edit";
+import {Publish} from "@mui/icons-material";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import _ from "lodash";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import ConversionItem from "../../components/Products/ConversionItem";
 import TransferScalingItem from "./TransferScalingItem";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 
 class TransferScaling extends Component {
     constructor(props) {

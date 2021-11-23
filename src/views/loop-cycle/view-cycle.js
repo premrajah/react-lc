@@ -1,36 +1,35 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
+import {connect} from "react-redux";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { Modal, ModalBody } from "react-bootstrap";
+import {Modal, ModalBody} from "react-bootstrap";
 import GrayLoop from "../../img/icons/gray-loop.png";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { baseUrl } from "../../Util/Constants";
+import {makeStyles} from "@mui/styles";
+import TextField from "@mui/material/TextField";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@mui/styles/index";
 import moment from "moment/moment";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import Typography from "@material-ui/core/Typography";
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
-import TimelineContent from "@material-ui/lab/TimelineContent";
-import TimelineDot from "@material-ui/lab/TimelineDot";
-import CheckIcon from "@material-ui/icons/Check";
-import AddIcon from "@material-ui/icons/Add";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import Typography from "@mui/material/Typography";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
+import CheckIcon from "@mui/icons-material/Check";
+import AddIcon from "@mui/icons-material/Add";
 import NotFound from "../NotFound/index";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import ProductExpandItem from "../../components/ProductExpandItem";
-import Org from "../../components/Org/Org";
 import OrgFull from "../../components/Org/OrgFull";
 
 class ViewCycle extends Component {
@@ -1083,11 +1082,11 @@ class ViewCycle extends Component {
                                         <React.Fragment>
                                             <CssBaseline />
 
-                                            <AppBar
+                                            <div
                                                 position="fixed"
                                                 color="#ffffff"
                                                 className={
-                                                    classesBottom.appBar + "  custom-bottom-appbar"
+                                                     "custom-bottom-fixed-appbar  custom-bottom-appbar"
                                                 }>
                                                 <Toolbar>
                                                     <div className="container ">
@@ -1128,7 +1127,7 @@ class ViewCycle extends Component {
                                                         </div>
                                                     </div>
                                                 </Toolbar>
-                                            </AppBar>
+                                            </div>
                                         </React.Fragment>
                                     )}
 

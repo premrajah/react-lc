@@ -11,7 +11,7 @@ import Org from "../../components/Org/Org";
 import { Link } from "react-router-dom";
 import { Badge, Modal } from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
-import { FormControl, FormHelperText, MenuItem, Select } from "@material-ui/core";
+import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
 import ProductItemNew from "../../components/ProductItemNew";
 
 class IssueDetail extends Component {

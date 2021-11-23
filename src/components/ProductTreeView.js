@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import axios from "axios/index";
 import {baseUrl} from "../Util/Constants";
 import PropTypes from "prop-types";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import {makeStyles, withStyles} from "@material-ui/core/styles";
-import TreeItem from "@material-ui/lab/TreeItem";
-import Typography from "@material-ui/core/Typography";
+import SvgIcon from "@mui/material/SvgIcon";
+import {makeStyles, withStyles} from "@mui/styles";
+import TreeItem from "@mui/lab/TreeItem";
+import Typography from "@mui/material/Typography";
 import ProductTreeItemView from "./ProductTreeItemView";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {Spinner} from "react-bootstrap";
 
 class ProductTreeView extends Component {

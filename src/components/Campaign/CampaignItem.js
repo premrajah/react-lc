@@ -10,8 +10,6 @@ import {Modal, ModalBody} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
-import {Add} from "@material-ui/icons";
-import {capitalize} from "../../Util/GlobalFunctions";
 
 class CampaignItem extends Component {
     constructor(props) {

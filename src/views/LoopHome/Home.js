@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import Footer from "../Footer/Footer";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 
 class Home extends Component {

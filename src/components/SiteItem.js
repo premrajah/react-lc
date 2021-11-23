@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import EditIcon from '@material-ui/icons/Edit';
-import Close from "@material-ui/icons/Close";
+import EditIcon from '@mui/icons-material/Edit';
+import Close from "@mui/icons-material/Close";
 import EditSite from "./Sites/EditSite";
-import MapIcon from '@material-ui/icons/Place';
-import {MapContainer} from "./Map/MapContainer";
+import MapIcon from '@mui/icons-material/Place';
 import {GoogleMap} from "./Map/MapsContainer";
+
 const SiteItem = ({site}) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = site;
     const [showModal, setShowModal] = useState(false);

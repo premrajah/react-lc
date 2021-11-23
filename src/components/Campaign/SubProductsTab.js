@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+
 // import SubproductItem from "./Item/SubproductItem";
 
 class SubProductsTab extends Component {

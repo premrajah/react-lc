@@ -1,24 +1,24 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Close from "@material-ui/icons/Close";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles/index";
+import {connect} from "react-redux";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Close from "@mui/icons-material/Close";
+import {makeStyles} from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import TextField from "@mui/material/TextField";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl} from "../Util/Constants";
 import ProductExpandItem from "./ProductExpandItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import FormHelperText from "@mui/material/FormHelperText";
 import MomentUtils from "@date-io/moment";
 import _ from "lodash";
 import clsx from "clsx";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DatePicker from '@mui/lab/DatePicker';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1492,7 +1492,7 @@ class ListEditForm extends Component {
                                         Required From
                                     </div>
 
-                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    {/*<MuiPickersUtilsProvider utils={MomentUtils}>*/}
                                         <DatePicker
                                             name={"dateRequiredFrom"}
                                             inputVariant="outlined"
@@ -1507,7 +1507,7 @@ class ListEditForm extends Component {
                                             }
                                             onChange={this.handleChangeDateStartDate.bind(this)}
                                         />
-                                    </MuiPickersUtilsProvider>
+                                    {/*</MuiPickersUtilsProvider>*/}
                                     {this.state.errors["startDate"] && (
                                         <span className={"text-mute small"}>
                                             <span style={{ color: "red" }}>* </span>
@@ -1521,7 +1521,7 @@ class ListEditForm extends Component {
                                         Required By
                                     </div>
 
-                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    {/*<MuiPickersUtilsProvider utils={MomentUtils}>*/}
                                         <DatePicker
                                             name={"dateRequiredBy"}
                                             minDate={
@@ -1542,7 +1542,7 @@ class ListEditForm extends Component {
                                             }
                                             onChange={this.handleChangeDate.bind(this)}
                                         />
-                                    </MuiPickersUtilsProvider>
+                                    {/*</MuiPickersUtilsProvider>*/}
                                     {this.state.errors["endDate"] && (
                                         <span className={"text-mute small"}>
                                             <span style={{ color: "red" }}>* </span>

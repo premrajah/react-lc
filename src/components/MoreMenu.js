@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreIcon from "@material-ui/icons/MoreHoriz";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreIcon from "@mui/icons-material/MoreHoriz";
 import { Modal, ModalBody } from "react-bootstrap";
 
 class MoreMenu extends Component {

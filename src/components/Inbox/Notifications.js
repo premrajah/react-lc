@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
 import reactStringReplace from "react-string-replace";
-import {Card, CardContent, Snackbar} from "@material-ui/core";
-import NotIcon from "@material-ui/icons/Notifications";
+import {Card, CardContent, Snackbar} from "@mui/material";
+import NotIcon from "@mui/icons-material/Notifications";
 import moment from "moment/moment";
 import Org from "../Org/Org";
 import {Link} from "react-router-dom";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/lab/Alert";
 import _ from 'lodash';
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
@@ -117,7 +117,7 @@ class Notifications extends Component {
 
         const { message, orgs } = item;
         let text;
-        
+
         const flags = orgs.length > 0 && orgs.filter(org => org.read_flag).filter(org => org.org._id === this.props.userDetail.orgId).map(org => org.read_flag).map(f => f.flag)[0];
         const readTime = orgs.length > 0 && orgs.filter(org => org.read_flag).filter(org => org.org._id === this.props.userDetail.orgId).map(org => org.read_flag)[0];
         const messageId = item.message._id;

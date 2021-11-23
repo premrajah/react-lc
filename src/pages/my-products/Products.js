@@ -3,34 +3,28 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import {withStyles} from "@material-ui/core/styles/index";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-import RemoveIcon from '@material-ui/icons/Remove';
-import DownloadIcon from '@material-ui/icons/GetApp';
-import MapIcon from '@material-ui/icons/Map';
+import DownloadIcon from '@mui/icons-material/GetApp';
+import MapIcon from '@mui/icons-material/Map';
 
 import {CSVLink} from "react-csv";
-import {Modal, ModalBody, Spinner} from "react-bootstrap";
-import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
+import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {CURRENT_PRODUCT, LOGIN, LOGIN_ERROR} from "../../store/types";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
-import {getMessages, getNotifications} from "../../store/actions/actions";
 import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
-import Close from "@material-ui/icons/Close";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import Close from "@mui/icons-material/Close";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+
 class Products extends Component {
 
     constructor(props) {

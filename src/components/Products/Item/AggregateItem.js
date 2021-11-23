@@ -6,8 +6,8 @@ import PlaceholderImg from "../../../img/place-holder-lc.png";
 import {Link, useHistory} from "react-router-dom";
 import * as actionCreator from "../../../store/actions/actions";
 import {connect} from "react-redux";
-import {withStyles} from "@material-ui/core/styles";
-import {Tooltip} from "@material-ui/core";
+import {withStyles} from "@mui/styles";
+import {Tooltip} from "@mui/material";
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {

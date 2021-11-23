@@ -52,7 +52,7 @@ import {
     SITE_FORM_SHOW,
     SHOW_MULTIPLE_POP_UP,
     PRODUCT_PAGE_RESET,
-    PRODUCT_NOT_FOUND
+    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR,TOGGLE_GLOBAL_DIALOG
 } from "../types";
 
 export const initialState = {
@@ -106,6 +106,8 @@ export const initialState = {
     showMultiplePopUp:false,
     createProductId:null,
     productNotFound:false,
+    showRightBar:false,
+    showGlobalDiaglog:false,
     showSiteForm:{
         show:false,
         item:null
@@ -122,6 +124,13 @@ const reducer = (state = initialState, action) => {
             newState.userDetail = action.value;
             break;
 
+
+        case TOGGLE_RIGHTBAR:
+            newState.showRightBar = !state.showRightBar;
+            break;
+        case TOGGLE_GLOBAL_DIALOG:
+            newState.showGlobalDiaglog = !state.showGlobalDiaglog;
+            break;
         case SET_ORG_IMG:
             newState.orgImage = action.value;
             break;

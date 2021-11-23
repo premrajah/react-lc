@@ -78,15 +78,40 @@ import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 import TransferScaling from "./views/account/TransferScaling";
 import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
 import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
-import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
-import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
-const theme = createMuiTheme();
+// import { ThemeProvider, createMuiTheme, makeStyles } from '@mui/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => {
-    root: {
-        // some css that access to theme
-    }
+import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
+const theme = createTheme({
+    palette: {
+
+
+        // primary: {
+        //     // light: will be calculated from palette.primary.main,
+        //     main: '#ff4400',
+        //     // dark: will be calculated from palette.primary.main,
+        //     // contrastText: will be calculated to contrast with palette.primary.main
+        // },
+        // ownerState:{
+        //     main: '#ff4400',
+        // },
+        // secondary: {
+        //     light: '#0066ff',
+        //     main: '#0044ff',
+        //     // dark: will be calculated from palette.secondary.main,
+        //     contrastText: '#ffcc00',
+        // },
+        // // Used by `getContrastText()` to maximize the contrast between
+        // // the background and the text.
+        // contrastThreshold: 3,
+        // // Used by the functions below to shift a color's luminance by approximately
+        // // two indexes within its tonal palette.
+        // // E.g., shift from Red 500 to Red 300 or Red 700.
+        // tonalOffset: 0.2,
+
+    },
 });
+
 
 class App extends Component {
 

@@ -1,7 +1,7 @@
 import React ,{Component } from 'react';
 import PlaceholderImg from "../../img/place-holder-lc.png";
 
-import ImagesSlider from "../ImagesSlider";
+import ImagesSlider from "../ImagesSlider/ImagesSlider";
 
 class ImageHeader extends Component{
 

@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {TextField} from "@material-ui/core";
-import {makeStyles} from '@material-ui/core/styles';
+import {TextField} from "@mui/material";
+import {makeStyles} from '@mui/styles';
+import InputBase from '@mui/material/InputBase';
+import { alpha, styled } from '@mui/material/styles';
+import CustomizedInput from "./CustomizedInput";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -11,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
 }));
+
+
+
 
 const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
@@ -39,16 +45,17 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
              onChange(value)
     };
 
+
     return(
         <>
 
-            {title&& <div className={"custom-label text-bold text-blue mb-1"}>
+            {title&& <div className={"custom-label text-bold text-blue mb-0"}>
                 {title}
             </div>}
 
-           <div className={"field-box mb-1"}>
+           <div className={"field-box mb-2"}>
 
-               <TextField
+               <CustomizedInput
 
                   variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
 

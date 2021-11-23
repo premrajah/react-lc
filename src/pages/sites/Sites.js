@@ -3,22 +3,14 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import {withStyles} from "@material-ui/core/styles/index";
-import ProductItem from "../../components/Products/Item/ProductItem";
+import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, PRODUCTS_FILTER_VALUES, SITES_FILTER_VALUES} from "../../Util/Constants";
-import RemoveIcon from '@material-ui/icons/Remove';
-import {CSVLink} from "react-csv";
+import {baseUrl, SITES_FILTER_VALUES} from "../../Util/Constants";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {CURRENT_PRODUCT} from "../../store/types";
-import SiteItem from "../../components/SiteItem";
 import SitePageItem from "../../components/Sites/SitePageItem";
 
 class Sites extends Component {

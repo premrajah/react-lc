@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 import SearchIcon from "../../img/icons/search-icon.png";
 import { Link } from "react-router-dom";
-import InputLabel from "@material-ui/core/InputLabel";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import { withStyles } from "@material-ui/core/styles/index";
+import InputLabel from "@mui/material/InputLabel";
+import { makeStyles } from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import { withStyles } from "@mui/styles/index";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
 import HeaderDark from "../header/HeaderDark";
@@ -745,10 +745,10 @@ class ViewSearch extends Component {
                             <React.Fragment>
                                 <CssBaseline />
 
-                                <AppBar
+                                <div
                                     position="fixed"
                                     color="#ffffff"
-                                    className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                    className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
                                     <Toolbar>
                                         <div
                                             className="row  justify-content-center search-container "
@@ -775,7 +775,7 @@ class ViewSearch extends Component {
                                             </div>
                                         </div>
                                     </Toolbar>
-                                </AppBar>
+                                </div>
                             </React.Fragment>
                         )}
                     </>
@@ -815,41 +815,6 @@ const useStylesBottomBar = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar() {
-    const classes = useStylesBottomBar();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <button
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                Back
-                            </button>
-                        </div>
-                        <div className="col-auto" style={{ margin: "auto" }}>
-                            <p className={"blue-text"}> Page 2/3</p>
-                        </div>
-                        <div className="col-auto">
-                            <button
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-}
 
 function UnitSelect(props) {
     const classes = useStylesSelect();

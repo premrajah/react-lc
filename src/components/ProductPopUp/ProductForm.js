@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
+import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
-import { Cancel, Check, Error, Publish } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/core/styles/index";
+import { Cancel, Check, Error, Publish } from "@mui/icons-material";
+import { makeStyles } from "@mui/styles";
+import { withStyles } from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl, capitalizeFirstLetter, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
@@ -131,10 +131,16 @@ class ProductForm extends Component {
 
                     if (responseAll.length>0&&this.props.item){
 
+
+                        let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        let subCategories=cat.length>0?cat[0].types:[]
+                       let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                          let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+
                         this.setState({
-                            subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
-                            states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
-                            units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+                            subCategories:subCategories,
+                            states : states,
+                            units : units
                         })
 
                     }
@@ -725,7 +731,7 @@ class ProductForm extends Component {
 
 
                             <div className="row no-gutters">
-                                <div className="col-12 mt-4">
+                                <div className="col-12 mt-2">
 
                                    <TextFieldWrapper
                                      initialValue={this.props.item&&this.props.item.product.name}
@@ -736,8 +742,8 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row  mt-4">
-                                <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                            <div className="row  mt-2">
+                                <div className="col-md-5 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
@@ -746,7 +752,7 @@ class ProductForm extends Component {
 
                                 </div>
 
-                                <div className="col-md-4 col-sm-12">
+                                <div className="col-md-3 col-sm-12">
 
                                     <SelectArrayWrapper
 
@@ -769,7 +775,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row mt-4">
+                            <div className="row mt-2">
 
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
@@ -847,7 +853,7 @@ class ProductForm extends Component {
 
 
 
-                            <div className="row no-gutters mt-4">
+                            <div className="row no-gutters mt-2">
                                 <div className="col-12">
                                     <div className="row camera-grids   no-gutters   ">
                                         <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
@@ -917,7 +923,7 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
                             </div>
-                                <div className="row no-gutters mt-4">
+                                <div className="row no-gutters mt-2">
                                     <div className="col-12">
                                         <div className="row no-gutters justify-content-center ">
                                             <div className="col-12 ">
@@ -952,7 +958,7 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
 
-                            <div className="row no-gutters mt-4">
+                            <div className="row no-gutters mt-2">
                                 <div className="col-12">
 
                                     <TextFieldWrapper
@@ -984,7 +990,7 @@ class ProductForm extends Component {
 
 
 
-                                    <div className={this.state.moreDetail?"col-12 mt-4": "d-none    "}>
+                                    <div className={this.state.moreDetail?"col-12 mt-2": "d-none    "}>
                                         <div className="row">
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
@@ -1028,7 +1034,7 @@ class ProductForm extends Component {
                                     </div>
 
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
                                     Attachment
                                 </div>
@@ -1182,7 +1188,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="col-12 mt-4 mb-5">
+                            <div className="col-12 mt-2 mb-5">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
                                     0 ? (

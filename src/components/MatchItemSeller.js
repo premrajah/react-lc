@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from "react-bootstrap";
 import GrayLoop from "../img/icons/gray-loop.png";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import CompanyInfo from "./CompanyInfo";
 

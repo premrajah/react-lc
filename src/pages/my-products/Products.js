@@ -3,33 +3,27 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import {withStyles} from "@material-ui/core/styles/index";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-import RemoveIcon from '@material-ui/icons/Remove';
-import DownloadIcon from '@material-ui/icons/GetApp';
-import MapIcon from '@material-ui/icons/Map';
+import DownloadIcon from '@mui/icons-material/GetApp';
+import MapIcon from '@mui/icons-material/Map';
 
 import {CSVLink} from "react-csv";
-import {Modal, ModalBody, Spinner} from "react-bootstrap";
-import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
+import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {CURRENT_PRODUCT, LOGIN, LOGIN_ERROR} from "../../store/types";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
-import {getMessages, getNotifications} from "../../store/actions/actions";
 import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
-import Close from "@material-ui/icons/Close";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import Close from "@mui/icons-material/Close";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 class Products extends Component {
 
@@ -104,9 +98,13 @@ class Products extends Component {
     componentDidMount() {
 
         this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
-    // this.loadNewPageSetUp()
+
+        // this.props.resetProductPageOffset()
+        // this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
+        this.props.dispatchLoadProductsWithoutParentPage({offset:0,size:400});
+
+        // this.loadNewPageSetUp()
 
         // this.getSitesForProducts()
 
@@ -120,6 +118,8 @@ class Products extends Component {
 
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
+
+            alert("called")
 
             this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
 
@@ -337,7 +337,7 @@ class Products extends Component {
         return (
             <Layout>
 
-                <div className="wrapper">
+                <>
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
@@ -363,14 +363,14 @@ class Products extends Component {
                                             <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer',
                                                 textOverflow: "ellipsis",
                                                 whiteSpace: "nowrap",
-                                                overflow: "hidden"}}><RemoveIcon color="secondary" /> {product.product.name}</div>
+                                                overflow: "hidden"}}><IndeterminateCheckBoxIcon style={{opacity:"0.5"}} className={"text-blue"} /> {product.product.name}</div>
                                     ))}
                                 </div>
                             </div>
                         </div>
                     </div> : null }
 
-                    <div className="container  mb-150  pb-5 pt-4">
+                    <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="Products"
@@ -379,37 +379,36 @@ class Products extends Component {
 
                         <div className="row">
                             <div className="col-md-8 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
                                     Product Service
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/product-archive" className="btn btn-sm btn-gray-border mr-2">
                                     Records
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
                                     Tracked
                                 </Link>
                             </div>
 
 
                             <div className="col-md-4 d-flex justify-content-end">
-                                <button className="btn btn-sm blue-btn" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button>
-                                <button className="d-none btn btn-sm blue-btn ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+                                <button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button>
+                                <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
                         </div>
 
-                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className={"listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.props.productWithoutParentList&&this.props.productWithoutParentList.filter((site)=>
+                                <p  className="text-gray-light ml-2 ">
+                                    {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -436,17 +435,14 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1">Listable Products</span>
+                                    <span className="ml-1 text-gray-light">Products Listed</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
-                            </div>
-                        </div>
-                        <div className={"listing-row-border mb-3"}></div>
 
-                        {this.props.productWithoutParentList&&
-                        this.props.productWithoutParentList.filter((site)=>
+                        </div>
+
+                        {this.props.productWithoutParentListPage&&
+                        this.props.productWithoutParentListPage.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -489,7 +485,7 @@ class Products extends Component {
                         ))}
 
 
-                        {this.props.productWithoutParentList&&this.props.productWithoutParentList.filter((site)=>
+                        {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                     site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                     this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -522,13 +518,13 @@ class Products extends Component {
 
                         }
 
-                        {/*{this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&*/}
-                        {/*<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
-                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
-                        {/*        <div>Loading products please wait ...</div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*}*/}
+                        {this.props.productWithoutParentListPage.length!=0&&!this.props.lastPageReached &&
+                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
+                                <div>Loading products please wait ...</div>
+                            </div>
+                        </div>
+                        }
                     </div>
 
                     <React.Fragment>
@@ -553,7 +549,7 @@ class Products extends Component {
                             </Toolbar>
                         </AppBar>
                     </React.Fragment>
-                </div>
+                </>
 
                 <Modal
                     // className={"loop-popup"}
@@ -682,6 +678,9 @@ const mapDispatchToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
+        resetProductPageOffset: (data) =>
+            dispatch(actionCreator.resetProductPageOffset(data)),
+
         setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),

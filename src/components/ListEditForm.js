@@ -1,24 +1,27 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../store/actions/actions";
-import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Close from "@material-ui/icons/Close";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles/index";
+import {connect} from "react-redux";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Close from "@mui/icons-material/Close";
+import {makeStyles} from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import TextField from "@mui/material/TextField";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import {baseUrl} from "../Util/Constants";
 import ProductExpandItem from "./ProductExpandItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import MomentUtils from "@date-io/moment";
+import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
 import clsx from "clsx";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import CustomizedInput from "./FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1116,7 +1119,7 @@ class ListEditForm extends Component {
                                         Title
                                     </div>
 
-                                    <TextField
+                                    <CustomizedInput
                                         value={
                                             this.state.title
                                                 ? this.state.title
@@ -1141,7 +1144,7 @@ class ListEditForm extends Component {
                                         Description
                                     </div>
 
-                                    <TextField
+                                    <CustomizedInput
                                         value={
                                             this.state.description
                                                 ? this.state.description
@@ -1174,8 +1177,9 @@ class ListEditForm extends Component {
                                                 variant="outlined"
                                                 className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
+                                                <CustomizedSelect
                                                     native
+                                                    variant="standard"
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "category"
@@ -1198,7 +1202,7 @@ class ListEditForm extends Component {
                                                             {item.name}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
 
                                                 <FormHelperText>
                                                     Which category is your product located within?
@@ -1226,7 +1230,8 @@ class ListEditForm extends Component {
                                                 variant="outlined"
                                                 className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
+                                                <CustomizedSelect
+                                                    variant="standard"
                                                     native
                                                     onChange={this.handleChange.bind(this, "type")}
                                                     inputProps={{
@@ -1247,7 +1252,7 @@ class ListEditForm extends Component {
                                                             {item.name}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
                                             </FormControl>
                                             {this.state.errors["type"] && (
                                                 <span className={"text-mute small"}>
@@ -1269,7 +1274,8 @@ class ListEditForm extends Component {
                                                 variant="outlined"
                                                 className={classes.formControl}>
                                                 <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                <Select
+                                                <CustomizedSelect
+                                                    variant="standard"
                                                     native
                                                     onChange={this.handleChange.bind(this, "state")}
                                                     inputProps={{
@@ -1290,7 +1296,7 @@ class ListEditForm extends Component {
                                                             {item}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
                                             </FormControl>
                                             {this.state.errors["state"] && (
                                                 <span className={"text-mute small"}>
@@ -1317,7 +1323,8 @@ class ListEditForm extends Component {
                                         <InputLabel htmlFor="outlined-age-native-simple">
                                             Unit
                                         </InputLabel>
-                                        <Select
+                                        <CustomizedSelect
+                                            variant="standard"
                                             name={"unit"}
                                             native
                                             onChange={this.handleChange.bind(this, "unit")}
@@ -1339,7 +1346,7 @@ class ListEditForm extends Component {
                                                     {item}
                                                 </option>
                                             ))}
-                                        </Select>
+                                        </CustomizedSelect>
                                     </FormControl>
                                     {this.state.errors["unit"] && (
                                         <span className={"text-mute small"}>
@@ -1349,7 +1356,7 @@ class ListEditForm extends Component {
                                     )}
                                 </div>
                                 <div className="col-6 pl-2">
-                                    <TextField
+                                    <CustomizedInput
                                         value={
                                             this.state.volume
                                                 ? this.state.volume
@@ -1377,7 +1384,8 @@ class ListEditForm extends Component {
                                     </div>
 
                                     <FormControl variant="outlined" className={classes.formControl}>
-                                        <Select
+                                        <CustomizedSelect
+                                            variant="standard"
                                             name="product"
                                             native
                                             onChange={this.handleChange.bind(this, "product")}
@@ -1402,7 +1410,7 @@ class ListEditForm extends Component {
                                                         {item.sub_product_ids.length} Sub Products)
                                                     </option>
                                                 ))}
-                                        </Select>
+                                        </CustomizedSelect>
                                         {this.state.errors["product"] && (
                                             <span className={"text-mute small"}>
                                                 <span style={{ color: "red" }}>* </span>
@@ -1438,10 +1446,11 @@ class ListEditForm extends Component {
                                         Deliver To
                                     </div>
 
-                                    <FormControl variant="outlined" className={classes.formControl}>
+                                    <FormControl  className={classes.formControl}>
                                         {/*<InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>*/}
 
-                                        <Select
+                                        <CustomizedSelect
+                                            variant="standard"
                                             name={"deliver"}
                                             native
                                             // label="Deliver To"
@@ -1464,7 +1473,7 @@ class ListEditForm extends Component {
                                                     {item.name + "(" + item.address + ")"}
                                                 </option>
                                             ))}
-                                        </Select>
+                                        </CustomizedSelect>
                                     </FormControl>
 
                                     {this.state.errors["deliver"] && (
@@ -1492,14 +1501,16 @@ class ListEditForm extends Component {
                                         Required From
                                     </div>
 
-                                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                                        <DatePicker
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileDatePicker
                                             name={"dateRequiredFrom"}
                                             inputVariant="outlined"
                                             variant={"outlined"}
                                             margin="normal"
                                             id="date-picker-dialog"
                                             format="DD/MM/yyyy"
+                                            renderInput={(params) => <CustomizedInput {...params} />}
+
                                             value={
                                                 this.state.dateRequiredFrom
                                                     ? this.state.dateRequiredFrom
@@ -1507,7 +1518,7 @@ class ListEditForm extends Component {
                                             }
                                             onChange={this.handleChangeDateStartDate.bind(this)}
                                         />
-                                    </MuiPickersUtilsProvider>
+                                    </LocalizationProvider>
                                     {this.state.errors["startDate"] && (
                                         <span className={"text-mute small"}>
                                             <span style={{ color: "red" }}>* </span>
@@ -1521,8 +1532,8 @@ class ListEditForm extends Component {
                                         Required By
                                     </div>
 
-                                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                                        <DatePicker
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileDatePicker
                                             name={"dateRequiredBy"}
                                             minDate={
                                                 this.state.dateRequiredFrom
@@ -1541,8 +1552,10 @@ class ListEditForm extends Component {
                                                     : this.state.item.listing.expire_after_epoch_ms
                                             }
                                             onChange={this.handleChangeDate.bind(this)}
+                                            renderInput={(params) => <CustomizedInput {...params} />}
+
                                         />
-                                    </MuiPickersUtilsProvider>
+                                    </LocalizationProvider>
                                     {this.state.errors["endDate"] && (
                                         <span className={"text-mute small"}>
                                             <span style={{ color: "red" }}>* </span>
@@ -1591,7 +1604,7 @@ class ListEditForm extends Component {
                                                     className="col-md-12 col-sm-12 col-xs-12 ">
                                                     {!this.state.free && (
                                                         <div className="col-12 mb-5">
-                                                            <TextField
+                                                            <CustomizedInput
                                                                 value={
                                                                     this.state.price
                                                                         ? this.state.price
@@ -1666,7 +1679,7 @@ class ListEditForm extends Component {
                                         <form onSubmit={this.handleSubmitSite}>
                                             <div className="row no-gutters justify-content-center ">
                                                 <div className="col-12 mt-4">
-                                                    <TextField
+                                                    <CustomizedInput
                                                         id="outlined-basic"
                                                         label=" Name"
                                                         variant="outlined"
@@ -1687,7 +1700,7 @@ class ListEditForm extends Component {
                                                 </div>
 
                                                 <div className="col-12 mt-4">
-                                                    <TextField
+                                                    <CustomizedInput
                                                         id="outlined-basic"
                                                         label="Contact"
                                                         variant="outlined"
@@ -1708,7 +1721,7 @@ class ListEditForm extends Component {
                                                 </div>
 
                                                 <div className="col-12 mt-4">
-                                                    <TextField
+                                                    <CustomizedInput
                                                         id="outlined-basic"
                                                         label="Address"
                                                         variant="outlined"
@@ -1729,7 +1742,7 @@ class ListEditForm extends Component {
                                                     )}
                                                 </div>
                                                 <div className="col-12 mt-4">
-                                                    <TextField
+                                                    <CustomizedInput
                                                         id="outlined-basic"
                                                         type={"text"}
                                                         name={"phone"}
@@ -1751,7 +1764,7 @@ class ListEditForm extends Component {
                                                 </div>
 
                                                 <div className="col-12 mt-4">
-                                                    <TextField
+                                                    <CustomizedInput
                                                         id="outlined-basic"
                                                         label="Email"
                                                         variant="outlined"
@@ -1772,7 +1785,7 @@ class ListEditForm extends Component {
                                                     )}
                                                 </div>
                                                 <div className="col-12 mt-4">
-                                                    <TextField
+                                                    <CustomizedInput
                                                         onChange={this.handleChangeSite.bind(
                                                             this,
                                                             "others"

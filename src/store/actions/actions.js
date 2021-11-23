@@ -38,8 +38,8 @@ import {
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
     PRODUCT_REGISTER, PRODUCT_RELEASE, SERVICE_AGENT_REQUEST, SHOW_SNACKBAR, CURRENT_PRODUCT,
-    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,CURRENT_SITE,PRODUCT_NPARENT_NO_LIST,SHOW_MULTIPLE_POP_UP,
-    SITE_FORM_SHOW
+    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE, CURRENT_SITE, PRODUCT_NPARENT_NO_LIST, SHOW_MULTIPLE_POP_UP,
+    SITE_FORM_SHOW, PRODUCT_PAGE_RESET, PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG
 } from "../types";
 import {load} from "dotenv";
 
@@ -57,6 +57,18 @@ export const loading = () => {
     };
 };
 
+
+export const toggleRightBar = () => {
+    return {
+        type: TOGGLE_RIGHTBAR,
+    };
+};
+
+export const toggleGlobalDialog = () => {
+    return {
+        type: TOGGLE_GLOBAL_DIALOG,
+    };
+};
 
 export const setMultiplePopUp = (data) => {
 
@@ -268,9 +280,17 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
                 // this.setState({
                 //     notFound: true,
                 // });
+
+                dispatch({ type: PRODUCT_NOT_FOUND , value:true});
+
             }
         );
 
+};
+
+export const resetProductPageOffset = () => {
+
+    return { type: PRODUCT_PAGE_RESET };
 };
 
 

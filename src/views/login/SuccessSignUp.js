@@ -3,8 +3,8 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import SendIcon from "../../img/send-icon.png";
 import history from "../../History/history";
-import { makeStyles } from "@material-ui/core/styles";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { makeStyles } from "@mui/styles";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

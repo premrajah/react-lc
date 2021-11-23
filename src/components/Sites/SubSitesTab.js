@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import SitePageItem from "./SitePageItem";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import {CURRENT_SITE} from "../../store/types";
 
 class SubSitesTab extends Component {
     slug;

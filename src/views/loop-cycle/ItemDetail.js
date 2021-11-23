@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
 import MarkerIcon from "../../img/icons/marker.png";
 import CalenderIcon from "../../img/icons/calender.png";
 import ListIcon from "../../img/icons/list.png";
@@ -10,7 +10,7 @@ import StateIcon from "../../img/icons/state.png";
 import PaperImg from "../../img/paper-big.png";
 import Sidebar from "../menu/Sidebar";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 

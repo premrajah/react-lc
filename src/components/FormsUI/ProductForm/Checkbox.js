@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Checkbox} from '@material-ui/core'
+import {Checkbox} from '@mui/material'
 
 const CheckboxWrapper = ({name, title,onChange, legend,initialValue,error, ...otherProps}) => {
 
@@ -32,7 +32,7 @@ const CheckboxWrapper = ({name, title,onChange, legend,initialValue,error, ...ot
 
     return  (
         <>
-        <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-3"}>
+        <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-1"}>
             {title}
         </div>
             <span style={{width:"100%"}} className={""}>

@@ -1,19 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import PlaceholderImg from "../../img/place-holder-lc.png";
-import moment from "moment/moment";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Close from "@material-ui/icons/Close";
-import {capitalize} from "../../Util/GlobalFunctions";
-import {
-    useHistory,
-    BrowserRouter,
-    Route,
-} from "react-router-dom";
-import EditIcon from "@material-ui/icons/Edit";
+import Close from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 
 const TransferScalingItem = (props) => {
     const history = useHistory()

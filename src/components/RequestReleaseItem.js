@@ -6,11 +6,11 @@ import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 
 import { Modal, ModalBody } from "react-bootstrap";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import moment from "moment/moment";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import { withStyles } from "@material-ui/core/styles/index";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { withStyles } from "@mui/styles/index";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";

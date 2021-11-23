@@ -5,13 +5,15 @@ import {connect} from "react-redux";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@mui/styles";
 
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ProductDetailCycle from "../../components/ProductDetailCycle";
 import PageHeader from "../../components/PageHeader";
 import NotFound from "../NotFound";
+import Layout from "../../components/Layout/Layout";
+import ProductDetailContent from "../../components/Products/ProductDetailContent";
 
 class ItemCycleDetail extends Component {
     slug;
@@ -176,26 +178,17 @@ class ItemCycleDetail extends Component {
 
     getResources() {
 
-
-        // Su1t75s7hz
-
         var url = baseUrl + "code/" + this.slug + "/expand?agg";
 
         axios
-            .get(
-                url
-                // {
-                //     headers: {
-                //         "Authorization" : "Bearer "+this.props.userDetail.token
-                //     }
-                // }
-            )
+            .get(url)
             .then(
                 (response) => {
                     var responseData = response.data.data;
 
                     this.setState({
                         item: responseData,
+                        notFoundError:false
                     });
 
                     //
@@ -228,32 +221,53 @@ class ItemCycleDetail extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="accountpage">
-                    <HeaderDark />
 
-                    <div className="container ">
-                        {!this.state.notFoundError? <div>
-                            <PageHeader
-                                pageTitle="Product Details (Provenance)"
-                                subTitle="See product details and Provenance."
-                            />
-
-                            {this.state.item && (
-                                <>
-                                    <ProductDetailCycle
-                                        showRegister={true}
-                                        item={this.state.item}
-                                    />
-                                </>
-                            )}
-                        </div>:
-                        <NotFound slug={this.slug} qrCodeNotFound={true} />
-                        }
+            <>
+            {this.state.notFoundError ? (
+                <NotFound slug={this.slug} qrCodeNotFound={true} />
+                ) :  <Layout hideFooter={true}>
+                    <div className={"container pb-5 mb-5"}>
+                        {this.state.item && (
+                            <>
+                                <ProductDetailCycle
+                                    showRegister={true}
+                                    item={this.state.item}
+                                />
+                            </>
+                        )}
                     </div>
-                </div>
-            </div>
+                </Layout>
+            }
+
+
+            {/*<div>*/}
+            {/*    <Sidebar />*/}
+            {/*    <div className="accountpage">*/}
+            {/*        <HeaderDark />*/}
+
+            {/*        <div className="container ">*/}
+            {/*            {!this.state.notFoundError? <div>*/}
+            {/*                <PageHeader*/}
+            {/*                    pageTitle="Product Details (Provenance)"*/}
+            {/*                    subTitle="See product details and Provenance."*/}
+            {/*                />*/}
+
+            {/*                {this.state.item && (*/}
+            {/*                    <>*/}
+            {/*                        <ProductDetailCycle*/}
+            {/*                            showRegister={true}*/}
+            {/*                            item={this.state.item}*/}
+            {/*                        />*/}
+            {/*                    </>*/}
+            {/*                )}*/}
+            {/*            </div>:*/}
+            {/*            <NotFound slug={this.slug} qrCodeNotFound={true} />*/}
+            {/*            }*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+
+                </>
         );
     }
 }

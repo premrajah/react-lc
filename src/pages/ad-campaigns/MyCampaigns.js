@@ -3,34 +3,24 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import {withStyles} from "@material-ui/core/styles/index";
-import ProductItem from "../../components/Products/Item/ProductItem";
+import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, CAMPAIGN_FILTER_VALUES, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-import RemoveIcon from '@material-ui/icons/Remove';
-import DownloadIcon from '@material-ui/icons/GetApp';
-import MapIcon from '@material-ui/icons/Map';
-
-import {CSVLink} from "react-csv";
-import {Modal, ModalBody, Spinner} from "react-bootstrap";
-import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
+import {baseUrl, CAMPAIGN_FILTER_VALUES} from "../../Util/Constants";
+import moment from "moment/moment";
+import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {CURRENT_PRODUCT, LOGIN, LOGIN_ERROR, PRODUCT_LIST} from "../../store/types";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {saveKey, saveUserToken} from "../../LocalStorage/user";
-import {getMessages, getNotifications} from "../../store/actions/actions";
 import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
-import Close from "@material-ui/icons/Close";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import EditIcon from "@mui/icons-material/Edit";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {createCampaignUrl} from "../../Util/Api";
+import AddIcon from '@mui/icons-material/Add';
+import CreateCampaign from "./CreateCampaign";
+import RightSidebar from "../../components/RightBar/RightSidebar";
+import CampaignDetailContent from "../../components/Campaign/CampaignDetailContent";
 
 class MyCampaigns extends Component {
 
@@ -49,7 +39,11 @@ class MyCampaigns extends Component {
             fields: {},
             errors: {},
             loading:false,
-            items:[]
+            items:[],
+            createNew:false,
+            toggleBar:false,
+            editItem:null,
+            editMode:false
 
         }
 
@@ -69,8 +63,6 @@ class MyCampaigns extends Component {
     handleSearchFilter = (filterValue) => {
         this.setState({filterValue: filterValue});
     }
-
-
 
 
     handleChange(value,field ) {
@@ -105,8 +97,7 @@ class MyCampaigns extends Component {
     }
     componentDidMount() {
 
-        this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
 
         this.loadCampaigns()
 
@@ -211,7 +202,7 @@ class MyCampaigns extends Component {
                 product.purpose,
                 product.units,
                 product.volume,
-                site.name,
+                site.campaign.name,
                 site.address,
                 service_agent.name,
                 qr_artifact.name,
@@ -244,6 +235,38 @@ class MyCampaigns extends Component {
         })
     }
 
+
+    toggleCreate=()=>{
+        this.setState({
+            createNew:!this.state.createNew,
+
+        })
+    }
+
+    toggleRightBar=(item)=>{
+
+        console.log(item)
+
+
+        if (item){
+            this.setState({
+                editMode:true,
+                editItem:item
+
+            })
+        }else{
+
+            this.setState({
+                editMode:false,
+                editItem:null
+
+            })
+        }
+
+this.props.toggleRightBar()
+
+
+    }
 
     toggleDownloadQrCodes=()=>{
 
@@ -335,7 +358,12 @@ class MyCampaigns extends Component {
 
                 <div className="wrapper">
 
+                    <RightSidebar  toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
+                        {!this.state.editMode && <CreateCampaign refreshData={()=> this.loadCampaigns()} />}
+                        {this.state.editMode && this.state.editItem && <CampaignDetailContent item={this.state.editItem} />}
+
+                    </RightSidebar>
                     <div className="container  mb-150  pb-5 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
@@ -343,85 +371,154 @@ class MyCampaigns extends Component {
                             subTitle="All your ad campaigns can be found here"
                         />
 
-                        <div className="row d-none">
-                            <div className="col-md-8 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
-                                    Product Service
-                                </Link>
+                        <div className="row text-right">
+                            <div className="col-12 d-flex text-right">
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
-                                    Records
-                                </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
-                                    Tracked
-                                </Link>
+                                <div  className={
+                                    " mb-4  "}>
+                                    <button
+
+                                        onClick={()=>this.toggleRightBar()}
+                                        className={
+                                            "btn-gray-border "
+                                        }>
+                                        <AddIcon />
+                                        <span>
+                                                        Create
+                                                    </span>
+                                    </button>
+
+                                </div>
+
                             </div>
 
 
                         </div>
+
+                        {this.state.createNew&&
+                        <CreateCampaign />
+                        }
 
                         <div className="row d-none  justify-content-center search-container  pt-3 pb-4">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={CAMPAIGN_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className={"listing-row-border "}></div>
+                        <div className={"d-none listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div className="col">
+                        <div className="row d-none justify-content-center filter-row    pt-3 pb-3">
+                            <div className="col-8">
                                 <p style={{ fontSize: "18px" }} className="text-mute mb-1">
                                     {this.state.items.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
-                                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                this.state.filterValue==="description"? site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                this.state.filterValue==="description"?site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                     null):
-                                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                    site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+                                                (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                   site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
                                         ).length
 
                                     }
-                                    <span className="ml-1">Listable Products</span>
+                                    <span className="ml-1">Campaigns Found</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
+                            <div className="text-mute col-2 pl-0 text-right">
+                                <span style={{ fontSize: "18px" }}>Start Data</span>
+                            </div>
+                            <div className="text-mute col-2 pl-0 text-right">
+                                <span style={{ fontSize: "18px" }}>End Date</span>
                             </div>
                         </div>
-                        <div className={"listing-row-border mb-3"}></div>
+                        <div className={" d-none listing-row-border mb-3"}></div>
 
-                        {
-                            this.state.items.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="description"? site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                        null):
-                                    (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+                        <div className="row">
+                                <div className="col-md-12">
+                                    <div className="table-wrap">
+                                        <table className="table custom-table table-responsive-xl">
+                                            <thead>
+                                            <tr className={"text-bold"}>
+                                                <th>&nbsp;</th>
+                                                <th>Campaign Name</th>
+                                                <th>Validity</th>
+                                                <th>Stage</th>
+                                                <th>Artifacts</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                this.state.items.filter((site)=>
+                                                    this.state.filterValue?( this.state.filterValue==="name"?
+                                                        site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                        this.state.filterValue==="description"?site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                                            null):
+                                                        (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                           site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                            )
-                            .map((item, index) => (
-                            <div id={item._key} key={item._key}>
-                                <ProductItem
-                                    index={index}
-                                    goToLink={true}
-                                    delete={false}
-                                    edit={false}
-                                    remove={false}
-                                    duplicate={false}
-                                    item={item}
-                                    hideMore
-                                    listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
-                                    showAddToListButton
-                                />
+                                                )
+                                                    .map((item, index) => (
+
+
+                                                            <tr className="" role="alert">
+
+                                                                <td>{index+1}</td>
+
+                                                <td className="d-flex align-items-center">
+
+                                                    {/*<Link to={"/campaign/"+item.campaign._key}>*/}
+                                                        <div className="pl-3 email">
+                                                        <span className={"title-bold text-capitlize"}>{item.campaign.name}</span>
+                                                        <span className={"text-gray-light"}>{moment(item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                                                    </div>
+                                                    {/*</Link>*/}
+                                                </td>
+                                                <td>{moment(item.start_ts).format("DD MMM YYYY")} - {moment(item.end_ts).format("DD MMM YYYY")}</td>
+                                                <td className="status text-capitlize"><span className={item.campaign.stage==="active"?"active":"waiting"}>{item.campaign.stage}</span></td>
+
+                                                                <td>
+                                                                    <ul className="persons">
+
+                                                                        {item.artifacts.map((artifact)=>
+
+                                                                            <li>
+                                                                                <a href="">
+                                                                                    <img
+                                                                                        src={artifact.blob_url}
+                                                                                         className="img-fluid"
+
+                                                                                    />
+                                                                                </a>
+                                                                            </li>
+
+                                                                        )}
+
+                                                                    </ul>
+                                                                </td>
+                                                       <td>
+                                                           {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
+
+                                                           <span className={"text-bold"} onClick={()=>this.toggleRightBar(item)}  >
+                                                           View Details</span>
+                                                </td>
+
+                                            </tr>
+
+                                                            ))}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                             </div>
-                        ))}
+                        </div>
 
 
-                        {this.props.productWithoutParentList.filter((site)=>
+
+                        {this.state.items.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                    site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                     this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                         this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                             this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -433,7 +530,7 @@ class MyCampaigns extends Component {
 
 
                                                                     null):
-                                    (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                         site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
@@ -446,136 +543,17 @@ class MyCampaigns extends Component {
                             ).length===0&&
                             <div className="row  justify-content-center filter-row    pt-3 pb-3">
                                 <div   className="col">
-                                    <div>No products found!</div>
+                                    <div>No campaigns found!</div>
                                 </div>
                             </div>
 
                         }
 
-                        {/*{this.props.productWithoutParentList.length!=0&&!this.props.lastPageReached &&*/}
-                        {/*<div className="row  justify-content-center filter-row    pt-3 pb-3">*/}
-                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
-                        {/*        <div>Loading products please wait ...</div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*}*/}
                     </div>
 
-                    <React.Fragment>
-                        <CssBaseline />
-
-                        <AppBar
-                            position="fixed"
-                            style={{backgroundColor: "#ffffff"}}
-                            className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div
-                                    className="row  justify-content-center search-container "
-                                    style={{ margin: "auto" }}>
-                                    <div className="col-auto" style={{cursor: 'pointer' }}>
-                                        <a onClick={this.showProductSelection}>
-                                            <p className={"green-text bottom-bar-text"}>
-                                                <b>Add New Product</b>
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </Toolbar>
-                        </AppBar>
-                    </React.Fragment>
                 </div>
 
-                <Modal
-                    // className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    show={this.state.showMap}
-                    centered
-                    size={"lg"}
-                    onHide={this.toggleMap}
-                    animation={false}>
-                    <ModalBody>
-                        <div className=" text-right web-only">
-                            <Close
-                                onClick={this.toggleMap}
-                                className="blue-text click-item"
-                                style={{ fontSize: 32 }}
-                            />
-                        </div>
 
-                        <div className={"row justify-content-center"}>
-                <ProductsGoogleMap mapData={this.state.mapData} width="700px" height="400px"/>
-
-                        </div>
-                    </ModalBody>
-                </Modal>
-                }
-
-
-                <Modal
-                    // className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    show={this.state.showDownloadQrCodes}
-                    centered
-                    // size={"lg"}
-                    onHide={this.toggleDownloadQrCodes}
-                    animation={false}>
-                    <ModalBody>
-                        <div className=" text-right web-only">
-                            <Close
-                                onClick={this.toggleDownloadQrCodes}
-                                className="blue-text click-item"
-                                style={{ fontSize: 32 }}
-                            />
-                        </div>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <h5
-                                    style={{ textTransform: "Capitalize" }}
-                                    className={"text-bold text-blue"}>
-                                  Download Multiple QR Codes
-                                </h5>
-                            </div>
-                        </div>
-
-                        <div className={"row justify-content-center"}>
-                            <form onSubmit={this.downloadMultipleQrCodes}>
-
-                                        <div className="row mb-2 text-center">
-
-
-                                            <div className="col-12 ">
-
-                                                <TextFieldWrapper
-                                                    // readonly ={this.state.disableVolume}
-                                                    initialValue={this.state.selectedItem&&this.state.selectedItem.factor+""}
-                                                    // value={this.state.disableVolume?"0":""}
-                                                    onChange={(value)=>this.handleChange(value,"count")}
-                                                    error={this.state.errors["count"]}
-                                                    name="count" title="Enter required number of Qr codes to be downloaded" />
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-                                <div className={"row"}>
-                                    <div className="col-12 mt-4">
-                                        <button
-                                            type={"submit"}
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
-                                            }>
-                                            {"Download"}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                    </ModalBody>
-                </Modal>
 
             </Layout>
         );
@@ -597,7 +575,10 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
-        lastPageReached:state.lastPageReached
+        lastPageReached:state.lastPageReached,
+        showRightBar:state.showRightBar,
+
+
     };
 };
 
@@ -616,6 +597,8 @@ const mapDispatchToProps = (dispatch) => {
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        toggleRightBar: (data) => dispatch(actionCreator.toggleRightBar(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MyCampaigns);

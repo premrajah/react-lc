@@ -1,15 +1,14 @@
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineDot from "@material-ui/lab/TimelineDot";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import Typography from "@mui/material/Typography";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
 import moment from "moment";
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -52,17 +51,19 @@ function OrgTrailsTimeline(props) {
                     .map((item, index) => (
                         <TimelineItem key={index}>
                             <TimelineOppositeContent>
-                                <Paper elevation={0} className={classes.paper}>
+                                {/*<Paper elevation={0} className={classes.paper}>*/}
                                     <Typography
-                                        variant="h6"
-                                        component="h1"
-                                        style={{ color: "#05AD88" }}>
-                                        <span className={"text-caps"}>
-                                            {item.org.name}
-                                            {item.org.description && ", " + item.org.description}
+                                        variant="p"
+                                        component="p"
+                                        // style={{ color: "#05AD88" }}
+                                    >
+                                        <span className={" "}>
+                                            <span className={"text-caps sub-title-text-pink"}>  {item.org.name}</span>
+                                            <br/>
+                                            <span className={" text-capitlize text-gray-light"}>{item.org.description}</span>
                                         </span>
                                     </Typography>
-                                </Paper>
+                                {/*</Paper>*/}
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
@@ -98,17 +99,17 @@ function OrgTrailsTimeline(props) {
                     .map((item, index) => (
                         <TimelineItem>
                             <TimelineOppositeContent>
-                                <Paper elevation={0} className={classes.paper}>
+                                {/*<Paper elevation={0} className={classes.paper}>*/}
                                     <Typography
-                                        variant="h6"
-                                        component="h1"
-                                        style={{ color: "#05AD88" }}>
-                                        <span className={"text-caps"}>
+                                        variant="p"
+                                        component="p"
+                                       >
+                                        <span className={"text-caps "}>
                                             {item.org.name}
                                             {item.org.description && ", " + item.org.description}
                                         </span>
                                     </Typography>
-                                </Paper>
+                                {/*</Paper>*/}
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>

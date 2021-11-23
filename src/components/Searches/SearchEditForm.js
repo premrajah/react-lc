@@ -1,29 +1,26 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Close from "@material-ui/icons/Close";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles/index";
+import {connect} from "react-redux";
+import Select from "@mui/material/Select";
+import Close from "@mui/icons-material/Close";
+import {makeStyles} from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import TextField from "@mui/material/TextField";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import ProductExpandItem from "../ProductExpandItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import MomentUtils from "@date-io/moment";
+import {baseUrl} from "../../Util/Constants";
 import _ from "lodash";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import {capitalize} from "../../Util/GlobalFunctions";
 import EditSite from "../Sites/EditSite";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1161,14 +1158,15 @@ updateSite=(search,site)=>{
                                     Required From
                                 </div>
 
-                                <MuiPickersUtilsProvider utils={MomentUtils}>
-                                    <DatePicker
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <MobileDatePicker
                                         name={"dateRequiredFrom"}
                                         inputVariant="outlined"
                                         variant={"outlined"}
                                         margin="normal"
                                         id="date-picker-dialog"
                                         format="DD/MM/yyyy"
+                                        renderInput={(params) => <CustomizedInput {...params} />}
                                         value={
                                             this.state.dateRequiredFrom
                                                 ? this.state.dateRequiredFrom
@@ -1176,7 +1174,7 @@ updateSite=(search,site)=>{
                                         }
                                         onChange={this.handleChangeDateStartDate.bind(this)}
                                     />
-                                </MuiPickersUtilsProvider>
+                                </LocalizationProvider>
                                 {this.state.errors["startDate"] && (
                                     <span className={"text-mute small"}>
                                             <span style={{ color: "red" }}>* </span>
@@ -1190,8 +1188,8 @@ updateSite=(search,site)=>{
                                     Required By
                                 </div>
 
-                                <MuiPickersUtilsProvider utils={MomentUtils}>
-                                    <DatePicker
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <MobileDatePicker
                                         name={"dateRequiredBy"}
                                         minDate={
                                             this.state.dateRequiredFrom
@@ -1210,8 +1208,10 @@ updateSite=(search,site)=>{
                                                 : this.props.item.search.expire_after_epoch_ms
                                         }
                                         onChange={this.handleChangeDate.bind(this)}
+                                        renderInput={(params) => <CustomizedInput {...params} />}
                                     />
-                                </MuiPickersUtilsProvider>
+
+                                </LocalizationProvider>
                                 {this.state.errors["endDate"] && (
                                     <span className={"text-mute small"}>
                                             <span style={{ color: "red" }}>* </span>

@@ -6,8 +6,8 @@ class NotFound extends Component {
     render() {
         return (
             <Layout>
-                <section className="not-found mb-4 mt-5 pt-5">
-                    <div className="container mt-5 pt-5">
+                <section className="not-found pb-5 mb-5 mt-5 pt-5">
+                    <div className="container mt-5 pt-5 mb-5 pb-5   ">
                         <div className="row justify-content-center">
                             <div className="col-lg-8">
                                 <h1>404</h1>

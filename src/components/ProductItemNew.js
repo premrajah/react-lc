@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 import MoreMenu from "./MoreMenu";
 import ProductDetail from "./Products/ProductDetail";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
-import {Add} from "@material-ui/icons";
+import {Add} from "@mui/icons-material";
 import {capitalize} from "../Util/GlobalFunctions";
 
 class ProductItemNew extends Component {

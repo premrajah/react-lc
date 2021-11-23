@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import GoogleMapReact from 'google-map-react';
 import MapIcon from '@material-ui/icons/Place';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 export class MapContainer extends Component {

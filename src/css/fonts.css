@@ -30,4 +30,9 @@
     src: url("../fonts/nunito_sans/NunitoSans-SemiBold.ttf");
 }
 
+@font-face {
+    font-family: "nunito-sans-semi-bold";
+    src: url("../fonts/nunito_sans/NunitoSans-ExtraLight.ttf");
+}
+
 /*---------*/

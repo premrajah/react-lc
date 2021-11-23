@@ -1,25 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
-import TextField from "@material-ui/core/TextField";
-import {Modal, ModalBody, Spinner} from "react-bootstrap";
+import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
-import { Alert } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import PlaceholderImg from "../../../src/img/sq_placeholder.png";
-import EditIcon from "@material-ui/icons/Edit";
-import {Publish} from "@material-ui/icons";
+import EditIcon from "@mui/icons-material/Edit";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import _ from "lodash";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import ImageCropper from "../../components/Cropper/ImageCropper";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 
 class CompanyInfo extends Component {
     constructor(props) {

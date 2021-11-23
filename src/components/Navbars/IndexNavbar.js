@@ -2,20 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
-import MenuIcon from "@material-ui/icons/Menu";
-import MenuOutline from "@material-ui/icons/MailOutline";
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOutline from "@mui/icons-material/MailOutline";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LogoSymbol from "../../img/Symbol-white.svg";
 import HeaderLogoSvg from '../../img/Logo-white.svg';
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import {makeStyles, withStyles} from "@material-ui/core/styles";
-import {Badge, Snackbar, Tooltip} from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-
+import LinearProgress from "@mui/material/LinearProgress";
+import {makeStyles, withStyles} from "@mui/styles";
+import {Badge, Snackbar, Tooltip} from "@mui/material";
+import Alert from "@mui/lab/Alert";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 
 
 const LightTooltip = withStyles((theme) => ({
@@ -38,6 +40,8 @@ class ComponentsNavbar extends React.Component {
             count: 0,
             nextIntervalFlag: false,
             orgImage: "",
+            anchorEl:null,
+            menuOpen:false
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -48,6 +52,21 @@ class ComponentsNavbar extends React.Component {
 
     }
 
+
+     handleClickMenu = (event) => {
+        this.setState({
+            anchorEl:event.currentTarget,
+            menuOpen:true
+        });
+
+
+    };
+     handleCloseMenu = () => {
+         this.setState({
+             anchorEl:null,
+             menuOpen:false
+         });
+    };
 
     showProductSelection() {
         this.props.showProductPopUp({ type: "create_product", show: true });
@@ -162,7 +181,7 @@ class ComponentsNavbar extends React.Component {
                     <Alert  severity="success">You have new notifications.</Alert>
                 </Snackbar>
 
-                <Navbar className={"fixed-top container-blue "} color-on-scroll="100" expand="lg">
+                <Navbar className={"container-blue "} color-on-scroll="100" expand="lg">
                     <Nav className={"justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
                             <div className="row no-gutters">
@@ -278,8 +297,129 @@ class ComponentsNavbar extends React.Component {
                             </>
                         )}
 
+
+                        {/*<BasicMenu orgImage={this.props.orgImage} isLoggedIn={this.props.isLoggedIn} userDetail={this.props.userDetail}/>*/}
+
+
                         {this.props.isLoggedIn && (
-                            <NavItem className={"web-only padding-0"}>
+                            <NavItem className={"web-only "}>
+
+                                    <div
+                                        onClick={this.handleClickMenu}
+                                        className={"wl-link-white click-item pt-1"}>
+                                        <figure className="avatar avatar-60 ">
+                                            <span className={"word-user"}>
+                                                {this.props.isLoggedIn ? (
+                                                    this.props.orgImage ? (
+                                                        <LightTooltip title={this.props.userDetail ? `${this.props.userDetail.email}` : "Menu"} arrow placement="left">
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center",
+                                                                }}>
+                                                                <img
+                                                                    src={this.props.orgImage}
+                                                                    alt=""
+                                                                    style={{
+                                                                        maxHeight: "30px",
+                                                                        maxWidth: "30px",
+                                                                        objectFit: "cover",
+                                                                        width: "30px",
+                                                                        height: "30px",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </LightTooltip>
+                                                    ) : this.props.userDetail.firstName ? (
+                                                        this.props.userDetail.firstName.substr(0, 2)
+                                                    ) : (
+                                                        this.props.userDetail.orgId &&
+                                                        this.props.userDetail.orgId.substr(4, 2)
+                                                    )
+                                                ) : (
+                                                    this.props.userDetail.orgId &&
+                                                    this.props.userDetail.orgId.substr(4, 2)
+                                                )}
+                                            </span>
+                                        </figure>
+
+                                        <i className="fa fa-cogs d-lg-none d-xl-none" />
+                                    </div>
+
+                                    <Menu
+                                        // className={"p-0"}
+                                        style={{paddingTop:"0!important",paddingBottom:"0!important"}}
+                                        id="basic-menu"
+                                        anchorEl={this.state.anchorEl}
+                                        open={this.state.menuOpen}
+                                        onClose={this.handleCloseMenu}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                    {/*<DropdownMenu className="dropdown-with-icons">*/}
+                                        <Link className={"dropdown-item"} to="/account">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Account
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/my-products">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Products
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/my-campaigns">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Campaigns
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/sites">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Sites
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/my-search">
+                                            <i className="tim-icons icon-paper" />
+                                            Searches
+                                        </Link>
+
+                                        <Link className={"dropdown-item"} to="/my-listings">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Listings
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/my-cycles">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Cycles
+                                        </Link>
+
+
+
+                                        <Link className={"dropdown-item"} to="/approve">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Approvals
+                                        </Link>
+
+                                        <Link className={"dropdown-item"} to="/issues">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Issues
+                                        </Link>
+
+
+                                        {/*<Link className={"dropdown-item"} to="">*/}
+                                        {/*    <i className="tim-icons icon-bullet-list-67" />*/}
+                                        {/*    Help*/}
+                                        {/*</Link>*/}
+
+                                        <Link className={"dropdown-item click-item"} onClick={this.logOut}>
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Log Out
+                                        </Link>
+                                    {/*</DropdownMenu>*/}
+                                    </Menu>
+
+                            </NavItem>
+                        )}
+
+
+                        {this.props.isLoggedIn && (
+                            <NavItem className={"d-none web-only padding-0"}>
                                 <UncontrolledDropdown nav>
                                     <DropdownToggle
                                         caret
@@ -336,6 +476,10 @@ class ComponentsNavbar extends React.Component {
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Products
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/my-campaigns">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Campaigns
                                         </Link>
                                         <Link className={"dropdown-item"} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
@@ -394,6 +538,90 @@ class ComponentsNavbar extends React.Component {
             </>
         );
     }
+}
+
+
+
+ function BasicMenu(props) {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    return (
+        <div>
+
+
+            <div  onClick={handleClick}>
+                <figure className="avatar avatar-60 ">
+                                            <span className={"word-user"}>
+                                                {props.isLoggedIn ? (
+                                                    props.orgImage ? (
+                                                        <LightTooltip title={props.userDetail ? `${props.userDetail.email}` : "Menu"} arrow placement="left">
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center",
+                                                                }}>
+                                                                <img
+                                                                    src={props.orgImage}
+                                                                    alt=""
+                                                                    style={{
+                                                                        maxHeight: "30px",
+                                                                        maxWidth: "30px",
+                                                                        objectFit: "cover",
+                                                                        width: "30px",
+                                                                        height: "30px",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </LightTooltip>
+                                                    ) : props.userDetail.firstName ? (
+                                                        props.userDetail.firstName.substr(0, 2)
+                                                    ) : (
+                                                        props.userDetail.orgId &&
+                                                        props.userDetail.orgId.substr(4, 2)
+                                                    )
+                                                ) : (
+                                                    props.userDetail.orgId &&
+                                                    props.userDetail.orgId.substr(4, 2)
+                                                )}
+                                            </span>
+                </figure>
+
+                <i className="fa fa-cogs d-lg-none d-xl-none" />
+            </div>
+            <Button
+                id="basic-button"
+                aria-controls="basic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+            >
+                Dashboard
+            </Button>
+
+
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
+        </div>
+    );
 }
 
 function LinearIndeterminate() {

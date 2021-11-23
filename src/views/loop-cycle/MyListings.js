@@ -5,19 +5,20 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import AppBar from "@material-ui/core/AppBar";
-import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
+import AppBar from "@mui/material/AppBar";
+import { makeStyles } from "@mui/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchGray from "@mui/icons-material/Search";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import ResourceItem from "../create-search/ResourceItem";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import { withStyles } from "@material-ui/core/styles/index";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import { withStyles } from "@mui/styles/index";
 import ProductBlue from "../../img/icons/product-128.svg";
 import PageHeader from "../../components/PageHeader";
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 
 class MyListings extends Component {
     constructor(props) {
@@ -171,9 +172,8 @@ function SearchField() {
     const classes = useStylesTabs();
 
     return (
-        <TextField
-            variant="outlined"
-            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+        <CustomizedInput
+            className={" full-width-field"}
             id="input-with-icon-textfield"
             InputProps={{
                 endAdornment: (

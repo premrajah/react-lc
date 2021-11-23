@@ -1,25 +1,16 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
 import {Link} from "react-router-dom";
-import {makeStyles} from "@material-ui/core/styles";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
-
-import SearchItem from "../../views/loop-cycle/search-item";
-import ResourceItem from "../../views/create-search/ResourceItem";
-import TextField from "@material-ui/core/TextField";
-import Org from "../Org/Org";
+import {withStyles} from "@mui/styles/index";
+import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
-import Close from "@material-ui/icons/Close";
-import ImageHeader from "../UIComponents/ImageHeader";
+import Close from "@mui/icons-material/Close";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
 import {GoogleMap} from "../Map/MapsContainer";

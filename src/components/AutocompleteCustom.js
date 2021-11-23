@@ -5,7 +5,7 @@ import { baseUrl } from "../Util/Constants";
 import axios from "axios/index";
 import CompaniesHouseLogo from "../img/hmrc.png";
 import LoopcycleLogo from '../img/loopcycle_logo_31x31.png';
-import PencilIcon from '@material-ui/icons/Edit';
+import PencilIcon from '@mui/icons-material/Edit';
 
 class AutocompleteCustom extends Component {
     static propTypes = {

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import history from "../../History/history";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@mui/styles";
+import TextField from "@mui/material/TextField";
 
 const useStyles = makeStyles((theme) => ({
     root: {

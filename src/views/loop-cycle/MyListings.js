@@ -18,6 +18,7 @@ import Toolbar from "@mui/material/Toolbar";
 import { withStyles } from "@mui/styles/index";
 import ProductBlue from "../../img/icons/product-128.svg";
 import PageHeader from "../../components/PageHeader";
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 
 class MyListings extends Component {
     constructor(props) {
@@ -171,9 +172,8 @@ function SearchField() {
     const classes = useStylesTabs();
 
     return (
-        <TextField
-            variant="outlined"
-            className={clsx(classes.margin, classes.textField) + " full-width-field"}
+        <CustomizedInput
+            className={" full-width-field"}
             id="input-with-icon-textfield"
             InputProps={{
                 endAdornment: (

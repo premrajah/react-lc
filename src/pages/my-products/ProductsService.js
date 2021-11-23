@@ -4,8 +4,8 @@ import {connect} from "react-redux";
 import clsx from "clsx";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
 import {makeStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -17,6 +17,7 @@ import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import ProductItem from "../../components/Products/Item/ProductItem";
+import Layout from "../../components/Layout/Layout";
 
 class ProductsService extends Component {
     constructor(props) {
@@ -96,10 +97,8 @@ class ProductsService extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
+
 
                     <div className="container  pb-4 pt-4">
                         <PageHeader
@@ -110,31 +109,30 @@ class ProductsService extends Component {
 
                         <div className="row">
                             <div className="col-12 d-flex justify-content-start">
-                                <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/my-products" className="btn btn-sm btn-gray-border mr-2">
                                     Products
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/product-archive" className="btn btn-sm btn-gray-border mr-2">
                                     Records
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
                                     Tracked
                                 </Link>
                             </div>
                         </div>
 
-                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
 
                             </div>
                         </div>
-                        <div className={"listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
+                                <p  className="text-gray-light ml-2">
                                     {this.state.products.filter((item)=> {
 
                                         let site = item.product
@@ -165,11 +163,8 @@ class ProductsService extends Component {
                                     }).length} Products
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
-                            </div>
+
                         </div>
-                        <div className={"listing-row-border mb-3"}></div>
 
                         {this.state.products.filter((item)=> {
 
@@ -217,8 +212,8 @@ class ProductsService extends Component {
                             </>
                         ))}
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

@@ -11,7 +11,7 @@ const PageHeader = ({ pageIcon, pageTitle, subTitle, bottomLine }) => {
 
             <div className="row">
                 <div className="col-12">
-                    <h3 className="blue-text text-heading">{pageTitle ? pageTitle : ""}</h3>
+                    <h4 className="blue-text text-heading">{pageTitle ? pageTitle : ""}</h4>
                 </div>
             </div>
 

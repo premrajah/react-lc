@@ -91,7 +91,7 @@ export const initialState = {
     unreadMessages: false,
     unreadNotifications: false,
     productPageOffset:0,
-    productPageSize:20,
+    productPageSize:400,
     lastPageReached:false,
     serviceAgentRequests: [],
     productReleaseRequests: [],

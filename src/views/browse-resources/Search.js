@@ -23,6 +23,7 @@ import {makeStyles, withStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 
 class Search extends Component {
     constructor(props) {
@@ -171,9 +172,9 @@ function NavTabs() {
                 <div className={"container"}>
                     <div className="row  justify-content-center search-container listing-row-border pb-4">
                         <div className={"col-12"}>
-                            <TextField
+                            <CustomizedInput
                                 label={"Search this seller’s listings"}
-                                variant="outlined"
+
                                 className={
                                     clsx(classes.margin, classes.textField) + " full-width-field"
                                 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Sidebar from "../menu/Sidebar";
-import HeaderDark from "../header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import axios from "axios/index";
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import SearchBar from "../../components/SearchBar";
+import Layout from "../../components/Layout/Layout";
 
 class ProductArchive extends Component {
 
@@ -84,46 +85,40 @@ class ProductArchive extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
 
-                    <div className="container  pb-4 pt-4">
+                <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
                             pageTitle="Product Record"
                             subTitle="Your previously owned products"
-                            bottomLine={<hr />}
+                            // bottomLine={<hr />}
                         />
 
-                        <div className="row mt-3 mb-5">
+                        <div className="row ">
                             <div className="col-12 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
                                     Product Service
                                 </Link>
 
-                                <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/my-products" className="btn btn-sm btn-gray-border mr-2">
                                     Products
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm blue-btn">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
                                     Tracked
                                 </Link>
                             </div>
                         </div>
-                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
 
                             </div>
                         </div>
-
-                        <div className={"listing-row-border "}></div>
-
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
+                                <p  className="text-gray-light ml-2">
                                     {this.state.products.filter((item)=> {
 
                                         let site = item.product
@@ -154,11 +149,8 @@ class ProductArchive extends Component {
                                     }).length} Products
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
-                            </div>
+
                         </div>
-                        <div className={"listing-row-border mb-3"}></div>
 
                         {this.state.products.filter((item)=> {
 
@@ -209,8 +201,8 @@ class ProductArchive extends Component {
 
 
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

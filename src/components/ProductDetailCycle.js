@@ -619,7 +619,7 @@ class ProductDetailCycle extends Component {
                     pageTitle="Product Details(Provenance)"
                     subTitle="See product details and provenance"
                 />
-                <div className="row no-gutters  justify-content-center">
+                <div className="row   justify-content-center">
                     <div className="col-md-4 col-sm-12 col-xs-12 ">
                         <div className="row stick-left-box  ">
                             <div className="col-12  ">
@@ -724,9 +724,9 @@ class ProductDetailCycle extends Component {
                         </div>
                     </div>
 
-                    <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left"}>
+                    <div className={"col-md-8 col-sm-12 col-xs-12 "}>
                         <div className="row justify-content-start pb-3  ">
-                            <div className="col-12 mt-2">
+                            <div className="col-12 ">
                                 <div className="row">
                                     <div className="col-8">
                                         <h4 className={"blue-text text-heading"}>
@@ -904,7 +904,7 @@ class ProductDetailCycle extends Component {
                             </div>
                         </div>
 
-                        <div className="row justify-content-start  pt-3 no-gutters mt-4 ">
+                        <div className="row justify-content-start  pt-3 no-gutters  mb-2 ">
                             <div className="col-12">
                                 <h5 className={"attribute-label col-12 p-0 text-blue "}>Product Provenance </h5>
                                 <p style={{ fontSize: "16px" }} className={"text-gray-light "}>

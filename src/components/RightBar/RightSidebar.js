@@ -7,6 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
+import {ChevronRight} from "@mui/icons-material";
+import Backdrop from '@mui/material/Backdrop';
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -27,13 +29,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
         props.toggleOpen()
     };
 
+
+
     const handleDrawerClose = () => {
         props.toggleOpen()
     };
 
     return (
-
-        <Box sx={{ display: 'flex' }}>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={props.showRightBar}
+            // onClick={handleDrawerClose}
+        >
+        <Box sx={{ display: 'flex' }} >
 
             <Drawer
                 sx={{
@@ -43,14 +51,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
                         width: props.width,
                     },
                 }}
+
                 variant="persistent"
                 anchor="right"
                 open={props.showRightBar}
             >
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
-                        <CloseIcon />
+                        <ChevronRight />
                     </IconButton>
+
                 </DrawerHeader>
                 <Divider />
 
@@ -59,6 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
             </Drawer>
         </Box>
+        </Backdrop>
     );
 }
 

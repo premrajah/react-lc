@@ -799,7 +799,8 @@ h3 {
 }
 
 h4 {
-    font-size: 25px;
+    font-size: 24px;
+    font-family: var(--primary-heading);
 }
 
 h5 {
@@ -2917,16 +2918,16 @@ background: white;
 }
 
 .btn-close.close-done {
-    right: 20px;
-    margin: 10px;
+    right: 10px;
+    margin: 0px;
     position: absolute;
     cursor: pointer;
     display: block;
     z-index: 1000;
-    color: #05ad88 !important;
+    /*color: #05ad88 !important;*/
     background: transparent;
     border: none;
-    font-size: 20px;
+    font-size: 32px;
     font-weight: bold;
 }
 
@@ -2951,7 +2952,7 @@ background: white;
 .stick-left-box {
     position: -webkit-sticky !important;
     position: sticky !important;
-    top: 100px;
+    top: 0px;
     /*padding: 50px;*/
     /*font-size: 20px;*/
 }
@@ -3378,6 +3379,7 @@ background: white;
 /*campaign table */
 
 .table {
+ border:   2px solid #f8f9fd !important;
     border-collapse: collapse !important; }
 .table td,
 .table th {
@@ -3431,32 +3433,32 @@ background: white;
 .table thead th {
     border: none;
     padding: 30px;
-    font-size: 13px;
-    font-weight: 500;
+    /*font-size: 13px;*/
+    /*font-weight: 500;*/
     color: gray; }
 .table thead tr {
     background: #fff;
-    border-bottom: 4px solid #eceffa!important;
+    border-bottom: 2px solid #eceffa!important;
 }
 
 
 .table tbody tr {
     margin-bottom: 10px;
-    border-bottom: 4px solid #f8f9fd!important;
+    border-bottom: 2px solid #f8f9fd!important;
 }
 .table tbody tr:last-child {
     border-bottom: 0; }
 .table tbody th {
     border: none;
     padding: 20px;
-    font-size: 14px;
+    /*font-size: 14px;*/
     /*! background: #fff; */
     vertical-align: middle; }
 
 .table tbody td {
     border: none;
     padding: 15px;
-    font-size: 14px;
+    /*font-size: 14px;*/
     /*! background: #fff; */
     vertical-align: middle; }
 
@@ -3499,7 +3501,7 @@ background: white;
 
 .table thead th{
     color: black!important;
-    font-size: 14px;
+    /*font-size: 14px;*/
     font-weight: 700;
 }
 
@@ -3581,4 +3583,35 @@ input:focus,textarea:focus{
 
 .MuiMenu-list{
     padding: 0!important;
+}
+.Mui-active {
+
+    color:   #27245C;
+    fill:   #27245C!important;
+
+}
+
+.Mui-completed{
+
+    color: #D31169!important;
+}
+
+.MuiStepLabel-label.Mui-completed {
+
+    color:   #27245C!important;
+    fill:   #27245C!important;
+
+}
+.btn-back{
+    color:"#27245C"!important;
+    text-transform: capitalize!important;
+
+}
+.MuiDrawer-root>.MuiDrawer-paper{
+
+    background: #f8f8f9!important;
+}
+
+.full-width-field{
+    width: 100%;
 }

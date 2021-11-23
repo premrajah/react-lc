@@ -670,7 +670,7 @@ class ProductDetailContent extends Component {
 
                             </div>
                         </div>
-                        <div className="row no-gutters  justify-content-center">
+                        <div className="row   justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
 
                                 <div className="row ">
@@ -718,7 +718,7 @@ class ProductDetailContent extends Component {
 
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left "}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12  "}>
 
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">

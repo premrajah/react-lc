@@ -24,7 +24,16 @@ class CampaignDetailContent extends Component {
 
     }
 
-    actionSubmit = () => {
+
+    toggleEditMode=(item)=> {
+
+this.setState({
+    editMode:!this.state.editMode
+})
+
+    }
+
+        actionSubmit = () => {
         var data = {
             id: this.state.currentReleaseId,
             new_stage: "cancelled",
@@ -539,14 +548,11 @@ class CampaignDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-
                         {this.state.editMode?   <CreateCampaign item={this.state.item} />:
                             <>
-                                <CampaignDetail item={this.state.item} />
+                                <CampaignDetail toggleEditMode={this.toggleEditMode} item={this.state.item} />
                             </>}
-
-
-                    </>
+                   </>
                 ) : (
                     <div className={"loading-screen"}> Loading .... </div>
                 )}

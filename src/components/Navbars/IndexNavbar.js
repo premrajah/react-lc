@@ -302,11 +302,11 @@ class ComponentsNavbar extends React.Component {
 
 
                         {this.props.isLoggedIn && (
-                            <NavItem className={"web-only padding-0"}>
+                            <NavItem className={"web-only "}>
 
                                     <div
                                         onClick={this.handleClickMenu}
-                                        className={"wl-link-white click-item"}>
+                                        className={"wl-link-white click-item pt-1"}>
                                         <figure className="avatar avatar-60 ">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
@@ -348,7 +348,7 @@ class ComponentsNavbar extends React.Component {
                                     </div>
 
                                     <Menu
-                                        className={"p-0"}
+                                        // className={"p-0"}
                                         style={{paddingTop:"0!important",paddingBottom:"0!important"}}
                                         id="basic-menu"
                                         anchorEl={this.state.anchorEl}

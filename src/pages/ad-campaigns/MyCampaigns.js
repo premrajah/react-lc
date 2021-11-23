@@ -97,8 +97,7 @@ class MyCampaigns extends Component {
     }
     componentDidMount() {
 
-        this.props.loadSites();
-        this.props.dispatchLoadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+
 
         this.loadCampaigns()
 
@@ -359,9 +358,9 @@ this.props.toggleRightBar()
 
                 <div className="wrapper">
 
-                    <RightSidebar toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
+                    <RightSidebar  toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
-                        {!this.state.editMode && <CreateCampaign  />}
+                        {!this.state.editMode && <CreateCampaign refreshData={()=> this.loadCampaigns()} />}
                         {this.state.editMode && this.state.editItem && <CampaignDetailContent item={this.state.editItem} />}
 
                     </RightSidebar>
@@ -439,7 +438,7 @@ this.props.toggleRightBar()
                                     <div className="table-wrap">
                                         <table className="table custom-table table-responsive-xl">
                                             <thead>
-                                            <tr>
+                                            <tr className={"text-bold"}>
                                                 <th>&nbsp;</th>
                                                 <th>Campaign Name</th>
                                                 <th>Validity</th>
@@ -498,7 +497,10 @@ this.props.toggleRightBar()
                                                                     </ul>
                                                                 </td>
                                                        <td>
-                                                           <EditIcon onClick={()=>this.toggleRightBar(item)}  />
+                                                           {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
+
+                                                           <span className={"text-bold"} onClick={()=>this.toggleRightBar(item)}  >
+                                                           View Details</span>
                                                 </td>
 
                                             </tr>

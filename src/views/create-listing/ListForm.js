@@ -30,6 +30,7 @@ import PageHeader from "../../components/PageHeader";
 import EditSite from "../../components/Sites/EditSite";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
 
 
 class ListForm extends Component {
@@ -806,7 +807,7 @@ class ListForm extends Component {
                                                     Title
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(this, "title")}
                                                     name={"title"}
                                                     id="outlined-basic"
@@ -829,7 +830,7 @@ class ListForm extends Component {
                                                     Description
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "description"
@@ -901,7 +902,7 @@ class ListForm extends Component {
                                                     </div>
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     value={this.state.selectedProductId}
                                                     className={"d-none"}
                                                     onChange={this.handleChange.bind(
@@ -950,10 +951,10 @@ class ListForm extends Component {
                                                         </div>
 
                                                         <FormControl
-                                                            variant="outlined"
+
                                                             className={classes.formControl}>
                                                             {/*<InputLabel htmlFor="outlined-age-native-simple">Located At</InputLabel>*/}
-                                                            <Select
+                                                            <CustomizedSelect
                                                                 name={"deliver"}
                                                                 native
                                                                 // label="Located At"
@@ -976,7 +977,7 @@ class ListForm extends Component {
                                                                             ")"}
                                                                     </option>
                                                                 ))}
-                                                            </Select>
+                                                            </CustomizedSelect>
                                                         </FormControl>
 
                                                         {this.state.errors["deliver"] && (
@@ -1131,7 +1132,7 @@ class ListForm extends Component {
                                                                 className="col-md-12 col-sm-12 col-xs-12 ">
                                                                 {!this.state.free && (
                                                                     <div className="col-12 mb-5">
-                                                                        <TextField
+                                                                        <CustomizedInput
                                                                             name={"price"}
                                                                             type={"number"}
                                                                             onChange={this.handleChange.bind(

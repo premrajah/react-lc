@@ -100,10 +100,11 @@ class Products extends Component {
         this.props.loadSites();
 
 
-        this.props.resetProductPageOffset()
-        this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
+        // this.props.resetProductPageOffset()
+        // this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
+        this.props.dispatchLoadProductsWithoutParentPage({offset:0,size:400});
 
-        this.loadNewPageSetUp()
+        // this.loadNewPageSetUp()
 
         // this.getSitesForProducts()
 
@@ -336,7 +337,7 @@ class Products extends Component {
         return (
             <Layout>
 
-                <div className="wrapper">
+                <>
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
@@ -369,7 +370,7 @@ class Products extends Component {
                         </div>
                     </div> : null }
 
-                    <div className="container  mb-150  pb-5 pt-4">
+                    <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="Products"
@@ -398,7 +399,7 @@ class Products extends Component {
                             </div>
                         </div>
 
-                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
                             </div>
@@ -406,7 +407,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p  className="text-mute ml-2 mb-1">
+                                <p  className="text-gray-light ml-2 ">
                                     {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -434,7 +435,7 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1">Products Listed</span>
+                                    <span className="ml-1 text-gray-light">Products Listed</span>
                                 </p>
                             </div>
 
@@ -548,7 +549,7 @@ class Products extends Component {
                             </Toolbar>
                         </AppBar>
                     </React.Fragment>
-                </div>
+                </>
 
                 <Modal
                     // className={"loop-popup"}

@@ -325,6 +325,8 @@ class CreateCampaign extends Component {
                 )
                 .then((res) => {
 
+
+                    this.props.refreshData()
                     //
                     // if (!this.props.parentProduct) {
                     //     this.setState({
@@ -688,7 +690,7 @@ class CreateCampaign extends Component {
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}
-                            subTitle="Define campaign parameters here"
+                            // subTitle="Define campaign parameters here"
                         />
 
                         <div className={classes.root}>
@@ -1245,7 +1247,7 @@ class CreateCampaign extends Component {
 
                                         </Typography>
                                         <div>
-                                            <Button disabled={this.state.activeStep === 0} onClick={this.handleBack} className={classes.button}>
+                                            <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
                                                 Back
                                             </Button>
                                             {this.isStepOptional(this.state.activeStep) && (
@@ -1253,17 +1255,17 @@ class CreateCampaign extends Component {
                                                     variant="contained"
                                                     color="primary"
                                                     onClick={this.handleSkip}
-                                                    className={classes.button}
+                                                    // className={classes.button}
                                                 >
                                                     Skip
                                                 </Button>
                                             )}
 
-                                            <Button
+                                            <button
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={this.handleNext}
-                                                className={classes.button}
+                                                className={" btn-gray-border "}
                                             >
 
 
@@ -1271,7 +1273,7 @@ class CreateCampaign extends Component {
                                                     this.state.files.filter((item) => item.status === 0).length >
                                                     0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
                                                 this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
-                                            </Button>
+                                            </button>
 
 
                                         </div>

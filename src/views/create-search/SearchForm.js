@@ -39,6 +39,7 @@ import EditSite from "../../components/Sites/EditSite";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
 
 
 
@@ -1102,7 +1103,7 @@ class SearchForm extends Component {
                                                     Title
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(this, "title")}
                                                     name={"title"}
                                                     id="outlined-basic"
@@ -1125,7 +1126,7 @@ class SearchForm extends Component {
                                                     Description
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "description"
@@ -1155,15 +1156,16 @@ class SearchForm extends Component {
                                                             Resource Category
                                                         </div>
                                                         <FormControl
-                                                            variant="outlined"
+                                                            // variant="outlined"
                                                             className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                            <Select
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple"></InputLabel>*/}
+                                                            <CustomizedSelect
                                                                 native
                                                                 onChange={this.handleChange.bind(
                                                                     this,
                                                                     "category"
                                                                 )}
+                                                                variant="standard"
                                                                 inputProps={{
                                                                     name: "category",
                                                                     id:
@@ -1178,7 +1180,7 @@ class SearchForm extends Component {
                                                                         </option>
                                                                     )
                                                                 )}
-                                                            </Select>
+                                                            </CustomizedSelect>
 
                                                             <FormHelperText>
                                                                 Which category is your product located within?
@@ -1209,8 +1211,9 @@ class SearchForm extends Component {
                                                             }
                                                             variant="outlined"
                                                             className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                            <Select
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple"></InputLabel>*/}
+                                                            <CustomizedSelect
+                                                                variant="standard"
                                                                 native
                                                                 onChange={this.handleChange.bind(
                                                                     this,
@@ -1230,7 +1233,7 @@ class SearchForm extends Component {
                                                                         </option>
                                                                     )
                                                                 )}
-                                                            </Select>
+                                                            </CustomizedSelect>
                                                         </FormControl>
                                                         {this.state.errors["type"] && (
                                                             <span className={"text-mute small"}>
@@ -1257,8 +1260,9 @@ class SearchForm extends Component {
                                                             }
                                                             variant="outlined"
                                                             className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                            <Select
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple"></InputLabel>*/}
+                                                            <CustomizedSelect
+                                                                variant="standard"
                                                                 native
                                                                 onChange={this.handleChange.bind(
                                                                     this,
@@ -1276,7 +1280,7 @@ class SearchForm extends Component {
                                                                         {item}
                                                                     </option>
                                                                 ))}
-                                                            </Select>
+                                                            </CustomizedSelect>
                                                         </FormControl>
                                                         {this.state.errors["state"] && (
                                                             <span className={"text-mute small"}>
@@ -1311,7 +1315,8 @@ class SearchForm extends Component {
                                                     <InputLabel htmlFor="outlined-age-native-simple">
                                                         Unit
                                                     </InputLabel>
-                                                    <Select
+                                                    <CustomizedSelect
+                                                        // variant="standard"
                                                         name={"unit"}
                                                         native
                                                         onChange={this.handleChange.bind(
@@ -1328,7 +1333,7 @@ class SearchForm extends Component {
                                                         {this.state.units.map((item) => (
                                                             <option value={item}>{item}</option>
                                                         ))}
-                                                    </Select>
+                                                    </CustomizedSelect>
                                                 </FormControl>
                                                 {this.state.errors["unit"] && (
                                                     <span className={"text-mute small"}>
@@ -1338,7 +1343,7 @@ class SearchForm extends Component {
                                                 )}
                                             </div>
                                             <div className="col-6 pl-2">
-                                                <TextField
+                                                <CustomizedInput
                                                     disabled={
                                                         this.state.units.length > 0 ? false : true
                                                     }
@@ -1386,7 +1391,8 @@ class SearchForm extends Component {
                                             <FormControl
                                                 variant="outlined"
                                                 className={classes.formControl}>
-                                                <Select
+                                                <CustomizedSelect
+                                                    variant="standard"
                                                     name="product"
                                                     native
                                                     onChange={this.handleChange.bind(
@@ -1407,7 +1413,7 @@ class SearchForm extends Component {
                                                             {/*({item.sub_product_ids.length} Sub Products)*/}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
                                                 {this.state.errors["product"] && (
                                                     <span className={"text-mute small"}>
                                                         <span style={{ color: "red" }}>* </span>
@@ -1453,7 +1459,8 @@ class SearchForm extends Component {
                                                 className={classes.formControl}>
                                                 {/*<InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>*/}
 
-                                                <Select
+                                                <CustomizedSelect
+                                                    variant="standard"
                                                     name={"deliver"}
                                                     native
                                                     // label="Deliver To"
@@ -1472,7 +1479,7 @@ class SearchForm extends Component {
                                                             {item.name + "(" + item.address + ")"}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
                                             </FormControl>
 
                                             {this.state.errors["deliver"] && (

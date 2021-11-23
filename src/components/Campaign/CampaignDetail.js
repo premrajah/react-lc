@@ -22,6 +22,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import InfoTabContent from "./InfoTabContent";
 import moment from "moment/moment";
+import ConditionsContent from "./ConditionsContent";
 
 class CampaignDetail extends Component {
     slug;
@@ -106,14 +107,13 @@ class CampaignDetail extends Component {
     hideReportModal = () => this.setState({ isVisibleReportModal: false });
 
     callBackResult(action) {
-        if (action === "report") {
-            this.showReportModal();
-        } else if (action === "register") {
-            this.showRegister();
-        } else if (action === "selectCompany") {
-            this.showOrgInput();
-        } else if (action === "approveRelease") {
-            this.showApproveReleasePopUp();
+        if (action === "edit") {
+
+            this.props.toggleEditMode()
+
+            // this.setState({
+            //     editMode:true
+            // })
         }
     }
 
@@ -578,25 +578,14 @@ class CampaignDetail extends Component {
 
         return (
             <>
-                <div className="wrapper">
 
-                    {this.state.zoomQrCode&&  <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
-                        {this.props.item&&this.props.item.qr_artifact && (
-                            <img
-                                className="img-fluid qr-code-zoom"
-                                src={this.props.item.qr_artifact.blob_url}
-
-                            />
-                        )}
-                    </div>}
-
-                    <div className="container  mb-150  pb-5 pt-4">
-                        <PageHeader
-                            pageIcon={CubeBlue}
-                            pageTitle="Product Details(Provenance)"
-                            subTitle="See product details and provenance"
-                        />
-                        <div className="row no-gutters  justify-content-center">
+                    {/*<div className="container p-2 mb-150  m-2">*/}
+                        {/*<PageHeader*/}
+                        {/*    pageIcon={CubeBlue}*/}
+                        {/*    pageTitle="Cma Details(Provenance)"*/}
+                        {/*    subTitle="See product details and provenance"*/}
+                        {/*/>*/}
+                        <div className="row  mt-2 ml-2 justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className="row stick-left-box  ">
                                     <div className="col-12  ">
@@ -606,28 +595,20 @@ class CampaignDetail extends Component {
                                         ) : (
                                             <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                         )}
-
-
-
-
-
                                     </div>
 
                                 </div>
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left"}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12 "}>
                                 <div className="row justify-content-start pb-3  ">
-                                    <div className="col-12 mt-2">
+                                    <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-8">
-                                                <h4 className={"blue-text text-heading"}>
 
-
-                                                    <h4 className="text-capitalize product-title">
+                                              <h4 className="text-capitalize product-title">
                                             {this.props.item.campaign.name}</h4>
 
-                                                </h4>
                                             {/*<span className={"text-gray-light small"}>    {moment(this.props.item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>*/}
                                             </div>
 
@@ -649,15 +630,7 @@ class CampaignDetail extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="col-12">
-                                        <div className="row">
-                                            <div className="col-7">
-                                                <div>
-                                                    {/*<OrgComponent org={this.props.item.org} />*/}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
 
 
@@ -705,20 +678,17 @@ class CampaignDetail extends Component {
                                                 </TabPanel>
 
                                                 <TabPanel value="2">
-                                                    <InfoTabContent  item={this.props.item} />
+                                                    <ConditionsContent  item={this.props.item} />
                                                 </TabPanel>
                                                 <TabPanel value="3">
                                                     <>
-
-                                                        <InfoTabContent  item={this.props.item} />
-
+                                                        <div className={"bg-white mt-4 rad-8 p-2 gray-border"}>
+                                                        {this.props.item.message_template.text}
+                                                        </div>
                                                     </>
 
                                                 </TabPanel>
 
-                                                <TabPanel value="6">
-                                                    {/*<ArtifactProductsTab  hideAdd={true} item={this.props.item}/>*/}
-                                                </TabPanel>
 
                                             </TabContext>
                                         </Box>
@@ -733,9 +703,7 @@ class CampaignDetail extends Component {
                             </div>
                         </div>
 
-                    </div>
-                </div>
-
+                    {/*</div>*/}
 
 
             </>

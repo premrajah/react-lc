@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
+import CloseIcon from '@mui/icons-material/Close';
 
 import ProductExpandItem from "../../components/ProductExpandItem";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
@@ -36,7 +37,7 @@ class ProductPopUp extends Component {
                         className="btn-close close-done"
                         data-dismiss="modal"
                         aria-label="Close">
-                        Done
+                        <CloseIcon style={{ fontSize: "32px"}} />
                     </button>
                 </div>
                 <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">

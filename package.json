@@ -28,12 +28,10 @@
     "dotenv": "^8.2.0",
     "draft-convert": "^2.1.12",
     "draft-js": "^0.11.7",
-    "draftjs-to-html": "^0.9.1",
     "formik": "^2.2.6",
     "google-map-react": "^2.1.10",
     "google-maps-react": "^2.0.6",
     "history": "^5.0.0",
-    "html-to-draftjs": "^1.5.0",
     "jspdf": "^2.2.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
@@ -44,12 +42,7 @@
     "react-cropper": "^2.1.8",
     "react-csv": "^2.0.3",
     "react-device-detect": "^1.15.0",
-<<<<<<< HEAD
-    "react-dom": "^16.14.0",
-    "react-draft-wysiwyg": "^1.14.7",
-=======
     "react-dom": "^17.0.0",
->>>>>>> 49e9b112235310ca21f340bbdb19a89eac741fb0
     "react-dropzone": "^11.2.4",
     "react-image-gallery": "^1.0.8",
     "react-moment": "^1.0.0",

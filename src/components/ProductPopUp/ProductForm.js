@@ -131,10 +131,16 @@ class ProductForm extends Component {
 
                     if (responseAll.length>0&&this.props.item){
 
+
+                        let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        let subCategories=cat.length>0?cat[0].types:[]
+                       let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                          let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+
                         this.setState({
-                            subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
-                            states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
-                            units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
+                            subCategories:subCategories,
+                            states : states,
+                            units : units
                         })
 
                     }

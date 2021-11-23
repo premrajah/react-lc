@@ -84,8 +84,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     useEffect(() => {
         getAllOrgs();
-        // getAllMessageGroups();
-        getAllMessageGroupsExpand();
+        getAllMessageGroups();
+        // getAllMessageGroupsExpand();
     }, []);
 
     useEffect(() => {
@@ -250,8 +250,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
         if(showHideOrgSearch) {
             if(allMessageGroups[0].id === "0") {
-                // getAllMessageGroups();
-                getAllMessageGroupsExpand();
+                getAllMessageGroups();
+                // getAllMessageGroupsExpand();
                 handleGroupClick(allMessageGroups[0], 0);
             }
         } else {
@@ -326,8 +326,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
                     }
-                    // getAllMessageGroups();
-                    getAllMessageGroupsExpand();
+                    getAllMessageGroups();
+                    // getAllMessageGroupsExpand();
                     getAllOrgs();
 
                     if(payload.message_group_id) {

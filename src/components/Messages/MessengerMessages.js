@@ -3,21 +3,12 @@ import axios from "axios";
 import {baseUrl, createMarkup, useInterval} from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-<<<<<<< HEAD
-import {Button, List, ListItem, Tooltip} from "@material-ui/core";
-import {Alert, Autocomplete} from "@material-ui/lab";
-import CreateIcon from "@material-ui/icons/Create";
-import SendIcon from "@material-ui/icons/Send";
-import FilterListIcon from '@material-ui/icons/FilterList';
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
-import ExplicitIcon from '@material-ui/icons/Explicit';
-=======
 import {Button, List, ListItem, Tooltip} from "@mui/material";
 import {Alert, Autocomplete} from "@mui/lab";
 import CreateIcon from "@mui/icons-material/Create";
+import ExplicitIcon from '@mui/icons-material/Explicit';
 import SendIcon from "@mui/icons-material/Send";
 import FilterListIcon from '@mui/icons-material/FilterList';
->>>>>>> 49e9b112235310ca21f340bbdb19a89eac741fb0
 import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
@@ -383,16 +374,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 {
                     <div className="col-md-4">
                         <div className="row">
-<<<<<<< HEAD
                              <div className="col-md-8">
                                  {!showHideGroupFilter && <div className="d-flex justify-content-start align-items-center h-100">Groups</div>}
                                  {showHideGroupFilter && <Autocomplete
                                      size="small"
-=======
-                            <div className="col-md-8">
-                                {showHideGroupFilter && <Autocomplete
-                                    size="small"
->>>>>>> 49e9b112235310ca21f340bbdb19a89eac741fb0
                                     freeSolo
                                     onChange={(e, value) => setAutoCompleteOrg(value)}
                                     options={

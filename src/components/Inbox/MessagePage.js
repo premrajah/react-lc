@@ -1,5 +1,4 @@
 import React from 'react'
-import Messages from "./Messages";
 import Sidebar from "../../views/menu/Sidebar";
 import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../PageHeader";
@@ -20,7 +19,6 @@ function MessagePage () {
                     </div>
 
                     <div>
-                        {/*<Messages />*/}
                         <MessengerMessages />
                     </div>
                 </div>

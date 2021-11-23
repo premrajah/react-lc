@@ -3,14 +3,13 @@ import axios from "axios";
 import {baseUrl, createMarkup, useInterval} from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Button, List, ListItem, Tooltip} from "@mui/material";
+import {Button, List, ListItem, Tooltip, TextField} from "@mui/material";
 import {Alert, Autocomplete} from "@mui/lab";
 import CreateIcon from "@mui/icons-material/Create";
 import ExplicitIcon from '@mui/icons-material/Explicit';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SendIcon from "@mui/icons-material/Send";
 import FilterListIcon from '@mui/icons-material/FilterList';
-import TextField from "../FormsUI/ProductForm/TextField";
 import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@mui/styles";
@@ -64,20 +63,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     let trackedList = [];
 
 
-    const handleEntityDialogOpen = () => {
-        setOpenEntityDialog(true);
-    };
-
-    const handleEntityDialogClose = (value) => {
-        setOpenEntityDialog(false);
-        // setSelectedValue(value);
-    };
-
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-    }
-
     useEffect(() => {
         scrollToBottom()
     }, [selectedMsgGroup]);
@@ -92,6 +77,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setUserOrg(userDetail.orgId);
     }, []);
 
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
 
     // useInterval(() => {
     //     getAllOrgs();
@@ -101,7 +90,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const ListGroupDisplay = (group, i) => {
         trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
 
-        console.log('group ', group.message_group)
 
         return <div key={i} >
             <ListItem
@@ -116,7 +104,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             </ListItem>
         </div>
     }
-
 
     const getAllOrgs = () => {
         axios
@@ -167,7 +154,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
 
-                // if(!selectedItem) {
+                // if(selectedItem === 0) {
                 //     handleGroupClick(data[0], 0);
                 // }
             })
@@ -178,7 +165,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const getAllMessageGroupsExpand = () => {
         axios
-            .get(`${baseUrl}message-group/expand`)
+            // .get(`${baseUrl}message-group/expand`)
+            .get(`${baseUrl}message-group/do-not-use`)
             .then((response) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
@@ -191,7 +179,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 console.log("message-group-error ", error.message);
             });
     };
-
 
 
     const getGroupMessageWithId = (id) => {
@@ -218,6 +205,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             });
     };
 
+    const handleEntityDialogOpen = () => {
+        setOpenEntityDialog(true);
+    };
+
+    const handleEntityDialogClose = (value) => {
+        setOpenEntityDialog(false);
+        // setSelectedValue(value);
+    };
+
+
     const handleNewMessageSelect = (e) => {
         if (!e) return;
         const temp = [];
@@ -227,8 +224,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setReactSelectedValues(temp);
     };
 
+    const handleFilterGroups = (e, value) => {
+        setAutoCompleteOrg(value);
+    }
+
     const handleGroupClick = (group, selectedIndex) => {
-        console.log('g ', group, selectedIndex);
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
         updateSelected(selectedIndex);
@@ -322,6 +322,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 if (response.status === 200) {
 
                     const data = response.data.data;
+
                     setMessageText("");
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
@@ -337,7 +338,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         if(trackedList.length > 0) {
                             const msgGroupIdCheck = trackedList.filter(g => g.groupId === data.message_group._id);
                             if(msgGroupIdCheck) {
-                                console.log('mgix ', trackedList.length)
                                 const _id = msgGroupIdCheck[0].groupId;
                                 const _key = msgGroupIdCheck[0].groupKey;
                                 const name = msgGroupIdCheck[0].name;
@@ -379,29 +379,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                              <div className="col-md-8">
                                  {!showHideGroupFilter && <div className="d-flex justify-content-start align-items-center h-100">Groups</div>}
                                  {showHideGroupFilter && <Autocomplete
-                                     size="small"
-                                    freeSolo
-                                    onChange={(e, value) => setAutoCompleteOrg(value)}
-                                    options={
-                                        allMessageGroups.length > 0
-                                            ? allMessageGroups.map((option) =>
-                                                option.name ? option.name : ""
-                                            )
-                                            : []
-                                    }
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Search for group"
-                                            margin="normal"
-                                            variant="outlined"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                type: "search",
-                                            }}
-                                        />
-                                    )}
-                                />}
+                                     disablePortal
+                                     id="groups-filter"
+                                     fullWidth
+                                     onChange={(e, value) => handleFilterGroups(e, value)}
+                                     options={allMessageGroups.length > 0
+                                         ? allMessageGroups.map((option) =>
+                                             option.name ? option.name : ""
+                                         )
+                                         : []}
+                                     // sx={{ width: 300 }}
+                                     renderInput={(params) => <TextField {...params} label="Search for Groups" />}
+                                 />}
                             </div>
 
                             <div className="col-md-2 d-flex justify-content-center align-items-center">

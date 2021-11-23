@@ -5,6 +5,7 @@ import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {convertToHTML} from "draft-convert";
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+import styles from './MessengerMessage.module.css';
 
 
 
@@ -54,9 +55,11 @@ class WysiwygEditor extends Component{
 
     render(){
         const { editorState } = this.state;
-        return <div className='editor'>
+        return <div className="">
             <Editor
                 // toolbarOnFocus
+                wrapperClassName="wysiwyg-wrapper"
+                editorClassName="wysiwyg-editor"
                 editorState={editorState}
                 onEditorStateChange={this.onEditorStateChange}
                 toolbar={{
@@ -65,7 +68,7 @@ class WysiwygEditor extends Component{
                     textAlign: { inDropdown: true },
                     link: { inDropdown: true },
                     history: { inDropdown: true },
-                    image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
+                    // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
                 // mention={{
                 //     separator: ' ',

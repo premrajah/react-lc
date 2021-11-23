@@ -7,6 +7,7 @@ import {Button, List, ListItem, Tooltip} from "@mui/material";
 import {Alert, Autocomplete} from "@mui/lab";
 import CreateIcon from "@mui/icons-material/Create";
 import ExplicitIcon from '@mui/icons-material/Explicit';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SendIcon from "@mui/icons-material/Send";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import TextField from "../FormsUI/ProductForm/TextField";
@@ -17,6 +18,7 @@ import RichTextEditor from "./RichTextEditor";
 import WysiwygEditor from "./WysiwygEditor";
 import styles from './MessengerMessage.module.css';
 import MessageEntityDialog from "./MessageEntityDialog";
+
 
 
 const msgWindowHeight = "520px";

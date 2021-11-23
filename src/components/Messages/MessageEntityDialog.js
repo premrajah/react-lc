@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dialog, DialogActions, DialogContent, DialogTitle, Paper} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogTitle, Paper} from "@mui/material";
 
 
 const MessageEntityDialog = (props) => {

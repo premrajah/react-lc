@@ -467,12 +467,12 @@ this.props.toggleRightBar()
 
                                                 <td className="d-flex align-items-center">
 
-                                                    <Link to={"/campaign/"+item.campaign._key}>
+                                                    {/*<Link to={"/campaign/"+item.campaign._key}>*/}
                                                         <div className="pl-3 email">
                                                         <span className={"title-bold text-capitlize"}>{item.campaign.name}</span>
                                                         <span className={"text-gray-light"}>{moment(item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>
                                                     </div>
-                                                    </Link>
+                                                    {/*</Link>*/}
                                                 </td>
                                                 <td>{moment(item.start_ts).format("DD MMM YYYY")} - {moment(item.end_ts).format("DD MMM YYYY")}</td>
                                                 <td className="status text-capitlize"><span className={item.campaign.stage==="active"?"active":"waiting"}>{item.campaign.stage}</span></td>

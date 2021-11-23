@@ -31,6 +31,9 @@ this.setState({
     editMode:!this.state.editMode
 })
 
+
+        this.props.toggleEditMode()
+
     }
 
         actionSubmit = () => {
@@ -548,10 +551,10 @@ this.setState({
             <>
                 {this.state.item ? (
                     <>
-                        {this.state.editMode?   <CreateCampaign item={this.state.item} />:
+
                             <>
-                                <CampaignDetail toggleEditMode={this.toggleEditMode} item={this.state.item} />
-                            </>}
+                                <CampaignDetail refreshData={this.props.refreshData} toggleEditMode={this.toggleEditMode} item={this.state.item} />
+                            </>
                    </>
                 ) : (
                     <div className={"loading-screen"}> Loading .... </div>

@@ -385,7 +385,7 @@ class CreateCampaign extends Component {
 
         const campaignData = {
 
-            id:this.props.item._id,
+            id:this.props.item.campaign._id,
             update:{
                 name:name,
                 description:description,
@@ -420,7 +420,20 @@ class CreateCampaign extends Component {
                 //     });
                 // }
 
-                this.props.showSnackbar({show:true,severity:"success",message:"Campaign updated successfully. Thanks"})
+                // this.props.showSnackbar({show:true,severity:"success",message:"Campaign updated successfully. Thanks"})
+
+
+                this.props.refreshData()
+                //
+                // if (!this.props.parentProduct) {
+                //     this.setState({
+                //         product: res.data.data,
+                //         parentProduct: res.data.data,
+                //     });
+                // }
+
+                // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
+                this.props.toggleRightBar()
 
 
             })

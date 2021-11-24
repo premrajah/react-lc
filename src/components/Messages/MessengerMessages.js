@@ -71,8 +71,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     useEffect(() => {
         getAllOrgs();
-        // getAllMessageGroups();
-        getAllMessageGroupsExpand();
+        getAllMessageGroups();
+        // getAllMessageGroupsExpand();
     }, []);
 
     useEffect(() => {
@@ -101,18 +101,19 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 onClick={() => handleGroupClick(group, i)}
             >
                 {/*{group.name.replace(/\W/g, " ")}*/}
-                 {group.orgs || group.orgs.length > 0 && group.orgs.map((g, i) => {
-                     return <div key={i} className="mr-2">
-                         <Tooltip arrow title={
-                             <div className="d-flex flex-column">
-                                 <div>{g.name ? g.name : ""}</div>
-                                 <small>{g.email ? g.email : ""}</small>
-                             </div>
-                         }>
-                            <Avatar style={{color: "#000", backgroundColor: "var(--lc-bg-gray)", border: "1px solid var(--lc-green)"}}>{g.name ? g.name.substr(0, 2) : ""}</Avatar>
-                         </Tooltip>
-                     </div>
-            })}
+            {/*     {group.orgs || group.orgs.length > 0 && group.orgs.map((g, i) => {*/}
+            {/*         return <div key={i} className="mr-2">*/}
+            {/*             <Tooltip arrow title={*/}
+            {/*                 <div className="d-flex flex-column">*/}
+            {/*                     <div>{g.name ? g.name : ""}</div>*/}
+            {/*                     <small>{g.email ? g.email : ""}</small>*/}
+            {/*                 </div>*/}
+            {/*             }>*/}
+            {/*                <Avatar style={{color: "#000", backgroundColor: "var(--lc-bg-gray)", border: "1px solid var(--lc-green)"}}>{g.name ? g.name.substr(0, 2) : ""}</Avatar>*/}
+            {/*             </Tooltip>*/}
+            {/*         </div>*/}
+            {/*})}*/}
+                {group.name}
             </ListItem>
         </div>
     }
@@ -262,8 +263,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
         if(showHideOrgSearch) {
             if(allMessageGroups[0].id === "0") {
-                // getAllMessageGroups();
-                getAllMessageGroupsExpand();
+                getAllMessageGroups();
+                // getAllMessageGroupsExpand();
                 handleGroupClick(allMessageGroups[0], 0);
             }
         } else {
@@ -339,8 +340,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     if(reactSelectedValues.length > 0   ) {
                         reactSelectRef.current.clearValue();
                     }
-                    // getAllMessageGroups();
-                    getAllMessageGroupsExpand();
+                    getAllMessageGroups();
+                    // getAllMessageGroupsExpand();
                     getAllOrgs();
 
                     if(payload.message_group_id) {

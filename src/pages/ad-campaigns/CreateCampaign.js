@@ -992,7 +992,7 @@ class CreateCampaign extends Component {
                                                                 margin="normal"
                                                                 id="date-picker-dialog-1"
                                                                 // label="Available From"
-                                                                format="DD/MM/yyyy"
+                                                                inputFormat="dd/MM/yyyy"
                                                                 value={this.state.startDate}
 
                                                                 // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
@@ -1028,7 +1028,7 @@ class CreateCampaign extends Component {
                                                                 variant={"outlined"}
                                                                 margin="normal"
                                                                 id="date-picker-dialog"
-                                                                format="DD/MM/yyyy"
+                                                                inputFormat="DD/MM/yyyy"
                                                                 value={this.state.endDate}
                                                                 // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
 

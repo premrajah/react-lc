@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ExplicitIcon from '@mui/icons-material/Explicit';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SendIcon from "@mui/icons-material/Send";
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from '@mui/icons-material/Search';
 import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@mui/styles";
@@ -19,6 +19,8 @@ import styles from './MessengerMessage.module.css';
 import MessageEntityDialog from "./MessageEntityDialog";
 import AvatarWithColours from "../Avatars/AvatarWithColours";
 import {purple} from "@mui/material/colors";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 
 
 
@@ -93,8 +95,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
 
         return <div key={i} >
-            <ListItem
-                classes={{root: classes.root, selected: classes.selected}}
+
+            <div
+                // classes={{root: classes.root, selected: classes.selected}}
+                className={"click-item p-2 message-group-item"}
                 selected={selectedItem === i}
                 button
                 divider
@@ -114,7 +118,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             {/*         </div>*/}
             {/*})}*/}
                 {group.name.replaceAll(",",", ").replaceAll("+",", ").replaceAll("-","")}
-            </ListItem>
+            </div>
         </div>
     }
 
@@ -385,194 +389,190 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     return (
         <>
+
             <div className="row">
-                {
-                    <div className="col-md-4">
-                        <div className="row">
-                             <div className="col-md-8">
-                                 {!showHideGroupFilter && <div className="d-flex justify-content-start align-items-center h-100">Groups</div>}
-                                 {showHideGroupFilter && <Autocomplete
-                                     disablePortal
-                                     id="groups-filter"
-                                     fullWidth
-                                     onChange={(e, value) => handleFilterGroups(e, value)}
-                                     options={allMessageGroups.length > 0
-                                         ? allMessageGroups.map((option) =>
-                                             option.name ? option.name : ""
-                                         )
-                                         : []}
-                                     // sx={{ width: 300 }}
-                                     renderInput={(params) => <TextField {...params} label="Search for Groups" />}
-                                 />}
-                            </div>
-
-                            <div className="col-md-2 d-flex justify-content-center align-items-center">
-                                <Tooltip title="Filter groups">
-                                    <Button onClick={() => handleFilterGroupsButton()}>
-                                        <FilterListIcon className={"text-blue"} style={{fontSize:"24px"}} />
-                                    </Button>
-                                </Tooltip>
-                            </div>
-
-                            <div className="col-md-2 d-flex justify-content-center align-items-center">
-                                <Tooltip title="New Message">
-                                    <Button onClick={() => handleOrgSearchButton()}>
-                                        <AddIcon className={"text-blue"} style={{fontSize:"24px"}} />
-                                    </Button>
-                                </Tooltip>
-                            </div>
+                <div className="col-md-4">
+                    <div className="row">
+                        <div className="col-md-8">
+                            {!showHideGroupFilter && <div className="d-flex justify-content-start align-items-center h-100">Groups</div>}
+                            {showHideGroupFilter && <Autocomplete
+                                variant={"standard"}
+                                disablePortal
+                                id="groups-filter"
+                                fullWidth
+                                onChange={(e, value) => handleFilterGroups(e, value)}
+                                options={allMessageGroups.length > 0
+                                    ? allMessageGroups.map((option) =>
+                                        option.name ? option.name : ""
+                                    )
+                                    : []}
+                                // sx={{ width: 300 }}
+                                renderInput={(params) => <TextField  {...params} label="Search for Groups" />}
+                            />}
                         </div>
 
-                        {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
-                        <List
-                            className="message-groups text-capitalize"
-                            style={{
-                                height: msgWindowHeight,
-                                maxHeight: msgWindowHeight,
-                                overflow: "auto",
-                            }}>
-                            {allMessageGroups.length > 0 ? (
-                                allMessageGroups
-                                    .filter((val) => {
-                                        if (val.name) {
-                                            if (
-                                                autoCompleteOrg === "" ||
-                                                autoCompleteOrg === "null"
-                                            ) {
-                                                return val;
-                                            } else if (
-                                                val.name
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        autoCompleteOrg
-                                                            ? autoCompleteOrg.toLowerCase()
-                                                            : setAutoCompleteOrg("")
-                                                    )
-                                            ) {
-                                                return val;
-                                            }
-                                        }
-                                    })
-                                    .map((group, i) => ListGroupDisplay(group, i))
-                            ) : (
-                                <div>Loading...</div>
-                            )}
-                        </List>
+                        <div className="col-md-2 d-flex justify-content-center align-items-center">
+                            <Tooltip title="Filter groups">
+                                <Button onClick={() => handleFilterGroupsButton()}>
+                                    <FilterListIcon className={"text-blue"} style={{fontSize:"24px"}} />
+                                </Button>
+                            </Tooltip>
+                        </div>
+
+                        <div className="col-md-2 d-flex justify-content-center align-items-center">
+                            <Tooltip title="New Message">
+                                <Button onClick={() => handleOrgSearchButton()}>
+                                    <AddIcon className={"text-blue"} style={{fontSize:"24px"}} />
+                                </Button>
+                            </Tooltip>
+                        </div>
                     </div>
-                }
 
+                    {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
+                    <div
+                        className="message-groups bg-white rad-8 p-3 gray-border text-capitalize"
+                        style={{
+                            height: msgWindowHeight,
+                            maxHeight: msgWindowHeight,
+                            overflow: "auto",
+                        }}>
+                        {allMessageGroups.length > 0 ? (
+                            allMessageGroups
+                                .filter((val) => {
+                                    if (val.name) {
+                                        if (
+                                            autoCompleteOrg === "" ||
+                                            autoCompleteOrg === "null"
+                                        ) {
+                                            return val;
+                                        } else if (
+                                            val.name
+                                                .toLowerCase()
+                                                .includes(
+                                                    autoCompleteOrg
+                                                        ? autoCompleteOrg.toLowerCase()
+                                                        : setAutoCompleteOrg("")
+                                                )
+                                        ) {
+                                            return val;
+                                        }
+                                    }
+                                })
+                                .map((group, i) => ListGroupDisplay(group, i))
+                        ) : (
+                            <div>Loading...</div>
+                        )}
+                    </div>
+                </div>
 
-                {
-                    <>
-                        <div className="col-md-7">
-                            {showHideOrgSearch && <div className="row">
-                                <div className="col">
-                                    <Select
-                                        options={reactSelectValues.length > 0 ? reactSelectValues : []}
-                                        isMulti
-                                        placeholder="Search orgs to send messages"
-                                        name="orgs"
-                                        className="react-multi-select"
-                                        classNamePrefix="select"
-                                        onChange={(e) => handleNewMessageSelect(e)}
-                                        ref={reactSelectRef}
-                                    />
-                                </div>
-                            </div>}
+                <div className="col-md-7">
+                    {showHideOrgSearch && <div className="row">
+                        <div className="col">
+                            <Select
+                                options={reactSelectValues.length > 0 ? reactSelectValues : []}
+                                isMulti
+                                placeholder="Search orgs to send messages"
+                                name="orgs"
+                                className="react-multi-select"
+                                classNamePrefix="select"
+                                onChange={(e) => handleNewMessageSelect(e)}
+                                ref={reactSelectRef}
+                            />
+                        </div>
+                    </div>}
 
-                            <div
-                                className="row"
-                                style={{
-                                    height: msgWindowHeight,
-                                    maxHeight: msgWindowHeight,
-                                    overflow: "auto",
-                                }}>
-                                <div className="col">
-                                    {selectedMsgGroup.length > 0 ? (
-                                        <div
-                                            className="message-window p-3"
-                                            style={{ height: msgWindowHeight }}>
-                                            {selectedMsgGroup.map((m, i) => (
-                                                <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-start' : 'justify-content-end'}`}>
-                                                    <div
-                                                        className="w-75 p-3 mb-3 border-rounded text-blue gray-border"
-                                                        style={{
-                                                            background: checkWhoseMessage(m.orgs) ? "#ffffff" : "#ffffff"
+                    <div
+                        className="row"
+                        style={{
+                            height: msgWindowHeight,
+                            maxHeight: msgWindowHeight,
+                            overflow: "auto",
+                        }}>
+                        <div className="col">
+                            {selectedMsgGroup.length > 0 ? (
+                                <div
+                                    className="message-window p-3"
+                                    style={{ height: msgWindowHeight }}>
+                                    {selectedMsgGroup.map((m, i) => (
+                                        <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-start' : 'justify-content-end'}`}>
+                                            <div
+                                                className="w-75 p-3 mb-3 border-rounded text-blue gray-border"
+                                                style={{
+                                                    background: checkWhoseMessage(m.orgs) ? "#ffffff" : "#ffffff"
 
-                                                        }}>
-                                                        <div className="d-flex justify-content-between">
-                                                            <div>
-                                                                <small>
-                                                                    <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? m.orgs[0].org.org.name : ''}</small>
-                                                                    <small className={"text-gray-light"} style={{opacity: '0.5'}}>
-                                                                        {moment(
-                                                                            m.message._ts_epoch_ms
-                                                                        ).fromNow()}
-                                                                    </small>
-                                                                </small>
-                                                            </div>
-                                                            <div>
-                                                                {m.message.entity_as_json && <small className="mr-2" style={{cursor: "pointer"}}>
-                                                                    <ExplicitIcon fontSize="small" onClick={handleEntityDialogOpen}/>
-                                                                    <MessageEntityDialog entity={m.message.entity_as_json} open={openEntityDialog} onClose={handleEntityDialogClose} />
+                                                }}>
+                                                <div className="d-flex justify-content-between">
+                                                    <div>
+                                                        <small>
+                                                            <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? m.orgs[0].org.org.name : ''}</small>
+                                                            <small className={"text-gray-light"} style={{opacity: '0.5'}}>
+                                                                {moment(
+                                                                    m.message._ts_epoch_ms
+                                                                ).fromNow()}
+                                                            </small>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        {m.message.entity_as_json && <small className="mr-2" style={{cursor: "pointer"}}>
+                                                            <ExplicitIcon fontSize="small" onClick={handleEntityDialogOpen}/>
+                                                            <MessageEntityDialog entity={m.message.entity_as_json} open={openEntityDialog} onClose={handleEntityDialogClose} />
 
-                                                                </small>}
-                                                                {m.artifacts.length > 0 && <small style={{cursor: "pointer"}}>
-                                                                    <PhotoLibraryIcon fontSize="small"/>
-                                                                </small>}
-                                                            </div>
-                                                        </div>
-                                                        <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
+                                                        </small>}
+                                                        {m.artifacts.length > 0 && <small style={{cursor: "pointer"}}>
+                                                            <PhotoLibraryIcon fontSize="small"/>
+                                                        </small>}
                                                     </div>
                                                 </div>
-                                            )).reverse()}
-                                            <div className="dummy" ref={messagesEndRef} />
+                                                <div dangerouslySetInnerHTML={createMarkup(m.message.text)}></div>
+                                            </div>
                                         </div>
+                                    )).reverse()}
+                                    <div className="dummy" ref={messagesEndRef} />
+                                </div>
 
-                                    ) : (
-                                        <div></div>
-                                    )}
-                                </div>
-                            </div>
-
-                            {<div className="row">
-                                <div className="col">
-                                    {reactSelectedValues.length > 0 && <Alert severity="info" className="mr-2">{`Send message to selected orgs`}</Alert>}
-                                    {reactSelectedValues.length > 0 || selectedMsgGroup.length > 0 && <Alert severity="info">{`Reply to the selected group`}</Alert>}
-                                </div>
-                            </div>}
-
-                            <div className="row mt-2" style={{height: "60px"}}>
-                                <div className="col-11 p-0 mb-5" style={{border: '1px solid var(--lc-pale-purple)'}}>
-                                    {/*<RichTextEditor*/}
-                                    {/*    richTextHandleCallback={(value) => handleRichTextCallback(value)}*/}
-                                    {/*    allOrgs={allOrgs} ref={resetDraftRef}*/}
-                                    {/*/>*/}
-                                    <WysiwygEditor
-                                        wrapperClassName="wysiwyg-wrapper-class"
-                                        editorClassName="wysiwyg-editor-class"
-                                        allOrgs={allOrgs}
-                                        ref={resetDraftRef}
-                                        richTextHandleCallback={(value) => handleRichTextCallback(value)}
-                                    />
-                                </div>
-                                <div className="col-1 d-flex justify-content-center align-items-center p-0">
-                                    <Button
-                                        type="button"
-                                        disabled={messageText ? false : true}
-                                        fullWidth
-                                        onClick={() => handleSendMessage()}>
-                                        <SendIcon
-                                            fontSize="large"
-                                            style={{color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)"}}
-                                        />
-                                    </Button>
-                                </div>
-                            </div>
+                            ) : (
+                                <div></div>
+                            )}
                         </div>
-                    </>
-                }
+                    </div>
+
+                    {<div className="row">
+                        <div className="col">
+                            {reactSelectedValues.length > 0 && <Alert severity="info" className="mr-2">{`Send message to selected orgs`}</Alert>}
+                            {reactSelectedValues.length > 0 || selectedMsgGroup.length > 0 && <Alert severity="info">{`Reply to the selected group`}</Alert>}
+                        </div>
+                    </div>}
+
+                    <div className="row mt-2" style={{height: "60px"}}>
+                        <div className="col-11 p-0 mb-5" style={{border: '1px solid var(--lc-pale-purple)'}}>
+                            {/*<RichTextEditor*/}
+                            {/*    richTextHandleCallback={(value) => handleRichTextCallback(value)}*/}
+                            {/*    allOrgs={allOrgs} ref={resetDraftRef}*/}
+                            {/*/>*/}
+                            <WysiwygEditor
+                                wrapperClassName="wysiwyg-wrapper-class"
+                                editorClassName="wysiwyg-editor-class"
+                                allOrgs={allOrgs}
+                                ref={resetDraftRef}
+                                richTextHandleCallback={(value) => handleRichTextCallback(value)}
+                            />
+                        </div>
+                        <div className="col-1 d-flex justify-content-center align-items-center p-0">
+                            <Button
+                                type="button"
+                                disabled={messageText ? false : true}
+                                fullWidth
+                                onClick={() => handleSendMessage()}>
+                                <SendIcon
+                                    fontSize="large"
+                                    style={{color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)"}}
+                                />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
         </>
     );

@@ -1851,9 +1851,9 @@ button.blue-btn-border
     font-family: var(--body-text);
 
 }
-.MuiInputBase-root{
-    width: 100%;
-}
+/*.MuiInputBase-root{*/
+/*    width: 100%;*/
+/*}*/
 
 
 
@@ -3640,4 +3640,9 @@ input:active,input:focus{
 
 .Mui-checked{
     color: var(--lc-purple)!important;
+}
+.message-groups>div:not(:last-child) {
+
+    border-bottom: 1px solid #EAEAEF!important;
+
 }

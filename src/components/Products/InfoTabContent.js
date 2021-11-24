@@ -30,7 +30,7 @@ class InfoTabContent extends Component {
                         </p>
                         <span
 
-                            className=" text-capitlize mb-1 cat-box text-left p-2">
+                            className=" text-capitlize mb-1 cat-box text-left ">
                                                             <span className="">
                                                                 {this.props.item.product.category}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -140,12 +140,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
 
-                                className=" text-label text-bold text-blue mb-1">
+                                className=" text-label  text-bold text-blue mb-1">
                                 Brand
                             </p>
                             <p
 
-                                className="sub-title-text-pink  mb-1">
+                                className="sub-title-text-pink text-capitlize mb-1">
                                 {this.props.item &&
                                 this.props.item.product.sku
                                     .brand}

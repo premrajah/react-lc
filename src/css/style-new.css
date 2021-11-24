@@ -98,6 +98,10 @@ body {
 
 }
 
+.modal-content{
+    background: #f8f8f9;
+}
+
 .bg-white{
     background: white;
 }
@@ -1845,6 +1849,9 @@ button.blue-btn-border
     font-family: var(--body-text);
 
 }
+.MuiInputBase-root{
+    width: 100%;
+}
 
 
 
@@ -2636,6 +2643,7 @@ button.blue-btn-border
     background:  #EAEAEF;
     font-size: 14px;
     /*opacity: .5;*/
+    padding: 5px 10px;
 }
 
 .custom-label {
@@ -2821,7 +2829,7 @@ background: white;
 
 .cat-box {
     text-align: center;
-    width: 100%;
+    /*width: 100%;*/
     width: auto;
     color: var(--lc-purple);
 }
@@ -2833,10 +2841,10 @@ background: white;
     border-radius: 15%;
 }
 
-.cat-box {
-    padding: 10px;
-    /*float: left;*/
-}
+/*.cat-box {*/
+/*    padding: 10px;*/
+/*    !*float: left;*!*/
+/*}*/
 
 .btn-gray:hover {
     background: #cccccc;
@@ -2885,7 +2893,7 @@ background: white;
     width: 80px;
     margin-right: 15px;
     margin-bottom: 15px;
-    margin-top: 15px;
+    margin-top: 0px;
 }
 
 .image-gallery-slide img {
@@ -3132,7 +3140,7 @@ background: white;
 }
 
 .search-container .filter-box {
-    position: absolute;
+    position: relative;
     /*height: 100%;*/
     z-index: 1000;
     /*top: 15px;*/
@@ -3147,7 +3155,8 @@ background: white;
 /*}*/
 
 #searchBar {
-    padding-left: 140px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .btn-link:disabled {
@@ -3505,6 +3514,10 @@ background: white;
     font-weight: 700;
 }
 
+.custom-table td{
+    vertical-align: top!important;
+}
+
 .custom-table tbody .persons {
     padding: 0;
     margin: 0; }
@@ -3531,7 +3544,9 @@ background: white;
     border: 2px solid  #EAEAEF;
     position: relative;
     padding: 2px;
+    display: flex;
 }
+
 #searchBar{
     height: 52px;
     width: 100%;
@@ -3539,7 +3554,7 @@ background: white;
 }
 .search-icon{
     position: absolute;
-    right: 3%;
+    right: 1%;
     font-size: 28px!important;
     margin: 10px auto;
 }
@@ -3551,7 +3566,12 @@ background: white;
     /*margin: auto;*/
     margin: 2px auto;
 }
-
+#searchBar:focus{
+    background: none!important;
+}
+input,textarea,select{
+    background: white!important;
+}
 .filter-box{
        font-weight: 700;
 }
@@ -3572,10 +3592,10 @@ input:active,input:focus{
     border: none!important;
     transition: none!important;
 }
-input:focus,textarea:focus{
+/*input:focus,textarea:focus{*/
 
-    background: #f2f2f2;
-}
+/*    background: #f2f2f2;*/
+/*}*/
 .custom-bottom-fixed-appbar{
     width: 100%;
     background: white;
@@ -3614,4 +3634,8 @@ input:focus,textarea:focus{
 
 .full-width-field{
     width: 100%;
+}
+
+.Mui-checked{
+    color: var(--lc-purple)!important;
 }

@@ -272,7 +272,7 @@ class ProductItemNew extends Component {
                                     </>
                                     </Link>
                                 </div>
-                                <div className={this.props.biggerImage?"col-5 pl-2  content-box-listing":"col-7 pl-4  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-5 pl-3  content-box-listing":"col-7 pl-3  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-capitalize mb-1">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>  <small className={""}><small> - {this.props.item._key}</small></small></Link>

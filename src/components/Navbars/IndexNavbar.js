@@ -306,7 +306,7 @@ class ComponentsNavbar extends React.Component {
 
                                     <div
                                         onClick={this.handleClickMenu}
-                                        className={"wl-link-white click-item pt-1"}>
+                                        className={"wl-link-white click-item pt-2"}>
                                         <figure className="avatar avatar-60 ">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
@@ -418,112 +418,6 @@ class ComponentsNavbar extends React.Component {
                         )}
 
 
-                        {this.props.isLoggedIn && (
-                            <NavItem className={"d-none web-only padding-0"}>
-                                <UncontrolledDropdown nav>
-                                    <DropdownToggle
-                                        caret
-                                        color="default"
-                                        data-toggle="dropdown"
-                                        href="#pablo"
-                                        nav
-                                        onClick={(e) => e.preventDefault()}
-                                        className={"wl-link-white "}>
-                                        <figure className="avatar avatar-60 ">
-                                            <span className={"word-user"}>
-                                                {this.props.isLoggedIn ? (
-                                                    this.props.orgImage ? (
-                                                        <LightTooltip title={this.props.userDetail ? `${this.props.userDetail.email}` : "Menu"} arrow placement="left">
-                                                            <div
-                                                                style={{
-                                                                    display: "flex",
-                                                                    justifyContent: "center",
-                                                                    alignItems: "center",
-                                                                }}>
-                                                                    <img
-                                                                        src={this.props.orgImage}
-                                                                        alt=""
-                                                                        style={{
-                                                                            maxHeight: "30px",
-                                                                            maxWidth: "30px",
-                                                                            objectFit: "cover",
-                                                                            width: "30px",
-                                                                            height: "30px",
-                                                                        }}
-                                                                    />
-                                                            </div>
-                                                        </LightTooltip>
-                                                    ) : this.props.userDetail.firstName ? (
-                                                        this.props.userDetail.firstName.substr(0, 2)
-                                                    ) : (
-                                                        this.props.userDetail.orgId &&
-                                                        this.props.userDetail.orgId.substr(4, 2)
-                                                    )
-                                                ) : (
-                                                    this.props.userDetail.orgId &&
-                                                    this.props.userDetail.orgId.substr(4, 2)
-                                                )}
-                                            </span>
-                                        </figure>
-
-                                        <i className="fa fa-cogs d-lg-none d-xl-none" />
-                                    </DropdownToggle>
-                                    <DropdownMenu className="dropdown-with-icons">
-                                        <Link className={"dropdown-item"} to="/account">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Account
-                                        </Link>
-                                        <Link className={"dropdown-item"} to="/my-products">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Products
-                                        </Link>
-                                        <Link className={"dropdown-item"} to="/my-campaigns">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Campaigns
-                                        </Link>
-                                        <Link className={"dropdown-item"} to="/sites">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Sites
-                                        </Link>
-                                        <Link className={"dropdown-item"} to="/my-search">
-                                            <i className="tim-icons icon-paper" />
-                                            Searches
-                                        </Link>
-
-                                        <Link className={"dropdown-item"} to="/my-listings">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Listings
-                                        </Link>
-                                        <Link className={"dropdown-item"} to="/my-cycles">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Cycles
-                                        </Link>
-
-
-
-                                        <Link className={"dropdown-item"} to="/approve">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Approvals
-                                        </Link>
-
-                                        <Link className={"dropdown-item"} to="/issues">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Issues
-                                        </Link>
-
-                                        {/*<Link className={"dropdown-item"} to="">*/}
-                                        {/*    <i className="tim-icons icon-bullet-list-67" />*/}
-                                        {/*    Help*/}
-                                        {/*</Link>*/}
-
-                                        <DropdownItem onClick={this.logOut}>
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Log Out
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
-                            </NavItem>
-                        )}
 
                         <NavItem className={"mobile-only"}>
                             <button
@@ -542,87 +436,6 @@ class ComponentsNavbar extends React.Component {
 
 
 
- function BasicMenu(props) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    return (
-        <div>
-
-
-            <div  onClick={handleClick}>
-                <figure className="avatar avatar-60 ">
-                                            <span className={"word-user"}>
-                                                {props.isLoggedIn ? (
-                                                    props.orgImage ? (
-                                                        <LightTooltip title={props.userDetail ? `${props.userDetail.email}` : "Menu"} arrow placement="left">
-                                                            <div
-                                                                style={{
-                                                                    display: "flex",
-                                                                    justifyContent: "center",
-                                                                    alignItems: "center",
-                                                                }}>
-                                                                <img
-                                                                    src={props.orgImage}
-                                                                    alt=""
-                                                                    style={{
-                                                                        maxHeight: "30px",
-                                                                        maxWidth: "30px",
-                                                                        objectFit: "cover",
-                                                                        width: "30px",
-                                                                        height: "30px",
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </LightTooltip>
-                                                    ) : props.userDetail.firstName ? (
-                                                        props.userDetail.firstName.substr(0, 2)
-                                                    ) : (
-                                                        props.userDetail.orgId &&
-                                                        props.userDetail.orgId.substr(4, 2)
-                                                    )
-                                                ) : (
-                                                    props.userDetail.orgId &&
-                                                    props.userDetail.orgId.substr(4, 2)
-                                                )}
-                                            </span>
-                </figure>
-
-                <i className="fa fa-cogs d-lg-none d-xl-none" />
-            </div>
-            <Button
-                id="basic-button"
-                aria-controls="basic-menu"
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-            >
-                Dashboard
-            </Button>
-
-
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-            </Menu>
-        </div>
-    );
-}
 
 function LinearIndeterminate() {
     const classes = useStyles();

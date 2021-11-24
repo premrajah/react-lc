@@ -527,28 +527,7 @@ class Products extends Component {
                         }
                     </div>
 
-                    <React.Fragment>
-                        <CssBaseline />
 
-                        <AppBar
-                            position="fixed"
-                            style={{backgroundColor: "#ffffff"}}
-                            className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div
-                                    className="row  justify-content-center search-container "
-                                    style={{ margin: "auto" }}>
-                                    <div className="col-auto" style={{cursor: 'pointer' }}>
-                                        <a onClick={this.showProductSelection}>
-                                            <p className={"green-text bottom-bar-text"}>
-                                                <b>Add New Product</b>
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </Toolbar>
-                        </AppBar>
-                    </React.Fragment>
                 </>
 
                 <Modal

@@ -28,7 +28,7 @@ class SearchBar extends Component {
 
                     <div style={{width:  '100%'}} className={"search-box custom-select  rad-8"}>
                         {/*<FormControl className={"filter-box"}   component="div">*/}
-                            <select style={{width:  '10.5%'}} label="Filter" className="filter-box  rad-8"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                            <select style={{width:  'auto'}} label="Filter" className="filter-box  rad-8"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >
                                     Filter By
                                 </option>
@@ -39,6 +39,7 @@ class SearchBar extends Component {
                         {/*</FormControl>*/}
 
                         <input
+                            type={"text"}
                             id="searchBar"
                             className={"rad-8"}
                             label={title ? title : ""}

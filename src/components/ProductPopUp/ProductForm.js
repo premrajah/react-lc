@@ -717,7 +717,7 @@ class ProductForm extends Component {
             <>
                 <div className="row   pt-2 ">
                     <div className="col-7  ">
-                        <h3 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
+                        <h4 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
                     </div>
                     <div className="col-5  ">
                         <button className="btn btn-sm blue-btn" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
@@ -974,7 +974,7 @@ class ProductForm extends Component {
 
                             <div className="row no-gutters mt-2">
                                 <div className="col-12 text-left">
-                                    <span style={{ margin: "10px 0", float: "left" }}>
+                                    <span style={{ float: "left" }}>
                                         <span
                                             onClick={this.showMoreDetails}
                                             className={
@@ -1033,13 +1033,13 @@ class ProductForm extends Component {
                                         </div>
                                     </div>
 
-
+<div className={"row"}>
                             <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
-                                    Attachment
+                                   Add Attachments
                                 </div>
 
-                                <div className="container-fluid  pb-5 ">
+                                <div className="container-fluid  pb-3 ">
                                     <div className="row camera-grids   no-gutters   ">
                                         <div className="col-12  text-left ">
                                             <div className="">
@@ -1187,8 +1187,9 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="col-12 mt-2 mb-5">
+</div>
+                                <div className={"row"}>
+                            <div className="col-12  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
                                     0 ? (
@@ -1219,6 +1220,7 @@ class ProductForm extends Component {
                                     </button>
                                 )}
                             </div>
+                    </div>
                             </form>
 
                     </div>

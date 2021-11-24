@@ -27,11 +27,12 @@ import AddIcon from "@mui/icons-material/Add";
 import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import {Spinner} from "react-bootstrap";
 import Select from "@mui/material/Select";
-import {createCampaignUrl} from "../../Util/Api";
+import {campaignStrategyUrl, createCampaignUrl} from "../../Util/Api";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import {validateDate} from "@mui/lab/internal/pickers/date-utils";
 
 class CreateCampaign extends Component {
 
@@ -41,6 +42,8 @@ class CreateCampaign extends Component {
             searchValue: '',
             selectOptionError:false,
             filterValue: '',
+            startDate:null,
+            endDate:null,
             selectedProducts: [],
             showMultiUpload: false,
             isIntersecting:false,
@@ -77,6 +80,9 @@ class CreateCampaign extends Component {
                 {name:"Matches",value:"matches"},
                 {name:"Not Matches",value:"not_matches"},
             ],
+            strategyProducts:[],
+            conditionAll:[],
+             conditionAny:[]
 
         }
 
@@ -87,6 +93,7 @@ class CreateCampaign extends Component {
 
         array.push(this.state.countAny + 1);
 
+
         this.setState({
             addCountAny: array,
             countAny: this.state.countAny + 1,
@@ -95,69 +102,190 @@ class CreateCampaign extends Component {
 
     subtractCountAny = (index) => {
 
-        if (this.state.countAny > 0) {
             var array = this.state.addCountAny;
 
             // array.splice(index,1    );
             array.pop();
 
-
-            if (this.state.countAny > 0)
                 this.setState({
                     addCountAny: array,
                     countAny: this.state.countAny - 1,
                 });
-        }
-    }
 
-    addCountAll = () => {
-        var array = this.state.addCountAll;
-
-        array.push(this.state.countAll + 1);
-
-        this.setState({
-            addCountAll: array,
-            countAll: this.state.countAll + 1,
-        });
     }
 
     subtractCountAll = (index) => {
 
-        if (this.state.countAll > 0) {
-            var array = this.state.addCountAll;
 
-            // array.splice(index,1);
-            array.pop();
-            if (this.state.countAll > 0)
+
+            let arrayCount = this.state.addCountAll;
+            arrayCount.pop()
+
+
                 this.setState({
-                    addCountAll: array,
+                    addCountAll: arrayCount,
                     countAll: this.state.countAll - 1,
                 });
-        }
+
     }
+
+    addCountAll = () => {
+
+
+
+
+        let arrayCount = this.state.addCountAll;
+        arrayCount.push(this.state.countAll+1)
+
+        console.log(arrayCount)
+
+        this.setState({
+            conditionAll: arrayCount,
+            countAll: this.state.countAll + 1,
+        });
+    }
+
+
 
     handleChange(value,field ) {
 
-        console.log(value,field)
+        // console.log(value,field)
+
+
+        if (field==="startDate"){
+            this.setState({
+                startDate:value
+            })
+        }else if(field==="endDate"){
+            this.setState({
+                endDate:value
+            })
+
+        }
 
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
 
+
+
+        if (this.state.activeStep===1){
+
+            this.countStrategyProducts()
+        }
+
+
     }
     componentDidMount() {
 
         this.setState({
-            countAll: 0,
-            countAny: 0,
+            conditionAll: [],
+            conditionAny: [],
+            addCountAll:[],
+            addCountAny:[],
+            countAll:0,
+            countAny:0,
         })
 
 
         if (this.props.item){
+
+            console.log(this.props.item)
+            this.loadSavedValues()
+            // this.countStrategyProducts()
+
             this.loadImages()
+            this.setState({
+                startDate:this.props.item.campaign.start_ts,
+                endDate:this.props.item.campaign.end_ts
+            })
         }
     }
 
+
+    countStrategyProducts = ()  => {
+
+
+        let fields=this.state.fields
+
+
+        let conditionAll=[]
+        let conditionAny=[]
+
+
+
+        for (let i=0;i<this.state.countAll;i++) {
+
+            conditionAll.push({
+                predicate: fields[`propertyAnd[${i}]`],
+                operator: fields[`operatorAnd[${i}]`],
+                value: fields[`valueAnd[${i}]`]
+
+            })
+        }
+
+        for (let i=0;i<this.state.countAny;i++) {
+
+            conditionAny.push({
+                predicate: fields[`propertyOr[${i}]`],
+                operator: fields[`operatorOr[${i}]`],
+                value: fields[`valueOr[${i}]`]
+
+            })
+        }
+
+
+        this.setState({
+
+            conditionAll:conditionAll,
+            conditionAny:conditionAny
+        })
+
+        axios
+            .post(campaignStrategyUrl, {
+                all_of:conditionAll,
+                any_of:conditionAny,
+            })
+            .then(
+                (response) => {
+
+                    // console.log(response)
+
+                    this.setState({
+
+                        strategyProducts:response.data.data
+                    })
+
+                },
+                (error) => {
+                    // let status = error.response.status
+                }
+            )
+            .catch(error => {});
+
+        // dispatch({ type: "PRODUCT_LIST", value: [] })
+    };
+
+
+    loadSavedValues=()=> {
+
+
+
+
+        this.setState({
+            countAll:this.props.item.campaign.all_of.length,
+            countAny:this.props.item.campaign.any_of.length,
+
+            conditionAll:this.props.item.campaign.all_of,
+            conditionAny:this.props.item.campaign.any_of,
+
+            addCountAll:Array.from({length: this.props.item.campaign.all_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAny:Array.from({length: this.props.item.campaign.any_of.length}, () => Math.floor(Math.random() * 10000)),
+
+        })
+
+
+    }
 
     loadImages=()=> {
         let images = [];
@@ -207,9 +335,13 @@ class CreateCampaign extends Component {
 
          if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
 
+             if (this.state.activeStep==0&&!this.validateDates()){
+
+                 return
+             }
 
 
-             if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
+              if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
 
                  this.setState({
 
@@ -260,6 +392,28 @@ class CreateCampaign extends Component {
         }
 
 
+    };
+
+    handleChangeDateStartDate = (date) => {
+        this.setState({
+            startDate: date,
+        });
+
+        let fields = this.state.fields;
+        fields["startDate"] = date;
+
+        this.setState({ fields });
+    };
+
+    handleChangeDateEndDate = (date) => {
+        this.setState({
+            endDate: date,
+        });
+
+        let fields = this.state.fields;
+        fields["endDate"] = date;
+
+        this.setState({ fields });
     };
 
     handleSubmit = () => {
@@ -637,11 +791,12 @@ class CreateCampaign extends Component {
 
 
         if (activeStep===0) {
+
+            this.validateDates()
             validations = [
                 validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
-                // validateFormatCreate("startData", [{check: Validators.required, message: 'Required'}], fields),
-                // validateFormatCreate("endDate", [{check: Validators.required, message: 'Required'}], fields),
+
 
             ]
 
@@ -683,7 +838,49 @@ class CreateCampaign extends Component {
 
         this.setState({errors: errors});
 
+
+
+
         return formIsValid;
+
+    }
+
+
+    validateDates(){
+
+
+        let valid=true
+
+            if (!this.state.startDate){
+
+                this.setState({
+                    startDateError:true
+                })
+
+                valid=  false
+
+            }else{
+                this.setState({
+                    startDateError:false
+                })
+            }
+
+            if (!this.state.endDate){
+
+                this.setState({
+                    endDateError:true
+                })
+
+                valid =  false
+
+            }else{
+                this.setState({
+                    endDateError:false
+                })
+
+            }
+            return valid
+
 
     }
 
@@ -725,40 +922,14 @@ class CreateCampaign extends Component {
                                 })}
                             </Stepper>
                             <div>
-                                {this.state.activeStep === this.state.steps.length ? (
-                                    <>
 
-                                        <div className="row no-gutters mt-5 pt-5 justify-content-center text-center">
-                                            <div className="col-12">
-                                        <Typography className={classes.instructions}>
-
-                                            Campaign Create Successfully
-
-
-                                        </Typography>
-                                            </div>
-                                        </div>
-                                    <div className="row no-gutters mt-2 pt-2 justify-content-center text-center">
-
-                                    <div className="col-3">
-                                                <a   className={"  blue-btn-border mt-2 mb-2"}>
-                                                    View All
-                                                </a>
-                                            </div>
-                                                <div className="col-3">
-                                        <button  onClick={this.handleReset} className={"  blue-btn-border mt-2 mb-2"}>
-                                            Create New
-                                        </button>
-                                            </div>
-                                        </div>
-
-                                        </>
-                                ) : (
                                     <div>
-                                        <Typography className={classes.instructions}>
+
                                             {/*{getStepContent(this.state.activeStep)}*/}
 
-                                            {this.state.activeStep===0&&
+
+
+                                                <div className={this.state.activeStep===0?"":"d-none"}>
                                             <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
                                                 <div className="row no-gutters">
@@ -803,15 +974,19 @@ class CreateCampaign extends Component {
                                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
 
                                                         <MobileDatePicker
+
+                                                            disableHighlightToday={true}
                                                                 minDate={new Date()}
                                                                 // label="Required By"
                                                                 inputVariant="outlined"
                                                                 variant={"outlined"}
                                                                 margin="normal"
-                                                                id="date-picker-dialog"
+                                                                id="date-picker-dialog-1"
                                                                 // label="Available From"
                                                                 format="DD/MM/yyyy"
-                                                                value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
+                                                                value={this.state.startDate}
+
+                                                                // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
                                                                 // onChange={this.handleChangeDateStartDate.bind(
                                                                 //     this
                                                                 // )}
@@ -820,6 +995,8 @@ class CreateCampaign extends Component {
 
                                                             />
                                                         </LocalizationProvider>
+
+                                                        {this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
 
                                                     </div>
 
@@ -834,6 +1011,8 @@ class CreateCampaign extends Component {
                                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
 
                                                             <MobileDatePicker
+                                                                disableHighlightToday={true}
+
                                                                 minDate={new Date()}
                                                                 // label="Required By"
                                                                 inputVariant="outlined"
@@ -841,23 +1020,35 @@ class CreateCampaign extends Component {
                                                                 margin="normal"
                                                                 id="date-picker-dialog"
                                                                 format="DD/MM/yyyy"
-                                                                value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+                                                                value={this.state.endDate}
+                                                                // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
 
                                                                 renderInput={(params) => <CustomizedInput {...params} />}
                                                                 onChange={(value)=>this.handleChange(value,"endDate")}
 
                                                             />
                                                         </LocalizationProvider>
+                                                        {this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
                                                     </div>
                                                 </div>
 
 
 
 
-                                            </form>}
-                                            {this.state.activeStep===1&&
-                                                <>
-                                            <div className="col-12 mt-3 p-3 container-light-border ">
+                                            </form>
+
+                                                </div>
+
+
+
+
+                                            <div className={this.state.activeStep===1?"":"d-none"}>
+                                            <div className="row p-3">
+
+
+
+                                            <div className="col-12  p-3 container-light-border bg-white ">
 
                                                 <p className={"text-bold "}>Choose must conditions </p>
 
@@ -873,7 +1064,7 @@ class CreateCampaign extends Component {
 
                                                                         <SelectArrayWrapper
 
-                                                                            // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                            initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].predicate:null}
                                                                             onChange={(value)=> {
                                                                                 this.handleChange(value,`propertyAnd[${index}]`)
 
@@ -893,7 +1084,7 @@ class CreateCampaign extends Component {
                                                             <div className="col-3 pr-2">
                                                                 <SelectArrayWrapper
 
-                                                                    // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].operator:null}
                                                                     onChange={(value)=> {
                                                                         this.handleChange(value,`operatorAnd[${index}]`,)
 
@@ -912,7 +1103,7 @@ class CreateCampaign extends Component {
                                                                 <TextFieldWrapper
                                                                     error={this.state.errors[`valueAnd[${index}]`]}
 
-                                                                    // initialValue={this.props.item&&this.props.item.product.name}
+                                                                    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null}
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
                                                                     name={`valueAnd[${index}]`} title="Value" />
                                                             </div>
@@ -959,19 +1150,19 @@ class CreateCampaign extends Component {
                                                 </form>
 
                                             </div>
-                                            <div className="col-12 mt-3 p-3 mb-4 container-light-border">
+                                            <div className="col-12 mt-3 p-3 mb-4 bg-white container-light-border">
                                                 <p className={"text-bold "}>Choose optional conditions </p>
                                                 <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
                                                     {this.state.addCountAny.map((item, index) =>
                                                         <div className="row no-gutters mt-4">
-                                                            <div className="col-4">
+                                                            <div className="col-3">
                                                                 <div className="row camera-grids   no-gutters   ">
                                                                     <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
 
                                                                         <SelectArrayWrapper
 
-                                                                            // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                            initialValue={this.state.conditionAny.length>0&&this.state.conditionAny[index]?this.state.conditionAny[index].predicate:null}
                                                                             onChange={(value)=> {
                                                                                 this.handleChange(value,`propertyOr[${index}]`)
                                                                             }}
@@ -988,10 +1179,10 @@ class CreateCampaign extends Component {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-1 pr-2">
+                                                            <div className="col-3 pr-2">
                                                                 <SelectArrayWrapper
 
-                                                                    // initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                                    initialValue={this.state.conditionAny.length>0&&this.state.conditionAny[index]?this.state.conditionAny[index].operator:null}
                                                                     onChange={(value)=> {
                                                                         this.handleChange(value,`operatorOr[${index}]`)
 
@@ -1008,12 +1199,12 @@ class CreateCampaign extends Component {
                                                                 <TextFieldWrapper
                                                                     error={this.state.errors[`valueOr[${index}]`]}
 
-                                                                    // initialValue={this.props.item&&this.props.item.product.name}
+                                                                    initialValue={this.state.conditionAny.length&&this.state.conditionAny[index]?this.state.conditionAny[index].value:null}
                                                                     onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}
                                                                     name={`valueOr[${index}]`} title="Value" />
                                                             </div>
 
-                                                            <div  className="col-2 text-center"
+                                                            <div  className="col-1 text-center"
                                                                   style={{ display: "flex" }}>
 
 
@@ -1055,12 +1246,16 @@ class CreateCampaign extends Component {
                                                 </form>
 
                                             </div>
-                                           </>}
 
-                                            {this.state.activeStep === 2 &&
-                                            <>
+                                                <div className={"col-12 mb-3 p-3 bg-white rad-8 text-blue text-bold"}>Products targeted based on conditions defined above: <span className={"sub-title-text-pink"}>{this.state.strategyProducts.length}</span></div>
+
+                                            </div>
+                                            </div>
+
+
+                                        <div className={this.state.activeStep===2?"":"d-none"}>
                                                 <div className="row mt-3 ">
-                                                    <div className="col-12 mt-4">
+                                                    <div className="col-12 mt-0">
                                                         <div className="row camera-grids   no-gutters   ">
                                                             <div className="col-12  text-left ">
 
@@ -1253,12 +1448,12 @@ class CreateCampaign extends Component {
 
 
                                                 </div>
-                                            </>
-                                            }
+                                        </div>
 
 
 
-                                        </Typography>
+
+
                                         <div>
                                             <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
                                                 Back
@@ -1293,7 +1488,6 @@ class CreateCampaign extends Component {
 
                                         {this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}
                                     </div>
-                                )}
                             </div>
                         </div>
 

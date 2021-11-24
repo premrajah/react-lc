@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Button, List, ListItem, Tooltip, TextField, Avatar} from "@mui/material";
 import {Alert, Autocomplete} from "@mui/lab";
-import CreateIcon from "@mui/icons-material/Create";
+import AddIcon from '@mui/icons-material/Add';
 import ExplicitIcon from '@mui/icons-material/Explicit';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SendIcon from "@mui/icons-material/Send";
@@ -409,7 +409,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             <div className="col-md-2 d-flex justify-content-center align-items-center">
                                 <Tooltip title="Filter groups">
                                     <Button onClick={() => handleFilterGroupsButton()}>
-                                        <FilterListIcon fontSize="large" />
+                                        <FilterListIcon className={"text-blue"} style={{fontSize:"24px"}} />
                                     </Button>
                                 </Tooltip>
                             </div>
@@ -417,7 +417,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             <div className="col-md-2 d-flex justify-content-center align-items-center">
                                 <Tooltip title="New Message">
                                     <Button onClick={() => handleOrgSearchButton()}>
-                                        <CreateIcon />
+                                        <AddIcon className={"text-blue"} style={{fontSize:"24px"}} />
                                     </Button>
                                 </Tooltip>
                             </div>

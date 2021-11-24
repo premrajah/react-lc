@@ -183,7 +183,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const checkWhoseMessage = (orgs) => {
         if(orgs.length > 0) {
             if(orgs[0].actor === "message_from"){
-                if(orgs[0].org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
+                if(orgs[0].org._id&&orgs[0].org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
                     return true;
                 } else {
                     return false;

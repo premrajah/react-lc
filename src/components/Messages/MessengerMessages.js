@@ -94,15 +94,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const ListGroupDisplay = (group, i) => {
         trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
 
-        return <div key={i} >
+        return <div key={i}>
 
             <div
                 // classes={{root: classes.root, selected: classes.selected}}
-                className={"click-item p-2 message-group-item"}
+                className={`click-item p-2 message-group-item`}
                 selected={selectedItem === i}
-                button
-                divider
+                // button
+                // divider
                 onClick={() => handleGroupClick(group, i)}
+                style={selectedItem === i ? {backgroundColor: 'var(--lc-pink)', color: "#fff"} : {backgroundColor: "#fff"} }
             >
                 {/*{group.name.replace(/\W/g, " ")}*/}
             {/*     {group.orgs || group.orgs.length > 0 && group.orgs.map((g, i) => {*/}

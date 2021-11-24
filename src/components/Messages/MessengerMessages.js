@@ -113,7 +113,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             {/*             </Tooltip>*/}
             {/*         </div>*/}
             {/*})}*/}
-                {group.name}
+                {group.name.replaceAll(",",", ").replaceAll("+",", ").replaceAll("-","")}
             </ListItem>
         </div>
     }
@@ -425,7 +425,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                         {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
                         <List
-                            className="message-groups"
+                            className="message-groups text-capitalize"
                             style={{
                                 height: msgWindowHeight,
                                 maxHeight: msgWindowHeight,
@@ -495,16 +495,16 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             {selectedMsgGroup.map((m, i) => (
                                                 <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-start' : 'justify-content-end'}`}>
                                                     <div
-                                                        className="w-75 p-2 mb-1 border-rounded"
+                                                        className="w-75 p-3 mb-3 border-rounded text-blue gray-border"
                                                         style={{
-                                                            background: checkWhoseMessage(m.orgs) ? "var(--lc-purple)" : "var(--lc-green)",
-                                                            color: "#ffffff",
+                                                            background: checkWhoseMessage(m.orgs) ? "#ffffff" : "#ffffff"
+
                                                         }}>
                                                         <div className="d-flex justify-content-between">
                                                             <div>
                                                                 <small>
                                                                     <small className="mr-1" style={{opacity: '0.8'}}>{checkWhoseMessage(m.orgs) ? m.orgs[0].org.org.name : ''}</small>
-                                                                    <small style={{opacity: '0.5'}}>
+                                                                    <small className={"text-gray-light"} style={{opacity: '0.5'}}>
                                                                         {moment(
                                                                             m.message._ts_epoch_ms
                                                                         ).fromNow()}

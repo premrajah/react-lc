@@ -13,6 +13,8 @@
     --lc-pink: #D31169;
     --lc-yellow: #D1E534;
     --lc-bg-gray: #EAEAEF;
+    --lc-light-gray: #939393;
+
 }
 
 .text-pink-heading{
@@ -1844,7 +1846,7 @@ button.blue-btn-border
 
 .content-box-listing .text-mute,
 .text-gray-light {
-    color: #939393;
+    color: var(--lc-light-gray);
     /*opacity: 0.5 ;*/
     font-family: var(--body-text);
 

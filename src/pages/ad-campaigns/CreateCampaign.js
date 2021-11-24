@@ -192,7 +192,7 @@ class CreateCampaign extends Component {
 
             console.log(this.props.item)
             this.loadSavedValues()
-            // this.countStrategyProducts()
+            this.callStrategy()
 
             this.loadImages()
             this.setState({
@@ -241,10 +241,20 @@ class CreateCampaign extends Component {
             conditionAny:conditionAny
         })
 
+
+        this.callStrategy()
+
+        // dispatch({ type: "PRODUCT_LIST", value: [] })
+    };
+
+
+    callStrategy=()=>{
+
+
         axios
             .post(campaignStrategyUrl, {
-                all_of:conditionAll,
-                any_of:conditionAny,
+                all_of:this.state.conditionAll,
+                any_of:this.state.conditionAny,
             })
             .then(
                 (response) => {
@@ -263,8 +273,7 @@ class CreateCampaign extends Component {
             )
             .catch(error => {});
 
-        // dispatch({ type: "PRODUCT_LIST", value: [] })
-    };
+    }
 
 
     loadSavedValues=()=> {
@@ -1056,7 +1065,22 @@ class CreateCampaign extends Component {
 
 
 
+                                                    <div className="row no-gutters mt-4">
+                                                        <div className="col-3">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
+                                                        </div>
+                                                        <div className="col-3">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Operator</div>
+                                                        </div>
+                                                        <div className="col-5">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
+                                                        </div>
+                                                        <div className="col-1">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
+                                                        </div>
+                                                    </div>
                                                      {this.state.addCountAll.map((item, index) =>
+
                                                         <div className="row no-gutters mt-4">
                                                             <div className="col-3">
                                                                 <div className="row camera-grids   no-gutters   ">
@@ -1073,7 +1097,8 @@ class CreateCampaign extends Component {
                                                                             error={this.state.errors[`propertyAnd[${index}]`]}
                                                                             name={`propertyAnd[${index}]`}
                                                                             options={this.state.properties}
-                                                                            title="Property"/>
+                                                                            // title=""
+                                                                        />
 
                                                                     </div>
 
@@ -1095,7 +1120,9 @@ class CreateCampaign extends Component {
 
                                                                     option={"name"}
                                                                     valueKey={"value"}
-                                                                    options={this.state.operators} name={`operatorAnd[${index}]`} title="Operator"/>
+                                                                    options={this.state.operators} name={`operatorAnd[${index}]`}
+                                                                    // title="Operator"
+                                                                />
 
                                                             </div>
 
@@ -1105,7 +1132,9 @@ class CreateCampaign extends Component {
 
                                                                     initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null}
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
-                                                                    name={`valueAnd[${index}]`} title="Value" />
+                                                                    name={`valueAnd[${index}]`}
+                                                                    // title="Value"
+                                                                />
                                                             </div>
 
                                                             <div  className="col-1 text-center"
@@ -1154,6 +1183,21 @@ class CreateCampaign extends Component {
                                                 <p className={"text-bold "}>Choose optional conditions </p>
                                                 <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
+                                                    <div className="row no-gutters mt-4">
+                                                        <div className="col-3">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
+                                                        </div>
+                                                        <div className="col-3">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Operator</div>
+                                                        </div>
+                                                        <div className="col-5">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
+                                                        </div>
+                                                        <div className="col-1">
+                                                            <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
+                                                        </div>
+                                                    </div>
+
                                                     {this.state.addCountAny.map((item, index) =>
                                                         <div className="row no-gutters mt-4">
                                                             <div className="col-3">
@@ -1171,7 +1215,9 @@ class CreateCampaign extends Component {
 
                                                                             error={this.state.errors[`propertyOr[${index}]`]}
 
-                                                                            options={this.state.properties} name={`propertyOr[${index}]`} title="Property"/>
+                                                                            options={this.state.properties} name={`propertyOr[${index}]`}
+                                                                            // title="Property"
+                                                                        />
 
                                                                     </div>
 
@@ -1191,7 +1237,9 @@ class CreateCampaign extends Component {
                                                                     select={"Select"}
                                                                     option={"name"}
                                                                     valueKey={"value"}
-                                                                    options={this.state.operators} name={`operatorOr[${index}]`} title="Operator"/>
+                                                                    options={this.state.operators} name={`operatorOr[${index}]`}
+                                                                    // title="Operator"
+                                                                />
 
                                                             </div>
 
@@ -1201,7 +1249,9 @@ class CreateCampaign extends Component {
 
                                                                     initialValue={this.state.conditionAny.length&&this.state.conditionAny[index]?this.state.conditionAny[index].value:null}
                                                                     onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}
-                                                                    name={`valueOr[${index}]`} title="Value" />
+                                                                    name={`valueOr[${index}]`}
+                                                                    // title="Value"
+                                                                />
                                                             </div>
 
                                                             <div  className="col-1 text-center"

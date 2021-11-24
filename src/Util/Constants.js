@@ -1,4 +1,5 @@
 import DOMPurify from 'dompurify'
+import {useEffect, useRef} from "react";
 
 export const { REACT_APP_BRANCH_ENV } = process.env;
 
@@ -70,3 +71,35 @@ export const createMarkup = (html) => {
     }
 }
 
+/*
+    Polling timer for hooks
+    Usage in component
+
+    useInterval(() => {
+        // put your interval code here.
+    }, 1000 * 10);
+ */
+export const useInterval = (callback, delay) => {
+
+    const savedCallback = useRef();
+
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+
+
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (delay !== null) {
+            const id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
+}
+
+export const randomColorGen = () => {
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    return `#${randomColor}`;
+}

@@ -20,7 +20,7 @@
 .file-uploader-thumbnail {
     margin-right: 15px;
     margin-bottom: 15px;
-    margin-top: 15px;
+    margin-top: 0px;
 }
 
 .file-uploader-thumbnail-container > .file-uploader-thumbnail {

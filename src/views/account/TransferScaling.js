@@ -5,22 +5,22 @@ import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {Modal, ModalBody, Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import PlaceholderImg from "../../../src/img/place-holder-lc.png";
-import EditIcon from "@material-ui/icons/Edit";
-import {Publish} from "@material-ui/icons";
+import EditIcon from "@mui/icons-material/Edit";
+import {Publish} from "@mui/icons-material";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import _ from "lodash";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import ConversionItem from "../../components/Products/ConversionItem";
 import TransferScalingItem from "./TransferScalingItem";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 
 class TransferScaling extends Component {
     constructor(props) {
@@ -276,7 +276,7 @@ class TransferScaling extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
+
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -510,8 +510,6 @@ class TransferScaling extends Component {
         event.preventDefault();
 
 
-        console.log("submit called")
-
         if (this.state.type!=="delete"&&!this.handleValidationScaling()){
 
             return
@@ -549,9 +547,6 @@ class TransferScaling extends Component {
             units: units,
             factor: factor
         }
-        console.log("transferScalingObject")
-        console.log(transferScalingObject)
-
 
 
         if (!this.state.transferScaling||this.state.transferScaling.length===0) {
@@ -564,14 +559,8 @@ class TransferScaling extends Component {
 
             let exists = false
 
-            console.log( this.state.transferScaling.length)
+
             for (let i = 0; i < this.state.transferScaling.length; i++) {
-                console.log(this.state.transferScaling[i])
-                console.log(this.state.transferScaling[i].units,units)
-                console.log(this.state.transferScaling[i].state,state)
-                console.log(this.state.transferScaling[i].type,type)
-                console.log(this.state.transferScaling[i].category,category)
-                console.log(this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId))
 
                 if (this.state.transferScaling[i].org_id&&this.state.transferScaling[i].org_id.includes(orgId)&&this.state.transferScaling[i].units === units &&
                     this.state.transferScaling[i].state === state &&
@@ -599,9 +588,6 @@ class TransferScaling extends Component {
         }
 
 
-        console.log("final data")
-        console.log(transferScaling)
-
         axios
             .post(`${baseUrl}org`,
                 {
@@ -619,7 +605,7 @@ class TransferScaling extends Component {
                         loading: false,
                         submitSuccess: true,
                     });
-                    console.log(res)
+
                 }
 
                 this.updateUnitConversions(null,null)

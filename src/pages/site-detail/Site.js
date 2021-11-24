@@ -3,7 +3,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 
 import encodeUrl from "encodeurl";
-import { withStyles } from "@material-ui/core/styles/index";
+import { withStyles } from "@mui/styles/index";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
 import SiteDetailContent from "../../components/Sites/SiteDetailContent";

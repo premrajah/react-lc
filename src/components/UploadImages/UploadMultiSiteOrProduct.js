@@ -4,12 +4,14 @@ import  * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
 import SelectArrayWrapper from "../FormsUI/Select";
-import Button from "@material-ui/core/Button";
-import {Publish} from "@material-ui/icons";
+import Button from "@mui/material/Button";
+import {Publish} from "@mui/icons-material";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {TextField} from "formik-material-ui";
-import {MenuItem} from "@material-ui/core";
+// import {TextField} from "formik-material-ui";
+import {TextField} from "@mui/material";
+
+import {MenuItem} from "@mui/material";
 import EditSite from "../Sites/EditSite";
 
 
@@ -218,26 +220,26 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
 
                             {isProduct && <div className="row">
                                 <div className="col">
-                                    <Field
-                                        component={TextField}
-                                        type="text"
-                                        name="siteId"
-                                        label="Pick a Site"
-                                        select
-                                        variant="outlined"
-                                        helperText="Please select a Site"
-                                        margin="normal"
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    >
-                                        <MenuItem value="">Pick a site</MenuItem>
-                                        {siteList.length > 0 ? siteList.map((option) => (
-                                            <MenuItem key={option._id} value={option._id}>
-                                                {`${option.name} - (${option.address})`}
-                                            </MenuItem>
-                                        )) : <MenuItem value="">Loading...</MenuItem> }
-                                    </Field>
+                                    {/*<Field*/}
+                                    {/*    component={TextField}*/}
+                                    {/*    type="text"*/}
+                                    {/*    name="siteId"*/}
+                                    {/*    label="Pick a Site"*/}
+                                    {/*    select*/}
+                                    {/*    variant="outlined"*/}
+                                    {/*    helperText="Please select a Site"*/}
+                                    {/*    margin="normal"*/}
+                                    {/*    InputLabelProps={{*/}
+                                    {/*        shrink: true,*/}
+                                    {/*    }}*/}
+                                    {/*>*/}
+                                    {/*    <MenuItem value="">Pick a site</MenuItem>*/}
+                                    {/*    {siteList.length > 0 ? siteList.map((option) => (*/}
+                                    {/*        <MenuItem key={option._id} value={option._id}>*/}
+                                    {/*            {`${option.name} - (${option.address})`}*/}
+                                    {/*        </MenuItem>*/}
+                                    {/*    )) : <MenuItem value="">Loading...</MenuItem> }*/}
+                                    {/*</Field>*/}
                                 </div>
                             </div>}
 

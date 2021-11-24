@@ -1,18 +1,13 @@
-import React, { Component } from "react";
-import Messages from "./Messages";
+import React, {Component} from "react";
 import Sidebar from "../../views/menu/Sidebar";
 import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../PageHeader";
 import "./messages.css";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import { unreadMessages } from "../../store/actions/actions";
-import { GET_MESSAGES, LOCAL_STORAGE_MESSAGE_TIMESTAMP } from "../../store/types";
-import { getMessages } from "../../store/actions/actions";
-import { messageAlert } from "../../store/actions/actions";
-import SendMessage from "@material-ui/icons/Send";
+import SendMessage from "@mui/icons-material/Send";
 
 class MessageLayout extends Component {
     state = {
@@ -44,8 +39,6 @@ class MessageLayout extends Component {
 
         this.getAllOrgs();
 
-        console.log("old msghs");
-        console.log(this.props.messages);
     }
 
     chats = [
@@ -107,7 +100,6 @@ class MessageLayout extends Component {
     selectChat(event) {
         let chat = this.chats.filter((item) => item.id == event.currentTarget.dataset.id)[0];
 
-        console.log(chat);
 
         this.setState({
             openedChat: chat,

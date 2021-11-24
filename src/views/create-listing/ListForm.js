@@ -1,50 +1,37 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Close from "@material-ui/icons/Close";
+import {connect} from "react-redux";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import Close from "@mui/icons-material/Close";
 import "../../Util/upload-file.css";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import TextField from "@material-ui/core/TextField";
+import {makeStyles} from "@mui/styles";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import TextField from "@mui/material/TextField";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles/index";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import {baseUrl} from "../../Util/Constants";
+import LinearProgress from "@mui/material/LinearProgress";
 import ProductBlue from "../../img/icons/product-blue.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import MomentUtils from "@date-io/moment";
 import ItemDetailPreview from "../../components/ItemDetailPreview";
 import ProductTreeView from "../../components/ProductTreeView";
-import AddSite from "../../components/AddSite";
 
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+
+
 import PageHeader from "../../components/PageHeader";
 import EditSite from "../../components/Sites/EditSite";
-import {load} from "dotenv";
 import ProductItem from "../../components/Products/Item/ProductItem";
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
-
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 class ListForm extends Component {
     constructor(props) {
@@ -106,7 +93,8 @@ class ListForm extends Component {
             previewImage: null,
             selectedProductId: null,
             previewProduct:null,
-            selectedLoading:false
+            selectedLoading:false,
+            createListingError:null
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -466,7 +454,19 @@ class ListForm extends Component {
 
                 // this.props.history.push("/"+res.data.data._key)
             })
-            .catch((error) => {});
+            .catch((error) => {
+
+
+                if (error&&error.response&&error.response.status){
+                    console.log(error.response)
+
+                    this.setState({
+                        notFoundError:true,
+                        createListingError:"some error"
+                    })
+                }
+
+            });
     }
 
     toggleAddComponent() {
@@ -807,7 +807,7 @@ class ListForm extends Component {
                                                     Title
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(this, "title")}
                                                     name={"title"}
                                                     id="outlined-basic"
@@ -830,7 +830,7 @@ class ListForm extends Component {
                                                     Description
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "description"
@@ -868,7 +868,7 @@ class ListForm extends Component {
 
                                                 <div className="row">
                                                     <div className="col-4">
-                                                {this.props.productWithoutParentNoList.length>0&&
+                                                {this.props.productWithoutParentNoList&&this.props.productWithoutParentNoList.length>0&&
                                                 <ProductTreeView
                                                     items={this.props.productWithoutParentNoList}
                                                     triggerCallback={(productId) =>
@@ -902,7 +902,7 @@ class ListForm extends Component {
                                                     </div>
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     value={this.state.selectedProductId}
                                                     className={"d-none"}
                                                     onChange={this.handleChange.bind(
@@ -951,10 +951,10 @@ class ListForm extends Component {
                                                         </div>
 
                                                         <FormControl
-                                                            variant="outlined"
+
                                                             className={classes.formControl}>
                                                             {/*<InputLabel htmlFor="outlined-age-native-simple">Located At</InputLabel>*/}
-                                                            <Select
+                                                            <CustomizedSelect
                                                                 name={"deliver"}
                                                                 native
                                                                 // label="Located At"
@@ -977,7 +977,7 @@ class ListForm extends Component {
                                                                             ")"}
                                                                     </option>
                                                                 ))}
-                                                            </Select>
+                                                            </CustomizedSelect>
                                                         </FormControl>
 
                                                         {this.state.errors["deliver"] && (
@@ -1013,9 +1013,11 @@ class ListForm extends Component {
                                                             Required From
                                                         </div>
 
-                                                        <MuiPickersUtilsProvider
-                                                            utils={MomentUtils}>
-                                                            <DatePicker
+                                                        {/*<MuiPickersUtilsProvider*/}
+                                                        {/*    utils={MomentUtils}>*/}
+                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                        <MobileDatePicker
                                                                 minDate={new Date()}
                                                                 // label="Required By"
                                                                 inputVariant="outlined"
@@ -1028,8 +1030,11 @@ class ListForm extends Component {
                                                                 onChange={this.handleChangeDateStartDate.bind(
                                                                     this
                                                                 )}
+
+                                                                renderInput={(params) => <CustomizedInput {...params} />}
                                                             />
-                                                        </MuiPickersUtilsProvider>
+                                                        </LocalizationProvider>
+                                                        {/*</MuiPickersUtilsProvider>*/}
 
                                                         {this.state.errors["startDate"] && (
                                                             <span className={"text-mute small"}>
@@ -1048,9 +1053,12 @@ class ListForm extends Component {
                                                             Required By
                                                         </div>
 
-                                                        <MuiPickersUtilsProvider
-                                                            utils={MomentUtils}>
-                                                            <DatePicker
+                                                        {/*<MuiPickersUtilsProvider*/}
+                                                        {/*    utils={MomentUtils}>*/}
+
+                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                        <MobileDatePicker
                                                                 minDate={
                                                                     this.state.startDate
                                                                         ? this.state.startDate
@@ -1067,8 +1075,10 @@ class ListForm extends Component {
                                                                 onChange={this.handleChangeDateEndDate.bind(
                                                                     this
                                                                 )}
+                                                                renderInput={(params) => <CustomizedInput {...params} />}
                                                             />
-                                                        </MuiPickersUtilsProvider>
+                                                        </LocalizationProvider>
+                                                        {/*</MuiPickersUtilsProvider>*/}
 
                                                         {this.state.errors["endDate"] && (
                                                             <span className={"text-mute small"}>
@@ -1122,7 +1132,7 @@ class ListForm extends Component {
                                                                 className="col-md-12 col-sm-12 col-xs-12 ">
                                                                 {!this.state.free && (
                                                                     <div className="col-12 mb-5">
-                                                                        <TextField
+                                                                        <CustomizedInput
                                                                             name={"price"}
                                                                             type={"number"}
                                                                             onChange={this.handleChange.bind(
@@ -1229,12 +1239,11 @@ class ListForm extends Component {
 
                     {this.state.page < 4 && (
                         <React.Fragment>
-                            <CssBaseline />
-
-                            <AppBar
+                            <div
                                 position="fixed"
                                 color="#ffffff"
-                                className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
+
                                 {this.state.page < 4 && (
                                     <LinearProgress
                                         variant="determinate"
@@ -1290,7 +1299,7 @@ class ListForm extends Component {
                                         </div>
                                     </div>
                                 </Toolbar>
-                            </AppBar>
+                            </div>
                         </React.Fragment>
                     )}
 
@@ -1321,71 +1330,7 @@ class ListForm extends Component {
     }
 }
 
-const useStylesBottomBar = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
-function BottomAppBar() {
-    const classes = useStylesBottomBar();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <button
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                Back
-                            </button>
-                        </div>
-                        <div className="col-auto" style={{ margin: "auto" }}>
-                            <p className={"blue-text"}> Page 2/3</p>
-                        </div>
-                        <div className="col-auto">
-                            <button
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-}
 
 
 

@@ -1,21 +1,20 @@
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineDot from "@material-ui/lab/TimelineDot";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
 import moment from "moment";
 import React, {useEffect, useState} from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import MapIcon from '@material-ui/icons/Place';
-import {showSiteModal} from "../store/actions/actions";
-import Close from "@material-ui/icons/Close";
-import {MapContainer} from "./Map/MapContainer";
+import {makeStyles} from "@mui/styles";
+import MapIcon from '@mui/icons-material/Place';
+import Close from "@mui/icons-material/Close";
 import {GoogleMap} from "./Map/MapsContainer";
 import {Modal, ModalBody} from "react-bootstrap";
+
 const useStyles = makeStyles((theme) => ({
     text: {
         padding: theme.spacing(2, 2, 0),

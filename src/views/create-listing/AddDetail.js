@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";

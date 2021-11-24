@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import history from "../../History/history";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { Alert } from "react-bootstrap";
-import { Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { Checkbox, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
@@ -301,38 +301,41 @@ class SignUp extends Component {
                                 <div className="col-12 ">
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
-                            <div className="col-6 pr-2 mt-4">
+                            <div className="col-6 pr-2 ">
 
                                 <TextFieldWrapper
 
                                     onChange={(value)=>this.handleChange(value,"firstName")}
                                     error={this.state.errors["firstName"]}
-                                    name="firstName" label="First Name" />
+                                    name="firstName" title="First Name" />
                             </div>
 
-                            <div className="col-6 mt-4 pl-2">
+                            <div className="col-6  pl-2">
                                 <TextFieldWrapper
 
                                     onChange={(value)=>this.handleChange(value,"lastName")}
                                     error={this.state.errors["lastName"]}
-                                    name="lastName" label="Last Name" />
+                                    name="lastName" title="Last Name" />
                             </div>
 
-                            <div className="col-6 mt-4 pr-2">
+                            <div className="col-6  pr-2">
                                 <TextFieldWrapper
                                     onChange={(value)=>this.handleChange(value,"email")}
                                     error={this.state.errors["email"]}
-                                    name="email" label="Email" />
+                                    name="email" title="Email" />
                             </div>
 
-                            <div className="col-6 mt-4 pl-2">
+                            <div className="col-6  pl-2">
                                 <TextFieldWrapper
                                     onChange={(value)=>this.handleChange(value,"phone")}
                                     error={this.state.errors["phone"]}
-                                    name="phone" label="Phone" />
+                                    name="phone" title="Phone" />
                             </div>
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 ">
+                                <div className={"custom-label text-bold text-blue mb-0"}>
+                                    Select Company
+                                </div>
                                 <AutocompleteCustom
                                     orgs={true}
                                     companies={true}
@@ -344,7 +347,7 @@ class SignUp extends Component {
                             </div>
                             {!this.state.isLoopCycleCompany &&
                                 <>
-                            <div className="col-12 mt-4">
+                            <div className="col-12 ">
 
                                 <div className="row">
                                     <div className={this.state.industryOtherShow?"col-6 transition-width":"col-12 transition-width"}>
@@ -363,7 +366,7 @@ class SignUp extends Component {
                                            })
                                        }
                                    }}
-                                   options={this.state.industries} name={"industry"} label="Industry"
+                                   options={this.state.industries} name={"industry"} title="Industry"
                                />
                                     </div>
 
@@ -372,12 +375,12 @@ class SignUp extends Component {
 
                                             // onChange={(value)=>this.handleChangeProduct(value,"volume")}
                                             error={this.state.errors["industry"]}
-                                            name="industry-other" label=" Specify here" />
+                                            name="industry-other" title=" Specify here" />
                                     </div>
                                 </div>
 
                             </div>
-                            <div className="col-12 mt-4">
+                            <div className="col-12 ">
                                 <div className="row">
                                 <div className={this.state.reasonOtherShow?"col-6 ":"col-12"}>
                                 <SelectArrayWrapper
@@ -397,7 +400,7 @@ class SignUp extends Component {
 
                                     }}
                                     select
-                                    options={this.state.reasons} name={"reason"} label="Main Reason for using Loopcycle"
+                                    options={this.state.reasons} name={"reason"} title="Main Reason for using Loopcycle"
                                 />
                                 </div>
 
@@ -406,12 +409,12 @@ class SignUp extends Component {
 
                                     // onChange={(value)=>this.handleChangeProduct(value,"volume")}
                                     error={this.state.errors["reason"]}
-                                    name="reason-other" label=" Specify here" />
+                                    name="reason-other" title=" Specify here" />
                                 </div>
                                 </div>
 
                             </div>
-                            <div className="col-12 mt-4">
+                            <div className="col-12 ">
                                 <div className="row">
                                     <div className={this.state.businessFieldOtherShow?"col-6 ":"col-12"}>
                                 <SelectArrayWrapper
@@ -429,7 +432,7 @@ class SignUp extends Component {
                                             })
                                         }
                                     }}
-                                    options={this.state.businessFields} name={"businessField"} label="Field of Business"
+                                    options={this.state.businessFields} name={"businessField"} title="Field of Business"
                                 />
                                     </div>
                                 <div className={this.state.businessFieldOtherShow?"col-6 append-animate":"d-none"}>
@@ -444,32 +447,40 @@ class SignUp extends Component {
 
 
                             </div>
-                            <div className="col-12 mt-4">
-                                <TextFieldWrapper
-                                    onChange={(value)=>this.handleChange(value,"no_of_staff")}
-                                    error={this.state.errors["no_of_staff"]}
-                                    name="no_of_staff" label="No. of staff" />
-                            </div>
+
 
                             </>}
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 ">
+                                <div className="row ">
+                                    {!this.state.isLoopCycleCompany &&
+                                    <div className="col-6 ">
+                                        <TextFieldWrapper
+                                            onChange={(value)=>this.handleChange(value,"no_of_staff")}
+                                            error={this.state.errors["no_of_staff"]}
+                                            name="no_of_staff" title="No. of staff" />
+
+                                    </div>}
+                                    <div className="col-6 ">
                                 <TextFieldWrapper
                                     onChange={(value)=>this.handleChange(value,"referral")}
                                     error={this.state.errors["referral"]}
-                                    name="referral" label="Referral Code (If Any)" />
+                                    name="referral" title="Referral Code (If Any)" />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col-12 mt-4">
 
 
+                            <div className="col-12 ">
+                                <div className="row ">
+                                <div className="col-6 ">
+                                    <TextFieldWrapper
 
-                                <TextFieldWrapper
-
-                                    onChange={(value)=>this.handleChange(value,"password")}
-                                    error={this.state.errors["password"]}
-                                    name="password" label="Password"
-                                    type={this.state.showPassword ? "text" : "password"}
-                                    InputProps={{
+                                        onChange={(value)=>this.handleChange(value,"password")}
+                                        error={this.state.errors["password"]}
+                                        name="password" title="Password"
+                                        type={this.state.showPassword ? "text" : "password"}
+                                        InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
                                                     <IconButton
@@ -484,21 +495,22 @@ class SignUp extends Component {
                                                 </InputAdornment>
                                             ),
                                         }}
-                                />
+                                    />
+                                </div>
+                                    <div className="col-6 ">
+                                        <TextFieldWrapper
+
+                                            type="password"
+                                            onChange={(value)=>this.handleChange(value,"confirmPassword")}
+                                            error={this.state.errors["confirmPassword"]}
+                                            name="confirmPassword" title="Confirm Password" />
+                                    </div>
+                                </div>
+
 
                             </div>
 
-                            <div className="col-12 mt-4">
-                                <TextFieldWrapper
-
-                                    type="password"
-                                    onChange={(value)=>this.handleChange(value,"confirmPassword")}
-                                    error={this.state.errors["confirmPassword"]}
-                                    name="confirmPassword" label="Confirm Password" />
-
-                            </div>
-
-                            <div className="col-12 mt-4 justify-content-center">
+                            <div className="col-12  justify-content-center">
                                 <div className={""}>
                                 <p className={""}>
                                     <CheckboxWrapper
@@ -526,14 +538,14 @@ class SignUp extends Component {
                             </div>
 
                             {this.props.signUpFailed && (
-                                <div className="col-12 mt-4">
+                                <div className="col-12 ">
                                     <Alert key={"alert"} variant={"danger"}>
                                         {this.props.signUpError}
                                     </Alert>
                                 </div>
                             )}
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 ">
                                 <button
                                     type={"submit"}
                                     className={
@@ -550,12 +562,12 @@ class SignUp extends Component {
                             </div>
 
                             <div className="row justify-content-center no-gutters">
-                                <div className="col-12 mt-4">
+                                <div className="col-12 mb-2 mt-2 ">
                                     <p className={"or-text-divider"}>
                                         <span>or</span>
                                     </p>
                                 </div>
-                            <div className="col-12 mt-4 justify-content-center text-center">
+                            <div className="col-12  justify-content-center text-center">
 
                                 {/*<div className="col-auto  ">*/}
                                 {this.props.isPage?

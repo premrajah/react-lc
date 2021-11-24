@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import axios from "axios/index";
 import {baseUrl} from "../Util/Constants";
 import PropTypes from "prop-types";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import {makeStyles, withStyles} from "@material-ui/core/styles";
-import TreeItem from "@material-ui/lab/TreeItem";
-import Typography from "@material-ui/core/Typography";
+import SvgIcon from "@mui/material/SvgIcon";
+import {makeStyles, withStyles} from "@mui/styles";
+import TreeItem from "@mui/lab/TreeItem";
+import Typography from "@mui/material/Typography";
 import ProductTreeItemView from "./ProductTreeItemView";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {Spinner} from "react-bootstrap";
 
 class ProductTreeView extends Component {
@@ -24,6 +24,7 @@ class ProductTreeView extends Component {
             tree: [],
             filteredList: [],
             selectedProductId: null,
+            uniqueItems:[]
         };
 
         this.getItems = this.getItems.bind(this);
@@ -78,8 +79,6 @@ class ProductTreeView extends Component {
     setTree() {
 
 
-        console.log("called")
-
             let list = this.props.items
 
 
@@ -114,8 +113,7 @@ class ProductTreeView extends Component {
                     tree.push(treeItem);
                 }
             }
-            console.log("tree")
-            console.log(tree)
+
             this.setState({
                 tree: tree,
                 filteredList: tree,
@@ -133,7 +131,6 @@ class ProductTreeView extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props){
-            console.log("change detected")
             this.setTree()
         }
     }

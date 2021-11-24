@@ -28,15 +28,6 @@ class ResourceItem extends Component {
 
     componentDidMount() {
 
-
-
-        // console.log(this.props.artifacts)
-        // if (!this.props.item.listing.artifacts&&this.props.artifacts){
-        //
-        //         this.setState({
-        //             artifacts:this.props.images
-        //         })
-        // }
     }
 
 

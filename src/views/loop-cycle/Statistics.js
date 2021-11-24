@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import clsx from "clsx";
 import StatBLue from "../../img/icons/stat-blue.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { Doughnut } from "react-chartjs-2";
-import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
+import {Doughnut} from "react-chartjs-2";
+import {makeStyles} from "@mui/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
 import {Link} from "react-router-dom";
 

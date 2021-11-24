@@ -4,7 +4,7 @@ import { baseUrl } from "../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from "react-bootstrap";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 
 class MatchItemBuyer extends Component {

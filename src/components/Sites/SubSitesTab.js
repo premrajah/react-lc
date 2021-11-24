@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import SitePageItem from "./SitePageItem";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import {CURRENT_SITE} from "../../store/types";
 
 class SubSitesTab extends Component {
     slug;
@@ -30,9 +29,7 @@ class SubSitesTab extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log("udpate")
         if (prevProps!=this.props) {
-            console.log("props changed")
             this.getSubSites()
         }
     }
@@ -53,7 +50,6 @@ class SubSitesTab extends Component {
                         subSites:responseAll
                     })
 
-                    console.log(responseAll)
 
                 },
                 (error) => {

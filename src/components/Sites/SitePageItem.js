@@ -1,16 +1,16 @@
 import React, {useState} from "react";
-import EditIcon from '@material-ui/icons/Edit';
-import Close from "@material-ui/icons/Close";
+import EditIcon from '@mui/icons-material/Edit';
+import Close from "@mui/icons-material/Close";
 import EditSite from "./EditSite";
-import DeleteIcon from '@material-ui/icons/Delete'
 import {GoogleMap} from "../Map/MapsContainer";
-import MapIcon from '@material-ui/icons/Place';
+import MapIcon from '@mui/icons-material/Place';
 import {Link} from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
+
 const SitePageItem = (  props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
     const [showModal, setShowModal] = useState(false);

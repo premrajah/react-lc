@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
+import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Close, Error, Publish} from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/core/styles/index";
+import {Cancel, Check, Close, Error, Publish} from "@mui/icons-material";
+import { makeStyles } from "@mui/styles";
+import { withStyles } from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl, capitalizeFirstLetter, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
@@ -17,10 +17,10 @@ import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {capitalize} from "../../Util/GlobalFunctions";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import {loadCurrentSite} from "../../store/actions/actions";
 
 

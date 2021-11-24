@@ -3,7 +3,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 
 import encodeUrl from "encodeurl";
-import { withStyles } from "@material-ui/core/styles/index";
+import { withStyles } from "@mui/styles/index";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
 import ProductDetailContent from "../../components/Products/ProductDetailContent";
@@ -60,16 +60,13 @@ class ProductView extends Component {
 
     componentDidMount() {
         this.props.loadCurrentProduct(encodeUrl(this.slug));
-        console.log(this.props.location.search)
-
 
         if (this.props.location.search.includes("r=true")){
 
-            axios.get(baseUrl + "product/" + this.slug + "/code?r=true").then(
+            axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
                 (response) => {
-                    var responseAll = response.data;
+                    let responseAll = response.data;
 
-                  console.log(responseAll)
 
                 },
                 (error) => {}
@@ -82,11 +79,11 @@ class ProductView extends Component {
         const classesBottom = withStyles();
 
         return (
-            <Layout hideFooter={true}>
-                <div className="accountpage">
-                    {this.state.notFound ? (
+
+                <>
+                    {this.props.productNotFound ? (
                         <NotFound />
-                    ) : (
+                    ) :  <Layout hideFooter={true}>
                         <div className={"container pb-5 mb-5"}>
                             {this.props.currentProduct && (
                                 <>
@@ -98,9 +95,10 @@ class ProductView extends Component {
                                 </>
                             )}
                         </div>
-                    )}
-                </div>
-            </Layout>
+                    </Layout>
+                    }
+                </>
+
         );
     }
 }
@@ -119,7 +117,9 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-        currentProduct:state.currentProduct
+        currentProduct:state.currentProduct,
+        productNotFound:state.productNotFound,
+
     };
 };
 

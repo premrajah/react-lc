@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 
 class Sidebar extends Component {
     constructor(props) {
@@ -163,6 +163,12 @@ class Sidebar extends Component {
                                                 className="white-text list-group-item list-group-item-action">
                                                 Products
                                             </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-campaigns"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Campaigns
+                                        </Link>
 
                                             <Link
                                                 onClick={this.toggleMenu}

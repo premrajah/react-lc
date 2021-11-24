@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import SubproductItem from "./Item/SubproductItem";
+import AddLinkIcon from '@mui/icons-material/AddLink';
 
 class SubProductsTab extends Component {
     slug;
@@ -16,24 +17,52 @@ class SubProductsTab extends Component {
 
         return (
             <>
-                {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&& <p
-                    style={{ margin: "10px 0px" }}
-                    className={
-                        "green-text forgot-password-link text-mute small"
-                    }>
-                                 <span  data-parent={this.props.item.product._key}
-                                                        onClick={this.showProductSelection}
-                                                    >
+                {/*{this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&& <p*/}
+                {/*    style={{ margin: "10px 0px" }}*/}
+                {/*    className={*/}
+                {/*        "green-text forgot-password-link text-mute small"*/}
+                {/*    }>*/}
+                {/*                 <span  data-parent={this.props.item.product._key}*/}
+                {/*                                        onClick={this.showProductSelection}*/}
+                {/*                                    >*/}
+                {/*                                        Link Subproducts*/}
+                {/*                                    </span>*/}
+                {/*</p>}*/}
+
+
+                {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&&
+
+                <div  className={
+                    " mt-4  text-right"}>
+                    <button
+
+                        className={
+                            "btn-gray-border "
+                        }>
+                        <AddLinkIcon />     <span  data-parent={this.props.item.product._key}
+                                                   onClick={this.showProductSelection}
+                    >
                                                         Link Subproducts
                                                     </span>
-                </p>}
 
+
+                        {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&     <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
+                                                                                                                                 onClick={this.editConversion}
+                        >Edit Conversions</span>}
+                    </button>
+                </div> }
+
+
+
+                <div className={"mt-4"}></div>
                 {this.props.item.sub_products.length > 0 && (
                     <>
                         {this.props.item.sub_products.map(
                             (item, index) => (
                                 <SubproductItem
 
+
+                                    smallImage={true}
                                     noLinking={this.props.noLinking}
                                     hideMoreMenu={this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id?false:true}
                                     key={index}

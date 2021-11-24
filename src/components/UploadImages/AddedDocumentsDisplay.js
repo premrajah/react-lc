@@ -5,7 +5,9 @@ import {baseUrl} from "../../Util/Constants";
 import {useParams} from 'react-router-dom';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-
+import DescriptionIcon from '@mui/icons-material/Description';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import MoreMenu from "../MoreMenu";
 const AddedDocumentsDisplay = (props) => {
     const { artifacts, pageRefreshCallback } = props;
 
@@ -40,6 +42,21 @@ const AddedDocumentsDisplay = (props) => {
 
     }
 
+   const callBackResult=(action,key,blob_url) =>{
+
+        if (action === "download") {
+
+
+            window.location.href = blob_url
+
+        } else if (action === "delete") {
+
+            setDocKey(key);
+            handleDeleteDocument()
+
+        }
+    }
+
 
 
     const handleReplaceArtifacts = (payload) => {
@@ -66,9 +83,11 @@ const AddedDocumentsDisplay = (props) => {
         <>
             <div className="row">
                 <div className="col">
-                    {!props.hideAdd &&   <p className="mt-1 mb-3 text-gray-light">
-                        If documents have been added, please find the links to download below
-                    </p>}
+                       <p className="mt-1 mb-3 text-bold tex text-gray-light">
+                        <div className={"custom-label text-bold text-blue mt-4 mb-4"}>
+                            Files Uploaded
+                        </div>
+                    </p>
                     {artifacts.length > 0 ? (
                         artifacts.map((artifact, index) => {
                             if (
@@ -83,20 +102,47 @@ const AddedDocumentsDisplay = (props) => {
                                 artifact.mime_type === "application/vnd.ms-excel"
                             ) {
                                 return (
-                                    <div key={index} className="mt-1 mb-2">
-                                        <a
-                                            className="btn-link"
-                                            href={artifact.blob_url}
+                                    <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3 bg-white row">
+
+                                        <div className={"col-10"}>
+
+                                        <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
+                                        <span
+
+                                            className="ml-4  text-blue text-bold"
+                                            // href={artifact.blob_url}
                                             target="_blank"
                                             rel="noopener noreferrer">
                                             {artifact.blob_name}
-                                        </a>
+                                        </span>
+
+                                        </div>
+                                        <div className={"col-2"}>
+
+
+                                               <MoreMenu
+
+                                            triggerCallback={(action) =>
+                                                callBackResult(action,artifact._key,artifact.blob_url)
+                                            }
+
+                                            download={
+                                               true
+                                            }
+
+                                            delete={
+                                                props.isLoggedIn
+                                            }
+                                        />
+
+
                                         {!props.hideAdd &&    <span
-                                            className="ml-2 text-danger"
+                                            className="ml-2 text-danger d-none"
                                             style={{ cursor: "pointer" }}
                                             onClick={() => handleDocumentKey(artifact._key)}>
-                                            <b>X</b>
+                                            <IndeterminateCheckBoxIcon style={{opacity:"0.5"}} className={"text-blue"}  />
                                         </span>}
+                                        </div>
 
                                     </div>
                                 );

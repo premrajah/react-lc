@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 import SearchIcon from "../../img/icons/search-icon.png";
 import { Link } from "react-router-dom";
-import InputLabel from "@material-ui/core/InputLabel";
-import Close from "@material-ui/icons/Close";
-import NavigateBefore from "@material-ui/icons/NavigateBefore";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles/index";
+import InputLabel from "@mui/material/InputLabel";
+import Close from "@mui/icons-material/Close";
+import NavigateBefore from "@mui/icons-material/NavigateBefore";
+import { makeStyles } from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import TextField from "@mui/material/TextField";
+import { withStyles } from "@mui/styles/index";
 import MarkerIcon from "../../img/icons/marker.png";
 import CalenderIcon from "../../img/icons/calender.png";
 import ListIcon from "../../img/icons/list.png";
@@ -21,20 +21,27 @@ import AmountIcon from "../../img/icons/amount.png";
 import StateIcon from "../../img/icons/state.png";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import HeaderWhiteBack from "../header/HeaderWhiteBack";
 import ResourceItem from "../item/ResourceItem";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import ProductExpandItem from "../../components/ProductExpandItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import FormHelperText from "@mui/material/FormHelperText";
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
 import _ from "lodash";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import PageHeader from "../../components/PageHeader";
 import AddSite from "../../components/AddSite";
 import EditSite from "../../components/Sites/EditSite";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1096,7 +1103,7 @@ class SearchForm extends Component {
                                                     Title
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(this, "title")}
                                                     name={"title"}
                                                     id="outlined-basic"
@@ -1119,7 +1126,7 @@ class SearchForm extends Component {
                                                     Description
                                                 </div>
 
-                                                <TextField
+                                                <CustomizedInput
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "description"
@@ -1149,15 +1156,16 @@ class SearchForm extends Component {
                                                             Resource Category
                                                         </div>
                                                         <FormControl
-                                                            variant="outlined"
+                                                            // variant="outlined"
                                                             className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                            <Select
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple"></InputLabel>*/}
+                                                            <CustomizedSelect
                                                                 native
                                                                 onChange={this.handleChange.bind(
                                                                     this,
                                                                     "category"
                                                                 )}
+                                                                variant="standard"
                                                                 inputProps={{
                                                                     name: "category",
                                                                     id:
@@ -1172,7 +1180,7 @@ class SearchForm extends Component {
                                                                         </option>
                                                                     )
                                                                 )}
-                                                            </Select>
+                                                            </CustomizedSelect>
 
                                                             <FormHelperText>
                                                                 Which category is your product located within?
@@ -1203,8 +1211,9 @@ class SearchForm extends Component {
                                                             }
                                                             variant="outlined"
                                                             className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                            <Select
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple"></InputLabel>*/}
+                                                            <CustomizedSelect
+                                                                variant="standard"
                                                                 native
                                                                 onChange={this.handleChange.bind(
                                                                     this,
@@ -1224,7 +1233,7 @@ class SearchForm extends Component {
                                                                         </option>
                                                                     )
                                                                 )}
-                                                            </Select>
+                                                            </CustomizedSelect>
                                                         </FormControl>
                                                         {this.state.errors["type"] && (
                                                             <span className={"text-mute small"}>
@@ -1251,8 +1260,9 @@ class SearchForm extends Component {
                                                             }
                                                             variant="outlined"
                                                             className={classes.formControl}>
-                                                            <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
-                                                            <Select
+                                                            {/*<InputLabel htmlFor="outlined-age-native-simple"></InputLabel>*/}
+                                                            <CustomizedSelect
+                                                                variant="standard"
                                                                 native
                                                                 onChange={this.handleChange.bind(
                                                                     this,
@@ -1270,7 +1280,7 @@ class SearchForm extends Component {
                                                                         {item}
                                                                     </option>
                                                                 ))}
-                                                            </Select>
+                                                            </CustomizedSelect>
                                                         </FormControl>
                                                         {this.state.errors["state"] && (
                                                             <span className={"text-mute small"}>
@@ -1305,7 +1315,8 @@ class SearchForm extends Component {
                                                     <InputLabel htmlFor="outlined-age-native-simple">
                                                         Unit
                                                     </InputLabel>
-                                                    <Select
+                                                    <CustomizedSelect
+                                                        // variant="standard"
                                                         name={"unit"}
                                                         native
                                                         onChange={this.handleChange.bind(
@@ -1322,7 +1333,7 @@ class SearchForm extends Component {
                                                         {this.state.units.map((item) => (
                                                             <option value={item}>{item}</option>
                                                         ))}
-                                                    </Select>
+                                                    </CustomizedSelect>
                                                 </FormControl>
                                                 {this.state.errors["unit"] && (
                                                     <span className={"text-mute small"}>
@@ -1332,7 +1343,7 @@ class SearchForm extends Component {
                                                 )}
                                             </div>
                                             <div className="col-6 pl-2">
-                                                <TextField
+                                                <CustomizedInput
                                                     disabled={
                                                         this.state.units.length > 0 ? false : true
                                                     }
@@ -1380,7 +1391,8 @@ class SearchForm extends Component {
                                             <FormControl
                                                 variant="outlined"
                                                 className={classes.formControl}>
-                                                <Select
+                                                <CustomizedSelect
+                                                    variant="standard"
                                                     name="product"
                                                     native
                                                     onChange={this.handleChange.bind(
@@ -1401,7 +1413,7 @@ class SearchForm extends Component {
                                                             {/*({item.sub_product_ids.length} Sub Products)*/}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
                                                 {this.state.errors["product"] && (
                                                     <span className={"text-mute small"}>
                                                         <span style={{ color: "red" }}>* </span>
@@ -1447,7 +1459,8 @@ class SearchForm extends Component {
                                                 className={classes.formControl}>
                                                 {/*<InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>*/}
 
-                                                <Select
+                                                <CustomizedSelect
+                                                    variant="standard"
                                                     name={"deliver"}
                                                     native
                                                     // label="Deliver To"
@@ -1466,7 +1479,7 @@ class SearchForm extends Component {
                                                             {item.name + "(" + item.address + ")"}
                                                         </option>
                                                     ))}
-                                                </Select>
+                                                </CustomizedSelect>
                                             </FormControl>
 
                                             {this.state.errors["deliver"] && (
@@ -1489,13 +1502,13 @@ class SearchForm extends Component {
                                             </p>
                                         </div>
 
-                                        <div className="col-12 mb-2">
+                                        <div className="col-6 mb-2">
                                             <div className={"custom-label text-bold text-blue "}>
                                                 Required From
                                             </div>
 
-                                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                                <DatePicker
+                                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                <MobileDatePicker
                                                     minDate={new Date()}
                                                     inputVariant="outlined"
                                                     variant={"outlined"}
@@ -1507,8 +1520,9 @@ class SearchForm extends Component {
                                                     onChange={this.handleChangeDateStartDate.bind(
                                                         this
                                                     )}
+                                                    renderInput={(params) => <CustomizedInput {...params} />}
                                                 />
-                                            </MuiPickersUtilsProvider>
+                                            </LocalizationProvider>
                                             {this.state.errors["startDate"] && (
                                                 <span className={"text-mute small"}>
                                                     <span style={{ color: "red" }}>* </span>
@@ -1517,13 +1531,13 @@ class SearchForm extends Component {
                                             )}
                                         </div>
 
-                                        <div className="col-12 mb-2">
+                                        <div className="col-6 mb-2">
                                             <div className={"custom-label text-bold text-blue "}>
                                                 Required By
                                             </div>
 
-                                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                                <DatePicker
+                                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                <MobileDatePicker
                                                     minDate={
                                                         this.state.dateRequiredFrom
                                                             ? this.state.dateRequiredFrom
@@ -1537,8 +1551,9 @@ class SearchForm extends Component {
                                                     format="DD/MM/yyyy"
                                                     value={this.state.dateRequiredBy}
                                                     onChange={this.handleChangeDate.bind(this)}
+                                                    renderInput={(params) => <CustomizedInput {...params} />}
                                                 />
-                                            </MuiPickersUtilsProvider>
+                                            </LocalizationProvider>
                                             {this.state.errors["endDate"] && (
                                                 <span className={"text-mute small"}>
                                                     <span style={{ color: "red" }}>* </span>
@@ -1820,12 +1835,11 @@ class SearchForm extends Component {
                         this.state.active === 6 ||
                         this.state.active === 7) && (
                         <React.Fragment>
-                            <CssBaseline />
 
-                            <AppBar
+                            <div
                                 position="fixed"
                                 color="#ffffff"
-                                className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
                                 {/*<ProgressBar now={this.state.progressBar}  />*/}
                                 {this.state.page < 4 && (
                                     <LinearProgress
@@ -1927,7 +1941,7 @@ class SearchForm extends Component {
                                         </div>
                                     )}
                                 </Toolbar>
-                            </AppBar>
+                            </div>
                         </React.Fragment>
                     )}
 
@@ -1988,41 +2002,6 @@ const useStylesBottomBar = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar() {
-    const classes = useStylesBottomBar();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <button
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                Back
-                            </button>
-                        </div>
-                        <div className="col-auto" style={{ margin: "auto" }}>
-                            <p className={"blue-text"}> Page 2/3</p>
-                        </div>
-                        <div className="col-auto">
-                            <button
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2 btn-blue">
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </React.Fragment>
-    );
-}
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreIcon from "@material-ui/icons/MoreHoriz";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreIcon from "@mui/icons-material/MoreHoriz";
 import { Modal, ModalBody } from "react-bootstrap";
 
 class MoreMenu extends Component {
@@ -160,11 +160,19 @@ class MoreMenu extends Component {
                                     Edit
                                 </MenuItem>
                             )}
+                            {this.props.download && (
+                                <MenuItem data-action={"download"} onClick={this.handleClose}>
+                                    Download
+                                </MenuItem>
+                            )}
+
+
                             {this.props.delete && (
                                 <MenuItem data-action={"delete"} onClick={this.handleClose}>
                                     Delete
                                 </MenuItem>
                             )}
+
                             {this.props.duplicate && (
                                 <MenuItem data-action={"duplicate"} onClick={this.handleClose}>
                                     Duplicate

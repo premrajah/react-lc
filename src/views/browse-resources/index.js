@@ -6,23 +6,23 @@ import FilterImg from "../../img/icons/filter-icon.png";
 import HeaderDark from "../header/HeaderDark";
 import Footer from "../Footer/Footer";
 import Sidebar from "../menu/Sidebar";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import AppBar from "@material-ui/core/AppBar";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import AppBar from "@mui/material/AppBar";
+import { makeStyles, withStyles } from "@mui/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchGray from "@mui/icons-material/Search";
 import { baseUrl } from "../../Util/Constants";
 import ResourceItem from "../item/ResourceItem";
 import axios from "axios/index";
-import Slider from "@material-ui/core/Slider/index";
-import Checkbox from "@material-ui/core/Checkbox";
-import Close from "@material-ui/icons/Close";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
+import Slider from "@mui/material/Slider/index";
+import Checkbox from "@mui/material/Checkbox";
+import Close from "@mui/icons-material/Close";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
 import CalGrey from "../../img/icons/calender-dgray.png";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 class BrowseResources extends Component {
     constructor(props) {

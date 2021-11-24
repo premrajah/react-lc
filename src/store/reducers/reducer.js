@@ -50,7 +50,9 @@ import {
     CURRENT_SITE,
     GET_LISTINGS,
     SITE_FORM_SHOW,
-    SHOW_MULTIPLE_POP_UP
+    SHOW_MULTIPLE_POP_UP,
+    PRODUCT_PAGE_RESET,
+    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR,TOGGLE_GLOBAL_DIALOG
 } from "../types";
 
 export const initialState = {
@@ -89,7 +91,7 @@ export const initialState = {
     unreadMessages: false,
     unreadNotifications: false,
     productPageOffset:0,
-    productPageSize:20,
+    productPageSize:400,
     lastPageReached:false,
     serviceAgentRequests: [],
     productReleaseRequests: [],
@@ -103,6 +105,9 @@ export const initialState = {
     signUpPageSubmitted:false,
     showMultiplePopUp:false,
     createProductId:null,
+    productNotFound:false,
+    showRightBar:false,
+    showGlobalDiaglog:false,
     showSiteForm:{
         show:false,
         item:null
@@ -119,6 +124,13 @@ const reducer = (state = initialState, action) => {
             newState.userDetail = action.value;
             break;
 
+
+        case TOGGLE_RIGHTBAR:
+            newState.showRightBar = !state.showRightBar;
+            break;
+        case TOGGLE_GLOBAL_DIALOG:
+            newState.showGlobalDiaglog = !state.showGlobalDiaglog;
+            break;
         case SET_ORG_IMG:
             newState.orgImage = action.value;
             break;
@@ -133,8 +145,18 @@ const reducer = (state = initialState, action) => {
 
         case SITE_POPUP:
             newState.showSitePopUp = action.value;
+
             break;
 
+        case CURRENT_PRODUCT:
+            newState.productNotFound = false;
+
+            newState.currentProduct = action.value;
+
+            break;
+        case PRODUCT_NOT_FOUND:
+            newState.productNotFound = action.value;
+            break;
         case SITE_FORM_SHOW:
             newState.showSiteForm = action.value;
             break;
@@ -220,10 +242,7 @@ const reducer = (state = initialState, action) => {
             newState.snackbarMessage = action.value;
 
             break;
-        case CURRENT_PRODUCT:
-            newState.currentProduct = action.value;
 
-            break;
 
         case CURRENT_SITE:
             newState.currentSite = action.value;
@@ -234,6 +253,13 @@ const reducer = (state = initialState, action) => {
             newState.loading = false;
             break;
 
+        case PRODUCT_PAGE_RESET:
+
+            newState.productPageSize=20
+            newState.productPageOffset = 0
+            newState.productWithoutParentListPage= [];
+
+            break;
 
         case PRODUCT_NPARENT_LIST_PAGE:
 

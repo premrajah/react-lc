@@ -38,8 +38,8 @@ import {
     UNREAD_MESSAGES,
     UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
     PRODUCT_REGISTER, PRODUCT_RELEASE, SERVICE_AGENT_REQUEST, SHOW_SNACKBAR, CURRENT_PRODUCT,
-    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE,CURRENT_SITE,PRODUCT_NPARENT_NO_LIST,SHOW_MULTIPLE_POP_UP,
-    SITE_FORM_SHOW
+    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE, CURRENT_SITE, PRODUCT_NPARENT_NO_LIST, SHOW_MULTIPLE_POP_UP,
+    SITE_FORM_SHOW, PRODUCT_PAGE_RESET, PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG
 } from "../types";
 import {load} from "dotenv";
 
@@ -58,9 +58,20 @@ export const loading = () => {
 };
 
 
+export const toggleRightBar = () => {
+    return {
+        type: TOGGLE_RIGHTBAR,
+    };
+};
+
+export const toggleGlobalDialog = () => {
+    return {
+        type: TOGGLE_GLOBAL_DIALOG,
+    };
+};
+
 export const setMultiplePopUp = (data) => {
 
-    console.log("action called")
     return {
         type: SHOW_MULTIPLE_POP_UP,
         value: data,
@@ -259,7 +270,7 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
         )
         .then(
             (response) => {
-                var responseAll = response.data;
+                let responseAll = response.data;
 
                 dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
 
@@ -269,9 +280,17 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
                 // this.setState({
                 //     notFound: true,
                 // });
+
+                dispatch({ type: PRODUCT_NOT_FOUND , value:true});
+
             }
         );
 
+};
+
+export const resetProductPageOffset = () => {
+
+    return { type: PRODUCT_PAGE_RESET };
 };
 
 
@@ -336,7 +355,6 @@ export const loadProductsSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
-    // console.log(data)
 
     axios
         // .get(`${baseUrl}product/no-parent/no-links`)
@@ -346,7 +364,7 @@ export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
                 if(response.status === 200) {
                     dispatch(loading(false));
                 }
-                // console.log(data)
+
                 dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: {val:response.data.data,offset:data.offset, size:data.size, refresh:data.refresh}});
             },
             (error) => {
@@ -359,7 +377,6 @@ export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentNoListingSync = (data) => (dispatch) => {
 
-// console.log(data)
 
     axios
         .get(`${baseUrl}product/no-listing/no-links`)
@@ -381,7 +398,6 @@ export const loadProductsWithoutParentNoListingSync = (data) => (dispatch) => {
 
 export const loadProductsWithoutParentSync = (data) => (dispatch) => {
 
-// console.log(data)
 
     axios
         .get(`${baseUrl}product/no-parent/no-links`)
@@ -527,7 +543,6 @@ export const signUpSync = (data) => (dispatch) => {
         delete data.type
 
 
-        // console.log(type)
     }
 
 
@@ -541,15 +556,12 @@ export const signUpSync = (data) => (dispatch) => {
             dispatch({ type: SIGN_UP, value: res.data });
         })
         .catch((error) => {
-            // dispatch(stopLoading())
-// console.log(error.response)
 
             if (error.response) {
 
                 dispatch(signUpFailed(error.response && error.response.data ? error.response.data.errors[0].message : error.response.status + ": " + error.response.statusText));
             }
-            // dispatch({ type: AUTH_FAILED });
-            // dispatch({ type: ERROR, payload: error.data.error.message });
+
         });
 };
 

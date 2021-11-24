@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import axios from "axios/index";
 import { baseUrl } from "../Util/Constants";
 import PropTypes from "prop-types";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import TreeItem from "@material-ui/lab/TreeItem";
-import Typography from "@material-ui/core/Typography";
+import SvgIcon from "@mui/material/SvgIcon";
+import { makeStyles, withStyles } from "@mui/styles";
+import TreeItem from "@mui/lab/TreeItem";
+import Typography from "@mui/material/Typography";
 
 class ProductTreeItemView extends Component {
     constructor(props) {
@@ -40,7 +40,7 @@ class ProductTreeItemView extends Component {
     }
 
     setOpen=()=> {
-        // // console.log(this.state.open)
+
         this.setState({
             open: !this.state.open,
         });
@@ -86,7 +86,6 @@ class ProductTreeItemView extends Component {
                 tree.push(treeItem);
             }
 
-            // // console.log(tree)
 
             this.setState({
                 tree: tree,
@@ -152,10 +151,7 @@ class ProductTreeItemView extends Component {
                         this.setState({
                             listingExist: responseAll?true:false,
                         });
-                        //
-                        // this.setTree();
-                        // console.log("getting listing")
-                        // console.log(responseAll)
+
                     },
                     (error) => {
                         // var status = error.response.status

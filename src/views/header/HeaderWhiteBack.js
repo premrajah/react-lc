@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import history from "../../History/history";
-import Close from "@material-ui/icons/Close";
-import NavigateBefore from "@material-ui/icons/NavigateBefore";
+import Close from "@mui/icons-material/Close";
+import NavigateBefore from "@mui/icons-material/NavigateBefore";
 
 class HeaderWhiteBack extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
-import "./css/style.css";
+import "./css/style-new.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
 import Home from "./pages/home/Home";
 import LoginPopUp from "./views/login/LoginPopUp";
@@ -12,7 +12,7 @@ import ItemDetail from "./views/browse-resources/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import ProductsNew from "./pages/my-products/Products";
 import Product from "./pages/product-detail/Product";
-import ProductsService from "./views/loop-cycle/ProductsService";
+import ProductsService from "./pages/my-products/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
 import Loops from "./views/loop-cycle/Loops";
@@ -50,7 +50,7 @@ import Privacy from "./components/Terms/Privacy";
 import AcceptableUse from "./components/Terms/AcceptableUse";
 import TermsAndService from "./components/Terms/TermsAndService";
 import FindResourcePage from "./views/browse-resources/FindResourcePage";
-import ProductArchive from "./views/product-archive/ProductArchive";
+import ProductArchive from "./pages/my-products/ProductArchive";
 import ProductTreeView from "./components/ProductTreeView";
 import Approvals from "./pages/approvals/Approvals";
 import Issues from "./views/issues/Issues";
@@ -59,7 +59,7 @@ import ApprovedReleases from "./pages/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./components/Inbox/MessagePage";
 import Messeges from "./pages/message/MessagePage";
-import TrackedProducts from "./components/Products/TrackedProducts";
+import TrackedProducts from "./pages/my-products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
 import RegisterRecord from "./views/approvals/RegisterRecord";
@@ -78,6 +78,39 @@ import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 import TransferScaling from "./views/account/TransferScaling";
 import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
 import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
+// import { ThemeProvider, createMuiTheme, makeStyles } from '@mui/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+
+import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
+const theme = createTheme({
+    palette: {
+
+
+        // primary: {
+        //     // light: will be calculated from palette.primary.main,
+        //     main: '#ff4400',
+        //     // dark: will be calculated from palette.primary.main,
+        //     // contrastText: will be calculated to contrast with palette.primary.main
+        // },
+        // ownerState:{
+        //     main: '#ff4400',
+        // },
+        // secondary: {
+        //     light: '#0066ff',
+        //     main: '#0044ff',
+        //     // dark: will be calculated from palette.secondary.main,
+        //     contrastText: '#ffcc00',
+        // },
+        // // Used by `getContrastText()` to maximize the contrast between
+        // // the background and the text.
+        // contrastThreshold: 3,
+        // // Used by the functions below to shift a color's luminance by approximately
+        // // two indexes within its tonal palette.
+        // // E.g., shift from Red 500 to Red 300 or Red 700.
+        // tonalOffset: 0.2,
+
+    },
+});
 
 
 class App extends Component {
@@ -89,6 +122,7 @@ class App extends Component {
     render() {
         return (
             <>
+                <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     {/*<Header />*/}
                     <Switch>
@@ -130,6 +164,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
+                        <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
 
@@ -157,6 +192,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />
                         <LoggedInRoute
                             exact
@@ -171,7 +207,7 @@ class App extends Component {
                         />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
-                        <Route exact path="/p/:slug" component={ItemCycleDetail} />
+
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
                         <LoggedInRoute
                             exact
@@ -194,6 +230,7 @@ class App extends Component {
 
                     <CustomSnackbar />
                 </BrowserRouter>
+                </ThemeProvider>
             </>
         );
     }

@@ -1,12 +1,8 @@
 import React, {Component} from "react";
-import CubeBlue from "../../img/icons/product-icon-big.png";
-import {withStyles} from "@material-ui/core/styles/index";
-import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
 import SignUp from "../../views/login/SignUp";
 import SuccessSignUp from "../../views/login/SuccessSignUp";
-import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 class SignUpPage extends Component {
 

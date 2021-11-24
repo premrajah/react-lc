@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import history from "../../History/history";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { Alert, Spinner } from "react-bootstrap";
-import { IconButton, InputAdornment } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import {makeStyles} from "@mui/styles";
+import TextField from "@mui/material/TextField";
+import {Alert, Spinner} from "react-bootstrap";
+import {IconButton, InputAdornment} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

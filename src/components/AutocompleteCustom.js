@@ -5,7 +5,7 @@ import { baseUrl } from "../Util/Constants";
 import axios from "axios/index";
 import CompaniesHouseLogo from "../img/hmrc.png";
 import LoopcycleLogo from '../img/loopcycle_logo_31x31.png';
-import PencilIcon from '@material-ui/icons/Edit';
+import PencilIcon from '@mui/icons-material/Edit';
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -22,8 +22,6 @@ class AutocompleteCustom extends Component {
     componentDidMount() {
 
         if (this.props.initialOrgId){
-
-            console.log(this.props.initialOrgId,this.props.initialOrgName)
 
             this.setState({
                 selectedOrgId:this.props.initialOrgId,

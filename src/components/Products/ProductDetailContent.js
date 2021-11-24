@@ -4,15 +4,17 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
-import {withStyles} from "@material-ui/core/styles/index";
+// import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
+import {Alert, Modal, ModalBody} from "react-bootstrap";
+
+import {withStyles} from "@mui/styles/index";
 import {Link} from "react-router-dom";
 import SearchItem from "../../views/loop-cycle/search-item";
 import ResourceItem from "../../views/create-search/ResourceItem";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
@@ -20,8 +22,14 @@ import SubProductsTab from "./SubProductsTab";
 import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
-import OrgFull from "../Org/OrgFull";
 import AggregatesTab from "./AggregatesTab";
+import OrgComponent from "../Org/OrgComponent";
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import Box from '@mui/material/Box';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+
 
 class ProductDetailContent extends Component {
     slug;
@@ -63,7 +71,8 @@ class ProductDetailContent extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             initialValues:{},
-            activeKey:"productinfo"
+            activeKey:"1",
+            zoomQrCode:false
 
         };
 
@@ -91,7 +100,7 @@ class ProductDetailContent extends Component {
         this.phonenumber = this.phonenumber.bind(this);
     }
 
-    setActiveKey=(key)=>{
+    setActiveKey=(event,key)=>{
 
 
         this.setState({
@@ -271,7 +280,13 @@ class ProductDetailContent extends Component {
         if (prevProps!==this.props) {
 
 
-            this.setActiveKey("productinfo")
+            if(this.props.item.product.purpose === "aggregate"){
+                this.setActiveKey(null,"1")
+            }else{
+                this.setActiveKey(null,"2")
+
+            }
+
         }
     }
 
@@ -592,6 +607,14 @@ class ProductDetailContent extends Component {
 
             this.loadInfo();
         }
+
+
+        if(this.props.item.product.purpose === "aggregate"){
+            this.setActiveKey(null,"1")
+        }else{
+            this.setActiveKey(null,"2")
+
+        }
     }
 
     loadInfo() {
@@ -613,6 +636,16 @@ class ProductDetailContent extends Component {
 
 
 
+    callZoom=()=>{
+
+
+        this.setState({
+            zoomQrCode:!this.state.zoomQrCode
+
+
+        })
+    }
+
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -621,8 +654,27 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-                        <div className="row no-gutters  justify-content-center">
+
+                        {this.state.zoomQrCode&&  <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
+                            {this.props.item&&this.props.item.qr_artifact && (
+                                <img
+                                    className="img-fluid qr-code-zoom"
+                                    src={this.props.item.qr_artifact.blob_url}
+
+                                />
+                            )}
+                        </div>}
+                        <div className="row no-gutters pt-4 pb-4  justify-content-center">
+                            <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
+
+                            </div>
+                        </div>
+                        <div className="row   justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
+
+                                <div className="row ">
+                                    <div className="col-12 ">
                                 <div className=" stick-left-box  ">
 
 
@@ -634,7 +686,7 @@ class ProductDetailContent extends Component {
                                         this.state.userDetail.orgId !== this.state.item.org._id && (
                                             <>
                                                 <div className={"col-12 pb-5 mb-5"}>
-                                                    <div className="row justify-content-start pb-3 pt-3 ">
+                                                    <div className="row justify-content-start pb-3  ">
                                                         <div className="col-12 ">
                                                             <button
                                                                 onClick={this.showRegister}
@@ -648,17 +700,31 @@ class ProductDetailContent extends Component {
                                                 </div>
                                             </>
                                         )}
-                                    <QrCode hideRegister={this.props.hideRegister}  item={this.state.item}/>
+
+
+                                    <InfoTabContent item={this.props.item}/>
+
+
+                                    <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
+
+
+
+
                                 </div>
+
+
+                                </div>
+                                </div>
+
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left pt-3 "}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12  "}>
 
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-8">
-                                                <h4 className="blue-text text-heading text-caps">
+                                                <h4 className="text-capitalize product-title">
                                                     {this.state.item.product.name}
                                                 </h4>
                                             </div>
@@ -701,14 +767,13 @@ class ProductDetailContent extends Component {
                                     <div className="col-12">
                                         <div className="row">
                                             <div className="col-7">
-                                                <OrgFull org={this.state.item.org} />
+                                                <OrgComponent org={this.state.item.org} />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className={"listing-row-border "}></div>
 
-                                <div className="row justify-content-start pb-3 pt-3 ">
+                                <div className="row justify-content-start pb-3 ">
                                     <div className="col-auto">
                                         <p
                                             style={{ fontSize: "16px" }}
@@ -717,69 +782,112 @@ class ProductDetailContent extends Component {
                                         </p>
                                     </div>
                                 </div>
+
                                 <div className={"listing-row-border "}></div>
 
+
                                 {this.props.item &&
-                                <div className="row justify-content-start pb-3 pt-3 tabs-detail">
-                                    <div className="col-12 mt-2">
-                                        <Tabs
+                                <div className="row justify-content-start pb-3  tabs-detail">
+                                    <div className="col-12 ">
 
-                                            onSelect={(k) => this.setActiveKey(k)}
-                                            activeKey={this.state.activeKey}
-                                            id="uncontrolled-tab-example">
-                                            <Tab eventKey="productinfo" title="Product Info">
-                                                <InfoTabContent item={this.props.item}/>
+                                        <Box sx={{ width: '100%', typography: 'body1' }}>
+                                            <TabContext value={this.state.activeKey}>
+                                                <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                    <TabList
+                                                        variant="scrollable"
+                                                        scrollButtons="auto"
+                                                        textColor={"#27245C"}
+                                                        TabIndicatorProps={{
+                                                            style: {
+                                                                backgroundColor: "#27245C",
+                                                                padding: '2px',
+                                                            }
+                                                        }}
+                                                        onChange={this.setActiveKey}
 
-                                            </Tab>
-
-                                            {(this.props.item.product.purpose === "aggregate") &&
-                                            <Tab eventKey="aggregates" title="Aggregations">
-                                                <AggregatesTab item={this.props.item}/>
-                                            </Tab>}
-                                            <Tab eventKey="subproducts" title="Subproducts">
-                                                <SubProductsTab item={this.props.item}/>
-                                            </Tab>
-
-                                            <Tab eventKey="maps" title="Site">
-
-                                                <p>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
-                                                {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
+                                                        aria-label="lab API tabs example">
+                                                        {/*<Tab label="Info" value="1" />*/}
 
 
-                                                <GoogleMap siteId={this.props.item.site._key} width={"100%"}
-                                                           height={"300px"} locations={[{
-                                                    name: this.props.item.site.name,
-                                                    location: this.props.item.site.geo_codes[0].address_info.geometry.location,
-                                                    isCenter: true
-                                                }]}/>}
+                                                        {(this.props.item.product.purpose === "aggregate") &&
+                                                        <Tab label="Aggregation" value="1"/>
+                                                        }
+                                                            <Tab label="Sub Products" value="2" />
 
-                                            </Tab>
+                                                        <Tab label="Site" value="3" />
+                                                        {this.state.searches.length > 0 && (
+                                                        <Tab label="Searches" value="4" />
+                                                        )}
+
+                                                        {this.state.listingLinked &&
+                                                        <Tab label="Searches" value="5" />
+                                                            }
+                                                        {this.state.listingLinked && (   <Tab label="Listing" value="6" />)}
+                                                        <Tab label="Artifacts" value="6" />
 
 
-                                            {this.state.searches.length > 0 && (
-                                                <Tab eventKey="search" title="Searches">
-                                                    {this.state.searches.map((item) => (
-                                                        <SearchItem item={item}/>
-                                                    ))}
-                                                </Tab>
-                                            )}
+                                                    </TabList>
+                                                </Box>
 
-                                            {this.state.listingLinked && (
-                                                <Tab eventKey="listing" title="Listing">
-                                                    {this.state.listingLinked && (
-                                                        <ResourceItem
-                                                            history={this.props.history}
-                                                            item={this.state.listingLinked}
-                                                            artifacts={this.state.item.artifacts}
-                                                            hideMoreMenu={true}
-                                                        />
-                                                    )}
-                                                </Tab>
-                                            )}
-                                            <Tab eventKey="artifacts" title="Artifacts">
-                                                <ArtifactProductsTab item={this.props.item}/>
-                                            </Tab>
-                                        </Tabs>
+
+
+                                                {(this.props.item.product.purpose === "aggregate") &&
+                                                <TabPanel value="1">
+
+                                                    <AggregatesTab item={this.props.item}/>
+                                                </TabPanel>}
+                                                <TabPanel value="2">
+                                                    <SubProductsTab item={this.props.item}/>
+                                                </TabPanel>
+                                                <TabPanel value="3">
+                                                    <>
+
+                                                    <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
+                                                    {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
+
+                                                    <div className={"bg-white rad-8 p-2"}>
+                                                    <GoogleMap siteId={this.props.item.site._key} width={"100%"}
+                                                               height={"300px"} locations={[{
+                                                        name: this.props.item.site.name,
+                                                        location: this.props.item.site.geo_codes[0].address_info.geometry.location,
+                                                        isCenter: true
+                                                    }]}/>
+                                                    </div>
+
+                                                    }
+
+                                                    </>
+
+                                                </TabPanel>
+
+
+                                                {this.state.searches.length > 0 && (
+                                                    <TabPanel value="4">
+                                                        {this.state.searches.map((item) => (
+                                                            <SearchItem item={item}/>
+                                                        ))}
+                                                    </TabPanel>
+                                                )}
+
+                                                {this.state.listingLinked && (
+                                                    <TabPanel value="5">
+                                                        {this.state.listingLinked && (
+                                                            <ResourceItem
+                                                                history={this.props.history}
+                                                                item={this.state.listingLinked}
+                                                                artifacts={this.state.item.artifacts}
+                                                                hideMoreMenu={true}
+                                                            />
+                                                        )}
+                                                    </TabPanel>
+                                                )}
+                                                <TabPanel value="6">
+                                                    <ArtifactProductsTab item={this.props.item}/>
+                                                </TabPanel>
+
+                                            </TabContext>
+                                        </Box>
+
                                     </div>
                                 </div>
                                 }
@@ -803,11 +911,7 @@ class ProductDetailContent extends Component {
                                 </button>
                             </div>
 
-                            {/*<ProductEditForm*/}
-                            {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
-                            {/*    isDuplicate={this.state.productDuplicate}*/}
-                            {/*    productId={this.state.item.product._key}*/}
-                            {/*/>*/}
+
                             <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
                                 <div className="col mobile-menu">
                                     <div className="form-col-left col-12">

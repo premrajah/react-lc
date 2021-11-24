@@ -1,5 +1,5 @@
-import React ,{Component } from 'react';
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
+import React, {Component} from 'react';
+import {Modal} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 

@@ -1,17 +1,16 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import SubproductItem from "./Item/SubproductItem";
 import AggregateItem from "./Item/AggregateItem";
-import AddIcon from "@material-ui/icons/Add";
-import {Modal, ModalBody} from "react-bootstrap";
+import AddIcon from "@mui/icons-material/Add";
+import AddLinkIcon from '@mui/icons-material/AddLink';
+import {Modal} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import axios from "axios";
-import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {baseUrl} from "../../Util/Constants";
-import {withStyles} from "@material-ui/core/styles";
-import {Tooltip} from "@material-ui/core";
+import {withStyles} from "@mui/styles";
+import {Tooltip} from "@mui/material";
 import ConversionsTab from "./ConversionsTab";
 import _ from "lodash";
 
@@ -184,15 +183,6 @@ componentDidMount() {
                         units:units
                     })
 
-                    console.log(units)
-
-
-                    // subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
-                    // states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
-                    // units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
-
-
-
 
                 },
                 (error) => {}
@@ -203,15 +193,19 @@ componentDidMount() {
 
 
         return (
-       <>
 
-           {!this.state.showConversion? <>
-                {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&& <p
-                    style={{ margin: "10px 0px" }}
+            <>
+
+                {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&&
+
+               <div  className={
+                   " mt-4 text-right"}>
+                   <button
+
                     className={
-                        "green-text forgot-password-link text-mute small"
+                        "btn-gray-border "
                     }>
-                                 <span  data-parent={this.props.item.product._key}
+                       <AddLinkIcon />     <span  data-parent={this.props.item.product._key}
                                         onClick={this.showProductSelection}
                                  >
                                                         Link Aggregate Product
@@ -219,29 +213,35 @@ componentDidMount() {
 
 
                     {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&     <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
-                           onClick={this.editConversion}
+                                                                                                                             onClick={this.editConversion}
                     >Edit Conversions</span>}
-                </p>}
+                </button>
+               </div> }
+
+       <div className={"white-bg rad-8 p-3 mt-4"}>
+
+           {!this.state.showConversion? <>
+
 
                    {this.props.item.product.aggregations.length>0    &&  <>
                 <div className={" row"}>
-                    <div className={" col-4 text-bold"}>Info</div>
-                    <div className={" col-7 text-bold"}>Products</div>
+                    <div className={" col-5 text-bold"}>Info</div>
+                    <div className={" col-6 text-bold"}>Products</div>
                     {/*<div className={" col-3 text-bold"}>Total Volume</div>*/}
                     <div className={" col-1 text-bold"}></div>
                 </div>
                 <div className="listing-row-border "></div>
                 {this.props.item.product.aggregations&&this.props.item.product.aggregations.length > 0 &&this.props.item.product.aggregations.map((aggregate,index)=>
                     <>{index>0 &&  <div className="listing-row-border "></div>}
-                        <div className={aggregate.units===this.props.item.product.units?" row bg-grey":"row"}>
-                            <div className={" col-4"}>
+                        <div className={aggregate.units===this.props.item.product.units?" mt-1 mb-1 row bg-grey":"row mt-1 mb-1"}>
+                            <div className={" col-5"}>
                                 <span className={"small "}>Category: <span className={"text-capitalize text-mute"}>{aggregate.category}, {aggregate.type}, {aggregate.state}</span></span><br/>
                                 <span className={"small "}>Volume: <span className={"text-capitalize text-mute"}>{aggregate.volume}</span></span><br/>
                                 {/*<span className={"small "}>State: <span className={"text-capitalize text-mute"}>{aggregate.state}</span></span><br/>*/}
                                 <span className={"small "}>Unit: <span className={"text-capitalize text-mute"}>{aggregate.units}</span></span><br/>
 
                             </div>
-                            <div className={" col-7"}>
+                            <div className={" col-6"}>
 
                         { aggregate.product_info.map(
                             (item, index2) =>
@@ -381,7 +381,9 @@ componentDidMount() {
 
                 </Modal>
 
-            </>
+            </div>
+
+                </>
         );
     }
 }

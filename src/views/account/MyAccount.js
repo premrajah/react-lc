@@ -4,7 +4,7 @@ import SettingsWhite from "../../img/icons/settings-blue.png";
 import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 import PageHeader from "../../components/PageHeader";
 

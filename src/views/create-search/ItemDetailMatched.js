@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import encodeUrl from "encodeurl";
-import { withStyles } from "@material-ui/core/styles/index";
+import { withStyles } from "@mui/styles/index";
 import MatchItemBuyer from "../../components/MatchItemBuyer";
 import ProductExpandItem from "../../components/ProductExpandItem";
 

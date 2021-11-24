@@ -1,23 +1,23 @@
 import React, { Component } from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import AppBar from "@mui/material/AppBar";
 import PaperImg from "../../img/paper-big.png";
 import Sidebar from "../menu/Sidebar";
-import { makeStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { makeStyles } from "@mui/styles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HeaderWhiteBack from "../header/HeaderWhiteBack";
-import { withStyles } from "@material-ui/core/styles/index";
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
-import TimelineDot from "@material-ui/lab/TimelineDot";
+import { withStyles } from "@mui/styles/index";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
 
 class LoopDetail extends Component {
     constructor(props) {

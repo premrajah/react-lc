@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import Paper from "../../img/paper.png";
 import clsx from "clsx";
 import FilterImg from "../../img/icons/filter-icon.png";
@@ -10,19 +10,20 @@ import HandGreyIcon from "../../img/icons/hand-gray.png";
 import EditGray from "../../img/icons/edit-gray.png";
 import RingGray from "../../img/icons/ring-gray.png";
 import Sidebar from "../menu/Sidebar";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Close from "@material-ui/icons/Close";
-import NavigateBefore from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Close from "@mui/icons-material/Close";
+import NavigateBefore from "@mui/icons-material/NavigateBefore";
 import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import SearchGray from "@material-ui/icons/Search";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import {makeStyles, withStyles} from "@mui/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchGray from "@mui/icons-material/Search";
+import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 
 class Search extends Component {
     constructor(props) {
@@ -171,9 +172,9 @@ function NavTabs() {
                 <div className={"container"}>
                     <div className="row  justify-content-center search-container listing-row-border pb-4">
                         <div className={"col-12"}>
-                            <TextField
+                            <CustomizedInput
                                 label={"Search this seller’s listings"}
-                                variant="outlined"
+
                                 className={
                                     clsx(classes.margin, classes.textField) + " full-width-field"
                                 }

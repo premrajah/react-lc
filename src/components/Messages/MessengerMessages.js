@@ -491,7 +491,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         <div className="col">
                             {selectedMsgGroup.length > 0 ? (
                                 <div
-                                    className="message-window p-3"
+                                    className="message-window p-2"
                                     style={{ height: msgWindowHeight }}>
                                     {selectedMsgGroup.map((m, i) => (
                                         <div  key={i} className={`d-flex ${checkWhoseMessage(m.orgs) ? 'justify-content-start' : 'justify-content-end'}`}>

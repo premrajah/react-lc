@@ -1,26 +1,16 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Alert  from '@mui/material/Alert';
 import { makeStyles } from '@mui/styles';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-}));
+
 
 function CustomSnackbar(props) {
-    const classes = useStyles();
+
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
@@ -38,8 +28,8 @@ function CustomSnackbar(props) {
     return (
         <div >
 
-            <Snackbar open={props.snackbarMessage.show} autoHideDuration={2000} onClose={()=> props.showSnackbar({show:false})}>
-                <Alert onClose={()=> props.showSnackbar({show:false})} severity={props.snackbarMessage.severity}>
+            <Snackbar anchorOrigin={{ vertical:"bottom",horizontal: "right" }} open={props.snackbarMessage.show} autoHideDuration={2000} onClose={()=> props.showSnackbar({show:false})}>
+                <Alert variant="filled"  onClose={()=> props.showSnackbar({show:false})} severity={props.snackbarMessage.severity}>
                     {props.snackbarMessage.message}
                 </Alert>
             </Snackbar>

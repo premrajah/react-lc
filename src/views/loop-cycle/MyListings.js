@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import ResourceItem from "../create-search/ResourceItem";
+import ResourceItem from "../../pages/create-search/ResourceItem";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import { withStyles } from "@mui/styles/index";

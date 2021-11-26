@@ -234,19 +234,15 @@ class SiteForm extends Component {
 
                 }else{
 
-
-
-
                         this.props.loadCurrentSite(parentId)
-
 
                 }
                 this.props.loadSites()
                 this.props.loadParentSites()
-                this.hidePopUp()
+
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
-
+                this.hidePopUp()
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
@@ -257,7 +253,7 @@ class SiteForm extends Component {
 
 
     updateSite = (event) => {
-        let item=this.props.showSiteForm.item.site
+        let item=this.props.showSiteForm.item
 
         event.preventDefault();
         if (!this.handleValidation()) {
@@ -414,6 +410,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         this.setState({
             createNew:!this.state.createNew
         })
+
+        console.log(this.props.showSiteForm)
        // else if (this.props.showSiteForm.type==="link-product"){
 
             // this.props.loadProducts()
@@ -587,7 +585,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-12 ">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.name}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.name}
                                         onChange={(value)=>this.handleChange(value,"name")}
                                         error={this.state.errors["name"]}
                                         name="name" title="Name" />
@@ -598,7 +596,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.is_head_office}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.is_head_office}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
                                         name={"isHeadOffice"} title="Head Office ?" />
 
@@ -607,7 +605,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-md-8 col-sm-12">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.contact}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}
                                         onChange={(value)=>this.handleChange(value,"contact")}
                                         error={this.state.errors["contact"]}
                                         name="contact" title="Contact" />
@@ -619,7 +617,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-12 ">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.description}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.description}
                                         onChange={(value)=>this.handleChange(value,"description")}
                                         error={this.state.errors["description"]}
                                         name="description" title="Description" />
@@ -632,7 +630,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.external_reference}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.external_reference}
                                         onChange={(value)=>this.handleChange(value,"external_reference")}
                                         error={this.state.errors["external_reference"]}
                                         name="external_reference" title="Site Id" />
@@ -662,7 +660,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-6 pr-2">
 
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.phone}
+                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
                                                     onChange={(value)=>this.handleChange(value,"phone")}
                                                     error={this.state.errors["phone"]}
                                                     name="phone" title="Phone" />
@@ -671,7 +669,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-6 pl-2">
 
                                             <TextFieldWrapper
-                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.email}
+                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.email}
                                                 onChange={(value)=>this.handleChange(value,"email")}
                                                 error={this.state.errors["email"]}
                                                 name="email" title="Email" />
@@ -684,7 +682,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-12">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.address}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}
 
@@ -697,7 +695,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-12">
 
                                     <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.site.others}
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.others}
                                         onChange={(value)=>this.handleChange(value,"other")}
                                         error={this.state.errors["description"]}
                                         name="other" title="Other" />
@@ -717,7 +715,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                         }
                                         disabled={this.state.isSubmitButtonPressed}>
-                                        {this.props.item?"Update Site":"Add Site"}
+                                        {this.props.showSiteForm.item?"Update Site":"Add Site"}
                                     </button>
 
                             </div>

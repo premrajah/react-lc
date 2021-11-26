@@ -10,7 +10,7 @@ import {baseUrl} from "../../Util/Constants";
 import {Checkbox, FormLabel} from '@mui/material';
 
 
-const EditSite = ({editable, loadSites, site, submitCallback}) => {
+const EditSite = ({editable, loadSites, site, submitCallback, showHeader}) => {
     const { key, name, address, email, contact, phone, others, is_head_office } = site;
     const[isDisabled, setIsDisabled] = useState(false);
 
@@ -88,11 +88,11 @@ const EditSite = ({editable, loadSites, site, submitCallback}) => {
     },[])
 
     return  <div>
-        <div className="row mb-3">
+        {showHeader &&  <div className="row mb-3">
             <div className="col">
-                <h4 className="text-center green-text">{editable ? 'Edit Site' : 'Add New Site'}</h4>
+                 <h4 className="text-center green-text">{editable ? 'Edit Site' : 'Add New Site'}</h4>
             </div>
-        </div>
+        </div>}
         <div className="row">
             <div className="col">
                 <Formik

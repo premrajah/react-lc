@@ -63,7 +63,7 @@ const SelectArrayWrapper = (props) => {
                     {placeholder}
                 </option>}
 
-                {options.map((item, index) => (
+                {options&&options.map((item, index) => (
                     <option selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}   key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
                         {(option?item[option]:item)}
                     </option>

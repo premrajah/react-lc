@@ -5,7 +5,7 @@ import PageHeader from "../PageHeader";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
-import ResourceItem from "../../views/create-search/ResourceItem";
+import ResourceItem from "../../pages/create-search/ResourceItem";
 
 const ListingRecord = ({history}) => {
     const [listings, setListings] = useState([]);

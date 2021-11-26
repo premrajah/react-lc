@@ -6,19 +6,21 @@ import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
 import { makeStyles } from "@mui/styles";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import encodeUrl from "encodeurl";
+import { Modal, ModalBody } from "react-bootstrap";
 import { withStyles } from "@mui/styles/index";
-import MatchItemBuyer from "../../components/MatchItemBuyer";
+import TextField from "@mui/material/TextField";
 import ProductExpandItem from "../../components/ProductExpandItem";
 
 class ItemDetailMatch extends Component {
-    match;
+    listing;
+    search;
 
     constructor(props) {
         super(props);
@@ -32,17 +34,22 @@ class ItemDetailMatch extends Component {
             matches: [],
             matchExist: false,
             match: null,
+            site: null,
             previewImage: null,
         };
 
         this.getPreviewImage = this.getPreviewImage.bind(this);
 
-        this.match = props.match.params.match;
+        this.listing = props.match.params.listing;
+        this.search = props.match.params.search;
 
         this.getResources = this.getResources.bind(this);
         this.requestMatch = this.requestMatch.bind(this);
         this.showPopUp = this.showPopUp.bind(this);
+
         this.getMatches = this.getMatches.bind(this);
+        this.checkMatch = this.checkMatch.bind(this);
+        this.getSite = this.getSite.bind(this);
     }
 
     getPreviewImage(productSelectedKey) {
@@ -66,6 +73,30 @@ class ItemDetailMatch extends Component {
             );
     }
 
+    getSite(item) {
+        axios
+            .get(baseUrl + "site/" + item.site_id.replace("Site/", ""), {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    var responseData = response.data;
+
+                    this.setState({
+                        site: responseData.data,
+                    });
+                },
+                (error) => {
+                    // this.setState({
+                    //
+                    //     notFound: true
+                    // })
+                }
+            );
+    }
+
     requestMatch() {
         axios
             .post(
@@ -85,6 +116,8 @@ class ItemDetailMatch extends Component {
                     showPopUp: false,
                     matchExist: true,
                 });
+
+                this.checkMatch();
 
                 // this.getResources()
             })
@@ -114,21 +147,21 @@ class ItemDetailMatch extends Component {
 
     getResources() {
         axios
-            .get(baseUrl + "match/" + encodeUrl(this.match), {
+            .get(baseUrl + "listing/" + encodeUrl(this.listing) + "/expand", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
             })
             .then(
                 (response) => {
-                    var responseData = response.data.data;
+                    var responseData = response.data;
 
                     this.setState({
-                        item: responseData,
-                        site: responseData.listing.site,
+                        item: responseData.data,
+                        site: responseData.data.site,
                     });
 
-                    if (responseData) this.getPreviewImage(responseData.listing.product._id);
+                    this.getPreviewImage(responseData.data.product._id);
                 },
                 (error) => {}
             );
@@ -153,16 +186,32 @@ class ItemDetailMatch extends Component {
             );
     }
 
-    componentDidMount() {
-        this.getResources();
+    checkMatch() {
+        axios
+            .get(baseUrl + "match/search-and-listing/" + this.search + "/" + this.listing, {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+                    var responseData = response.data.data;
 
-        this.interval = setInterval(() => {
-            this.getResources();
-        }, 5000);
+                    if (responseData) {
+                        this.setState({
+                            matchExist: true,
+                            match: responseData,
+                        });
+                    }
+                },
+                (error) => {}
+            );
     }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
+
+    componentDidMount() {
+        this.checkMatch();
+        this.getResources();
     }
 
     render() {
@@ -180,6 +229,10 @@ class ItemDetailMatch extends Component {
                             <div className="container " style={{ padding: "0" }}>
                                 <div className="row no-gutters  justify-content-center">
                                     <div className="col-md-4 col-sm-12 col-xs-12 ">
+                                        {/*{this.state.item.images.length > 0 ?*/}
+                                        {/*<ImagesSlider images={this.state.item.images} /> :*/}
+                                        {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
+
                                         <div className="row stick-left-box  ">
                                             <div className="col-12 text-center ">
                                                 <img
@@ -192,21 +245,14 @@ class ItemDetailMatch extends Component {
                                                     alt=""
                                                 />
                                             </div>
-                                            <div className="col-12 text-center ">
-                                                <MatchItemBuyer
-                                                    showImage={false}
-                                                    showInfo={false}
-                                                    item={this.state.item}
-                                                />
-                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
+                                    <div className={"col-md-8 col-sm-12 col-xs-12 pl-4 pb-5"}>
                                         <div className="row justify-content-start pb-3 pt-4 listing-row-border">
                                             <div className="col-12 mt-2">
                                                 <h4 className={"blue-text text-heading"}>
-                                                    {this.state.item.listing.listing.name}
+                                                    {this.state.item.listing.name}
                                                 </h4>
                                             </div>
 
@@ -215,17 +261,17 @@ class ItemDetailMatch extends Component {
                                                     <div className="col-7">
                                                         <p>
                                                             <span className={"green-text"}>
-                                                                {this.state.item.listing.org.name}
+                                                                {this.state.item.org.name}
                                                             </span>
                                                         </p>
                                                     </div>
 
                                                     <div className="col-3 green-text text-heading text-right">
-                                                        {this.state.item.listing.listing.price ? (
+                                                        {this.state.item.listing.price ? (
                                                             <>
                                                                 GBP {
-                                                                    this.state.item.listing.listing
-                                                                        .price.value
+                                                                    this.state.item.listing.price
+                                                                        .value
                                                                 }
                                                             </>
                                                         ) : (
@@ -241,7 +287,7 @@ class ItemDetailMatch extends Component {
                                                 <p
                                                     style={{ fontSize: "16px" }}
                                                     className={"text-gray-light "}>
-                                                    {this.state.item.listing.listing.description}
+                                                    {this.state.item.listing.description}
                                                 </p>
                                             </div>
                                         </div>
@@ -254,14 +300,23 @@ class ItemDetailMatch extends Component {
                                                     Category
                                                 </p>
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
-                                                    {this.state.item.listing.listing.category},
-                                                    {this.state.item.listing.listing.type},
-                                                    {this.state.item.listing.listing.state}
+                                                    {this.state.item.listing.category},
+                                                    {this.state.item.listing.type},
+                                                    {this.state.item.listing.state}
                                                 </p>
+                                                {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
+                                                {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
                                             </div>
                                         </div>
 
+                                        {/*<div className="row  justify-content-start search-container  pb-2">*/}
 
+                                        {/*<div className={"col-auto"}>*/}
+
+                                        {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
+                                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org.name} </p>*/}
+                                        {/*</div>*/}
+                                        {/*</div>*/}
 
                                         <div className="row  justify-content-start search-container  pb-2">
                                             <div className={"col-auto"}>
@@ -273,14 +328,14 @@ class ItemDetailMatch extends Component {
                                                 <p style={{ fontSize: "18px" }} className="  mb-1">
                                                     {moment(
                                                         this.state.item &&
-                                                            this.state.item.listing.listing
+                                                            this.state.item.listing
                                                                 .available_from_epoch_ms
                                                     ).format("DD MMM YYYY")}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div className="row  justify-content-start search-container   pb-2 ">
+                                        <div className="row  justify-content-start search-container pb-2 ">
                                             <div className={"col-auto"}>
                                                 <p
                                                     style={{ fontSize: "18px" }}
@@ -291,7 +346,7 @@ class ItemDetailMatch extends Component {
 
                                                     {this.state.item &&
                                                         moment(
-                                                            this.state.item.listing.listing
+                                                            this.state.item.listing
                                                                 .expire_after_epoch_ms
                                                         ).format("DD MMM YYYY")}
                                                 </p>
@@ -299,6 +354,10 @@ class ItemDetailMatch extends Component {
                                         </div>
 
                                         <div className="row  justify-content-start search-container pt-2  pb-2">
+                                            {/*<div className={"col-1"}>*/}
+                                            {/*<MarkerIcon  style={{ fontSize: 30, color: "#a8a8a8" }} />*/}
+
+                                            {/*</div>*/}
                                             <div className={"col-auto"}>
                                                 <p
                                                     style={{ fontSize: "18px" }}
@@ -328,7 +387,7 @@ class ItemDetailMatch extends Component {
                                             <ProductExpandItem
                                                 hideMore={true}
                                                 hideAddAll={true}
-                                                productId={this.state.item.listing.product._id.replace(
+                                                productId={this.state.item.product._id.replace(
                                                     "Product/",
                                                     ""
                                                 )}
@@ -337,7 +396,130 @@ class ItemDetailMatch extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <React.Fragment>
+                                <CssBaseline />
+
+                                <AppBar
+                                    position="fixed"
+                                    color="#ffffff"
+                                    className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                    <Toolbar>
+                                        <div
+                                            className="row  justify-content-center search-container "
+                                            style={{ margin: "auto" }}>
+                                            {!this.state.matchExist ? (
+                                                <div className="col-auto">
+                                                    <button
+                                                        onClick={this.showPopUp}
+                                                        type="button"
+                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                                        Request A Match
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {this.state.match && (
+                                                        <Link
+                                                            to={
+                                                                "/matched/" +
+                                                                this.state.match.match._key
+                                                            }
+                                                            className={
+                                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                            }>
+                                                            View Match
+                                                        </Link>
+                                                    )}
+                                                </>
+                                            )}
+                                        </div>
+                                    </Toolbar>
+                                </AppBar>
+                            </React.Fragment>
                             }
+                            <Modal
+                                className={"loop-popup"}
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered
+                                show={this.state.showPopUp}
+                                onHide={this.showPopUp}
+                                animation={false}>
+                                <ModalBody>
+                                    {/*<div className={"row justify-content-center"}>*/}
+                                    {/*<div className={"col-4 text-center"}>*/}
+                                    {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                                    {/*</div>*/}
+                                    {/*</div>*/}
+
+                                    {this.state.loopError ? (
+                                        <>
+                                            <div className={"row justify-content-center"}>
+                                                <div className={"col-12 text-center"}>
+                                                    <p className={"text-bold "}>Failed</p>
+                                                    <p> {this.state.loopError}</p>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className={"row justify-content-center"}>
+                                                <div className={"col-10 text-center"}>
+                                                    <p className={"text-bold"}>Start a match</p>
+                                                    <p>
+
+                                                        We’ll let the seller know that your
+                                                        interested in this product. Do you want to
+                                                        send a message?
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className={"row justify-content-center"}>
+                                                <div
+                                                    className={"col-12"}
+                                                    style={{ textAlign: "center" }}>
+                                                    <TextField
+                                                        id="outlined-basic"
+                                                        label="Message"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        name={"text"}
+                                                        type={"text"}
+                                                    />
+                                                </div>
+                                                <div
+                                                    className={"col-12"}
+                                                    style={{ textAlign: "center" }}>
+                                                    <div className={"row justify-content-center"}>
+                                                        <div
+                                                            className={"col-6"}
+                                                            style={{ textAlign: "center" }}>
+                                                            <p
+                                                                onClick={this.requestMatch}
+                                                                className={
+                                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                                }>
+                                                                Request Match
+                                                            </p>
+                                                        </div>
+
+                                                        <div
+                                                            className={"col-6"}
+                                                            style={{ textAlign: "center" }}>
+                                                            <p
+                                                                onClick={this.showPopUp}
+                                                                className={
+                                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                                }>
+                                                                Cancel
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </ModalBody>
+                            </Modal>
                         </>
                     )}
                 </div>

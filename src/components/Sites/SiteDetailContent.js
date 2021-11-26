@@ -283,7 +283,7 @@ class SiteDetailContent extends Component {
         if (action === "edit") {
 
             this.props.setSiteForm({show:true,
-                item:this.props.item,type:"edit", heading:"Edit Site"});
+                item:this.props.item.site,type:"edit", heading:"Edit Site"});
 
         } else if (action === "delete") {
             this.deleteItem();
@@ -600,6 +600,12 @@ class SiteDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
+                        <div className="row no-gutters pt-4 pb-4  justify-content-center">
+                            <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.props.item&&this.props.item.site.name}</span>
+
+                            </div>
+                        </div>
                         <div className="row no-gutters  justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className=" stick-left-box  ">
@@ -758,11 +764,7 @@ class SiteDetailContent extends Component {
                                 </button>
                             </div>
 
-                            {/*<ProductEditForm*/}
-                            {/*    triggerCallback={(action) => this.callBackSubmit(action)}*/}
-                            {/*    isDuplicate={this.state.productDuplicate}*/}
-                            {/*    productId={this.state.item.product._key}*/}
-                            {/*/>*/}
+
                             <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
                                 <div className="col mobile-menu">
                                     <div className="form-col-left col-12">

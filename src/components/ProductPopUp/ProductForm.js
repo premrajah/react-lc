@@ -329,7 +329,7 @@ class ProductForm extends Component {
             validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("type", [{check: Validators.required, message: '<Sw>'}],fields),
             validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),
@@ -737,22 +737,23 @@ class ProductForm extends Component {
                                      initialValue={this.props.item&&this.props.item.product.name}
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
-                                     name="title" title="Title" />
+                                     name="title" title="Title"
+                                   />
 
                                 </div>
                             </div>
 
                             <div className="row  mt-2">
-                                <div className="col-md-5 col-sm-12  justify-content-start align-items-center">
+                                <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
-                                        name={"is_listable"} title="Allow product to be listed for sale" />
+                                        name={"is_listable"} title="Allow product to be listed" />
 
                                 </div>
 
-                                <div className="col-md-3 col-sm-12">
+                                <div className="col-md-4 col-sm-12">
 
                                     <SelectArrayWrapper
 
@@ -760,7 +761,8 @@ class ProductForm extends Component {
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
                                         options={this.state.condition}
-                                        name={"condition"} title="Condition"/>
+                                        name={"condition"} title="Condition"
+                                    />
 
                                 </div>
 
@@ -803,7 +805,8 @@ class ProductForm extends Component {
 
                                     })
                                     }}
-                                       options={this.state.categories} name={"category"} title="Resource Category"/>
+                                       options={this.state.categories} name={"category"} title="Resource Category"
+                                    />
 
                                 </div>
 
@@ -856,7 +859,7 @@ class ProductForm extends Component {
                             <div className="row no-gutters mt-2">
                                 <div className="col-12">
                                     <div className="row camera-grids   no-gutters   ">
-                                        <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
+                                        <div className="col-md-4 col-sm-12 col-xs-12 pr-2 ">
 
                                             <SelectArrayWrapper
 
@@ -869,7 +872,7 @@ class ProductForm extends Component {
 
                                         </div>
 
-                                        <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
+                                        <div className="col-md-8 col-sm-12 col-xs-12 pl-2">
 
                                             <SelectArrayWrapper
 
@@ -881,10 +884,12 @@ class ProductForm extends Component {
 
                                                                     this.handleChangeProduct(value,"deliver")
 
-                                                                }} select={"Select"} options={this.props.siteList} name={"deliver"} title="Dispatch / Collection Address"/>
+                                                                }} select={"Select"}
+                                                options={this.props.siteList} name={"deliver"}
+                                                title="Dispatch / Collection Address"/>
 
 
-                                            <p style={{ margin: "10px 0" }}>
+                                            <p style={{ marginTop: "10px" }}>
                                                 <span className="mr-1">Do not see your address?</span>
                                                 <span
                                                     onClick={this.showSubmitSite}
@@ -913,7 +918,7 @@ class ProductForm extends Component {
                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                         <div className={"row"}>
                                                             <div className={"col-12"}>
-                                                                <EditSite site={{}} submitCallback={() => this.showSubmitSite()} />
+                                                                <EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -925,7 +930,7 @@ class ProductForm extends Component {
                             </div>
                                 <div className="row no-gutters mt-2">
                                     <div className="col-12">
-                                        <div className="row no-gutters justify-content-center ">
+                                        <div className="row no-gutters justify-content-start ">
                                             <div className="col-12 ">
                                                 <div
                                                     className={"custom-label text-bold text-blue mb-1"}>
@@ -933,7 +938,7 @@ class ProductForm extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="col-6 pr-2">
+                                            <div className="col-4 pr-2">
                                                 <SelectArrayWrapper
                                                     select={"Select"}
                                                     initialValue={this.props.item&&this.props.item.product.units}
@@ -943,7 +948,7 @@ class ProductForm extends Component {
                                                     disabled={ (this.state.units.length > 0) ? false : true}
                                                     options={this.state.units} name={"units"} title="(Units)"/>
                                             </div>
-                                            <div className="col-6 pl-2">
+                                            <div className="col-4 pl-2">
 
                                                 {!this.state.disableVolume&&   <TextFieldWrapper
                                                     // readonly ={this.state.disableVolume}

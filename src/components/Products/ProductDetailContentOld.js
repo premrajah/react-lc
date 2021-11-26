@@ -10,7 +10,7 @@ import {Alert, Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
 import {Link} from "react-router-dom";
 import SearchItem from "../../views/loop-cycle/search-item";
-import ResourceItem from "../../views/create-search/ResourceItem";
+import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@material-ui/core/TextField";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";

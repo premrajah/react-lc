@@ -85,24 +85,24 @@ const SitePageItem = (  props) => {
                 {/*</div>*/}
                 <div className={" pl-2  content-site content-box-listing"}>
 
-                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                        <Link  to={props.isLoggedIn?"/ps/" + props.item._key:"#"}> {props.item.name} {is_head_office&& <span className="mr-2 text-bold text-mute"><small>(Head Office)</small></span>}</Link>
+                    <p style={{ fontSize: "18px" }} className="text-capitlize mb-1">
+                        <Link  to={props.isLoggedIn?"/ps/" + props.item._key:"#"}> <span className={"title-bold"}>{props.item.name}</span> {is_head_office&& <span className="mr-2 text-bold text-gray-light"><small>(Head Office)</small></span>}</Link>
                     </p>
 
-                    {props.item.external_reference &&    <p  className="text-mute mb-1 text-caps ">
+                    {props.item.external_reference &&    <p  className="text-gray-light mb-1 text-capitlize ">
                         Site Id: {props.item.external_reference}
                     </p>}
-                    {email &&    <p  className="text-mute mb-1 text-caps small">
+                    {email &&    <p  className="text-gray-light mb-1 text-capitlize ">
                        email
                     </p>}
-                    {phone &&    <p  className="text-mute mb-1 text-caps small">
+                    {phone &&    <p  className="text-gray-light mb-1 text-capitlize ">
                         {phone}
                     </p>}
-                    {contact &&    <p  className="text-mute mb-1 text-caps small">
+                    {contact &&    <p  className="text-gray-light mb-1 text-capitlize ">
                         {contact}
                     </p>}
 
-                    {address &&    <p  className="text-mute mb-1  text-caps small">
+                    {address &&    <p  className="text-gray-light mb-1  text-capitlize">
                         {address}
                     </p>}
 

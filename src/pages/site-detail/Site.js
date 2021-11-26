@@ -66,11 +66,11 @@ class Site extends Component {
 
         return (
             <Layout hideFooter={true}>
-                <div className="accountpage">
+
                     {this.state.notFound ? (
                         <NotFound />
                     ) : (
-                        <div className={"container pb-5 mb-5"}>
+                        <div className={"container pb-4 mb-4"}>
                             {this.props.currentSite && (
                                 <>
                                  <SiteDetailContent
@@ -82,7 +82,7 @@ class Site extends Component {
                             )}
                         </div>
                     )}
-                </div>
+
             </Layout>
         );
     }

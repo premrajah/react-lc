@@ -17,7 +17,7 @@ import jspdf from "jspdf";
 import QrCodeBg from "../../img/qr-code-bg.png";
 import LoopcycleLogo from "../../img/logo-text.png";
 import SearchItem from "../../views/loop-cycle/search-item";
-import ResourceItem from "../../views/create-search/ResourceItem";
+import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
 import Org from "../Org/Org";
 import MoreMenu from "../MoreMenu";

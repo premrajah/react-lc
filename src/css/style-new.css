@@ -1576,6 +1576,7 @@ a.blue-btn-border
     line-height: 1.4em;
     letter-spacing: 1px;
     height: 48px;
+    background: transparent;
 }
 
 button.blue-btn-border
@@ -1597,6 +1598,8 @@ button.blue-btn-border
     text-transform: uppercase;
     line-height: 1.4em;
     letter-spacing: 1px;
+
+    background: transparent;
 
 }
 
@@ -1851,9 +1854,9 @@ button.blue-btn-border
     font-family: var(--body-text);
 
 }
-/*.MuiInputBase-root{*/
-/*    width: 100%;*/
-/*}*/
+.MuiInputBase-root{
+    width: 100%;
+}
 
 
 
@@ -1970,6 +1973,7 @@ button.blue-btn-border
     border: 2px solid #ebebeb;
     color: #959595;
     min-width: 150px !important;
+
 }
 
 .green-btn-border {
@@ -3601,6 +3605,7 @@ input:active,input:focus{
 .custom-bottom-fixed-appbar{
     width: 100%;
     background: white;
+    z-index: 1000;
 }
 
 .MuiMenu-list{

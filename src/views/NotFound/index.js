@@ -38,16 +38,16 @@ class NotFound extends Component {
                         <div className="row justify-content-center">
                             {!this.props.qrCodeNotFound ?
                                 <div className="col-lg-8">
-                                <h1>404</h1>
-                                <h2>Oops! This Page Could Not Be Found</h2>
-                                <p>
-                                    Sorry but the page you are looking for does not exist, has been
-                                    moved, name changed or is temporarily unavailable
-                                </p>
-                                <Link to="/" className="mt-1 btn blue-btn">
-                                    HOME
-                                </Link>
-                            </div>:
+                                    <h1>404</h1>
+                                    <h2>Oops! This Page Could Not Be Found</h2>
+                                    <p>
+                                        Sorry but the page you are looking for does not exist, has been
+                                        moved, name changed or is temporarily unavailable
+                                    </p>
+                                    <Link to="/" className="mt-1 btn blue-btn">
+                                        HOME
+                                    </Link>
+                                </div>:
                                 <div className="col-lg-8">
                                     <h1>404</h1>
                                     <p>
@@ -55,28 +55,28 @@ class NotFound extends Component {
                                     </p>
                                     {this.props.isLoggedIn ?
                                         <>
-                                                <div className="row justify-content-start pb-3 pt-3 ">
-                                                    <div className="col-6 ">
-                                                        <Link
-                                                            onClick={this.showProductSelection}
-                                                            to={this.props.isLoggedIn && "/my-products"}
-                                                            className="  blue-btn-border mt-2 mb-2">
-                                                            Add Product
-                                                        </Link>
-                                                    </div>
-                                                    <div className="col-6 ">
-                                                        <Link
-
-                                                            to={"/my-products"}
-
-                                                            // onClick={this.showRegister}
-                                                            className={
-                                                                "  blue-btn-border mt-2 mb-2"
-                                                            }>
-                                                            View Products
-                                                        </Link>
-                                                    </div>
+                                            <div className="row justify-content-start pb-3 pt-3 ">
+                                                <div className="col-6 ">
+                                                    <Link
+                                                        onClick={this.showProductSelection}
+                                                        to={this.props.isLoggedIn && "/my-products"}
+                                                        className="  blue-btn-border mt-2 mb-2">
+                                                        Add Product
+                                                    </Link>
                                                 </div>
+                                                <div className="col-6 ">
+                                                    <Link
+
+                                                        to={"/my-products"}
+
+                                                        // onClick={this.showRegister}
+                                                        className={
+                                                            "  blue-btn-border mt-2 mb-2"
+                                                        }>
+                                                        View Products
+                                                    </Link>
+                                                </div>
+                                            </div>
 
                                         </>:
                                         <>

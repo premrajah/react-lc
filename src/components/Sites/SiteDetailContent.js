@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
+import {Alert, Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
@@ -16,6 +16,16 @@ import InfoTabContent from "./InfoTabContent";
 import {GoogleMap} from "../Map/MapsContainer";
 import SubSitesTab from "./SubSitesTab";
 import SubProductsTab from "./SubProductsTab";
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import Box from '@mui/material/Box';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import AggregatesTab from "../Products/AggregatesTab";
+import SearchItem from "../Searches/search-item";
+import ResourceItem from "../../pages/create-search/ResourceItem";
+import ArtifactProductsTab from "../Products/ArtifactProductsTab";
+
 
 class SiteDetailContent extends Component {
     slug;
@@ -57,32 +67,16 @@ class SiteDetailContent extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             initialValues:{},
-            activeKey:"productinfo",
+            activeKey:1,
+            zoomQrCode:false,
+            siteQrCode:null
 
 
         };
 
-        this.getSubProducts = this.getSubProducts.bind(this);
-        this.getMatches = this.getMatches.bind(this);
-        this.getSearches = this.getSearches.bind(this);
-        this.getListing = this.getListing.bind(this);
-        this.showRegister = this.showRegister.bind(this);
-        this.getSites = this.getSites.bind(this);
-        this.showSubmitSite = this.showSubmitSite.bind(this);
-        this.showProductEdit = this.showProductEdit.bind(this);
-        this.showProductDuplicate = this.showProductDuplicate.bind(this);
 
-        this.callBackResult = this.callBackResult.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
         this.showProductSelection = this.showProductSelection.bind(this);
-        this.showReleaseProduct = this.showReleaseProduct.bind(this);
-        this.showServiceAgent = this.showServiceAgent.bind(this);
-        this.showOrgForm = this.showOrgForm.bind(this);
-        this.handleSubmitOrg = this.handleSubmitOrg.bind(this);
-        this.getOrgs = this.getOrgs.bind(this);
-        this.loadInfo = this.loadInfo.bind(this);
 
-        this.phonenumber = this.phonenumber.bind(this);
     }
 
     actionSubmit = () => {
@@ -142,112 +136,7 @@ class SiteDetailContent extends Component {
         }
     };
 
-    phonenumber(inputtxt) {
-        var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
-        var phoneWithZero = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
-
-        if (inputtxt.match(phoneNoWithCode)) {
-            return true;
-        } else if (inputtxt.match(phoneWithZero)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    handleChangeEmail(field, e) {
-        var email = e.target.value;
-
-        var error = false;
-
-        if (!email) {
-            error = true;
-        }
-
-        if (typeof email !== "undefined") {
-            let lastAtPos = email.lastIndexOf("@");
-            let lastDotPos = email.lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    email.indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    email.length - lastDotPos > 2
-                )
-            ) {
-                error = true;
-            }
-        }
-
-        this.setState({
-            email: e.target.value,
-            emailError: error,
-        });
-    }
-
-    getOrgs() {
-        axios.get(baseUrl + "org/all").then(
-            (response) => {
-                var response = response.data;
-
-                this.setState({
-                    orgs: response.data,
-                });
-            },
-            (error) => {}
-        );
-    }
-
-    handleSubmitOrg() {
-        var email = this.state.email;
-
-
-        if (!this.state.emailError)
-            axios
-                .post(baseUrl + "org/email", {
-                    email: email,
-                })
-                .then((res) => {
-                    this.showOrgForm();
-                    this.getOrgs();
-                })
-                .catch((error) => {});
-    }
-
-    showOrgForm() {
-        this.setState({
-            showOrgForm: !this.state.showOrgForm,
-        });
-    }
-
-    showReleaseProduct() {
-        this.setState({
-            errorRelease: false,
-        });
-
-        this.getSites();
-        this.setState({
-            showReleaseProduct: !this.state.showReleaseProduct,
-        });
-    }
-
-    showServiceAgent() {
-        this.setState({
-            errorServiceAgent: false,
-        });
-
-        this.getSites();
-        this.setState({
-            showServiceAgent: !this.state.showServiceAgent,
-        });
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
 
     showProductSelection(event) {
         this.props.setProduct(this.props.item.site);
@@ -267,7 +156,6 @@ class SiteDetailContent extends Component {
 
             this.getSubProducts();
 
-            this.loadInfo();
         }
     }
 
@@ -541,9 +429,11 @@ class SiteDetailContent extends Component {
         );
     }
 
-    setActiveKey=(key)=>{
 
 
+    setActiveKey=(event,key)=>{
+
+        console.log(event, key)
         this.setState({
             activeKey:key
         })
@@ -552,44 +442,52 @@ class SiteDetailContent extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.item.site) {
-            this.loadProduct(this.props.productId);
-        } else {
+
+          this.setActiveKey(null,"1")
+
             this.setState({
                 item: this.props.item.site,
             });
 
-            this.loadInfo();
-        }
 
+        this.getQrCode()
 
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-
-        if (prevProps!==this.props) {
-
-
-            this.setActiveKey("productinfo")
-        }
+        //
+        // if (prevProps!==this.props) {
+        //     this.setActiveKey("1")
+        // }
     }
 
-    loadInfo() {
-        if (this.state.item) {
-            // this.getOrgs();
-            //
-            // if (this.state.item.listing && this.props.isLoggedIn) {
-            //     this.getListing();
-            // }
-            //
-            // if (this.state.item && this.state.item.searches.length > 0) {
-            //     this.getSearches();
-            // }
-            //
-            // if (this.state.showRegister && this.state.isLoggedIn && this.state.userDetail)
-            //     this.getSites();
-        }
+
+
+    callZoom=()=>{
+
+        this.setState({
+            zoomQrCode:!this.state.zoomQrCode
+
+
+        })
     }
 
+
+    getQrCode=()=> {
+
+
+        if(!this.props.item.site._key) return;
+
+        axios.get(`${baseUrl}site/${this.props.item.site._key}/code-artifact`)
+
+            .then(response => {
+                this.setState({siteQrCode: response.data.data})
+            })
+            .catch(error => {
+
+            })
+
+
+    }
 
 
     render() {
@@ -600,42 +498,52 @@ class SiteDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-                        <div className="row no-gutters pt-4 pb-4  justify-content-center">
+
+                        {this.state.zoomQrCode&&
+                        <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
+                            <img className="img-fluid qr-code-zoom"
+
+                                 src={this.state.siteQrCode.blob_url}
+                                />
+                        </div>}
+
+
+                        <div className="row  pt-4 pb-4  justify-content-center">
                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
                                 <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.props.item&&this.props.item.site.name}</span>
 
                             </div>
                         </div>
-                        <div className="row no-gutters  justify-content-center">
+                        <div className="row   justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className=" stick-left-box  ">
 
-
-                                  {/*<ImageHeader images={this.state.item.artifacts} />*/}
                                     {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
 
-
+                                    <div className={"p-2 gray-border rad-8 bg-white"}>
                                     <GoogleMap width={"100%"} height={"300px"} locations={[{
                                         name: this.props.item.site.name,
                                         location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                         isCenter: true
                                     }]}/>
-
+                                    </div>
                                     }
 
-                                    <QrCode hideRegister={this.props.hideRegister}  item={this.state.item}/>
+                                    {this.state.siteQrCode && <QrCode item={this.props.item.site} callZoom={this.callZoom}
+                                            hideRegister={this.props.hideRegister}
+                                            siteQrCode={this.state.siteQrCode}  />}
 
                                 </div>
 
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 desktop-padding-left pt-3 "}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12 p-0 "}>
 
-                                <div className="row justify-content-start pb-3  ">
+                                <div className="row  justify-content-start   ">
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-8">
-                                                <h4 className="blue-text text-heading text-caps">
+                                                <h4 className="text-capitalize product-title">
                                                     {this.props.item.site.name}
                                                 </h4>
                                             </div>
@@ -676,74 +584,69 @@ class SiteDetailContent extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="col-12">
-                                        <div className="row">
-                                            <div className="col-7">
-                                                {/*<OrgFull org={this.state.item.org} />*/}
-                                            </div>
-                                        </div>
+                                </div>
+                                <div className="row justify-content-start pb-3 ">
+                                    <div className="col-auto">
+                                        <p
+
+                                            className={"text-gray-light  "}>
+                                            {this.props.item.site.description}
+                                        </p>
                                     </div>
                                 </div>
-                                {/*<div className={"listing-row-border "}></div>*/}
 
-                                {/*<div className="row justify-content-start pb-3 pt-3 ">*/}
-                                {/*    <div className="col-auto">*/}
-                                {/*        <p*/}
-                                {/*            style={{ fontSize: "16px" }}*/}
-                                {/*            className={"text-gray-light  "}>*/}
-                                {/*            /!*{this.state.item.product.description}*!/*/}
-                                {/*        </p>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
                                 <div className={"listing-row-border "}></div>
 
-                                <div className="row justify-content-start pb-3 pt-3 tabs-detail">
+
+                                <div className="row justify-content-start pb-3  tabs-detail">
                                     <div className="col-12 mt-2">
-                                        <Tabs
+                                        <Box sx={{ width: '100%', typography: 'body1' }}>
+                                            <TabContext value={this.state.activeKey}>
+                                                <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                    <TabList
+                                                        variant="scrollable"
+                                                        scrollButtons="auto"
+                                                        textColor={"#27245C"}
+                                                        TabIndicatorProps={{
+                                                            style: {
+                                                                backgroundColor: "#27245C",
+                                                                padding: '2px',
+                                                            }
+                                                        }}
+                                                        onChange={this.setActiveKey} >
 
-                                            onSelect={(k) => this.setActiveKey(k)}
-                                            activeKey={this.state.activeKey}
-                                            id="uncontrolled-tab-example">
-                                            <Tab eventKey="productinfo" title=" Info">
-                                               <InfoTabContent
+                                                        <Tab label="Info" value="1"/>
 
-                                                   item={this.props.item.site} />
+                                                        <Tab label="Sub Site" value="2" />
 
-                                            </Tab>
+                                                        {this.props.isLoggedIn  &&
+                                                        <Tab label="Sub Products" value="3" />
+                                                        }
 
-                                            <Tab eventKey="subsites" title="Sub Sites">
+                                                    </TabList>
+                                                </Box>
+
+
+                                                <TabPanel value="1">
+
+                                                <InfoTabContent item={this.props.item.site} />
+
+                                                </TabPanel>
+                                                <TabPanel value="2">
+
                                                 <SubSitesTab  item={this.props.item} />
-                                            </Tab>
+
+                                                </TabPanel>
+
+                                                {this.props.isLoggedIn  &&
+                                                <TabPanel value="3">
+                                                <SubProductsTab item={this.props.item.site} />
+                                                </TabPanel>}
 
 
-                                            {this.props.isLoggedIn && this.props.item.site &&      <Tab eventKey="subproducts" title="Products">
-                                              <SubProductsTab item={this.props.item.site} />
-                                            </Tab>}
+                                            </TabContext>
+                                        </Box>
 
-
-
-                                            {/*{this.state.searches.length > 0 && (*/}
-                                            {/*    <Tab eventKey="search" title="Searches">*/}
-                                            {/*        {this.state.searches.map((item) => (*/}
-                                            {/*            <SearchItem item={item} />*/}
-                                            {/*        ))}*/}
-                                            {/*    </Tab>*/}
-                                            {/*)}*/}
-
-                                            {/*{this.state.listingLinked && (*/}
-                                            {/*    <Tab eventKey="listing" title="Listing">*/}
-                                            {/*        {this.state.listingLinked && (*/}
-                                            {/*            <ResourceItem*/}
-                                            {/*                history={this.props.history}*/}
-                                            {/*                item={this.state.listingLinked}*/}
-                                            {/*            />*/}
-                                            {/*        )}*/}
-                                            {/*    </Tab>*/}
-                                            {/*)}*/}
-                                            {/*<Tab eventKey="artifacts" title="Artifacts">*/}
-                                            {/*    /!*<ArtifactProductsTab item={this.props.item.site} />*!/*/}
-                                            {/*</Tab>*/}
-                                        </Tabs>
                                     </div>
                                 </div>
                             </div>

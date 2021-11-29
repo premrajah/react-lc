@@ -15,7 +15,7 @@ const PageHeader = ({ pageIcon, pageTitle, subTitle, bottomLine }) => {
                 </div>
             </div>
 
-            <div className="row mb-3">
+            <div className="row mb-2">
                 <div className="col-12">
                     <p className="text-gray-light">{subTitle ? subTitle : ""}</p>
                 </div>

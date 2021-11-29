@@ -21,7 +21,7 @@ import HeaderWhiteBack from "../../views/header/HeaderWhiteBack";
 import ResourceItem from "../../views/item/ResourceItem";
 import HeaderDark from "../../views/header/HeaderDark";
 import Sidebar from "../../views/menu/Sidebar";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import moment from "moment";
 import _ from "lodash";
@@ -1140,7 +1140,7 @@ if ((this.state.activeStep-1)==0){
                                         <div className="row no-gutters justify-content-center ">
                                             <div className="col-12">
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.item&&this.props.item.product.name}
+                                                    initialValue={this.props.item&&this.props.item.search.name}
                                                     onChange={(value)=>this.handleChange(value,"title")}
                                                       error={this.state.showFieldErrors&&this.state.errors["title"]}
                                                      name="title"
@@ -1324,12 +1324,12 @@ if ((this.state.activeStep-1)==0){
                                                 </FormHelperText>
 
 
-                                            {this.state.productSelected && (
+                                            {this.state.fields["product"] && (
                                                 <>
                                                     <ProductExpandItem
                                                         hideMore={true}
                                                         hideAddAll={true}
-                                                        productId={this.state.productSelected}
+                                                        productId={this.state.fields["product"]}
                                                     />
                                                 </>
                                             )}

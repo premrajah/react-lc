@@ -5,7 +5,7 @@ import PlaceholderImg from "../img/place-holder-lc.png";
 import { makeStyles } from "@mui/styles";
 import moment from "moment";
 import { withStyles } from "@mui/styles/index";
-import ProductExpandItem from "./ProductExpandItem";
+import ProductExpandItem from "./Products/ProductExpandItem";
 
 class ItemDetailPreview extends Component {
     slug;

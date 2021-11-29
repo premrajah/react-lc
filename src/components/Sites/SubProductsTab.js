@@ -11,6 +11,7 @@ import Select from "@mui/material/Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import {withStyles} from "@mui/styles";
+import AddLinkIcon from "@mui/icons-material/AddLink";
 
 class SubProductsTab extends Component {
     slug;
@@ -189,18 +190,27 @@ class SubProductsTab extends Component {
         return (
             <>
 
-                <p
-                    style={{ margin: "10px 0px" }}
-                    className={
-                        "green-text forgot-password-link text-mute small"
-                    }>
-                           <span  data-parent={this.props.item._key}
-                                                        onClick={this.toggleSelection}
-                                                    >
+
+                {this.props.isLoggedIn&&
+
+                <div  className={
+                    " mt-4  text-right"}>
+                    <button
+                        data-parent={this.props.item._key}
+                        onClick={this.toggleSelection}
+                        className={
+                            "btn-gray-border "
+                        }>
+                        <AddLinkIcon />     <span
+
+                    >
                                                         Link Products
                                                     </span>
-                </p>
 
+                    </button>
+                </div> }
+
+                <div className={"mt-4"}></div>
                 {this.state.products&&this.state.products.length > 0 && (
                     <>
                         {this.state.products.map(

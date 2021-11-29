@@ -11,7 +11,7 @@ import {Alert, Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
-import SearchItem from "../views/loop-cycle/search-item";
+import SearchItem from "./Searches/search-item";
 import ResourceItem from "../pages/create-search/ResourceItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";

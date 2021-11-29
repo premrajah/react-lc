@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import Paper from "../img/place-holder-lc.png";
+import Paper from "../../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
-import Org from "./Org/Org";
-import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
-import OrgFull from "./Org/OrgFull";
+import Org from "../Org/Org";
+import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
+import OrgFull from "../Org/OrgFull";
+import OrgComponent from "../Org/OrgComponent";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 class CycleItem extends Component {
     constructor(props) {
@@ -194,58 +196,88 @@ class CycleItem extends Component {
 
     render() {
         return (
-            <div className="row no-gutters justify-content-left mt-4 mb-4 listing-row-border pb-4">
+            <div className="row no-gutters justify-content-left mb-3 p-3 rad-8 bg-white ">
                 <div className={"col-2 text-left"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {this.props.item.product.artifacts.length > 0 ? (
                                 <ImageOnlyThumbnail images={this.props.item.product.artifacts} />
                             ) : (
-                                <img className={"img-fluid"} src={Paper} alt="" />
+                                <img className={"img-fluid img-list"} src={Paper} alt="" />
                             )}
                         </>
                     </Link>
                 </div>
-                <div className={"col-4 pl-2 content-box-listing"}>
+                <div className={"col-6 pl-3 content-box-listing"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
-                            <p style={{ fontSize: "18px" }} className=" mb-1 text-bold text-blue">
-                                {this.props.item.product.product.name}
+                            {/*<p  className="text-capitlize mb-1 title-bold">*/}
+                            {/*    {this.props.item.listing.name}*/}
+                            {/*</p>*/}
+                            <p  className=" mb-1 text-gray-light  ">
+                                {this.props.item.product && (
+                                    <>Listing: <span className={"text-blue"}>{this.props.item.listing.name}</span> </>
+                                )}
                             </p>
-                            <p style={{ fontSize: "16px" }} className=" mb-1">
-                                {this.props.item.product.product.description.substr(0, 60)} ..
+                            <p  className=" mb-1 text-gray-light mt-2 ">
+                                {this.props.item.product && (
+                                    <>Search: <span className={"text-blue"}>{this.props.item.search.name}</span> </>
+                                )}
+                            </p>
+                            <p  className=" mb-1 text-gray-light mt-2 ">
+                                {this.props.item.product && (
+                                    <>Product: <span className={"text-blue"}>{this.props.item.product.product.name}</span> </>
+                                )}
                             </p>
 
-                            <p style={{ fontSize: "16px" }} className=" mb-1">
-                                Listing: {this.props.item.listing.name}
+                            <p className={"text-gray-light mt-2 "}>
+                                Category:
+                                <span
+
+                                    className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                            <span className="text-capitlize">
+                                                                {capitalize(this.props.item.listing.category)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className=" text-capitlize">
+                                                                {capitalize(this.props.item.listing.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className="  text-capitlize">
+                                                                {capitalize(this.props.item.listing.state)}
+                                                            </span>
+
+
+
+                                    </span>
                             </p>
+
                         </>
                     </Link>
 
-                    <div style={{ fontSize: "16px" }} className=" mb-1">
-                        <OrgFull org={this.props.item.sender} /> →
-                        <OrgFull org={this.props.item.receiver} />
+                    <div  className=" mt-2">
+                        <OrgComponent org={this.props.item.sender} /> →
+                        <OrgComponent org={this.props.item.receiver} />
                     </div>
 
                     {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}
                 </div>
 
-                <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className="text-mute mb-1 small">
-                        <span className={"text-bold"}>
+                <div  className={"col-2 text-right"}>
+                    <p className="text-gray-light mb-1 ">
+                     Offer: <span className={"text-bold text-pink"}>
 
                             GBP {this.props.item.offer.amount.value}
                         </span>
                     </p>
                 </div>
 
-                <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className={"green-text text-mute text-bold text-caps small"}>
-                        {this.props.item.cycle.stage}
+
+                <div  className={"col-2 justify-content-end"}>
+                    <p className={"  status text-right"}>
+                                <span className={this.props.item.cycle.stage!="closed"?" active text-capitlize":"text-capitlize waiting "}>
+                                    {this.props.item.cycle.stage}
+                                </span>
                     </p>
-                </div>
-                <div style={{ textAlign: "right" }} className={"col-2"}>
-                    <p className={" text-mute text-bold small"}>
+                    <p className={" text-gray-light date-bottom "}>
                         {moment(this.props.item.cycle._ts_epoch_ms).format("DD MMM YYYY")}
                     </p>
                 </div>

@@ -15,7 +15,7 @@ import moment from "moment";
 import encodeUrl from "encodeurl";
 import { withStyles } from "@mui/styles/index";
 import MatchItemBuyer from "../../components/MatchItemBuyer";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 
 class ItemDetailMatch extends Component {
     match;

@@ -239,10 +239,10 @@ class SiteForm extends Component {
                 }
                 this.props.loadSites()
                 this.props.loadParentSites()
-
+                this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
-                this.hidePopUp()
+
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
@@ -554,11 +554,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <Close />
                         </button>
                     </div>
-                    <div className="row  justify-content-center mobile-menu-row pt-3 m-2">
+                    <div className="row  justify-content-center mobile-menu-row p-3 m-2">
 
-                    <div className="col-12  ">
-                        <h3 className={"blue-text text-heading text-center"}>
-                            {this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
+                    <div className="col-12 p-0 ">
+                        <h4 className={"blue-text text-heading text-left"}>
+                            {this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
                     </div>
 
                         {/*link existing or new site*/}
@@ -593,7 +593,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 </div>
                             </div>
                             <div className="row  ">
-                                <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.is_head_office}
@@ -602,7 +602,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                 </div>
 
-                                <div className="col-md-8 col-sm-12">
+                                <div className="col-md-6 col-sm-12">
 
                                     <TextFieldWrapper
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}

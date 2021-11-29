@@ -1,15 +1,11 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import Close from "@mui/icons-material/Close";
 import "../../Util/upload-file.css";
 import {makeStyles} from "@mui/styles";
 import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
-import TextField from "@mui/material/TextField";
-import clsx from "clsx";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
@@ -22,7 +18,6 @@ import ProductTreeView from "../../components/ProductTreeView";
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 
@@ -31,6 +26,10 @@ import EditSite from "../../components/Sites/EditSite";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 
 class ListForm extends Component {
@@ -94,7 +93,9 @@ class ListForm extends Component {
             selectedProductId: null,
             previewProduct:null,
             selectedLoading:false,
-            createListingError:null
+            createListingError:null,
+            activeStep:0,
+            showFieldErrors:false
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -256,7 +257,153 @@ class ListForm extends Component {
         }
     }
 
-    handleChange(field, e) {
+    validateDates=()=>{
+
+
+        let valid=true
+
+        if (!this.state.startDate){
+
+            this.setState({
+                startDateError:true
+            })
+
+            valid=  false
+
+        }else{
+            this.setState({
+                startDateError:false
+            })
+        }
+
+        if (!this.state.endDate){
+
+            this.setState({
+                endDateError:true
+            })
+
+            valid =  false
+
+        }else{
+            this.setState({
+                endDateError:false
+            })
+
+        }
+        return valid
+
+
+    }
+
+
+    handleValidationList=(activeStep)=> {
+
+
+        let fields = this.state.fields;
+
+        let validations=[]
+
+
+
+        if (activeStep===0) {
+
+            validations = [
+
+                validateFormatCreate("title", [{check: Validators.required, message: 'Required'}], fields),
+                validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
+                // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
+
+            ]
+
+        }
+        else if (activeStep===1) {
+            validations = [
+                validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
+                validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
+
+            ]
+
+        }
+        else if (activeStep===2) {
+
+        }
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        console.log("errors")
+        console.log(formIsValid)
+        console.log(errors)
+
+
+        return formIsValid;
+
+
+    }
+
+
+    handleChange=(value,field)=>{
+
+
+        if (field==="startDate"){
+            this.setState({
+                startDate:value
+            })
+        }else if(field==="endDate"){
+            this.setState({
+                endDate:value
+            })
+        }
+
+        let fields = this.state.fields;
+        fields[field] = value;
+
+        this.setState({ fields });
+
+        this.setState({
+            showFieldErrors:false,
+
+        })
+
+
+
+        if (this.handleValidationList(this.state.activeStep)){
+
+
+            if (this.state.activeStep==1){
+
+                if (this.validateDates()){
+
+                    this.setState({
+                        nextBlue:true,
+
+                    })
+                }else{
+
+                    this.setState({
+                        nextBlue:false,
+
+                    })
+                }
+
+            }else{
+
+                this.setState({
+                    nextBlue:true,
+
+                })
+
+            }
+
+        }else{
+            this.setState({
+                nextBlue:false,
+
+            })
+
+        }
+    }
+    handleChangeOld(field, e) {
         let fields = this.state.fields;
 
         fields[field] = e.target.value;
@@ -290,73 +437,7 @@ class ListForm extends Component {
         }
     }
 
-    handleValidateOne() {
-        let fields = this.state.fields;
-        let errors = this.state.errors;
-        let formIsValid = true;
 
-        if (!fields["title"]) {
-            formIsValid = false;
-            errors["title"] = "Required";
-        }
-
-        if (!fields["description"]) {
-            formIsValid = false;
-            errors["description"] = "Required";
-        }
-
-        // if (!this.state.selectedProductId) {
-        //     formIsValid = false;
-        //     errors["product"] = "Required";
-        // }
-
-        if (!fields["product"]) {
-            formIsValid = false;
-            errors["product"] = "Required";
-        }
-
-        this.setState({
-            nextBlue: formIsValid,
-            errors: errors,
-        });
-
-        return formIsValid;
-    }
-
-    handleValidateTwo() {
-        let fields = this.state.fields;
-        let errors = this.state.errors;
-        let formIsValid = true;
-
-        if (!fields["deliver"]) {
-            formIsValid = false;
-            errors["deliver"] = "Required";
-        }
-
-        if (!fields["startDate"]) {
-            formIsValid = false;
-            errors["startDate"] = "Required";
-        }
-
-        if (!fields["endDate"]) {
-            formIsValid = false;
-            errors["endDate"] = "Required";
-        }
-
-        if (!this.state.free) {
-            if (!fields["price"]) {
-                formIsValid = false;
-                errors["price"] = "Required";
-            }
-        }
-
-        this.setState({
-            nextBlueAddDetail: formIsValid,
-            errors: errors,
-        });
-
-        return formIsValid;
-    }
 
     handleChangeDateStartDate = (date) => {
         this.setState({
@@ -800,54 +881,32 @@ class ListForm extends Component {
                                     <div onSubmit={this.createListing} className={"mb-5"}>
                                         <div className="row no-gutters justify-content-center mt-2">
                                             <div className="col-12">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Title
-                                                </div>
-
-                                                <CustomizedInput
-                                                    onChange={this.handleChange.bind(this, "title")}
-                                                    name={"title"}
+                                                <TextFieldWrapper
+                                                    initialValue={this.props.item&&this.props.item.search.name}
+                                                    onChange={(value)=>this.handleChange(value,"title")}
+                                                    error={this.state.showFieldErrors&&this.state.errors["title"]}
+                                                    name="title"
+                                                    title="Title"
                                                     id="outlined-basic"
                                                     variant="outlined"
                                                     fullWidth={true}
                                                 />
-                                                {this.state.errors["title"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["title"]}
-                                                    </span>
-                                                )}
+
                                             </div>
 
-                                            <div className="col-12 mt-4">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Description
-                                                </div>
+                                            <div className="col-12 mt-2">
 
-                                                <CustomizedInput
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "description"
-                                                    )}
+                                                <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChange(value,"description")}
                                                     name={"description"}
                                                     id="outlined-basic"
                                                     multiline
                                                     rows={4}
                                                     variant="outlined"
                                                     fullWidth={true}
+                                                    title="Description"
                                                 />
-                                                {this.state.errors["description"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["description"]}
-                                                    </span>
-                                                )}
+
                                             </div>
 
                                             <div className="col-12 mt-4 mb-4">
@@ -905,10 +964,9 @@ class ListForm extends Component {
                                                 <CustomizedInput
                                                     value={this.state.selectedProductId}
                                                     className={"d-none"}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "product"
-                                                    )}
+
+                                                    onChange={(value)=>this.handleChange(value,"product")}
+
                                                     name={"product"}
                                                     placeholder={"product"}
                                                     id="outlined-basic"
@@ -942,246 +1000,107 @@ class ListForm extends Component {
                                         <div className="row no-gutters justify-content-center mt-2">
                                             <div className="col-12 mt-4">
                                                 <div className="row ">
-                                                    <div className="col-md-12 col-sm-6 col-xs-12 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue mb-1"
-                                                            }>
-                                                            Located At
-                                                        </div>
 
-                                                        <FormControl
+                                                    <div className="col-12 mb-2">
 
-                                                            className={classes.formControl}>
-                                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Located At</InputLabel>*/}
-                                                            <CustomizedSelect
-                                                                name={"deliver"}
-                                                                native
-                                                                // label="Located At"
-                                                                onChange={this.handleChange.bind(
-                                                                    this,
-                                                                    "deliver"
-                                                                )}
-                                                                inputProps={{
-                                                                    name: "deliver",
-                                                                    id:
-                                                                        "outlined-age-native-simple",
-                                                                }}>
-                                                                <option value={null}>Select</option>
+                                                        <SelectArrayWrapper
+                                                            valueKey={"_key"}
+                                                            initialValue={this.props.item&&capitalize(this.props.item.product.deliver)}
+                                                            onChange={(value)=>this.handleChange(value,"deliver")}
+                                                            error={this.state.showFieldErrors&&this.state.errors["deliver"]}
+                                                            options={this.props.siteList}
+                                                            option={"name"}
+                                                            select={"Select"}
+                                                            name={"deliver"} title="Deliver"
+                                                            native
+                                                        />
+                                                        <p style={{ marginTop: "10px" }}>
 
-                                                                {this.props.siteList.map((item) => (
-                                                                    <option value={item._key}>
-                                                                        {item.name +
-                                                                            "(" +
-                                                                            item.address +
-                                                                            ")"}
-                                                                    </option>
-                                                                ))}
-                                                            </CustomizedSelect>
-                                                        </FormControl>
-
-                                                        {this.state.errors["deliver"] && (
-                                                            <span className={"text-mute small"}>
-                                                                <span style={{ color: "red" }}>
-                                                                    *
-                                                                </span>
-                                                                {this.state.errors["deliver"]}
-                                                            </span>
-                                                        )}
-
-                                                        <p
-                                                            style={{ margin: "10px 0" }}
-                                                            onClick={this.toggleSite}
-                                                            className={
-                                                                "green-text forgot-password-link text-mute small"
-                                                            }>
-                                                            Add New Site
+                                                            Don’t see it on here?
+                                                            <span
+                                                                onClick={this.toggleSite}
+                                                                className={
+                                                                    "green-text forgot-password-link text-mute small"
+                                                                }>
+                                                    Add a site
+                                                </span>
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div className="row no-gutters justify-content-center mt-5">
-                                            <div className="col-12 mb-3">
-                                                <div className="row ">
-                                                    <div className="col-6 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue "
-                                                            }>
-                                                            Required From
-                                                        </div>
-
-                                                        {/*<MuiPickersUtilsProvider*/}
-                                                        {/*    utils={MomentUtils}>*/}
-                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                        <MobileDatePicker
-                                                                minDate={new Date()}
-                                                                // label="Required By"
-                                                                inputVariant="outlined"
-                                                                variant={"outlined"}
-                                                                margin="normal"
-                                                                id="date-picker-dialog"
-                                                                label="Available From"
-                                                                format="DD/MM/yyyy"
-                                                                value={this.state.startDate}
-                                                                onChange={this.handleChangeDateStartDate.bind(
-                                                                    this
-                                                                )}
-
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
-                                                            />
-                                                        </LocalizationProvider>
-                                                        {/*</MuiPickersUtilsProvider>*/}
-
-                                                        {this.state.errors["startDate"] && (
-                                                            <span className={"text-mute small"}>
-                                                                <span style={{ color: "red" }}>
-                                                                    *
-                                                                </span>
-                                                                {this.state.errors["startDate"]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="col-6 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue "
-                                                            }>
-                                                            Required By
-                                                        </div>
-
-                                                        {/*<MuiPickersUtilsProvider*/}
-                                                        {/*    utils={MomentUtils}>*/}
-
-                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                        <MobileDatePicker
-                                                                minDate={
-                                                                    this.state.startDate
-                                                                        ? this.state.startDate
-                                                                        : new Date()
-                                                                }
-                                                                // label="Required By"
-                                                                inputVariant="outlined"
-                                                                variant={"outlined"}
-                                                                margin="normal"
-                                                                id="date-picker-dialog"
-                                                                label="End Date "
-                                                                format="DD/MM/yyyy"
-                                                                value={this.state.endDate}
-                                                                onChange={this.handleChangeDateEndDate.bind(
-                                                                    this
-                                                                )}
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
-                                                            />
-                                                        </LocalizationProvider>
-                                                        {/*</MuiPickersUtilsProvider>*/}
-
-                                                        {this.state.errors["endDate"] && (
-                                                            <span className={"text-mute small"}>
-                                                                <span style={{ color: "red" }}>
-                                                                    *
-                                                                </span>
-                                                                {this.state.errors["endDate"]}
-                                                            </span>
-                                                        )}
-                                                    </div>
+                                        <div className="row no-gutters justify-content-start ">
+                                            <div className="col-4 pr-1">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue "
+                                                    }>
+                                                    Available From
                                                 </div>
+
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                    <MobileDatePicker
+
+                                                        className={"full-width-field"}
+                                                        disableHighlightToday={true}
+                                                        minDate={new Date()}
+                                                        // label="Required By"
+                                                        inputVariant="outlined"
+                                                        variant={"outlined"}
+                                                        margin="normal"
+                                                        id="date-picker-dialog-1"
+                                                        // label="Available From"
+                                                        inputFormat="dd/MM/yyyy"
+                                                        value={this.state.startDate}
+
+                                                        // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
+                                                        // onChange={this.handleChangeDateStartDate.bind(
+                                                        //     this
+                                                        // )}
+                                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                                        onChange={(value)=>this.handleChange(value,"startDate")}
+
+                                                    />
+                                                </LocalizationProvider>
+
+                                                {this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
                                             </div>
 
-                                            <div className="col-12 mb-3">
-                                                <div className="row">
-                                                    <div className="col-md-6 col-sm-12 col-xs-12">
-                                                        <div className="row">
-                                                            <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
-                                                                <div
-                                                                    className={
-                                                                        "custom-label text-bold text-blue "
-                                                                    }>
-                                                                    Price
-                                                                </div>
-                                                            </div>
+                                            <div className="col-4 pl-1 ">
 
-                                                            <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
-                                                                <button
-                                                                    onClick={this.toggleSale}
-                                                                    className={
-                                                                        !this.state.free
-                                                                            ? "col-12 btn-select-free green-bg"
-                                                                            : "btn-select-free"
-                                                                    }>
-                                                                    For Sale
-                                                                </button>
-
-                                                                <button
-                                                                    onClick={this.toggleFree}
-                                                                    className={
-                                                                        this.state.free
-                                                                            ? "col-12 btn-select-free green-bg"
-                                                                            : "btn-select-free"
-                                                                    }>
-                                                                    Free
-                                                                </button>
-                                                            </div>
-
-                                                            <div
-                                                                style={{ paddingLeft: "0" }}
-                                                                className="col-md-12 col-sm-12 col-xs-12 ">
-                                                                {!this.state.free && (
-                                                                    <div className="col-12 mb-5">
-                                                                        <CustomizedInput
-                                                                            name={"price"}
-                                                                            type={"number"}
-                                                                            onChange={this.handleChange.bind(
-                                                                                this,
-                                                                                "price"
-                                                                            )}
-                                                                            id="input-with-icon-textfield"
-                                                                            label="£"
-                                                                            variant="outlined"
-                                                                            className={
-                                                                                clsx(
-                                                                                    classes.margin,
-                                                                                    classes.textField
-                                                                                ) +
-                                                                                " full-width-field"
-                                                                            }
-                                                                            id="input-with-icon-textfield"
-                                                                        />
-
-                                                                        {this.state.errors[
-                                                                            "price"
-                                                                        ] && (
-                                                                            <span
-                                                                                className={
-                                                                                    "text-mute small"
-                                                                                }>
-                                                                                <span
-                                                                                    style={{
-                                                                                        color:
-                                                                                            "red",
-                                                                                    }}>
-                                                                                    *
-                                                                                </span>
-                                                                                {
-                                                                                    this.state
-                                                                                        .errors[
-                                                                                        "price"
-                                                                                    ]
-                                                                                }
-                                                                            </span>
-                                                                        )}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue "
+                                                    }>
+                                                    Available By
                                                 </div>
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                    <MobileDatePicker
+                                                        disableHighlightToday={true}
+
+                                                        minDate={new Date()}
+                                                        // label="Required By"
+                                                        inputVariant="outlined"
+                                                        variant={"outlined"}
+                                                        margin="normal"
+                                                        id="date-picker-dialog"
+                                                        inputFormat="dd/MM/yyyy"
+                                                        value={this.state.endDate}
+                                                        // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+
+                                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                                        onChange={(value)=>this.handleChange(value,"endDate")}
+
+                                                    />
+                                                </LocalizationProvider>
+                                                {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

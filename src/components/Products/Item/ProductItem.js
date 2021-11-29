@@ -260,7 +260,8 @@ class ProductItemNew extends Component {
 
     render() {
         return (
-            <> <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
+            <>
+                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-4":"col-2 "}>
                                     <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
@@ -359,7 +360,7 @@ class ProductItemNew extends Component {
                                     </>
                                     }
 
-                                    <p className={"text-gray-light "}>
+                                    <p className={"text-gray-light date-bottom"}>
                                         {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
 
                                     </p>

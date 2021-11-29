@@ -13,7 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles/index";
 import axios from "axios/index";
 import { baseUrl } from "../../Util/Constants";
-import ProductExpandItem from "../ProductExpandItem";
+import ProductExpandItem from "../Products/ProductExpandItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MomentUtils from "@date-io/moment";
 import _ from "lodash";

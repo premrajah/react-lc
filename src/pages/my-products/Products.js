@@ -13,7 +13,6 @@ import SearchBar from "../../components/SearchBar";
 import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import DownloadIcon from '@mui/icons-material/GetApp';
 import MapIcon from '@mui/icons-material/Map';
-
 import {CSVLink} from "react-csv";
 import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";

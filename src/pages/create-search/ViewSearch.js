@@ -1,27 +1,37 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import SearchIcon from "../../img/icons/search-icon.png";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
-import { makeStyles } from "@mui/styles";
+import {makeStyles} from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
-import { withStyles } from "@mui/styles/index";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
+import {baseUrl} from "../../Util/Constants";
 import moment from "moment";
 import NotFound from "../../views/NotFound";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import SearchEditForm from "../../components/Searches/SearchEditForm";
-import { Modal } from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import MoreMenu from "../../components/MoreMenu";
-import Org from "../../components/Org/Org";
+import Layout from "../../components/Layout/Layout";
+import OrgComponent from "../../components/Org/OrgComponent";
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import Box from '@mui/material/Box';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import AggregatesTab from "../../components/Products/AggregatesTab";
+import SubProductsTab from "../../components/Products/SubProductsTab";
+import {GoogleMap} from "../../components/Map/MapsContainer";
+import SearchItem from "../../components/Searches/search-item";
+import ResourceItem from "./ResourceItem";
+import ArtifactProductsTab from "../../components/Products/ArtifactProductsTab";
+import InfoTabContent from "../../components/Searches/InfoTabContent";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -115,6 +125,16 @@ class ViewSearch extends Component {
         this.deleteItem = this.deleteItem.bind(this);
     }
 
+
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
     callBackResult(action) {
         if (action === "edit") {
             this.showEdit();
@@ -452,6 +472,9 @@ class ViewSearch extends Component {
         this.getSearch();
         this.getListingForSearch();
         this.loadMatches();
+        this.setState({
+            activeKey:"0"
+        })
     }
 
     classes = useStylesSelect;
@@ -461,11 +484,7 @@ class ViewSearch extends Component {
         const classesBottom = withStyles();
 
         return (
-            <>
-                {/*<div className="container  p-2">*/}
-                {/*</div>*/}
-                <Sidebar />
-                <HeaderDark />
+            <Layout>
 
                 {this.state.notFound ? (
                     <NotFound />
@@ -474,9 +493,17 @@ class ViewSearch extends Component {
                         {this.state.createSearchData && (
                             <>
                                 <div className="container ">
-                                    <div className="row  justify-content-center pb-5 ">
-                                        <div className="col-md-4 col-sm-12 col-xs-12 pb-5 pt-5 ">
-                                            <div className="row stick-left-box container-gray justify-content-center ">
+                                    <div className="row  pt-4 pb-4  justify-content-start">
+                                        <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                            <Link to={"/my-search"}>My Searches</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state
+                                            .createSearchData
+                                            .search.name}</span>
+
+                                        </div>
+                                    </div>
+                                    <div className="row  justify-content-center  ">
+                                        <div className="col-md-4 col-sm-12 col-xs-12 ">
+                                            <div className="row stick-left-box  justify-content-center p-2 gray-border rad-8 bg-white ">
                                                 {this.state.previewImage ? (
                                                     <img
                                                         className={"img-fluid"}
@@ -495,23 +522,23 @@ class ViewSearch extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-8 col-sm-12 col-xs-12 pb-5 pt-5 pl-4 mt-4">
+                                        <div className="col-md-8 col-sm-12 col-xs-12 ">
                                             <div className="row ">
-                                                <div className="col-12 mt-2">
-                                                    <div className="row justify-content-start pb-3 pt-4 ">
+                                                <div className="col-12 ">
+                                                    <div className="row justify-content-start ">
                                                         <div className="col-12 ">
                                                             <div className="row">
                                                                 <div className="col-8 text-left">
-                                                                    <h5
+                                                                    <h4
                                                                         className={
-                                                                            "text-caps blue-text text-heading"
+                                                                            "text-capitalize product-title"
                                                                         }>
                                                                         {
                                                                             this.state
                                                                                 .createSearchData
                                                                                 .search.name
                                                                         }
-                                                                    </h5>
+                                                                    </h4>
                                                                 </div>
                                                                 <div className="col-4 text-right">
                                                                     <MoreMenu
@@ -529,24 +556,20 @@ class ViewSearch extends Component {
                                                         </div>
 
                                                         <div className="col-12">
-                                                            <Org
-                                                                orgId={
+                                                            <OrgComponent
+                                                                org={
                                                                     this.state.createSearchData.org
-                                                                        ._id
+
                                                                 }
-                                                                orgDescription={
-                                                                    this.state.createSearchData.org
-                                                                        .description
-                                                                }
+
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className={"listing-row-border"}></div>
 
                                                     <div className="row justify-content-start pb-3 pt-3 ">
                                                         <div className="col-auto">
                                                             <p
-                                                                style={{ fontSize: "16px" }}
+
                                                                 className={"text-gray-light "}>
                                                                 {
                                                                     this.state.createSearchData
@@ -556,161 +579,95 @@ class ViewSearch extends Component {
                                                         </div>
                                                     </div>
 
-                                                    <div className={"listing-row-border"}></div>
+                                                    <div className={"listing-row-border "}></div>
+                                                    {this.state.createSearchData &&
+                                                    <div className="row justify-content-start pb-3  tabs-detail">
+                                                        <div className="col-12 ">
 
-                                                    <div className="row  justify-content-start search-container pt-3 pb-3 ">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Category
-                                                            </p>
-                                                            <p style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {
-                                                                    this.state.createSearchData
-                                                                        .search.category
-                                                                }
-                                                                , {
-                                                                    this.state.createSearchData
-                                                                        .search.type
-                                                                }
-                                                            </p>
-                                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.createSearchData.search.type}</p>*/}
-                                                        </div>
-                                                    </div>
-                                                    <div className="row  justify-content-start search-container  pb-4">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Amount
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {
-                                                                    this.state.createSearchData
-                                                                        .search.volume
-                                                                }
-                                                                {
-                                                                    this.state.createSearchData
-                                                                        .search.units
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                                                <TabContext value={this.state.activeKey}>
+                                                                    <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                                        <TabList
+                                                                            variant="scrollable"
+                                                                            scrollButtons="auto"
+                                                                            textColor={"#27245C"}
+                                                                            TabIndicatorProps={{
+                                                                                style: {
+                                                                                    backgroundColor: "#27245C",
+                                                                                    padding: '2px',
+                                                                                }
+                                                                            }}
+                                                                            onChange={this.setActiveKey}
 
-                                                    <div className="row  justify-content-start search-container  pb-4">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                State
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {
-                                                                    this.state.createSearchData
-                                                                        .search.state
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                                            aria-label="lab API tabs example">
 
-                                                    <div className="row  justify-content-start search-container  pb-4">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Required From
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {moment(
-                                                                    this.state.createSearchData
-                                                                        .search
-                                                                        .require_after_epoch_ms
-                                                                ).format("DD MMM YYYY")}
-                                                            </p>
-                                                        </div>
-                                                    </div>
 
-                                                    <div className="row  justify-content-start search-container  pb-4">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Required by
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {moment(
-                                                                    this.state.createSearchData
-                                                                        .search
-                                                                        .expire_after_epoch_ms
-                                                                ).format("DD MMM YYYY")}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row  justify-content-start search-container  pb-4">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Location
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {
-                                                                    this.state.createSearchData.site
-                                                                        .name
-                                                                }
-                                                                ,
-                                                                {
-                                                                    this.state.createSearchData.site
-                                                                        .contact
-                                                                }
-                                                            </p>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="  mb-1">
-                                                                {
-                                                                    this.state.createSearchData.site
-                                                                        .address
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                                            <Tab label="Info" value="0"/>
 
-                                                    {this.state.createSearchData.product && (
-                                                        <>
-                                                            <div className="row  justify-content-start search-container pt-2  pb-2">
-                                                                <div className={"col-auto"}>
-                                                                    <p
-                                                                        style={{ fontSize: "18px" }}
-                                                                        className="text-mute text-bold text-blue mb-1">
-                                                                        Product Linked
-                                                                    </p>
-                                                                </div>
-                                                            </div>
+                                                                            <Tab label="Linked Product" value="1" />
 
-                                                            {this.state.createSearchData && (
-                                                                <ProductExpandItem
-                                                                    hideMore={true}
-                                                                    hideAddAll={true}
-                                                                    productId={this.state.createSearchData.product._id.replace(
-                                                                        "Product/",
-                                                                        ""
-                                                                    )}
-                                                                />
-                                                            )}
-                                                        </>
-                                                    )}
+                                                                            <Tab label="Site" value="2" />
+                                                                        </TabList>
+                                                                    </Box>
+
+                                                                    <TabPanel value="0">
+
+                                                                        <InfoTabContent item={this.state.createSearchData.search}/>
+                                                                    </TabPanel>
+
+                                                                    {this.state.createSearchData.product &&  <TabPanel value="1">
+
+                                                                        <>
+
+                                                                            <div className={"mt-4"}></div>
+
+
+                                                                                {this.state.createSearchData && (
+                                                                                    <ProductExpandItem
+                                                                                        hideMoreMenu={true}
+                                                                                        hideAddAll={true}
+                                                                                        productId={this.state.createSearchData.product._id.replace(
+                                                                                            "Product/",
+                                                                                            ""
+                                                                                        )}
+                                                                                    />
+                                                                                )}
+                                                                            </>
+
+                                                                    </TabPanel>}
+
+
+                                                                    {this.state.createSearchData.site &&
+                                                                    <TabPanel value="2">
+                                                                        <>
+
+                                                                            <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.state.createSearchData.site._key}>{this.state.createSearchData.site.name}</Link></span></p>
+                                                                            {this.state.createSearchData.site.geo_codes && this.state.createSearchData.site.geo_codes[0] &&
+
+                                                                            <div className={"bg-white rad-8 p-2"}>
+                                                                                <GoogleMap siteId={this.state.createSearchData.site._key} width={"100%"}
+                                                                                           height={"300px"} locations={[{
+                                                                                    name: this.state.createSearchData.site.name,
+                                                                                    location: this.state.createSearchData.site.geo_codes[0].address_info.geometry.location,
+                                                                                    isCenter: true
+                                                                                }]}/>
+                                                                            </div>
+
+                                                                            }
+
+                                                                        </>
+
+                                                                    </TabPanel>}
+
+
+                                                                </TabContext>
+                                                            </Box>
+
+                                                        </div>
+                                                    </div>}
+
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -780,7 +737,7 @@ class ViewSearch extends Component {
                         )}
                     </>
                 )}
-            </>
+            </Layout>
         );
     }
 }

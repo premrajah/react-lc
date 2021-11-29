@@ -234,13 +234,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // setSelectedValue(value);
     };
 
-    const handleSingleArtifactDialogOpen = () => {
-        setOpenSingleArtifactDialog(true);
-    }
-
-    const handleSingleArtifactDialogClose = () => {
-        setOpenSingleArtifactDialog(false);
-    }
+    const handleSingleArtifactDialogOpen = () => { setOpenSingleArtifactDialog(true); }
+    const handleSingleArtifactDialogClose = () => { setOpenSingleArtifactDialog(false); }
 
 
     const handleNewMessageSelect = (e) => {
@@ -557,10 +552,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                     <div className="row mt-2" style={{height: "60px"}}>
                         <div className="col-11 p-0 mb-5" style={{border: '1px solid var(--lc-pale-purple)'}}>
-                            {/*<RichTextEditor*/}
-                            {/*    richTextHandleCallback={(value) => handleRichTextCallback(value)}*/}
-                            {/*    allOrgs={allOrgs} ref={resetDraftRef}*/}
-                            {/*/>*/}
                             <WysiwygEditor
                                 wrapperClassName="wysiwyg-wrapper-class"
                                 editorClassName="wysiwyg-editor-class"

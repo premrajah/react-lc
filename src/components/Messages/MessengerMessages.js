@@ -174,9 +174,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
 
-                // if(selectedItem === 0) {
-                //     handleGroupClick(data[0], 0);
-                // }
+                selectedItem === 0 && handleGroupClick(data[0], 0);
+
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -259,6 +258,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         if(reactSelectedValues.length > 0   ) {
             reactSelectRef.current.clearValue();
         }
+
         setShowHideGroupFilter(false);
         setShowHideOrgSearch(false);
         getGroupMessageWithId(group._key);
@@ -273,7 +273,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
         if(showHideOrgSearch) {
             if(allMessageGroups[0].id === "0") {
-                getAllMessageGroups();
+                allMessageGroups.splice(0, 1); // remove new message
                 // getAllMessageGroupsExpand();
                 handleGroupClick(allMessageGroups[0], 0);
             }
@@ -495,6 +495,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             overflow: "auto",
                         }}>
                         <div className="col">
+                            {(selectedMsgGroup.length <= 0 && (allMessageGroups.length > 0 && allMessageGroups[0].id !== "0")) ? "Loading..." : <div></div>}
                             {selectedMsgGroup.length > 0 ? (
                                 <div
                                     className="message-window p-2"

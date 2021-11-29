@@ -1028,7 +1028,7 @@ class CreateCampaign extends Component {
                                                                 variant={"outlined"}
                                                                 margin="normal"
                                                                 id="date-picker-dialog"
-                                                                inputFormat="DD/MM/yyyy"
+                                                                inputFormat="dd/MM/yyyy"
                                                                 value={this.state.endDate}
                                                                 // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
 

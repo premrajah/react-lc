@@ -11,10 +11,6 @@ const MessageEntityDialog = (props) => {
         onClose(false);
     };
 
-    const handleListItemClick = (value) => {
-        onClose(value);
-    };
-
     return (
         <Dialog
             maxWidth={"xs"}

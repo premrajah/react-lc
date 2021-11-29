@@ -21,6 +21,7 @@ import AvatarWithColours from "../Avatars/AvatarWithColours";
 import {purple} from "@mui/material/colors";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
 
 
 
@@ -63,6 +64,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
     const [openEntityDialog, setOpenEntityDialog] = useState(false);
+    const [openSingleArtifactDialog, setOpenSingleArtifactDialog] = useState(false);
 
     let trackedList = [];
 
@@ -231,6 +233,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setOpenEntityDialog(false);
         // setSelectedValue(value);
     };
+
+    const handleSingleArtifactDialogOpen = () => {
+        setOpenSingleArtifactDialog(true);
+    }
+
+    const handleSingleArtifactDialogClose = () => {
+        setOpenSingleArtifactDialog(false);
+    }
 
 
     const handleNewMessageSelect = (e) => {
@@ -520,7 +530,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                                                         </small>}
                                                         {m.artifacts.length > 0 && <small style={{cursor: "pointer"}}>
-                                                            <PhotoLibraryIcon fontSize="small"/>
+                                                            <PhotoLibraryIcon fontSize="small" onClick={handleSingleArtifactDialogOpen}/>
+                                                            <MessageGroupSingleArtifactDialog artifacts={m.artifacts} open={openSingleArtifactDialog} onClose={handleSingleArtifactDialogClose} />
                                                         </small>}
                                                     </div>
                                                 </div>

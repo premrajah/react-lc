@@ -66,7 +66,7 @@ class InfoTabContent extends Component {
                     <div className="col-auto">
                         <p  className=" text-bold text-label text-blue mb-1">Required From</p>
                         <p className={"text-gray-light mb "}> {moment(
-                            this.props.item.require_after_epoch_ms
+                            this.props.item.available_from_epoch_ms
                         ).format("DD MMM YYYY")}</p>
                     </div>
                 </div>

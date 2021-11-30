@@ -101,7 +101,6 @@ class ConversionsTab extends Component {
 
         }
 
-        console.log(updateConversions)
 
 
         const productData = {

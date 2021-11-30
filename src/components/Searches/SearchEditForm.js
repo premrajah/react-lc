@@ -348,7 +348,6 @@ class SearchEditForm extends Component {
             "product_id":dataFORM.get("product")
         };
 
-        console.log(data)
 
         axios
             .post(baseUrl + "search", data, {

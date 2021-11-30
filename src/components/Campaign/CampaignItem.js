@@ -159,7 +159,6 @@ class CampaignItem extends Component {
                 (response) => {
                     var res = response.data.data;
 
-                    // console.log(res)
                     this.setState({
                         images: res,
                     });

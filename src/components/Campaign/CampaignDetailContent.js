@@ -490,8 +490,6 @@ this.setState({
     componentDidMount() {
 
 
-        // console.log(this.props.item)
-
 
         axios
             // .get(baseUrl + "campaign/" + encodeUrl(this.slug))

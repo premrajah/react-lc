@@ -137,7 +137,6 @@ class CreateCampaign extends Component {
         let arrayCount = this.state.addCountAll;
         arrayCount.push(this.state.countAll+1)
 
-        console.log(arrayCount)
 
         this.setState({
             conditionAll: arrayCount,
@@ -148,8 +147,6 @@ class CreateCampaign extends Component {
 
 
     handleChange(value,field ) {
-
-        // console.log(value,field)
 
 
         if (field==="startDate"){
@@ -190,7 +187,6 @@ class CreateCampaign extends Component {
 
         if (this.props.item){
 
-            console.log(this.props.item)
             this.loadSavedValues()
             this.callStrategy()
 
@@ -259,7 +255,6 @@ class CreateCampaign extends Component {
             .then(
                 (response) => {
 
-                    // console.log(response)
 
                     this.setState({
 

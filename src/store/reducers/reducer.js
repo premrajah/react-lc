@@ -136,7 +136,6 @@ const reducer = (state = initialState, action) => {
             break;
 
         case SHOW_MULTIPLE_POP_UP:
-            console.log("shpw mulitp;l")
             newState.showMultiplePopUp = action.value;
             break;
         case LOADING_SPINNER:
@@ -297,12 +296,12 @@ const reducer = (state = initialState, action) => {
             if (newLength===initialLength){
 
                 newState.lastPageReached=true
-                console.log("last page reached")
+
             }else{
                 newState.lastPageReached=false
             }
 
-            console.log(action.value.val)
+
 
             // newState.productWithoutParentList= (action.value.val);
 

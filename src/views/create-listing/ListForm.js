@@ -331,13 +331,8 @@ class ListForm extends Component {
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
-        console.log("errors")
-        console.log(formIsValid)
-        console.log(errors)
-
 
         return formIsValid;
-
 
     }
 
@@ -539,7 +534,6 @@ class ListForm extends Component {
 
 
                 if (error&&error.response&&error.response.status){
-                    console.log(error.response)
 
                     this.setState({
                         notFoundError:true,

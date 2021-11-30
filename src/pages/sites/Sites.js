@@ -35,12 +35,10 @@ class Sites extends Component {
     }
 
     handleSearch = (searchValue) => {
-        console.log("searchValue ",searchValue)
         this.setState({searchValue: searchValue});
     }
 
     handleSearchFilter = (filterValue) => {
-        console.log("filtervalue ",filterValue)
         this.setState({filterValue: filterValue});
     }
 
@@ -81,11 +79,6 @@ class Sites extends Component {
 
        let [entry] = entities
 
-        console.log(entry)
-
-
-        // if (!this.props.loading)
-        // console.log(entry.boundingClientRect.y)
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
@@ -108,8 +101,6 @@ class Sites extends Component {
             )
             .then(
                 (response) => {
-
-                    // console.log(response.data.data)
 
 
                     let productSelected=response.data.data

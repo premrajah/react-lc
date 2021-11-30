@@ -1,29 +1,33 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Formik, Form, Field} from 'formik';
-import  * as Yup from 'yup';
+import * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
-import SelectArrayWrapper from "../FormsUI/Select";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import Button from "@mui/material/Button";
-import {Publish} from "@mui/icons-material";
+import {Publish, Download} from "@mui/icons-material";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 // import {TextField} from "formik-material-ui";
-import {TextField} from "@mui/material";
-
-import {MenuItem} from "@mui/material";
 import EditSite from "../Sites/EditSite";
+import {validateInputs} from "../../Util/Validator";
 
 
+const UploadMultiSiteOrProduct = (props) => {
 
-
-
-const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multiUploadCallback}) => {
+    // {siteList, loadSites, multiUploadCallback, popUpType}
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
+    const [isProduct, setIsProduct] = useState(false);
+    const [isSite, setIsSite] = useState(false);
+    const [fileName, setFileName] = useState(null);
+
+
     const [uploadSitesError, setUploadSitesError] = useState('');
     const [errorsArray, setErrorsArray] = useState([]);
+    const [fields, setFields] = useState({});
+    const [errors, setErrors] = useState({});
+
     // const [sites, setSites] = useState([]);
     const [siteShowHide, setSiteShowHide] = useState(false);
     const [submitSiteError, setSubmitSiteError] = useState("");
@@ -31,8 +35,20 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
     const formikRef = useRef();
 
     useEffect(() => {
-        if(isProduct) {
-            loadSites();
+
+        // console.log("popUpType")
+        //
+        // console.log(props.popUpType)
+
+
+        if(props.popUpType=="isProduct") {
+            props.loadSites();
+            setIsProduct(true)
+            setIsSite(false)
+        }else if(props.popUpType=="isSite") {
+            props.loadSites();
+            setIsProduct(false)
+            setIsSite(true)
         }
 
     }, [])
@@ -52,14 +68,105 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
     })
 
     const handleMultiUploadCallback = useCallback(() => {
-        multiUploadCallback();
+        props.multiUploadCallback();
     }, [])
 
     const handleReset = () => {
         formikRef.current?.resetForm();
     }
 
+
+   const handleValidation=()=> {
+
+
+        let fieldsLocal = fields;
+
+
+        let validations = [
+            // validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
+            // validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
+
+
+        ]
+
+
+        let {formIsValid, errorsLocal} = validateInputs(validations)
+
+       setErrors(errorsLocal);
+        return formIsValid;
+    }
+
+    const  handleChange=(value, field) =>{
+
+        // console.log( field)
+
+
+        if (field==="artifact"){
+
+            setFileName(value.name)
+
+        }
+
+            let fieldsLocal = fields;
+
+            fieldsLocal[field] = value;
+
+            setFields(fieldsLocal)
+
+    }
+
+
+
+
+    const handleFormSubmitNew=(event)=>{
+
+alert("Called")
+        let parentId;
+        event.preventDefault();
+        if (!handleValidation()) {
+
+            return
+
+        }
+
+
+
+
+        const data = new FormData(event.target);
+
+
+        const formData = {
+             artifact: data.get("artifact"),
+                match_strategy: data.get("match_strategy"),
+                merge_strategy: data.get("merge_strategy"),
+                siteId: data.get("deliver"),
+
+
+        };
+
+
+
+        const {artifact, match_strategy, merge_strategy, siteId} = formData;
+        setIsDisabled(true);
+        setUploadArtifactError(<span className="text-success"><b>Processing...</b></span>)
+
+
+        getImageAsBytes(formData.artifact)
+            .then(data => {
+
+
+                postArtifact(data, artifact, match_strategy, merge_strategy, siteId);
+            })
+            .catch(error => {
+                console.log('Convert as bytes error ', error.message);
+                setIsDisabled(false);
+            });
+
+    }
     const handleFormSubmit = (values, {setSubmitting}) => {
+
+
 
         const {artifact, match_strategy, merge_strategy, siteId} = values;
         setIsDisabled(true);
@@ -127,7 +234,7 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
     }
 
     const handleShowHideSite = () => {
-        loadSites();
+        props.loadSites();
         setSiteShowHide(!siteShowHide);
         setSubmitSiteError('');
         setSubmitSiteErrorClassName('');
@@ -163,26 +270,19 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
 
     return <>
 
-        <div className="row mb-3">
+        <div className="row mb-2">
             <div className="col">
-                <h4>{isSite && 'Sites Upload'}{isProduct && 'Products Upload'}</h4>
-                <p className="green-link-url">
-                    <a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "products" : "sites"} csv template</a>
-                </p>
+                <h4 className={"blue-text text-heading"}>{isSite && 'Multiple Sites Upload'}{isProduct && 'Multiple Products Upload'}</h4>
+                <span className="top-element text-capitlize text-underline">
+                   <Download style={{fontSize:"16px"}} /> <a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "products" : "sites"} csv template</a>
+                </span>
             </div>
         </div>
 
-        <div className="row">
+        <div className="row ">
             <div className="col">
-                <Formik
-                    initialValues={INITIAL_VALUES}
-                    validationSchema={VALIDATION_SCHEMA}
-                    onSubmit={async (values, {setSubmitting}) => handleFormSubmit(values, {setSubmitting})}
-                    innerRef={formikRef}
-                    enableReinitialize
-                >
-                    {(formProps) => (
-                        <Form>
+
+                <form onSubmit={handleFormSubmitNew}>
                             <div className="row mb-2">
                                 <div className="col">
                                     <div>{uploadArtifactError}</div>
@@ -196,30 +296,100 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                 </div>
                             </div>
 
-                            <div className="row mb-2">
+
+
+                            <div className="row mb-2 justify-content-center text-center bg-white rad-8 p-3 m-2 ">
                                 <div className="col">
+
+
                                     <Button
-                                        variant="contained"
+                                        // variant="contained"
                                         component="label"
+                                        className={"text-blue"}
+                                        style={{backgroundColor:"#D31169"}}
                                     >
-                                        <Publish />
+                                        <Publish  style={{color:"#fff"}} />
                                         <input
                                             type="file"
                                             hidden
                                             accept="text/csv"
                                             name="artifact"
-                                            onChange={(event => formProps.setFieldValue('artifact', event.target.files[0]))}
+                                            onChange={(event) => handleChange( event.target.files[0],'artifact')}
+                                            // onChange={(value)=> {
+                                            //
+                                            //     handleChange(event,"deliver")
+                                            //
+                                            // }}
+
                                             onClick={() => { setUploadArtifactError(''); setUploadSitesError(''); setErrorsArray([])}}
                                         />
                                     </Button>
-                                    <div className="mt-1">{formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-danger">{formProps.errors.artifact}</div>) : null}</div>
-                                    <div className="text-muted">Only CSV files</div>
-                                    <div>File name: <b>{formProps.values.artifact.name}</b></div>
+                                    <div className="mt-1">
+                                        {/*{formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-danger">{formProps.errors.artifact}</div>) : null}*/}
+                                    </div>
+                                    {fileName &&<div className="text-blue">File: {fileName}</div>}
+                                    <div className="text-gray-light">(Click To Upload CSV File)</div>
+
+
                                 </div>
                             </div>
 
-                            {isProduct && <div className="row">
+                    {isProduct &&  <div className="row">
                                 <div className="col">
+
+                                        <SelectArrayWrapper
+
+                                            // initialValue={this.props.item&&this.props.item.site._key}
+                                            option={"name"}
+                                            valueKey={"_key"}
+                                            // error={this.state.errors["deliver"]}
+                                            onChange={(value)=> {
+
+                                                handleChange(value,"deliver")
+
+                                            }}
+                                            select={"Select"}
+                                            options={props.siteList} name={"deliver"}
+                                            title="Dispatch / Collection Address"/>
+
+
+                                        <p style={{ marginTop: "10px" }}>
+                                            <span className="mr-1 text-gray-light">Do not see your address?</span>
+                                            <span
+                                                onClick={handleShowHideSite}
+                                                className={
+                                                    "green-text forgot-password-link text-mute small"
+                                                }>
+                                                    {siteShowHide
+                                                        ? "Hide add site"
+                                                        : "Add a site"}
+                                                </span>
+                                        </p>
+
+                                        {siteShowHide && (
+                                            <div
+                                                className={
+                                                    "row justify-content-center p-2 container-gray"
+                                                }>
+                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                                    <div
+                                                        className={
+                                                            "custom-label text-bold text-blue mb-1"
+                                                        }>
+                                                        Add New Site
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                                    <div className={"row"}>
+                                                        <div className={"col-12"}>
+                                                            <EditSite showHeader={false} site={{}} submitCallback={() => handleEditSiteCallBack()} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+
                                     {/*<Field*/}
                                     {/*    component={TextField}*/}
                                     {/*    type="text"*/}
@@ -243,50 +413,66 @@ const UploadMultiSiteOrProduct = ({siteList, loadSites, isSite, isProduct, multi
                                 </div>
                             </div>}
 
-                            {isProduct && <div className="row mb-2">
-                                <div className="col">
-                                    <div className="row">
-                                        <div className="col-md-6 green-text" style={{cursor: "pointer"}} onClick={() => handleShowHideSite()}>Add Site {siteShowHide ? <span className='text-warning'><b>Close</b></span> : ""}</div>
-                                    </div>
-                                    <div className={submitSiteErrorClassName}><b>{submitSiteError}</b></div>
-                                    {siteShowHide && <div className="row">
-                                        <div className="col">
-                                            <div className="container p-4" style={{backgroundColor: "#f2f2f2", width: '70%'}}>
-                                                <EditSite site={{}} submitCallback={(e) => handleEditSiteCallBack(e)} />
-                                            </div>
-                                        </div>
-                                    </div>}
-                                </div>
-                            </div>}
+                            {/*{isProduct && <div className="row mb-2">*/}
+                            {/*    <div className="col">*/}
+                            {/*        <div className="row">*/}
+                            {/*            <div className="col-md-6 green-text" style={{cursor: "pointer"}} onClick={() => handleShowHideSite()}>Add Site {siteShowHide ? <span className='text-warning'><b>Close</b></span> : ""}</div>*/}
+                            {/*        </div>*/}
+                            {/*        <div className={submitSiteErrorClassName}><b>{submitSiteError}</b></div>*/}
+                            {/*        {siteShowHide && <div className="row">*/}
+                            {/*            <div className="col">*/}
+                            {/*                <div className="container p-4" style={{backgroundColor: "#f2f2f2", width: '70%'}}>*/}
+                            {/*                    <EditSite site={{}} submitCallback={(e) => handleEditSiteCallBack(e)} />*/}
+                            {/*                </div>*/}
+                            {/*            </div>*/}
+                            {/*        </div>}*/}
+                            {/*    </div>*/}
+                            {/*</div>}*/}
 
                             <div className="row mb-2">
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
                                         name="match_strategy"
-                                        label="Match Strategy"
+
                                         helperText="Select how to match"
                                         options={MATCH_STRATEGY_OPTIONS}
+
+
+                                        onChange={(value)=> {
+                                            handleChange(value,"match_strategy")
+                                        }}
+
+                                        title="Match Strategy"
+
                                     />
                                 </div>
 
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
+
                                         name="merge_strategy"
-                                        label="Merge Strategy"
+
                                         helperText="Select how to merge"
                                         options={MERGE_STRATEGY_OPTIONS}
+                                        onChange={(value)=> {
+                                            handleChange(value,"merge_strategy")
+                                        }}
+
+                                        title="Merge Strategy"
                                     />
                                 </div>
                             </div>
 
                             <div className="row mt-4 mb-4">
                                 <div className="col">
-                                    <button disabled={isDisabled} type="button" className="btn btn-block btn-green" onClick={formProps.submitForm} style={{backgroundColor: '#07AD88'}} >Submit</button>
+                                    <button disabled={isDisabled} type="submit" className="btn btn-block btn-green"
+                                            // onClick={formProps.submitForm}
+                                            style={{backgroundColor: '#07AD88'}} >Submit</button>
                                 </div>
                             </div>
-                        </Form>
-                    )}
-                </Formik>
+                        </form>
+
+
             </div>
         </div>
     </>

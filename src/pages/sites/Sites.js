@@ -165,7 +165,10 @@ class Sites extends Component {
     }
 
     toggleMultiSite = () => {
-        this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        // this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        this.props.setMultiplePopUp({show:true,type:"isSite"})
     }
 
     handleMultiUploadCallback = () => {
@@ -306,6 +309,7 @@ const mapDispatchToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),

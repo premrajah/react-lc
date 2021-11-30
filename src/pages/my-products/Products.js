@@ -23,6 +23,8 @@ import Close from "@mui/icons-material/Close";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import {PRODUCT_NPARENT_LIST_PAGE} from "../../store/types";
+import {loading} from "../../store/actions/actions";
 
 class Products extends Component {
 
@@ -40,7 +42,10 @@ class Products extends Component {
             showDownloadQrCodes:false,
             fields: {},
             errors: {},
-            loading:false
+            loading:false,
+            items:[],
+            lastPageReached:false,
+            currentOffset:0
 
         }
 
@@ -96,21 +101,62 @@ class Products extends Component {
     }
     componentDidMount() {
 
-        this.props.loadSites();
+        // this.props.loadSites();
 
 
         // this.props.resetProductPageOffset()
         // this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
-        this.props.dispatchLoadProductsWithoutParentPage({offset:0,size:400});
+        // this.props.dispatchLoadProductsWithoutParentPage({offset:0,size:400});
 
         // this.loadNewPageSetUp()
 
         // this.getSitesForProducts()
 
+
+
+
+        // this.loadProductsWithoutParentPageWise()
+        this.loadNewPageSetUp()
     }
 
 
+
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+        console.log(newOffset)
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.props.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:response.data.data
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {});
+
+        this.setState({
+
+            currentOffset:newOffset+400
+        })
+
+    }
+
     handleObserver=(entities, observer) =>{
+
+
 
 
        let [entry] = entities
@@ -118,10 +164,11 @@ class Products extends Component {
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
-            alert("called")
+            // alert("called")
 
-            this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
+            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
 
+            this.loadProductsWithoutParentPageWise()
         }
 
 
@@ -407,7 +454,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
                                 <p  className="text-gray-light ml-2 ">
-                                    {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
+                                    {this.state.items.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -440,8 +487,8 @@ class Products extends Component {
 
                         </div>
 
-                        {this.props.productWithoutParentListPage&&
-                        this.props.productWithoutParentListPage.filter((site)=>
+                        {
+                        this.state.items.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -484,40 +531,9 @@ class Products extends Component {
                         ))}
 
 
-                        {this.props.productWithoutParentListPage&&this.props.productWithoutParentListPage.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                        this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue==="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue==="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                this.state.filterValue==="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
 
 
-                                                                    null):
-                                    (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase())||
-                                        site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.sku.serial&&site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-                            ).length===0&&
-                            <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                                <div   className="col">
-                                    <div>No products found!</div>
-                                </div>
-                            </div>
-
-                        }
-
-                        {this.props.productWithoutParentListPage.length!=0&&!this.props.lastPageReached &&
+                        {!this.state.lastPageReached &&
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
                                 <div>Loading products please wait ...</div>
@@ -656,8 +672,8 @@ const mapDispatchToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
-        resetProductPageOffset: (data) =>
-            dispatch(actionCreator.resetProductPageOffset(data)),
+        // resetProductPageOffset: (data) =>
+        //     dispatch(actionCreator.resetProductPageOffset(data)),
 
         setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         dispatchLoadProductsWithoutParent: (data) =>

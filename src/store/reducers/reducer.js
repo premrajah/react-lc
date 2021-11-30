@@ -103,7 +103,7 @@ export const initialState = {
     currentSite: null,
     currentSiteLoading: false,
     signUpPageSubmitted:false,
-    showMultiplePopUp:false,
+    showMultiplePopUp: {show:false,type:null},
     createProductId:null,
     productNotFound:false,
     showRightBar:false,

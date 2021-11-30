@@ -17,6 +17,8 @@ import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {capitalize} from "../../Util/GlobalFunctions";
+import SiteForm from "../Sites/SiteForm";
+import {Link} from "react-router-dom";
 
 
 
@@ -700,7 +702,7 @@ class ProductForm extends Component {
 
     showMultipleUpload=()=>{
 
-        this.props.setMultiplePopUp(true)
+        this.props.setMultiplePopUp({show:true,type:"isProduct"})
             this.props.showProductPopUp({ action: "hide_all", show: false });
 
 
@@ -843,7 +845,6 @@ class ProductForm extends Component {
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.product.state}
-
                                         onChange={(value)=>this.handleChangeProduct(value,"state")}
                                         error={this.state.errors["state"]}
 
@@ -890,7 +891,7 @@ class ProductForm extends Component {
 
 
                                             <p style={{ marginTop: "10px" }}>
-                                                <span className="mr-1">Do not see your address?</span>
+                                                <span className="mr-1 text-gray-light">Do not see your address?</span>
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
@@ -902,15 +903,18 @@ class ProductForm extends Component {
                                                 </span>
                                             </p>
 
+
                                             {this.state.showSubmitSite && (
                                                 <div
                                                     className={
                                                         "row justify-content-center p-2 container-gray"
                                                     }>
+
+
                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                         <div
                                                             className={
-                                                                "custom-label text-bold text-blue mb-1"
+                                                                "custom-label text-bold text-blue pt-2"
                                                             }>
                                                             Add New Site
                                                         </div>
@@ -918,7 +922,10 @@ class ProductForm extends Component {
                                                     <div className="col-md-12 col-sm-12 col-xs-12 ">
                                                         <div className={"row"}>
                                                             <div className={"col-12"}>
-                                                                <EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />
+
+                                                                <SiteForm setSiteFormNew={{show:true,item:this.props.item,type:"new",heading:"Add New Site"}} removePopUp={true} />
+                                                                {/*<EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />*/}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1193,7 +1200,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 </div>
-                                <div className={"row"}>
+                                {!this.state.showSubmitSite &&  <div className={"row"}>
                             <div className="col-12  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
@@ -1225,7 +1232,7 @@ class ProductForm extends Component {
                                     </button>
                                 )}
                             </div>
-                    </div>
+                    </div>}
                             </form>
 
                     </div>

@@ -29,7 +29,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import NotFound from "../NotFound/index";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import OrgFull from "../../components/Org/OrgFull";
 
 class ViewCycle extends Component {

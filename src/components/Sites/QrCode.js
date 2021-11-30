@@ -7,6 +7,8 @@ import axios from "axios/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../../img/qr-code-bg.png";
 import LoopcycleLogo from "../../img/logo-text.png";
+import {Link} from "react-router-dom";
+import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
 
 class QrCode extends Component {
     slug;
@@ -52,7 +54,6 @@ class QrCode extends Component {
         };
 
 
-        this.getQrCode = this.getQrCode.bind(this);
 
     }
 
@@ -96,28 +97,14 @@ class QrCode extends Component {
 
 
 
-    getQrCode=()=> {
-        if(!this.props.item._key) return;
-
-
-        // this.setState({siteQrCode: this.props.item.qr_artifact})
-
-        // axios.get(`${baseUrl}site/${this.props.item._key}/code-artifact?u=${frontEndUrl}site/${this.props.item._key}`)
-
-        axios.get(`${baseUrl}site/${this.props.item._key}/code-artifact`)
-
-            .then(response => {
-                this.setState({siteQrCode: response.data.data})
-            })
-            .catch(error => {
-
-            })
-    }
 
 
     componentDidMount() {
+        this.setState({
+            siteQrCode:this.props.siteQrCode,
+            item:this.props.item
+        })
 
-       this.getQrCode()
     }
 
 
@@ -157,79 +144,58 @@ class QrCode extends Component {
         this.loadProduct(productKey)
     }
 
+    callZoom=()=>{
+
+        this.props.callZoom()
+
+    }
+
     render() {
 
 
         return (
-            <div className={"row"}>
-                <div className={"col-12 pb-5 mb-5"}>
-                    <div className="row justify-content-start pb-3 pt-3 ">
-                        <div className="col-12 ">
-                            <h5 className={"text-bold blue-text"}>
-                                Site Code
-                            </h5>
-                        </div>
 
-                        <div className="col-12">
-                            <p
-                                style={{ fontSize: "16px" }}
-                                className={"text-gray-light "}>
-                                Scan the QR code below to view this site
-                            </p>
-                        </div>
+            <>
+
+                <div className="row bg-white mt-3 rad-8 border-box no-gutters justify-content-center ">
+                    <div className="col-3 zoom-in-cursor  " onClick={this.callZoom}>
+
+                        {this.state.siteQrCode && (
+                            <img
+                            className=""
+                            src={this.state.siteQrCode.blob_url}
+                            alt={this.state.item.name}
+                            title={this.state.item.name}
+                            style={{ width: "100%" }}
+                            />
+                            )}
+
                     </div>
-
-                    <div className="row justify-content-center ">
-                        <div className="col-12 border-box">
-                            <div className="d-flex flex-column justify-content-center align-items-center">
-                                {this.state.siteQrCode&&this.state.siteQrCode && (
-                                    <img
-                                        className=""
-                                        src={this.state.siteQrCode.blob_url}
-                                        alt={this.state.item.name}
-                                        title={this.state.item.name}
-                                        style={{ width: "100%" }}
-                                    />
-                                )}
-
-                                <div className="d-flex justify-content-center w-100">
-                                    {this.props.hideRegister && (
-                                        <p className={"green-text"}>
-
-                                            <span
-                                                to={`/site/${this.props.item._key}`}
-                                                className={"mr-3 click-item"}
-                                                onClick={() =>
-                                                    this.handlePrintPdf(
-                                                        this.props.item,
-                                                        this.state
-                                                            .siteQrCode.blob_url,
-                                                        QrCodeBg,
-                                                        LoopcycleLogo
-                                                    )
-                                                }>
-                                                [PDF]
-                                            </span>
-                                            <a
-                                                className={"mr-3"}
-                                                href={
-                                                    baseUrl + "site/" + this.props.item._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
-                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item._key + ".png" }>[Alt]</a>
-                                            <a
-                                                className={"mr-3"}
-                                                href={
-                                                    baseUrl + "site/" + this.props.item._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
-                                                } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item._key + ".png" }>[Mono]</a>
-                                        </p>
-                                    )}
-                                </div>
-
+                    <div className="col-9 pl-2 zoom-in-cursor" onClick={this.callZoom}>
+                        <div className="row justify-content-start  ">
+                            <div className="col-12 ">
+                                    <span className={"title-bold blue-text text-caps  p-0 "}>
+                                        Site Code
+                                    </span>
+                                <br/>
+                                <span style={{ fontSize: "14px" }}
+                                    className={"text-gray-light text-capitalize"}>
+                                        Click to Scan the QR code
+                                    </span>
 
                             </div>
+
+
+
                         </div>
+
+
                     </div>
+
+
                 </div>
-            </div>
+
+                </>
         );
     }
 }

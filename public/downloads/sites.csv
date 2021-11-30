@@ -1,2 +1,2 @@
-﻿name,contact,address,phone,email,others,is_head_office
-Example Site,Example Person,Example address,777777777,example@example.com,,TRUE
+name,description,external_reference,contact,address,phone,email,others,is_head_office
+Example Site,some description,dfdfdfd,Example Person,Example address,777777777,example@example.com,,TRUE

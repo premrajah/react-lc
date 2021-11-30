@@ -38,7 +38,7 @@ const OrgComponent = (props) => {
                         textTransform: "capitalize",
                         fontWeight: "700",
                         // color : "#444",
-                    }}>By: <span className={"sub-title-text-pink"}> {props.org.name}</span>
+                    }}><span className={"sub-title-text-pink"}> {props.org.name}</span>
                 </div>
                 <OverlayTrigger
                     trigger={ ["hover", "focus"]}

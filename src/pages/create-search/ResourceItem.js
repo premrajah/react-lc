@@ -8,6 +8,7 @@ import moment from "moment";
 import MoreMenu from "../../components/MoreMenu";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
+import {capitalize} from "../../Util/GlobalFunctions";
 class ResourceItem extends Component {
     constructor(props) {
         super(props);
@@ -79,7 +80,7 @@ class ResourceItem extends Component {
             <>
                 {this.props.item.listing.listing ? (
                     <>
-                        <h1>here</h1>
+
                         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
                         <div
                             onClick={this.goToPage}
@@ -87,9 +88,9 @@ class ResourceItem extends Component {
                             <div className={"col-2"}>
                                 {this.props.item.listing.artifacts &&
                                 this.props.item.listing.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail images={this.props.item.listing.artifacts} />
+                                    <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.listing.artifacts} />
                                 ) : (
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}
 
 
@@ -103,10 +104,10 @@ class ResourceItem extends Component {
                                         <>Product: {this.props.item.listing.product.name} </>
                                     )}
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                <p style={{ fontSize: "16px" }} className="text-capitlize mb-1">
                                     {this.props.item.listing.listing.category}, {this.props.item.listing.listing.type}, {this.props.item.listing.listing.state}
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                                <p style={{ fontSize: "16px" }} className="text-capitlize mb-1">
 
                                     {this.props.item.listing.listing.volume}
                                     {this.props.item.listing.listing.units}
@@ -114,7 +115,7 @@ class ResourceItem extends Component {
                             </div>
 
                             <div className={"col-2 text-right"}>
-                                <p className={"green-text text-caps"}>
+                                <p className={"green-text text-capitlize"}>
                                     {this.props.item.listing.listing.price &&
                                     this.props.item.listing.listing.price.value ? (
                                         <> GBP {this.props.item.listing.listing.price.value}</>
@@ -127,13 +128,13 @@ class ResourceItem extends Component {
                             </div>
 
                             <div className={"col-2 text-right"}>
-                                <p className={"green-text text-caps"}>
+                                <p className={"green-text text-capitlize"}>
                                     {this.props.item.listing.listing.stage}
                                 </p>
                             </div>
 
                             <div className={"col-2 text-right"}>
-                                <p className={" text-caps"}>
+                                <p className={" text-capitlize"}>
                                     {moment(this.props.item.listing.listing._ts_epoch_ms).format(
                                         "DD MMM YYYY"
                                     )}
@@ -151,38 +152,49 @@ class ResourceItem extends Component {
 
                         <div
                             // onClick={this.goToPage}
-                            className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
+                            className="row no-gutters justify-content-center p-3 bg-white rad-8 click-item mb-3">
                             <div className={"col-2"}>
                                 {this.props.item.artifacts &&
                                 this.props.item.artifacts.length > 0 ?
-                                    <ImageOnlyThumbnail images={this.props.item.artifacts} />:
+                                    <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.artifacts} />:
                                     this.props.artifacts && this.props.artifacts.length > 0?<ImageOnlyThumbnail images={this.props.artifacts} />:
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 }
                             </div>
-                            <div className={"col-4 pl-3 content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className="text-caps mb-1 list-title">
+                            <div className={"col-6 pl-3  content-box-listing"}>
+                                <p  className="text-capitlize mb-1 title-bold">
                                     {this.props.item.listing.name}
                                 </p>
-                                <p style={{ fontSize: "16px" }} className=" mb-1 ">
+                                <p  className=" mb-1 text-gray-light mt-2 ">
                                     {this.props.item.product && (
-                                        <>Product: {this.props.item.product.name} </>
+                                        <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
                                     )}
                                 </p>
 
-                                <p
-                                    style={{ fontSize: "16px" }}
-                                    className="text-mute mb-1 text-caps">
-                                    {this.props.item.listing.category}, {this.props.item.listing.type}, {this.props.item.listing.state}, {this.props.item.listing.volume}{this.props.item.listing.units}
+                                <p className={"text-gray-light mt-2 "}>
+                                    Category:
+                                    <span
+
+                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                            <span className="text-capitlize">
+                                                                {capitalize(this.props.item.listing.category)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className=" text-capitlize">
+                                                                {capitalize(this.props.item.listing.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className="  text-capitlize">
+                                                                {capitalize(this.props.item.listing.state)}
+                                                            </span>
+
+
+
+                                    </span>
                                 </p>
-                                {/*<p*/}
-                                {/*    style={{ fontSize: "16px" }}*/}
-                                {/*    className="text-mute mb-1 text-cabs">*/}
-                                {/*    {this.props.item.listing.volume} {this.props.item.listing.units}*/}
-                                {/*</p>*/}
+
+
                             </div>
-                            <div className={"col-2 text-right"}>
-                                <p className={"green-text "}>
+                            <div className={"col-2  text-right"}>
+                                <p className={"text-blue text-bold "}>
                                     {this.props.item.listing.price &&
                                     this.props.item.listing.price.value ? (
                                         <>GBP {this.props.item.listing.price.value}</>
@@ -192,25 +204,30 @@ class ResourceItem extends Component {
                                 </p>
                             </div>
 
-                            <div className={"col-2 text-right"}>
-                                <p className={"green-text text-caps"}>
+
+
+                            <div  className={"col-2 justify-content-end"}>
+                                <p className={"  status text-right"}>
+                                <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
+                                </span>
                                 </p>
-                            </div>
-                            <div className={"col-2 text-right"}>
-                                <p className={" text-caps"}>
-                                    {moment(this.props.item.listing._ts_epoch_ms).format(
-                                        "DD MMM YYYY"
-                                    )}
-                                </p>
-                                {!this.props.hideMoreMenu&&  <MoreMenu
+                                <p  className={" text-gray-light text-14 text-right"}>  {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
                                     delete={true}
                                     edit={false}
                                     remove={false}
                                     duplicate={false}
-                                />}
+                                />}</p>
+
+                                <p className={" text-gray-light text-14 date-bottom text-right"}>
+                                    {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
+                                </p>
+
+
                             </div>
+
+
                         </div>
                         </Link>
                     </>

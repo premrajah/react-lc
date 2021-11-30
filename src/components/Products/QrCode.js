@@ -162,18 +162,7 @@ class QrCode extends Component {
         return (
             <>
 
-                {/*<div className="qr-code-zoom row">*/}
-                {/*    {this.props.item&&this.props.item.qr_artifact && (*/}
-                {/*        <img*/}
-                {/*            className="img-fluid qr-code-zoom"*/}
-                {/*            src={this.props.item.qr_artifact.blob_url}*/}
-                {/*            alt={this.state.item.product.name}*/}
-                {/*            title={this.state.item.product.name}*/}
-                {/*            // style={{ width: "100%" }}*/}
-                {/*        />*/}
-                {/*    )}*/}
-                {/*</div>*/}
-                    <div className="row border-box no-gutters justify-content-center ">
+                    <div className="row border-box no-gutters bg-white rad-8 justify-content-center ">
                         <div className="col-3 zoom-in-cursor  " onClick={this.callZoom}>
 
                             {this.props.item&&this.props.item.qr_artifact && (
@@ -192,8 +181,6 @@ class QrCode extends Component {
                                 <div className="col-12 ">
                                     <span className={"title-bold blue-text text-caps  p-0 "}>
                                         Cyclecode
-
-
                                     </span>
                                     <br/>
                                     <span

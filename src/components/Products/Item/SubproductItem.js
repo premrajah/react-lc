@@ -8,12 +8,12 @@ import MoreMenu from "../../MoreMenu";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../../store/actions/actions";
 import {connect} from "react-redux";
-import {capitalize} from "../../../Util/GlobalFunctions";
 import {
     useHistory,
     BrowserRouter,
     Route,
 } from "react-router-dom";
+import {capitalize} from "../../../Util/GlobalFunctions";
 
 const SubproductItem = (props) => {
     const history = useHistory()
@@ -88,25 +88,47 @@ const SubproductItem = (props) => {
             <div className="col-sm-7 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item._key}`}>
-                        <h5>{item.name}</h5>
+                        <span className={"title-bold"}>{item.name}</span>
                     </Link>
                 </div>
                 {!props.aggregate &&
                 <>
 
-                <div style={{lineHeight: '22px', fontSize:"12px"}} className="text-muted text-capitalize">{item.purpose}</div>
-                <div className="text-muted text-capitalize" style={{lineHeight: '22px', fontSize:"12px"}}>
+
+                <div className="text-gray-light mt-2">
+
+                    <span
+
+                        className=" text-capitlize mb-1 cat-box text-left ">
+                                                            <span className="">
+                                                                {item.category}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                            <span className=" text-capitlize">
+                                                                {capitalize(item.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                            <span className="  text-capitlize">
+                                                                {capitalize(item.state)}
+                                                            </span>
 
 
 
-                    <span className="mr-1">{item.category},</span>
-                        <span className="mr-1">{item.type},</span>
-                        <span className="mr-1 ">{capitalize(item.state)},</span>
-                        <span>{item.volume}</span>
-                        <span>{item.units}</span>
+                        </span>
+
 
                 </div>
-                {item.search_ids && <div className="text-muted">
+
+                    {/*<p className="text-gray-light mt-2 ">Category:<span*/}
+                    {/*    className="ml-1 text-capitlize mb-1 cat-box text-left p-1"><span*/}
+                    {/*    className="text-capitlize">Plastics</span><span className="m-1 arrow-cat">❯</span><span*/}
+                    {/*    className=" text-capitlize">Pp</span><span className="m-1 arrow-cat">❯</span><span*/}
+                    {/*    className="  text-capitlize">Loose</span></span>*/}
+                    {/*</p>*/}
+                    <p className="text-gray-light mt-2 text-capitlize ">
+                        {item.purpose}
+                    </p>
+
+
+                {item.search_ids && <div className="text-gray-light">
                         <span className="mr-1">{item.search_ids.length}</span>
                         <span>Searches</span>
                     </div>
@@ -117,10 +139,10 @@ const SubproductItem = (props) => {
 
             {!props.aggregate &&  <div className="col-sm-3 d-flex justify-content-end">
                 <div>
-                    <div className={"text-gray-light small "}>
+                    <div className={"text-gray-light date-bottom "}>
                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                     </div>
-                    {!props.hideMoreMenu&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
+                    {(!props.hideMoreMenu)&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
                 </div>
             </div>}
         </div>

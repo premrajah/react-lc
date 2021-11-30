@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {Field, Form, Formik} from 'formik'
 import * as Yup from 'yup';
 import TextFieldWrapper from "./FormsUI/TextField";
+import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
 // import {Select} from "formik-material-ui";
 
 class IssueSubmitForm extends Component {
@@ -130,9 +131,9 @@ class IssueSubmitForm extends Component {
                                 <div className="col">
                                     <FormControl>
                                         <Field
-                                            // component={Select}
+                                            component={CustomizedSelect}
                                             name="priority"
-                                            variant="outlined"
+                                            variant="standard"
                                             label="Priority"
                                         >
                                             {ISSUES_PRIORITY.map(issue => (<MenuItem key={issue} value={issue}>{issue}</MenuItem>))}

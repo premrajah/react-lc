@@ -6,8 +6,8 @@ import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
 import { makeStyles } from "@mui/styles";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
@@ -17,11 +17,20 @@ import { Modal, ModalBody } from "react-bootstrap";
 import { withStyles } from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
 import MatchItemSeller from "../../components/MatchItemSeller";
-import NotFound from "../NotFound/index";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import NotFound from "../../views/NotFound";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import Org from "../../components/Org/Org";
 import MoreMenu from "../../components/MoreMenu";
 import ListEditForm from "../../components/ListEditForm";
+import Layout from "../../components/Layout/Layout";
+import OrgComponent from "../../components/Org/OrgComponent";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import InfoTabContent from "../../components/Listings/InfoTabContent";
+import {GoogleMap} from "../../components/Map/MapsContainer";
 
 class ItemDetail extends Component {
     slug;
@@ -87,6 +96,17 @@ class ItemDetail extends Component {
         }
     }
 
+
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
+
     showEdit() {
         this.setState({
             showEdit: !this.state.showEdit,
@@ -97,7 +117,7 @@ class ItemDetail extends Component {
 
     getPreviewImage(productSelectedKey) {
         axios
-            .get(baseUrl + "product/" + productSelectedKey.replace("Product/", "") + "/artifact", {
+            .get(baseUrl + "product/" + productSelectedKey + "/artifact", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -163,7 +183,7 @@ class ItemDetail extends Component {
 
     getResources() {
         axios
-            .get(baseUrl + "listing/" + encodeUrl(this.slug), {
+            .get(baseUrl + "listing/" + encodeUrl(this.slug)+"/expand", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -176,9 +196,9 @@ class ItemDetail extends Component {
                         item: responseData.data,
                     });
 
-                    this.getSite(responseData.data);
+                    // this.getSite(responseData.data);
 
-                    this.getPreviewImage(responseData.data.product_id);
+                    this.getPreviewImage(responseData.data.product._key);
                 },
                 (error) => {
                     this.setState({
@@ -260,6 +280,10 @@ class ItemDetail extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
+        this.setState({
+            activeKey:"0"
+        })
+
         this.checkMatch();
         this.getResources();
 
@@ -268,6 +292,8 @@ class ItemDetail extends Component {
         this.interval = setInterval(() => {
             this.getMatches();
         }, 5000);
+
+
     }
 
     componentWillUnmount() {
@@ -279,11 +305,7 @@ class ItemDetail extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
-                <Sidebar />
-
-                <div className="accountpage">
-                    <HeaderDark />
+            <Layout>
 
                     {this.state.notFound ? (
                         <NotFound />
@@ -291,8 +313,15 @@ class ItemDetail extends Component {
                         <>
                             {this.state.item && (
                                 <>
-                                    <div className="container " style={{ padding: "0" }}>
-                                        <div className="row no-gutters  justify-content-center  mb-4 pb-4">
+                                    <div className="container " >
+
+                                        <div className="row  pt-4 pb-4  justify-content-start">
+                                            <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                                <Link to={"/my-search"}>My Listings</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
+
+                                            </div>
+                                        </div>
+                                        <div className="row   justify-content-center  mb-4 pb-4">
                                             {/*<div className="floating-back-icon" style={{ margin: "auto" }}>*/}
 
                                             {/*<NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />*/}
@@ -319,14 +348,14 @@ class ItemDetail extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
-                                                <div className="row justify-content-start pb-3 pt-3 ">
-                                                    <div className="col-12 mt-2">
+                                            <div className={"col-md-8 col-sm-12 col-xs-12 "}>
+                                                <div className="row justify-content-start  ">
+                                                    <div className="col-12 ">
                                                         <div className="row">
                                                             <div className="col-8">
                                                                 <h5
                                                                     className={
-                                                                        "blue-text text-heading"
+                                                                        "text-capitalize product-title"
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h5>
@@ -354,15 +383,15 @@ class ItemDetail extends Component {
                                                         <div className="row">
                                                             <div className="col-7">
                                                                 <div>
-                                                                    <Org
-                                                                        orgId={
-                                                                            this.state.item.org_id
+                                                                    <OrgComponent
+                                                                        org={
+                                                                            this.state.item.org
                                                                         }
                                                                     />
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-5 green-text text-heading text-right">
+                                                            <div className="col-5 blue-text text-blue text-bold  text-right">
                                                                 {this.state.item.listing.price ? (
                                                                     <>
                                                                         GBP {
@@ -377,8 +406,7 @@ class ItemDetail extends Component {
                                                         </div>
                                                     </div>
 
-                                                    <div className={"col-12 pt-3"}>
-                                                        <div className={"listing-row-border"}></div>
+                                                    <div className={"col-12 "}>
 
                                                         <div className="row justify-content-start pb-3 pt-3 ">
                                                             <div className="col-auto">
@@ -392,117 +420,95 @@ class ItemDetail extends Component {
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className={"listing-row-border"}></div>
                                                     </div>
                                                 </div>
 
-                                                <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Category
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            {this.state.item.listing.category}, {this.state.item.listing.type}, {this.state.item.listing.state}, {this.state.item.listing.volume}{this.state.item.listing.units}
-                                                        </p>
-                                                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
-                                                        {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
+                                                <div className={"listing-row-border "}></div>
+                                                {this.state.item &&
+                                                <div className="row justify-content-start pb-3  tabs-detail">
+                                                    <div className="col-12 ">
+
+                                                        <Box sx={{ width: '100%', typography: 'body1' }}>
+                                                            <TabContext value={this.state.activeKey}>
+                                                                <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                                    <TabList
+                                                                        variant="scrollable"
+                                                                        scrollButtons="auto"
+                                                                        textColor={"#27245C"}
+                                                                        TabIndicatorProps={{
+                                                                            style: {
+                                                                                backgroundColor: "#27245C",
+                                                                                padding: '2px',
+                                                                            }
+                                                                        }}
+                                                                        onChange={this.setActiveKey}
+
+                                                                        aria-label="lab API tabs example">
+
+
+                                                                        <Tab label="Info" value="0"/>
+
+                                                                        <Tab label="Linked Product" value="1" />
+
+                                                                        <Tab label="Site" value="2" />
+                                                                    </TabList>
+                                                                </Box>
+
+                                                                <TabPanel value="0">
+
+                                                                    <InfoTabContent item={this.state.item.listing}/>
+                                                                </TabPanel>
+
+                                                                {this.state.item.product &&  <TabPanel value="1">
+
+                                                                    <>
+
+                                                                        <div className={"mt-4"}></div>
+
+
+                                                                        {this.state.item && (
+                                                                            <ProductExpandItem
+                                                                                hideMoreMenu={true}
+                                                                                hideAddAll={true}
+                                                                                productId={this.state.item.product._key}
+                                                                            />
+                                                                        )}
+                                                                    </>
+
+                                                                </TabPanel>}
+
+
+                                                                {this.state.item.site &&
+                                                                <TabPanel value="2">
+                                                                    <>
+
+                                                                        <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.state.item.site._key}>{this.state.item.site.name}</Link></span></p>
+                                                                        {this.state.item.site.geo_codes && this.state.item.site.geo_codes[0] &&
+
+                                                                        <div className={"bg-white rad-8 p-2"}>
+                                                                            <GoogleMap siteId={this.state.item.site._key} width={"100%"}
+                                                                                       height={"300px"} locations={[{
+                                                                                name: this.state.item.site.name,
+                                                                                location: this.state.item.site.geo_codes[0].address_info.geometry.location,
+                                                                                isCenter: true
+                                                                            }]}/>
+                                                                        </div>
+
+                                                                        }
+
+                                                                    </>
+
+                                                                </TabPanel>}
+
+
+                                                            </TabContext>
+                                                        </Box>
+
                                                     </div>
-                                                </div>
+                                                </div>}
 
-                                                {/*<div className="row  justify-content-start search-container  pb-4">*/}
 
-                                                {/*<div className={"col-auto"}>*/}
 
-                                                {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
-                                                {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.org_id.substr(4)} </p>*/}
-                                                {/*</div>*/}
-                                                {/*</div>*/}
-
-                                                <div className="row  justify-content-start search-container  pb-4">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Available From
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            {moment(
-                                                                this.state.item &&
-                                                                    this.state.item.listing
-                                                                        .available_from_epoch_ms
-                                                            ).format("DD MMM YYYY")}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row  justify-content-start search-container  mt-2 mb-2 ">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Available Until
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-
-                                                            {this.state.item &&
-                                                                moment(
-                                                                    this.state.item.listing
-                                                                        .expire_after_epoch_ms
-                                                                ).format("DD MMM YYYY")}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row  justify-content-start search-container pt-2  pb-2">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Delivery From
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            {this.state.site &&
-                                                                this.state.site.name}
-                                                        </p>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="  mb-1">
-                                                            {this.state.site &&
-                                                                this.state.site.address}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row  justify-content-start search-container pt-2  pb-2">
-                                                    <div className={"col-auto"}>
-                                                        <p
-                                                            style={{ fontSize: "18px" }}
-                                                            className="text-mute text-bold text-blue mb-1">
-                                                            Product Linked
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                {this.state.item && (
-                                                    <ProductExpandItem
-                                                        hideMore={true}
-                                                        hideAddAll={true}
-                                                        productId={this.state.item.product_id.replace(
-                                                            "Product/",
-                                                            ""
-                                                        )}
-                                                    />
-                                                )}
 
                                                 {this.state.matches &&
                                                     this.state.matches.length > 0 && (
@@ -556,11 +562,11 @@ class ItemDetail extends Component {
                                         <React.Fragment>
                                             <CssBaseline />
 
-                                            <AppBar
+                                            <div
                                                 position="fixed"
                                                 color="#ffffff"
                                                 className={
-                                                    classesBottom.appBar + "  custom-bottom-appbar"
+                                                    "custom-bottom-fixed-appbar  custom-bottom-appbar"
                                                 }>
                                                 <Toolbar>
                                                     <div
@@ -576,7 +582,7 @@ class ItemDetail extends Component {
                                                         </div>
                                                     </div>
                                                 </Toolbar>
-                                            </AppBar>
+                                            </div>
                                         </React.Fragment>
                                     )}
 
@@ -658,8 +664,8 @@ class ItemDetail extends Component {
                             )}
                         </>
                     )}
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

@@ -165,7 +165,10 @@ class Sites extends Component {
     }
 
     toggleMultiSite = () => {
-        this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        // this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        this.props.setMultiplePopUp({show:true,type:"isSite"})
     }
 
     handleMultiUploadCallback = () => {
@@ -186,11 +189,7 @@ class Sites extends Component {
         return (
             <Layout>
 
-                <div className="wrapper">
-
-
-
-                    <div className="container  mb-150  pb-5 pt-4">
+                    <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="Sites"
@@ -201,31 +200,24 @@ class Sites extends Component {
                             <div className="col-md-9 d-flex justify-content-start">
                                 <Link onClick={()=> {
                                     this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
-                                }}  className="btn btn-sm blue-btn mr-2 click-item">
+                                }}  className="btn-gray-border  mr-2 click-item">
                                     Add Sites / Address
                                 </Link>
 
-                                <Link onClick={this.toggleMultiSite} className="btn btn-sm blue-btn mr-2 click-item">
+                                <Link onClick={this.toggleMultiSite} className="btn-gray-border  mr-2 click-item">
                                     Upload Multiple Sites / Addresses (CSV)
                                 </Link>
-
                             </div>
-
-
                         </div>
-
-
-
-                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={SITES_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className={"listing-row-border "}></div>
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                        <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
+                                <p style={{ fontSize: "18px" }} className="text-gray-light ">
                                     {this.props.siteParentList.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue==="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -239,14 +231,11 @@ class Sites extends Component {
 
                                     ).length
                                     }
-                                    <span className="ml-1">Sites</span>
+                                    <span className="ml-1 ">Sites Listed</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
-                            </div>
+
                         </div>
-                        <div className={"listing-row-border mb-3"}></div>
 
 
                         {this.props.siteParentList.filter((site)=>
@@ -267,9 +256,6 @@ class Sites extends Component {
                         ))}
 
                     </div>
-
-
-                </div>
 
                 {this.state.showMultiUpload && (
                     <>
@@ -323,6 +309,7 @@ const mapDispatchToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),

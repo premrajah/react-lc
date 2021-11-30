@@ -4,21 +4,23 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import SearchIcon from "../../img/icons/search-128px.svg";
 import { Link } from "react-router-dom";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
 import AppBar from "@mui/material/AppBar";
 import { makeStyles } from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, LISTING_FILTER_VALUES} from "../../Util/Constants";
 import axios from "axios/index";
-import SearchItem from "./search-item";
+import SearchItem from "../../components/Searches/search-item";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import { withStyles } from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import Layout from "../../components/Layout/Layout";
+import SearchBar from "../../components/SearchBar";
 
 class MySearch extends Component {
     constructor(props) {
@@ -29,6 +31,8 @@ class MySearch extends Component {
             count: 0,
             nextIntervalFlag: false,
             items: [],
+            searchValue: '',
+            filterValue: '',
         };
 
         this.getItems = this.getItems.bind(this);
@@ -41,6 +45,14 @@ class MySearch extends Component {
 
     componentDidMount() {
         this.getItems();
+    }
+
+    handleSearch = (searchValue) => {
+        this.setState({searchValue: searchValue});
+    }
+
+    handleSearchFilter = (filterValue) => {
+        this.setState({filterValue: filterValue});
     }
 
     getItems() {
@@ -64,49 +76,59 @@ class MySearch extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
-
+            <Layout>
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             subTitle="All your searches can be found here. You can accept or decline a match to complete a loop"
                             pageTitle="Searches"
                             pageIcon={SearchIcon}
                         />
-
-                        <div className="row">
-                            <div className="col-12 d-flex justify-content-end">
-                                <Link to="/my-search-records" className="btn btn-sm blue-btn mr-2">
+                        <div className="row ">
+                            <div className="col-12 d-flex justify-content-start">
+                                <Link to="/search-records" className="btn btn-sm btn-gray-border">
                                     Search Records
                                 </Link>
                             </div>
                         </div>
-
-                        <div className="row  justify-content-center search-container  pt-3 pb-4">
+                        <div className="row pt-3 justify-content-center search-container   ">
                             <div className={"col-12"}>
-                                <SearchField />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={LISTING_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className={"listing-row-border"}></div>
+                        <div className="row  justify-content-center filter-row  pt-3 pb-3">
+                            <div className="col">
+                                <p  className="text-gray-light ml-2 ">
+                                    {this.state.items&&this.state.items.filter((site)=>
+                                        this.state.filterValue?( this.state.filterValue==="name"?
+                                            site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                            this.state.filterValue==="product name"? site.product&&site.product.name
+                                                &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
 
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div className="col-6">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.state.items.length} Searches
+                                                null):
+                                            (site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                site.product&& site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
+                                            )
+
+                                    ).filter(l => l.search.stage.toLowerCase() !== "agreed" && l.search.stage !== "expired").length
+
+                                    }
+                                    <span className="ml-1 text-gray-light"> Search Found</span>
                                 </p>
                             </div>
-                            <div className="col-4 text-mute text-right col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Status</span>
-                            </div>
-                            <div className="col-2 text-mute text-right col-auto pl-0">
-                                <span style={{ fontSize: "18px" }}>Created</span>
-                            </div>
-                        </div>
-                        <div className={"listing-row-border mb-3"}></div>
 
-                        {this.state.items.filter(s => s.search.stage !== "expired" && s.search.stage !== "agreed").map((item, index) => (
+
+                        </div>
+
+                        {this.state.items&&this.state.items.filter((site)=>
+                                this.state.filterValue?( this.state.filterValue==="name"?
+                                    site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                                    this.state.filterValue==="product name"? site.product&&site.product.name
+                                        &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()): null):
+                                    (site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                        site.product&& site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
+                                    )
+
+                            ).filter(l => l.search.stage.toLowerCase() !== "agreed" && l.search.stage !== "expired").map((item, index) => (
                             <SearchItem
                                 showMoreMenu={true}
                                 triggerCallback={() => this.callBackResult()}
@@ -115,32 +137,7 @@ class MySearch extends Component {
                             />
                         ))}
                     </div>
-
-                    <React.Fragment>
-                        <CssBaseline />
-
-                        <AppBar
-                            position="fixed"
-                            style={{backgroundColor: "#ffffff"}}
-                            className={classesBottom.appBar + "  custom-bottom-appbar"}>
-                            <Toolbar>
-                                <div
-                                    className="row  justify-content-center search-container "
-                                    style={{ margin: "auto" }}>
-                                    <div className="col-auto">
-                                        <Link to={"/search-form"}>
-                                            <p className={"green-text bottom-bar-text"}>
-
-                                                <b>Create New Search</b>
-                                            </p>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </Toolbar>
-                        </AppBar>
-                    </React.Fragment>
-                </div>
-            </div>
+            </Layout>
         );
     }
 }

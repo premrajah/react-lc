@@ -1,18 +1,22 @@
 import React, { Component } from "react";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-import ProductItemNew from "./ProductItemNew";
 import { makeStyles, withStyles } from "@mui/styles/index";
-import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Spinner} from "react-bootstrap";
-import {PRODUCT_NPARENT_LIST} from "../store/types";
-import {loading} from "../store/actions/actions";
+import {PRODUCT_NPARENT_LIST} from "../../store/types";
+import {loading} from "../../store/actions/actions";
+import SubproductItem from "./Item/SubproductItem";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import AddIcon from "@mui/icons-material/Add";
 
 const useStylesSelect = makeStyles((theme) => ({
     formControl: {
@@ -226,11 +230,12 @@ class ProductExpandItem extends Component {
         const classesBottom = withStyles();
 
         return (
-            <>
+            <div className={"mt-3"}>
                 {this.props.currentProduct && (
-                    <ProductItemNew
-                        hideMore={true}
-                        item={this.props.currentProduct}
+                    <SubproductItem
+                        smallImage={true}
+                        hideMoreMenu={true}
+                        item={this.props.currentProduct.product}
                     />
                 )}
 
@@ -245,58 +250,63 @@ class ProductExpandItem extends Component {
                                                 Sub Products
                                             </p>
 
-                                            <ul>
+                                            <ol>
                                                 {this.props.currentProduct &&this.props.currentProduct.sub_products&&
                                                     this.props.currentProduct.sub_products.map(
                                                         (item, index) => (
                                                             <>
-                                                                <li className={""}>
+                                                                <li className={"text-gray-light"}>
                                                                     <span
                                                                         className={
                                                                             "d-flex justify-content-start align-items-center"
                                                                         }>
                                                                         {item.name}
-                                                                        <DeleteIcon
+
+                                                                        <IndeterminateCheckBoxIcon
                                                                             classname={
-                                                                                "click-item ml-2 "
+                                                                                "click-item ml-3 text-blue"
                                                                             }
                                                                             data-id={item._key}
                                                                             style={{
-                                                                                color: "#ccc",
-                                                                                fontSize: "16px",
+                                                                                opacity:"0.5",
+                                                                                marginLeft:"10px",
+                                                                                cursor:"pointer"
                                                                             }}
                                                                             onClick={this.removeItem.bind(
                                                                                 this
                                                                             )}
                                                                         />
+
                                                                     </span>
                                                                 </li>
                                                             </>
                                                         )
                                                     )}
-                                            </ul>
+                                            </ol>
                                         </div>
                                         <div className="col-12">
                                             <p
                                                 style={{ margin: "10px 0px" }}
                                                 className={" text-mute small"}>
-                                                <span
+                                                <button
                                                     className={
-                                                        "forgot-password-link green-text mr-2 "
+                                                        " btn-gray-border  mr-2 "
                                                     }
                                                     data-parent={this.props.currentProduct.product._key}
                                                     onClick={this.showProductSelection}>
+                                                     <AddIcon />
                                                     Create New
-                                                </span>
+                                                </button>
                                                 :
-                                                <span
+                                                <button
                                                     className={
-                                                        "forgot-password-link green-text ml-2"
+                                                        "btn-gray-border click-item ml-2"
                                                     }
                                                     data-parent={this.props.currentProduct.product._key}
                                                     onClick={this.showExisting}>
-                                                    Add Existing
-                                                </span>
+                                                     <AddLinkIcon />
+                                                    Link Existing
+                                                </button>
                                             </p>
                                         </div>
                                     </div>
@@ -319,9 +329,9 @@ class ProductExpandItem extends Component {
                                                 <FormControl
                                                     variant="outlined"
                                                     className={classes.formControl}>
-                                                    <Select
+                                                    <CustomizedSelect
                                                         name={`product[${index}]`}
-                                                        // label={"Link a product"}
+                                                        variant={"standard"}
                                                         required={true}
                                                         native
                                                         onChange={this.handleChange.bind(
@@ -356,7 +366,7 @@ class ProductExpandItem extends Component {
                                                             ))}
 
 
-                                                    </Select>
+                                                    </CustomizedSelect>
                                                     {this.props.productList.length===0&&   <Spinner
                                                         as="span"
                                                         animation="border"
@@ -382,7 +392,7 @@ class ProductExpandItem extends Component {
                                             <div className="col-3">
                                                 {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
 
-                                                <TextField
+                                                <CustomizedInput
                                                     required={true}
                                                     type={"number"}
                                                     onChange={this.handleChange.bind(
@@ -455,7 +465,7 @@ class ProductExpandItem extends Component {
                         </div>
                     </>
                 )}
-            </>
+            </div>
         );
     }
 }

@@ -6,9 +6,9 @@ import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
 import Home from "./pages/home/Home";
 import LoginPopUp from "./views/login/LoginPopUp";
 import CompanyPage from "./views/loop-cycle/company-page";
-import MySearch from "./views/loop-cycle/MySearch";
-import MyListingsOld from "./views/loop-cycle/MyListings";
-import ItemDetail from "./views/browse-resources/ItemDetail";
+import MySearch from "./pages/search/MySearch";
+import MyListingsOld from "./pages/listings/MyListings";
+import ItemDetail from "./pages/listings/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import ProductsNew from "./pages/my-products/Products";
 import Product from "./pages/product-detail/Product";
@@ -16,23 +16,23 @@ import ProductsService from "./pages/my-products/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
 import Loops from "./views/loop-cycle/Loops";
-import MyCycles from "./views/loop-cycle/MyCycles";
+import MyCycles from "./pages/cycles/MyCycles";
 import LoopDetail from "./views/loop-cycle/LoopDetail";
 import ViewCycle from "./views/loop-cycle/view-cycle";
-import CreateSearchHome from "./views/create-search/Home";
+import CreateSearchHome from "./pages/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import SubProductView from "./views/create-listing/SubProductView";
 import ListForm from "./views/create-listing/ListForm";
-import SearchForm from "./views/create-search/SearchForm";
-import ViewSearchNew from "./views/create-search/ViewSearch";
-import SearchMatches from "./views/create-search/search-matches";
-import AddDetail from "./views/create-search/AddDetail";
+import SearchForm from "./pages/create-search/SearchForm";
+import ViewSearchNew from "./pages/create-search/ViewSearch";
+import SearchMatches from "./pages/create-search/search-matches";
+import AddDetail from "./pages/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
 import BrowseResources from "./views/browse-resources/index";
 import MessageSeller from "./views/browse-resources/message-seller";
-import ItemDetailMatch from "./views/create-search/ItemDetailMatch";
-import ItemDetailMatched from "./views/create-search/ItemDetailMatched";
+import ItemDetailMatch from "./pages/create-search/ItemDetailMatch";
+import ItemDetailMatched from "./pages/create-search/ItemDetailMatched";
 import Search from "./views/browse-resources/Search";
 import Filter from "./views/browse-resources/Filter";
 import LoggedInRoute from "./Util/LoggedInRoute";
@@ -64,8 +64,7 @@ import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
 import RegisterRecord from "./views/approvals/RegisterRecord";
 import ServiceAgentRecord from "./views/approvals/ServiceAgentRecord";
-import SearchRecords from "./components/Searches/SearchRecords";
-import ListingRecord from "./components/Listings/ListingRecord";
+import ListingRecord from "./pages/listings/ListingRecord";
 import SignUpPage from "./pages/sign-up/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
 import LoggedOutRoute from "./Util/LoggedOutRoute";
@@ -73,7 +72,7 @@ import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 import Sites from "./pages/sites/Sites";
 import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
-import CyclesRecords from "./components/Cycles/CyclesRecords";
+import CyclesRecords from "./pages/cycles/CyclesRecords";
 import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
 import TransferScaling from "./views/account/TransferScaling";
 import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
@@ -82,6 +81,7 @@ import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
+import SearchRecords from "./pages/search/SearchRecords";
 const theme = createTheme({
     palette: {
 
@@ -137,7 +137,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/messages-new" component={Messeges} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
-                        <LoggedInRoute exact path="/my-search-records" component={SearchRecords} />
+                        <LoggedInRoute exact path="/search-records" component={SearchRecords} />
                         <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
                         <LoggedInRoute exact path="/my-listing-record" component={ListingRecord} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />

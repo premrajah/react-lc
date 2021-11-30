@@ -4,7 +4,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
 
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
 
 class ProductPopUp extends Component {

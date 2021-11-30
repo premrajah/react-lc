@@ -13,7 +13,7 @@ import TextField from "@mui/material/TextField";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../Util/Constants";
-import ProductExpandItem from "./ProductExpandItem";
+import ProductExpandItem from "./Products/ProductExpandItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
 import clsx from "clsx";

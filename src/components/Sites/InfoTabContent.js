@@ -14,7 +14,7 @@ class InfoTabContent extends Component {
 
 
         return (
-            <>
+            <div className={"bg-white p-3 mt-4 rad-8"}>
 
                 {this.props.item &&
                 (this.props.item.external_reference) && (
@@ -22,12 +22,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
+                                className=" text-bold text-blue mb-1">
                                 Site ID
                             </p>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
+
+                                className=" text-gray-light   mb-1">
                                 {
                                     this.props.item.external_reference
                                 }
@@ -41,12 +41,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
+                                className=" text-bold text-blue mb-1">
                                 Email
                             </p>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
+
+                                className=" text-gray-light   mb-1">
                                 {
                                     this.props.item.email
                                 }
@@ -60,12 +60,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
+                                className=" text-bold text-blue mb-1">
                                 Phone
                             </p>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
+
+                                className="text-gray-light    mb-1">
                                 {
                                     this.props.item.phone
                                 }
@@ -79,12 +79,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
+                                className=" text-bold text-blue mb-1">
                                 Contact
                             </p>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
+
+                                className="text-gray-light    mb-1">
                                 {this.props.item.contact}
                             </p>
                         </div>
@@ -96,12 +96,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
+                                className=" text-bold text-blue mb-1">
                                 Address
                             </p>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
+
+                                className=" text-gray-light   mb-1">
                                 {this.props.item.address}
                             </p>
                         </div>
@@ -114,12 +114,12 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 style={{ fontSize: "18px" }}
-                                className="text-mute text-bold text-blue mb-1">
+                                className=" text-bold text-blue mb-1">
                                 Other
                             </p>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className="  mb-1">
+
+                                className="text-gray-light    mb-1">
                                 {this.props.item.others}
                             </p>
                         </div>
@@ -127,7 +127,7 @@ class InfoTabContent extends Component {
                 )}
 
 
-            </>
+            </div>
         );
     }
 }

@@ -6,8 +6,8 @@ import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 import { Link } from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
 import { makeStyles } from "@mui/styles";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
@@ -16,7 +16,7 @@ import encodeUrl from "encodeurl";
 import { Modal, ModalBody } from "react-bootstrap";
 import { withStyles } from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 
 class ItemDetailMatch extends Component {
     listing;

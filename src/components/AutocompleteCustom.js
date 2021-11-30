@@ -44,13 +44,13 @@ class AutocompleteCustom extends Component {
     changeInput = (key) => {
         axios.get(baseUrl + "org/search?o=0&s=20&q=" + key).then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     orgs: responseAll.companies,
                 });
 
-                var companies = [];
+                let companies = [];
 
 
 
@@ -64,7 +64,7 @@ class AutocompleteCustom extends Component {
 
 
                 if (this.props.companies)
-                    for (var i = 0; i < responseAll.companies.length; i++) {
+                    for (let i = 0; i < responseAll.companies.length; i++) {
                         companies.push({
                             name: responseAll.companies[i].title,
                             company: responseAll.companies[i].company_number,

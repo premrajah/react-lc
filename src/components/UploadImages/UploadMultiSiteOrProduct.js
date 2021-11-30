@@ -10,6 +10,8 @@ import * as actionCreator from "../../store/actions/actions";
 // import {TextField} from "formik-material-ui";
 import EditSite from "../Sites/EditSite";
 import {validateInputs} from "../../Util/Validator";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SiteForm from "../Sites/SiteForm";
 
 
 const UploadMultiSiteOrProduct = (props) => {
@@ -271,7 +273,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
     return <>
-
+        <div className={!siteShowHide?"":"d-none"}>
         <div className="row mb-2">
             <div className="col">
                 <h4 className={"blue-text text-heading"}>{isSite && 'Multiple Sites Upload'}{isProduct && 'Multiple Products Upload'}</h4>
@@ -477,6 +479,40 @@ const UploadMultiSiteOrProduct = (props) => {
 
             </div>
         </div>
+        </div>
+
+
+        {siteShowHide && (
+            <div
+                className={
+                    "row justify-content-center p-2 "
+                }>
+
+
+                <div className="col-md-12 col-sm-12 col-xs-12 ">
+                    <div
+                        onClick={handleShowHideSite}
+                        className={
+                            "custom-label text-bold text-blue pt-2 pb-2 click-item"
+                        }>
+                        <ArrowBackIcon /> Upload Multiple {isProduct?"Products":"Site"}
+                    </div>
+                </div>
+                <div className="col-md-12 col-sm-12 col-xs-12 ">
+                    <div className={"row"}>
+                        <div className={"col-12"}>
+
+                            <SiteForm submitCallback={ handleShowHideSite} setSiteFormNew={{show:true,type:"new",heading:"Add New Site"}} removePopUp={true} />
+                            {/*<EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />*/}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+
+
+
     </>
 };
 

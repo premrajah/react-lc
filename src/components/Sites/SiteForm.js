@@ -177,12 +177,13 @@ class SiteForm extends Component {
 
     handleSubmit = (event) => {
 
-        console.log("handle submit called")
+
+        // alert("Fdfdfd")
+        // console.log("handle submit called")
+
+
         event.preventDefault();
         event.stopPropagation();
-
-
-        return
 
 
 
@@ -233,24 +234,42 @@ class SiteForm extends Component {
                     headers: {
                         Authorization: "Bearer " + this.props.userDetail.token,
                     },
+
+
+
+
                 }
             )
             .then((res) => {
 
 
-                if (parentId) {
 
-                    this.updateParentSite(parentId, res.data.data._key)
 
-                }else{
+                if (!this.props.submitCallback) {
+                    if (parentId) {
+
+                        this.updateParentSite(parentId, res.data.data._key)
+
+                    } else {
+
 
                         this.props.loadCurrentSite(parentId)
 
+                    }
+                }else{
+
+                     // for product form callback
+                     this.props.submitCallback()
+
                 }
+
+
                 this.props.loadSites()
                 this.props.loadParentSites()
                 this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
+
+
 
 
             })
@@ -552,12 +571,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                 {this.props.removePopUp?
 <>
+    <div className="row">
+    <div className="col-12 ">
+        <h4 className={"blue-text text-heading text-left"}>
+            {this.props.setSiteFormNew.heading}</h4>
+    </div>
+    </div>
 
+                            <div className={"row justify-content-center create-product-row pl-3 pb-3 pr-3"}>
 
-
-                            <div className={"row justify-content-center create-product-row p-3"}>
-
-                                <form onSubmit={this.handleSubmit}>
+                                <form className={"full-width-field"} onSubmit={this.handleSubmit}>
 
 
 
@@ -572,7 +595,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         </div>
                                     </div>
                                     <div className="row  ">
-                                        <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
+                                        <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                             <CheckboxWrapper
                                                 initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.is_head_office}
@@ -581,7 +604,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         </div>
 
-                                        <div className="col-md-6 col-sm-12">
+                                        <div className="col-md-4 col-sm-12">
 
                                             <TextFieldWrapper
                                                 initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}
@@ -589,6 +612,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 error={this.state.errors["contact"]}
                                                 name="contact" title="Contact" />
 
+                                        </div>
+                                        <div className="col-md-4 col-sm-12">
+
+                                        <TextFieldWrapper
+                                            onChange={(value)=>this.handleChange(value,"external_reference")}
+                                            error={this.state.errors["external_reference"]}
+                                            name="external_reference" title="Site Id" />
                                         </div>
                                     </div>
 
@@ -605,15 +635,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     <div className="row no-gutters">
                                         <div className="col-6 pr-1">
-
-
-                                            <TextFieldWrapper
-                                                onChange={(value)=>this.handleChange(value,"external_reference")}
-                                                error={this.state.errors["external_reference"]}
-                                                name="external_reference" title="Site Id" />
-                                        </div>
-
-                                        <div className="col-6 pl-1 ">
                                             <SelectArrayWrapper
 
                                                 option={"name"}
@@ -626,6 +647,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 name={"parent"} title="Select parent site/address"/>
 
                                         </div>
+
+                                        <div className="col-6 pl-1 ">
+
+                                            <TextFieldWrapper
+                                                onChange={(value)=>this.handleChange(value,"phone")}
+                                                error={this.state.errors["phone"]}
+                                                name="phone" title="Phone" />
+                                        </div>
                                     </div>
 
                                     <div className="row no-gutters ">
@@ -635,17 +664,17 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 <div className="col-6 pr-2">
 
                                                     <TextFieldWrapper
-                                                        onChange={(value)=>this.handleChange(value,"phone")}
-                                                        error={this.state.errors["phone"]}
-                                                        name="phone" title="Phone" />
-
-                                                </div>
-                                                <div className="col-6 pl-2">
-
-                                                    <TextFieldWrapper
                                                         onChange={(value)=>this.handleChange(value,"email")}
                                                         error={this.state.errors["email"]}
                                                         name="email" title="Email" />
+
+                                                </div>
+                                                <div className="col-6 pl-2">
+                                                    <TextFieldWrapper
+                                                        onChange={(value)=>this.handleChange(value,"other")}
+                                                        error={this.state.errors["description"]}
+                                                        name="other" title="Other" />
+
 
                                                 </div>
                                             </div>
@@ -666,10 +695,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     <div className="row no-gutters ">
                                         <div className="col-12">
 
-                                            <TextFieldWrapper
-                                                onChange={(value)=>this.handleChange(value,"other")}
-                                                error={this.state.errors["description"]}
-                                                name="other" title="Other" />
+
 
 
                                         </div>

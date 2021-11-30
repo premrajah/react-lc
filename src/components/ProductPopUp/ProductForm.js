@@ -19,7 +19,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import {capitalize} from "../../Util/GlobalFunctions";
 import SiteForm from "../Sites/SiteForm";
 import {Link} from "react-router-dom";
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 class ProductForm extends Component {
@@ -397,7 +397,9 @@ class ProductForm extends Component {
 
     handleSubmit = (event) => {
 
+
         event.preventDefault();
+        event.stopPropagation()
         if (!this.handleValidationProduct()){
 
             return
@@ -717,6 +719,10 @@ class ProductForm extends Component {
 
         return (
             <>
+
+
+                    <div className={!this.state.showSubmitSite?"":"d-none"}>
+
                 <div className="row   pt-2 ">
                     <div className="col-7  ">
                         <h4 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
@@ -726,10 +732,13 @@ class ProductForm extends Component {
                     </div>
                 </div>
 
+
+
+
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
 
-                            <form onSubmit={this.handleSubmit}>
+                          <form onSubmit={this.handleSubmit}>
 
 
                             <div className="row no-gutters">
@@ -904,33 +913,7 @@ class ProductForm extends Component {
                                             </p>
 
 
-                                            {this.state.showSubmitSite && (
-                                                <div
-                                                    className={
-                                                        "row justify-content-center p-2 container-gray"
-                                                    }>
 
-
-                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue pt-2"
-                                                            }>
-                                                            Add New Site
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                                        <div className={"row"}>
-                                                            <div className={"col-12"}>
-
-                                                                <SiteForm setSiteFormNew={{show:true,item:this.props.item,type:"new",heading:"Add New Site"}} removePopUp={true} />
-                                                                {/*<EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />*/}
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -1200,7 +1183,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 </div>
-                                {!this.state.showSubmitSite &&  <div className={"row"}>
+                                 <div className={"row"}>
                             <div className="col-12  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
@@ -1232,11 +1215,45 @@ class ProductForm extends Component {
                                     </button>
                                 )}
                             </div>
-                    </div>}
+                    </div>
                             </form>
+
+
 
                     </div>
                 </div>
+                        </div>
+
+
+
+                {this.state.showSubmitSite && (
+                    <div
+                        className={
+                            "row justify-content-center p-2 "
+                        }>
+
+
+                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                            <div
+                                onClick={this.showSubmitSite}
+                                className={
+                                    "custom-label text-bold text-blue pt-2 pb-2 click-item"
+                                }>
+                                <ArrowBackIcon /> Add Product
+                            </div>
+                        </div>
+                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+
+                                    <SiteForm submitCallback={() => this.showSubmitSite()} setSiteFormNew={{show:true,item:this.props.item,type:"new",heading:"Add New Site"}} removePopUp={true} />
+                                    {/*<EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />*/}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </>
         );
     }

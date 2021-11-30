@@ -21,6 +21,7 @@ import AvatarWithColours from "../Avatars/AvatarWithColours";
 import {purple} from "@mui/material/colors";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
 
 
 
@@ -63,6 +64,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [showHideOrgSearch, setShowHideOrgSearch] = useState(false);
 
     const [openEntityDialog, setOpenEntityDialog] = useState(false);
+    const [openSingleArtifactDialog, setOpenSingleArtifactDialog] = useState(false);
 
     let trackedList = [];
 
@@ -172,9 +174,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
 
-                // if(selectedItem === 0) {
-                //     handleGroupClick(data[0], 0);
-                // }
+                selectedItem === 0 && handleGroupClick(data[0], 0);
+
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -232,6 +233,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // setSelectedValue(value);
     };
 
+    const handleSingleArtifactDialogOpen = () => { setOpenSingleArtifactDialog(true); }
+    const handleSingleArtifactDialogClose = () => { setOpenSingleArtifactDialog(false); }
+
 
     const handleNewMessageSelect = (e) => {
         if (!e) return;
@@ -254,6 +258,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         if(reactSelectedValues.length > 0   ) {
             reactSelectRef.current.clearValue();
         }
+
         setShowHideGroupFilter(false);
         setShowHideOrgSearch(false);
         getGroupMessageWithId(group._key);
@@ -268,7 +273,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         // showHideOrgSearch ? allMessageGroups.pop() : allMessageGroups.unshift({id: "0", name: "New Chat"});
         if(showHideOrgSearch) {
             if(allMessageGroups[0].id === "0") {
-                getAllMessageGroups();
+                allMessageGroups.splice(0, 1); // remove new message
                 // getAllMessageGroupsExpand();
                 handleGroupClick(allMessageGroups[0], 0);
             }
@@ -490,6 +495,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             overflow: "auto",
                         }}>
                         <div className="col">
+                            {(selectedMsgGroup.length <= 0 && (allMessageGroups.length > 0 && allMessageGroups[0].id !== "0")) ? "Loading..." : <div></div>}
                             {selectedMsgGroup.length > 0 ? (
                                 <div
                                     className="message-window p-2"
@@ -520,7 +526,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                                                         </small>}
                                                         {m.artifacts.length > 0 && <small style={{cursor: "pointer"}}>
-                                                            <PhotoLibraryIcon fontSize="small"/>
+                                                            <PhotoLibraryIcon fontSize="small" onClick={handleSingleArtifactDialogOpen}/>
+                                                            <MessageGroupSingleArtifactDialog artifacts={m.artifacts} open={openSingleArtifactDialog} onClose={handleSingleArtifactDialogClose} />
                                                         </small>}
                                                     </div>
                                                 </div>
@@ -546,10 +553,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                     <div className="row mt-2" style={{height: "60px"}}>
                         <div className="col-11 p-0 mb-5" style={{border: '1px solid var(--lc-pale-purple)'}}>
-                            {/*<RichTextEditor*/}
-                            {/*    richTextHandleCallback={(value) => handleRichTextCallback(value)}*/}
-                            {/*    allOrgs={allOrgs} ref={resetDraftRef}*/}
-                            {/*/>*/}
                             <WysiwygEditor
                                 wrapperClassName="wysiwyg-wrapper-class"
                                 editorClassName="wysiwyg-editor-class"

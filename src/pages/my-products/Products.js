@@ -115,8 +115,8 @@ class Products extends Component {
 
 
 
-        // this.loadProductsWithoutParentPageWise()
-        this.loadNewPageSetUp()
+        this.loadProductsWithoutParentPageWise()
+        // this.loadNewPageSetUp()
     }
 
 
@@ -533,7 +533,7 @@ class Products extends Component {
 
 
 
-                        {!this.state.lastPageReached &&
+                        {false&&!this.state.lastPageReached &&
                         <div className="row  justify-content-center filter-row    pt-3 pb-3">
                             <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
                                 <div>Loading products please wait ...</div>

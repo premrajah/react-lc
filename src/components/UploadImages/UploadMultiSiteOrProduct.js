@@ -121,7 +121,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
     const handleFormSubmitNew=(event)=>{
 
-alert("Called")
         let parentId;
         event.preventDefault();
         if (!handleValidation()) {
@@ -250,16 +249,19 @@ alert("Called")
     const postLoadSitesOrProducts = (url, payload) => {
         axios.post(url, payload)
             .then(res => {
-                if(res.status === 200) {
+
+
+                // alert("no errror")
                     setUploadSitesError(<span className="text-success"><b>Uploaded {isSite ? "Sites" : "Products"} Successfully!</b></span>);
                     setErrorsArray(res.data.errors)
                     setUploadArtifactError('');
                     setIsDisabled(false);
-                    handleMultiUploadCallback();
+                    // handleMultiUploadCallback();
                     handleReset();
-                }
+
             })
             .catch(error => {
+                // alert(" errror found")
                 console.log("multi site upload error ", error.message);
                 setUploadSitesError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
                 setIsDisabled(false)

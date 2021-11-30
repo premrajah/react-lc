@@ -126,8 +126,6 @@ class Products extends Component {
 
         let newOffset=this.state.currentOffset
 
-        console.log(newOffset)
-
 
         axios
             // .get(`${baseUrl}product/no-parent/no-links`)
@@ -290,7 +288,6 @@ class Products extends Component {
             .then((res) => {
 
                 if (res.status === 200) {
-                   // console.log(res)
 
                     let sites=res.data.data
 

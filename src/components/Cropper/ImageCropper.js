@@ -17,7 +17,6 @@ export const ImageCropper = (props) => {
 
         let files=props.files;
 
-        console.log(files)
         if (files[0]){
 
             setName(files[0].name)
@@ -47,7 +46,7 @@ export const ImageCropper = (props) => {
         } else if (e.target) {
             files = e.target.files;
         }
-        console.log(files)
+
         if (files[0]){
 
             setName(files[0].name)

@@ -346,7 +346,7 @@ class ProductForm extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
+
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -492,7 +492,6 @@ class ProductForm extends Component {
 
                 this.setState({isSubmitButtonPressed: true})
 
-                // console.log(completeData)
                 // return false
                 axios
                     .put(
@@ -680,9 +679,7 @@ class ProductForm extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        console.log("this.props")
 
-        console.log(this.props)
         this.getFiltersCategories();
 
 

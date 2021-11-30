@@ -41,7 +41,6 @@ class WysiwygEditor extends Component{
     }
 
     onEditorStateChange = (editorState) => {
-        // console.log(editorState)
         this.setState({
             editorState,
         });

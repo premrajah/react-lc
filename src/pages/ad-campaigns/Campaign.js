@@ -112,11 +112,6 @@ class Campaign extends Component {
 
        let [entry] = entities
 
-        console.log(entry)
-
-
-        // if (!this.props.loading)
-        // console.log(entry.boundingClientRect.y)
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
@@ -139,8 +134,6 @@ class Campaign extends Component {
             )
             .then(
                 (response) => {
-
-                    // console.log(response.data.data)
 
 
                     let productSelected=response.data.data
@@ -245,7 +238,6 @@ class Campaign extends Component {
             .then((res) => {
 
                 if (res.status === 200) {
-                   // console.log(res)
 
                     let sites=res.data.data
 
@@ -304,8 +296,6 @@ class Campaign extends Component {
 
         event.preventDefault();
 
-
-        console.log("submit called")
 
         if (this.state.type!="delete"&&!this.handleValidationScaling()){
 

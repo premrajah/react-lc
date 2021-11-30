@@ -178,8 +178,19 @@ class SiteForm extends Component {
     handleSubmit = (event) => {
 
 
-        let parentId;
+        // alert("Fdfdfd")
+        // console.log("handle submit called")
+
+
         event.preventDefault();
+        event.stopPropagation();
+
+
+
+        let parentId;
+
+
+
         if (!this.handleValidation()) {
 
             return
@@ -223,26 +234,44 @@ class SiteForm extends Component {
                     headers: {
                         Authorization: "Bearer " + this.props.userDetail.token,
                     },
+
+
+
+
                 }
             )
             .then((res) => {
 
 
-                if (parentId) {
 
-                    this.updateParentSite(parentId, res.data.data._key)
 
-                }else{
+                if (!this.props.submitCallback) {
+                    if (parentId) {
+
+                        this.updateParentSite(parentId, res.data.data._key)
+
+                    } else {
+
 
                         this.props.loadCurrentSite(parentId)
 
+                    }
+                }else{
+
+                     // for product form callback
+                     this.props.submitCallback()
+
                 }
+
+
                 this.props.loadSites()
                 this.props.loadParentSites()
-
+                this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
-                this.hidePopUp()
+
+
+
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
@@ -539,12 +568,168 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
         return (
             <>
-                <Modal
+
+                {this.props.removePopUp?
+<>
+    <div className="row">
+    <div className="col-12 ">
+        <h4 className={"blue-text text-heading text-left"}>
+            {this.props.setSiteFormNew.heading}</h4>
+    </div>
+    </div>
+
+                            <div className={"row justify-content-center create-product-row pl-3 pb-3 pr-3"}>
+
+                                <form className={"full-width-field"} onSubmit={this.handleSubmit}>
+
+
+
+                                    <div className="row no-gutters">
+                                        <div className="col-12 ">
+
+                                            <TextFieldWrapper
+                                                onChange={(value)=>this.handleChange(value,"name")}
+                                                error={this.state.errors["name"]}
+                                                name="name" title="Name" />
+
+                                        </div>
+                                    </div>
+                                    <div className="row  ">
+                                        <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+
+                                            <CheckboxWrapper
+                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.is_head_office}
+                                                onChange={(checked)=>this.checkListable(checked)} color="primary"
+                                                name={"isHeadOffice"} title="Head Office ?" />
+
+                                        </div>
+
+                                        <div className="col-md-4 col-sm-12">
+
+                                            <TextFieldWrapper
+                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}
+                                                onChange={(value)=>this.handleChange(value,"contact")}
+                                                error={this.state.errors["contact"]}
+                                                name="contact" title="Contact" />
+
+                                        </div>
+                                        <div className="col-md-4 col-sm-12">
+
+                                        <TextFieldWrapper
+                                            onChange={(value)=>this.handleChange(value,"external_reference")}
+                                            error={this.state.errors["external_reference"]}
+                                            name="external_reference" title="Site Id" />
+                                        </div>
+                                    </div>
+
+                                    <div className="row no-gutters">
+                                        <div className="col-12 ">
+
+                                            <TextFieldWrapper
+                                                onChange={(value)=>this.handleChange(value,"description")}
+                                                error={this.state.errors["description"]}
+                                                name="description" title="Description" />
+
+                                        </div>
+                                    </div>
+
+                                    <div className="row no-gutters">
+                                        <div className="col-6 pr-1">
+                                            <SelectArrayWrapper
+
+                                                option={"name"}
+                                                valueKey={"_key"}
+                                                error={this.state.errors["parent"]}
+                                                onChange={(value)=> {
+                                                    this.handleChange(value,"parent")
+                                                }}
+                                                select={"Select"} options={this.props.siteList}
+                                                name={"parent"} title="Select parent site/address"/>
+
+                                        </div>
+
+                                        <div className="col-6 pl-1 ">
+
+                                            <TextFieldWrapper
+                                                onChange={(value)=>this.handleChange(value,"phone")}
+                                                error={this.state.errors["phone"]}
+                                                name="phone" title="Phone" />
+                                        </div>
+                                    </div>
+
+                                    <div className="row no-gutters ">
+                                        <div className="col-12">
+                                            <div className="row no-gutters justify-content-center ">
+
+                                                <div className="col-6 pr-2">
+
+                                                    <TextFieldWrapper
+                                                        onChange={(value)=>this.handleChange(value,"email")}
+                                                        error={this.state.errors["email"]}
+                                                        name="email" title="Email" />
+
+                                                </div>
+                                                <div className="col-6 pl-2">
+                                                    <TextFieldWrapper
+                                                        onChange={(value)=>this.handleChange(value,"other")}
+                                                        error={this.state.errors["description"]}
+                                                        name="other" title="Other" />
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row no-gutters ">
+                                        <div className="col-12">
+
+                                            <TextFieldWrapper
+                                                onChange={(value)=>this.handleChange(value,"address")}
+                                                error={this.state.errors["address"]}
+
+                                                name="address" title="Address" />
+
+
+                                        </div>
+                                    </div>
+                                    <div className="row no-gutters ">
+                                        <div className="col-12">
+
+
+
+
+                                        </div>
+                                    </div>
+                                    <div className="row no-gutters ">
+
+                                    </div>
+                                    <div className={"row"}>
+                                        <div className="col-12 mt-4 mb-2">
+
+                                            <button
+                                                type={"submit"}
+                                                className={
+                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                }
+                                                disabled={this.state.isSubmitButtonPressed}>
+                                               Add Site
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+</>:
+                    <Modal
                     // size="lg"
                     centered
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
+
                     <div className="m-1">
                         <button
                             onClick={this.hidePopUp}
@@ -554,11 +739,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <Close />
                         </button>
                     </div>
-                    <div className="row  justify-content-center mobile-menu-row pt-3 m-2">
+                    <div className="row  justify-content-center mobile-menu-row p-3 m-2">
 
-                    <div className="col-12  ">
-                        <h3 className={"blue-text text-heading text-center"}>
-                            {this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h3>
+                    <div className="col-12 p-0 ">
+                        <h4 className={"blue-text text-heading text-left"}>
+                            {this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
                     </div>
 
                         {/*link existing or new site*/}
@@ -593,7 +778,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 </div>
                             </div>
                             <div className="row  ">
-                                <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.is_head_office}
@@ -602,7 +787,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                 </div>
 
-                                <div className="col-md-8 col-sm-12">
+                                <div className="col-md-6 col-sm-12">
 
                                     <TextFieldWrapper
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}
@@ -937,8 +1122,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                                         </div>
 
-
-
                                                         <div
                                                             className="col-2 text-center"
                                                             style={{ display: "flex" }}>
@@ -998,7 +1181,9 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                         </div>
 
                     </div>
-                </Modal>
+
+
+                </Modal>}
 
             </>
         );

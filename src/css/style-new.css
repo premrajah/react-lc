@@ -268,6 +268,9 @@ body.sidemenu-open .wrapper:after {
     background: #27245c;
 }
 
+.bg-blue{
+    background: #27245c;
+}
 .sidebar-container {
     padding: 0 10%;
 }
@@ -3650,4 +3653,40 @@ input:active,input:focus{
 
     border-bottom: 1px solid #EAEAEF!important;
 
+}
+
+.status .active {
+    background: #cff6dd;
+    color: #1fa750; }
+.status .active:after {
+    background: #23bd5a; }
+.status .waiting {
+    background: #fdf5dd;
+    color: #cfa00c; }
+.status .waiting:after {
+    background: #f2be1d; }
+.status span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 22px;
+    width: auto!important;
+}
+
+.status span::after {
+    position: absolute;
+    top: 9px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    content: '';
+    border-radius: 50%;
+}
+.text-14{
+    font-size: 14px;
+}
+.date-bottom{
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    bottom: 0;
 }

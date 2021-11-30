@@ -165,7 +165,10 @@ class Sites extends Component {
     }
 
     toggleMultiSite = () => {
-        this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        // this.setState({showMultiUpload: !this.state.showMultiUpload});
+
+        this.props.setMultiplePopUp({show:true,type:"isSite"})
     }
 
     handleMultiUploadCallback = () => {
@@ -186,9 +189,6 @@ class Sites extends Component {
         return (
             <Layout>
 
-
-
-
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
@@ -200,21 +200,15 @@ class Sites extends Component {
                             <div className="col-md-9 d-flex justify-content-start">
                                 <Link onClick={()=> {
                                     this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
-                                }}  className="btn btn-sm blue-btn mr-2 click-item">
+                                }}  className="btn-gray-border  mr-2 click-item">
                                     Add Sites / Address
                                 </Link>
 
-                                <Link onClick={this.toggleMultiSite} className="btn btn-sm blue-btn mr-2 click-item">
+                                <Link onClick={this.toggleMultiSite} className="btn-gray-border  mr-2 click-item">
                                     Upload Multiple Sites / Addresses (CSV)
                                 </Link>
-
                             </div>
-
-
                         </div>
-
-
-
                         <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={SITES_FILTER_VALUES} />
@@ -315,6 +309,7 @@ const mapDispatchToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),

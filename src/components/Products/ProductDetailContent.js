@@ -9,7 +9,7 @@ import {Alert, Modal, ModalBody} from "react-bootstrap";
 
 import {withStyles} from "@mui/styles/index";
 import {Link} from "react-router-dom";
-import SearchItem from "../../views/loop-cycle/search-item";
+import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
@@ -29,6 +29,7 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import SubproductItem from "./Item/SubproductItem";
 
 
 class ProductDetailContent extends Component {
@@ -664,7 +665,7 @@ class ProductDetailContent extends Component {
                                 />
                             )}
                         </div>}
-                        <div className="row no-gutters pt-4 pb-4  justify-content-center">
+                        <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
                                 <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
 
@@ -806,23 +807,22 @@ class ProductDetailContent extends Component {
                                                         onChange={this.setActiveKey}
 
                                                         aria-label="lab API tabs example">
-                                                        {/*<Tab label="Info" value="1" />*/}
-
 
                                                         {(this.props.item.product.purpose === "aggregate") &&
                                                         <Tab label="Aggregation" value="1"/>
                                                         }
-                                                            <Tab label="Sub Products" value="2" />
+                                                        <Tab label="Sub Products" value="2" />
 
                                                         <Tab label="Site" value="3" />
+
                                                         {this.state.searches.length > 0 && (
                                                         <Tab label="Searches" value="4" />
                                                         )}
 
                                                         {this.state.listingLinked &&
-                                                        <Tab label="Searches" value="5" />
+                                                        <Tab label="Listing" value="5" />
                                                             }
-                                                        {this.state.listingLinked && (   <Tab label="Listing" value="6" />)}
+
                                                         <Tab label="Artifacts" value="6" />
 
 
@@ -862,17 +862,24 @@ class ProductDetailContent extends Component {
 
 
                                                 {this.state.searches.length > 0 && (
+                                                    <>
+                                                    <div className={"mt-4"}></div>
                                                     <TabPanel value="4">
                                                         {this.state.searches.map((item) => (
-                                                            <SearchItem item={item}/>
+                                                            <SearchItem smallImage={true} item={item}/>
                                                         ))}
                                                     </TabPanel>
+                                                    </>
                                                 )}
 
                                                 {this.state.listingLinked && (
+
+                                                    <>
+                                                    <div className={"mt-4"}></div>
                                                     <TabPanel value="5">
                                                         {this.state.listingLinked && (
                                                             <ResourceItem
+                                                                smallImage={true}
                                                                 history={this.props.history}
                                                                 item={this.state.listingLinked}
                                                                 artifacts={this.state.item.artifacts}
@@ -880,6 +887,7 @@ class ProductDetailContent extends Component {
                                                             />
                                                         )}
                                                     </TabPanel>
+                                                    </>
                                                 )}
                                                 <TabPanel value="6">
                                                     <ArtifactProductsTab item={this.props.item}/>

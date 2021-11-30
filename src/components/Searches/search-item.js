@@ -7,7 +7,8 @@ import SearchGray from "@mui/icons-material/Search";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
-import MoreMenu from "../../components/MoreMenu";
+import MoreMenu from "../MoreMenu";
+import {capitalize} from "../../Util/GlobalFunctions";
 
 class SearchItem extends Component {
     constructor(props) {
@@ -95,63 +96,83 @@ class SearchItem extends Component {
         const classes = withStyles();
         return (
             <Link to={"/search/" + this.props.item.search._key}>
-                <div className="row no-gutters justify-content-center  mb-2 mt-2      pb-4">
+                <div className="row no-gutters justify-content-center mb-4  p-3 bg-white rad-8">
                     <div
                         className={
                             !this.state.previewImage ? "col-2 search-column-left" : "col-2 "
                         }>
                         {this.state.previewImage ? (
                             <img
-                                className={"img-fluid img-list"}
+                                className={"img-fluid img-list rad-8"}
                                 src={this.state.previewImage}
                                 alt=""
                             />
                         ) : (
                             <SearchGray
                                 style={{ color: "#C8C8C8", display: "table-cell" }}
-                                className={"m-5"}
+                                className={"m-5 img-list"}
                             />
                         )}
                     </div>
-                    <div className={"col-6 pl-3 content-box-listing"}>
-                        <p style={{ fontSize: "18px" }} className="text-blue mb-1 text-caps">
+                    <div className={"col-8 pl-3 content-box-listing"}>
+                        <p  className="text-capitlize mb-1 title-bold">
                             {this.props.item.search.name}
                         </p>
-                        <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
-                            {this.props.item.search.category}, {this.props.item.search.type}, {this.props.item.search.state} {this.props.item.search.volume}{this.props.item.search.units}
+                        <p  className=" mb-1 text-gray-light mt-2 ">
+                            {this.props.item.product && (
+                                <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
+                            )}
+                        </p>
+                        <p className={"text-gray-light mt-2 "}>
+                            Category:
+                            <span
+
+                                className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                            <span className="text-capitlize">
+                                                                {capitalize(this.props.item.search.category)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className=" text-capitlize">
+                                                                {capitalize(this.props.item.search.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className="  text-capitlize">
+                                                                {capitalize(this.props.item.search.state)}
+                                                            </span>
+
+
+
+                                    </span>
                         </p>
 
-                        <p style={{ fontSize: "16px" }} className="text-caps mb-1">
-                            {this.props.item.search.description.substr(0, 60)}..
-                        </p>
-                        {/*<p style={{ fontSize: "16px" }} className="text-mute mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}
-                    </div>
-                    <div style={{ textAlign: "right" }} className={"col-2"}>
-                        <p
-                            className={
-                                (this.props.item.stage === "matched" && "orange-text ") +
-                                (this.props.item.search.stage === "active" && " green-text") +
-                                "   text-caps"
-                            }>
-                            {this.props.item.search.stage}
-                        </p>
+                        {/*<p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}
                     </div>
 
-                    <div style={{ textAlign: "right" }} className={"col-2"}>
-                        <p className="">
-                            {/*{this.props.item.search.stage}*/}
+
+                    <div  className={"col-2 justify-content-end"}>
+                        <p className={"  status text-right"}>
+                                <span className={this.props.item.search.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
+                                    {this.props.item.search.stage}
+                                </span>
+                        </p>
+                        <p  className={" text-gray-light text-14 text-right"}>
+                            {this.props.showMoreMenu && (
+                                <MoreMenu
+                                    triggerCallback={(action) => this.callBackResult(action)}
+                                    delete={true}
+                                    duplicate={false}
+                                    edit={false}
+                                />
+                            )}
+                        </p>
+
+                        <p className={" text-gray-light text-14 date-bottom text-right"}>
                             {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
                         </p>
 
-                        {this.props.showMoreMenu && (
-                            <MoreMenu
-                                triggerCallback={(action) => this.callBackResult(action)}
-                                delete={true}
-                                duplicate={false}
-                                edit={false}
-                            />
-                        )}
+
                     </div>
+
+
+
                 </div>
             </Link>
         );

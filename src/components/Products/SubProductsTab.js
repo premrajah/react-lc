@@ -35,12 +35,13 @@ class SubProductsTab extends Component {
                 <div  className={
                     " mt-4  text-right"}>
                     <button
+                        data-parent={this.props.item.product._key}
+                        onClick={this.showProductSelection}
 
                         className={
                             "btn-gray-border "
                         }>
-                        <AddLinkIcon />     <span  data-parent={this.props.item.product._key}
-                                                   onClick={this.showProductSelection}
+                        <AddLinkIcon />     <span
                     >
                                                         Link Subproducts
                                                     </span>

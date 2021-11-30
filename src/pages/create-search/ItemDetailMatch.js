@@ -16,7 +16,7 @@ import encodeUrl from "encodeurl";
 import { Modal, ModalBody } from "react-bootstrap";
 import { withStyles } from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 
 class ItemDetailMatch extends Component {
     listing;

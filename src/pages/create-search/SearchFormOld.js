@@ -26,7 +26,7 @@ import HeaderWhiteBack from "../../views/header/HeaderWhiteBack";
 import ResourceItem from "../../views/item/ResourceItem";
 import HeaderDark from "../../views/header/HeaderDark";
 import Sidebar from "../../views/menu/Sidebar";
-import ProductExpandItem from "../../components/ProductExpandItem";
+import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import MomentUtils from "@date-io/moment";
 import moment from "moment";

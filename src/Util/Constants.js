@@ -42,6 +42,8 @@ export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
 export const PRODUCTS_FILTER_VALUES = ["name", "condition", "brand", "category","type","state","year of manufacture","model","serial no."];
 export const SITES_FILTER_VALUES = ["name","site id","address"];
+export const LISTING_FILTER_VALUES = ["name", "product name"];
+export const CYCLE_FILTER_VALUES = ["listing name", "search name","product name"];
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];
 export const MERGE_STRATEGY_OPTIONS = ["always_new", "always_fail", "pick_first", "pick_any"];

@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import SitePageItem from "./SitePageItem";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
+import AddLinkIcon from "@mui/icons-material/AddLink";
 
 class SubSitesTab extends Component {
     slug;
@@ -83,17 +84,28 @@ class SubSitesTab extends Component {
 
         return (
             <>
-                <p
-                    style={{ margin: "10px 0px" }}
-                    className={
-                        "green-text forgot-password-link text-mute small"
-                    }>
-                    {this.props.isLoggedIn&& <span  data-parent={this.props.item._key}
-                                                        onClick={this.showSiteSelection}
-                                                    >
-                                                        Link Sub Sites
-                                                    </span>}
-                </p>
+
+                {this.props.isLoggedIn&&
+
+                <div  className={
+                    " mt-4  text-right"}>
+                    <button
+                        data-parent={this.props.item.site._key}
+                        onClick={this.showSiteSelection}
+                        className={
+                            "btn-gray-border "
+                        }>
+                        <AddLinkIcon />     <span
+
+                    >
+                                                        Link Subsites
+                                                    </span>
+
+                    </button>
+                </div> }
+
+
+                <div className={"mt-4"}></div>
 
                         {this.props.item.children_sites.map(
                             (item, index) => (

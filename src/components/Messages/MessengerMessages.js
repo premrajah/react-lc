@@ -97,29 +97,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
 
         return <div key={i}>
-
             <div
-                // classes={{root: classes.root, selected: classes.selected}}
                 className={`click-item p-2 message-group-item`}
                 selected={selectedItem === i}
-                // button
-                // divider
                 onClick={() => handleGroupClick(group, i)}
                 style={selectedItem === i ? {backgroundColor: 'var(--lc-pink)', color: "#fff"} : {backgroundColor: "#fff"} }
             >
-                {/*{group.name.replace(/\W/g, " ")}*/}
-            {/*     {group.orgs || group.orgs.length > 0 && group.orgs.map((g, i) => {*/}
-            {/*         return <div key={i} className="mr-2">*/}
-            {/*             <Tooltip arrow title={*/}
-            {/*                 <div className="d-flex flex-column">*/}
-            {/*                     <div>{g.name ? g.name : ""}</div>*/}
-            {/*                     <small>{g.email ? g.email : ""}</small>*/}
-            {/*                 </div>*/}
-            {/*             }>*/}
-            {/*                <Avatar style={{color: "#000", backgroundColor: "var(--lc-bg-gray)", border: "1px solid var(--lc-green)"}}>{g.name ? g.name.substr(0, 2) : ""}</Avatar>*/}
-            {/*             </Tooltip>*/}
-            {/*         </div>*/}
-            {/*})}*/}
                 {group.name.replaceAll(",",", ").replaceAll("+",", ").replaceAll("-","")}
             </div>
         </div>
@@ -259,8 +242,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             reactSelectRef.current.clearValue();
         }
 
-        setShowHideGroupFilter(false);
+        if(allMessageGroups[1].id === "0") {
+            allMessageGroups.splice(1, 1); // remove new message
+        }
+
         setShowHideOrgSearch(false);
+        setShowHideGroupFilter(false);
         getGroupMessageWithId(group._key);
         setSelectedMsgGroup([]);
     };

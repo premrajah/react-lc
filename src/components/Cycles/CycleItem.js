@@ -1,14 +1,12 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Paper from "../../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import moment from "moment/moment";
-import Org from "../Org/Org";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
-import OrgFull from "../Org/OrgFull";
 import OrgComponent from "../Org/OrgComponent";
 import {capitalize} from "../../Util/GlobalFunctions";
 
@@ -118,11 +116,7 @@ class CycleItem extends Component {
         event.preventDefault();
 
         const form = event.currentTarget;
-        //
-        // if (this.handleValidation()){
-        //     this.setState({
-        //         btnLoading: true
-        //     })
+
 
         const data = new FormData(event.target);
 

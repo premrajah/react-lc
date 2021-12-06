@@ -1,21 +1,17 @@
 import React, {Component} from "react";
 import PlaceholderImg from "../../../img/place-holder-lc.png";
 import MoreMenu from "../../MoreMenu";
-import {Tooltip} from "@mui/material";
 import axios from "axios/index";
 import {baseUrl} from "../../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../../store/actions/actions";
-import {Modal, ModalBody} from "react-bootstrap";
+import {Modal, ModalBody, OverlayTrigger, Popover} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
-import {Add} from "@mui/icons-material";
+import {Add, Info} from "@mui/icons-material";
 import {capitalize} from "../../../Util/GlobalFunctions";
-import { Info } from "@mui/icons-material";
-import {withStyles} from "@mui/styles";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 
 
 class ProductItemNew extends Component {
@@ -243,9 +239,6 @@ class ProductItemNew extends Component {
      orgPopover = (
         <Popover id="add-popover">
             <div className={"p-3"}>
-
-                {/*<span className={"title-bold"} style={{ textTransform: "capitalize" }}>"Click"</span>*/}
-                {/*<br/>*/}
 
                     <>
                 <span className={"text-gray-light"}>
@@ -493,15 +486,12 @@ class ProductItemNew extends Component {
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartthis.props.items: state.cartthis.props.items,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartthis.props.item : state.abondonCartthis.props.item,
-        // showNewsletter: state.showNewsletter
+
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

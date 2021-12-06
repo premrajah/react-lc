@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {TextField} from "@mui/material";
 import {makeStyles} from '@mui/styles';
-import InputBase from '@mui/material/InputBase';
-import { alpha, styled } from '@mui/material/styles';
 import CustomizedInput from "./CustomizedInput";
 
 const useStyles = makeStyles((theme) => ({

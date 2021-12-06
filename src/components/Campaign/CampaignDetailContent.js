@@ -5,7 +5,6 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {withStyles} from "@mui/styles/index";
-import CreateCampaign from "../../pages/ad-campaigns/CreateCampaign";
 import CampaignDetail from "./CampaignDetail";
 
 class CampaignDetailContent extends Component {
@@ -274,23 +273,7 @@ this.setState({
             showSubmitSite: !this.state.showSubmitSite,
         });
     }
-    submitDuplicateProduct = (event) => {
-        // axios
-        //     .post(baseUrl + "product/" + this.state.item.product._key + "/duplicate", {})
-        //     .then((res) => {
-        //         this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
-        //
-        //         this.props.history.push("/my-products");
-        //
-        //
-        //     })
-        //     .catch((error) => {
-        //         // this.setState({
-        //         //
-        //         //     errorRegister:error.response.data.errors[0].message
-        //         // })
-        //     });
-    };
+
 
     submitReleaseProduct = (event) => {
         this.setState({

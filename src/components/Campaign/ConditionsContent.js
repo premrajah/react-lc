@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import moment from "moment/moment";
 
 class ConditionsContent extends Component {
     slug;

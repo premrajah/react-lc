@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import {Publish, Download} from "@mui/icons-material";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-// import {TextField} from "formik-material-ui";
 import EditSite from "../Sites/EditSite";
 import {validateInputs} from "../../Util/Validator";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -16,7 +15,6 @@ import SiteForm from "../Sites/SiteForm";
 
 const UploadMultiSiteOrProduct = (props) => {
 
-    // {siteList, loadSites, multiUploadCallback, popUpType}
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
@@ -253,7 +251,6 @@ const UploadMultiSiteOrProduct = (props) => {
             .then(res => {
 
 
-                // alert("no errror")
                     setUploadSitesError(<span className="text-success"><b>Uploaded {isSite ? "Sites" : "Products"} Successfully!</b></span>);
                     setErrorsArray(res.data.errors)
                     setUploadArtifactError('');

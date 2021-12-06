@@ -17,17 +17,7 @@ class SubProductsTab extends Component {
 
         return (
             <>
-                {/*{this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&& <p*/}
-                {/*    style={{ margin: "10px 0px" }}*/}
-                {/*    className={*/}
-                {/*        "green-text forgot-password-link text-mute small"*/}
-                {/*    }>*/}
-                {/*                 <span  data-parent={this.props.item.product._key}*/}
-                {/*                                        onClick={this.showProductSelection}*/}
-                {/*                                    >*/}
-                {/*                                        Link Subproducts*/}
-                {/*                                    </span>*/}
-                {/*</p>}*/}
+
 
 
                 {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&&

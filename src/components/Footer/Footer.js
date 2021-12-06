@@ -5,8 +5,7 @@ import {Button, Col, Nav, NavItem, NavLink, Row, UncontrolledTooltip,} from "rea
 import styles from "./Footer.module.css";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-// // import HeaderLogoSvg from "../../img/loopcycle_header_logo.svg";
-// import HeaderLogoSvg from '../../img/Logo-white.svg';
+
 import LogoSymbol from "../../img/Symbol-white.svg";
 
 class Footer extends React.Component {

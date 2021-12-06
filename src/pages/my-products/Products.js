@@ -3,9 +3,6 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
@@ -23,8 +20,6 @@ import Close from "@mui/icons-material/Close";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import {PRODUCT_NPARENT_LIST_PAGE} from "../../store/types";
-import {loading} from "../../store/actions/actions";
 
 class Products extends Component {
 
@@ -100,17 +95,6 @@ class Products extends Component {
         // }
     }
     componentDidMount() {
-
-        // this.props.loadSites();
-
-
-        // this.props.resetProductPageOffset()
-        // this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
-        // this.props.dispatchLoadProductsWithoutParentPage({offset:0,size:400});
-
-        // this.loadNewPageSetUp()
-
-        // this.getSitesForProducts()
 
 
 

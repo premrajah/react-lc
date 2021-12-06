@@ -107,9 +107,14 @@ class AutocompleteCustom extends Component {
         };
     }
 
+
+
     onChange = (e) => {
+
         const { suggestions } = this.props;
         const userInput = e.currentTarget.value;
+
+        console.log(e.currentTarget.value, e.keyCode)
 
         this.setState({
             activeSuggestion: 0,
@@ -274,7 +279,7 @@ class AutocompleteCustom extends Component {
 
                     className={`${this.state.selected&&"d-none "} custom-input`}
                     onChange={onChange}
-                    onKeyDown={onKeyDown}
+                    // onKeyDown={onKeyDown}
                     value={this.state.userInput}
                     autoComplete={"new-password"}
                     placeholder={"Company (Type your company name here)"}

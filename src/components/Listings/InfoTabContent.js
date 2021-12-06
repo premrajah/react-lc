@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {capitalize} from "../../Util/GlobalFunctions";
 import {capitalizeFirstLetter} from "../../Util/Constants";
+
 import moment from "moment";
 
 class InfoTabContent extends Component {

@@ -1,16 +1,14 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
-import { Cancel, Check, Error, Publish } from "@mui/icons-material";
-import { makeStyles } from "@mui/styles";
-import { withStyles } from "@mui/styles/index";
+import {Cancel, Check, Error, Publish} from "@mui/icons-material";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import {baseUrl, capitalizeFirstLetter, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
-import { Spinner } from "react-bootstrap";
-import EditSite from "../../components/Sites/EditSite";
+import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
@@ -18,7 +16,6 @@ import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {capitalize} from "../../Util/GlobalFunctions";
 import SiteForm from "../Sites/SiteForm";
-import {Link} from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
@@ -1039,7 +1036,6 @@ class ProductForm extends Component {
                                         <div className="col-12  text-left ">
                                             <div className="">
                                                 <div className={""}>
-                                                    {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
 
                                                     <div className={"file-uploader-box"}>
                                                         <div

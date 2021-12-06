@@ -127,11 +127,7 @@ class Product extends Component {
                 });
             })
             .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
+
             });
     };
 

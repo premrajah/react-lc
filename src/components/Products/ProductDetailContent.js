@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-// import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
 
 import {withStyles} from "@mui/styles/index";
@@ -29,7 +28,6 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import SubproductItem from "./Item/SubproductItem";
 
 
 class ProductDetailContent extends Component {

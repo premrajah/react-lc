@@ -21,10 +21,6 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import AggregatesTab from "../Products/AggregatesTab";
-import SearchItem from "../Searches/search-item";
-import ResourceItem from "../../pages/create-search/ResourceItem";
-import ArtifactProductsTab from "../Products/ArtifactProductsTab";
 
 
 class SiteDetailContent extends Component {
@@ -224,23 +220,7 @@ class SiteDetailContent extends Component {
             showSubmitSite: !this.state.showSubmitSite,
         });
     }
-    submitDuplicateProduct = (event) => {
-        // axios
-        //     .post(baseUrl + "product/" + this.state.item.product._key + "/duplicate", {})
-        //     .then((res) => {
-        //         this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
-        //
-        //         this.props.history.push("/my-products");
-        //
-        //
-        //     })
-        //     .catch((error) => {
-        //         // this.setState({
-        //         //
-        //         //     errorRegister:error.response.data.errors[0].message
-        //         // })
-        //     });
-    };
+
 
 
 

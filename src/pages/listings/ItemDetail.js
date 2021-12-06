@@ -322,10 +322,7 @@ class ItemDetail extends Component {
                                             </div>
                                         </div>
                                         <div className="row   justify-content-center  mb-4 pb-4">
-                                            {/*<div className="floating-back-icon" style={{ margin: "auto" }}>*/}
 
-                                            {/*<NavigateBefore onClick={this.handleBack} style={{ fontSize: 32, color: "white" }} />*/}
-                                            {/*</div>*/}
 
                                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                                 {/*stick-left-box*/}

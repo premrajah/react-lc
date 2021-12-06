@@ -1,14 +1,8 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import {baseUrl, frontEndUrl} from "../../Util/Constants";
-import axios from "axios/index";
 
 import jspdf from "jspdf";
-import QrCodeBg from "../../img/qr-code-bg.png";
-import LoopcycleLogo from "../../img/logo-text.png";
-import {Link} from "react-router-dom";
-import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
 
 class QrCode extends Component {
     slug;

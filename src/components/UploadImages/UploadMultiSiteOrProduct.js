@@ -36,9 +36,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
     useEffect(() => {
 
-        // console.log("popUpType")
-        //
-        // console.log(props.popUpType)
 
 
         if(props.popUpType=="isProduct") {
@@ -98,8 +95,6 @@ const UploadMultiSiteOrProduct = (props) => {
     }
 
     const  handleChange=(value, field) =>{
-
-        // console.log( field)
 
 
         if (field==="artifact"){

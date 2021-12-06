@@ -170,10 +170,6 @@ class SiteForm extends Component {
     handleSubmit = (event) => {
 
 
-        // alert("Fdfdfd")
-        // console.log("handle submit called")
-
-
         event.preventDefault();
         event.stopPropagation();
 
@@ -432,7 +428,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
             createNew:!this.state.createNew
         })
 
-        console.log(this.props.showSiteForm)
+
        // else if (this.props.showSiteForm.type==="link-product"){
 
             // this.props.loadProducts()

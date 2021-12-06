@@ -245,8 +245,6 @@ class MyCampaigns extends Component {
 
     toggleRightBar=(item)=>{
 
-        console.log(item)
-
 
         if (item){
             this.setState({
@@ -295,7 +293,6 @@ this.props.toggleRightBar()
             .then((res) => {
 
                 if (res.status === 200) {
-                   // console.log(res)
 
                     let sites=res.data.data
 

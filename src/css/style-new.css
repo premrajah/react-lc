@@ -17,6 +17,10 @@
 
 }
 
+.wysiwyg-editor {
+    padding: 0 1em;
+}
+
 .text-pink-heading{
 
     color: var(--lc-pink);

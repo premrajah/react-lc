@@ -97,29 +97,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         trackedList.push({groupId: group._id, groupKey: group._key, name: group.name, index: i});
 
         return <div key={i}>
-
             <div
-                // classes={{root: classes.root, selected: classes.selected}}
                 className={`click-item p-2 message-group-item`}
                 selected={selectedItem === i}
-                // button
-                // divider
                 onClick={() => handleGroupClick(group, i)}
                 style={selectedItem === i ? {backgroundColor: 'var(--lc-pink)', color: "#fff"} : {backgroundColor: "#fff"} }
             >
-                {/*{group.name.replace(/\W/g, " ")}*/}
-            {/*     {group.orgs || group.orgs.length > 0 && group.orgs.map((g, i) => {*/}
-            {/*         return <div key={i} className="mr-2">*/}
-            {/*             <Tooltip arrow title={*/}
-            {/*                 <div className="d-flex flex-column">*/}
-            {/*                     <div>{g.name ? g.name : ""}</div>*/}
-            {/*                     <small>{g.email ? g.email : ""}</small>*/}
-            {/*                 </div>*/}
-            {/*             }>*/}
-            {/*                <Avatar style={{color: "#000", backgroundColor: "var(--lc-bg-gray)", border: "1px solid var(--lc-green)"}}>{g.name ? g.name.substr(0, 2) : ""}</Avatar>*/}
-            {/*             </Tooltip>*/}
-            {/*         </div>*/}
-            {/*})}*/}
                 {group.name.replaceAll(",",", ").replaceAll("+",", ").replaceAll("-","")}
             </div>
         </div>
@@ -259,8 +242,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             reactSelectRef.current.clearValue();
         }
 
-        setShowHideGroupFilter(false);
+        if(allMessageGroups[1].id === "0") {
+            allMessageGroups.splice(1, 1); // remove new message
+        }
+
         setShowHideOrgSearch(false);
+        setShowHideGroupFilter(false);
         getGroupMessageWithId(group._key);
         setSelectedMsgGroup([]);
     };
@@ -471,7 +458,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     </div>
                 </div>
 
-                <div className="col-md-7">
+                <div className="col-md-8">
                     {showHideOrgSearch && <div className="row">
                         <div className="col">
                             <Select
@@ -488,11 +475,12 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     </div>}
 
                     <div
-                        className="row"
+                        className="row no-gutters"
                         style={{
                             height: msgWindowHeight,
                             maxHeight: msgWindowHeight,
                             overflow: "auto",
+                            borderRight: "1px solid var(--lc-bg-gray)"
                         }}>
                         <div className="col">
                             {(selectedMsgGroup.length <= 0 && (allMessageGroups.length > 0 && allMessageGroups[0].id !== "0")) ? "Loading..." : <div></div>}
@@ -544,40 +532,42 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                         </div>
                     </div>
 
-                    {<div className="row">
-                        <div className="col">
-                            {reactSelectedValues.length > 0 && <Alert severity="info" className="mr-2">{`Send message to selected orgs`}</Alert>}
-                            {reactSelectedValues.length > 0 || selectedMsgGroup.length > 0 && <Alert severity="info">{`Reply to the selected group`}</Alert>}
-                        </div>
-                    </div>}
 
-                    <div className="row mt-2" style={{height: "60px"}}>
-                        <div className="col-11 p-0 mb-5" style={{border: '1px solid var(--lc-pale-purple)'}}>
-                            <WysiwygEditor
-                                wrapperClassName="wysiwyg-wrapper-class"
-                                editorClassName="wysiwyg-editor-class"
-                                allOrgs={allOrgs}
-                                ref={resetDraftRef}
-                                richTextHandleCallback={(value) => handleRichTextCallback(value)}
-                            />
-                        </div>
-                        <div className="col-1 d-flex justify-content-center align-items-center p-0">
-                            <Button
-                                type="button"
-                                disabled={messageText ? false : true}
-                                fullWidth
-                                onClick={() => handleSendMessage()}>
-                                <SendIcon
-                                    fontSize="large"
-                                    style={{color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)"}}
-                                />
-                            </Button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
+            <div className="wysiwyg-editor-container">
+                {<div className="row">
+                    <div className="col">
+                        {reactSelectedValues.length > 0 && <Alert severity="info" className="mr-2">{`Send message to selected orgs`}</Alert>}
+                        {reactSelectedValues.length > 0 || selectedMsgGroup.length > 0 && <Alert severity="info">{`Reply to the selected group`}</Alert>}
+                    </div>
+                </div>}
 
+                <div className="row mt-2 mb-5" style={{height: "60px"}}>
+                    <div className="col-11" style={{border: '1px solid var(--lc-pale-purple)'}}>
+                        <WysiwygEditor
+                            wrapperClassName="wysiwyg-wrapper-class"
+                            editorClassName="wysiwyg-editor-class"
+                            allOrgs={allOrgs}
+                            ref={resetDraftRef}
+                            richTextHandleCallback={(value) => handleRichTextCallback(value)}
+                        />
+                    </div>
+                    <div className="col-1 no-gutters d-flex justify-content-center align-items-center">
+                        <Button
+                            type="button"
+                            disabled={messageText ? false : true}
+                            fullWidth
+                            onClick={() => handleSendMessage()}>
+                            <SendIcon
+                                fontSize="large"
+                                style={{color: messageText ? "var(--lc-pink)" : "var(--lc-bg-gray)"}}
+                            />
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </>
     );
 };

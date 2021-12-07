@@ -78,7 +78,6 @@ class ProductTreeView extends Component {
 
     setTree() {
 
-
             let list = this.props.items
 
 
@@ -121,19 +120,25 @@ class ProductTreeView extends Component {
 
     }
 
-    componentDidMount() {
-        // this.getItems();
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
+        if (prevProps!==this.props) {
+
+
+
+        }
+    }
+
+    componentDidMount() {
+
+        this.setState({
+            tree: [],
+            filteredList: [],
+        });
 
         this.setTree()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-        if (prevProps!==this.props){
-            this.setTree()
-        }
-    }
 
     getItems() {
         axios.get(baseUrl + "product/no-parent").then(
@@ -205,15 +210,7 @@ class ProductTreeView extends Component {
                                     name={"name"}
                                     onChange={this.handleSearch.bind(this, "name")}
                                 />
-                                {this.props.items.length===0&&   <Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                    style={{color:"#07AD88"}}
-                                    className={"spinner-select"}
-                                />}
+
                             </div>
                             <div className={"col-12"}>
                                 <div className={"row tree-view-menu"}>

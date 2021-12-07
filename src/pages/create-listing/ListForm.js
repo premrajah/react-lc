@@ -1,28 +1,21 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import Close from "@mui/icons-material/Close";
 import "../../Util/upload-file.css";
 import {makeStyles} from "@mui/styles";
 import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
-import TextField from "@mui/material/TextField";
-import clsx from "clsx";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import LinearProgress from "@mui/material/LinearProgress";
 import ProductBlue from "../../img/icons/product-blue.png";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+
 import ItemDetailPreview from "../../components/ItemDetailPreview";
 import ProductTreeView from "../../components/ProductTreeView";
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 
@@ -30,9 +23,16 @@ import PageHeader from "../../components/PageHeader";
 import EditSite from "../../components/Sites/EditSite";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import {capitalize} from "../../Util/GlobalFunctions";
+import Layout from "../../components/Layout/Layout";
+import TextField from "@mui/material/TextField";
+import clsx from "clsx";
 
 
-class ListForm extends Component {
+class ListFormNew extends Component {
     constructor(props) {
         super(props);
 
@@ -93,7 +93,9 @@ class ListForm extends Component {
             selectedProductId: null,
             previewProduct:null,
             selectedLoading:false,
-            createListingError:null
+            createListingError:null,
+            activeStep:0,
+            showFieldErrors:false
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -178,10 +180,10 @@ class ListForm extends Component {
 
     getPreviewImage(productSelectedKey) {
         axios.get(baseUrl + "product/" + productSelectedKey + "/artifact", {
-            headers: {
-                Authorization: "Bearer " + this.props.userDetail.token,
-            },
-        })
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
             .then(
                 (response) => {
                     var responseAll = response.data.data;
@@ -201,7 +203,54 @@ class ListForm extends Component {
             );
     }
 
-    handleNext() {
+    handleNext = () => {
+
+
+        this.setState({
+            showFieldErrors:true
+        })
+
+        if (this.handleValidationList(this.state.activeStep)) {
+
+            window.scrollTo(0, 0);
+
+            if(this.handleValidationList(this.state.activeStep+1)){
+
+                this.setState({
+                    nextBlue:true,
+
+                });
+            }else{
+                this.setState({
+                    nextBlue:false
+                });
+
+            }
+
+            this.setState({
+                activeStep: this.state.activeStep + 1,
+                progressBar: 100,
+                showFieldErrors:false
+            });
+
+
+
+         if (this.state.activeStep === 2) {
+                this.createListing();
+                //
+            } else if (this.state.activeStep === 3) {
+                this.props.history.push("/" + this.state.listResourceData._key);
+            }
+
+
+        }
+
+
+
+    };
+
+
+    handleNextOld() {
         if (this.state.page === 1 && this.handleValidateOne()) {
             window.scrollTo(0, 0);
 
@@ -239,6 +288,43 @@ class ListForm extends Component {
     }
 
     handleBack() {
+
+
+        if ((this.state.activeStep - 1) == 0) {
+
+            if (this.handleValidationList(this.state.activeStep - 1)) {
+
+                this.setState({
+                    nextBlue: true
+                });
+
+            } else {
+
+                this.setState({
+                    nextBlue: false
+                });
+            }
+
+        }
+
+        window.scrollTo(0, 0);
+
+        if (this.state.activeStep>0)
+            this.setState({
+                activeStep: this.state.activeStep - 1
+            });
+
+
+
+
+
+        this.setState({
+
+            progressBar: 50,
+        });
+    }
+
+    handleBackOld() {
         if (this.state.page === 3) {
             window.scrollTo(0, 0);
             this.setState({
@@ -255,7 +341,153 @@ class ListForm extends Component {
         }
     }
 
-    handleChange(field, e) {
+    validateDates=()=>{
+
+
+        let valid=true
+
+        if (!this.state.startDate){
+
+            this.setState({
+                startDateError:true
+            })
+
+            valid=  false
+
+        }else{
+            this.setState({
+                startDateError:false
+            })
+        }
+
+        if (!this.state.endDate){
+
+            this.setState({
+                endDateError:true
+            })
+
+            valid =  false
+
+        }else{
+            this.setState({
+                endDateError:false
+            })
+
+        }
+        return valid
+
+
+    }
+
+
+    handleValidationList=(activeStep)=> {
+
+
+        let fields = this.state.fields;
+
+        let validations=[]
+
+
+
+        if (activeStep===0) {
+
+            validations = [
+                validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
+
+                validateFormatCreate("title", [{check: Validators.required, message: 'Required'}], fields),
+                validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
+
+            ]
+
+        }
+        else if (activeStep===1) {
+            validations = [
+                validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields)
+
+            ]
+
+            if (!this.state.free){
+                validations .push(
+                    validateFormatCreate("price", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'Invalid input.'}], fields)
+                )
+            }
+
+        }
+        else if (activeStep===2) {
+
+        }
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+
+        return formIsValid;
+
+    }
+
+
+    handleChange=(value,field)=>{
+
+
+        if (field==="startDate"){
+            this.setState({
+                startDate:value
+            })
+        }else if(field==="endDate"){
+            this.setState({
+                endDate:value
+            })
+        }
+
+        let fields = this.state.fields;
+        fields[field] = value;
+
+        this.setState({ fields });
+
+        this.setState({
+            showFieldErrors:false,
+
+        })
+
+
+
+        if (this.handleValidationList(this.state.activeStep)){
+
+
+            if (this.state.activeStep===1){
+
+                if (this.validateDates()){
+
+                    this.setState({
+                        nextBlue:true,
+
+                    })
+                }else{
+
+                    this.setState({
+                        nextBlue:false,
+
+                    })
+                }
+
+            }else{
+
+                this.setState({
+                    nextBlue:true,
+
+                })
+
+            }
+
+        }else{
+            this.setState({
+                nextBlue:false,
+
+            })
+
+        }
+    }
+    handleChangeOld(field, e) {
         let fields = this.state.fields;
 
         fields[field] = e.target.value;
@@ -289,73 +521,7 @@ class ListForm extends Component {
         }
     }
 
-    handleValidateOne() {
-        let fields = this.state.fields;
-        let errors = this.state.errors;
-        let formIsValid = true;
 
-        if (!fields["title"]) {
-            formIsValid = false;
-            errors["title"] = "Required";
-        }
-
-        if (!fields["description"]) {
-            formIsValid = false;
-            errors["description"] = "Required";
-        }
-
-        // if (!this.state.selectedProductId) {
-        //     formIsValid = false;
-        //     errors["product"] = "Required";
-        // }
-
-        if (!fields["product"]) {
-            formIsValid = false;
-            errors["product"] = "Required";
-        }
-
-        this.setState({
-            nextBlue: formIsValid,
-            errors: errors,
-        });
-
-        return formIsValid;
-    }
-
-    handleValidateTwo() {
-        let fields = this.state.fields;
-        let errors = this.state.errors;
-        let formIsValid = true;
-
-        if (!fields["deliver"]) {
-            formIsValid = false;
-            errors["deliver"] = "Required";
-        }
-
-        if (!fields["startDate"]) {
-            formIsValid = false;
-            errors["startDate"] = "Required";
-        }
-
-        if (!fields["endDate"]) {
-            formIsValid = false;
-            errors["endDate"] = "Required";
-        }
-
-        if (!this.state.free) {
-            if (!fields["price"]) {
-                formIsValid = false;
-                errors["price"] = "Required";
-            }
-        }
-
-        this.setState({
-            nextBlueAddDetail: formIsValid,
-            errors: errors,
-        });
-
-        return formIsValid;
-    }
 
     handleChangeDateStartDate = (date) => {
         this.setState({
@@ -431,11 +597,28 @@ class ListForm extends Component {
             },
         };
 
+
+     let dataNew= {
+            name: this.state.fields["title"],
+                description: this.state.fields["description"],
+                category: this.state.fields["category"],
+                type: this.state.fields["type"],
+                units: this.state.fields["units"],
+                volume: this.state.fields["volume"],
+                state: this.state.fields["state"],
+               available_from_epoch_ms: new Date(this.state.startDate).getTime(),
+                expire_after_epoch_ms: new Date(this.state.endDate).getTime(),
+         price: {
+             value: this.state.free ? 0 : this.state.fields["price"],
+             currency: "gbp",
+         },
+        }
+
         axios
             .put(
                 baseUrl + "listing",
                 {
-                    listing: data,
+                    listing: dataNew,
                     site_id: this.state.fields["deliver"],
                     product_id: this.state.fields["product"],
                 },
@@ -457,7 +640,6 @@ class ListForm extends Component {
 
 
                 if (error&&error.response&&error.response.status){
-                    console.log(error.response)
 
                     this.setState({
                         notFoundError:true,
@@ -785,68 +967,44 @@ class ListForm extends Component {
         const classesBottom = withStyles();
 
         return (
-            <>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
 
-                    <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle="New Listing" />
+                <div className="container  pb-4 pt-4">
+                    {this.state.activeStep<3 &&      <PageHeader pageTitle="New Listing" subTitle={this.state.activeStep==0?"Basic Details":this.state.activeStep==1?"More Details":"Preview"} />}
 
-                        <div className={this.state.page === 1 ? "" : "d-none"}>
+                        <div className={this.state.activeStep === 0 ? "" : "d-none"}>
                             <div className="row add-listing-container   pb-5 pt-2">
                                 <div className={"col-12"}>
                                     <div onSubmit={this.createListing} className={"mb-5"}>
                                         <div className="row no-gutters justify-content-center mt-2">
                                             <div className="col-12">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Title
-                                                </div>
-
-                                                <TextField
-                                                    onChange={this.handleChange.bind(this, "title")}
-                                                    name={"title"}
+                                                <TextFieldWrapper
+                                                    initialValue={this.props.item&&this.props.item.search.name}
+                                                    onChange={(value)=>this.handleChange(value,"title")}
+                                                    error={this.state.showFieldErrors&&this.state.errors["title"]}
+                                                    name="title"
+                                                    title="Title"
                                                     id="outlined-basic"
                                                     variant="outlined"
                                                     fullWidth={true}
                                                 />
-                                                {this.state.errors["title"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["title"]}
-                                                    </span>
-                                                )}
+
                                             </div>
 
-                                            <div className="col-12 mt-4">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold text-blue mb-1"
-                                                    }>
-                                                    Description
-                                                </div>
+                                            <div className="col-12 mt-2">
 
-                                                <TextField
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "description"
-                                                    )}
+                                                <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChange(value,"description")}
                                                     name={"description"}
+                                                    error={this.state.showFieldErrors&&this.state.errors["description"]}
                                                     id="outlined-basic"
                                                     multiline
                                                     rows={4}
                                                     variant="outlined"
                                                     fullWidth={true}
+                                                    title="Description"
                                                 />
-                                                {this.state.errors["description"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["description"]}
-                                                    </span>
-                                                )}
+
                                             </div>
 
                                             <div className="col-12 mt-4 mb-4">
@@ -857,27 +1015,30 @@ class ListForm extends Component {
                                                     }>
                                                     Link a product
                                                     <span onClick={this.showProductSelection}
-                                                          style={{float:"right"}}
-                                                          className={
-                                                              "green-text forgot-password-link text-mute small"
-                                                          }>
+                                                        style={{float:"right"}}
+                                                        className={
+                                                            "green-text forgot-password-link text-mute small"
+                                                        }>
                                                     Add New product
                                                 </span>
                                                 </div>
 
                                                 <div className="row">
                                                     <div className="col-4">
-                                                        {this.props.productWithoutParentNoList&&this.props.productWithoutParentNoList.length>0&&
-                                                        <ProductTreeView
-                                                            items={this.props.productWithoutParentNoList}
-                                                            triggerCallback={(productId) =>
-                                                                this.productSelected(productId)
-                                                            }
-                                                            className={"mb-4"}
-                                                        />
-                                                        }
+                                                {this.props.productWithoutParentNoList&&this.props.productWithoutParentNoList.length>0&&
+                                                <ProductTreeView
+                                                    items={this.props.productWithoutParentNoList}
+                                                    triggerCallback={(productId) => {
+                                                        this.productSelected(productId)
+                                                        this.handleChange(productId,"product")
+
+                                                    }
+                                                    }
+                                                    className={"mb-4"}
+                                                />
+                                                }
                                                     </div>
-                                                    <div className="col-8  mt-5 pt-2">
+                                                    <div className="col-8 pt-2" style={{marginTop:"75px"}}>
 
                                                         {!this.state.selectedLoading&&this.state.previewProduct&&
                                                         <ProductItem
@@ -901,24 +1062,36 @@ class ListForm extends Component {
                                                     </div>
                                                 </div>
 
-                                                <TextField
+                                                {/*<CustomizedInput*/}
+                                                {/*    value={this.state.selectedProductId}*/}
+                                                {/*    className={"d-none"}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"product")}*/}
+                                                {/*    name={"product"}*/}
+                                                {/*    placeholder={"product"}*/}
+                                                {/*    id="outlined-basic"*/}
+                                                {/*    variant="outlined"*/}
+                                                {/*    fullWidth={true}*/}
+                                                {/*/>*/}
+
+                                               <div className={"d-none"}> <TextFieldWrapper
                                                     value={this.state.selectedProductId}
-                                                    className={"d-none"}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "product"
-                                                    )}
+                                                    onChange={(value)=>this.handleChange(value,"product")}
                                                     name={"product"}
-                                                    placeholder={"product"}
+                                                    error={this.state.showFieldErrors&&this.state.errors["product"]}
                                                     id="outlined-basic"
+
+                                                    rows={4}
+
                                                     variant="outlined"
                                                     fullWidth={true}
+                                                    title="Product Select"
                                                 />
+                                                </div>
 
-                                                {this.state.errors["product"] && (
-                                                    <span className={"text-mute small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["product"]}
+                                                {this.state.showFieldErrors&&this.state.errors&&this.state.errors["product"] && (
+                                                    <span style={{ color: "#f44336" }} className={""}>
+                                                       {this.state.errors["product"].message}
+
                                                     </span>
                                                 )}
                                             </div>
@@ -928,265 +1101,172 @@ class ListForm extends Component {
                             </div>
                         </div>
 
-                        <div className={this.state.page === 2 ? "" : "d-none"}>
+                        <div className={this.state.activeStep === 1 ? "" : "d-none"}>
                             <div className="row add-listing-container   pb-5 pt-2">
                                 <div className={"col-12"}>
-                                    <div className="row no-gutters">
-                                        <div className="col-auto">
-                                            <h5 className={" text-heading"}>Add Details</h5>
-                                        </div>
-                                    </div>
-
                                     <div onSubmit={this.createListing} className={"mb-5"}>
                                         <div className="row no-gutters justify-content-center mt-2">
-                                            <div className="col-12 mt-4">
+                                            <div className="col-12 ">
                                                 <div className="row ">
-                                                    <div className="col-md-12 col-sm-6 col-xs-12 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue mb-1"
-                                                            }>
-                                                            Located At
-                                                        </div>
 
-                                                        <FormControl
-                                                            variant="outlined"
-                                                            className={classes.formControl}>
-                                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Located At</InputLabel>*/}
-                                                            <Select
-                                                                name={"deliver"}
-                                                                native
-                                                                // label="Located At"
-                                                                onChange={this.handleChange.bind(
-                                                                    this,
-                                                                    "deliver"
-                                                                )}
-                                                                inputProps={{
-                                                                    name: "deliver",
-                                                                    id:
-                                                                        "outlined-age-native-simple",
-                                                                }}>
-                                                                <option value={null}>Select</option>
+                                                    <div className="col-12 mb-2">
 
-                                                                {this.props.siteList.map((item) => (
-                                                                    <option value={item._key}>
-                                                                        {item.name +
-                                                                        "(" +
-                                                                        item.address +
-                                                                        ")"}
-                                                                    </option>
-                                                                ))}
-                                                            </Select>
-                                                        </FormControl>
+                                                        <SelectArrayWrapper
+                                                            valueKey={"_key"}
+                                                            initialValue={this.props.item&&capitalize(this.props.item.product.deliver)}
+                                                            onChange={(value)=>this.handleChange(value,"deliver")}
+                                                            error={this.state.showFieldErrors&&this.state.errors["deliver"]}
+                                                            options={this.props.siteList}
+                                                            option={"name"}
+                                                            select={"Select"}
+                                                            name={"deliver"} title="Deliver"
+                                                            native
+                                                        />
+                                                        <p className={"text-g"} style={{ marginTop: "10px" }}>
 
-                                                        {this.state.errors["deliver"] && (
-                                                            <span className={"text-mute small"}>
-                                                                <span style={{ color: "red" }}>
-                                                                    *
-                                                                </span>
-                                                                {this.state.errors["deliver"]}
-                                                            </span>
-                                                        )}
-
-                                                        <p
-                                                            style={{ margin: "10px 0" }}
-                                                            onClick={this.toggleSite}
-                                                            className={
-                                                                "green-text forgot-password-link text-mute small"
-                                                            }>
-                                                            Add New Site
+                                                            or <span
+                                                                onClick={this.toggleSite}
+                                                                className={
+                                                                    "green-text forgot-password-link "
+                                                                }>Add new</span>
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div className="row no-gutters justify-content-center mt-5">
-                                            <div className="col-12 mb-3">
-                                                <div className="row ">
-                                                    <div className="col-6 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue "
-                                                            }>
-                                                            Required From
-                                                        </div>
-
-                                                        {/*<MuiPickersUtilsProvider*/}
-                                                        {/*    utils={MomentUtils}>*/}
-                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                            <MobileDatePicker
-                                                                minDate={new Date()}
-                                                                // label="Required By"
-                                                                inputVariant="outlined"
-                                                                variant={"outlined"}
-                                                                margin="normal"
-                                                                id="date-picker-dialog"
-                                                                label="Available From"
-                                                                format="DD/MM/yyyy"
-                                                                value={this.state.startDate}
-                                                                onChange={this.handleChangeDateStartDate.bind(
-                                                                    this
-                                                                )}
-
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
-                                                            />
-                                                        </LocalizationProvider>
-                                                        {/*</MuiPickersUtilsProvider>*/}
-
-                                                        {this.state.errors["startDate"] && (
-                                                            <span className={"text-mute small"}>
-                                                                <span style={{ color: "red" }}>
-                                                                    *
-                                                                </span>
-                                                                {this.state.errors["startDate"]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="col-6 ">
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue "
-                                                            }>
-                                                            Required By
-                                                        </div>
-
-                                                        {/*<MuiPickersUtilsProvider*/}
-                                                        {/*    utils={MomentUtils}>*/}
-
-                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                            <MobileDatePicker
-                                                                minDate={
-                                                                    this.state.startDate
-                                                                        ? this.state.startDate
-                                                                        : new Date()
-                                                                }
-                                                                // label="Required By"
-                                                                inputVariant="outlined"
-                                                                variant={"outlined"}
-                                                                margin="normal"
-                                                                id="date-picker-dialog"
-                                                                label="End Date "
-                                                                format="DD/MM/yyyy"
-                                                                value={this.state.endDate}
-                                                                onChange={this.handleChangeDateEndDate.bind(
-                                                                    this
-                                                                )}
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
-                                                            />
-                                                        </LocalizationProvider>
-                                                        {/*</MuiPickersUtilsProvider>*/}
-
-                                                        {this.state.errors["endDate"] && (
-                                                            <span className={"text-mute small"}>
-                                                                <span style={{ color: "red" }}>
-                                                                    *
-                                                                </span>
-                                                                {this.state.errors["endDate"]}
-                                                            </span>
-                                                        )}
-                                                    </div>
+                                        <div className="row  justify-content-start ">
+                                            <div className="col-6 ">
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue "
+                                                    }>
+                                                    Available From
                                                 </div>
+
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                    <MobileDatePicker
+
+                                                        className={"full-width-field"}
+                                                        disableHighlightToday={true}
+                                                        minDate={new Date()}
+                                                        // label="Required By"
+                                                        inputVariant="outlined"
+                                                        variant={"outlined"}
+                                                        margin="normal"
+                                                        id="date-picker-dialog-1"
+                                                        // label="Available From"
+                                                        inputFormat="dd/MM/yyyy"
+                                                        value={this.state.startDate}
+
+                                                        // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
+                                                        // onChange={this.handleChangeDateStartDate.bind(
+                                                        //     this
+                                                        // )}
+                                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                                        onChange={(value)=>this.handleChange(value,"startDate")}
+
+                                                    />
+                                                </LocalizationProvider>
+
+                                                {this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
                                             </div>
 
-                                            <div className="col-12 mb-3">
-                                                <div className="row">
-                                                    <div className="col-md-6 col-sm-12 col-xs-12">
-                                                        <div className="row">
-                                                            <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
-                                                                <div
-                                                                    className={
-                                                                        "custom-label text-bold text-blue "
-                                                                    }>
-                                                                    Price
+                                            <div className="col-6  ">
+
+                                                <div
+                                                    className={
+                                                        "custom-label text-bold text-blue "
+                                                    }>
+                                                    Available By
+                                                </div>
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                    <MobileDatePicker
+                                                        disableHighlightToday={true}
+
+                                                        minDate={new Date()}
+                                                        // label="Required By"
+                                                        inputVariant="outlined"
+                                                        variant={"outlined"}
+                                                        margin="normal"
+                                                        id="date-picker-dialog"
+                                                        inputFormat="dd/MM/yyyy"
+                                                        value={this.state.endDate}
+                                                        // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+
+                                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                                        onChange={(value)=>this.handleChange(value,"endDate")}
+
+                                                    />
+                                                </LocalizationProvider>
+                                                {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
+                                            </div>
+                                        </div>
+
+                                        <div className="row no-gutters justify-content-start ">
+
+                                        <div className="col-12 mb-3">
+                                            <div className="row">
+                                                <div className="col-md-6 col-sm-12 col-xs-12">
+                                                    <div className="row mt-3">
+
+
+                                                        <div className="col-md-12 col-sm-12 col-xs-12 mb-2">
+                                                            <button
+                                                                onClick={this.toggleSale}
+                                                                className={
+                                                                    !this.state.free
+                                                                        ? "col-12 btn-select-free green-bg"
+                                                                        : "btn-select-free"
+                                                                }>
+                                                                For Sale
+                                                            </button>
+
+                                                            <button
+                                                                onClick={this.toggleFree}
+                                                                className={
+                                                                    this.state.free
+                                                                        ? "col-12 btn-select-free green-bg"
+                                                                        : "btn-select-free"
+                                                                }>
+                                                                Free
+                                                            </button>
+                                                        </div>
+
+                                                        <div
+                                                            style={{ paddingLeft: "0" }}
+                                                            className="col-md-12 col-sm-12 col-xs-12 ">
+                                                            {!this.state.free && (
+                                                                <div className="col-12 mb-5">
+                                                                    <TextFieldWrapper
+                                                                        onChange={(value)=>this.handleChange(value,"price")}
+                                                                        name={"price"}
+                                                                        error={this.state.showFieldErrors&&this.state.errors["price"]}
+                                                                        id="outlined-basic"
+
+                                                                        rows={4}
+                                                                        variant="outlined"
+                                                                        fullWidth={true}
+                                                                        title="Price"
+                                                                    />
                                                                 </div>
-                                                            </div>
-
-                                                            <div className="col-md-12 col-sm-12 col-xs-12 mb-3">
-                                                                <button
-                                                                    onClick={this.toggleSale}
-                                                                    className={
-                                                                        !this.state.free
-                                                                            ? "col-12 btn-select-free green-bg"
-                                                                            : "btn-select-free"
-                                                                    }>
-                                                                    For Sale
-                                                                </button>
-
-                                                                <button
-                                                                    onClick={this.toggleFree}
-                                                                    className={
-                                                                        this.state.free
-                                                                            ? "col-12 btn-select-free green-bg"
-                                                                            : "btn-select-free"
-                                                                    }>
-                                                                    Free
-                                                                </button>
-                                                            </div>
-
-                                                            <div
-                                                                style={{ paddingLeft: "0" }}
-                                                                className="col-md-12 col-sm-12 col-xs-12 ">
-                                                                {!this.state.free && (
-                                                                    <div className="col-12 mb-5">
-                                                                        <TextField
-                                                                            name={"price"}
-                                                                            type={"number"}
-                                                                            onChange={this.handleChange.bind(
-                                                                                this,
-                                                                                "price"
-                                                                            )}
-                                                                            id="input-with-icon-textfield"
-                                                                            label="£"
-                                                                            variant="outlined"
-                                                                            className={
-                                                                                clsx(
-                                                                                    classes.margin,
-                                                                                    classes.textField
-                                                                                ) +
-                                                                                " full-width-field"
-                                                                            }
-                                                                            id="input-with-icon-textfield"
-                                                                        />
-
-                                                                        {this.state.errors[
-                                                                            "price"
-                                                                            ] && (
-                                                                            <span
-                                                                                className={
-                                                                                    "text-mute small"
-                                                                                }>
-                                                                                <span
-                                                                                    style={{
-                                                                                        color:
-                                                                                            "red",
-                                                                                    }}>
-                                                                                    *
-                                                                                </span>
-                                                                                {
-                                                                                    this.state
-                                                                                        .errors[
-                                                                                        "price"
-                                                                                        ]
-                                                                                }
-                                                                            </span>
-                                                                        )}
-                                                                    </div>
-                                                                )}
-                                                            </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className={this.state.page === 3 ? "" : "d-none"}>
+                        <div className={this.state.activeStep === 2 ? "" : "d-none"}>
                             <ItemDetailPreview
                                 previewImage={this.state.previewImage}
                                 site={this.state.siteSelected}
@@ -1195,7 +1275,7 @@ class ListForm extends Component {
                             />
                         </div>
 
-                        <div className={this.state.page === 4 ? "" : "d-none"}>
+                        <div className={this.state.activeStep === 3 ? "" : "d-none"}>
                             <div className="container   pb-4 pt-4">
                                 <div className="row justify-content-center pb-2 pt-4 ">
                                     <div className="col-auto text-center">
@@ -1236,14 +1316,14 @@ class ListForm extends Component {
                         </div>
                     </div>
 
-                    {this.state.page < 4 && (
+                    {this.state.activeStep < 3 && (
                         <React.Fragment>
                             <div
                                 position="fixed"
                                 color="#ffffff"
                                 className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
 
-                                {this.state.page < 4 && (
+                                {this.state.activeStep < 3 && (
                                     <LinearProgress
                                         variant="determinate"
                                         value={this.state.progressBar}
@@ -1254,7 +1334,7 @@ class ListForm extends Component {
                                         className="row  justify-content-center search-container "
                                         style={{ margin: "auto" }}>
                                         <div className="col-auto">
-                                            {this.state.page > 1 && (
+                                            {this.state.activeStep > 0 && (
                                                 <button
                                                     type="button"
                                                     onClick={this.handleBack}
@@ -1264,32 +1344,28 @@ class ListForm extends Component {
                                             )}
                                         </div>
                                         <div className="col-auto" style={{ margin: "auto" }}>
-                                            <p className={"blue-text"}> Page {this.state.page}/3</p>
+                                            <p className={"blue-text"}> Page {this.state.activeStep+1}/3</p>
                                         </div>
                                         <div className="col-auto">
-                                            {this.state.page < 3 && (
+                                            {this.state.activeStep < 2 && (
                                                 <button
                                                     onClick={this.handleNext}
                                                     type="button"
                                                     className={
-                                                        (this.state.nextBlue &&
-                                                            this.state.page === 1) ||
-                                                        (this.state.page === 2 &&
-                                                            this.state.nextBlueAddDetail)
-                                                            ? "btn-next shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2"
+                                                        this.state.nextBlue
+                                                            ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2 "
                                                             : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2"
                                                     }>
                                                     Next
                                                 </button>
                                             )}
 
-                                            {this.state.page === 3 && (
+                                            {this.state.activeStep === 2 && (
                                                 <button
                                                     onClick={this.handleNext}
                                                     type="button"
-                                                    className={
-                                                        this.state.nextBlueAddDetail
-                                                            ? "btn-next shadow-sm mr-2 btn btn-link blue-btn       mt-2 mb-2 "
+                                                    className={this.state.nextBlue
+                                                            ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2  "
                                                             : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "
                                                     }>
                                                     Post Listing
@@ -1323,8 +1399,8 @@ class ListForm extends Component {
                             </div>
                         </>
                     )}
-                </div>
-            </>
+
+            </Layout>
         );
     }
 }
@@ -1402,4 +1478,4 @@ const mapDispachToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ListForm);
+export default connect(mapStateToProps, mapDispachToProps)(ListFormNew);

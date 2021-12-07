@@ -71,7 +71,7 @@ const SelectArrayWrapper = (props) => {
             </CustomizedSelect>
                 </FormControl>
 
-                {error && <span style={{color:"#f44336",fontSize: "0.75rem"}} className={"text-danger"}> {error.message}</span>}
+                {error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}
             </div>
         </>
     );

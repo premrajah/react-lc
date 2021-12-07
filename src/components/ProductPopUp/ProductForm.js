@@ -102,6 +102,9 @@ class ProductForm extends Component {
     }
 
     showSubmitSite=()=> {
+
+        window.scrollTo(0, 0);
+
         this.setState({
             errorRegister: null,
         });
@@ -735,7 +738,7 @@ class ProductForm extends Component {
                           <form onSubmit={this.handleSubmit}>
 
 
-                            <div className="row no-gutters">
+                            <div className="row ">
                                 <div className="col-12 mt-2">
 
                                    <TextFieldWrapper
@@ -758,34 +761,8 @@ class ProductForm extends Component {
 
                                 </div>
 
-                                <div className="col-md-4 col-sm-12">
+                                <div className="col-md-8 col-sm-12">
 
-                                    <SelectArrayWrapper
-
-                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
-                                        onChange={(value)=>this.handleChangeProduct(value,"condition")}
-                                        error={this.state.errors["condition"]}
-                                        options={this.state.condition}
-                                        name={"condition"} title="Condition"
-                                    />
-
-                                </div>
-
-                                <div className="col-md-4 col-sm-12">
-
-                                    <TextFieldWrapper
-                                        initialValue={this.props.item&&this.props.item.product.sku.brand}
-                                        onChange={(value)=>this.handleChangeProduct(value,"brand")}
-                                        error={this.state.errors["title"]}
-                                        name="brand" title="Brand" />
-
-                                </div>
-                            </div>
-
-                            <div className="row mt-2">
-
-
-                                <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.product.category}
                                         option={"name"}
@@ -796,26 +773,39 @@ class ProductForm extends Component {
 
                                             this.handleChangeProduct(value,"category")
                                             this.setState({
-                                        catSelected:  this.state.categories.length>0? this.state.categories.filter(
-                                            (item) => item.name === value
-                                        )[0]:null,
+                                                catSelected:  this.state.categories.length>0? this.state.categories.filter(
+                                                    (item) => item.name === value
+                                                )[0]:null,
 
-                                        subCategories:this.state.categories.length>0?this.state.categories.filter(
-                                            (item) => item.name === value
-                                        )[0]&&this.state.categories.filter(
-                                            (item) => item.name === value
-                                        )[0].types:[],
-                                        states: [],
-                                        units: [],
+                                                subCategories:this.state.categories.length>0?this.state.categories.filter(
+                                                    (item) => item.name === value
+                                                )[0]&&this.state.categories.filter(
+                                                    (item) => item.name === value
+                                                )[0].types:[],
+                                                states: [],
+                                                units: [],
 
-                                    })
-                                    }}
-                                       options={this.state.categories} name={"category"} title="Resource Category"
+                                            })
+                                        }}
+                                        options={this.state.categories} name={"category"} title="Resource Category"
                                     />
+
+
 
                                 </div>
 
+                                {/*<div className="col-md-4 col-sm-12">*/}
+
+                                {/* */}
+
+                                {/*</div>*/}
+                            </div>
+
+                            <div className="row mt-2">
+
+
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
+
                                     <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.product.type}
                                         option={"name"}
@@ -826,26 +816,29 @@ class ProductForm extends Component {
                                             this.handleChangeProduct(value,"type")
 
                                             this.setState({
-                                            subCatSelected:  this.state.subCategories.length>0? this.state.subCategories.filter(
-                                                (item) => item.name === value
-                                            )[0]:null,
+                                                subCatSelected:  this.state.subCategories.length>0? this.state.subCategories.filter(
+                                                    (item) => item.name === value
+                                                )[0]:null,
 
-                                            states: this.state.subCategories.length>0?this.state.subCategories.filter(
-                                                (item) => item.name === value
-                                            )[0].state:[],
-                                            units: this.state.subCategories.length>0?this.state.subCategories.filter(
-                                                (item) => item.name === value
-                                            )[0].units:[]
+                                                states: this.state.subCategories.length>0?this.state.subCategories.filter(
+                                                    (item) => item.name === value
+                                                )[0].state:[],
+                                                units: this.state.subCategories.length>0?this.state.subCategories.filter(
+                                                    (item) => item.name === value
+                                                )[0].units:[]
                                             })
                                         }}
 
                                         disabled={
                                             ((this.state.subCategories&&this.state.subCategories.length > 0)) ? false : true
-                                    } options={this.state.subCategories?this.state.subCategories:[]} name={"type"} title="Type"/>
+                                        } options={this.state.subCategories?this.state.subCategories:[]} name={"type"} title="Type"/>
 
                                 </div>
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
+
+
+
                                     <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.product.state}
                                         onChange={(value)=>this.handleChangeProduct(value,"state")}
@@ -854,16 +847,29 @@ class ProductForm extends Component {
                                         select={"Select"}
                                         disabled={ (this.state.states.length > 0 )? false : true}
                                         options={this.state.states?this.state.states:[]} name={"state"} title="State"/>
+                                </div>
+
+                                <div className={"col-md-4 col-sm-12 col-xs-12"}>
+
+                                    <SelectArrayWrapper
+
+                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
+                                        onChange={(value)=>this.handleChangeProduct(value,"condition")}
+                                        error={this.state.errors["condition"]}
+                                        options={this.state.condition}
+                                        name={"condition"} title="Condition"
+                                    />
+
 
                                 </div>
                             </div>
 
 
 
-                            <div className="row no-gutters mt-2">
+                            <div className="row  mt-2">
                                 <div className="col-12">
-                                    <div className="row camera-grids   no-gutters   ">
-                                        <div className="col-md-4 col-sm-12 col-xs-12 pr-2 ">
+                                    <div className="row camera-grids      ">
+                                        <div className="col-md-4 col-sm-12 col-xs-12  ">
 
                                             <SelectArrayWrapper
 
@@ -875,8 +881,14 @@ class ProductForm extends Component {
                                                options={this.state.purpose} name={"purpose"} title="Purpose"/>
 
                                         </div>
-
-                                        <div className="col-md-8 col-sm-12 col-xs-12 pl-2">
+                                        <div className="col-md-4 col-sm-12 col-xs-12  ">
+                                        <TextFieldWrapper
+                                            initialValue={this.props.item&&this.props.item.product.sku.brand}
+                                            onChange={(value)=>this.handleChangeProduct(value,"brand")}
+                                            error={this.state.errors["title"]}
+                                            name="brand" title="Brand" />
+                                        </div>
+                                        <div className="col-md-4 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
 
@@ -894,15 +906,15 @@ class ProductForm extends Component {
 
 
                                             <p style={{ marginTop: "10px" }}>
-                                                <span className="mr-1 text-gray-light">Do not see your address?</span>
+                                                <span className="mr-1 text-gray-light">or </span>
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
-                                                        "green-text forgot-password-link text-mute small"
+                                                        "green-text forgot-password-link"
                                                     }>
                                                     {this.state.showSubmitSite
                                                         ? "Hide add site"
-                                                        : "Add a site"}
+                                                        : "Add new address"}
                                                 </span>
                                             </p>
 
@@ -912,9 +924,9 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
                             </div>
-                                <div className="row no-gutters mt-2">
+                                <div className="row  mt-2">
                                     <div className="col-12">
-                                        <div className="row no-gutters justify-content-start ">
+                                        <div className="row  justify-content-start ">
                                             <div className="col-12 ">
                                                 <div
                                                     className={"custom-label text-bold text-blue mb-1"}>
@@ -922,7 +934,7 @@ class ProductForm extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="col-4 pr-2">
+                                            <div className="col-4 ">
                                                 <SelectArrayWrapper
                                                     select={"Select"}
                                                     initialValue={this.props.item&&this.props.item.product.units}
@@ -932,7 +944,7 @@ class ProductForm extends Component {
                                                     disabled={ (this.state.units.length > 0) ? false : true}
                                                     options={this.state.units} name={"units"} title="(Units)"/>
                                             </div>
-                                            <div className="col-4 pl-2">
+                                            <div className="col-4 ">
 
                                                 {!this.state.disableVolume&&   <TextFieldWrapper
                                                     // readonly ={this.state.disableVolume}
@@ -947,7 +959,7 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
 
-                            <div className="row no-gutters mt-2">
+                            <div className="row  mt-2">
                                 <div className="col-12">
 
                                     <TextFieldWrapper
@@ -961,7 +973,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-2">
+                            <div className="row  mt-2">
                                 <div className="col-12 text-left">
                                     <span style={{ float: "left" }}>
                                         <span
@@ -1029,7 +1041,7 @@ class ProductForm extends Component {
                                 </div>
 
                                 <div className="container-fluid  pb-3 ">
-                                    <div className="row camera-grids   no-gutters   ">
+                                    <div className="row camera-grids      ">
                                         <div className="col-12  text-left ">
                                             <div className="">
                                                 <div className={""}>

@@ -57,7 +57,7 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
                   variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
 
            </div>
-            {error && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{error.message}</span>}
+            {error && <span style={{color:"#f44336",fontSize:"12px!important"}} className='text-danger'>{error.message}</span>}
         </>
 
     )

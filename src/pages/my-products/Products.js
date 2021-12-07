@@ -40,7 +40,8 @@ class Products extends Component {
             loading:false,
             items:[],
             lastPageReached:false,
-            currentOffset:0
+            currentOffset:0,
+            productPageSize:400
 
         }
 
@@ -96,9 +97,6 @@ class Products extends Component {
     }
     componentDidMount() {
 
-
-
-
         this.loadProductsWithoutParentPageWise()
         // this.loadNewPageSetUp()
     }
@@ -113,7 +111,7 @@ class Products extends Component {
 
         axios
             // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.props.productPageSize}`)
+            .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then(
                 (response) => {
                     if(response.status === 200) {

@@ -103,7 +103,7 @@ class Home extends Component {
                                                 href="https://loopcycle.io/"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                type="button"
+
                                                 style={{ textDecoration: "none" }}
                                                 className="mr-2  blue-btn-border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />

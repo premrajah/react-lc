@@ -541,12 +541,8 @@ class ProductDetailCycle extends Component {
         if (prevProps!==this.props) {
 
 
-            if(this.props.item.product.purpose === "aggregate"){
                 this.setActiveKey(null,"1")
-            }else{
-                this.setActiveKey(null,"2")
 
-            }
 
         }
     }
@@ -560,12 +556,9 @@ class ProductDetailCycle extends Component {
 
         this.getProductTrails(this.props.item.product._key);
 
-        if(this.props.item.product.purpose === "aggregate"){
-            this.setActiveKey(null,"1")
-        }else{
-            this.setActiveKey(null,"2")
 
-        }
+            this.setActiveKey(null,"1")
+
     }
 
     getProductTrails(productKey) {
@@ -630,10 +623,10 @@ class ProductDetailCycle extends Component {
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}
 
-                                <InfoTabContent item={this.props.item}/>
+                                {/*<InfoTabContent item={this.props.item}/>*/}
 
 
-                                <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.props.item}/>
+                                <QrCode hideRefresh={true} callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.props.item}/>
 
                             </div>
 
@@ -818,22 +811,22 @@ class ProductDetailCycle extends Component {
                                                 aria-label="lab API tabs example">
                                                 {/*<Tab label="Info" value="1" />*/}
 
-
+                                                <Tab label="Product Info" value="1" />
                                                 {(this.props.item.product.purpose === "aggregate") &&
-                                                <Tab label="Aggregation" value="1"/>
+                                                <Tab label="Aggregation" value="2"/>
                                                 }
-                                                <Tab label="Sub Products" value="2" />
+                                                <Tab label="Sub Products" value="3" />
 
-                                                <Tab label="Site" value="3" />
+                                                <Tab label="Site" value="4" />
                                                 {this.state.searches.length > 0 && (
-                                                    <Tab label="Searches" value="4" />
+                                                    <Tab label="Searches" value="5" />
                                                 )}
 
                                                 {this.state.listingLinked &&
-                                                <Tab label="Searches" value="5" />
+                                                <Tab label="Listing" value="6" />
                                                 }
-                                                {this.state.listingLinked && (   <Tab label="Listing" value="6" />)}
-                                                <Tab label="Artifacts" value="6" />
+
+                                                <Tab label="Artifacts" value="7" />
 
 
 
@@ -841,16 +834,20 @@ class ProductDetailCycle extends Component {
                                         </Box>
 
 
-
-                                        {(this.props.item.product.purpose === "aggregate") &&
                                         <TabPanel value="1">
+
+                                            <InfoTabContent item={this.props.item}/>
+
+                                        </TabPanel>
+                                        {(this.props.item.product.purpose === "aggregate") &&
+                                        <TabPanel value="2">
 
                                             <AggregatesTab item={this.props.item}/>
                                         </TabPanel>}
-                                        <TabPanel value="2">
+                                        <TabPanel value="3">
                                             <SubProductsTab  noLinking={true} item={this.props.item}/>
                                         </TabPanel>
-                                        <TabPanel value="3">
+                                        <TabPanel value="4">
                                             <>
 
                                                 <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
@@ -873,7 +870,7 @@ class ProductDetailCycle extends Component {
 
 
                                         {this.state.searches.length > 0 && (
-                                            <TabPanel value="4">
+                                            <TabPanel value="5">
                                                 {this.state.searches.map((item) => (
                                                     <SearchItem item={item}/>
                                                 ))}
@@ -881,7 +878,7 @@ class ProductDetailCycle extends Component {
                                         )}
 
                                         {this.state.listingLinked && (
-                                            <TabPanel value="5">
+                                            <TabPanel value="6">
                                                 {this.state.listingLinked && (
                                                     <ResourceItem
                                                         history={this.props.history}
@@ -892,7 +889,7 @@ class ProductDetailCycle extends Component {
                                                 )}
                                             </TabPanel>
                                         )}
-                                        <TabPanel value="6">
+                                        <TabPanel value="7">
                                             <ArtifactProductsTab  hideAdd={true} item={this.props.item}/>
                                         </TabPanel>
 

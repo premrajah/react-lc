@@ -3044,17 +3044,33 @@ background: white;
 }
 
 .tree-view-item {
-    background: #ffffff;
-    padding: 2px 6px 2px 6px;
+    /*background: #ffffff;*/
+
     /*border-radius: 8px;*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tree-view-item-selected svg{
+    /*color: white!important;*/
+}
+.tree-view-item-selected {
+    /*background: #05ad88;*/
+    /*font-weight: bold;*/
+    /*color: white;*/
+
+    /*box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);*/
+
 }
 
-.tree-view-item-selected {
+.tree-item-name{
+    padding: 2px 6px 2px 6px;
+}
+
+.tree-view-item-selected .tree-item-name{
     background: #05ad88;
     font-weight: bold;
     color: white;
-    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
-
 }
 
 .tree-view-menu p {
@@ -3264,9 +3280,9 @@ background: white;
     }
 }
 .tree-view-item:hover {
-    background: #eee;
-    width: 100%;
-    color: black;
+    /*background: #eee;*/
+    /*width: 100%;*/
+    /*color: black;*/
 }
 .expand-square{
     height: 20px;
@@ -3693,4 +3709,10 @@ input:active,input:focus{
     right: 0;
     font-size: 12px;
     bottom: 0;
+}
+.top-right{
+    position: absolute;
+    right: 10px;
+    top: 0px;
+
 }

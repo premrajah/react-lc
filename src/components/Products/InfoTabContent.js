@@ -17,11 +17,11 @@ class InfoTabContent extends Component {
 
 
         return (
-            <>
+            <div className={"bg-white rad-8 mt-4 p-3"}>
                 <div className="row  justify-content-start search-container no-gutters  pb-2">
-                    <div className={"attribute-label col-12 text-blue mt-4 mb-4"}>
-                        Product Info
-                    </div>
+                    {/*<div className={"attribute-label col-12 text-blue mt-4 mb-4"}>*/}
+                    {/*    Product Info*/}
+                    {/*</div>*/}
                     <div className={"col-12"}>
                         <p
                             style={{ fontSize: "18px" }}
@@ -252,7 +252,7 @@ class InfoTabContent extends Component {
                         </div>
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 }

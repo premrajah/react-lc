@@ -101,31 +101,47 @@ class ProductTreeItemView extends Component {
         this.getListing()
     }
 
-    getSubProducts() {
+    async getSubProducts() {
 
         if (this.props.item) {
             let currentProductId = this.props.item.id;
 
-            axios
-                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
-                    headers: {
-                        Authorization: "Bearer " + this.props.token,
-                    },
-                })
-                .then(
-                    (response) => {
-                        var responseAll = response.data.data;
 
-                        this.setState({
-                            products: responseAll,
-                        });
+            let response = await axios.get(baseUrl + "product/" + currentProductId + "/sub-product", {
+                headers: {
+                    Authorization: "Bearer " + this.props.token,
+                },
+            });
 
-                        this.setTree();
-                    },
-                    (error) => {
-                        // var status = error.response.status
-                    }
-                );
+            let responseAll = response.data.data;
+
+            this.setState({
+                products: responseAll,
+            });
+
+            this.setTree();
+
+
+            // axios
+            //     .get(baseUrl + "product/" + currentProductId + "/sub-product", {
+            //         headers: {
+            //             Authorization: "Bearer " + this.props.token,
+            //         },
+            //     })
+            //     .then(
+            //         (response) => {
+            //             var responseAll = response.data.data;
+            //
+            //             this.setState({
+            //                 products: responseAll,
+            //             });
+            //
+            //             this.setTree();
+            //         },
+            //         (error) => {
+            //             // var status = error.response.status
+            //         }
+            //     );
         }
 
     }
@@ -169,7 +185,18 @@ class ProductTreeItemView extends Component {
             <>
                 <div className={"tree-item-container"} style={{ padding: "2px" }}>
                     <p>
-                        <div className={"expand-square"}>
+
+                        <span
+                            data-id={this.props.item.id}
+                            onClick={!this.state.listingExist && this.setSelected}
+                            className={
+                                !this.state.listingExist
+                                    ? this.props.selected === this.props.item.id
+                                        ? "tree-view-item-selected tree-view-item"
+                                        : "tree-view-item"
+                                    : "tree-view-item text-mute"
+                            }>
+                            <span className="mr-1">  <div className={"expand-square"}>
                         {this.state.tree.length > 0 &&
                         <>
                             {
@@ -190,22 +217,11 @@ class ProductTreeItemView extends Component {
                             }
                         </>
                         }
-                        </div>
-                        <span
-                            data-id={this.props.item.id}
-                            onClick={!this.state.listingExist && this.setSelected}
-                            className={
-                                !this.state.listingExist
-                                    ? this.props.selected === this.props.item.id
-                                        ? "tree-view-item-selected tree-view-item"
-                                        : "tree-view-item"
-                                    : "tree-view-item text-mute"
-                            }>
-                            <span className="mr-1">{this.props.item.name}</span>
+                            </div><span className={"tree-item-name"}>{this.props.item.name}</span></span>
                             {this.state.tree.length>0 &&
                             <>
-                            <span className="mr-1">-</span>
-                            <span>{this.state.tree.length + " Sub Products"}</span>
+                            {/*<span className="mr-1">-</span>*/}
+                            <span>{"("+this.state.tree.length+")"}</span>
                             </>
                             }
                         </span>

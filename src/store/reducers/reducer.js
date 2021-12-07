@@ -340,7 +340,7 @@ const reducer = (state = initialState, action) => {
 
         case PRODUCT_NPARENT_NO_LIST:
 
-
+            newState.productWithoutParentNoList=[]
             newState.productWithoutParentNoList= (action.value.val);
 
             newState.loading = false;

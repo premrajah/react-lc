@@ -82,6 +82,7 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
 import SearchRecords from "./pages/search/SearchRecords";
+import ListFormNew from "./pages/create-listing/ListForm";
 const theme = createTheme({
     palette: {
 
@@ -162,7 +163,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
-                        <LoggedInRoute exact path="/list-form" component={ListForm} />
+                        <LoggedInRoute exact path="/list-form" component={ListFormNew} />
+                        <LoggedInRoute exact path="/list-form-old" component={ListForm} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
                         <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />

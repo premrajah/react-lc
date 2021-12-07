@@ -59,18 +59,20 @@ class ProductView extends Component {
 
 
     componentDidMount() {
-        this.props.loadCurrentProduct(encodeUrl(this.slug));
 
-        if (this.props.location.search.includes("r=true")){
+        if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 
             axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
                 (response) => {
                     let responseAll = response.data;
 
-
+                    this.props.loadCurrentProduct(encodeUrl(this.slug));
                 },
                 (error) => {}
             );
+        }else {
+
+            this.props.loadCurrentProduct(encodeUrl(this.slug));
         }
     }
 

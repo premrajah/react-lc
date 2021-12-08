@@ -1,18 +1,25 @@
-import React, { Component } from "react";
-import Sidebar from "../menu/Sidebar";
-import HeaderDark from "../header/HeaderDark";
+import React, {Component} from "react";
 import axios from "axios/index";
-import { connect } from "react-redux";
-import { baseUrl } from "../../Util/Constants";
+import {connect} from "react-redux";
+import {baseUrl} from "../../Util/Constants";
 import ImagesSlider from "../../components/ImagesSlider/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
 import Org from "../../components/Org/Org";
-import { Link } from "react-router-dom";
-import { Badge, Modal } from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {Badge, Modal} from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
-import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
-import ProductItemNew from "../../components/ProductItemNew";
+import {FormControl, FormHelperText, MenuItem, Select} from "@mui/material";
+import ProductItem from "../../components/Products/Item/ProductItem";
+import Layout from "../../components/Layout/Layout";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import OrgComponent from "../../components/Org/OrgComponent";
+import InfoTabContent from "../../components/issues/InfoTabContent";
+import SubproductItem from "../../components/Products/Item/SubproductItem";
 
 class IssueDetail extends Component {
     state = {
@@ -21,6 +28,7 @@ class IssueDetail extends Component {
         stageModal: false,
         stageForm: "open",
         stageSelectedValue: "",
+        activeKey:"1",
     };
 
     handleShowEditModal = () => this.setState({ editModal: true });
@@ -52,6 +60,15 @@ class IssueDetail extends Component {
         if (priority === "low") return "info";
     };
 
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
     handleIssueSubmitted = (issueKey) => {
         this.getIssue(issueKey);
     };
@@ -111,13 +128,20 @@ class IssueDetail extends Component {
 
     render() {
         return (
-            <div className="mb-5">
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
-                    <div className="container  pb-4 pt-4">
+            <Layout>
+
+
+                    <div className="container  ">
                         {this.state.issue && (
-                            <div>
+
+                            <>
+                                <div className="row  pt-4 pb-4  justify-content-start">
+                                    <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                        <Link to={"/issues"}>My Issues</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.issue.issue.title}</span>
+
+                                    </div>
+                                </div>
+
                                 <div className="row">
                                     <div className="col-md-4 col-sm-12 col-xs-12 ">
                                         <div className="row stick-left-box ">
@@ -130,27 +154,27 @@ class IssueDetail extends Component {
                                                     />
                                                 ) : (
                                                     <img
-                                                        className={"img-fluid"}
+                                                        className={"img-fluid rad-8 bg-white p-2"}
                                                         src={PlaceholderImg}
                                                         alt=""
                                                     />
                                                 )}
                                             </div>
 
-                                            <div className="col-12 mt-5">
+                                            <div className="col-12 mt-3 d-none ">
                                                 {this.state.issue.product && (
                                                     <div>
                                                         <Link
                                                             to={`/product/${this.state.issue.product.product._key}`}>
-                                                            <h4
+                                                            <p
                                                                 className={
-                                                                    "blue-text text-heading"
+                                                                    "text-capitalize title-bold"
                                                                 }>
                                                                 {
                                                                     this.state.issue.product.product
                                                                         .name
                                                                 }
-                                                            </h4>
+                                                            </p>
                                                         </Link>
                                                         <p>
                                                             {
@@ -164,12 +188,25 @@ class IssueDetail extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="col-md-8 col-sm-12 col-xs-12 pl-5">
-                                        <div className="row mt-3">
+                                    <div className="col-md-8 col-sm-12 col-xs-12 ">
+                                        <div className="row ">
                                             <div className="col-md-10">
-                                                <h4 className={"blue-text text-heading"}>
+                                                <h4 className={"text-capitalize product-title"}>
                                                     {this.state.issue.issue.title}
+                                                    {this.state.issue.issue && (
+
+                                                            <Badge
+                                                                className="ml-3"
+                                                                style={{"fontSize":"50%",verticalAlign: "middle"}}
+                                                                variant={this.checkPriority(
+                                                                    this.state.issue.issue.priority
+                                                                )}>
+                                                                {this.state.issue.issue.priority.toUpperCase()}
+                                                            </Badge>
+
+                                                    )}
                                                 </h4>
+
                                             </div>
                                             <div className="col-md-2 text-right">
                                                 <MoreMenu
@@ -180,74 +217,10 @@ class IssueDetail extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="row">
-                                            <div className="col">
-                                                <div>
-                                                    {this.state.issue.issue && (
-                                                        <span className="mr-3">
-                                                            <Badge
-                                                                variant={this.checkPriority(
-                                                                    this.state.issue.issue.priority
-                                                                )}>
-                                                                {this.state.issue.issue.priority.toUpperCase()}
-                                                            </Badge>
-                                                        </span>
-                                                    )}
-
-                                                    {this.state.issue.issue.stage && (
-                                                        <span className="mr-3">
-                                                            <span>Stage: </span>
-                                                            <span>
-                                                                <b>
-                                                                    {this.state.issue.issue.stage}
-                                                                </b>
-                                                            </span>
-                                                        </span>
-                                                    )}
-
-                                                    {this.state.issue.creator && (
-                                                        <span className="mr-3">
-                                                            <span>Created by:</span>
-                                                            <Org
-                                                                orgId={this.state.issue.creator._id}
-                                                                orgDescription={
-                                                                    this.state.issue.creator
-                                                                        .description
-                                                                }
-                                                            />
-                                                        </span>
-                                                    )}
-                                                    {this.state.issue.service_agent && (
-                                                        <span>
-                                                            <span>
-                                                                Service agent:
-                                                                <Org
-                                                                    orgId={
-                                                                        this.state.issue
-                                                                            .service_agent._id
-                                                                    }
-                                                                    orgDescription={
-                                                                        this.state.issue
-                                                                            .service_agent
-                                                                            .description
-                                                                    }
-                                                                />
-                                                            </span>
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="row mt-2 mb-2">
-                                            <div className="col">
-                                                <div className={"listing-row-border "}></div>
-                                            </div>
-                                        </div>
 
                                         {this.state.issue.issue.description && (
-                                            <div>
-                                                <div className="row">
+                                            <>
+                                                <div className="row mb-3">
                                                     <div className="col">
                                                         <p className="text-gray-light">
                                                             {this.state.issue.issue.description}
@@ -255,35 +228,81 @@ class IssueDetail extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="row mt-2 mb-2">
-                                                    <div className="col">
-                                                        <div className={"listing-row-border "}></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </>
                                         )}
 
-                                        {this.state.issue && (
-                                            <div className="row">
-                                                <div className="col">
-                                                        <ProductItemNew
-                                                            item={this.state.issue.product}
-                                                            hideMore
-                                                            goToLink
-                                                            parentId={this.state.issue.product._key}
-                                                            history={this.props.history}
-                                                        />
-                                                </div>
+                                        <div className={"listing-row-border "}></div>
+
+
+                                        {this.state.issue &&
+                                        <div className="row justify-content-start pb-3  tabs-detail">
+                                            <div className="col-12 ">
+
+                                                <Box sx={{ width: '100%', typography: 'body1' }}>
+                                                    <TabContext value={this.state.activeKey}>
+                                                        <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                            <TabList
+                                                                variant="scrollable"
+                                                                scrollButtons="auto"
+                                                                textColor={"#27245C"}
+                                                                TabIndicatorProps={{
+                                                                    style: {
+                                                                        backgroundColor: "#27245C",
+                                                                        padding: '2px',
+                                                                    }
+                                                                }}
+                                                                onChange={this.setActiveKey}
+
+                                                                aria-label="lab API tabs example">
+
+                                                                <Tab label="Info" value="1" />
+                                                                {(this.state.issue.product) &&
+                                                                <Tab label="Product" value="2"/>
+                                                                }
+                                                            </TabList>
+                                                        </Box>
+
+                                                        <TabPanel value="1">
+
+                                                            <InfoTabContent item={this.state.issue}/>
+
+                                                        </TabPanel>
+
+
+                                                        {(this.state.issue.product) &&
+                                                        <TabPanel value="2">
+                                                            <div className=" mt-3">
+                                                            </div>
+
+                                                                    <SubproductItem
+                                                                        item={this.state.issue.product.product}
+                                                                        hideMoreMenu={true}
+                                                                        goToLink
+                                                                        parentId={this.state.issue.product.product._key}
+                                                                        history={this.props.history}
+                                                                    />
+
+
+                                                        </TabPanel>}
+
+
+                                                    </TabContext>
+                                                </Box>
+
                                             </div>
-                                        )}
+                                        </div>
+                                        }
+
+
                                     </div>
                                 </div>
-                            </div>
+
+
+                                </>
                         )}
                     </div>
-                </div>
 
-                {/*Modals*/}
+
                 {this.state.issue && (
                     <>
                         <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
@@ -367,7 +386,7 @@ class IssueDetail extends Component {
                         </Modal>
                     </>
                 )}
-            </div>
+            </Layout>
         );
     }
 }

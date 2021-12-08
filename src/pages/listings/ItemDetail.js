@@ -1,25 +1,21 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
-import { makeStyles } from "@mui/styles";
-import { baseUrl } from "../../Util/Constants";
+import {makeStyles} from "@mui/styles";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import moment from "moment";
 import encodeUrl from "encodeurl";
-import { Modal, ModalBody } from "react-bootstrap";
-import { withStyles } from "@mui/styles/index";
+import {Modal, ModalBody} from "react-bootstrap";
+import {withStyles} from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
 import MatchItemSeller from "../../components/MatchItemSeller";
 import NotFound from "../../views/NotFound";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
-import Org from "../../components/Org/Org";
 import MoreMenu from "../../components/MoreMenu";
 import ListEditForm from "../../components/ListEditForm";
 import Layout from "../../components/Layout/Layout";
@@ -333,7 +329,7 @@ class ItemDetail extends Component {
                                                 <div className="row   stick-left-box ">
                                                     <div className="col-12 text-center ">
                                                         <img
-                                                            className={"img-fluid"}
+                                                            className={"img-fluid  rad-8 bg-white p-2"}
                                                             src={
                                                                 this.state.previewImage
                                                                     ? this.state.previewImage

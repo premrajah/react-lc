@@ -972,31 +972,18 @@ class ProductDetailCycle extends Component {
                     show={this.state.isVisibleReportModal}
                     onHide={this.hideReportModal}
                     animation={false}>
-                    <Modal.Title>
-                        <div className="row">
-                            <div className="col">
-                                <button
-                                    className="btn float-right mr-3 mt-2 mb-2"
-                                    onClick={this.hideReportModal}>
-                                    X
-                                </button>
-                                <div className="text-center mt-2 mb-2">Report Issue</div>
-                            </div>
-                        </div>
-                    </Modal.Title>
-                    <Modal.Body>
+
                         {this.props.item.product._key && (
-                            <div>
-                                <div className="mt-2 mb-2">
-                                    Product:
-                                    <span>
-                                        <b>{this.props.item.product.name}</b>
-                                    </span>
-                                </div>
-                                <IssueSubmitForm productId={this.props.item.product._key} />
-                            </div>
+
+                                <IssueSubmitForm
+
+                                    onSubmitted={() =>{
+                                        this.hideReportModal();
+                                    }}
+                                    productName={this.props.item.product.name} productId={this.props.item.product._key} />
+
                         )}
-                    </Modal.Body>
+
                 </Modal>
 
                 <Modal

@@ -38,6 +38,7 @@ const IssueItem = ({ item, onSubmitted }) => {
 
     const handleIssueSubmitted = () => {
         onSubmitted();
+        handleHideEditModal()
     };
 
     return (
@@ -143,21 +144,14 @@ const IssueItem = ({ item, onSubmitted }) => {
                 </Link>
             )}
             <Modal show={editModal} onHide={handleHideEditModal}>
-                <Modal.Header closeButton>
-                    {issue.title ? (
-                        <Modal.Title>Edit Issue: {issue.title}</Modal.Title>
-                    ) : (
-                        <Modal.Title>New Issue</Modal.Title>
-                    )}
-                </Modal.Header>
-                <Modal.Body>
+
                     <IssueSubmitForm
                         issue={issue}
                         edit
                         productId={product.product._id}
                         onSubmitted={handleIssueSubmitted}
                     />
-                </Modal.Body>
+
             </Modal>
         </>
     );

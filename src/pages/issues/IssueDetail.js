@@ -20,6 +20,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import OrgComponent from "../../components/Org/OrgComponent";
 import InfoTabContent from "../../components/issues/InfoTabContent";
 import SubproductItem from "../../components/Products/Item/SubproductItem";
+import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
 
 class IssueDetail extends Component {
     state = {
@@ -50,6 +51,7 @@ class IssueDetail extends Component {
                 if (response.status === 200) {
                     this.setState({ stageSelectedValue: this.state.issue.issue.stage });
                 }
+                this.handleHideEditModal()
             })
             .catch((error) => {});
     };
@@ -71,6 +73,8 @@ class IssueDetail extends Component {
     }
     handleIssueSubmitted = (issueKey) => {
         this.getIssue(issueKey);
+
+
     };
 
     handleSetStage = () => {
@@ -306,25 +310,17 @@ class IssueDetail extends Component {
                 {this.state.issue && (
                     <>
                         <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
-                            <Modal.Header closeButton>
-                                {this.state.issue.issue.title ? (
-                                    <Modal.Title>
-                                        Edit Issue: {this.state.issue.issue.title}
-                                    </Modal.Title>
-                                ) : (
-                                    <Modal.Title>Edit Issue</Modal.Title>
-                                )}
-                            </Modal.Header>
-                            <Modal.Body>
+
+
                                 <IssueSubmitForm
                                     issue={this.state.issue.issue}
                                     edit
                                     productId={this.state.issue.product.product._id}
-                                    onSubmitted={() =>
-                                        this.handleIssueSubmitted(this.state.issue.issue._key)
-                                    }
+                                    onSubmitted={() =>{
+                                        this.handleIssueSubmitted(this.state.issue.issue._key);
+                                    }}
                                 />
-                            </Modal.Body>
+
                         </Modal>
 
                         <Modal show={this.state.stageModal} onHide={this.handleHideStageModal}>
@@ -362,7 +358,8 @@ class IssueDetail extends Component {
                                             ) : (
                                                 <FormControl>
                                                     <FormHelperText>Select Stage</FormHelperText>
-                                                    <Select
+                                                    <CustomizedSelect
+                                                        variant={"standard"}
                                                         className="mb-3"
                                                         name="stage"
                                                         defaultValue={this.state.issue.issue.stage}
@@ -372,7 +369,7 @@ class IssueDetail extends Component {
                                                         <MenuItem value="progress">
                                                             progress
                                                         </MenuItem>
-                                                    </Select>
+                                                    </CustomizedSelect>
                                                 </FormControl>
                                             )}
 
@@ -383,6 +380,7 @@ class IssueDetail extends Component {
                                     </div>
                                 </div>
                             </Modal.Body>
+
                         </Modal>
                     </>
                 )}

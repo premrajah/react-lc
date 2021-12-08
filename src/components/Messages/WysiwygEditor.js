@@ -56,6 +56,7 @@ class WysiwygEditor extends Component{
         const { editorState } = this.state;
         return <div className="">
             <Editor
+                placeholder="Enter message here..."
                 // toolbarOnFocus
                 wrapperClassName="wysiwyg-wrapper"
                 editorClassName="wysiwyg-editor"

@@ -792,7 +792,7 @@ class ProductDetailCycle extends Component {
                         </div>
                         <div className="listing-row-border "></div>
                         <div className="row justify-content-start   tabs-detail">
-                            <div className="col-12 mt-2">
+                            <div className="col-12 ">
                                 <Box sx={{ width: '100%', typography: 'body1' }}>
                                     <TabContext value={this.state.activeKey}>
                                         <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
@@ -826,7 +826,7 @@ class ProductDetailCycle extends Component {
                                                 <Tab label="Listing" value="6" />
                                                 }
 
-                                                <Tab label="Artifacts" value="7" />
+                                                <Tab label="Attachments" value="7" />
 
 
 

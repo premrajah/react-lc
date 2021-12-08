@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {makeStyles} from '@mui/styles';
 import CustomizedInput from "./CustomizedInput";
+import CustomPopover from "../CustomPopover";
+import {Info} from "@mui/icons-material";
+import {OverlayTrigger} from "react-bootstrap";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -15,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
+const TextFieldWrapper = ({name,title,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
     // const [field, mata] = useField(name)
     const classes = useStyles();
@@ -47,7 +50,7 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
         <>
 
             {title&& <div className={"custom-label text-bold text-blue mb-0"}>
-                {title}
+                {title} <CustomPopover heading={detailsHeading}  text={details}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
             </div>}
 
            <div className={"field-box mb-2"}>

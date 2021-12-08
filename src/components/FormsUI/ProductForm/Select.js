@@ -3,6 +3,8 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import {makeStyles} from '@mui/styles';
 import CustomizedSelect from "./CustomizedSelect";
+import {Info} from "@mui/icons-material";
+import CustomPopover from "../CustomPopover";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SelectArrayWrapper = (props) => {
 
-    const {label,title,option,initialValue,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
+    const {label,title,option,initialValue,detailsHeading,details,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState();
     const classes = useStyles();
@@ -35,7 +37,7 @@ const SelectArrayWrapper = (props) => {
     return (
         <>
             {title&& <div className={"custom-label text-bold text-blue mb-0"}>
-                {title}
+                {title} <CustomPopover heading={detailsHeading} text={details}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
             </div>}
             <div className={"field-box mb-2"}>
                 <FormControl variant="standard" >

@@ -95,6 +95,26 @@ class InfoTabContent extends Component {
                 )}
 
                 {this.props.item &&
+                this.props.item.product.external_reference && (
+                    <div className="row  justify-content-start search-container  pb-2">
+                        <div className={"col-auto"}>
+                            <p
+
+                                className="text-label  text-bold text-blue mb-1">
+                                External Reference
+                            </p>
+                            <p
+
+                                className="  mb-1">
+                                {this.props.item &&
+                                this.props.item.product
+                                    .external_reference}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {this.props.item &&
                 this.props.item.product.sku.model && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>

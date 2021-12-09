@@ -18,6 +18,7 @@ import {capitalize} from "../../Util/GlobalFunctions";
 import SiteForm from "../Sites/SiteForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
+import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 
 
 class ProductForm extends Component {
@@ -440,6 +441,8 @@ class ProductForm extends Component {
                 const is_listable = this.state.is_listable;
                 const site = data.get("deliver")
                 const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0
+                const external_reference = data.get("external_reference")
+
 
                 const productData = {
                     purpose: purpose.toLowerCase(),
@@ -452,7 +455,7 @@ class ProductForm extends Component {
                     state: state,
                     volume: volume,
                     is_listable: is_listable,
-                    // "stage" : "certified",
+                    "external_reference" : external_reference,
                     sku: {
                         serial: serial,
                         model: model,
@@ -624,14 +627,13 @@ class ProductForm extends Component {
             const upc = data.get("upc");
             const part_no = data.get("part_no");
             const state = data.get("state");
-
+           const external_reference = data.get("external_reference")
             const site = data.get("deliver");
 
             const productData = {
                 id: this.props.item.product._key,
                 update: {
                     artifacts: this.state.images,
-
                     purpose: purpose.toLowerCase(),
                     condition: condition.toLowerCase(),
                     name: title,
@@ -642,6 +644,7 @@ class ProductForm extends Component {
                     state: state,
                     volume: Number(volume),
                     stage: "certified",
+                    external_reference : external_reference,
                     is_listable: this.state.is_listable,
                     sku: {
                         serial: serial,
@@ -908,7 +911,7 @@ class ProductForm extends Component {
 
                                                                 }} select={"Select"}
                                                 options={this.props.siteList} name={"deliver"}
-                                                title="Dispatch / Collection Address"/>
+                                                title="Dispatch/Collection Address"/>
 
 
                                             <p style={{ marginTop: "10px" }}>
@@ -1037,13 +1040,19 @@ class ProductForm extends Component {
                                                 <TextFieldWrapper  details=" The part number of the product"   initialValue={this.props.item&&this.props.item.product.sku.part_no} name="part_no" title="Part No." />
 
                                             </div>
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <TextFieldWrapper  details="A unique number used by external systems"   initialValue={this.props.item&&this.props.item.product.external_reference} name="external_reference" title="External reference" />
+
+                                            </div>
                                         </div>
                                     </div>
 
 <div className={"row"}>
                             <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
-                                   Add Attachments
+                                   Add Attachments <CustomPopover text={"Any images, videos, documents or external links you wish to add to the product. \n" +
+                                "\n" +
+                                "Files that can be uploaded are: png, jpeg, jpg, .doc, .csv"}><InfoIcon/></CustomPopover>
                                 </div>
 
                                 <div className="container-fluid  pb-3 ">

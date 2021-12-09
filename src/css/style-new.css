@@ -3217,6 +3217,11 @@ background: white;
 .text-capitalize {
     text-transform: capitalize;
 }
+.text-sentence:first-letter {
+    text-transform: uppercase;
+}
+
+
 .mb-150 {
     margin-bottom: 150px;
 }

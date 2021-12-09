@@ -3,8 +3,8 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import {makeStyles} from '@mui/styles';
 import CustomizedSelect from "./CustomizedSelect";
-import {Info} from "@mui/icons-material";
 import CustomPopover from "../CustomPopover";
+import InfoIcon from "./InfoIcon";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +37,7 @@ const SelectArrayWrapper = (props) => {
     return (
         <>
             {title&& <div className={"custom-label text-bold text-blue mb-0"}>
-                {title} <CustomPopover heading={detailsHeading} text={details}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                {title} <CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>
             </div>}
             <div className={"field-box mb-2"}>
                 <FormControl variant="standard" >

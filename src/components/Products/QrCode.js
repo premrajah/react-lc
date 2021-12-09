@@ -168,8 +168,8 @@ class QrCode extends Component {
         return (
             <>
 
-                    <div className="row border-box no-gutters bg-white rad-8 justify-content-center mt-4 ">
-                        <div className="col-3 zoom-in-cursor  " onClick={this.callZoom}>
+                    <div className="row border-box  bg-white rad-8 justify-content-center mt-4 ">
+                        <div className="col-3 zoom-in-cursor p-0 " onClick={this.callZoom}>
 
                             {this.props.item&&this.props.item.qr_artifact && (
                                 <img
@@ -182,7 +182,7 @@ class QrCode extends Component {
                             )}
 
                         </div>
-                        <div className="col-9 pl-2 zoom-in-cursor" onClick={this.callZoom}>
+                        <div className="col-9  zoom-in-cursor" onClick={this.callZoom}>
                             <div className="row justify-content-start  ">
                                 <div className="col-12 ">
                                     {!this.props.hideRefresh&&this.props.userDetail.is_org_admin &&    <span

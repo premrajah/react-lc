@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Checkbox} from '@mui/material'
+import {Info} from "@mui/icons-material";
+import CustomPopover from "../CustomPopover";
 
-const CheckboxWrapper = ({name, title,onChange, legend,initialValue,error, ...otherProps}) => {
+const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,initialValue,error, ...otherProps}) => {
 
     const [field,setField] = useState(initialValue)
 
@@ -33,7 +35,7 @@ const CheckboxWrapper = ({name, title,onChange, legend,initialValue,error, ...ot
     return  (
         <>
         <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-1"}>
-            {title}
+            {title} <CustomPopover heading={detailsHeading} text={details}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
         </div>
             <span style={{width:"100%"}} className={""}>
 

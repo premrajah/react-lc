@@ -586,7 +586,7 @@ class CampaignDetail extends Component {
                                         this.props.item.artifacts.length > 0 ? (
                                             <ImagesSlider images={this.props.item.artifacts} />
                                         ) : (
-                                            <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                            <img className={"img-fluid  rad-8 bg-white p-2"} src={PlaceholderImg} alt="" />
                                         )}
                                     </div>
 

@@ -511,9 +511,10 @@ class ViewSearch extends Component {
                                                         alt=""
                                                     />
                                                 ) : (
-                                                    <div className="col-12 text-center m-5">
+                                                    <div style={{background:"#eeeeee"}} className="col-12 text-center p-5  rad-8 ">
                                                         <img
-                                                            className={"my-search-icon-middle"}
+
+                                                            className={"my-search-icon-middle "}
                                                             src={SearchIcon}
                                                             alt=""
                                                         />

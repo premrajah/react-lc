@@ -265,10 +265,11 @@ class ProductItemNew extends Component {
                                     </>
                                     </Link>
                                 </div>
-                                <div className={this.props.biggerImage?"col-5 pl-3  content-box-listing":"col-7 pl-3  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-5 pl-3  content-box-listing":"col-8 pl-3  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-capitalize mb-1">
-                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>  <small className={""}><small> - {this.props.item._key}</small></small></Link>
+                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
+                                                className="badge badge-info ml-2">Listed</span>}  <small className={""}><small> - {this.props.item._key}</small></small></Link>
                                       </p>
 
                                     <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
@@ -288,9 +289,6 @@ class ProductItemNew extends Component {
                                         <span className="  text-capitlize">
                                                                 {capitalize(this.props.item.state)}
                                                             </span>
-
-
-
                                     </span>
                                     </p>
                                     <p  className=" text-capitalize  text-gray-light">
@@ -317,7 +315,7 @@ class ProductItemNew extends Component {
                                         </p>
                                     )}
                                 </div>
-                                <div style={{ textAlign: "right" }} className={"col-3"}>
+                                <div style={{ textAlign: "right" }} className={"col-2"}>
 
 
                                     {!this.props.hideAdd&&this.props.showAddToListButton &&

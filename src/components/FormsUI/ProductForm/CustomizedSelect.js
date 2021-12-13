@@ -18,7 +18,7 @@ const CustomizedSelect = styled(Select)(({ theme }) => ({
         width: '100%',
         // padding: '10px 12px',
         padding: '18.5px 14px',
-        height: "1.188em",
+        // height: "1.188em",
         transition: theme.transitions.create([
 
             // 'background-color',

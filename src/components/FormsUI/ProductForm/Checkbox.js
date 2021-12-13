@@ -35,7 +35,7 @@ const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,in
     return  (
         <>
         <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-1"}>
-            {title} <CustomPopover heading={detailsHeading} text={details}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+            {title} {details&&<CustomPopover heading={detailsHeading} text={details}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>}
         </div>
             <span style={{width:"100%"}} className={""}>
 

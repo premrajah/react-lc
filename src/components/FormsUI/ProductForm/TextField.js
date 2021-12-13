@@ -51,8 +51,8 @@ const TextFieldWrapper = ({name,title,details,detailsHeading,validators,label,on
         <>
 
             {title&& <div className={"custom-label text-bold text-blue mb-0"}>
-                {title} <CustomPopover heading={detailsHeading}  text={details}>
-                <InfoIcon/></CustomPopover>
+                {title}  {details&&<CustomPopover heading={detailsHeading}  text={details}>
+                <InfoIcon/></CustomPopover>}
             </div>}
 
            <div className={"field-box mb-2"}>

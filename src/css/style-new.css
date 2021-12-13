@@ -3084,7 +3084,11 @@ background: white;
 
 .tree-menu-container {
     /*border: 1px solid #eee;*/
-    padding-top: 20px;
+    /*padding-top: 20px;*/
+}
+
+.text-danger{
+    font-size: 14px;
 }
 
 .tree-view-menu {

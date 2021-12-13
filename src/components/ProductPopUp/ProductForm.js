@@ -333,7 +333,7 @@ class ProductForm extends Component {
             validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("type", [{check: Validators.required, message: '<Sw>'}],fields),
+            validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),

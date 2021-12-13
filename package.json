@@ -59,6 +59,7 @@
     "redux-thunk": "^2.3.0",
     "stackdriver-errors-js": "^0.8.0",
     "store": "^2.0.12",
+    "xlsx": "^0.17.4",
     "yup": "^0.32.9"
   },
   "scripts": {

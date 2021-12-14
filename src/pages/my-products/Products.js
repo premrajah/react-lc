@@ -434,8 +434,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.items.filter((site)=>
+                                <p  className="text-gray-light ml-2 ">Showing {this.state.items.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -462,7 +461,7 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1 text-gray-light">Products Listed</span>
+                                    <span className="ml-1 text-gray-light">Products</span>
                                 </p>
                             </div>
 

@@ -227,6 +227,10 @@ body.menuactive .wrapper {
     height: 100vh;
 }
 
+.main-content-area{
+    min-height: 600px;
+}
+
 body.sidemenu-open .wrapper {
     transform: scale(0.9);
     -webkit-transform: scale(0.9);

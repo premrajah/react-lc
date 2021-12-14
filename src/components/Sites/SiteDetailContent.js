@@ -709,7 +709,7 @@ class SiteDetailContent extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}
@@ -940,7 +940,7 @@ class SiteDetailContent extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}

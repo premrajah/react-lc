@@ -35,7 +35,7 @@ class ProductArchive extends Component {
 
     getAllPreviouslyOwnedProducts = () => {
         axios
-            .get(`${baseUrl}product/past-owner`, {
+            .get(`${baseUrl}product/past-owner/no-links`, {
                 headers: { Authorization: "Bearer " + this.props.userDetail.token },
             })
             .then((response) => {
@@ -48,7 +48,7 @@ class ProductArchive extends Component {
         if (this.state.products !== null && this.state.products.length > 0) {
             return this.state.products.map((item, index) => {
                 return (
-                    <Link to={`/p/${item.product._key}`} key={index}>
+                    <Link to={`/p/${item._key}`} key={index}>
                         <ErrorBoundary>
                             {/*<ProductRecordItem item={item.product} />*/}
                             <ProductItem
@@ -58,7 +58,7 @@ class ProductArchive extends Component {
                                 edit={true}
                                 remove={false}
                                 duplicate={true}
-                                item={item.product}
+                                item={item}
                             />
                         </ErrorBoundary>
                     </Link>
@@ -121,7 +121,7 @@ class ProductArchive extends Component {
                                 <p  className="text-gray-light ml-2">
                                     {this.state.products.filter((item)=> {
 
-                                        let site = item.product
+                                        let site = item
 
                                         return this.state.filterValue ? (this.state.filterValue === "name" ?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -154,7 +154,7 @@ class ProductArchive extends Component {
 
                         {this.state.products.filter((item)=> {
 
-                            let site=item.product
+                            let site=item
 
 
                             return    this.state.filterValue ? (this.state.filterValue === "name" ?
@@ -191,7 +191,7 @@ class ProductArchive extends Component {
                                     edit={true}
                                     remove={false}
                                     duplicate={true}
-                                    item={item.product}
+                                    item={item}
                                     hideMore={true}
                                 />
                                 </ErrorBoundary>

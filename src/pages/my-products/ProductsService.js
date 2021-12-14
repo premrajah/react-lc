@@ -44,7 +44,7 @@ class ProductsService extends Component {
     getProducts() {
         this.props.showLoading(true);
         axios
-            .get(baseUrl + "product/service-agent", {
+            .get(baseUrl + "product/service-agent/no-links", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -135,7 +135,7 @@ class ProductsService extends Component {
                                 <p  className="text-gray-light ml-2">
                                     {this.state.products.filter((item)=> {
 
-                                        let site = item.product
+                                        let site = item
 
                                         return this.state.filterValue ? (this.state.filterValue === "name" ?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -168,7 +168,7 @@ class ProductsService extends Component {
 
                         {this.state.products.filter((item)=> {
 
-                            let site=item.product
+                            let site=item
 
 
                         return    this.state.filterValue ? (this.state.filterValue === "name" ?
@@ -204,7 +204,7 @@ class ProductsService extends Component {
                                     edit={true}
                                     remove={false}
                                     duplicate={true}
-                                    item={item.product}
+                                    item={item}
                                     hideMore={true}
                                 />
 

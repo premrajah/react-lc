@@ -18,6 +18,7 @@ import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import {toNumber} from "lodash";
+import Layout from "../../components/Layout/Layout";
 
 
 
@@ -137,12 +138,8 @@ componentWillUnmount() {
 render() {
 
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper approval-page">
-                    <HeaderDark />
-
-                    <div className="container  pb-4 pt-4">
+            <Layout>
+                <div className="container  pb-4 pt-4">
                         <PageHeader pageTitle="Approvals" subTitle="You can approve or decline a new product someone has released to you here" />
 
                         <div className={"tab-content-listing col-12"}>
@@ -339,8 +336,8 @@ render() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

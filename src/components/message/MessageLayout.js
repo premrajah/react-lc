@@ -108,12 +108,8 @@ class MessageLayout extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper homepage">
-                    <HeaderDark />
 
-                    <div className="container container-message   pb-4 pt-4">
+            <div className="container container-message   pb-4 pt-4">
                         <div className="row">
                             <div className="col">
                                 <PageHeader
@@ -243,8 +239,7 @@ class MessageLayout extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
         );
     }
 }

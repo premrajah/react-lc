@@ -189,16 +189,16 @@ class RequestRegisterItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div className="row   mt-4 mb-4 ">
+                        <div className="row no-gutters bg-white rad-8 p-3 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
                                 ) : (
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid img-list rad-4"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
-                            <div className={"col-5 pl-2  content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className=" mb-1">
+                            <div className={"col-5 pl-3  content-box-listing"}>
+                                <p  className=" mb-1 title-bold">
                                     <Link to={`/p/${this.state.item.product.product._key}`}>{this.state.item.product.product.name}</Link>
                                 </p>
                                 <div style={{ margin: "0" }}>
@@ -221,8 +221,6 @@ class RequestRegisterItem extends Component {
                                  <span> {this.state.item.product.product.volume}
                                     {this.state.item.product.product.units}</span>
                                 </p>
-
-
                                 {this.state.item.search_ids && (
                                     <p
                                         style={{ fontSize: "16px" }}
@@ -238,7 +236,7 @@ class RequestRegisterItem extends Component {
                                     )}
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
-                                <p className={"text-gray-light small"}>
+                                <p className={"text-gray-light date-bottom"}>
                                     {moment(this.state.item.product.product._ts_epoch_ms).format("DD MMM YYYY")}
                                 </p>
 

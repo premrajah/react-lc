@@ -322,15 +322,15 @@ class RequestServiceAgentItem extends Component {
             <>
                 {this.state.item && (
                     <>
-                        <div  className="row  justify-content-center mt-4 mb-4 ">
+                        <div  className="row  justify-content-center bg-white no-gutters rad-8 p-3 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.state.item.product.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
                                 ) : (
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
-                            <div className={"col-5 pl-2  content-box-listing"}>
+                            <div className={"col-5 pl-3  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     <Link to={`/p/${this.state.item.product.product._key}`}>{this.state.item.product.product.name}</Link>
                                 </p>
@@ -371,7 +371,7 @@ class RequestServiceAgentItem extends Component {
                                     )}
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
-                                <p className={"text-gray-light small"}>
+                                <p className={"text-gray-light date-bottom"}>
                                     {moment(this.state.item.product.product._ts_epoch_ms).format(
                                         "DD MMM YYYY"
                                     )}

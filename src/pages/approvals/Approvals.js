@@ -1,21 +1,15 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {Component} from "react";
 import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
 import {makeStyles, withStyles} from "@mui/styles/index";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
 import RequestReleaseItem from "../../components/RequestReleaseItem";
 import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
-import {toNumber} from "lodash";
 import Layout from "../../components/Layout/Layout";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -328,198 +322,7 @@ render() {
 
                                 </TabContext>
                             </Box>
-                            {/*<div className={"d-non"}>*/}
-                            {/*    <AppBar*/}
-                            {/*        position="static"*/}
-                            {/*        style={{ boxShadhow: "none" , backgroundColor:"white"}}*/}
-                            {/*        elevation={0}*/}
-                            {/*    >*/}
 
-                            {/*        <StyledTabs*/}
-                            {/*            value={toNumber(this.state.tabQuery) ? toNumber(this.state.tabQuery) : this.state.value}*/}
-                            {/*            onChange={this.handleChange.bind(this)}*/}
-                            {/*            aria-label="nav tabs example"*/}
-                            {/*            scrollButtons="auto"*/}
-                            {/*        >*/}
-                            {/*            <StyledTab*/}
-                            {/*                label={*/}
-                            {/*                    this.props.productReleaseRequested.length > 0*/}
-                            {/*                        ? `Product Release Requests (${this.props.productReleaseRequested.length})`*/}
-                            {/*                        : "Product Release Requests"*/}
-                            {/*                }*/}
-                            {/*                {...a11yProps(0)}*/}
-                            {/*            />*/}
-                            {/*            <StyledTab*/}
-                            {/*                label={*/}
-                            {/*                    this.props.productRegisterRequests.length > 0*/}
-                            {/*                        ? `Product Register Requests (${this.props.productRegisterRequests.filter(r => (*/}
-                            {/*                            r.registration.stage !== "complete" &&*/}
-                            {/*                            r.registration.stage !== "cancelled" &&*/}
-                            {/*                            r.registration.stage !== "invalidated")*/}
-                            {/*                        ).length})`*/}
-                            {/*                        : "Product Register Requests"*/}
-                            {/*                }*/}
-                            {/*                {...a11yProps(1)}*/}
-                            {/*            />*/}
-                            {/*            <StyledTab*/}
-                            {/*                label={*/}
-                            {/*                    this.props.serviceAgentRequests.length > 0*/}
-                            {/*                        ? `Change Service Agent Requests (${this.props.serviceAgentRequests.filter(r => (*/}
-                            {/*                            r.Release.stage !== "complete" &&*/}
-                            {/*                            r.Release.stage !== "cancelled")*/}
-                            {/*                        ).length})`*/}
-                            {/*                        : "Change Service Agent Requests"*/}
-                            {/*                }*/}
-                            {/*                {...a11yProps(2)}*/}
-                            {/*            />*/}
-                            {/*        </StyledTabs>*/}
-                            {/*    </AppBar>*/}
-
-                            {/*    {this.state.value === 0 &&*/}
-                            {/*    <div className={"row"} value={this.state.value} index={0}>*/}
-                            {/*            <div className="col-12 mt-3 mb-3">*/}
-                            {/*                <div className="col d-flex justify-content-end">*/}
-                            {/*                    <Link to="/approved" className="btn btn-sm blue-btn"*/}
-                            {/*                          style={{color: "#fff"}}>*/}
-                            {/*                        Release Request Records*/}
-                            {/*                    </Link>*/}
-                            {/*                </div>*/}
-                            {/*            </div>*/}
-                            {/*            <div className={"listing-row-border "}></div>*/}
-                            {/*            {this.props.productReleaseRequests.filter(r =>*/}
-                            {/*                r.Release.stage !== "complete" &&*/}
-                            {/*                r.Release.stage !== "cancelled" &&*/}
-                            {/*                r.Release.stage !== "invalidated").map((item, index) => (*/}
-                            {/*                <div className="col-12" key={item.product.product._id} id={item.product.product._id}>*/}
-
-                            {/*                        <RequestReleaseItem*/}
-                            {/*                            history={this.props.history}*/}
-                            {/*                            item={item}*/}
-                            {/*                        />*/}
-
-                            {/*                </div>*/}
-                            {/*            ))}*/}
-                            {/*            {this.props.productReleaseRequested.length === 0 && (*/}
-                            {/*                <div className={" column--message"}>*/}
-                            {/*                    <p>*/}
-                            {/*                        {this.state.loading*/}
-                            {/*                            ? "Loading..."*/}
-                            {/*                            : "This search currently has no results"}*/}
-                            {/*                    </p>*/}
-                            {/*                </div>*/}
-                            {/*            )}*/}
-
-                            {/*    </div>*/}
-                            {/*    }*/}
-                            {/*    {this.state.value === 1 &&*/}
-                            {/*    <div className={"row"} value={this.state.value} index={1}>*/}
-
-                            {/*            <div className="col-12 mt-3 mb-3">*/}
-                            {/*                <div className="col d-flex justify-content-end">*/}
-                            {/*                    <Link to="/register-record" className="btn btn-sm blue-btn"*/}
-                            {/*                          style={{color: "#fff"}}>*/}
-                            {/*                        Register Request Records*/}
-                            {/*                    </Link>*/}
-                            {/*                </div>*/}
-                            {/*            </div>*/}
-
-                            {/*            {this.props.productRegisterRequests.filter(r => (*/}
-                            {/*                r.registration.stage !== "complete" &&*/}
-                            {/*                r.registration.stage !== "cancelled" &&*/}
-                            {/*                r.registration.stage !== "invalidated")*/}
-                            {/*            ).map((item, index) => (*/}
-                            {/*                <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>*/}
-
-                            {/*                    <RequestRegisterItem*/}
-                            {/*                        history={this.props.history}*/}
-                            {/*                        item={item}*/}
-                            {/*                    />*/}
-
-                            {/*                </div>*/}
-                            {/*            ))}*/}
-
-                            {/*            {this.props.productRegisterRequests.length === 0 && (*/}
-                            {/*                <div className={" column--message"}>*/}
-                            {/*                    <p>*/}
-                            {/*                        {this.state.loading*/}
-                            {/*                            ? "Loading..."*/}
-                            {/*                            : "This search currently has no results"}*/}
-                            {/*                    </p>*/}
-                            {/*                </div>*/}
-                            {/*            )}*/}
-
-
-                            {/*            {*/}
-                            {/*                this.props.productRegisterRequests.filter(r => (*/}
-                            {/*                    r.registration.stage !== "complete" &&*/}
-                            {/*                    r.registration.stage !== "cancelled" &&*/}
-                            {/*                    r.registration.stage !== "invalidated")*/}
-                            {/*                ).length === 0 && (*/}
-                            {/*                    <div className={" column--message"}>*/}
-                            {/*                        <p>*/}
-                            {/*                            {this.state.loading*/}
-                            {/*                                ? "Loading..."*/}
-                            {/*                                : "This currently has no active results"}*/}
-                            {/*                        </p>*/}
-                            {/*                    </div>*/}
-                            {/*                )*/}
-                            {/*            }*/}
-
-
-                            {/*    </div>*/}
-                            {/*    }*/}
-                            {/*    {this.state.value === 2 &&*/}
-                            {/*    <div className={"row"} value={this.state.value} index={2}>*/}
-
-                            {/*        <div className="col-12 mt-3 mb-3">*/}
-                            {/*            <div className="col d-flex justify-content-end">*/}
-                            {/*                <Link to="/service-agent-record" className="btn btn-sm blue-btn"*/}
-                            {/*                      style={{color: "#fff"}}>*/}
-                            {/*                    Service Agent Request Records*/}
-                            {/*                </Link>*/}
-                            {/*            </div>*/}
-                            {/*        </div>*/}
-
-                            {/*            {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (*/}
-                            {/*                <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >*/}
-                            {/*                    <RequestServiceAgentItem*/}
-                            {/*                        history={this.props.history}*/}
-                            {/*                        item={item}*/}
-                            {/*                    />*/}
-                            {/*                </div>*/}
-                            {/*            ))}*/}
-
-                            {/*            {this.props.serviceAgentRequests.length === 0 && (*/}
-                            {/*                <div className={" column--message"}>*/}
-                            {/*                    <p>*/}
-                            {/*                        {this.state.loading*/}
-                            {/*                            ? "Loading..."*/}
-                            {/*                            : "This search currently has no results"}*/}
-                            {/*                    </p>*/}
-                            {/*                </div>*/}
-                            {/*            )}*/}
-
-                            {/*        {*/}
-                            {/*            this.props.serviceAgentRequests.filter(r => (*/}
-                            {/*                r.Release.stage !== "complete" &&*/}
-                            {/*                r.Release.stage !== "cancelled")*/}
-                            {/*            ).length === 0 && (*/}
-                            {/*                <div className={" column--message"}>*/}
-                            {/*                    <p>*/}
-                            {/*                        {this.state.loading*/}
-                            {/*                            ? "Loading..."*/}
-                            {/*                            : "This currently has no active results"}*/}
-                            {/*                    </p>*/}
-                            {/*                </div>*/}
-                            {/*            )*/}
-                            {/*        }*/}
-
-                            {/*    </div>}*/}
-
-
-
-
-                            {/*</div>*/}
                         </div>
                     </div>
                 </div>

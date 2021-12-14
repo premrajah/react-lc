@@ -42,8 +42,8 @@ class Products extends Component {
             items:[],
             lastPageReached:false,
             currentOffset:0,
-            productPageSize:400
-
+            productPageSize:50,
+            loadingResults:false
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -98,8 +98,12 @@ class Products extends Component {
     }
     componentDidMount() {
 
-        this.loadProductsWithoutParentPageWise()
-        // this.loadNewPageSetUp()
+        // this.loadProductsWithoutParentPageWise()
+
+        this.setState({
+            items:[]
+        })
+        this.loadNewPageSetUp()
     }
 
 
@@ -118,7 +122,9 @@ class Products extends Component {
                     if(response.status === 200) {
 
                         this.setState({
-                            items:response.data.data
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
                         })
                     }
 
@@ -126,29 +132,29 @@ class Products extends Component {
                 (error) => {
                 }
             )
-            .catch(error => {});
+            .catch(error => {}).finally(()=>{
+
+                 });
 
         this.setState({
 
-            currentOffset:newOffset+400
+            currentOffset:newOffset+this.state.productPageSize
         })
 
     }
 
     handleObserver=(entities, observer) =>{
 
-
-
-
        let [entry] = entities
 
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
-            // alert("called")
-
             // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
 
+            this.setState({
+                loadingResults:true
+            })
             this.loadProductsWithoutParentPageWise()
         }
 
@@ -310,12 +316,7 @@ class Products extends Component {
 
         let validations=[
             validateFormatCreate("count", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields)
-
         ]
-
-
-
-
 
         let {formIsValid,errors}= validateInputs(validations)
         this.setState({ errors: errors });
@@ -433,8 +434,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.items.filter((site)=>
+                                <p  className="text-gray-light ml-2 ">Showing {this.state.items.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -461,7 +461,7 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1 text-gray-light">Products Listed</span>
+                                    <span className="ml-1 text-gray-light">Products</span>
                                 </p>
                             </div>
 
@@ -511,15 +511,11 @@ class Products extends Component {
                         ))}
 
 
-
-
-                        {false&&!this.state.lastPageReached &&
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
+                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
                             <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
                                 <div>Loading products please wait ...</div>
                             </div>
-                        </div>
-                        }
+                        </div>}
                     </div>
 
 
@@ -637,7 +633,6 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
-        lastPageReached:state.lastPageReached
     };
 };
 

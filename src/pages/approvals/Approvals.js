@@ -1,9 +1,7 @@
 import React, {Component, useEffect, useState} from "react";
-import Sidebar from "../../views/menu/Sidebar";
-import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
-import {makeStyles,withStyles} from "@mui/styles/index";
+import {makeStyles, withStyles} from "@mui/styles/index";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -18,8 +16,10 @@ import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import {toNumber} from "lodash";
-
-
+import Layout from "../../components/Layout/Layout";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from '@mui/lab/TabPanel';
 
 const StyledTabs = withStyles({
     root: {
@@ -84,6 +84,7 @@ class Approvals extends Component {
             value: 0,
             loading: false,
             tabQuery: 0,
+            activeKey:"1",
         };
 
     }
@@ -92,9 +93,20 @@ class Approvals extends Component {
         this.setState({value: newValue, tabQuery: newValue});
     };
 
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
 
 
     componentDidMount() {
+
+        this.setActiveKey(null,"1")
 
         const query = new URLSearchParams(this.props.location.search);
         query
@@ -137,399 +149,388 @@ componentWillUnmount() {
 render() {
 
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper approval-page">
-                    <HeaderDark />
-
-                    <div className="container  pb-4 pt-4">
+            <Layout>
+                <div className="container  pb-4 pt-4">
                         <PageHeader pageTitle="Approvals" subTitle="You can approve or decline a new product someone has released to you here" />
 
-                        <div className={"tab-content-listing col-12"}>
-                            <div>
-                                <AppBar
-                                    position="static"
-                                    style={{ boxShadhow: "none" , backgroundColor:"white"}}
-                                    elevation={0}
-                                >
+                    <div className={"listing-row-border "}></div>
 
-                                    <StyledTabs
-                                        value={toNumber(this.state.tabQuery) ? toNumber(this.state.tabQuery) : this.state.value}
-                                        onChange={this.handleChange.bind(this)}
-                                        aria-label="nav tabs example"
-                                        scrollButtons="auto"
-                                    >
-                                        <StyledTab
-                                            label={
-                                                this.props.productReleaseRequested.length > 0
-                                                    ? `Product Release Requests (${this.props.productReleaseRequested.length})`
-                                                    : "Product Release Requests"
-                                            }
-                                            {...a11yProps(0)}
-                                        />
-                                        <StyledTab
-                                            label={
-                                                this.props.productRegisterRequests.length > 0
-                                                    ? `Product Register Requests (${this.props.productRegisterRequests.filter(r => (
-                                                        r.registration.stage !== "complete" &&
-                                                        r.registration.stage !== "cancelled" &&
-                                                        r.registration.stage !== "invalidated")
-                                                    ).length})`
-                                                    : "Product Register Requests"
-                                            }
-                                            {...a11yProps(1)}
-                                        />
-                                        <StyledTab
-                                            label={
-                                                this.props.serviceAgentRequests.length > 0
-                                                    ? `Change Service Agent Requests (${this.props.serviceAgentRequests.filter(r => (
-                                                        r.Release.stage !== "complete" &&
-                                                        r.Release.stage !== "cancelled")
-                                                    ).length})`
-                                                    : "Change Service Agent Requests"
-                                            }
-                                            {...a11yProps(2)}
-                                        />
-                                    </StyledTabs>
-                                </AppBar>
+                    <div className={"row"}>
+                        <div className={" col-12"}>
 
-                                {this.state.value === 0 &&
-                                <div className={"row"} value={this.state.value} index={0}>
-                                        <div className="col-12 mt-3 mb-3">
-                                            <div className="col d-flex justify-content-end">
-                                                <Link to="/approved" className="btn btn-sm blue-btn"
-                                                      style={{color: "#fff"}}>
-                                                    Release Request Records
-                                                </Link>
+                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                <TabContext value={this.state.activeKey}>
+                                    <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                        <TabList
+                                            variant="scrollable"
+                                            scrollButtons="auto"
+                                            textColor={"#27245C"}
+                                            TabIndicatorProps={{
+                                                style: {
+                                                    backgroundColor: "#27245C",
+                                                    padding: '2px',
+                                                }
+                                            }}
+                                            onChange={this.setActiveKey}
+
+                                            aria-label="lab API tabs example">
+
+                                            <Tab label="Product Release Request" value="1" />
+                                            <Tab label="Product Release Request" value="2"/>
+                                            <Tab label="Change Service Agent Request" value="3" />
+
+                                        </TabList>
+                                    </Box>
+
+                                    <TabPanel value="1">
+                                        <div className={"row"} >
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/approved" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                        Release Request Records
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className={"listing-row-border "}></div>
-                                        {this.props.productReleaseRequests.filter(r =>
-                                            r.Release.stage !== "complete" &&
-                                            r.Release.stage !== "cancelled" &&
-                                            r.Release.stage !== "invalidated").map((item, index) => (
-                                            <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
+                                            <div className={"listing-row-border "}></div>
+                                            {this.props.productReleaseRequests.filter(r =>
+                                                r.Release.stage !== "complete" &&
+                                                r.Release.stage !== "cancelled" &&
+                                                r.Release.stage !== "invalidated").map((item, index) => (
+                                                <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
 
                                                     <RequestReleaseItem
                                                         history={this.props.history}
                                                         item={item}
                                                     />
 
-                                            </div>
-                                        ))}
-                                        {this.props.productReleaseRequested.length === 0 && (
-                                            <div className={" column--message"}>
-                                                <p>
-                                                    {this.state.loading
-                                                        ? "Loading..."
-                                                        : "This search currently has no results"}
-                                                </p>
-                                            </div>
-                                        )}
-
-                                </div>
-                                }
-                                {this.state.value === 1 &&
-                                <div className={"row"} value={this.state.value} index={1}>
-
-                                        <div className="col-12 mt-3 mb-3">
-                                            <div className="col d-flex justify-content-end">
-                                                <Link to="/register-record" className="btn btn-sm blue-btn"
-                                                      style={{color: "#fff"}}>
-                                                    Register Request Records
-                                                </Link>
-                                            </div>
-                                        </div>
-
-                                        {this.props.productRegisterRequests.filter(r => (
-                                            r.registration.stage !== "complete" &&
-                                            r.registration.stage !== "cancelled" &&
-                                            r.registration.stage !== "invalidated")
-                                        ).map((item, index) => (
-                                            <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
-
-                                                <RequestRegisterItem
-                                                    history={this.props.history}
-                                                    item={item}
-                                                />
-
-                                            </div>
-                                        ))}
-
-                                        {this.props.productRegisterRequests.length === 0 && (
-                                            <div className={" column--message"}>
-                                                <p>
-                                                    {this.state.loading
-                                                        ? "Loading..."
-                                                        : "This search currently has no results"}
-                                                </p>
-                                            </div>
-                                        )}
-
-
-                                        {
-                                            this.props.productRegisterRequests.filter(r => (
-                                                r.registration.stage !== "complete" &&
-                                                r.registration.stage !== "cancelled" &&
-                                                r.registration.stage !== "invalidated")
-                                            ).length === 0 && (
+                                                </div>
+                                            ))}
+                                            {this.props.productReleaseRequested.length === 0 && (
                                                 <div className={" column--message"}>
                                                     <p>
                                                         {this.state.loading
                                                             ? "Loading..."
-                                                            : "This currently has no active results"}
+                                                            : "This search currently has no results"}
                                                     </p>
                                                 </div>
-                                            )
-                                        }
+                                            )}
 
-
-                                </div>}
-                                {this.state.value === 2 &&
-                                <div className={"row"} value={this.state.value} index={2}>
-
-                                    <div className="col-12 mt-3 mb-3">
-                                        <div className="col d-flex justify-content-end">
-                                            <Link to="/service-agent-record" className="btn btn-sm blue-btn"
-                                                  style={{color: "#fff"}}>
-                                                Service Agent Request Records
-                                            </Link>
                                         </div>
-                                    </div>
+                                    </TabPanel>
+                                    <TabPanel value="2">
+                                        <div className={"row"} >
 
-                                        {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (
-                                            <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
-                                                <RequestServiceAgentItem
-                                                    history={this.props.history}
-                                                    item={item}
-                                                />
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/register-record" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                        Register Request Records
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        ))}
 
-                                        {this.props.serviceAgentRequests.length === 0 && (
-                                            <div className={" column--message"}>
-                                                <p>
-                                                    {this.state.loading
-                                                        ? "Loading..."
-                                                        : "This search currently has no results"}
-                                                </p>
+                                            {this.props.productRegisterRequests.filter(r => (
+                                                r.registration.stage !== "complete" &&
+                                                r.registration.stage !== "cancelled" &&
+                                                r.registration.stage !== "invalidated")
+                                            ).map((item, index) => (
+                                                <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
+
+                                                    <RequestRegisterItem
+                                                        history={this.props.history}
+                                                        item={item}
+                                                    />
+
+                                                </div>
+                                            ))}
+
+                                            {this.props.productRegisterRequests.length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This search currently has no results"}
+                                                    </p>
+                                                </div>
+                                            )}
+
+
+                                            {
+                                                this.props.productRegisterRequests.filter(r => (
+                                                    r.registration.stage !== "complete" &&
+                                                    r.registration.stage !== "cancelled" &&
+                                                    r.registration.stage !== "invalidated")
+                                                ).length === 0 && (
+                                                    <div className={" column--message"}>
+                                                        <p>
+                                                            {this.state.loading
+                                                                ? "Loading..."
+                                                                : "This currently has no active results"}
+                                                        </p>
+                                                    </div>
+                                                )
+                                            }
+
+
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel value="3">
+                                        <div className={"row"} >
+
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/service-agent-record" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                        Service Agent Request Records
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        )}
 
-                                    {
-                                        this.props.serviceAgentRequests.filter(r => (
-                                            r.Release.stage !== "complete" &&
-                                            r.Release.stage !== "cancelled")
-                                        ).length === 0 && (
-                                            <div className={" column--message"}>
-                                                <p>
-                                                    {this.state.loading
-                                                        ? "Loading..."
-                                                        : "This currently has no active results"}
-                                                </p>
-                                            </div>
-                                        )
-                                    }
+                                            {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (
+                                                <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
+                                                    <RequestServiceAgentItem
+                                                        history={this.props.history}
+                                                        item={item}
+                                                    />
+                                                </div>
+                                            ))}
 
-                                </div>}
+                                            {this.props.serviceAgentRequests.length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This search currently has no results"}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {
+                                                this.props.serviceAgentRequests.filter(r => (
+                                                    r.Release.stage !== "complete" &&
+                                                    r.Release.stage !== "cancelled")
+                                                ).length === 0 && (
+                                                    <div className={" column--message"}>
+                                                        <p>
+                                                            {this.state.loading
+                                                                ? "Loading..."
+                                                                : "This currently has no active results"}
+                                                        </p>
+                                                    </div>
+                                                )
+                                            }
+
+                                        </div>
+
+                                    </TabPanel>
+
+
+                                </TabContext>
+                            </Box>
+                            {/*<div className={"d-non"}>*/}
+                            {/*    <AppBar*/}
+                            {/*        position="static"*/}
+                            {/*        style={{ boxShadhow: "none" , backgroundColor:"white"}}*/}
+                            {/*        elevation={0}*/}
+                            {/*    >*/}
+
+                            {/*        <StyledTabs*/}
+                            {/*            value={toNumber(this.state.tabQuery) ? toNumber(this.state.tabQuery) : this.state.value}*/}
+                            {/*            onChange={this.handleChange.bind(this)}*/}
+                            {/*            aria-label="nav tabs example"*/}
+                            {/*            scrollButtons="auto"*/}
+                            {/*        >*/}
+                            {/*            <StyledTab*/}
+                            {/*                label={*/}
+                            {/*                    this.props.productReleaseRequested.length > 0*/}
+                            {/*                        ? `Product Release Requests (${this.props.productReleaseRequested.length})`*/}
+                            {/*                        : "Product Release Requests"*/}
+                            {/*                }*/}
+                            {/*                {...a11yProps(0)}*/}
+                            {/*            />*/}
+                            {/*            <StyledTab*/}
+                            {/*                label={*/}
+                            {/*                    this.props.productRegisterRequests.length > 0*/}
+                            {/*                        ? `Product Register Requests (${this.props.productRegisterRequests.filter(r => (*/}
+                            {/*                            r.registration.stage !== "complete" &&*/}
+                            {/*                            r.registration.stage !== "cancelled" &&*/}
+                            {/*                            r.registration.stage !== "invalidated")*/}
+                            {/*                        ).length})`*/}
+                            {/*                        : "Product Register Requests"*/}
+                            {/*                }*/}
+                            {/*                {...a11yProps(1)}*/}
+                            {/*            />*/}
+                            {/*            <StyledTab*/}
+                            {/*                label={*/}
+                            {/*                    this.props.serviceAgentRequests.length > 0*/}
+                            {/*                        ? `Change Service Agent Requests (${this.props.serviceAgentRequests.filter(r => (*/}
+                            {/*                            r.Release.stage !== "complete" &&*/}
+                            {/*                            r.Release.stage !== "cancelled")*/}
+                            {/*                        ).length})`*/}
+                            {/*                        : "Change Service Agent Requests"*/}
+                            {/*                }*/}
+                            {/*                {...a11yProps(2)}*/}
+                            {/*            />*/}
+                            {/*        </StyledTabs>*/}
+                            {/*    </AppBar>*/}
+
+                            {/*    {this.state.value === 0 &&*/}
+                            {/*    <div className={"row"} value={this.state.value} index={0}>*/}
+                            {/*            <div className="col-12 mt-3 mb-3">*/}
+                            {/*                <div className="col d-flex justify-content-end">*/}
+                            {/*                    <Link to="/approved" className="btn btn-sm blue-btn"*/}
+                            {/*                          style={{color: "#fff"}}>*/}
+                            {/*                        Release Request Records*/}
+                            {/*                    </Link>*/}
+                            {/*                </div>*/}
+                            {/*            </div>*/}
+                            {/*            <div className={"listing-row-border "}></div>*/}
+                            {/*            {this.props.productReleaseRequests.filter(r =>*/}
+                            {/*                r.Release.stage !== "complete" &&*/}
+                            {/*                r.Release.stage !== "cancelled" &&*/}
+                            {/*                r.Release.stage !== "invalidated").map((item, index) => (*/}
+                            {/*                <div className="col-12" key={item.product.product._id} id={item.product.product._id}>*/}
+
+                            {/*                        <RequestReleaseItem*/}
+                            {/*                            history={this.props.history}*/}
+                            {/*                            item={item}*/}
+                            {/*                        />*/}
+
+                            {/*                </div>*/}
+                            {/*            ))}*/}
+                            {/*            {this.props.productReleaseRequested.length === 0 && (*/}
+                            {/*                <div className={" column--message"}>*/}
+                            {/*                    <p>*/}
+                            {/*                        {this.state.loading*/}
+                            {/*                            ? "Loading..."*/}
+                            {/*                            : "This search currently has no results"}*/}
+                            {/*                    </p>*/}
+                            {/*                </div>*/}
+                            {/*            )}*/}
+
+                            {/*    </div>*/}
+                            {/*    }*/}
+                            {/*    {this.state.value === 1 &&*/}
+                            {/*    <div className={"row"} value={this.state.value} index={1}>*/}
+
+                            {/*            <div className="col-12 mt-3 mb-3">*/}
+                            {/*                <div className="col d-flex justify-content-end">*/}
+                            {/*                    <Link to="/register-record" className="btn btn-sm blue-btn"*/}
+                            {/*                          style={{color: "#fff"}}>*/}
+                            {/*                        Register Request Records*/}
+                            {/*                    </Link>*/}
+                            {/*                </div>*/}
+                            {/*            </div>*/}
+
+                            {/*            {this.props.productRegisterRequests.filter(r => (*/}
+                            {/*                r.registration.stage !== "complete" &&*/}
+                            {/*                r.registration.stage !== "cancelled" &&*/}
+                            {/*                r.registration.stage !== "invalidated")*/}
+                            {/*            ).map((item, index) => (*/}
+                            {/*                <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>*/}
+
+                            {/*                    <RequestRegisterItem*/}
+                            {/*                        history={this.props.history}*/}
+                            {/*                        item={item}*/}
+                            {/*                    />*/}
+
+                            {/*                </div>*/}
+                            {/*            ))}*/}
+
+                            {/*            {this.props.productRegisterRequests.length === 0 && (*/}
+                            {/*                <div className={" column--message"}>*/}
+                            {/*                    <p>*/}
+                            {/*                        {this.state.loading*/}
+                            {/*                            ? "Loading..."*/}
+                            {/*                            : "This search currently has no results"}*/}
+                            {/*                    </p>*/}
+                            {/*                </div>*/}
+                            {/*            )}*/}
+
+
+                            {/*            {*/}
+                            {/*                this.props.productRegisterRequests.filter(r => (*/}
+                            {/*                    r.registration.stage !== "complete" &&*/}
+                            {/*                    r.registration.stage !== "cancelled" &&*/}
+                            {/*                    r.registration.stage !== "invalidated")*/}
+                            {/*                ).length === 0 && (*/}
+                            {/*                    <div className={" column--message"}>*/}
+                            {/*                        <p>*/}
+                            {/*                            {this.state.loading*/}
+                            {/*                                ? "Loading..."*/}
+                            {/*                                : "This currently has no active results"}*/}
+                            {/*                        </p>*/}
+                            {/*                    </div>*/}
+                            {/*                )*/}
+                            {/*            }*/}
+
+
+                            {/*    </div>*/}
+                            {/*    }*/}
+                            {/*    {this.state.value === 2 &&*/}
+                            {/*    <div className={"row"} value={this.state.value} index={2}>*/}
+
+                            {/*        <div className="col-12 mt-3 mb-3">*/}
+                            {/*            <div className="col d-flex justify-content-end">*/}
+                            {/*                <Link to="/service-agent-record" className="btn btn-sm blue-btn"*/}
+                            {/*                      style={{color: "#fff"}}>*/}
+                            {/*                    Service Agent Request Records*/}
+                            {/*                </Link>*/}
+                            {/*            </div>*/}
+                            {/*        </div>*/}
+
+                            {/*            {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (*/}
+                            {/*                <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >*/}
+                            {/*                    <RequestServiceAgentItem*/}
+                            {/*                        history={this.props.history}*/}
+                            {/*                        item={item}*/}
+                            {/*                    />*/}
+                            {/*                </div>*/}
+                            {/*            ))}*/}
+
+                            {/*            {this.props.serviceAgentRequests.length === 0 && (*/}
+                            {/*                <div className={" column--message"}>*/}
+                            {/*                    <p>*/}
+                            {/*                        {this.state.loading*/}
+                            {/*                            ? "Loading..."*/}
+                            {/*                            : "This search currently has no results"}*/}
+                            {/*                    </p>*/}
+                            {/*                </div>*/}
+                            {/*            )}*/}
+
+                            {/*        {*/}
+                            {/*            this.props.serviceAgentRequests.filter(r => (*/}
+                            {/*                r.Release.stage !== "complete" &&*/}
+                            {/*                r.Release.stage !== "cancelled")*/}
+                            {/*            ).length === 0 && (*/}
+                            {/*                <div className={" column--message"}>*/}
+                            {/*                    <p>*/}
+                            {/*                        {this.state.loading*/}
+                            {/*                            ? "Loading..."*/}
+                            {/*                            : "This currently has no active results"}*/}
+                            {/*                    </p>*/}
+                            {/*                </div>*/}
+                            {/*            )*/}
+                            {/*        }*/}
+
+                            {/*    </div>}*/}
 
 
 
 
-                            </div>
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>
-            </div>
+
+            </Layout>
         );
     }
 }
 
-function NavTabs(props) {
-    const classes = useStylesTabs();
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    const [releases, setReleases] = useState([]);
-    const [registers, setRegisters] = useState([]);
-    const [serviceAgents, setServiceAgents] = useState([]);
-
-    const getReleases = () => {
-        axios
-            .get(baseUrl + "release")
-            .then(
-                (response) => {
-                    let responseAll = response.data.data;
-                    setReleases(responseAll);
-                }
-            ).catch(error => {});
-    };
-
-    const getRegisters = () => {
-        axios
-            .get(baseUrl + "register")
-            .then(
-                (response) => {
-                    let responseAll = response.data.data;
-                    setRegisters(responseAll);
-                }
-            ).catch(error => {});
-    };
-
-    const getServiceAgents = () => {
-        axios
-            .get(baseUrl + "service-agent")
-            .then(
-                (response) => {
-                    let responseAll = response.data.data;
-                    setRegisters(responseAll);
-                }
-            ).catch(error => {
-
-        });
-    };
-
-    useEffect(() => {
-        getReleases();
-        getRegisters();
-        getServiceAgents();
-    });
-
-    return (
-        <div className={classes.root}>
-            <AppBar position="static" style={{ boxShadhow: "none" }} elevation={0}>
-                <Tabs
-                    style={{
-                        backgroundColor: "#ffffff",
-                        color: "#07AD88!important",
-                        boxShadow: "none",
-                    }}
-                    indicatorColor="secondary"
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="nav tabs example">
-                    <LinkTab
-                        label={"Product Release Requests (" + releases.length + ")"}
-                        {...a11yProps(0)}
-                    />
-                    <LinkTab
-                        label={"Product Register Requests (" + registers.length + ")"}
-                        {...a11yProps(1)}
-                    />
-                    <LinkTab
-                        label={"Change Service Agent Requests  (" + serviceAgents.length + ")"}
-                        {...a11yProps(2)}
-                    />
-                </Tabs>
-            </AppBar>
-
-            <TabPanel value={value} index={0}>
-                <div className={"container"}>
-                    {releases.map((item, index) => (
-                        <React.Fragment key={index}>
-                            <RequestReleaseItem history={props.history} item={item} />
-                        </React.Fragment>
-                    ))}
-
-                    {releases.length === 0 && (
-                        <div className={" column-empty-message"}>
-                            <p>This search currently has no results</p>
-                        </div>
-                    )}
-                </div>
-            </TabPanel>
-
-            <TabPanel value={value} index={1}>
-                <div className={"container"}>
-                    {registers.map((item, index) => (
-                        <React.Fragment key={index}>
-                            <RequestRegisterItem history={props.history} item={item} />
-                        </React.Fragment>
-                    ))}
-
-                    {releases.length === 0 && (
-                        <div className={" column-empty-message"}>
-                            <p>This search currently has no results</p>
-                        </div>
-                    )}
-                </div>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <div className={"container"}>
-                    {serviceAgents.map((item, index) => (
-                        <React.Fragment key={index}>
-                            <RequestServiceAgentItem history={props.history} item={item} />
-                        </React.Fragment>
-                    ))}
-
-                    {serviceAgents.length === 0 && (
-                        <div className={" column-empty-message"}>
-                            <p>This search currently has no results</p>
-                        </div>
-                    )}
-                </div>
-            </TabPanel>
-        </div>
-    );
-}
 
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`nav-tabpanel-${index}`}
-            aria-labelledby={`nav-tab-${index}`}
-            {...other}>
-            {value === index && (
-                <Box p={3}>
-                    <Typography component="div">{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `nav-tab-${index}`,
-        "aria-controls": `nav-tabpanel-${index}`,
-    };
-}
-
-function LinkTab(props) {
-    return (
-        <Tab
-            component="a"
-            onClick={(event) => {
-                event.preventDefault();
-            }}
-            {...props}
-        />
-    );
-}
-
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        paddingRight: "0",
-        paddingLight: "0",
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 const mapStateToProps = (state) => {
     return {

@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {baseUrl, createMarkup, randomColorGen, useInterval} from "../../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl, createMarkup} from "../../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Button, List, ListItem, Tooltip, TextField, Avatar} from "@mui/material";
-import {Alert, Autocomplete} from "@mui/lab";
+import {Button, TextField, Tooltip} from "@mui/material";
+import {Autocomplete} from "@mui/lab";
+import {Alert} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import ExplicitIcon from '@mui/icons-material/Explicit';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
@@ -13,16 +14,9 @@ import FilterListIcon from '@mui/icons-material/Search';
 import moment from "moment/moment";
 import Select from "react-select";
 import {makeStyles} from "@mui/styles";
-import RichTextEditor from "./RichTextEditor";
 import WysiwygEditor from "./WysiwygEditor";
-import styles from './MessengerMessage.module.css';
 import MessageEntityDialog from "./MessageEntityDialog";
-import AvatarWithColours from "../Avatars/AvatarWithColours";
-import {purple} from "@mui/material/colors";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
-import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
-
 
 
 const msgWindowHeight = "520px";
@@ -157,7 +151,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
 
-                selectedItem === 0 && handleGroupClick(data[0], 0);
+                if(selectedItem === 0) {
+                    handleGroupClick(data[0], 0);
+                }
 
             })
             .catch((error) => {
@@ -234,6 +230,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     }
 
     const handleGroupClick = (group, selectedIndex) => {
+        console.log('g ', group._id, selectedIndex)
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
         updateSelected(selectedIndex);
@@ -243,6 +240,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         }
 
         if(allMessageGroups[1].id === "0") {
+            console.log('hit 1')
             allMessageGroups.splice(1, 1); // remove new message
         }
 

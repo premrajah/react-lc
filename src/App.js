@@ -57,7 +57,7 @@ import Issues from "./pages/issues/Issues";
 import IssueDetail from "./pages/issues/IssueDetail";
 import ApprovedReleases from "./pages/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
-import MessagePage from "./components/Inbox/MessagePage";
+import MessagePage from "./pages/message/MessagePage";
 import Messeges from "./pages/message/MessagePage";
 import TrackedProducts from "./pages/my-products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";

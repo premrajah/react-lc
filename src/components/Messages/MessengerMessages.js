@@ -342,7 +342,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         <>
             <div className="row">
                 <div className="col-md-4">
-                    <div className="row">
+                    <div className="row mb-2">
                         <div className="col-md-8">
                             {!showHideGroupFilter && (
                                 <div className="d-flex justify-content-start align-items-center h-100">
@@ -399,6 +399,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             maxHeight: msgWindowHeight,
                             overflow: "auto",
                         }}>
+
+                        {autoCompleteOrg && <div className="mb-2 d-flex justify-content-end">
+                            <div className="green-link-url" onClick={() => setAutoCompleteOrg("")}>clear filtered results</div>
+                        </div>}
+
                         {allMessageGroups.length > 0 ? (
                             <List component="nav" dense disablePadding>
                                 {allMessageGroups

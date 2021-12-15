@@ -124,23 +124,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 setAllMessageGroups(data);
 
                 if (selectedItem === 0) {
-                    handleGroupClick(data[0], 0);
-                }
-            })
-            .catch((error) => {
-                console.log("message-group-error ", error.message);
-            });
-    };
-
-    const getAllMessageGroupsExpand = () => {
-        axios
-            // .get(`${baseUrl}message-group/expand`)
-            .get(`${baseUrl}message-group/do-not-use`)
-            .then((response) => {
-                const data = response.data.data;
-                setAllMessageGroups(data);
-
-                if (!selectedItem) {
+                    console.log('si ', data[0]._key, selectedItem)
                     handleGroupClick(data[0], 0);
                 }
             })
@@ -212,9 +196,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleGroupClick = (group, selectedIndex) => {
+        updateSelected(selectedIndex);
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
-        updateSelected(selectedIndex);
 
         if (reactSelectedAsyncValues.length > 0) {
             reactSelectRef.current.clearValue();
@@ -228,6 +212,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setShowHideGroupFilter(false);
         getGroupMessageWithId(group._key);
         setSelectedMsgGroup([]);
+        console.log('c', group._key, selectedIndex)
     };
 
     const handleRichTextCallback = (value) => {
@@ -315,9 +300,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     if (reactSelectedAsyncValues.length > 0) {
                         reactSelectRef.current.clearValue();
                     }
-                    getAllMessageGroups();
 
                     if (payload.message_group_id) {
+                        console.log('pl ', payload.message_group_id);
                         handleGroupClick(data.message_group, selectedItem);
                     } else {
                         if (trackedList.length > 0) {

@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import { Button, TextField, Tooltip } from "@mui/material";
+import { Button, List, ListItemButton, TextField, Tooltip } from "@mui/material";
 import { Autocomplete } from "@mui/lab";
 import { Alert } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -48,9 +48,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const [selectedGroupId, setSelectedGroupId] = useState(null);
     const [selectedGroupKey, setSelectedGroupKey] = useState(null);
 
-    const [reactSelectValues, setReactSelectValues] = useState([]);
-    const [reactSelectedValues, setReactSelectedValues] = useState([]);
-
     const [reactSelectAsyncValues, setReactSelectAsyncValues] = useState([]);
     const [reactSelectedAsyncValues, setReactSelectedAsyncValues] = useState([]);
 
@@ -89,19 +86,21 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         trackedList.push({ groupId: group._id, groupKey: group._key, name: group.name, index: i });
 
         return (
-            <div key={i}>
-                <div
-                    className={`click-item p-2 message-group-item`}
-                    selected={selectedItem === i}
-                    onClick={() => handleGroupClick(group, i)}
-                    style={
-                        selectedItem === i
-                            ? { backgroundColor: "var(--lc-pink)", color: "#fff" }
-                            : { backgroundColor: "#fff" }
-                    }>
-                    {group.name.replaceAll(",", ", ").replaceAll("+", ", ").replaceAll("-", "")}
-                </div>
-            </div>
+            <ListItemButton
+                key={i}
+                className={`click-item p-2 message-group-item`}
+                selected={selectedItem === i}
+                onClick={() => handleGroupClick(group, i)}
+                autoFocus
+                dense
+                divider
+                style={
+                    selectedItem === i
+                        ? { backgroundColor: "var(--lc-pink)", color: "#fff" }
+                        : { backgroundColor: "#fff" }
+                }>
+                {group.name.replaceAll(",", ", ").replaceAll("+", ", ").replaceAll("-", "")}
+            </ListItemButton>
         );
     };
 
@@ -111,20 +110,11 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .then((response) => {
                 const res = response.data.data;
                 setAllOrgs(res);
-
-                const temp = [];
-                res.map((r) => {
-                    if (r.email !== null) {
-                        temp.push({ value: r._id, label: r.email });
-                    }
-                });
-                setReactSelectValues(temp);
             })
             .catch((error) => {
                 console.log("all orgs errors ", error.message);
             });
     };
-
 
     const getAllMessageGroups = () => {
         axios
@@ -170,7 +160,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 console.log("group message error ", error.message);
             });
     };
-
 
     const handleEntityDialogOpen = () => {
         setOpenEntityDialog(true);
@@ -223,7 +212,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleGroupClick = (group, selectedIndex) => {
-
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
         updateSelected(selectedIndex);
@@ -427,25 +415,30 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             overflow: "auto",
                         }}>
                         {allMessageGroups.length > 0 ? (
-                            allMessageGroups
-                                .filter((val) => {
-                                    if (val.name) {
-                                        if (autoCompleteOrg === "" || autoCompleteOrg === "null") {
-                                            return val;
-                                        } else if (
-                                            val.name
-                                                .toLowerCase()
-                                                .includes(
-                                                    autoCompleteOrg
-                                                        ? autoCompleteOrg.toLowerCase()
-                                                        : setAutoCompleteOrg("")
-                                                )
-                                        ) {
-                                            return val;
+                            <List component="nav" dense disablePadding>
+                                {allMessageGroups
+                                    .filter((val) => {
+                                        if (val.name) {
+                                            if (
+                                                autoCompleteOrg === "" ||
+                                                autoCompleteOrg === "null"
+                                            ) {
+                                                return val;
+                                            } else if (
+                                                val.name
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        autoCompleteOrg
+                                                            ? autoCompleteOrg.toLowerCase()
+                                                            : setAutoCompleteOrg("")
+                                                    )
+                                            ) {
+                                                return val;
+                                            }
                                         }
-                                    }
-                                })
-                                .map((group, i) => ListGroupDisplay(group, i))
+                                    })
+                                    .map((group, i) => ListGroupDisplay(group, i))}
+                            </List>
                         ) : (
                             <div>Loading...</div>
                         )}
@@ -463,7 +456,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             ? reactSelectAsyncValues
                                             : []
                                     }
-                                    loadOptions={() => handleNewMessageSelectAsync()}
+                                    loadOptions={handleNewMessageSelectAsync}
                                     onChange={(e) => handleReactAsyncOnChange(e)}
                                     ref={reactSelectRef}
                                     classNamePrefix="react-select-async"

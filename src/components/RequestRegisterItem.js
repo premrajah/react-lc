@@ -10,6 +10,7 @@ import { withStyles } from "@mui/styles/index";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
+import {capitalize} from "../Util/GlobalFunctions";
 
 class RequestRegisterItem extends Component {
     constructor(props) {
@@ -35,7 +36,9 @@ class RequestRegisterItem extends Component {
             siteSelected: null,
             fieldsSite: {},
             errorsSite: {},
-            isLoading:false
+            isLoading:false,
+            product:null,
+            artifacts:[]
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -160,8 +163,43 @@ class RequestRegisterItem extends Component {
     }
 
     componentDidMount() {
+        this.loadCurrentProductSync()
+        this.getArtifactsForProduct()
+    }
+
+    getArtifactsForProduct = () => {
+
+        axios.get(`${baseUrl}product/${this.props.item.product_id.replace("Product/","")}/artifact`)
+            .then(res => {
+                const data = res.data.data;
+
+
+                this.setState({
+                    artifacts:data
+                })
+            })
+            .catch(error => {
+            })
+
 
     }
+
+    loadCurrentProductSync = () => {
+        axios
+            .get(baseUrl + "product/" + this.props.item.product_id.replace("Product/",""))
+            .then(
+                (response) => {
+                    let responseAll = response.data;
+                    this.setState({
+                        product:responseAll.data.product
+                    })
+                },
+                (error) => {
+
+                }
+            );
+
+    };
 
     getDetails() {
         axios
@@ -191,53 +229,56 @@ class RequestRegisterItem extends Component {
                     <>
                         <div className="row no-gutters bg-white rad-8 p-3 mb-4 ">
                             <div className={"col-2 "}>
-                                {this.state.item.product.artifacts.length > 0 ? (
+                                {this.state.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
                                 ) : (
-                                    <img className={"img-fluid img-list rad-4"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
                             <div className={"col-5 pl-3  content-box-listing"}>
-                                <p  className=" mb-1 title-bold">
-                                    <Link to={`/p/${this.state.item.product.product._key}`}>{this.state.item.product.product.name}</Link>
+                                <p style={{ fontSize: "18px" }} className="title-bold mb-1 text-capitlize">
+                                    <Link to={`/p/${this.state.item.product_id.replace("Product/","")}`}>
+                                        {this.state.product&&this.state.product.name}
+                                    </Link>
                                 </p>
+
                                 <div style={{ margin: "0" }}>
-                                    <Org orgId={this.state.item.originator._id} />
-                                    <span>→</span>
-                                    <Org orgId={this.state.item.responder._id} />
+                                    {/*<Org orgId={this.state.item.originator._id} />*/}
+                                    {/*<span>→</span>*/}
+                                    {/*<Org orgId={this.state.item.responder._id} />*/}
                                 </div>
 
-                                <p style={{ fontSize: "16px" }} className=" mb-1 text-caps">
-                                    {this.state.item.registration.stage}
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                    Stage: <span className={"text-blue"}>{this.state.item.registration.stage}</span>
                                 </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.purpose}
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                    Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span className="mr-1">{this.state.item.product.product.category},</span>
-                                    <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>,
-                                 <span> {this.state.item.product.product.volume}
-                                    {this.state.item.product.product.units}</span>
-                                </p>
-                                {this.state.item.search_ids && (
-                                    <p
-                                        style={{ fontSize: "16px" }}
-                                        className="text-mute mb-1 bottom-tag-p">
-                                        {this.state.item.search_ids.length} Searches
-                                    </p>
-                                )}
-                                {this.state.item.sub_product_ids &&
-                                    this.state.item.sub_product_ids.length > 0 && (
-                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                            {this.state.item.sub_product_ids.length} Sub Products
-                                        </p>
-                                    )}
+
+
+                                {this.state.product&&  <p className={"text-gray-light mt-2 "}>
+                                    Category:
+                                    <span
+
+                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                            <span className="text-capitlize">
+                                                                {capitalize(this.state.product.category)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className=" text-capitlize">
+                                                                {capitalize(this.state.product.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className="  text-capitlize">
+                                                                {capitalize(this.state.product.state)}
+                                                            </span>
+                                    </span>
+                                </p>}
+
+
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
                                 <p className={"text-gray-light date-bottom"}>
-                                    {moment(this.state.item.product.product._ts_epoch_ms).format("DD MMM YYYY")}
+                                    {moment(this.state.item._ts_epoch_ms).format("DD MMM YYYY")}
                                 </p>
 
                                         {this.state.item.next_action.is_mine &&

@@ -124,7 +124,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 setAllMessageGroups(data);
 
                 if (selectedItem === 0) {
-                    console.log('si ', data[0]._key, selectedItem)
                     handleGroupClick(data[0], 0);
                 }
             })
@@ -212,7 +211,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setShowHideGroupFilter(false);
         getGroupMessageWithId(group._key);
         setSelectedMsgGroup([]);
-        console.log('c', group._key, selectedIndex)
     };
 
     const handleRichTextCallback = (value) => {
@@ -302,7 +300,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                     }
 
                     if (payload.message_group_id) {
-                        console.log('pl ', payload.message_group_id);
                         handleGroupClick(data.message_group, selectedItem);
                     } else {
                         if (trackedList.length > 0) {

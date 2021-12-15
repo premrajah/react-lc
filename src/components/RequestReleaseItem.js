@@ -14,6 +14,9 @@ import { withStyles } from "@mui/styles/index";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
+import {CURRENT_PRODUCT, PRODUCT_NOT_FOUND} from "../store/types";
+import {capitalize} from "../Util/GlobalFunctions";
+import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
 
 class RequestReleaseItem extends Component {
     constructor(props) {
@@ -40,7 +43,9 @@ class RequestReleaseItem extends Component {
             fieldsSite: {},
             fields:{},
             errorsSite: {},
-            isLoading:false
+            isLoading:false,
+            product:null,
+            artifacts:[]
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -279,8 +284,43 @@ class RequestReleaseItem extends Component {
     }
 
     componentDidMount() {
-        // this.getSites();
+        this.loadCurrentProductSync()
+        this.getArtifactsForProduct()
     }
+
+    getArtifactsForProduct = () => {
+
+        axios.get(`${baseUrl}product/${this.props.item.product_id.replace("Product/","")}/artifact`)
+            .then(res => {
+                const data = res.data.data;
+
+
+                this.setState({
+                    artifacts:data
+                })
+            })
+            .catch(error => {
+            })
+
+
+    }
+
+    loadCurrentProductSync = () => {
+        axios
+            .get(baseUrl + "product/" + this.props.item.product_id.replace("Product/",""))
+            .then(
+                (response) => {
+                    let responseAll = response.data;
+                    this.setState({
+                        product:responseAll.data.product
+                    })
+                },
+                (error) => {
+
+                }
+            );
+
+    };
 
     getDetails() {
         axios
@@ -305,58 +345,56 @@ class RequestReleaseItem extends Component {
                     <>
                         <div key={this.state.item.Release._id} id={this.state.item.Release._id} className="row no-gutters bg-white rad-8 p-3 justify-content-center  mb-4 ">
                             <div className={"col-2 "}>
-                                {this.state.item.product.artifacts.length > 0 ? (
+                                {this.state.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail
-                                        images={this.state.item.product.artifacts}
+                                        images={this.state.artifacts}
                                     />
                                 ) : (
                                     <img className={"img-fluid img-list rad-4"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
                             <div className={"col-5 pl-3  content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className="title-bold mb-1">
-                                    <Link to={`/p/${this.state.item.product.product._key}`}>{this.state.item.product.product.name}</Link>
+                                <p style={{ fontSize: "18px" }} className="title-bold mb-1 text-capitlize">
+                                    <Link to={`/p/${this.state.item.product_id.replace("Product/","")}`}>
+                                        {this.state.product&&this.state.product.name}
+                                    </Link>
                                 </p>
 
                                 <div style={{ margin: "0" }}>
-                                    <Org orgId={this.state.item.originator._id} />
-                                    <span>→</span>
-                                    <Org orgId={this.state.item.responder._id} />
+                                    {/*<Org orgId={this.state.item.originator._id} />*/}
+                                    {/*<span>→</span>*/}
+                                    {/*<Org orgId={this.state.item.responder._id} />*/}
                                 </div>
 
-                                <p style={{ fontSize: "16px" }} className=" mb-1 text-caps">
-                                    {this.state.item.Release.stage}
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                    Stage: <span className={"text-blue"}>{this.state.item.Release.stage}</span>
                                 </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    {this.state.item.product.product.purpose}
-                                </p>
-                                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                    <span className="mr-1">{this.state.item.product.product.category},</span>
-                                    <span className="mr-1">{this.state.item.product.product.type},</span>
-                                    <span>{this.state.item.product.product.state}</span>,
-                                    <span> {this.state.item.product.product.volume}</span>
-                                    <span>{this.state.item.product.product.units}</span>
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                    Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
 
 
-                                {this.state.item.search_ids && (
-                                    <p
-                                        style={{ fontSize: "16px" }}
-                                        className="text-mute mb-1 bottom-tag-p">
-                                        {this.state.item.search_ids.length} Searches
-                                    </p>
-                                )}
-                                {this.state.item.sub_product_ids &&
-                                    this.state.item.sub_product_ids.length > 0 && (
-                                        <p style={{ fontSize: "16px" }} className="text-mute mb-1">
-                                            {this.state.item.sub_product_ids.length} Sub Products
-                                        </p>
-                                    )}
+                                {this.state.product&&  <p className={"text-gray-light mt-2 "}>
+                                    Category:
+                                    <span
+
+                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                            <span className="text-capitlize">
+                                                                {capitalize(this.state.product.category)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className=" text-capitlize">
+                                                                {capitalize(this.state.product.type)}
+                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                                        <span className="  text-capitlize">
+                                                                {capitalize(this.state.product.state)}
+                                                            </span>
+                                    </span>
+                                </p>}
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-5"}>
                                 <p className={"text-gray-light   date-bottom"}>
-                                    {moment(this.state.item.product.product._ts_epoch_ms).format(
+                                    {moment(this.state.item.Release._ts_epoch_ms).format(
                                         "DD MMM YYYY"
                                     )}
                                 </p>
@@ -440,7 +478,8 @@ class RequestReleaseItem extends Component {
                                             </div>
 
 
-                                            <Select
+                                            <CustomizedSelect
+                                                variant={"standard"}
                                                 name={`parent_parent_id}]`}
                                                 // label={"Link a product"}
                                                 required={true}
@@ -461,14 +500,15 @@ class RequestReleaseItem extends Component {
                                                     ))}
 
 
-                                            </Select>
+                                            </CustomizedSelect>
 
                                             <div
                                                 className={"custom-label text-bold text-blue mb-3"}>
                                                 Select the location of product
                                             </div>
 
-                                            <Select
+                                            <CustomizedSelect
+                                                variant={"standard"}
                                                 required={true}
                                                 name={"site"}
                                                 native
@@ -484,14 +524,14 @@ class RequestReleaseItem extends Component {
                                                         {item.name + "(" + item.address + ")"}
                                                     </option>
                                                 ))}
-                                            </Select>
+                                            </CustomizedSelect>
                                         </FormControl>
 
                                         <p className="text-left" style={{ margin: "10px 0" }}>
                                             Don’t see it on here?
                                             <span
                                                 onClick={this.showSubmitSite}
-                                                className="green-text forgot-password-link text-mute small ml-1">
+                                                className="green-text forgot-password-link text-gray-light small ml-1">
                                                 Add a site
                                             </span>
                                         </p>
@@ -547,9 +587,6 @@ class RequestReleaseItem extends Component {
                                                     <form onSubmit={this.handleSubmitSite}>
                                                         <div className="row no-gutters justify-content-center ">
                                                             <div className="col-12 mt-4">
-
-
-
                                                                 <TextField
                                                                     id="outlined-basic"
                                                                     label=" Name"
@@ -565,7 +602,7 @@ class RequestReleaseItem extends Component {
                                                                 {this.state.errorsSite["name"] && (
                                                                     <span
                                                                         className={
-                                                                            "text-mute small"
+                                                                            "text-gray-light "
                                                                         }>
                                                                         <span style={{color: "red"}}>*</span>
                                                                         {
@@ -595,7 +632,7 @@ class RequestReleaseItem extends Component {
                                                                 ] && (
                                                                     <span
                                                                         className={
-                                                                            "text-mute small"
+                                                                            "text-gray-light small"
                                                                         }>
                                                                         <span style={{color: "red",}}>*</span>
                                                                         {
@@ -626,7 +663,7 @@ class RequestReleaseItem extends Component {
                                                                 ] && (
                                                                     <span
                                                                         className={
-                                                                            "text-mute small"
+                                                                            "text-gray-light small"
                                                                         }>
                                                                         <span style={{color: "red",}}>*</span>
                                                                         {
@@ -654,7 +691,7 @@ class RequestReleaseItem extends Component {
                                                                 {this.state.errorsSite["phone"] && (
                                                                     <span
                                                                         className={
-                                                                            "text-mute small"
+                                                                            "text-gray-light small"
                                                                         }>
                                                                         <span style={{color: "red"}}>*</span>
                                                                         {
@@ -683,7 +720,7 @@ class RequestReleaseItem extends Component {
                                                                 {this.state.errorsSite["email"] && (
                                                                     <span
                                                                         className={
-                                                                            "text-mute small"
+                                                                            "text-gray-light small"
                                                                         }>
                                                                         <span style={{color: "red"}}>*</span>
                                                                         {

@@ -756,7 +756,7 @@ export const fetchReleaseRequest = () => {
 };
 
 export const fetchReleaseRequestSync = () => (dispatch) => {
-    axios.get(baseUrl + "release/no-links").then(
+    axios.get(baseUrl + "release").then(
         (response) => {
 
             let responseAll = response.data.data;

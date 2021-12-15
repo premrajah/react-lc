@@ -14,6 +14,8 @@ import Layout from "../../components/Layout/Layout";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from '@mui/lab/TabPanel';
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 
 const StyledTabs = withStyles({
     root: {
@@ -100,7 +102,18 @@ class Approvals extends Component {
 
     componentDidMount() {
 
-        this.setActiveKey(null,"1")
+        if (this.props.location.search.includes("tab=")){
+
+            if (this.props.location.search.includes("tab=0"))
+            this.setActiveKey(null,"1")
+
+           else if (this.props.location.search.includes("tab=1"))
+                this.setActiveKey(null,"2")
+
+           else if (this.props.location.search.includes("tab=2"))
+                this.setActiveKey(null,"3")
+
+        }
 
         const query = new URLSearchParams(this.props.location.search);
         query
@@ -136,10 +149,6 @@ componentWillUnmount() {
 }
 
 
-
-
-
-
 render() {
 
         return (
@@ -170,7 +179,7 @@ render() {
                                             aria-label="lab API tabs example">
 
                                             <Tab label="Product Release Request" value="1" />
-                                            <Tab label="Product Release Request" value="2"/>
+                                            <Tab label="Product Register Request" value="2"/>
                                             <Tab label="Change Service Agent Request" value="3" />
 
                                         </TabList>
@@ -187,11 +196,13 @@ render() {
                                                 </div>
                                             </div>
                                             <div className={"listing-row-border "}></div>
+
+
                                             {this.props.productReleaseRequests.filter(r =>
                                                 r.Release.stage !== "complete" &&
                                                 r.Release.stage !== "cancelled" &&
                                                 r.Release.stage !== "invalidated").map((item, index) => (
-                                                <div className="col-12" key={item.product.product._id} id={item.product.product._id}>
+                                                <div className="col-12" key={item.product_id.replace("Product/","")} id={item.product_id.replace("Product/","")}>
 
                                                     <RequestReleaseItem
                                                         history={this.props.history}
@@ -200,6 +211,8 @@ render() {
 
                                                 </div>
                                             ))}
+
+
                                             {this.props.productReleaseRequested.length === 0 && (
                                                 <div className={" column--message"}>
                                                     <p>
@@ -229,7 +242,7 @@ render() {
                                                 r.registration.stage !== "cancelled" &&
                                                 r.registration.stage !== "invalidated")
                                             ).map((item, index) => (
-                                                <div className={"col-12"} key={item.product.product._id+"_reg"} id={item.product.product._id+"_reg"}>
+                                                <div className={"col-12"} key={item.product_id+"_reg"} id={item.product_id+"_reg"}>
 
                                                     <RequestRegisterItem
                                                         history={this.props.history}
@@ -250,8 +263,7 @@ render() {
                                             )}
 
 
-                                            {
-                                                this.props.productRegisterRequests.filter(r => (
+                                            {this.props.productRegisterRequests.filter(r => (
                                                     r.registration.stage !== "complete" &&
                                                     r.registration.stage !== "cancelled" &&
                                                     r.registration.stage !== "invalidated")
@@ -282,7 +294,7 @@ render() {
                                             </div>
 
                                             {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (
-                                                <div className={"col-12"} key={item.product.product._id+"_sg"} id={item.product.product._id+"_sg"} >
+                                                <div className={"col-12"} key={item.product_id+"_sg"} id={item.product_id+"_sg"} >
                                                     <RequestServiceAgentItem
                                                         history={this.props.history}
                                                         item={item}

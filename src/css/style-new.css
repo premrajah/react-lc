@@ -3776,5 +3776,9 @@ input:active,input:focus{
 }
 
 .wysiwyg-toolbar{
-    background: #eeeeee;
+    background: #eeeeee!important;
+}
+.message-window{
+    display: flex;
+    flex-direction: column-reverse;
 }

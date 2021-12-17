@@ -62,9 +62,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     let trackedList = [];
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [selectedMsgGroup]);
 
     useEffect(() => {
         getAllOrgs();
@@ -75,9 +72,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setUserOrg(userDetail.orgId);
     }, []);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
+
 
     // useInterval(() => {
     //     getAllOrgs();
@@ -138,7 +133,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const getGroupMessageWithId = (id) => {
         if (!id) return;
         axios
+            // .get(`${baseUrl}message-group/${id}/message?offset=5&include-notifs=true`)
             .get(`${baseUrl}message-group/${id}/message`)
+
             .then((response) => {
                 setSelectedMsgGroup(response.data.data);
             })
@@ -431,7 +428,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     .map((group, i) => ListGroupDisplay(group, i))}
                             </div>
                         ) : (
-                            <div>Loading...</div>
+                            <div className={"text-center p-3"}>Loading...</div>
                         )}
                     </div>
                 </div>
@@ -469,7 +466,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             {selectedMsgGroup.length <= 0 &&
                             allMessageGroups.length > 0 &&
                             allMessageGroups[0].id !== "0" ? (
-                                "Loading..."
+                               <div className={"text-center p-3"}>Loading...</div>
                             ) : (
                                 <div></div>
                             )}
@@ -564,7 +561,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                 </div>
                                             </div>
                                         ))
-                                        .reverse()}
+                                        }
                                     <div className="dummy" ref={messagesEndRef} />
                                 </div>
                             ) : (
@@ -628,6 +625,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         </>
     );
 };
+
+
 
 const mapStateToProps = (state) => {
     return {

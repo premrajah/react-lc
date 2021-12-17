@@ -516,6 +516,7 @@ class ProductForm extends Component {
                         }
 
                         this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
+
                         this.showProductSelection();
                         // this.props.loadProducts(this.props.userDetail.token);
                         // this.props.loadProductsWithoutParent();

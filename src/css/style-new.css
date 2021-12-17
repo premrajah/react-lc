@@ -3729,3 +3729,52 @@ input:active,input:focus{
     top: 0px;
 
 }
+
+.message-row{
+    height: 600px;
+}
+.message-column {
+
+    flex: 1;
+    /*padding: 16px;*/
+}
+
+.message-column .message-groups{
+    height: 520px;
+    overflow: auto
+}
+.editor-bottom-container{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.send-button-left{
+    position: absolute;
+
+    bottom: 10px;
+    right: 10px;
+    z-index: 10;
+}
+.msg-light .chat-msg-box{
+    color: black!important;
+    background: #e9ecf5!important;
+}
+.message-window{
+
+    height: 450px;
+    overflow: auto;
+}
+.message-group-item:hover{
+    background: #f0f2f5!important;
+}
+.message-group-item:hover{
+    background: #f0f2f5!important;
+}
+
+.message-group-item.selected{
+    background: #e9f3ff!important;
+}
+
+.wysiwyg-toolbar{
+    background: #eeeeee;
+}

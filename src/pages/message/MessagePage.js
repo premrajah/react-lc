@@ -7,15 +7,10 @@ function MessagePage() {
     return (
         <Layout>
             <div className="container   pb-4 pt-4">
-                <div className="row">
-                    <div className="col">
-                        <PageHeader pageTitle="Messages" subTitle="Send or receive messages here" />
-                    </div>
-                </div>
 
-                <div>
-                    <MessengerMessages />
-                </div>
+                        <PageHeader pageTitle="Messages" subTitle="Send or receive messages here" />
+                        <MessengerMessages />
+
             </div>
         </Layout>
     );

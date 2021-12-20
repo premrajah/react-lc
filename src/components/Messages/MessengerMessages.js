@@ -49,7 +49,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
 
     const [allOrgs, setAllOrgs] = useState([]);
+
     const [allMessageGroups, setAllMessageGroups] = useState([]);
+    const [filteredMessageGroups, setFilteredMessageGroups] = useState([]);
+
     const [autoCompleteOrg, setAutoCompleteOrg] = useState("");
     const [userOrg, setUserOrg] = useState("");
     const [selectedMsgGroup, setSelectedMsgGroup] = useState([]);
@@ -71,7 +74,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
 
     useEffect(() => {
-        getAllOrgs();
+        // getAllOrgs();
         getAllMessageGroups();
     }, []);
 
@@ -115,6 +118,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .then((response) => {
                 const res = response.data.data;
                 setAllOrgs(res);
+
             })
             .catch((error) => {
                 console.log("all orgs errors ", error.message);
@@ -127,10 +131,10 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
             .then((response) => {
                 const data = response.data.data;
                 setAllMessageGroups(data);
+                setFilteredMessageGroups(data)
 
-                if (selectedItem === 0) {
-                    handleGroupClick(data[0], 0);
-                }
+                    // handleGroupClick(data[0], 0);
+
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
@@ -139,6 +143,9 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const getGroupMessageWithId = (id) => {
         if (!id) return;
+
+        // alert("load "+ id)
+
         axios
             // .get(`${baseUrl}message-group/${id}/message?offset=5&include-notifs=true`)
             .get(`${baseUrl}message-group/${id}/message`)
@@ -186,13 +193,34 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     };
 
+
+
+    const filterGroups = (e) => {
+
+        const {value} = e.target;
+
+        console.log()
+
+        if (value) {
+            setFilteredMessageGroups(
+                allMessageGroups.filter((val) => {
+                    if (val.name) {
+                        if (val.name.toLowerCase().includes(value.toLowerCase())) {
+                            return val;
+                        }
+                    }
+                })
+            )
+
+        }else{
+            setFilteredMessageGroups(allMessageGroups)
+        }
+
+    }
     const handleReactAsyncOnChange = (e) => {
 
         const {value,options} = e.target;
-        console.log("text value")
-        console.log(value)
-        console.log("text options")
-        console.log(options)
+
 
 
         if (value) {
@@ -212,17 +240,15 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleGroupClick = (group, selectedIndex,orgs) => {
+
+        // console.log("handle group click")
+        // console.log(group, selectedIndex,orgs)
+
         updateSelected(selectedIndex);
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
 
-        if (reactSelectedAsyncValues.length > 0) {
-            reactSelectRef.current.clearValue();
-        }
 
-        if (allMessageGroups[1].id === "0") {
-            allMessageGroups.splice(1, 1); // remove new message
-        }
 
         setShowHideOrgSearch(false);
         setShowHideGroupFilter(false);
@@ -305,38 +331,45 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                 return;
         }
 
-        postMessage(payload);
+        postMessage(payload, messageType);
     };
 
-    const postMessage = (payload, messageKey) => {
+    const postMessage = (payload, messageType) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 if (response.status === 200) {
                     const data = response.data.data;
 
-                    setMessageText("");
-                    if (reactSelectedAsyncValues.length > 0) {
-                        reactSelectRef.current.clearValue();
-                    }
+                    // setMessageText("");
 
-                    if (payload.message_group_id) {
+
+                    if (messageType==="new_message")
+                    getAllMessageGroups()
+
+                    else{
+
                         handleGroupClick(data.message_group, selectedItem);
-                    } else {
-                        if (trackedList.length > 0) {
-                            const msgGroupIdCheck = trackedList.filter(
-                                (g) => g.groupId === data.message_group._id
-                            );
-
-                            if (msgGroupIdCheck) {
-                                const _id = msgGroupIdCheck[0].groupId;
-                                const _key = msgGroupIdCheck[0].groupKey;
-                                const name = msgGroupIdCheck[0].name;
-                                const index = msgGroupIdCheck[0].index - 1;
-                                handleGroupClick({ _id, _key, name }, index);
-                            }
-                        }
                     }
+
+                    // if (payload.message_group_id) {
+                    //     handleGroupClick(data.message_group, selectedItem);
+                    // } else {
+                    //
+                    //     if (trackedList.length > 0) {
+                    //         const msgGroupIdCheck = trackedList.filter(
+                    //             (g) => g.groupId === data.message_group._id
+                    //         );
+                    //
+                    //         if (msgGroupIdCheck) {
+                    //             const _id = msgGroupIdCheck[0].groupId;
+                    //             const _key = msgGroupIdCheck[0].groupKey;
+                    //             const name = msgGroupIdCheck[0].name;
+                    //             const index = msgGroupIdCheck[0].index - 1;
+                    //             handleGroupClick({ _id, _key, name }, index);
+                    //         }
+                    //     }
+                    // }
 
                     resetDraftRef.current.resetDraft(); // clear draftjs text field
                 }
@@ -347,8 +380,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleSendMessage = () => {
-        if (messageText && reactSelectedAsyncValues.length > 0) {
-            sendMessage(messageText, reactSelectedAsyncValues, "", "", "new_message");
+        if (messageText && newMsgOrgs.length > 0) {
+            sendMessage(messageText, newMsgOrgs, "", "", "new_message");
         } else if (messageText && selectedMsgGroup.length > 0) {
             if (selectedGroupId) {
                 sendMessage(messageText, [], selectedGroupId, "", "group_message");
@@ -361,7 +394,14 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         console.log("autocomplete")
         console.log(values)
 
-        
+
+        let orgs=[]
+           values.forEach((item)=>{
+
+    orgs.push(item._key)
+})
+
+        setNewMsgOrgs(orgs)
 
         // setValue(event.target.value);
         // if (onChange)
@@ -375,12 +415,18 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                      style={{
 
                          borderRight: "1px solid var(--lc-bg-gray)",
+                         borderBottom: "1px solid var(--lc-bg-gray)",
                      }}
                 >
-                    <div className="row d-flex no-gutters" style={{alignItems:"center"}}>
+                    <div
+                        style={{
+                            borderBottom: "1px solid var(--lc-bg-gray)",
+                            alignItems:"center"
+                        }}
+                        className="row d-flex no-gutters" >
                         <div className="col-md-10">
 
-                            <input className={"search-input full-width-field m-2"}   />
+                            <input placeholder={"Filter conversations"} onChange={filterGroups} className={"search-input full-width-field m-3"}   />
                                 {/*{!showHideGroupFilter && (*/}
                                 {/*    <div className="d-flex justify-content-start align-items-center h-100">*/}
                                 {/*        Groups*/}
@@ -442,29 +488,29 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             <div className="green-link-url" onClick={() => setAutoCompleteOrg("")}>clear filtered results</div>
                         </div>}
 
-                        {allMessageGroups.length > 0 ? (
+                        {filteredMessageGroups.length > 0 ? (
                             <div className={"message-item-c"}>
-                                {allMessageGroups
-                                    .filter((val) => {
-                                        if (val.name) {
-                                            if (
-                                                autoCompleteOrg === "" ||
-                                                autoCompleteOrg === "null"
-                                            ) {
-                                                return val;
-                                            } else if (
-                                                val.name
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        autoCompleteOrg
-                                                            ? autoCompleteOrg.toLowerCase()
-                                                            : setAutoCompleteOrg("")
-                                                    )
-                                            ) {
-                                                return val;
-                                            }
-                                        }
-                                    })
+                                {filteredMessageGroups
+                                    // .filter((val) => {
+                                    //     if (val.name) {
+                                    //         if (
+                                    //             autoCompleteOrg === "" ||
+                                    //             autoCompleteOrg === "null"
+                                    //         ) {
+                                    //             return val;
+                                    //         } else if (
+                                    //             val.name
+                                    //                 .toLowerCase()
+                                    //                 .includes(
+                                    //                     autoCompleteOrg
+                                    //                         ? autoCompleteOrg.toLowerCase()
+                                    //                         : setAutoCompleteOrg("")
+                                    //                 )
+                                    //         ) {
+                                    //             return val;
+                                    //         }
+                                    //     }
+                                    // })
                                     .map((group, i) =>
 
                                         // ListGroupDisplay(group, i)
@@ -483,7 +529,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                 <div className="col-md-8 message-column">
                     {showHideOrgSearch && (
-                        <div className="row"
+                        <div className="row no-gutters"
                              style={{
 
                                  borderBottom: "1px solid var(--lc-bg-gray)",
@@ -492,7 +538,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             <div className="col-12">
 
                                <Autocomplete
-                                    className={"m-2"}
+                                    className={"m-3"}
                                     multiple
                                     onOpen={() => {
                                         setOpen(true);
@@ -515,7 +561,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            style={{minHeight:"40px"}}
+                                            style={{minHeight:"45px"}}
                                             variant="standard"
                                             // label="Multiple values"
                                             placeholder="Search companies"
@@ -523,40 +569,22 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                         />
                                     )}
                                 />
-                                {/*<AsyncSelect*/}
 
-                                {/*    isMulti*/}
-                                {/*    value={*/}
-                                {/*        reactSelectAsyncValues.length > 0*/}
-                                {/*            ? reactSelectAsyncValues*/}
-                                {/*            : []*/}
-                                {/*    }*/}
-                                {/*    loadOptions={handleNewMessageSelectAsync}*/}
-                                {/*    onChange={(e) => handleReactAsyncOnChange(e)}*/}
-                                {/*    ref={reactSelectRef}*/}
-                                {/*    classNamePrefix="custom-react-select react-select-async"*/}
-                                {/*    placeholder="Search organisations here ."*/}
-                                {/*/>*/}
                             </div>
                         </div>
                     )}
 
 
                     {selectedOrgs&&selectedOrgs.length > 0 &&
-                    <div className="row"
+                    <div className="row no-gutters"
                          style={{
 
                              borderBottom: "1px solid var(--lc-bg-gray)",
                          }}
                     >
                         <div className="col-12">
-                            <div
-
-                                className={`click-item p-3 message-group-item selected`}
-
-
-                            >
-         <span className={"thumbnail-box"}>{selectedOrgs.map((item, index) =>
+                            <div className={`click-item p-3 message-group-item `}>
+                           <span className={"thumbnail-box"}>{selectedOrgs.map((item, index) =>
              <>
                  <span
                      className={`text-caps company-thumbnails ${index > 0 && " thumbnail-margin-left"} `}>{item.name.substr(0, 2)}</span>
@@ -574,7 +602,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                     )}
             </span>
                                 {/*<span className={"group-members date-bottom text-gray-light"}>*/}
-                                {/*    ({allOrgs.length} Participants)*/}
+                                {/*    ({selectedOrgs.length} Participants)*/}
                                 {/*</span>*/}
                             </div>
 
@@ -595,7 +623,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             {selectedMsgGroup.length <= 0 &&
                             allMessageGroups.length > 0 &&
                             allMessageGroups[0].id !== "0" ? (
-                               <div className={"text-center p-3"}>Loading...</div>
+                               <div className={"text-center p-3"}>Loading conversation...</div>
                             ) : (
                                 <div></div>
                             )}
@@ -768,13 +796,20 @@ const MessageGroupItem=(props)=>{
         axios
             .get(`${baseUrl}message-group/${props.item._key}/org`)
             .then((response) => {
+
                 const data = response.data.data;
                 setAllOrgs(data)
+
+                if (props.index===0){
+                    props.handleGroupClick(props.item,props.index,data)
+                }
 
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
             });
+
+
 
     },[]);
 
@@ -803,7 +838,7 @@ const MessageGroupItem=(props)=>{
                 {/*{props.item.name.replaceAll(",", ", ").replaceAll("+", ", ").replaceAll("-", "")}*/}
                 {allOrgs.map((item,index)=>
                 <>
-                    {index>0&&","}{item.name}
+                    {index>0&&","} {item.name}
                 </>
                 )}
             </span>
@@ -814,55 +849,6 @@ const MessageGroupItem=(props)=>{
     )
 }
 
-const topFilms = [
-    { title: 'The Shawshank Redemption', year: 1994 },
-    { title: 'The Godfather', year: 1972 },
-    { title: 'The Godfather: Part II', year: 1974 },
-    { title: 'The Dark Knight', year: 2008 },
-    { title: '12 Angry Men', year: 1957 },
-    { title: "Schindler's List", year: 1993 },
-    { title: 'Pulp Fiction', year: 1994 },
-    {
-        title: 'The Lord of the Rings: The Return of the King',
-        year: 2003,
-    },
-    { title: 'The Good, the Bad and the Ugly', year: 1966 },
-    { title: 'Fight Club', year: 1999 },
-    {
-        title: 'The Lord of the Rings: The Fellowship of the Ring',
-        year: 2001,
-    },
-    {
-        title: 'Star Wars: Episode V - The Empire Strikes Back',
-        year: 1980,
-    },
-    { title: 'Forrest Gump', year: 1994 },
-    { title: 'Inception', year: 2010 },
-    {
-        title: 'The Lord of the Rings: The Two Towers',
-        year: 2002,
-    },
-    { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-    { title: 'Goodfellas', year: 1990 },
-    { title: 'The Matrix', year: 1999 },
-    { title: 'Seven Samurai', year: 1954 },
-    {
-        title: 'Star Wars: Episode IV - A New Hope',
-        year: 1977,
-    },
-    { title: 'City of God', year: 2002 },
-    { title: 'Se7en', year: 1995 },
-    { title: 'The Silence of the Lambs', year: 1991 },
-    { title: "It's a Wonderful Life", year: 1946 },
-    { title: 'Life Is Beautiful', year: 1997 },
-    { title: 'The Usual Suspects', year: 1995 },
-    { title: 'Léon: The Professional', year: 1994 },
-    { title: 'Spirited Away', year: 2001 },
-    { title: 'Saving Private Ryan', year: 1998 },
-    { title: 'Once Upon a Time in the West', year: 1968 },
-    { title: 'American History X', year: 1998 },
-    { title: 'Interstellar', year: 2014 },
-];
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,

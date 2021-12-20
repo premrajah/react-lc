@@ -3782,3 +3782,59 @@ input:active,input:focus{
     display: flex;
     flex-direction: column-reverse;
 }
+.search-input{
+    height: 40px;
+    border: #eeeeee 1px solid;
+    background: #eeeeee!important;
+    border-radius: 8px;
+}
+.company-thumbnails{
+    height: 45px;
+    width: 45px;
+
+    border-radius: 50%;
+    position: relative;
+    /*   padding: 10px; */
+    background: white;
+    border: 2px solid #eee;
+
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    line-height: 45px;
+
+}
+.thumbnail-margin-left{
+    margin-left: -14px;
+
+}
+.more-items-thumbnail{
+    z-index: 11;
+    /*font-weight: bold;*/
+    line-height: 45px;
+    height: 45px;
+    /*width: 45px;*/
+    position: relative;
+
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 0px;
+    font-size: 14px;
+    /*color: var(--lc-pink);*/
+
+}
+
+.message-group-item{
+    padding: 5px;
+    overflow: hidden ;
+    position: relative;
+}
+
+.message-group-item{
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

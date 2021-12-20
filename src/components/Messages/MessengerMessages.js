@@ -6,7 +6,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { Button, List, ListItemButton, TextField, Tooltip } from "@mui/material";
 import { Autocomplete } from "@mui/lab";
 import { Alert } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import AddIcon from "@mui/icons-material/AddCircle";
 import ExplicitIcon from "@mui/icons-material/Explicit";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import SendIcon from "@mui/icons-material/Send";
@@ -40,6 +40,13 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const reactSelectRef = useRef([]);
     const resetDraftRef = useRef();
     const messagesEndRef = useRef(null);
+    const [open, setOpen] = React.useState(false);
+    const [selectOrgs, setSelectOrgs] = useState([]);
+    const [selectedOrgs, setSelectedOrgs] = useState([]);
+    const [newMsgOrgs, setNewMsgOrgs] = useState([]);
+
+    const loading = open && selectOrgs.length === 0;
+
 
     const [allOrgs, setAllOrgs] = useState([]);
     const [allMessageGroups, setAllMessageGroups] = useState([]);
@@ -159,34 +166,44 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setOpenSingleArtifactDialog(false);
     };
 
-    const handleNewMessageSelectAsync = async (inputValue, callback) => {
-        if (!inputValue) {
-            callback([]);
-        } else {
-            try {
+    const handleNewMessageSelectAsync = async (inputValue) => {
+
+        try {
                 const result = await axios.get(`${baseUrl}org/search?o=0&s=20&q=${inputValue}`);
                 const data = result.data.data;
                 const tempArray = [];
 
-                data.orgs.forEach((item, i) => {
-                    tempArray.push({ label: item.email, value: item._id });
-                });
+                // data.orgs.forEach((item, i) => {
+                //     tempArray.push({ label: item.email, value: item._id });
+                // });
 
-                callback(tempArray);
+                setSelectOrgs(data.orgs)
+
+                // callback(tempArray);
             } catch (error) {
                 console.log("org search error ", error.message);
             }
-        }
+
     };
 
-    const handleReactAsyncOnChange = (selectValue) => {
-        if (selectValue) {
-            setReactSelectAsyncValues(selectValue);
-            const temp = [];
-            selectValue.forEach((item) => {
-                temp.push(item.value);
-            });
-            setReactSelectedAsyncValues(temp);
+    const handleReactAsyncOnChange = (e) => {
+
+        const {value,options} = e.target;
+        console.log("text value")
+        console.log(value)
+        console.log("text options")
+        console.log(options)
+
+
+        if (value) {
+            // setReactSelectAsyncValues(value);
+            // const temp = [];
+            // value.forEach((item) => {
+            //     temp.push(item.value);
+            // });
+            // setReactSelectedAsyncValues(temp);
+
+            handleNewMessageSelectAsync(value)
         }
     };
 
@@ -194,7 +211,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setAutoCompleteOrg(value);
     };
 
-    const handleGroupClick = (group, selectedIndex) => {
+    const handleGroupClick = (group, selectedIndex,orgs) => {
         updateSelected(selectedIndex);
         setSelectedGroupId(group._id);
         setSelectedGroupKey(group._key);
@@ -211,6 +228,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         setShowHideGroupFilter(false);
         getGroupMessageWithId(group._key);
         setSelectedMsgGroup([]);
+
+        setSelectedOrgs(orgs)
     };
 
     const handleRichTextCallback = (value) => {
@@ -234,6 +253,8 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     const updateSelected = (selectedIndex) => {
         setSelectedItem(selectedIndex);
     };
+
+
 
     const checkWhoseMessage = (orgs) => {
         if (orgs.length > 0) {
@@ -335,14 +356,31 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
         }
     };
 
+    const handleChange = (event,values) => {
+
+        console.log("autocomplete")
+        console.log(values)
+
+        
+
+        // setValue(event.target.value);
+        // if (onChange)
+        //     onChange(event.target.value)
+    };
+
     return (
         <>
             <div className="row bg-white rad-8 gray-border  message-row no-gutters mb-5">
-                <div className="col-md-4 message-column">
-                    <div style={{height:"80px"}} className="row ">
+                <div className="col-md-4 message-column"
+                     style={{
+
+                         borderRight: "1px solid var(--lc-bg-gray)",
+                     }}
+                >
+                    <div className="row d-flex no-gutters" style={{alignItems:"center"}}>
                         <div className="col-md-10">
 
-                            <CustomizedInput  style={{height:"40px"}}  />
+                            <input className={"search-input full-width-field m-2"}   />
                                 {/*{!showHideGroupFilter && (*/}
                                 {/*    <div className="d-flex justify-content-start align-items-center h-100">*/}
                                 {/*        Groups*/}
@@ -370,29 +408,31 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                             {/*)}*/}
                         </div>
 
-                        <div className="col-md-2  justify-content-center align-items-center d-none">
-                            <Tooltip title="Filter groups">
-                                <Button onClick={() => handleFilterGroupsButton()}>
-                                    <FilterListIcon
-                                        className={"text-blue"}
-                                        style={{ fontSize: "24px" }}
-                                    />
-                                </Button>
-                            </Tooltip>
-                        </div>
+                        {/*<div className="col-md-2  justify-content-center align-items-center d-none">*/}
+                        {/*    <Tooltip title="Filter groups">*/}
+                        {/*        <Button onClick={() => handleFilterGroupsButton()}>*/}
+                        {/*            <FilterListIcon*/}
+                        {/*                className={"text-blue"}*/}
+                        {/*                style={{ fontSize: "24px" }}*/}
+                        {/*            />*/}
+                        {/*        </Button>*/}
+                        {/*    </Tooltip>*/}
+                        {/*</div>*/}
 
-                        <div className="col-md-2 d-flex justify-content-center align-items-center">
+                        <div className="col-md-2 text-center  justify-content-center align-items-center">
                             <Tooltip title="New Message">
-                                <Button onClick={() => handleOrgSearchButton()}>
-                                    <AddIcon className={"text-blue"} style={{ fontSize: "24px" }} />
-                                </Button>
+
+                                    <AddIcon onClick={() => handleOrgSearchButton()} className={"text-blue  click-item"} style={{ fontSize: "24px" }} />
+
                             </Tooltip>
                         </div>
                     </div>
 
-                    {allMessageGroups.length === 0 && <div>No group chats yet. </div>}
+                    {allMessageGroups.length === 0 && <div className={"text-center"}>No chats active. </div>}
                     <div
                         className="message-groups  text-capitalize"
+
+
                         style={{
 
                             // overflow: "auto",
@@ -425,7 +465,15 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                             }
                                         }
                                     })
-                                    .map((group, i) => ListGroupDisplay(group, i))}
+                                    .map((group, i) =>
+
+                                        // ListGroupDisplay(group, i)
+
+                                        <MessageGroupItem selectedItem={selectedItem} index={i} handleGroupClick={(group,i,orgs)=>handleGroupClick(group,i,orgs)} item={group} />
+
+                                    )
+
+                                }
                             </div>
                         ) : (
                             <div className={"text-center p-3"}>Loading...</div>
@@ -435,24 +483,105 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
                 <div className="col-md-8 message-column">
                     {showHideOrgSearch && (
-                        <div className="row">
-                            <div className="col">
-                                <AsyncSelect
-                                    isMulti
-                                    value={
-                                        reactSelectAsyncValues.length > 0
-                                            ? reactSelectAsyncValues
-                                            : []
-                                    }
-                                    loadOptions={handleNewMessageSelectAsync}
-                                    onChange={(e) => handleReactAsyncOnChange(e)}
-                                    ref={reactSelectRef}
-                                    classNamePrefix="react-select-async"
-                                    placeholder="Search orgs to send messages"
+                        <div className="row"
+                             style={{
+
+                                 borderBottom: "1px solid var(--lc-bg-gray)",
+                             }}
+                        >
+                            <div className="col-12">
+
+                               <Autocomplete
+                                    className={"m-2"}
+                                    multiple
+                                    onOpen={() => {
+                                        setOpen(true);
+                                    }}
+                                    open={open}
+                                    onClose={() => {
+                                        setOpen(false);
+                                    }}
+                                    // value={newMsgOrgs}
+                                    isOptionEqualToValue={(option, value) => option.name === value.name}
+                                    // renderOption={(props, option) => [props, option]}
+                                    loading={loading}
+                                    id="tags-standard"
+
+                                    onChange={handleChange}
+                                    options={selectOrgs.length > 0?selectOrgs:[]}
+                                    variant={"standard"}
+                                    getOptionLabel={(option) => option.name}
+                                    // defaultValue={topFilms[13]}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            style={{minHeight:"40px"}}
+                                            variant="standard"
+                                            // label="Multiple values"
+                                            placeholder="Search companies"
+                                            onChange={(e) => handleReactAsyncOnChange(e)}
+                                        />
+                                    )}
                                 />
+                                {/*<AsyncSelect*/}
+
+                                {/*    isMulti*/}
+                                {/*    value={*/}
+                                {/*        reactSelectAsyncValues.length > 0*/}
+                                {/*            ? reactSelectAsyncValues*/}
+                                {/*            : []*/}
+                                {/*    }*/}
+                                {/*    loadOptions={handleNewMessageSelectAsync}*/}
+                                {/*    onChange={(e) => handleReactAsyncOnChange(e)}*/}
+                                {/*    ref={reactSelectRef}*/}
+                                {/*    classNamePrefix="custom-react-select react-select-async"*/}
+                                {/*    placeholder="Search organisations here ."*/}
+                                {/*/>*/}
                             </div>
                         </div>
                     )}
+
+
+                    {selectedOrgs&&selectedOrgs.length > 0 &&
+                    <div className="row"
+                         style={{
+
+                             borderBottom: "1px solid var(--lc-bg-gray)",
+                         }}
+                    >
+                        <div className="col-12">
+                            <div
+
+                                className={`click-item p-3 message-group-item selected`}
+
+
+                            >
+         <span className={"thumbnail-box"}>{selectedOrgs.map((item, index) =>
+             <>
+                 <span
+                     className={`text-caps company-thumbnails ${index > 0 && " thumbnail-margin-left"} `}>{item.name.substr(0, 2)}</span>
+
+
+             </>
+         )}
+         </span>
+                                <span className={"ml-2 group-names text-capitlize "}>
+                {/*{props.item.name.replaceAll(",", ", ").replaceAll("+", ", ").replaceAll("-", "")}*/}
+                                    {selectedOrgs.map((item, index) =>
+                                        <>
+                                            {index > 0 && ","}{item.name}
+                                        </>
+                                    )}
+            </span>
+                                {/*<span className={"group-members date-bottom text-gray-light"}>*/}
+                                {/*    ({allOrgs.length} Participants)*/}
+                                {/*</span>*/}
+                            </div>
+
+                        </div>
+                    </div>
+                    }
+
 
                     <div
                         className="row no-gutters"
@@ -485,7 +614,7 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
                                                         : "justify-content-end msg-dark"
                                                 }`}>
                                                 <div
-                                                    className="w-75 p-3 mb-3 chat-msg-box border-rounded text-blue gray-border"
+                                                    className="w-75 p-2 mb-3 chat-msg-box border-rounded text-blue gray-border"
                                                     style={{
                                                         background: checkWhoseMessage(m.orgs)
                                                             ? "#ffffff"
@@ -628,6 +757,112 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
 
 
+const MessageGroupItem=(props)=>{
+
+
+    const [allOrgs, setAllOrgs] = useState([]);
+
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        axios
+            .get(`${baseUrl}message-group/${props.item._key}/org`)
+            .then((response) => {
+                const data = response.data.data;
+                setAllOrgs(data)
+
+            })
+            .catch((error) => {
+                console.log("message-group-error ", error.message);
+            });
+
+    },[]);
+
+
+     const handleClick=()=>{
+
+        props.handleGroupClick(props.item,props.index,allOrgs)
+    }
+    return(
+        <div
+            key={props.item._key}
+            id={props.item._key}
+            className={ props.selectedItem === props.index?`click-item p-3 message-group-item selected`:`click-item p-3 message-group-item`}
+
+            onClick={handleClick}
+        >
+         <span className={"thumbnail-box"}>{allOrgs.map((item,index)=>
+             <>
+             {index<3 && <span className={`text-caps company-thumbnails ${index>0&&" thumbnail-margin-left"} `}>{item.name.substr(0,2)}</span>}
+
+              {index==3 &&(allOrgs.length-3!==0)&&<span className={"more-items-thumbnail "}>+{allOrgs.length-3}</span>}
+
+             </>
+         )}</span>
+            <span className={"ml-2 group-names text-capitlize "}>
+                {/*{props.item.name.replaceAll(",", ", ").replaceAll("+", ", ").replaceAll("-", "")}*/}
+                {allOrgs.map((item,index)=>
+                <>
+                    {index>0&&","}{item.name}
+                </>
+                )}
+            </span>
+            {/*<span className={"group-members date-bottom text-gray-light"}>*/}
+            {/*    ({allOrgs.length} Participants)*/}
+            {/*</span>*/}
+        </div>
+    )
+}
+
+const topFilms = [
+    { title: 'The Shawshank Redemption', year: 1994 },
+    { title: 'The Godfather', year: 1972 },
+    { title: 'The Godfather: Part II', year: 1974 },
+    { title: 'The Dark Knight', year: 2008 },
+    { title: '12 Angry Men', year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+    { title: 'Pulp Fiction', year: 1994 },
+    {
+        title: 'The Lord of the Rings: The Return of the King',
+        year: 2003,
+    },
+    { title: 'The Good, the Bad and the Ugly', year: 1966 },
+    { title: 'Fight Club', year: 1999 },
+    {
+        title: 'The Lord of the Rings: The Fellowship of the Ring',
+        year: 2001,
+    },
+    {
+        title: 'Star Wars: Episode V - The Empire Strikes Back',
+        year: 1980,
+    },
+    { title: 'Forrest Gump', year: 1994 },
+    { title: 'Inception', year: 2010 },
+    {
+        title: 'The Lord of the Rings: The Two Towers',
+        year: 2002,
+    },
+    { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
+    { title: 'Goodfellas', year: 1990 },
+    { title: 'The Matrix', year: 1999 },
+    { title: 'Seven Samurai', year: 1954 },
+    {
+        title: 'Star Wars: Episode IV - A New Hope',
+        year: 1977,
+    },
+    { title: 'City of God', year: 2002 },
+    { title: 'Se7en', year: 1995 },
+    { title: 'The Silence of the Lambs', year: 1991 },
+    { title: "It's a Wonderful Life", year: 1946 },
+    { title: 'Life Is Beautiful', year: 1997 },
+    { title: 'The Usual Suspects', year: 1995 },
+    { title: 'Léon: The Professional', year: 1994 },
+    { title: 'Spirited Away', year: 2001 },
+    { title: 'Saving Private Ryan', year: 1998 },
+    { title: 'Once Upon a Time in the West', year: 1968 },
+    { title: 'American History X', year: 1998 },
+    { title: 'Interstellar', year: 2014 },
+];
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,

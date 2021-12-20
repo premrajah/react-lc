@@ -147,7 +147,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/sites" component={Sites} />
-
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
@@ -169,14 +168,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
-
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
-                        <LoggedInRoute
-                            exact
-                            path="/delivery-resource"
-                            component={DeliveryResource}
-                        />
-
+                        <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedOutRoute exact path="/sign-up" component={SignUpPage} />
                         <LoggedOutRoute exact path="/login" component={LoginPage} />
                         <LoggedOutRoute exact path="/forgot-password" component={ForgotPasswordPage} />

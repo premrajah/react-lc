@@ -20,6 +20,8 @@ import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog
 class MessengerMessages extends Component {
     constructor(props) {
         super(props);
+        this.messagesEndRef = React.createRef();
+        this.resetDraftRef = React.createRef();
 
         this.state = {
             // resetDraftRef:useRef(),
@@ -457,7 +459,7 @@ class MessengerMessages extends Component {
 
                                             <>
 
-                                                <MessageGroupItem selectedItem={this.state.selectedItem} index={i} handleGroupClick={(group,i,orgs)=>this.handleGroupClick(group,i,orgs)} item={group} />
+                                                <MessageGroupItem key={group._key+"_item"} selectedItem={this.state.selectedItem} index={i} handleGroupClick={(group,i,orgs)=>this.handleGroupClick(group,i,orgs)} item={group} />
 
 
                                             </>
@@ -567,7 +569,10 @@ class MessengerMessages extends Component {
                                     {this.state.selectedMsgGroup.length <= 0 &&
                                     this.state.allMessageGroups.length > 0 &&
                                     this.state.allMessageGroups[0].id !== "0" ? (
-                                        <div className={"text-center p-3"}>Loading conversation...</div>
+                                        <>
+                                        {!this.state.showHideOrgSearch && <div className={"text-center p-3"}>Loading conversation...</div>}
+                                        
+                                        </>
                                     ) : (
                                         <div></div>
                                     )}
@@ -669,7 +674,7 @@ class MessengerMessages extends Component {
                                                 ))
                                             }
                                             <div className="dummy"
-                                                 // ref={messagesEndRef}
+                                                 ref={this.messagesEndRef}
                                             />
                                         </div>
                                     ) : (
@@ -691,7 +696,7 @@ class MessengerMessages extends Component {
                                                 // wrapperClassName="wysiwyg-wrapper-class"
                                                 // editorClassName="wysiwyg-editor-class"
                                                 allOrgs={this.state.allOrgs}
-                                                // ref={this.state.resetDraftRef}
+                                                ref={this.resetDraftRef}
                                                 richTextHandleCallback={(value) => this.handleRichTextCallback(value)}
                                             />
                                         </div>
@@ -743,7 +748,7 @@ class MessageGroupItem extends Component {
 
         if (prevProps !== this.props) {
 
-           
+
         }
     }
 

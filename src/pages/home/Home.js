@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
-
 import FindProduct from "../../img/icons/Find-Product.svg";
 import AddProduct from "../../img/icons/add-product-icon.svg";
 import SellProduct from "../../img/icons/Sell-Products.svg";

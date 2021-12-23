@@ -491,18 +491,19 @@ this.props.toggleRightBar()
                                                                 <td>
                                                                     <ul className="persons">
 
-                                                                        {item.artifacts.map((artifact)=>
-
-                                                                            <li>
-                                                                                <a href="">
-                                                                                    <img
-                                                                                        src={artifact.blob_url}
-                                                                                         className="img-fluid"
-
-                                                                                    />
-                                                                                </a>
+                                                                        {item.artifacts && item.artifacts.map((artifact, i)=>
+                                                                            <li key={i}>
+                                                                                <div className="d-flex justify-content-center align-items-center" style={{width: "60px", height: "60px"}}>
+                                                                                    <div className="d-flex justify-content-center align-items-center" style={{  width: "50%", height: "50%"}}>
+                                                                                        <img
+                                                                                            src={artifact ? artifact.blob_url : ""}
+                                                                                            className="img-fluid w-100 h-100"
+                                                                                            alt={artifact.name}
+                                                                                            style={{borderRadius: "50%", objectFit: "contain"}}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
                                                                             </li>
-
                                                                         )}
 
                                                                     </ul>
@@ -510,7 +511,7 @@ this.props.toggleRightBar()
                                                        <td>
                                                            {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
 
-                                                           <span className={"text-bold"} onClick={()=>
+                                                           <span className={"text-bold"} style={{cursor: "pointer"}} onClick={()=>
                                                            {
 
                                                            this.setState({

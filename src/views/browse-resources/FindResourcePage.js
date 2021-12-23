@@ -12,7 +12,11 @@ import FindResourceListingItem from "../../components/FindResourceListingItem";
 import SearchBar from "../../components/SearchBar";
 import * as actionCreator from "../../store/actions/actions";
 import ErrorBoundary from "../../components/ErrorBoundary";
-
+import FindProduct from "../../img/icons/Find-Product.svg";
+import AddProduct from "../../img/icons/add-product-icon.svg";
+import SellProduct from "../../img/icons/Sell-Products.svg";
+import NewListing from "../../img/icons/add-listing-icon.svg";
+import NewSearch from "../../img/icons/search-icon.svg";
 
 const currentTime = new Date();
 
@@ -77,7 +81,7 @@ class FindResourcePage extends Component {
                     <div className="row mt-5" style={{ marginTop: "80px" }}>
                         <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
                             <div className="icon-holder">
-                                <Image className="p-4" src={SearchIcon} rounded height="240px" />
+                                <Image className="p-4" src={FindProduct} rounded height="240px" />
                             </div>
                             <h1 className="mt-3 blue-text">Buy Products</h1>
                             <p>
@@ -88,7 +92,7 @@ class FindResourcePage extends Component {
                             </Link>
                         </div>
                         <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
-                            <Image className="p-4" src={BottleDollarIcon} rounded height="240px" />
+                            <Image className="p-4" src={SellProduct} rounded height="240px" />
                             <h1 className="mt-3 blue-text">Sell Products</h1>
                             <p>
                                 List a new product for sale and we’ll notify you <br/>when you get a match.
@@ -100,7 +104,6 @@ class FindResourcePage extends Component {
                         </div>
                     </div>
 
-                    <hr />
 
                     <div className="row mt-5 mb-2">
                         <div className="col">

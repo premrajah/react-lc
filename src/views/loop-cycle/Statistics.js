@@ -46,7 +46,10 @@ class Statistics extends Component {
                         />
 
                         <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
-                            <PieChart corporate={"this.props.corporate"} />
+                          {/*/  <PieChart corporate={"this.props.corporate"} />*/}
+
+                            <embed src="https://dash.makealoop.io" style={{width:"100%",minHeight:"600px", height: "auto" }} />
+
                         </div>
                     </div>
                 </div>

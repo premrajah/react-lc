@@ -571,7 +571,7 @@ class MessengerMessages extends Component {
                                     this.state.allMessageGroups[0].id !== "0" ? (
                                         <>
                                         {!this.state.showHideOrgSearch && <div className={"text-center p-3"}>Loading conversation...</div>}
-                                        
+
                                         </>
                                     ) : (
                                         <div></div>

@@ -447,7 +447,7 @@ this.props.toggleRightBar()
                         <div className="row">
                                 <div className="col-md-12">
                                     <div className="table-wrap">
-                                        <table className="table custom-table table-responsive-xl">
+                                        <table className="table custom-table ">
                                             <thead>
                                             <tr className={"text-bold"}>
                                                 <th>&nbsp;</th>

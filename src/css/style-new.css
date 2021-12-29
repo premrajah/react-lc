@@ -3475,11 +3475,16 @@ background: white;
 /*    overflow-x: scroll; }*/
 
 .table {
-    min-width: 1000px !important;
-    width: 100%;
+    /*min-width: 1000px !important;*/
+    /*width: 100%;*/
     -webkit-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
     -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
     box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
+    background: white;
+
+}
+.table-wrap{
+    overflow-y: scroll;
 }
 .table thead th {
     border: none;

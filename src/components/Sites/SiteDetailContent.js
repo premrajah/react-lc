@@ -413,7 +413,6 @@ class SiteDetailContent extends Component {
 
     setActiveKey=(event,key)=>{
 
-        console.log(event, key)
         this.setState({
             activeKey:key
         })

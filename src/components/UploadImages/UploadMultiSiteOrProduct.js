@@ -141,11 +141,8 @@ const UploadMultiSiteOrProduct = (props) => {
         if (field==="artifact"){
 
             setFileName(value.name)
-            console.log(value.name)
+            let tmppath = URL.createObjectURL(value);
 
-            console.log(value)
-            var tmppath = URL.createObjectURL(value);
-            console.log(tmppath)
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -205,7 +202,6 @@ const UploadMultiSiteOrProduct = (props) => {
             }
         }
 
-        console.log(list)
 
         let errorFound=false
 

@@ -153,8 +153,6 @@ class MessengerMessages extends Component {
 
         const {value} = e.target;
 
-        console.log()
-
         if (value) {
 
             this.setState({
@@ -205,9 +203,6 @@ class MessengerMessages extends Component {
     };
 
      handleGroupClick = (group, selectedIndex,orgs) => {
-
-        // console.log("handle group click")
-        // console.log(group, selectedIndex,orgs)
 
         this.updateSelected(selectedIndex);
 
@@ -371,10 +366,6 @@ class MessengerMessages extends Component {
     };
 
      handleChange = (event,values) => {
-
-        console.log("autocomplete")
-        console.log(values)
-
 
         let orgs=[]
         values.forEach((item)=>{

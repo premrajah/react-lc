@@ -730,7 +730,6 @@ updateSite=(search,site)=>{
 
     handleChangeProduct(value,field ) {
 
-        // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });

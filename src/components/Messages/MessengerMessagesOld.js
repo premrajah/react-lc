@@ -187,8 +187,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
         const {value} = e.target;
 
-        console.log()
-
         if (value) {
             setFilteredMessageGroups(
                 allMessageGroups.filter((val) => {
@@ -229,8 +227,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
 
     const handleGroupClick = (group, selectedIndex,orgs) => {
 
-        // console.log("handle group click")
-        // console.log(group, selectedIndex,orgs)
 
         updateSelected(selectedIndex);
 
@@ -385,10 +381,6 @@ const MessengerMessages = ({ userDetail, messages, getMessages }) => {
     };
 
     const handleChange = (event,values) => {
-
-        console.log("autocomplete")
-        console.log(values)
-
 
         let orgs=[]
            values.forEach((item)=>{
@@ -735,7 +727,6 @@ const MessageGroupItem=(props)=>{
 
     useEffect(() => {
 
-        console.log("called useffect in group itme")
         axios
             .get(`${baseUrl}message-group/${props.item._key}/org`)
             .then((response) => {

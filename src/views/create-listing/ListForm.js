@@ -457,7 +457,6 @@ class ListForm extends Component {
 
 
                 if (error&&error.response&&error.response.status){
-                    console.log(error.response)
 
                     this.setState({
                         notFoundError:true,

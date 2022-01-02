@@ -287,7 +287,7 @@ class Campaign extends Component {
 
 
         let {formIsValid,errors}= validateInputs(validations)
-        console.log(errors)
+
         this.setState({ errors: errors });
         return formIsValid;
     }

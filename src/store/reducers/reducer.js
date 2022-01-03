@@ -123,8 +123,6 @@ const reducer = (state = initialState, action) => {
         case SET_USER_DETAIL:
             newState.userDetail = action.value;
             break;
-
-
         case TOGGLE_RIGHTBAR:
             newState.showRightBar = !state.showRightBar;
             break;
@@ -134,19 +132,16 @@ const reducer = (state = initialState, action) => {
         case SET_ORG_IMG:
             newState.orgImage = action.value;
             break;
-
         case SHOW_MULTIPLE_POP_UP:
             newState.showMultiplePopUp = action.value;
             break;
         case LOADING_SPINNER:
             newState.reviewLoading = true;
             break;
-
         case SITE_POPUP:
             newState.showSitePopUp = action.value;
 
             break;
-
         case CURRENT_PRODUCT:
             newState.productNotFound = false;
 
@@ -159,7 +154,6 @@ const reducer = (state = initialState, action) => {
         case SITE_FORM_SHOW:
             newState.showSiteForm = action.value;
             break;
-
         case PRODUCT_RELEASE:
             newState.productReleaseRequests = action.value;
             newState.productReleaseRequested = [];
@@ -167,19 +161,15 @@ const reducer = (state = initialState, action) => {
                 (item) => item.Release.stage === "requested"
             );
             break;
-
         case PRODUCT_REGISTER:
             newState.productRegisterRequests = action.value;
             break;
-
         case SERVICE_AGENT_REQUEST:
             newState.serviceAgentRequests = action.value;
             break;
-
         case REVIEW_BOX_OPEN:
             newState.reviewBoxOpen = action.value;
             break;
-
         case LOAD_USER_DETAIL:
             if (action.value) {
                 newState.loginFailed = false;
@@ -194,7 +184,6 @@ const reducer = (state = initialState, action) => {
                 newState.loading = false;
             }
             break;
-
         case LOGIN:
             newState.loginFailed = false;
             newState.isLoggedIn = true;
@@ -205,14 +194,12 @@ const reducer = (state = initialState, action) => {
             newState.showLoginPopUp = false;
             newState.userDetail = getKey("user");
             break;
-
         case LOGIN_ERROR:
             newState.loginError = action.value;
             newState.isLoggedIn = false;
             newState.loading = false;
             newState.loginFailed = true;
             break;
-
         case LOGOUT:
             newState.isLoggedIn = false;
             newState.loading = false;
@@ -236,13 +223,10 @@ const reducer = (state = initialState, action) => {
             saveKey("user", null);
             saveKey("token", null);
             break;
-
         case SHOW_SNACKBAR:
             newState.snackbarMessage = action.value;
 
             break;
-
-
         case CURRENT_SITE:
             newState.currentSite = action.value;
 
@@ -251,7 +235,6 @@ const reducer = (state = initialState, action) => {
             newState.productList = action.value;
             newState.loading = false;
             break;
-
         case PRODUCT_PAGE_RESET:
 
             newState.productPageSize=20
@@ -259,7 +242,6 @@ const reducer = (state = initialState, action) => {
             newState.productWithoutParentListPage= [];
 
             break;
-
         case PRODUCT_NPARENT_LIST_PAGE:
 
             newState.lastPageReached=false
@@ -337,7 +319,6 @@ const reducer = (state = initialState, action) => {
             newState.productPageSize=action.value.size
 
             break;
-
         case PRODUCT_NPARENT_NO_LIST:
 
             newState.productWithoutParentNoList=[]
@@ -347,27 +328,20 @@ const reducer = (state = initialState, action) => {
 
 
             break;
-
-
-
         case SITE_LIST:
             newState.siteList = action.value;
             newState.loading = false;
             break;
-
         case SITE_PARENT_LIST:
             newState.siteParentList = action.value;
             newState.loading = false;
             break;
-
         case PARENT_PRODUCT_ID:
             newState.parentProduct = action.value;
             break;
-
         case PRODUCT_ID:
             newState.product = action.value;
             break;
-
         case PRODUCT_POPUP:
 
 
@@ -410,73 +384,57 @@ const reducer = (state = initialState, action) => {
 
 
             break;
-
         case LOGIN_POPUP:
             newState.loginFailed = false;
             newState.showLoginPopUp = action.value;
             break;
-
         case LOGIN_POPUP_STATUS:
             newState.loginPopUpStatus = action.value;
             break;
-
         case SOCIAL_LOGIN_POPUP:
             // newState.loginFailed= false
             newState.showSocialLoginPopUp = action.value;
             newState.showLoginPopUp = action.value;
             //
             break;
-
         case SOCIAL_USER_INFO:
             // newState.loginFailed= false
             newState.socialUserInfo = action.value;
             //
 
             break;
-
         case SHOW_LOADING:
             newState.loading = action.value;
 
             break;
-
         case LOADING:
             newState.loading = true;
             break;
-
-
-
         case SLIDES_LOAD:
             newState.slides = action.value;
             break;
-
         case TRENDING_LOAD:
             newState.trendingItems = action.value;
             break;
-
         case REVIEW_SUCCESS:
             newState.reviewSuccessMessage = false;
             break;
-
         case REVIEW_SUBMIT:
             newState.loading = false;
             newState.reviewLoading = false;
             newState.reviewBoxOpen = false;
             newState.reviewSuccessMessage = true;
             break;
-
         case ERROR_REQUEST:
             newState.loading = false;
             break;
-
         case SET_CATEGORIES:
             newState.categories = action.value;
 
             break;
-
         case SET_LOCATION:
             newState.location = action.value;
             break;
-
         case LOGIN_FAILED:
             newState.loginFailed = true;
             newState.loginError = action.value;
@@ -489,11 +447,9 @@ const reducer = (state = initialState, action) => {
             newState.isLoggedIn = false;
             newState.loading = false;
             break;
-
         case STOP_LOADING:
             newState.loading = false;
             break;
-
         case USER_DETAIL:
             newState.isLoggedIn = true;
 
@@ -501,25 +457,20 @@ const reducer = (state = initialState, action) => {
             newState.loading = false;
 
             break;
-
         case SIGN_UP:
             newState.loginPopUpStatus = 5;
             newState.loading = false;
             newState.signUpPageSubmitted=true
             break;
-
         case GET_MESSAGES:
             newState.messages = action.value;
             break;
-
         case GET_NOTIFICATIONS:
             newState.notifications = action.value;
             break;
-
         case MESSAGE_ALERT:
             newState.messageAlert = action.value;
             break;
-
         case NOTIFICATION_ALERT:
             newState.notificationAlert = action.value;
             break;

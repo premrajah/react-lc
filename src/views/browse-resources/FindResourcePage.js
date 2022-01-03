@@ -17,6 +17,7 @@ import AddProduct from "../../img/icons/add-product-icon.svg";
 import SellProduct from "../../img/icons/Sell-Products.svg";
 import NewListing from "../../img/icons/add-listing-icon.svg";
 import NewSearch from "../../img/icons/search-icon.svg";
+import ResourceItem from "../../pages/create-search/ResourceItem";
 
 const currentTime = new Date();
 
@@ -65,7 +66,15 @@ class FindResourcePage extends Component {
                 .filter(item => item.listing.available_from_epoch_ms < currentTime.getTime() && item.listing.expire_after_epoch_ms > currentTime.getTime())
                   .map((item, index) => (
                       <ErrorBoundary key={index}>
-                          <FindResourceListingItem key={item.listing._id} item={item} />
+                          {/*<FindResourceListingItem key={item.listing._id} item={item} />*/}
+                          <ResourceItem
+                              // triggerCallback={() => this.callBackResult()}
+                              // history={this.props.history}
+                              link={"/" + item.listing._key}
+                              item={item}
+                              key={index}
+                              hideMoreMenu
+                          />
                       </ErrorBoundary>
                   ))
             : "Loading, no resources yet...";

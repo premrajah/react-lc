@@ -69,12 +69,12 @@ class MyAccount extends Component {
                                         Transfer Scaling <NavigateNextIcon />
                                     </Link>
 
-                                    {/*<Link*/}
-                                    {/*    to="/statistics"*/}
-                                    {/*    className="list-group-item list-group-item-action "*/}
-                                    {/*>*/}
-                                    {/*    Statistics <NavigateNextIcon />*/}
-                                    {/*</Link>*/}
+                                    <Link
+                                        to="/statistics"
+                                        className="list-group-item list-group-item-action "
+                                    >
+                                        Statistics <NavigateNextIcon />
+                                    </Link>
                                 </div>
 
                                 <div className="row d-none">

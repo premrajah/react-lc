@@ -606,7 +606,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <TextFieldWrapper
                                             onChange={(value)=>this.handleChange(value,"external_reference")}
                                             error={this.state.errors["external_reference"]}
-                                            name="external_reference" title="Site Id" />
+                                            name="external_reference" title="Reference Id" />
                                         </div>
                                     </div>
 

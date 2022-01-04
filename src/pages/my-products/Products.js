@@ -43,7 +43,8 @@ class Products extends Component {
             lastPageReached:false,
             currentOffset:0,
             productPageSize:50,
-            loadingResults:false
+            loadingResults:false,
+            count:0
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -89,6 +90,7 @@ class Products extends Component {
         this.setState({
             items:[]
         })
+        this.getTotalProducts()
         this.loadNewPageSetUp()
     }
 
@@ -108,6 +110,40 @@ class Products extends Component {
 
         // }
     }
+    getTotalProducts=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/no-parent/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+                 });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
+
     loadProductsWithoutParentPageWise=()=>{
 
 
@@ -134,7 +170,7 @@ class Products extends Component {
             )
             .catch(error => {}).finally(()=>{
 
-                 });
+        });
 
         this.setState({
 
@@ -461,7 +497,7 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1 text-gray-light">Products</span>
+                                    <span className="ml-1 text-gray-light"> of {this.state.count} Products</span>
                                 </p>
                             </div>
 

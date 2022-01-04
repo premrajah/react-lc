@@ -219,7 +219,7 @@ class QrCode extends Component {
                                             }}
                                             className={"mr-1 btn btn-sm btn-gray-border-small "}
                                             href={
-                                                baseUrl + "site/" + this.state.item._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
+                                                baseUrl + "site/" + this.state.item._key + "/code?style=blue&format=png&u=" + frontEndUrl + "p"
                                             } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item._key + ".png" }>Alt</a>
                                         <a
                                             onClick={(e)=>{
@@ -227,7 +227,7 @@ class QrCode extends Component {
                                             }}
                                             className={"mr-1 btn btn-sm btn-gray-border-small "}
                                             href={
-                                                baseUrl + "site/" + this.state.item._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                baseUrl + "site/" + this.state.item._key + "/code?style=mono&mode=mono&format=png&u=" + frontEndUrl + "p"
                                             } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item._key + ".png" }>Mono</a>
                                     </p>
                                 )}

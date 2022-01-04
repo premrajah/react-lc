@@ -235,13 +235,18 @@ class QrCode extends Component {
                                                 } }>
                                                 PDF
                                             </span>
+                                            {/* style mono, black, blue, green, lime, pink, white
+                                            mode: argb, rgb, mono, cmyk
+
+                                            format: png, bmp, jpg
+                                            */}
                                             <a
                                                 onClick={(e)=>{
                                                     e.stopPropagation();
                                                 }}
                                                 className={"mr-1 btn btn-sm btn-gray-border-small "}
                                                 href={
-                                                    baseUrl + "product/" + this.props.item.product._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
+                                                    baseUrl + "product/" + this.props.item.product._key + "/code?style=blue&format=png&u=" + frontEndUrl + "p"
                                                 } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>Alt</a>
                                             <a
                                                 onClick={(e)=>{
@@ -249,7 +254,7 @@ class QrCode extends Component {
                                                 }}
                                                 className={"mr-1 btn btn-sm btn-gray-border-small "}
                                                 href={
-                                                    baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                    baseUrl + "product/" + this.props.item.product._key + "/code?style=mono&mode=mono&format=png&u=" + frontEndUrl + "p"
                                                 } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>Mono</a>
                                         </p>
                                     )}

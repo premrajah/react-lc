@@ -23,7 +23,7 @@ class InfoTabContent extends Component {
                             <p
                                 style={{ fontSize: "18px" }}
                                 className=" text-bold text-blue mb-1">
-                                Site ID
+                                Reference ID
                             </p>
                             <p
 

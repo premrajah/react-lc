@@ -92,7 +92,7 @@ const SitePageItem = (  props) => {
                     </p>
 
                     {props.item.external_reference &&    <p  className="text-gray-light  mt-2 text-capitlize ">
-                        Site Id:  <span className={"text-blue"}>{props.item.external_reference}</span>
+                        Reference Id:  <span className={"text-blue"}>{props.item.external_reference}</span>
                     </p>}
                     {email &&    <p  className="text-gray-light  mt-2 ">
                        Email: <span className={"text-blue"}>{email}</span>

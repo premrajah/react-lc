@@ -198,8 +198,7 @@ class Sites extends Component {
 
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-gray-light ">
-                                    {this.state.items.filter((site)=>
+                                <p style={{ fontSize: "18px" }} className="text-gray-light ">Showing {this.state.items.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue==="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                             this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -212,7 +211,7 @@ class Sites extends Component {
 
                                     ).length
                                     }
-                                    <span className="ml-1 ">Sites Listed</span>
+                                    <span className="ml-1 "> Sites</span>
                                 </p>
                             </div>
 

@@ -81,6 +81,18 @@ class Products extends Component {
         threshold: 1.0
     };
 
+
+    componentDidMount() {
+
+        // this.loadProductsWithoutParentPageWise()
+
+        this.setState({
+            items:[]
+        })
+        this.loadNewPageSetUp()
+    }
+
+
     loadNewPageSetUp=()=>{
 
         // Create an observer
@@ -96,18 +108,6 @@ class Products extends Component {
 
         // }
     }
-    componentDidMount() {
-
-        // this.loadProductsWithoutParentPageWise()
-
-        this.setState({
-            items:[]
-        })
-        this.loadNewPageSetUp()
-    }
-
-
-
     loadProductsWithoutParentPageWise=()=>{
 
 

@@ -3,6 +3,11 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 
 import jspdf from "jspdf";
+import {Link} from "react-router-dom";
+import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
+import QrCodeBg from "../../img/qr-code-bg.png";
+import LoopcycleLogo from "../../img/logo-text.png";
+import {baseUrl, frontEndUrl} from "../../Util/Constants";
 
 class QrCode extends Component {
     slug;
@@ -177,6 +182,55 @@ class QrCode extends Component {
                                         Click to Scan the QR code
                                     </span>
 
+                            </div>
+                            <div  className="col-12 ">
+                                {this.props.hideRegister && (
+                                    <p className={"green-text"}>
+                                        {/*<Link*/}
+                                        {/*    onClick={(e)=>{*/}
+                                        {/*        e.stopPropagation();*/}
+                                        {/*    }}*/}
+
+                                        {/*    className={"mr-1 btn btn-sm btn-gray-border-small"}*/}
+                                        {/*    to={*/}
+                                        {/*        getProductProvenanceSlug(this.props.item.product._key)*/}
+
+                                        {/*    }>*/}
+                                        {/*    Provenance*/}
+                                        {/*</Link>*/}
+                                        <span
+                                            to={`/site/${this.state.item._key}`}
+                                            className={"mr-1 click-item btn btn-sm btn-gray-border-small"}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+
+                                                this.handlePrintPdf(
+                                                    this.state.item,
+                                                    this.state.siteQrCode.blob_url,
+                                                    QrCodeBg,
+                                                    LoopcycleLogo
+                                                )
+                                            } }>
+                                                PDF
+                                            </span>
+                                        <a
+                                            onClick={(e)=>{
+                                                e.stopPropagation();
+                                            }}
+                                            className={"mr-1 btn btn-sm btn-gray-border-small "}
+                                            href={
+                                                baseUrl + "site/" + this.state.item._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
+                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item._key + ".png" }>Alt</a>
+                                        <a
+                                            onClick={(e)=>{
+                                                e.stopPropagation();
+                                            }}
+                                            className={"mr-1 btn btn-sm btn-gray-border-small "}
+                                            href={
+                                                baseUrl + "site/" + this.state.item._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                            } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item._key + ".png" }>Mono</a>
+                                    </p>
+                                )}
                             </div>
 
 

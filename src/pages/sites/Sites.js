@@ -23,7 +23,12 @@ class Sites extends Component {
             selectedProducts: [],
             showMultiUpload: false,
             isIntersecting:false,
-            intersectionRatio:0
+            intersectionRatio:0,
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false
 
         }
 
@@ -50,6 +55,22 @@ class Sites extends Component {
         threshold: 1.0
     };
 
+
+    componentDidMount() {
+
+
+        // this.props.loadParentSites();
+
+        this.setState({
+            items:[]
+        })
+
+        this.loadNewPageSetUp()
+    }
+
+
+
+
     loadNewPageSetUp=()=>{
 
         // Create an observer
@@ -65,25 +86,54 @@ class Sites extends Component {
 
         // }
     }
-    componentDidMount() {
+    loadProductsWithoutParentPageWise=()=>{
 
-        // this.props.loadSites();
 
-        this.props.loadParentSites();
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}site/no-parent?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
     }
-
-
 
     handleObserver=(entities, observer) =>{
 
-
-       let [entry] = entities
+        let [entry] = entities
 
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
 
-            this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
+            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
 
+            this.setState({
+                loadingResults:true
+            })
+            this.loadProductsWithoutParentPageWise()
         }
 
 
@@ -94,66 +144,6 @@ class Sites extends Component {
     }
 
 
-    handleAddToProductsExportList = (returnedItem) => {
-
-        axios
-            .get(baseUrl + "product/" + returnedItem._key+ "/expand"
-            )
-            .then(
-                (response) => {
-
-
-                    let productSelected=response.data.data
-
-                    // check if already exists
-                    let filteredProduct = this.state.selectedProducts.filter(product => product.product._key !== productSelected.product._key);
-                    this.setState({selectedProducts: [...filteredProduct, productSelected]});
-
-                },
-                (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
-                }
-            );
-
-
-
-    }
-
-    removeFromSelectedProducts = (i) => {
-        this.setState(state => {
-            const selectedProducts = state.selectedProducts.filter((product, j) => i !== j);
-            return {
-                selectedProducts,
-            }
-        })
-    }
-
-    handleSaveCSV = () => {
-
-
-        const csvData = [];
-        this.state.selectedProducts.forEach(item => {
-            const {product, site, service_agent, qr_artifact} = item;
-            return csvData.push([
-                product.name,
-                product.description,
-                product.category,
-                product.condition,
-                product.purpose,
-                product.units,
-                product.volume,
-                site.name,
-                site.address,
-                service_agent.name,
-                qr_artifact.name,
-                qr_artifact.blob_url
-            ])
-        })
-
-        return csvData;
-    }
 
     toggleMultiSite = () => {
 
@@ -209,7 +199,7 @@ class Sites extends Component {
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
                                 <p style={{ fontSize: "18px" }} className="text-gray-light ">
-                                    {this.props.siteParentList.filter((site)=>
+                                    {this.state.items.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue==="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                             this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -229,7 +219,7 @@ class Sites extends Component {
                         </div>
 
 
-                        {this.props.siteParentList.filter((site)=>
+                        {this.state.items.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -246,7 +236,15 @@ class Sites extends Component {
                             </React.Fragment>
                         ))}
 
+
+                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
+                                <div>Loading ...</div>
+                            </div>
+                        </div>}
+
                     </div>
+
 
                 {this.state.showMultiUpload && (
                     <>

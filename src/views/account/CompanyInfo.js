@@ -597,7 +597,7 @@ class CompanyInfo extends Component {
                         <PageHeader
                             pageTitle="Company Info"
                             subTitle="Add and change your company details here"
-                            bottomLine={<hr />}
+                            // bottomLine={<hr />}
                         />
                         <Modal
                             className={"loop-popup"}
@@ -726,70 +726,71 @@ class CompanyInfo extends Component {
                                 </div>
                             </div>
                         </div>
-<hr />
+
                         <div className={"row"}>
-                            <div className={"col-6 mt-4 text-left"}>
-                                <h5>Company Info</h5>
+                            <div className={"col-6 text-left"}>
+
                         {this.state.org && (
                             <div className={"row"}>
                                 <div className={"col-12"}>
                                     <form onSubmit={this.handleSubmitSite}>
-                                        <div className="row no-gutters justify-content-center ">
-                                            <div className="col-12 mt-4">
+                                        <div className="row  justify-content-start ">
+                                            <div className="col-6  mt-3">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.companyName}
                                                     onChange={(value)=>this.handleChange(value,"companyName")}
                                                     error={this.state.errors["companyName"]}
-                                                    name="companyName" label="Company Name" />
+                                                    name="companyName" title="Company Name"
+                                                />
 
 
                                             </div>
 
-                                            <div className="col-12 mt-4">
+                                            <div className="col-6 mt-3">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.description}
                                                     onChange={(value)=>this.handleChange(value,"description")}
                                                     error={this.state.errors["description"]}
-                                                    name="description" label="Description" />
+                                                    name="description" title="Description" />
 
 
                                             </div>
 
-                                            <div className="col-12 mt-4">
+                                            <div className="col-6 mt-3">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.industry}
                                                     onChange={(value)=>this.handleChange(value,"industry")}
                                                     error={this.state.errors["industry"]}
-                                                    name="industry" label="Industry" />
+                                                    name="industry" title="Industry" />
 
 
                                             </div>
-                                            <div className="col-12 mt-4">
+                                            <div className="col-6 mt-3">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.sector}
                                                     onChange={(value)=>this.handleChange(value,"businessField")}
                                                     error={this.state.errors["businessField"]}
-                                                    name="businessField" label="Field of Business" />
+                                                    name="businessField" title="Field of Business" />
 
 
                                             </div>
-                                            <div className="col-12 mt-4">
+                                            <div className="col-6 mt-3">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.no_of_staff}
                                                     onChange={(value)=>this.handleChange(value,"no_of_staff")}
                                                     error={this.state.errors["no_of_staff"]}
-                                                    name="no_of_staff" label="No of staff" />
+                                                    name="no_of_staff" title="No of staff" />
 
 
                                             </div>
 
 
-                                            <div className="col-12 mt-4">
+                                            <div className="col-12 mt-3">
                                                 <button
                                                     type={"submit"}
                                                     className={
@@ -817,7 +818,7 @@ class CompanyInfo extends Component {
                         {this.state.org && !this.state.org.company && (
                             <>
                                 <div className="row mb-5 pb-5">
-                                    <div className="col-12 mt-4">
+                                    <div className="col-12 mt-3">
                                         <AutocompleteCustom
                                             companies={true}
                                             suggestions={this.state.orgNames}
@@ -827,7 +828,7 @@ class CompanyInfo extends Component {
                                         />
                                     </div>
 
-                                    <div className="col-12 mt-4">
+                                    <div className="col-12 mt-3">
                                         <button
                                             onClick={this.submitCompanyNumber}
                                             className={
@@ -846,7 +847,7 @@ class CompanyInfo extends Component {
                                             {this.state.loading ? "Wait.." : "Submit Company"}
                                         </button>
                                     </div>
-                                    <div className="col-12 mt-4">
+                                    <div className="col-12 mt-3">
                                     {this.state.errorCompany && (
                                         <Alert key={"alert"} variant={"danger"}>
                                             { this.state.errorCompany}

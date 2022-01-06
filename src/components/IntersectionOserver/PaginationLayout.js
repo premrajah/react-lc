@@ -21,7 +21,7 @@ class PaginationLayout extends Component {
     }
 
     componentWillUnmount() {
-        this.observer.unobserve(this.loadingRef);
+        // this.observer.unobserve(this.loadingRef);
     }
 
     // Options

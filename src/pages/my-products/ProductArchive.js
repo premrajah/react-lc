@@ -92,7 +92,7 @@ class ProductArchive extends Component {
 
         axios
             // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}past-owner/count`)
+            .get(`${baseUrl}product/past-owner/count`)
             .then(
                 (response) => {
                     if(response.status === 200) {
@@ -196,7 +196,7 @@ class ProductArchive extends Component {
                         </div>
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2"> Showing{this.state.items.filter((item)=> {
+                                <p  className="text-gray-light ml-2"> Showing {this.state.items.filter((item)=> {
 
                                         let site = item
 

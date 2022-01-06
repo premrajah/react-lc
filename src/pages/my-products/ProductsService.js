@@ -91,8 +91,7 @@ class ProductsService extends Component {
     getTotalCount=()=>{
 
         axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}service-agent/count`)
+            .get(`${baseUrl}product/service-agent/count`)
             .then(
                 (response) => {
                     if(response.status === 200) {

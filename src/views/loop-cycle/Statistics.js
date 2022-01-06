@@ -1,15 +1,15 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import clsx from "clsx";
 import StatBLue from "../../img/icons/stat-blue.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import {Doughnut} from "react-chartjs-2";
-import {makeStyles} from "@mui/styles";
+import { Doughnut } from "react-chartjs-2";
+import { makeStyles } from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Statistics extends Component {
     constructor(props) {
@@ -21,10 +21,6 @@ class Statistics extends Component {
             nextIntervalFlag: false,
         };
     }
-
-    interval;
-
-
 
     render() {
         return (
@@ -46,10 +42,12 @@ class Statistics extends Component {
                         />
 
                         <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
-                          {/*/  <PieChart corporate={"this.props.corporate"} />*/}
+                            {/*/  <PieChart corporate={"this.props.corporate"} />*/}
 
-                            <embed src="https://dash.makealoop.io" style={{width:"100%",minHeight:"600px", height: "auto" }} />
-
+                            <embed
+                                src="https://dash.makealoop.io"
+                                style={{ width: "100%", minHeight: "600px", height: "auto" }}
+                            />
                         </div>
                     </div>
                 </div>

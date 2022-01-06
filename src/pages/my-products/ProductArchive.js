@@ -1,30 +1,25 @@
-import React, { Component } from "react";
-import Sidebar from "../../views/menu/Sidebar";
-import HeaderDark from "../../views/header/HeaderDark";
+import React, {Component} from "react";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import axios from "axios/index";
 import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 // import ProductRecordItem from "../../components/ProductRecordItem";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class ProductArchive extends Component {
-
-
 
     constructor(props) {
         super(props);
 
         this.state = {
             timerEnd: false,
-
             nextIntervalFlag: false,
-
             searchValue: '',
             filterValue: '',
             products: [],
@@ -75,19 +70,13 @@ class ProductArchive extends Component {
         }
     };
 
-    // componentDidMount() {
-    //     this.getAllPreviouslyOwnedProducts();
-    // }
-
 
     componentDidMount() {
 
 
-        // this.props.loadParentSites();
         this.setState({
             items:[]
         })
-        // this.loadNewPageSetUp()
 
         this.getTotalCount()
 
@@ -99,8 +88,6 @@ class ProductArchive extends Component {
 
     getTotalCount=()=>{
 
-
-        let newOffset=this.state.currentOffset
 
 
         axios
@@ -124,29 +111,11 @@ class ProductArchive extends Component {
 
         });
 
-        this.setState({
 
-            currentOffset:newOffset+this.state.productPageSize
-        })
 
     }
 
 
-    loadNewPageSetUp=()=>{
-
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
-
-
-        // window.onload = function() {
-        if (this.loadingRefRecord)
-            this.observer.observe(this.loadingRefRecord);
-
-        // }
-    }
     loadProductsWithoutParentPageWise=()=>{
 
 
@@ -182,27 +151,6 @@ class ProductArchive extends Component {
 
     }
 
-    handleObserver=(entities, observer) =>{
-
-        let [entry] = entities
-
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
-
-            this.setState({
-                loadingResults:true
-            })
-            this.loadProductsWithoutParentPageWise()
-        }
-
-
-        this.setState({
-            intersectionRatio:entry.intersectionRatio
-        })
-
-    }
 
     handleSearch = (searchValue) => {
         this.setState({searchValue: searchValue});
@@ -248,8 +196,7 @@ class ProductArchive extends Component {
                         </div>
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2">
-                                    {this.state.items.filter((item)=> {
+                                <p  className="text-gray-light ml-2"> Showing{this.state.items.filter((item)=> {
 
                                         let site = item
 
@@ -276,13 +223,15 @@ class ProductArchive extends Component {
                                                 site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
                                                 site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                                    }).length} Products
+                                    }).length} of {this.state.count} Products
                                 </p>
                             </div>
 
                         </div>
 
-                        {this.state.items.filter((item)=> {
+                    <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+
+                    {this.state.items.filter((item)=> {
 
                             let site=item
 
@@ -329,11 +278,7 @@ class ProductArchive extends Component {
                             </>
                         ))}
 
-                    {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
-                        <div  ref={loadingRefRecord => (this.loadingRefRecord = loadingRefRecord)} className="col">
-                            <div>Loading products please wait ...</div>
-                        </div>
-                    </div>}
+                    </PaginationLayout>
 
 
                     </div>

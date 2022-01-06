@@ -12,6 +12,7 @@ import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiS
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import SitePageItem from "../../components/Sites/SitePageItem";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class Sites extends Component {
 
@@ -22,8 +23,7 @@ class Sites extends Component {
             filterValue: '',
             selectedProducts: [],
             showMultiUpload: false,
-            isIntersecting:false,
-            intersectionRatio:0,
+
             items:[],
             lastPageReached:false,
             currentOffset:0,
@@ -49,14 +49,6 @@ class Sites extends Component {
     }
 
 
-    // Options
-     options = {
-        root: null, // Page as root
-        rootMargin: '0px',
-        threshold: 1.0
-    };
-
-
     componentDidMount() {
 
 
@@ -68,15 +60,11 @@ class Sites extends Component {
             items:[]
         })
 
-        // this.loadNewPageSetUp()
     }
 
 
 
     getTotalCount=()=>{
-
-
-        let newOffset=this.state.currentOffset
 
 
         axios
@@ -100,29 +88,10 @@ class Sites extends Component {
 
         });
 
-        this.setState({
-
-            currentOffset:newOffset+this.state.productPageSize
-        })
-
     }
 
 
-    loadNewPageSetUp=()=>{
 
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
-
-
-        // window.onload = function() {
-        if (this.loadingRef)
-            this.observer.observe(this.loadingRef);
-
-        // }
-    }
     loadProductsWithoutParentPageWise=()=>{
 
 
@@ -157,30 +126,6 @@ class Sites extends Component {
         })
 
     }
-
-    handleObserver=(entities, observer) =>{
-
-        let [entry] = entities
-
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
-
-            this.setState({
-                loadingResults:true
-            })
-            this.loadProductsWithoutParentPageWise()
-        }
-
-
-        this.setState({
-            intersectionRatio:entry.intersectionRatio
-        })
-
-    }
-
-
 
     toggleMultiSite = () => {
 
@@ -255,6 +200,8 @@ class Sites extends Component {
                         </div>
 
 
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+
                         {this.state.items.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -273,11 +220,7 @@ class Sites extends Component {
                         ))}
 
 
-                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading ...</div>
-                            </div>
-                        </div>}
+                        </PaginationLayout>
 
                     </div>
 

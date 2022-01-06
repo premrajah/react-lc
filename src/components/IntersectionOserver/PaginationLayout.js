@@ -4,7 +4,13 @@ class PaginationLayout extends Component {
 
     constructor(props) {
         super(props);
+        this.loadingRef = React.createRef();
+
         this.state = {
+
+            isIntersecting:false,
+            intersectionRatio:0,
+
         }
     }
 
@@ -14,7 +20,16 @@ class PaginationLayout extends Component {
         this.loadNewPageSetUp()
     }
 
+    componentWillUnmount() {
+        this.observer.unobserve(this.loadingRef);
+    }
 
+    // Options
+    options = {
+        root: null, // Page as root
+        rootMargin: '0px',
+        threshold: 1.0
+    };
     observer
     loadNewPageSetUp=()=>{
 
@@ -30,12 +45,10 @@ class PaginationLayout extends Component {
     }
 
     handleObserver=(entities, observer) =>{
-
-       let [entry] = entities
+        let [entry] = entities
 
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
-
             this.props.loadMore()
         }
 

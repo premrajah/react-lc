@@ -16,12 +16,12 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class ProductsService extends Component {
-    loadingRefService
+
     constructor(props) {
         super(props);
-        this.loadingRefService = React.createRef();
         this.state = {
             timerEnd: false,
             nextIntervalFlag: false,
@@ -72,14 +72,6 @@ class ProductsService extends Component {
     }
 
 
-    // componentDidMount() {
-    //     this.getProducts();
-    //
-    //     this.interval = setInterval(() => {
-    //         this.getProducts();
-    //     }, 15000);
-    // }
-
 
     componentDidMount() {
 
@@ -88,10 +80,8 @@ class ProductsService extends Component {
         this.setState({
             items:[]
         })
-        this.loadNewPageSetUp()
 
         this.getTotalCount()
-// this.loadProductsWithoutParentPageWise()
 
 
     }
@@ -125,22 +115,7 @@ class ProductsService extends Component {
 
     }
 
-    observer
-    loadNewPageSetUp=()=>{
 
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
-
-
-        // window.onload = function() {
-        if (this.loadingRefService)
-            this.observer.observe(this.loadingRefService);
-
-        // }
-    }
     loadProductsWithoutParentPageWise=()=>{
 
 
@@ -174,27 +149,6 @@ class ProductsService extends Component {
 
     }
 
-    handleObserver=(entities, observer) =>{
-
-        let [entry] = entities
-
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
-            alert("intersec")
-            this.setState({
-                loadingResults:true
-            })
-            this.loadProductsWithoutParentPageWise()
-        }
-
-
-        this.setState({
-            intersectionRatio:entry.intersectionRatio
-        })
-
-    }
 
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -285,6 +239,7 @@ class ProductsService extends Component {
                             </div>
 
                         </div>
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
                         {this.state.items.filter((item)=> {
 
@@ -331,13 +286,10 @@ class ProductsService extends Component {
                                 {/*</Link>*/}
                             </>
                         ))}
+                        </PaginationLayout>
 
 
-                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
-                            <div  ref={loadingRefService => (this.loadingRefService = loadingRefService)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>}
+
                     </div>
 
             </Layout>

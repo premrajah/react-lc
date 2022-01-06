@@ -14,6 +14,7 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 
 
@@ -60,7 +61,6 @@ class TrackedProducts extends Component {
         this.setState({
             items:[]
         })
-        // this.loadNewPageSetUp()
 
         this.getTotalCount()
 
@@ -73,12 +73,10 @@ class TrackedProducts extends Component {
     getTotalCount=()=>{
 
 
-        let newOffset=this.state.currentOffset
-
 
         axios
             // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}track/count`)
+            .get(`${baseUrl}product/track/count`)
             .then(
                 (response) => {
                     if(response.status === 200) {
@@ -97,29 +95,10 @@ class TrackedProducts extends Component {
 
         });
 
-        this.setState({
-
-            currentOffset:newOffset+this.state.productPageSize
-        })
 
     }
 
 
-    loadNewPageSetUp=()=>{
-
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
-
-
-        // window.onload = function() {
-        if (this.loadingRefTrack)
-            this.observer.observe(this.loadingRefTrack);
-
-        // }
-    }
     loadProductsWithoutParentPageWise=()=>{
 
 
@@ -155,27 +134,6 @@ class TrackedProducts extends Component {
 
     }
 
-    handleObserver=(entities, observer) =>{
-
-        let [entry] = entities
-
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
-
-            this.setState({
-                loadingResults:true
-            })
-            this.loadProductsWithoutParentPageWise()
-        }
-
-
-        this.setState({
-            intersectionRatio:entry.intersectionRatio
-        })
-
-    }
 
 
 
@@ -257,6 +215,8 @@ class TrackedProducts extends Component {
 
                         </div>
 
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+
                         {this.state.items.filter((item)=> {
 
                             let site=item
@@ -303,11 +263,8 @@ class TrackedProducts extends Component {
 
                             </>
                         ))}
-                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
-                            <div  ref={loadingRefTrack => (this.loadingRefTrack = loadingRefTrack)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>}
+
+                        </PaginationLayout>
 
 
                     </div>

@@ -76,12 +76,7 @@ class Products extends Component {
 
     }
 
-    // Options
-     options = {
-        root: null, // Page as root
-        rootMargin: '0px',
-        threshold: 1.0
-    };
+
 
 
     componentDidMount() {
@@ -92,25 +87,10 @@ class Products extends Component {
             items:[]
         })
         this.getTotalProducts()
-        this.loadNewPageSetUp()
+
     }
 
 
-    loadNewPageSetUp=()=>{
-
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
-
-
-        // window.onload = function() {
-        if (this.loadingRef)
-            this.observer.observe(this.loadingRef);
-
-        // }
-    }
     getTotalProducts=()=>{
 
 
@@ -118,7 +98,6 @@ class Products extends Component {
 
 
         axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
             .get(`${baseUrl}product/no-parent/count`)
             .then(
                 (response) => {
@@ -138,15 +117,9 @@ class Products extends Component {
 
                  });
 
-        this.setState({
-
-            currentOffset:newOffset+this.state.productPageSize
-        })
-
     }
 
     loadProductsWithoutParentPageWise=()=>{
-
 
         let newOffset=this.state.currentOffset
 
@@ -176,28 +149,6 @@ class Products extends Component {
         this.setState({
 
             currentOffset:newOffset+this.state.productPageSize
-        })
-
-    }
-
-    handleObserver=(entities, observer) =>{
-
-       let [entry] = entities
-
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
-
-            this.setState({
-                loadingResults:true
-            })
-            this.loadProductsWithoutParentPageWise()
-        }
-
-
-        this.setState({
-            intersectionRatio:entry.intersectionRatio
         })
 
     }
@@ -504,7 +455,7 @@ class Products extends Component {
 
                         </div>
 
-                        {/*<PaginationLayout lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >*/}
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
                         {this.state.items.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
@@ -548,12 +499,12 @@ class Products extends Component {
                             </div>
                         ))}
 
-                        {/*</PaginationLayout>*/}
-                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>}
+                        </PaginationLayout>
+                        {/*{!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>*/}
+                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
+                        {/*        <div>Loading products please wait ...</div>*/}
+                        {/*    </div>*/}
+                        {/*</div>}*/}
                     </div>
 
 

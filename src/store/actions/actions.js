@@ -57,7 +57,6 @@ export const loading = () => {
     };
 };
 
-
 export const toggleRightBar = () => {
     return {
         type: TOGGLE_RIGHTBAR,
@@ -105,7 +104,6 @@ export const showSnackbar = (val) => {
         value: val,
     };
 };
-
 
 export const showLoading = (val) => {
     return {
@@ -255,7 +253,6 @@ export const loadParentSitesSync = (data) => (dispatch) => {
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
-
 export const loadCurrentProduct = (data) => {
     return (dispatch) => {
         dispatch(loading());
@@ -293,7 +290,6 @@ export const resetProductPageOffset = () => {
     return { type: PRODUCT_PAGE_RESET };
 };
 
-
 export const loadCurrentSite = (data) => {
     return (dispatch) => {
         dispatch(loading());
@@ -323,7 +319,6 @@ export const loadCurrentSiteSync = (data) => (dispatch) => {
 
 };
 
-
 export const loadProductsSync = (data) => (dispatch) => {
 
 
@@ -351,7 +346,6 @@ export const loadProductsSync = (data) => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
-
 
 export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
@@ -743,10 +737,6 @@ export const unreadNotifications = val => {
     return { type: UNREAD_NOTIFICATIONS, value: val}
 }
 
-
-
-
-
 export const fetchReleaseRequest = () => {
     return (dispatch) => {
         dispatch(loading());
@@ -773,9 +763,6 @@ export const fetchReleaseRequestSync = () => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
-
-
-
 
 export const fetchServiceAgentRequest = () => {
     return (dispatch) => {
@@ -804,9 +791,6 @@ export const fetchServiceAgentRequestSync = () => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
-
-
-
 
 export const fetchRegisterRequest = () => {
 

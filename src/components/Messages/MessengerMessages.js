@@ -14,6 +14,7 @@ import {makeStyles} from "@mui/styles";
 import WysiwygEditor from "./WysiwygEditor";
 import MessageEntityDialog from "./MessageEntityDialog";
 import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
+import {forEach} from "react-bootstrap/ElementChildren";
 
 
 
@@ -258,6 +259,16 @@ class MessengerMessages extends Component {
 
      checkWhoseMessage = (orgs) => {
         if (orgs.length > 0) {
+
+
+            orgs.forEach(item => {
+
+
+
+            })
+
+
+
             if (orgs[0].actor === "message_to") {
                 if (
                     (orgs[0].org.org._id && orgs[0].org.org._id.toLowerCase()) ===
@@ -415,14 +426,9 @@ class MessengerMessages extends Component {
                             {this.state.allMessageGroups.length === 0 && <div className={"text-center"}>No chats active. </div>}
                             <div
                                 className="message-groups  text-capitalize"
-
-
                                 style={{
-
                                     // overflow: "auto",
                                 }}>
-
-
 
                                 {this.state.filteredMessageGroups.length > 0 ? (
                                     <div className={"message-item-c"}>
@@ -432,16 +438,10 @@ class MessengerMessages extends Component {
                                             <div
                                                 key="new-item-group"
                                                 id="new-item-group"
-                                                className={`click-item p-3 message-group-item selected`}
-
-
-                                            >
-
+                                                className={`click-item p-3 message-group-item selected`}>
                                         <span className={"ml-2 group-names text-capitlize "}>
               New
-            </span>
-
-                                            </div>
+            </span></div>
                                         </>
                                         }
                                         {this.state.filteredMessageGroups.map((group, i) =>
@@ -596,6 +596,7 @@ class MessengerMessages extends Component {
                                                                             <small
                                                                                 className="mr-1"
                                                                                 style={{ opacity: "0.8" }}>
+                                                                                {m.orgs[0].org.org.name}
                                                                                 {this.checkWhoseMessage(m.orgs)
                                                                                     ? m.orgs[0].org.org.name
                                                                                     : ""}

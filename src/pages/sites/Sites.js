@@ -28,7 +28,8 @@ class Sites extends Component {
             lastPageReached:false,
             currentOffset:0,
             productPageSize:50,
-            loadingResults:false
+            loadingResults:false,
+            count:0
 
         }
 
@@ -61,14 +62,50 @@ class Sites extends Component {
 
         // this.props.loadParentSites();
 
+        this.getTotalCount()
+
         this.setState({
             items:[]
         })
 
-        this.loadNewPageSetUp()
+        // this.loadNewPageSetUp()
     }
 
 
+
+    getTotalCount=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}site/no-parent/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
 
 
     loadNewPageSetUp=()=>{
@@ -211,7 +248,7 @@ class Sites extends Component {
 
                                     ).length
                                     }
-                                    <span className="ml-1 "> Sites</span>
+                                    <span className="ml-1 "> of {this.state.count} Sites</span>
                                 </p>
                             </div>
 

@@ -22,12 +22,18 @@ class ProductArchive extends Component {
 
         this.state = {
             timerEnd: false,
-            count: 0,
+
             nextIntervalFlag: false,
 
             searchValue: '',
             filterValue: '',
             products: [],
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
 
@@ -45,8 +51,8 @@ class ProductArchive extends Component {
     };
 
     displayArchivedProducts = () => {
-        if (this.state.products !== null && this.state.products.length > 0) {
-            return this.state.products.map((item, index) => {
+        if (this.state.items !== null && this.state.items.length > 0) {
+            return this.state.items.map((item, index) => {
                 return (
                     <Link to={`/p/${item._key}`} key={index}>
                         <ErrorBoundary>
@@ -69,10 +75,134 @@ class ProductArchive extends Component {
         }
     };
 
+    // componentDidMount() {
+    //     this.getAllPreviouslyOwnedProducts();
+    // }
+
+
     componentDidMount() {
-        this.getAllPreviouslyOwnedProducts();
+
+
+        // this.props.loadParentSites();
+        this.setState({
+            items:[]
+        })
+        // this.loadNewPageSetUp()
+
+        this.getTotalCount()
+
+
+
     }
 
+
+
+    getTotalCount=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}past-owner/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
+
+
+    loadNewPageSetUp=()=>{
+
+        // Create an observer
+        this.observer = new IntersectionObserver(
+            this.handleObserver.bind(this), //callback
+            this.options
+        );
+
+
+        // window.onload = function() {
+        if (this.loadingRefRecord)
+            this.observer.observe(this.loadingRefRecord);
+
+        // }
+    }
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/past-owner/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
+
+    handleObserver=(entities, observer) =>{
+
+        let [entry] = entities
+
+
+        if (entry.intersectionRatio>this.state.intersectionRatio){
+
+            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
+
+            this.setState({
+                loadingResults:true
+            })
+            this.loadProductsWithoutParentPageWise()
+        }
+
+
+        this.setState({
+            intersectionRatio:entry.intersectionRatio
+        })
+
+    }
 
     handleSearch = (searchValue) => {
         this.setState({searchValue: searchValue});
@@ -119,7 +249,7 @@ class ProductArchive extends Component {
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
                                 <p  className="text-gray-light ml-2">
-                                    {this.state.products.filter((item)=> {
+                                    {this.state.items.filter((item)=> {
 
                                         let site = item
 
@@ -152,7 +282,7 @@ class ProductArchive extends Component {
 
                         </div>
 
-                        {this.state.products.filter((item)=> {
+                        {this.state.items.filter((item)=> {
 
                             let site=item
 
@@ -198,6 +328,12 @@ class ProductArchive extends Component {
 
                             </>
                         ))}
+
+                    {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                        <div  ref={loadingRefRecord => (this.loadingRefRecord = loadingRefRecord)} className="col">
+                            <div>Loading products please wait ...</div>
+                        </div>
+                    </div>}
 
 
                     </div>

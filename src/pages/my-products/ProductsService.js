@@ -4,8 +4,6 @@ import {connect} from "react-redux";
 import clsx from "clsx";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
 import {makeStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -20,16 +18,22 @@ import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
 
 class ProductsService extends Component {
+    loadingRefService
     constructor(props) {
         super(props);
-
+        this.loadingRefService = React.createRef();
         this.state = {
             timerEnd: false,
-            count: 0,
             nextIntervalFlag: false,
             products: [],
             searchValue: '',
             filterValue: '',
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
         this.getProducts = this.getProducts.bind(this);
@@ -68,12 +72,128 @@ class ProductsService extends Component {
     }
 
 
-    componentDidMount() {
-        this.getProducts();
+    // componentDidMount() {
+    //     this.getProducts();
+    //
+    //     this.interval = setInterval(() => {
+    //         this.getProducts();
+    //     }, 15000);
+    // }
 
-        this.interval = setInterval(() => {
-            this.getProducts();
-        }, 15000);
+
+    componentDidMount() {
+
+
+        // this.props.loadParentSites();
+        this.setState({
+            items:[]
+        })
+        this.loadNewPageSetUp()
+
+        this.getTotalCount()
+// this.loadProductsWithoutParentPageWise()
+
+
+    }
+
+
+
+    getTotalCount=()=>{
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}service-agent/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+
+
+    }
+
+    observer
+    loadNewPageSetUp=()=>{
+
+        // Create an observer
+        this.observer = new IntersectionObserver(
+            this.handleObserver.bind(this), //callback
+            this.options
+        );
+
+
+        // window.onload = function() {
+        if (this.loadingRefService)
+            this.observer.observe(this.loadingRefService);
+
+        // }
+    }
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+                .get(`${baseUrl}product/service-agent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false),
+                            currentOffset:newOffset+this.state.productPageSize
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+
+
+    }
+
+    handleObserver=(entities, observer) =>{
+
+        let [entry] = entities
+
+
+        if (entry.intersectionRatio>this.state.intersectionRatio){
+
+            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
+            alert("intersec")
+            this.setState({
+                loadingResults:true
+            })
+            this.loadProductsWithoutParentPageWise()
+        }
+
+
+        this.setState({
+            intersectionRatio:entry.intersectionRatio
+        })
+
     }
 
     componentWillUnmount() {
@@ -133,7 +253,7 @@ class ProductsService extends Component {
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
                                 <p  className="text-gray-light ml-2">
-                                    {this.state.products.filter((item)=> {
+                                    {this.state.items.filter((item)=> {
 
                                         let site = item
 
@@ -160,13 +280,13 @@ class ProductsService extends Component {
                                                 site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
                                                 site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                                    }).length} Products
+                                    }).length} of {this.state.count} Products
                                 </p>
                             </div>
 
                         </div>
 
-                        {this.state.products.filter((item)=> {
+                        {this.state.items.filter((item)=> {
 
                             let site=item
 
@@ -211,6 +331,13 @@ class ProductsService extends Component {
                                 {/*</Link>*/}
                             </>
                         ))}
+
+
+                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                            <div  ref={loadingRefService => (this.loadingRefService = loadingRefService)} className="col">
+                                <div>Loading products please wait ...</div>
+                            </div>
+                        </div>}
                     </div>
 
             </Layout>

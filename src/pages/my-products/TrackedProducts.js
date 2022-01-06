@@ -25,12 +25,17 @@ class TrackedProducts extends Component {
 
         this.state = {
             timerEnd: false,
-            count: 0,
             nextIntervalFlag: false,
 
             searchValue: '',
             filterValue: '',
             products: [],
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
 
@@ -47,9 +52,131 @@ class TrackedProducts extends Component {
     };
 
 
+
     componentDidMount() {
-        this.getTrackedProducts();
+
+
+        // this.props.loadParentSites();
+        this.setState({
+            items:[]
+        })
+        // this.loadNewPageSetUp()
+
+        this.getTotalCount()
+
+
+
     }
+
+
+
+    getTotalCount=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}track/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
+
+
+    loadNewPageSetUp=()=>{
+
+        // Create an observer
+        this.observer = new IntersectionObserver(
+            this.handleObserver.bind(this), //callback
+            this.options
+        );
+
+
+        // window.onload = function() {
+        if (this.loadingRefTrack)
+            this.observer.observe(this.loadingRefTrack);
+
+        // }
+    }
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/track/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
+
+    handleObserver=(entities, observer) =>{
+
+        let [entry] = entities
+
+
+        if (entry.intersectionRatio>this.state.intersectionRatio){
+
+            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
+
+            this.setState({
+                loadingResults:true
+            })
+            this.loadProductsWithoutParentPageWise()
+        }
+
+
+        this.setState({
+            intersectionRatio:entry.intersectionRatio
+        })
+
+    }
+
 
 
     handleSearch = (searchValue) => {
@@ -97,8 +224,7 @@ class TrackedProducts extends Component {
 
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.products.filter((item)=> {
+                                <p  className="text-gray-light ml-2 "> Showing {this.state.items.filter((item)=> {
 
                                         let site = item
 
@@ -125,13 +251,13 @@ class TrackedProducts extends Component {
                                                 site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
                                                 site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                                    }).length} Products
+                                    }).length} of {this.state.count} Products
                                 </p>
                             </div>
 
                         </div>
 
-                        {this.state.products.filter((item)=> {
+                        {this.state.items.filter((item)=> {
 
                             let site=item
 
@@ -177,6 +303,11 @@ class TrackedProducts extends Component {
 
                             </>
                         ))}
+                        {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                            <div  ref={loadingRefTrack => (this.loadingRefTrack = loadingRefTrack)} className="col">
+                                <div>Loading products please wait ...</div>
+                            </div>
+                        </div>}
 
 
                     </div>

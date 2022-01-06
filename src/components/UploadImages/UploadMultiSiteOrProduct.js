@@ -19,7 +19,7 @@ let productProperties=[
     {field:"external_reference",required:false},
     {field:"condition",required:true},
     {field:"purpose",required:true},
-    {field:"year_of_making",required:true},
+    {field:"year_of_making",required:false},
     {field:"category",required:true},
     {field:"type",required:true},
     {field:"state",required:true},

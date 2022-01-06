@@ -21,6 +21,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import CustomPopover from "../../components/FormsUI/CustomPopover";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class Products extends Component {
 
@@ -503,8 +504,9 @@ class Products extends Component {
 
                         </div>
 
-                        {
-                        this.state.items.filter((site)=>
+                        {/*<PaginationLayout lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >*/}
+
+                        {this.state.items.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -546,7 +548,7 @@ class Products extends Component {
                             </div>
                         ))}
 
-
+                        {/*</PaginationLayout>*/}
                         {!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
                             <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
                                 <div>Loading products please wait ...</div>

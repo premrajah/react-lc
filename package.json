@@ -47,6 +47,7 @@
     "react-dom": "^17.0.0",
     "react-draft-wysiwyg": "^1.14.7",
     "react-dropzone": "^11.2.4",
+    "react-ga": "^3.3.0",
     "react-image-gallery": "^1.0.8",
     "react-moment": "^1.0.0",
     "react-redux": "^7.2.1",

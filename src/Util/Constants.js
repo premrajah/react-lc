@@ -31,6 +31,15 @@ export const frontEndUrl =
         ? "http://127.0.0.1/"
         : "http://d.lpcy.uk/";
 
+export const gaTID =
+    REACT_APP_BRANCH_ENV === "master"
+        ? "UA-216464174-1"
+        : REACT_APP_BRANCH_ENV === "stage"
+            ? "UA-216464174-2"
+            : REACT_APP_BRANCH_ENV === "local"
+                ? "UA-216464174-3"
+                : "UA-216464174-3";
+
 console.log("REACT_APP_BRANCH_ENV" + REACT_APP_BRANCH_ENV);
 console.log("baseUrl" + baseUrl);
 console.log("baseImgUrl" + baseImgUrl);

@@ -1,15 +1,15 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import clsx from "clsx";
 import StatBLue from "../../img/icons/stat-blue.png";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
-import {Doughnut} from "react-chartjs-2";
-import {makeStyles} from "@mui/styles";
+import { Doughnut } from "react-chartjs-2";
+import { makeStyles } from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Statistics extends Component {
     constructor(props) {
@@ -22,10 +22,6 @@ class Statistics extends Component {
         };
     }
 
-    interval;
-
-
-
     render() {
         return (
             <div>
@@ -33,24 +29,16 @@ class Statistics extends Component {
                 <div className="wrapper">
                     <HeaderDark />
 
-                    <div className="container  pb-4 pt-4">
+                    <div className="container pt-4">
                         <div>
                             <Link to={"/account"}>Account </Link> > Statistics
                         </div>
-
-                        <PageHeader
-                            pageIcon={StatBLue}
-                            pageTitle="Statistics"
-                            subTitle="View your inventory statistics here"
-                            bottomLine={<hr />}
+                    </div>
+                    <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
+                        <embed
+                            src="https://dash.makealoop.io"
+                            style={{ width: "100%", minHeight: "800px", height: "auto" }}
                         />
-
-                        <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
-                          {/*/  <PieChart corporate={"this.props.corporate"} />*/}
-
-                            <embed src="https://dash.makealoop.io" style={{width:"100%",minHeight:"600px", height: "auto" }} />
-
-                        </div>
                     </div>
                 </div>
             </div>

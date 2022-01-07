@@ -516,7 +516,7 @@ class SiteDetailContent extends Component {
 
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 p-0 "}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12  "}>
 
                                 <div className="row  justify-content-start   ">
                                     <div className="col-12 ">
@@ -586,6 +586,7 @@ class SiteDetailContent extends Component {
                                                         variant="scrollable"
                                                         scrollButtons="auto"
                                                         textColor={"#27245C"}
+                                                        allowScrollButtonsMobile
                                                         TabIndicatorProps={{
                                                             style: {
                                                                 backgroundColor: "#27245C",

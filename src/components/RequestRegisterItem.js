@@ -228,25 +228,21 @@ class RequestRegisterItem extends Component {
                 {this.state.item && (
                     <>
                         <div className="row no-gutters bg-white rad-8 p-3 mb-4 ">
-                            <div className={"col-2 "}>
+                            <div className={"col-md-2 col-xs-12 col-sm-12 "}>
                                 {this.state.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
                                 ) : (
                                     <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
-                            <div className={"col-5 pl-3  content-box-listing"}>
+                            <div className={"col-md-5 col-xs-12 col-sm-12  pl-3-desktop  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className="title-bold mb-1 text-capitlize">
                                     <Link to={`/p/${this.state.item.product_id.replace("Product/","")}`}>
                                         {this.state.product&&this.state.product.name}
                                     </Link>
                                 </p>
 
-                                <div style={{ margin: "0" }}>
-                                    {/*<Org orgId={this.state.item.originator._id} />*/}
-                                    {/*<span>→</span>*/}
-                                    {/*<Org orgId={this.state.item.responder._id} />*/}
-                                </div>
+
 
                                 <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.registration.stage}</span>
@@ -257,7 +253,7 @@ class RequestRegisterItem extends Component {
                                 </p>
 
 
-                                {this.state.product&&  <p className={"text-gray-light mt-2 "}>
+                                {this.state.product&&  <div className={"text-gray-light mt-2 width-75"}>
                                     Category:
                                     <span
 
@@ -272,14 +268,14 @@ class RequestRegisterItem extends Component {
                                                                 {capitalize(this.state.product.state)}
                                                             </span>
                                     </span>
-                                </p>}
-
-
-                            </div>
-                            <div style={{ textAlign: "right" }} className={"col-5"}>
+                                </div>}
                                 <p className={"text-gray-light date-bottom"}>
                                     {moment(this.state.item._ts_epoch_ms).format("DD MMM YYYY")}
                                 </p>
+
+                            </div>
+                            <div style={{ textAlign: "right" }} className={"col-md-5 col-xs-12 col-sm-12 "}>
+
 
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(

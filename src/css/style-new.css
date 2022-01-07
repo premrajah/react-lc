@@ -3372,7 +3372,7 @@ background: white;
     display: flex;
 }
 .content-box-image{
-    width: 185px;
+    /*width: 185px;*/
 }
 .navbar .nav-link svg{
     /*color:var(--lc-pink) !important;*/

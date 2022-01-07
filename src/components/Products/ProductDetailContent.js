@@ -785,6 +785,7 @@ class ProductDetailContent extends Component {
                                             <TabContext value={this.state.activeKey}>
                                                 <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
                                                     <TabList
+                                                        allowScrollButtonsMobile
                                                         variant="scrollable"
                                                         scrollButtons="auto"
                                                         textColor={"#27245C"}

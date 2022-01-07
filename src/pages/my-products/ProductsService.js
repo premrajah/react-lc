@@ -121,9 +121,7 @@ class ProductsService extends Component {
         let newOffset=this.state.currentOffset
 
 
-        axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
-                .get(`${baseUrl}product/service-agent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+        axios.get(`${baseUrl}product/service-agent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then(
                 (response) => {
                     if(response.status === 200) {

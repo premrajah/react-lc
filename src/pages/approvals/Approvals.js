@@ -168,6 +168,7 @@ render() {
                                             variant="scrollable"
                                             scrollButtons="auto"
                                             textColor={"#27245C"}
+                                            allowScrollButtonsMobile
                                             TabIndicatorProps={{
                                                 style: {
                                                     backgroundColor: "#27245C",

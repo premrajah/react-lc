@@ -344,7 +344,7 @@ class RequestReleaseItem extends Component {
                 {this.state.item && (
                     <>
                         <div key={this.state.item.Release._id} id={this.state.item.Release._id} className="row no-gutters bg-white rad-8 p-3 justify-content-center  mb-4 ">
-                            <div className={"col-2 "}>
+                            <div className={"col-md-2 col-sm-12 col-xs-12 "}>
                                 {this.state.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail
                                         images={this.state.artifacts}
@@ -353,29 +353,25 @@ class RequestReleaseItem extends Component {
                                     <img className={"img-fluid img-list rad-4"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
-                            <div className={"col-5 pl-3  content-box-listing"}>
+                            <div className={"col-sm-5 col-xs-12 pl-3-desktop  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className="title-bold mb-1 text-capitlize">
                                     <Link to={`/p/${this.state.item.product_id.replace("Product/","")}`}>
                                         {this.state.product&&this.state.product.name}
                                     </Link>
                                 </p>
 
-                                <div style={{ margin: "0" }}>
-                                    {/*<Org orgId={this.state.item.originator._id} />*/}
-                                    {/*<span>→</span>*/}
-                                    {/*<Org orgId={this.state.item.responder._id} />*/}
-                                </div>
 
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+
+                                <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.Release.stage}</span>
                                 </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
 
 
-                                {this.state.product&&  <p className={"text-gray-light mt-2 "}>
+                                {this.state.product&&  <div className={"text-gray-light mt-1 mb-1 "}>
                                     Category:
                                     <span
 
@@ -390,15 +386,15 @@ class RequestReleaseItem extends Component {
                                                                 {capitalize(this.state.product.state)}
                                                             </span>
                                     </span>
-                                </p>}
+                                </div>}
                             </div>
-                            <div style={{ textAlign: "right" }} className={"col-5"}>
+                            <div style={{ textAlign: "right" }} className={"col-md-5 col-xs-12 col-sm-12"}>
+
                                 <p className={"text-gray-light   date-bottom"}>
                                     {moment(this.state.item.Release._ts_epoch_ms).format(
                                         "DD MMM YYYY"
                                     )}
                                 </p>
-
                                 <div className="row  pb-4 pb-4 mb-4">
                                     <div className="col-12 text-right pb-2 pt-2">
                                         {this.state.item.next_action.is_mine &&

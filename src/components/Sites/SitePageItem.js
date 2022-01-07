@@ -71,22 +71,22 @@ const SitePageItem = (  props) => {
 
                <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters site-item-list justify-content-start  mb-4 bg-white rad-8  p-3 ">
                 <div  className={"col-md-2 col-xs-12 "}>
-                    <div className={"content-site   content-box-image"}>
+                    {/*<div className={"content-site   content-box-image"}>*/}
                     <Link to={props.isLoggedIn?"/ps/" + props.item._key:"#"}>
                         <>
 
                             {props.item.geo_codes && props.item.geo_codes[0] ?
-                            <img style={{height:"185px",width:"185px"}} className={"img-fluid rad-4"} src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
+                            <img style={{height:"185px",width:"185px"}} className={"img-fluid img-list rad-4"} src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &zoom=12&size=185x185&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
-                            :<img className={"img-fluid"} src={PlaceholderImg} alt="" />}
+                            :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
 
                         </>
                     </Link>
-                    </div>
+                    {/*</div>*/}
 
                 </div>
-                   <div  className={"col-md-10 col-xs-12 pl-3-descktop"}>
+                   <div  className={"col-md-10 col-xs-12 pl-3-desktop"}>
                        <div className={" pl-3  content-site content-box-listing"}>
 
                            <p style={{ fontSize: "18px" }} className="text-capitlize mb-1">
@@ -112,7 +112,7 @@ const SitePageItem = (  props) => {
 
 
                        </div>
-                       <div style={{ textAlign: "right" }} className={""}>
+                       <div style={{ textAlign: "right" }} className={"add-top-button"}>
                            {/*<p className={"text-gray-light small"}>*/}
                            {/*    {"data hrere"}*/}
                            {/*</p>*/}
@@ -125,14 +125,15 @@ const SitePageItem = (  props) => {
 
                            </div>
 
-                           <p className={"text-gray-light date-bottom"}>
-                               {moment(props.item._ts_epoch_ms).format("DD MMM YYYY")}
-
-                           </p>
 
 
 
                        </div>
+                       <p className={"text-gray-light date-bottom"}>
+                           {moment(props.item._ts_epoch_ms).format("DD MMM YYYY")}
+
+                       </p>
+
                    </div>
 
             </div>

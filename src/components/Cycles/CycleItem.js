@@ -191,7 +191,7 @@ class CycleItem extends Component {
     render() {
         return (
             <div className="row no-gutters justify-content-left mb-3 p-3 rad-8 bg-white ">
-                <div className={"col-2 text-left"}>
+                <div className={"col-md-2 col-sm-12 col-xs-12 text-left"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {this.props.item.product.artifacts.length > 0 ? (
@@ -202,7 +202,7 @@ class CycleItem extends Component {
                         </>
                     </Link>
                 </div>
-                <div className={"col-6 pl-3 content-box-listing"}>
+                <div className={"col-md-10 col-sm-12 col-xs-12  pl-3-desktop content-box-listing"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {/*<p  className="text-capitlize mb-1 title-bold">*/}
@@ -213,18 +213,18 @@ class CycleItem extends Component {
                                     <>Listing: <span className={"text-blue"}>{this.props.item.listing.name}</span> </>
                                 )}
                             </p>
-                            <p  className=" mb-1 text-gray-light mt-2 ">
+                            <p  className=" mb-1 text-gray-light mt-1 mb-1 ">
                                 {this.props.item.product && (
                                     <>Search: <span className={"text-blue"}>{this.props.item.search.name}</span> </>
                                 )}
                             </p>
-                            <p  className=" mb-1 text-gray-light mt-2 ">
+                            <p  className=" mb-1 text-gray-light mt-1 mb-1 ">
                                 {this.props.item.product && (
                                     <>Product: <span className={"text-blue"}>{this.props.item.product.product.name}</span> </>
                                 )}
                             </p>
 
-                            <p className={"text-gray-light mt-2 "}>
+                            <div className={"text-gray-light mt-1 mb-1 "}>
                                 Category:
                                 <span
 
@@ -242,39 +242,38 @@ class CycleItem extends Component {
 
 
                                     </span>
-                            </p>
+                            </div>
 
                         </>
                     </Link>
 
-                    <div  className=" mt-2">
+                    <div  className=" mt-1 mb-1">
                         <OrgComponent org={this.props.item.sender} /> →
                         <OrgComponent org={this.props.item.receiver} />
                     </div>
 
-                    {/*<p style={{ fontSize: "16px" }} className=" text-mute mb-1">Sites: <span className={"text-bold"}>{this.props.item.from_site.name}  →  {this.props.item.to_site.name}</span></p>*/}
-                </div>
-
-                <div  className={"col-2 text-right"}>
-                    <p className="text-gray-light mb-1 ">
-                     Offer: <span className={"text-bold text-pink"}>
+                    <div  className={"add-top-button pl-3-desktop"}>
+                        <p className="text-gray-light mb-1 ">
+                            Offer: <span className={"text-bold text-pink"}>
 
                             GBP {this.props.item.offer.amount.value}
                         </span>
-                    </p>
-                </div>
+                        </p>
 
-
-                <div  className={"col-2 justify-content-end"}>
-                    <p className={"  status text-right"}>
+                        <p className={"  status mt-3 text-right"}>
                                 <span className={this.props.item.cycle.stage!="closed"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.cycle.stage}
                                 </span>
-                    </p>
+                        </p>
+
+                    </div>
                     <p className={" text-gray-light date-bottom "}>
                         {moment(this.props.item.cycle._ts_epoch_ms).format("DD MMM YYYY")}
                     </p>
+
                 </div>
+
+
             </div>
         );
     }

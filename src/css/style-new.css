@@ -2157,13 +2157,26 @@ button.blue-btn-border
     object-fit: cover;
     width: 110px;
 }
-
+.pl-3-desktop{
+    padding-top: 0rem !important;
+    padding-left: 1rem !important;
+}
 @media only screen and (max-width: 991px) {
 
+    .width-75{
+        width: 75%;
+    }
+
+    .pl-3-desktop{
+
+        padding-left: 0rem !important;
+        padding-top: 1rem !important;
+    }
+
     .img-list{
-        height: 110px;
+        height: 100%;
         object-fit: cover;
-        width: 110px;
+        width: 100%;
     }
 
     .custom-pl-5{
@@ -3843,4 +3856,7 @@ input:active,input:focus{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.add-top-button{
+    position: absolute;top: 0;right: 0;
 }

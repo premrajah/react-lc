@@ -254,7 +254,7 @@ class ProductItemNew extends Component {
         return (
             <>
                 <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
-                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-4":"col-2 "}>
+                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
                                     <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
@@ -265,17 +265,17 @@ class ProductItemNew extends Component {
                                     </>
                                     </Link>
                                 </div>
-                                <div className={this.props.biggerImage?"col-6 pl-3  content-box-listing":"col-8 pl-3  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-md-8 pl-3-desktop  content-box-listing":"col-md-10 pl-3-desktop  content-box-listing"}>
 
-                                        <p style={{ fontSize: "18px" }} className="text-capitalize mb-1">
+                                        <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-75">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
                                                 className="badge badge-info ml-2">Listed</span>}  <small className={""}><small> - {this.props.item._key}</small></small></Link>
                                       </p>
 
-                                    <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                    <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
                                       Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>
                                     </p>
-                                    <p className={"text-gray-light mt-2 "}>
+                                    <div className={"text-gray-light mt-1 mb-1"}>
                                     Category:
                                     <span
 
@@ -290,7 +290,7 @@ class ProductItemNew extends Component {
                                                                 {capitalize(this.props.item.state)}
                                                             </span>
                                     </span>
-                                    </p>
+                                    </div>
                                     <p  className=" text-capitalize  text-gray-light">
 
                                         {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}
@@ -298,37 +298,20 @@ class ProductItemNew extends Component {
                                     </p>
                                     {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
 
-                                    {this.props.item.search_ids && (
-                                        <p
-                                            style={{ fontSize: "16px" }}
-                                            className=" mb-1 bottom-tag-p">
-                                            {this.props.item.search_ids.length} Searches
-                                        </p>
-                                    )}
-                                    {this.props.item.sub_products &&
-                                    this.props.item.sub_products.length > 0 && (
-                                        <p
-                                            style={{ fontSize: "16px" }}
-                                            className=" mb-1">
-                                            {this.props.item.sub_product_ids.length} Sub
-                                            Products
-                                        </p>
-                                    )}
-                                </div>
-                                <div style={{ textAlign: "right" }} className={"col-2"}>
+
 
 
                                     {!this.props.hideAdd&&this.props.showAddToListButton &&
 
-                                    <><p className={"text-gray-light"}>
+                                    <><p className={"text-gray-light add-top-button pl-3-desktop"}>
                                         <Add
                                             style={{ cursor: "pointer", fontSize:"1.2rem"}}
                                             onClick={() => {
 
-                                            this.handleAddToProductList(this.props.item)
+                                                this.handleAddToProductList(this.props.item)
 
-                                        }}
-                                             // style={{cursor: 'pointer'}}
+                                            }}
+                                            // style={{cursor: 'pointer'}}
                                         />
                                         <span  onClick={() => {
 
@@ -342,9 +325,9 @@ class ProductItemNew extends Component {
                                         >
                                             <Info
                                                 className={"text-gray-light"}
-                                            style={{ cursor: "pointer", color: "#d7d7d7",fontSize:"1.2rem" }}
-                                            fontSize={"small"}
-                                        />
+                                                style={{ cursor: "pointer", color: "#d7d7d7",fontSize:"1.2rem" }}
+                                                fontSize={"small"}
+                                            />
                                         </OverlayTrigger>
                                     </p>
                                     </>
@@ -367,6 +350,7 @@ class ProductItemNew extends Component {
                                         />
                                     )}
                                 </div>
+
                             </div>
 
 

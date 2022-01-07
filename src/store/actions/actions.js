@@ -470,6 +470,7 @@ export const logInSync = (data) => (dispatch) => {
                         userId: res.data.data.id + "|" + res.data.data.orgId
                     }
                 });
+                ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
 
                 getMessages();
                 getNotifications();

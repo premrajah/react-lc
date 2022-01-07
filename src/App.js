@@ -83,6 +83,16 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
 import SearchRecords from "./pages/search/SearchRecords";
 import ListFormNew from "./pages/create-listing/ListForm";
+
+// Added by Chandan For Google Analytics
+// Refer: https://github.com/react-ga/react-ga for usage details
+// --- START
+import ReactGA from 'react-ga';
+import {gaTID} from "./Util/Constants";
+ReactGA.initialize(gaTID);
+ReactGA.pageview(window.location.pathname + window.location.search );
+// --- END
+
 const theme = createTheme({
     palette: {
 

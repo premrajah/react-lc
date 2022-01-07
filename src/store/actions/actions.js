@@ -2,7 +2,7 @@ import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, gaTID} from "../../Util/Constants";
 import {
 
     LOAD_USER_DETAIL,
@@ -42,6 +42,7 @@ import {
     SITE_FORM_SHOW, PRODUCT_PAGE_RESET, PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG
 } from "../types";
 import {load} from "dotenv";
+import ReactGA from "react-ga";
 
 
 
@@ -463,6 +464,13 @@ export const logInSync = (data) => (dispatch) => {
 
                 saveKey("user", res.data.data);
                 dispatch({ type: LOGIN, value: res.data.data });
+
+                ReactGA.initialize(gaTID, {
+                    gaOptions: {
+                        userId: res.data.data.id + "|" + res.data.data.orgId
+                    }
+                });
+
                 getMessages();
                 getNotifications();
             } else {

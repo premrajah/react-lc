@@ -12,6 +12,7 @@ import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiS
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import SitePageItem from "../../components/Sites/SitePageItem";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class Sites extends Component {
 
@@ -22,8 +23,13 @@ class Sites extends Component {
             filterValue: '',
             selectedProducts: [],
             showMultiUpload: false,
-            isIntersecting:false,
-            intersectionRatio:0
+
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
 
         }
 
@@ -43,116 +49,82 @@ class Sites extends Component {
     }
 
 
-    // Options
-     options = {
-        root: null, // Page as root
-        rootMargin: '0px',
-        threshold: 1.0
-    };
-
-    loadNewPageSetUp=()=>{
-
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
-
-
-        // window.onload = function() {
-        if (this.loadingRef)
-            this.observer.observe(this.loadingRef);
-
-        // }
-    }
     componentDidMount() {
 
-        // this.props.loadSites();
 
-        this.props.loadParentSites();
-    }
+        // this.props.loadParentSites();
 
-
-
-    handleObserver=(entities, observer) =>{
-
-
-       let [entry] = entities
-
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
-
-        }
-
+        this.getTotalCount()
 
         this.setState({
-            intersectionRatio:entry.intersectionRatio
+            items:[]
         })
 
     }
 
 
-    handleAddToProductsExportList = (returnedItem) => {
+
+    getTotalCount=()=>{
+
 
         axios
-            .get(baseUrl + "product/" + returnedItem._key+ "/expand"
-            )
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}site/no-parent/count`)
             .then(
                 (response) => {
+                    if(response.status === 200) {
 
+                        this.setState({
+                            count:(response.data.data),
 
-                    let productSelected=response.data.data
-
-                    // check if already exists
-                    let filteredProduct = this.state.selectedProducts.filter(product => product.product._key !== productSelected.product._key);
-                    this.setState({selectedProducts: [...filteredProduct, productSelected]});
+                        })
+                    }
 
                 },
                 (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
                 }
-            );
+            )
+            .catch(error => {}).finally(()=>{
 
-
+        });
 
     }
 
-    removeFromSelectedProducts = (i) => {
-        this.setState(state => {
-            const selectedProducts = state.selectedProducts.filter((product, j) => i !== j);
-            return {
-                selectedProducts,
-            }
+
+
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}site/no-parent?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
         })
-    }
 
-    handleSaveCSV = () => {
-
-
-        const csvData = [];
-        this.state.selectedProducts.forEach(item => {
-            const {product, site, service_agent, qr_artifact} = item;
-            return csvData.push([
-                product.name,
-                product.description,
-                product.category,
-                product.condition,
-                product.purpose,
-                product.units,
-                product.volume,
-                site.name,
-                site.address,
-                service_agent.name,
-                qr_artifact.name,
-                qr_artifact.blob_url
-            ])
-        })
-
-        return csvData;
     }
 
     toggleMultiSite = () => {
@@ -188,15 +160,15 @@ class Sites extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-md-9 d-flex justify-content-start">
+                            <div className="col-md-12  justify-content-start">
                                 <Link onClick={()=> {
                                     this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
-                                }}  className="btn-gray-border  mr-2 click-item">
-                                    Add Sites / Address
+                                }}  className="btn-gray-border  mr-2  click-item">
+                                    Add Sites/Address
                                 </Link>
 
-                                <Link onClick={this.toggleMultiSite} className="btn-gray-border  mr-2 click-item">
-                                    Upload Multiple Sites / Addresses (CSV)
+                                <Link onClick={this.toggleMultiSite} className="btn-gray-border    mr-2 click-item">
+                                    Upload Multiple Sites(CSV)
                                 </Link>
                             </div>
                         </div>
@@ -208,8 +180,7 @@ class Sites extends Component {
 
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-gray-light ">
-                                    {this.props.siteParentList.filter((site)=>
+                                <p style={{ fontSize: "18px" }} className="text-gray-light ">Showing {this.state.items.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue==="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                             this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -222,14 +193,16 @@ class Sites extends Component {
 
                                     ).length
                                     }
-                                    <span className="ml-1 ">Sites Listed</span>
+                                    <span className="ml-1 "> of {this.state.count} Sites</span>
                                 </p>
                             </div>
 
                         </div>
 
 
-                        {this.props.siteParentList.filter((site)=>
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+
+                        {this.state.items.filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -246,7 +219,11 @@ class Sites extends Component {
                             </React.Fragment>
                         ))}
 
+
+                        </PaginationLayout>
+
                     </div>
+
 
                 {this.state.showMultiUpload && (
                     <>

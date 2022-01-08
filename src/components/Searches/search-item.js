@@ -99,7 +99,7 @@ class SearchItem extends Component {
                 <div className="row no-gutters justify-content-center mb-4  p-3 bg-white rad-8">
                     <div
                         className={
-                            !this.state.previewImage ? "col-2 search-column-left" : "col-2 "
+                            !this.state.previewImage ? "col-md-2 col-xs-12 col-sm-12 search-column-left" : "col-md-2 col-xs-12 col-sm-12 "
                         }>
                         {this.state.previewImage ? (
                             <img
@@ -114,16 +114,16 @@ class SearchItem extends Component {
                             />
                         )}
                     </div>
-                    <div className={"col-8 pl-3 content-box-listing"}>
-                        <p  className="text-capitlize mb-1 title-bold">
+                    <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop content-box-listing"}>
+                        <p  className="text-capitlize mb-1 title-bold width-75">
                             {this.props.item.search.name}
                         </p>
-                        <p  className=" mb-1 text-gray-light mt-2 ">
+                        <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75">
                             {this.props.item.product && (
                                 <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
                             )}
                         </p>
-                        <p className={"text-gray-light mt-2 "}>
+                        <div className={"text-gray-light mt-1 mb-1 width-75 "}>
                             Category:
                             <span
 
@@ -141,13 +141,10 @@ class SearchItem extends Component {
 
 
                                     </span>
-                        </p>
+                        </div>
 
-                        {/*<p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}
-                    </div>
+                        <div className={"add-top-button pl-3-desktop"}>
 
-
-                    <div  className={"col-2 justify-content-end"}>
                         <p className={"  status text-right"}>
                                 <span className={this.props.item.search.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.search.stage}
@@ -163,13 +160,17 @@ class SearchItem extends Component {
                                 />
                             )}
                         </p>
+                        </div>
 
                         <p className={" text-gray-light text-14 date-bottom text-right"}>
                             {moment(this.props.item.search._ts_epoch_ms).format("DD MMM YYYY")}
                         </p>
 
-
+                        {/*<p style={{ fontSize: "16px" }} className=" mb-1">{this.props.item.state} / {this.props.item.search.volume} {this.props.item.search.units}</p>*/}
                     </div>
+
+
+
 
 
 
@@ -187,10 +188,8 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
+
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

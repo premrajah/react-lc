@@ -81,7 +81,7 @@ ImagesSlider extends React.Component {
                     <div className={"col-12"}>
                 <div className={"row p-2 "+styles.grayBox}>
                     <div className={"col-6 text-left"}>
-                        {/*{this.refImg.getCurrentIndex()}*/}
+
 
                         <span className={""}>{this.state.currentIndex+1}/{this.imagesArray.length}</span>
 

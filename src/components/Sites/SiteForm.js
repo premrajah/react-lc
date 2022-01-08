@@ -1,28 +1,20 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Close, Error, Publish} from "@mui/icons-material";
-import { makeStyles } from "@mui/styles";
-import { withStyles } from "@mui/styles/index";
+import {Close} from "@mui/icons-material";
+import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import {baseUrl, capitalizeFirstLetter, MIME_TYPES_ACCEPT} from "../../Util/Constants";
-import _ from "lodash";
+import {baseUrl} from "../../Util/Constants";
 import {Modal, Spinner} from "react-bootstrap";
-import EditSite from "../../components/Sites/EditSite";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {capitalize} from "../../Util/GlobalFunctions";
 import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import {loadCurrentSite} from "../../store/actions/actions";
-
 
 
 class SiteForm extends Component {
@@ -614,7 +606,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <TextFieldWrapper
                                             onChange={(value)=>this.handleChange(value,"external_reference")}
                                             error={this.state.errors["external_reference"]}
-                                            name="external_reference" title="Site Id" />
+                                            name="external_reference" title="Reference Id" />
                                         </div>
                                     </div>
 

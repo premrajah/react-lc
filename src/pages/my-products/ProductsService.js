@@ -4,8 +4,6 @@ import {connect} from "react-redux";
 import clsx from "clsx";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
 import {makeStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -18,18 +16,24 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class ProductsService extends Component {
+
     constructor(props) {
         super(props);
-
         this.state = {
             timerEnd: false,
-            count: 0,
             nextIntervalFlag: false,
             products: [],
             searchValue: '',
             filterValue: '',
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
         this.getProducts = this.getProducts.bind(this);
@@ -44,7 +48,7 @@ class ProductsService extends Component {
     getProducts() {
         this.props.showLoading(true);
         axios
-            .get(baseUrl + "product/service-agent", {
+            .get(baseUrl + "product/service-agent/no-links", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -68,13 +72,80 @@ class ProductsService extends Component {
     }
 
 
-    componentDidMount() {
-        this.getProducts();
 
-        this.interval = setInterval(() => {
-            this.getProducts();
-        }, 15000);
+    componentDidMount() {
+
+
+        // this.props.loadParentSites();
+        this.setState({
+            items:[]
+        })
+
+        this.getTotalCount()
+
+
     }
+
+
+
+    getTotalCount=()=>{
+
+        axios
+            .get(`${baseUrl}product/service-agent/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+
+
+    }
+
+
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios.get(`${baseUrl}product/service-agent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false),
+                            currentOffset:newOffset+this.state.productPageSize
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+
+
+    }
+
 
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -133,9 +204,9 @@ class ProductsService extends Component {
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
                                 <p  className="text-gray-light ml-2">
-                                    {this.state.products.filter((item)=> {
+                                    {this.state.items.filter((item)=> {
 
-                                        let site = item.product
+                                        let site = item
 
                                         return this.state.filterValue ? (this.state.filterValue === "name" ?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -160,15 +231,16 @@ class ProductsService extends Component {
                                                 site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
                                                 site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                                    }).length} Products
+                                    }).length} of {this.state.count} Products
                                 </p>
                             </div>
 
                         </div>
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
-                        {this.state.products.filter((item)=> {
+                        {this.state.items.filter((item)=> {
 
-                            let site=item.product
+                            let site=item
 
 
                         return    this.state.filterValue ? (this.state.filterValue === "name" ?
@@ -204,13 +276,17 @@ class ProductsService extends Component {
                                     edit={true}
                                     remove={false}
                                     duplicate={true}
-                                    item={item.product}
+                                    item={item}
                                     hideMore={true}
                                 />
 
                                 {/*</Link>*/}
                             </>
                         ))}
+                        </PaginationLayout>
+
+
+
                     </div>
 
             </Layout>

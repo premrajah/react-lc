@@ -21,10 +21,6 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import AggregatesTab from "../Products/AggregatesTab";
-import SearchItem from "../Searches/search-item";
-import ResourceItem from "../../pages/create-search/ResourceItem";
-import ArtifactProductsTab from "../Products/ArtifactProductsTab";
 
 
 class SiteDetailContent extends Component {
@@ -224,23 +220,7 @@ class SiteDetailContent extends Component {
             showSubmitSite: !this.state.showSubmitSite,
         });
     }
-    submitDuplicateProduct = (event) => {
-        // axios
-        //     .post(baseUrl + "product/" + this.state.item.product._key + "/duplicate", {})
-        //     .then((res) => {
-        //         this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
-        //
-        //         this.props.history.push("/my-products");
-        //
-        //
-        //     })
-        //     .catch((error) => {
-        //         // this.setState({
-        //         //
-        //         //     errorRegister:error.response.data.errors[0].message
-        //         // })
-        //     });
-    };
+
 
 
 
@@ -433,7 +413,6 @@ class SiteDetailContent extends Component {
 
     setActiveKey=(event,key)=>{
 
-        console.log(event, key)
         this.setState({
             activeKey:key
         })
@@ -537,7 +516,7 @@ class SiteDetailContent extends Component {
 
                             </div>
 
-                            <div className={"col-md-8 col-sm-12 col-xs-12 p-0 "}>
+                            <div className={"col-md-8 col-sm-12 col-xs-12  "}>
 
                                 <div className="row  justify-content-start   ">
                                     <div className="col-12 ">
@@ -607,6 +586,7 @@ class SiteDetailContent extends Component {
                                                         variant="scrollable"
                                                         scrollButtons="auto"
                                                         textColor={"#27245C"}
+                                                        allowScrollButtonsMobile
                                                         TabIndicatorProps={{
                                                             style: {
                                                                 backgroundColor: "#27245C",
@@ -729,7 +709,7 @@ class SiteDetailContent extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}
@@ -960,7 +940,7 @@ class SiteDetailContent extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}

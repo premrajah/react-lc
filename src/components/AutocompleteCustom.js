@@ -107,7 +107,10 @@ class AutocompleteCustom extends Component {
         };
     }
 
+
+
     onChange = (e) => {
+
         const { suggestions } = this.props;
         const userInput = e.currentTarget.value;
 
@@ -274,7 +277,7 @@ class AutocompleteCustom extends Component {
 
                     className={`${this.state.selected&&"d-none "} custom-input`}
                     onChange={onChange}
-                    onKeyDown={onKeyDown}
+                    // onKeyDown={onKeyDown}
                     value={this.state.userInput}
                     autoComplete={"new-password"}
                     placeholder={"Company (Type your company name here)"}

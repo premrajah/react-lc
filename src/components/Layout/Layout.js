@@ -18,9 +18,11 @@ class Layout extends React.Component {
     render() {
         const { children } = this.props
         return (
-            <div className='layout'>
+            <div className='layout layout-main'>
                 <Header />
+                <div className="main-content-area">
                 {children}
+                </div>
                 {!this.props.hideFooter&&<Footer/>}
             </div>
         );

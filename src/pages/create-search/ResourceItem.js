@@ -85,7 +85,7 @@ class ResourceItem extends Component {
                         <div
                             onClick={this.goToPage}
                             className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
-                            <div className={"col-2"}>
+                            <div className={"col-md-2 col-xs-12 col-sm-12"}>
                                 {this.props.item.listing.artifacts &&
                                 this.props.item.listing.artifacts.length > 0 ? (
                                     <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.listing.artifacts} />
@@ -153,7 +153,7 @@ class ResourceItem extends Component {
                         <div
                             // onClick={this.goToPage}
                             className="row no-gutters justify-content-center p-3 bg-white rad-8 click-item mb-3">
-                            <div className={"col-2"}>
+                            <div className={"col-md-2 col-xs-12 col-sm-12"}>
                                 {this.props.item.artifacts &&
                                 this.props.item.artifacts.length > 0 ?
                                     <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.artifacts} />:
@@ -161,17 +161,17 @@ class ResourceItem extends Component {
                                     <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 }
                             </div>
-                            <div className={"col-6 pl-3  content-box-listing"}>
+                            <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
                                 <p  className="text-capitlize mb-1 title-bold">
                                     {this.props.item.listing.name}
                                 </p>
-                                <p  className=" mb-1 text-gray-light mt-2 ">
+                                <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75 ">
                                     {this.props.item.product && (
                                         <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
                                     )}
                                 </p>
 
-                                <p className={"text-gray-light mt-2 "}>
+                                <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     Category:
                                     <span
 
@@ -186,27 +186,18 @@ class ResourceItem extends Component {
                                                                 {capitalize(this.props.item.listing.state)}
                                                             </span>
 
-
-
                                     </span>
-                                </p>
+                                </div>
 
-
-                            </div>
-                            <div className={"col-2  text-right"}>
-                                <p className={"text-blue text-bold "}>
-                                    {this.props.item.listing.price &&
-                                    this.props.item.listing.price.value ? (
-                                        <>GBP {this.props.item.listing.price.value}</>
-                                    ) : (
-                                        "Free"
-                                    )}
-                                </p>
-                            </div>
-
-
-
-                            <div  className={"col-2 justify-content-end"}>
+<div className={"add-top-button  pl-3-desktop"}>
+    <p className={"text-blue text-bold text-center"}>
+        {this.props.item.listing.price &&
+        this.props.item.listing.price.value ? (
+            <>GBP {this.props.item.listing.price.value}</>
+        ) : (
+            "Free"
+        )}
+    </p>
                                 <p className={"  status text-right"}>
                                 <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
@@ -219,6 +210,7 @@ class ResourceItem extends Component {
                                     remove={false}
                                     duplicate={false}
                                 />}</p>
+</div>
 
                                 <p className={" text-gray-light text-14 date-bottom text-right"}>
                                     {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
@@ -226,6 +218,10 @@ class ResourceItem extends Component {
 
 
                             </div>
+
+
+
+
 
 
                         </div>

@@ -1,23 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
-import { Nav, Navbar, NavbarBrand, NavItem } from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {Nav, Navbar, NavbarBrand, NavItem} from "react-bootstrap";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOutline from "@mui/icons-material/MailOutline";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LogoSymbol from "../../img/Symbol-white.svg";
 import HeaderLogoSvg from '../../img/Logo-white.svg';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import LinearProgress from "@mui/material/LinearProgress";
 import {makeStyles, withStyles} from "@mui/styles";
 import {Badge, Snackbar, Tooltip} from "@mui/material";
 import Alert from "@mui/lab/Alert";
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
 
 
 const LightTooltip = withStyles((theme) => ({
@@ -400,6 +397,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Issues
                                         </Link>
+
 
 
                                         {/*<Link className={"dropdown-item"} to="">*/}

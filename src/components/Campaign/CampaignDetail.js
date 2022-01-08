@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import {baseUrl, frontEndUrl} from "../../Util/Constants";
 import axios from "axios/index";
@@ -9,19 +8,13 @@ import ImagesSlider from "./../ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
 import {withStyles} from "@mui/styles/index";
 import jspdf from "jspdf";
-import QrCodeBg from "../../img/qr-code-bg.png";
-import LoopcycleLogo from "../../img/logo-text.png";
 import MoreMenu from "./../MoreMenu";
-import LinkIcon from '@mui/icons-material/Link';
-import PageHeader from "./../PageHeader";
-import CubeBlue from "../../img/icons/product-icon-big.png";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import InfoTabContent from "./InfoTabContent";
-import moment from "moment/moment";
 import ConditionsContent from "./ConditionsContent";
 
 class CampaignDetail extends Component {
@@ -593,7 +586,7 @@ class CampaignDetail extends Component {
                                         this.props.item.artifacts.length > 0 ? (
                                             <ImagesSlider images={this.props.item.artifacts} />
                                         ) : (
-                                            <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                            <img className={"img-fluid  rad-8 bg-white p-2"} src={PlaceholderImg} alt="" />
                                         )}
                                     </div>
 
@@ -609,7 +602,6 @@ class CampaignDetail extends Component {
                                               <h4 className="text-capitalize product-title">
                                             {this.props.item.campaign.name}</h4>
 
-                                            {/*<span className={"text-gray-light small"}>    {moment(this.props.item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>*/}
                                             </div>
 
                                             <div className="col-4 text-right">

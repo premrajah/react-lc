@@ -1406,7 +1406,7 @@ class ViewCycle extends Component {
                                                     </FormControl>
 
                                                     <p>
-                                                        Is the company you are looking for doesn't
+                                                        If the company you are looking for doesn't
                                                         exist?
                                                         <span
                                                             className={"green-link-url "}

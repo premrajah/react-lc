@@ -1,19 +1,19 @@
-import React, {Component} from "react";
+import React from "react";
 import Layout from "../../components/Layout/Layout";
-import MessageLayout from "../../components/message/MessageLayout";
+import PageHeader from "../../components/PageHeader";
+import MessengerMessages from "../../components/Messages/MessengerMessages";
 
-class MessagePage extends Component {
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
+function MessagePage() {
+    return (
+        <Layout>
+            <div className="container   pb-4 pt-4">
 
-    render() {
-        return (
-            <Layout>
-                <MessageLayout isPage={true} parentClass={"col-8"} />
-            </Layout>
-        );
-    }
+                        <PageHeader pageTitle="Messages" subTitle="Send or receive messages here" />
+                        <MessengerMessages />
+
+            </div>
+        </Layout>
+    );
 }
 
 export default MessagePage;

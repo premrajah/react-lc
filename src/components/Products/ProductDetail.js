@@ -127,11 +127,7 @@ class Product extends Component {
                 });
             })
             .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
+
             });
     };
 
@@ -143,7 +139,7 @@ class Product extends Component {
         } else {
             axios.get(baseUrl + "org/company/" + detail.company).then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         org_id: responseAll._key,
@@ -1299,7 +1295,7 @@ class Product extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}
@@ -1530,7 +1526,7 @@ class Product extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}

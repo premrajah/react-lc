@@ -53,11 +53,11 @@ import FindResourcePage from "./views/browse-resources/FindResourcePage";
 import ProductArchive from "./pages/my-products/ProductArchive";
 import ProductTreeView from "./components/ProductTreeView";
 import Approvals from "./pages/approvals/Approvals";
-import Issues from "./views/issues/Issues";
-import IssueDetail from "./views/issues/IssueDetail";
+import Issues from "./pages/issues/Issues";
+import IssueDetail from "./pages/issues/IssueDetail";
 import ApprovedReleases from "./pages/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
-import MessagePage from "./components/Inbox/MessagePage";
+import MessagePage from "./pages/message/MessagePage";
 import Messeges from "./pages/message/MessagePage";
 import TrackedProducts from "./pages/my-products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
@@ -82,6 +82,17 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 import CampaignDetailContent from "./components/Campaign/CampaignDetailContent";
 import SearchRecords from "./pages/search/SearchRecords";
+import ListFormNew from "./pages/create-listing/ListForm";
+
+// Added by Chandan For Google Analytics
+// Refer: https://github.com/react-ga/react-ga for usage details
+// --- START
+import ReactGA from 'react-ga';
+import {gaTID} from "./Util/Constants";
+ReactGA.initialize(gaTID);
+ReactGA.pageview(window.location.pathname + window.location.search );
+// --- END
+
 const theme = createTheme({
     palette: {
 
@@ -146,7 +157,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/sites" component={Sites} />
-
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
@@ -162,19 +172,14 @@ class App extends Component {
                         <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
-                        <LoggedInRoute exact path="/list-form" component={ListForm} />
+                        <LoggedInRoute exact path="/list-form" component={ListFormNew} />
+                        <LoggedInRoute exact path="/list-form-old" component={ListForm} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
                         <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
                         <LoggedInRoute exact path="/list-form" component={ListForm} />
-
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
-                        <LoggedInRoute
-                            exact
-                            path="/delivery-resource"
-                            component={DeliveryResource}
-                        />
-
+                        <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedOutRoute exact path="/sign-up" component={SignUpPage} />
                         <LoggedOutRoute exact path="/login" component={LoginPage} />
                         <LoggedOutRoute exact path="/forgot-password" component={ForgotPasswordPage} />

@@ -2,19 +2,14 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import {baseUrl, CAMPAIGN_FILTER_VALUES} from "../../Util/Constants";
 import moment from "moment/moment";
-import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
-import EditIcon from "@mui/icons-material/Edit";
-import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {createCampaignUrl} from "../../Util/Api";
 import AddIcon from '@mui/icons-material/Add';
@@ -452,7 +447,7 @@ this.props.toggleRightBar()
                         <div className="row">
                                 <div className="col-md-12">
                                     <div className="table-wrap">
-                                        <table className="table custom-table table-responsive-xl">
+                                        <table className="table custom-table ">
                                             <thead>
                                             <tr className={"text-bold"}>
                                                 <th>&nbsp;</th>
@@ -496,18 +491,19 @@ this.props.toggleRightBar()
                                                                 <td>
                                                                     <ul className="persons">
 
-                                                                        {item.artifacts.map((artifact)=>
-
-                                                                            <li>
-                                                                                <a href="">
-                                                                                    <img
-                                                                                        src={artifact.blob_url}
-                                                                                         className="img-fluid"
-
-                                                                                    />
-                                                                                </a>
+                                                                        {item.artifacts && item.artifacts.map((artifact, i)=>
+                                                                            <li key={i}>
+                                                                                <div className="d-flex justify-content-center align-items-center" style={{width: "60px", height: "60px"}}>
+                                                                                    <div className="d-flex justify-content-center align-items-center" style={{  width: "50%", height: "50%"}}>
+                                                                                        <img
+                                                                                            src={artifact ? artifact.blob_url : ""}
+                                                                                            className="img-fluid w-100 h-100"
+                                                                                            alt={artifact.name}
+                                                                                            style={{borderRadius: "50%", objectFit: "contain"}}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
                                                                             </li>
-
                                                                         )}
 
                                                                     </ul>
@@ -515,7 +511,7 @@ this.props.toggleRightBar()
                                                        <td>
                                                            {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
 
-                                                           <span className={"text-bold"} onClick={()=>
+                                                           <span className={"text-bold"} style={{cursor: "pointer"}} onClick={()=>
                                                            {
 
                                                            this.setState({

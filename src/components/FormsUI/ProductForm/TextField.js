@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {TextField} from "@mui/material";
 import {makeStyles} from '@mui/styles';
-import InputBase from '@mui/material/InputBase';
-import { alpha, styled } from '@mui/material/styles';
 import CustomizedInput from "./CustomizedInput";
+import CustomPopover from "../CustomPopover";
+import {Info} from "@mui/icons-material";
+import {OverlayTrigger} from "react-bootstrap";
+import InfoIcon from "./InfoIcon";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
+const TextFieldWrapper = ({name,title,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
     // const [field, mata] = useField(name)
     const classes = useStyles();
@@ -50,7 +51,8 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
         <>
 
             {title&& <div className={"custom-label text-bold text-blue mb-0"}>
-                {title}
+                {title}  {details&&<CustomPopover heading={detailsHeading}  text={details}>
+                <InfoIcon/></CustomPopover>}
             </div>}
 
            <div className={"field-box mb-2"}>
@@ -60,7 +62,7 @@ const TextFieldWrapper = ({name,title,validators,label,onChange,error,initialVal
                   variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
 
            </div>
-            {error && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{error.message}</span>}
+            {error && <span style={{color:"#f44336",fontSize:"12px!important"}} className='text-danger'>{error.message}</span>}
         </>
 
     )

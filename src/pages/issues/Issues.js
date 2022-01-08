@@ -1,12 +1,11 @@
-import React, { Component } from "react";
-import Sidebar from "../menu/Sidebar";
-import HeaderDark from "../header/HeaderDark";
+import React, {Component} from "react";
 import PageHeader from "../../components/PageHeader";
 import axios from "axios";
-import { connect } from "react-redux";
-import { baseUrl } from "../../Util/Constants";
+import {connect} from "react-redux";
+import {baseUrl} from "../../Util/Constants";
 import _ from "lodash";
-import IssueItem from "./IssueItem";
+import Layout from "../../components/Layout/Layout";
+import IssueItem from "../../components/issues/IssueItem";
 
 class Issues extends Component {
     state = {
@@ -36,10 +35,8 @@ class Issues extends Component {
 
     render() {
         return (
-            <div className="mb-5">
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
+
                     <div className="container  pb-4 pt-4">
                         <PageHeader pageTitle="Issues" subTitle="Find product related issues here" />
 
@@ -59,8 +56,8 @@ class Issues extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-// import {Alert, Modal, ModalBody, Tab, Tabs} from "react-bootstrap";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
 
 import {withStyles} from "@mui/styles/index";
@@ -29,7 +28,6 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import SubproductItem from "./Item/SubproductItem";
 
 
 class ProductDetailContent extends Component {
@@ -281,12 +279,10 @@ class ProductDetailContent extends Component {
         if (prevProps!==this.props) {
 
 
-            if(this.props.item.product.purpose === "aggregate"){
-                this.setActiveKey(null,"1")
-            }else{
-                this.setActiveKey(null,"2")
 
-            }
+                this.setActiveKey(null,"1")
+
+
 
         }
     }
@@ -609,13 +605,8 @@ class ProductDetailContent extends Component {
             this.loadInfo();
         }
 
-
-        if(this.props.item.product.purpose === "aggregate"){
             this.setActiveKey(null,"1")
-        }else{
-            this.setActiveKey(null,"2")
 
-        }
     }
 
     loadInfo() {
@@ -703,7 +694,6 @@ class ProductDetailContent extends Component {
                                         )}
 
 
-                                    <InfoTabContent item={this.props.item}/>
 
 
                                     <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
@@ -795,6 +785,7 @@ class ProductDetailContent extends Component {
                                             <TabContext value={this.state.activeKey}>
                                                 <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
                                                     <TabList
+                                                        allowScrollButtonsMobile
                                                         variant="scrollable"
                                                         scrollButtons="auto"
                                                         textColor={"#27245C"}
@@ -808,38 +799,41 @@ class ProductDetailContent extends Component {
 
                                                         aria-label="lab API tabs example">
 
+                                                        <Tab label="Product Info" value="1" />
                                                         {(this.props.item.product.purpose === "aggregate") &&
-                                                        <Tab label="Aggregation" value="1"/>
+                                                        <Tab label="Aggregation" value="2"/>
                                                         }
-                                                        <Tab label="Sub Products" value="2" />
+                                                        <Tab label="Sub Products" value="3" />
 
-                                                        <Tab label="Site" value="3" />
-
+                                                        <Tab label="Site" value="4" />
                                                         {this.state.searches.length > 0 && (
-                                                        <Tab label="Searches" value="4" />
+                                                            <Tab label="Searches" value="5" />
                                                         )}
 
                                                         {this.state.listingLinked &&
-                                                        <Tab label="Listing" value="5" />
-                                                            }
+                                                        <Tab label="Listing" value="6" />
+                                                        }
 
-                                                        <Tab label="Artifacts" value="6" />
-
+                                                        <Tab label="Attachments" value="7" />
 
                                                     </TabList>
                                                 </Box>
 
+                                                <TabPanel value="1">
 
+                                                <InfoTabContent item={this.props.item}/>
+
+                                                </TabPanel>
 
                                                 {(this.props.item.product.purpose === "aggregate") &&
-                                                <TabPanel value="1">
+                                                <TabPanel value="2">
 
                                                     <AggregatesTab item={this.props.item}/>
                                                 </TabPanel>}
-                                                <TabPanel value="2">
+                                                <TabPanel value="3">
                                                     <SubProductsTab item={this.props.item}/>
                                                 </TabPanel>
-                                                <TabPanel value="3">
+                                                <TabPanel value="4">
                                                     <>
 
                                                     <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
@@ -864,7 +858,7 @@ class ProductDetailContent extends Component {
                                                 {this.state.searches.length > 0 && (
                                                     <>
                                                     <div className={"mt-4"}></div>
-                                                    <TabPanel value="4">
+                                                    <TabPanel value="5">
                                                         {this.state.searches.map((item) => (
                                                             <SearchItem smallImage={true} item={item}/>
                                                         ))}
@@ -876,7 +870,7 @@ class ProductDetailContent extends Component {
 
                                                     <>
                                                     <div className={"mt-4"}></div>
-                                                    <TabPanel value="5">
+                                                    <TabPanel value="6">
                                                         {this.state.listingLinked && (
                                                             <ResourceItem
                                                                 smallImage={true}
@@ -889,7 +883,7 @@ class ProductDetailContent extends Component {
                                                     </TabPanel>
                                                     </>
                                                 )}
-                                                <TabPanel value="6">
+                                                <TabPanel value="7">
                                                     <ArtifactProductsTab item={this.props.item}/>
                                                 </TabPanel>
 
@@ -982,7 +976,7 @@ class ProductDetailContent extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}
@@ -1215,7 +1209,7 @@ class ProductDetailContent extends Component {
                                                             />
 
                                                             <p>
-                                                                Is the company you are looking for
+                                                                If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
                                                                     className={"green-link-url "}

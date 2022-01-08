@@ -77,7 +77,7 @@ const SubproductItem = (props) => {
 
     return <>
         <div className="row no-gutters justify-content-center mb-2 white-bg p-2 rad-8">
-            <div className="col-sm-2">
+            <div className="col-2">
                 {
                     artifacts.length > 0
                     ? <ImageOnlyThumbnail smallImage={props.smallImage} images={artifacts} />
@@ -85,7 +85,7 @@ const SubproductItem = (props) => {
                 }
             </div>
 
-            <div className="col-sm-7 pl-2">
+            <div className="col-8 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item._key}`}>
                         <span className={"title-bold"}>{item.name}</span>
@@ -116,13 +116,6 @@ const SubproductItem = (props) => {
 
 
                 </div>
-
-                    {/*<p className="text-gray-light mt-2 ">Category:<span*/}
-                    {/*    className="ml-1 text-capitlize mb-1 cat-box text-left p-1"><span*/}
-                    {/*    className="text-capitlize">Plastics</span><span className="m-1 arrow-cat">❯</span><span*/}
-                    {/*    className=" text-capitlize">Pp</span><span className="m-1 arrow-cat">❯</span><span*/}
-                    {/*    className="  text-capitlize">Loose</span></span>*/}
-                    {/*</p>*/}
                     <p className="text-gray-light mt-2 text-capitlize ">
                         {item.purpose}
                     </p>
@@ -137,7 +130,8 @@ const SubproductItem = (props) => {
                 }
             </div>
 
-            {!props.aggregate &&  <div className="col-sm-3 d-flex justify-content-end">
+            {!props.aggregate &&
+            <div className="col-2 d-flex justify-content-end">
                 <div>
                     <div className={"text-gray-light date-bottom "}>
                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}

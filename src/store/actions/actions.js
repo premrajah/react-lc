@@ -2,7 +2,7 @@ import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, gaTID, REACT_APP_BRANCH_ENV} from "../../Util/Constants";
 import {
 
     LOAD_USER_DETAIL,
@@ -42,6 +42,7 @@ import {
     SITE_FORM_SHOW, PRODUCT_PAGE_RESET, PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG
 } from "../types";
 import {load} from "dotenv";
+import ReactGA from "react-ga";
 
 
 
@@ -56,7 +57,6 @@ export const loading = () => {
         type: LOADING,
     };
 };
-
 
 export const toggleRightBar = () => {
     return {
@@ -105,7 +105,6 @@ export const showSnackbar = (val) => {
         value: val,
     };
 };
-
 
 export const showLoading = (val) => {
     return {
@@ -255,7 +254,6 @@ export const loadParentSitesSync = (data) => (dispatch) => {
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
-
 export const loadCurrentProduct = (data) => {
     return (dispatch) => {
         dispatch(loading());
@@ -293,7 +291,6 @@ export const resetProductPageOffset = () => {
     return { type: PRODUCT_PAGE_RESET };
 };
 
-
 export const loadCurrentSite = (data) => {
     return (dispatch) => {
         dispatch(loading());
@@ -323,7 +320,6 @@ export const loadCurrentSiteSync = (data) => (dispatch) => {
 
 };
 
-
 export const loadProductsSync = (data) => (dispatch) => {
 
 
@@ -351,7 +347,6 @@ export const loadProductsSync = (data) => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
-
 
 export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
 
@@ -469,6 +464,14 @@ export const logInSync = (data) => (dispatch) => {
 
                 saveKey("user", res.data.data);
                 dispatch({ type: LOGIN, value: res.data.data });
+
+                ReactGA.initialize(gaTID, {
+                    gaOptions: {
+                        userId: res.data.data.id + "|" + res.data.data.orgId
+                    }
+                });
+                ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
+
                 getMessages();
                 getNotifications();
             } else {
@@ -743,10 +746,6 @@ export const unreadNotifications = val => {
     return { type: UNREAD_NOTIFICATIONS, value: val}
 }
 
-
-
-
-
 export const fetchReleaseRequest = () => {
     return (dispatch) => {
         dispatch(loading());
@@ -773,9 +772,6 @@ export const fetchReleaseRequestSync = () => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
-
-
-
 
 export const fetchServiceAgentRequest = () => {
     return (dispatch) => {
@@ -804,9 +800,6 @@ export const fetchServiceAgentRequestSync = () => (dispatch) => {
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
-
-
-
 
 export const fetchRegisterRequest = () => {
 

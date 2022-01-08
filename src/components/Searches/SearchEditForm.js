@@ -12,7 +12,6 @@ import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import _ from "lodash";
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -731,7 +730,6 @@ updateSite=(search,site)=>{
 
     handleChangeProduct(value,field ) {
 
-        // console.log(field,value)
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });

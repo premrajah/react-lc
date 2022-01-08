@@ -24,8 +24,8 @@ const AddedDocumentsDisplay = (props) => {
     }
 
     const handleDeleteDocument = () => {
-        if(!docKey) return;
 
+        
         let afterRemoveDoc = artifacts.filter(item => item._key !== docKey);
         let artifactIds = [];
 

@@ -1,16 +1,12 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-import { makeStyles, withStyles } from "@mui/styles/index";
+import {makeStyles, withStyles} from "@mui/styles/index";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Spinner} from "react-bootstrap";
-import {PRODUCT_NPARENT_LIST} from "../../store/types";
-import {loading} from "../../store/actions/actions";
 import SubproductItem from "./Item/SubproductItem";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
@@ -65,10 +61,6 @@ class ProductExpandItem extends Component {
 
         axios.post(baseUrl + "product/sub-product/remove", data).then(
             (response) => {
-                // var responseAll = response.data.data;
-
-                // this.props.history.push("/my-products")
-                // this.props.loadProducts()
 
                 this.loadProduct(this.props.currentProduct.product._key);
             },

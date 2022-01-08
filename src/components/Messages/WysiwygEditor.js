@@ -56,12 +56,17 @@ class WysiwygEditor extends Component{
         const { editorState } = this.state;
         return <div className="">
             <Editor
+
+                placeholder="Enter message here..."
                 // toolbarOnFocus
+                toolbarClassName="wysiwyg-toolbar"
                 wrapperClassName="wysiwyg-wrapper"
                 editorClassName="wysiwyg-editor"
                 editorState={editorState}
                 onEditorStateChange={this.onEditorStateChange}
                 toolbar={{
+                    options: ['inline', 'blockType', 'fontSize', 'fontFamily','list','textAlign','link','colorPicker','emoji','remove','history'],
+
                     inline: { inDropdown: true },
                     list: { inDropdown: true },
                     textAlign: { inDropdown: true },
@@ -69,6 +74,7 @@ class WysiwygEditor extends Component{
                     history: { inDropdown: true },
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
+
                 // mention={{
                 //     separator: ' ',
                 //     trigger: '@',

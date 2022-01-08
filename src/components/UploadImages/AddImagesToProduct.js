@@ -183,7 +183,7 @@ class AddImagesToProduct extends Component {
 
     render() {
         return (
-            <div className="row">
+            <div className="row mt-4">
                 <div className="col">
 
                     <div className="row camera-grids   no-gutters   ">

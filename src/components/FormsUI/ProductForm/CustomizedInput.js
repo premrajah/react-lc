@@ -16,7 +16,8 @@ const CustomizedInput = styled(InputBase)(({ theme }) => ({
         width: '100%!important',
         // padding: '10px 12px',
         padding: '18.5px 14px',
-        height: "1.188em",
+        // height: "1.188em",
+        // height:theme.height,
         transition: theme.transitions.create([
             // 'border-color',
             // 'background-color',

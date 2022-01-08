@@ -7,6 +7,7 @@ import jspdf from "jspdf";
 import QrCodeBg from "../../img/qr-code-bg.png";
 import LoopcycleLogo from "../../img/logo-text.png";
 import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
+import axios from "axios";
 
 class QrCode extends Component {
     slug;
@@ -88,19 +89,24 @@ class QrCode extends Component {
 
         this.setState({productQrCode: this.props.item.qr_artifact})
 
-        // axios.get(`${baseUrl}product/${this.props.item.product._key}/code-artifact?u=${frontEndUrl}p`)
-        //     .then(response => {
-        //         this.setState({productQrCode: response.data.data})
-        //     })
-        //     .catch(error => {
-        //
-        //     })
+    }
+
+    refreshQrcode=()=>{
+
+        axios.get(baseUrl + "product/" +this.props.item.product._key + "/code-artifact?r=true").then(
+            (response) => {
+                let responseAll = response.data;
+
+                this.props.loadCurrentProduct(this.props.item.product._key);
+            },
+            (error) => {}
+        );
+
     }
 
 
     componentDidMount() {
 
-       // this.getQrCode()
     }
 
     loadInfo() {
@@ -162,8 +168,8 @@ class QrCode extends Component {
         return (
             <>
 
-                    <div className="row border-box no-gutters bg-white rad-8 justify-content-center ">
-                        <div className="col-3 zoom-in-cursor  " onClick={this.callZoom}>
+                    <div className="row border-box  bg-white rad-8 justify-content-center mt-4 ">
+                        <div className="col-3 zoom-in-cursor p-0 " onClick={this.callZoom}>
 
                             {this.props.item&&this.props.item.qr_artifact && (
                                 <img
@@ -176,9 +182,17 @@ class QrCode extends Component {
                             )}
 
                         </div>
-                        <div className="col-9 pl-2 zoom-in-cursor" onClick={this.callZoom}>
+                        <div className="col-9  zoom-in-cursor" onClick={this.callZoom}>
                             <div className="row justify-content-start  ">
                                 <div className="col-12 ">
+                                    {!this.props.hideRefresh&&this.props.userDetail.is_org_admin &&    <span
+                                        className={"mr-1 btn btn-sm btn-gray-border-small top-right"}
+                                    onClick={
+                                        (e)=> {e.stopPropagation(); this.refreshQrcode()}}
+                                    >
+                                        R
+                                    </span>}
+
                                     <span className={"title-bold blue-text text-caps  p-0 "}>
                                         Cyclecode
                                     </span>
@@ -195,6 +209,10 @@ class QrCode extends Component {
                                     {this.props.hideRegister && (
                                         <p className={"green-text"}>
                                             <Link
+                                                onClick={(e)=>{
+                                                    e.stopPropagation();
+                                                }}
+
                                                 className={"mr-1 btn btn-sm btn-gray-border-small"}
                                                 to={
                                                     getProductProvenanceSlug(this.props.item.product._key)
@@ -205,26 +223,38 @@ class QrCode extends Component {
                                             <span
                                                 to={`/product/${this.props.item.product._key}`}
                                                 className={"mr-1 click-item btn btn-sm btn-gray-border-small"}
-                                                onClick={() =>
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+
                                                     this.handlePrintPdf(
                                                         this.props.item.product,
-                                                        this.state
-                                                            .productQrCode.blob_url,
+                                                        this.props.item.qr_artifact.blob_url,
                                                         QrCodeBg,
                                                         LoopcycleLogo
                                                     )
-                                                }>
+                                                } }>
                                                 PDF
                                             </span>
+                                            {/* style mono, black, blue, green, lime, pink, white
+                                            mode: argb, rgb, mono, cmyk
+
+                                            format: png, bmp, jpg
+                                            */}
                                             <a
+                                                onClick={(e)=>{
+                                                    e.stopPropagation();
+                                                }}
                                                 className={"mr-1 btn btn-sm btn-gray-border-small "}
                                                 href={
-                                                    baseUrl + "product/" + this.props.item.product._key + "/code?a=true&f=png&u=" + frontEndUrl + "p"
+                                                    baseUrl + "product/" + this.props.item.product._key + "/code?style=blue&format=png&u=" + frontEndUrl + "p"
                                                 } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>Alt</a>
                                             <a
+                                                onClick={(e)=>{
+                                                    e.stopPropagation();
+                                                }}
                                                 className={"mr-1 btn btn-sm btn-gray-border-small "}
                                                 href={
-                                                    baseUrl + "product/" + this.props.item.product._key + "/code?m=true&f=png&u=" + frontEndUrl + "p"
+                                                    baseUrl + "product/" + this.props.item.product._key + "/code?style=mono&mode=mono&format=png&u=" + frontEndUrl + "p"
                                                 } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.props.item.product._key + ".png" }>Mono</a>
                                         </p>
                                     )}
@@ -274,7 +304,7 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
+        loadCurrentProduct:(data) => dispatch(actionCreator.loadCurrentProduct(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
     };
 };

@@ -3,9 +3,6 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
@@ -23,8 +20,8 @@ import Close from "@mui/icons-material/Close";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import {PRODUCT_NPARENT_LIST_PAGE} from "../../store/types";
-import {loading} from "../../store/actions/actions";
+import CustomPopover from "../../components/FormsUI/CustomPopover";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class Products extends Component {
 
@@ -45,8 +42,10 @@ class Products extends Component {
             loading:false,
             items:[],
             lastPageReached:false,
-            currentOffset:0
-
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -77,65 +76,36 @@ class Products extends Component {
 
     }
 
-    // Options
-     options = {
-        root: null, // Page as root
-        rootMargin: '0px',
-        threshold: 1.0
-    };
-
-    loadNewPageSetUp=()=>{
-
-        // Create an observer
-        this.observer = new IntersectionObserver(
-            this.handleObserver.bind(this), //callback
-            this.options
-        );
 
 
-        // window.onload = function() {
-        if (this.loadingRef)
-            this.observer.observe(this.loadingRef);
 
-        // }
-    }
     componentDidMount() {
 
-        // this.props.loadSites();
+        // this.loadProductsWithoutParentPageWise()
 
+        this.setState({
+            items:[]
+        })
+        this.getTotalProducts()
 
-        // this.props.resetProductPageOffset()
-        // this.props.dispatchLoadProductsWithoutParentPage({offset:this.props.productPageOffset,size:this.props.productPageSize});
-        // this.props.dispatchLoadProductsWithoutParentPage({offset:0,size:400});
-
-        // this.loadNewPageSetUp()
-
-        // this.getSitesForProducts()
-
-
-
-
-        this.loadProductsWithoutParentPageWise()
-        // this.loadNewPageSetUp()
     }
 
 
-
-    loadProductsWithoutParentPageWise=()=>{
+    getTotalProducts=()=>{
 
 
         let newOffset=this.state.currentOffset
 
 
         axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.props.productPageSize}`)
+            .get(`${baseUrl}product/no-parent/count`)
             .then(
                 (response) => {
                     if(response.status === 200) {
 
                         this.setState({
-                            items:response.data.data
+                            count:(response.data.data),
+
                         })
                     }
 
@@ -143,35 +113,42 @@ class Products extends Component {
                 (error) => {
                 }
             )
-            .catch(error => {});
+            .catch(error => {}).finally(()=>{
 
-        this.setState({
-
-            currentOffset:newOffset+400
-        })
+                 });
 
     }
 
-    handleObserver=(entities, observer) =>{
+    loadProductsWithoutParentPageWise=()=>{
+
+        let newOffset=this.state.currentOffset
 
 
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
 
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
+                        })
+                    }
 
-       let [entry] = entities
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
 
-
-        if (entry.intersectionRatio>this.state.intersectionRatio){
-
-            // alert("called")
-
-            // this.props.dispatchLoadProductsWithoutParentPage({offset:this.state.currentOffset,size:this.props.productPageSize});
-
-            this.loadProductsWithoutParentPageWise()
-        }
-
+        });
 
         this.setState({
-            intersectionRatio:entry.intersectionRatio
+
+            currentOffset:newOffset+this.state.productPageSize
         })
 
     }
@@ -327,12 +304,7 @@ class Products extends Component {
 
         let validations=[
             validateFormatCreate("count", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields)
-
         ]
-
-
-
-
 
         let {formIsValid,errors}= validateInputs(validations)
         this.setState({ errors: errors });
@@ -421,25 +393,27 @@ class Products extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-md-8 d-flex justify-content-start">
+                            <div className="col-md-12 ">
                                 <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
-                                    Product Service
+                                    <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Product Service</CustomPopover>
                                 </Link>
 
                                 <Link to="/product-archive" className="btn btn-sm btn-gray-border mr-2">
-                                    Records
+                                   <CustomPopover text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
                                 </Link>
 
                                 <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
-                                    Tracked
+                                    <CustomPopover text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}>Tracked</CustomPopover>
                                 </Link>
+
+                                <div style={{float:"right"}} className=" text-right pl-3-desktop">
+                                    <CustomPopover text={"Open QR codes that are not associated with any product yet. You can scan these codes and then associate them to a product that currently exists."}><button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
+                                    <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+                                </div>
                             </div>
 
 
-                            <div className="col-md-4 d-flex justify-content-end">
-                                <button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button>
-                                <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
-                            </div>
+
                         </div>
 
                         <div className="row  justify-content-center search-container  pt-3 pb-3">
@@ -450,8 +424,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.items.filter((site)=>
+                                <p  className="text-gray-light ml-2 ">Showing {this.state.items.filter((site)=>
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -478,14 +451,15 @@ class Products extends Component {
                                         ).length
 
                                     }
-                                    <span className="ml-1 text-gray-light">Products Listed</span>
+                                    <span className="ml-1 text-gray-light"> of {this.state.count} Products</span>
                                 </p>
                             </div>
 
                         </div>
 
-                        {
-                        this.state.items.filter((site)=>
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+
+                        {this.state.items.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -527,16 +501,12 @@ class Products extends Component {
                             </div>
                         ))}
 
-
-
-
-                        {false&&!this.state.lastPageReached &&
-                        <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                                <div>Loading products please wait ...</div>
-                            </div>
-                        </div>
-                        }
+                        </PaginationLayout>
+                        {/*{!this.state.lastPageReached &&    <div className={!this.state.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>*/}
+                        {/*    <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">*/}
+                        {/*        <div>Loading products please wait ...</div>*/}
+                        {/*    </div>*/}
+                        {/*</div>}*/}
                     </div>
 
 
@@ -654,7 +624,6 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
-        lastPageReached:state.lastPageReached
     };
 };
 

@@ -14,80 +14,7 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
-
-const TrackedProductsOld = () => {
-
-    const [tracked, setTracked] = useState(null);
-    const [trackStatus, setTrackStatus] = useState('');
-
-    useEffect(() => {
-        setTrackStatus('');
-        getTrackedProducts();
-    }, [])
-
-    const getTrackedProducts = () => {
-        axios.get(`${baseUrl}product/track`)
-            .then(res => {
-                const data = res.data.data;
-                setTracked(data);
-            })
-            .catch(error => {
-                console.log('track error ', error)
-            })
-    }
-
-    const handleSubmitStatus = (status) => {
-        setTrackStatus(status);
-        getTrackedProducts();
-    }
-
-
-    return (
-        <div>
-            <Sidebar />
-            <div className="wrapper">
-                <HeaderDark />
-
-                <div className="container  pb-4 pt-4">
-                    <PageHeader
-                        pageIcon={ArchiveIcon}
-                        pageTitle="Tracked Products"
-                        subTitle="Your tracked products"
-                        bottomLine={<hr />}
-                    />
-
-                    <div className="row mt-3 mb-5">
-                        <div className="col-12 d-flex justify-content-start">
-                            <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
-                                Product Service
-                            </Link>
-
-                            <Link to="/my-products" className="btn btn-sm blue-btn mr-2">
-                                Products
-                            </Link>
-
-                            <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
-                                Records
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col">
-                            {trackStatus}
-                            {(tracked !== null && tracked.length === 0) && <div>No products yet.</div>}
-                            {tracked ? tracked.map((item, index) => {
-                                return <TrackedProductItem key={index} item={item}  handleStatus={(status) => handleSubmitStatus(status) } />
-                            }) : <div>loading...</div>}
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    )
-}
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 
 
@@ -99,12 +26,17 @@ class TrackedProducts extends Component {
 
         this.state = {
             timerEnd: false,
-            count: 0,
             nextIntervalFlag: false,
 
             searchValue: '',
             filterValue: '',
             products: [],
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
 
@@ -112,7 +44,7 @@ class TrackedProducts extends Component {
 
     getTrackedProducts = () => {
 
-        axios.get(`${baseUrl}product/track`)
+        axios.get(`${baseUrl}product/track/no-links`)
 
             .then((response) => {
                 this.setState({ products: response.data.data });
@@ -121,9 +53,88 @@ class TrackedProducts extends Component {
     };
 
 
+
     componentDidMount() {
-        this.getTrackedProducts();
+
+
+        // this.props.loadParentSites();
+        this.setState({
+            items:[]
+        })
+
+        this.getTotalCount()
+
+
+
     }
+
+
+
+    getTotalCount=()=>{
+
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/track/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+
+    }
+
+
+    loadProductsWithoutParentPageWise=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}product/track/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            items:this.state.items.concat(response.data.data),
+                            loadingResults:false,
+                            lastPageReached:(response.data.data.length===0?true:false)
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+        this.setState({
+
+            currentOffset:newOffset+this.state.productPageSize
+        })
+
+    }
+
+
 
 
     handleSearch = (searchValue) => {
@@ -171,10 +182,9 @@ class TrackedProducts extends Component {
 
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.products.filter((item)=> {
+                                <p  className="text-gray-light ml-2 "> Showing {this.state.items.filter((item)=> {
 
-                                        let site = item.product
+                                        let site = item
 
                                         return this.state.filterValue ? (this.state.filterValue === "name" ?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -199,15 +209,17 @@ class TrackedProducts extends Component {
                                                 site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
                                                 site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                                    }).length} Products
+                                    }).length} of {this.state.count} Products
                                 </p>
                             </div>
 
                         </div>
 
-                        {this.state.products.filter((item)=> {
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
-                            let site=item.product
+                        {this.state.items.filter((item)=> {
+
+                            let site=item
 
 
                             return    this.state.filterValue ? (this.state.filterValue === "name" ?
@@ -243,7 +255,7 @@ class TrackedProducts extends Component {
                                         edit={false}
                                         remove={false}
                                         duplicate={false}
-                                        item={item.product}
+                                        item={item}
                                         untrack={true}
                                         reload={()=>{this.getTrackedProducts()}}
                                     />
@@ -251,6 +263,8 @@ class TrackedProducts extends Component {
 
                             </>
                         ))}
+
+                        </PaginationLayout>
 
 
                     </div>

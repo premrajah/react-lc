@@ -48,13 +48,13 @@ class SearchBar extends Component {
                             value={this.state.searchValue}
                             placeholder={searchType ? searchType : "Search"}
                             onChange={(e) => this.handleSearch(e.target.value)}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-
-                                    </InputAdornment>
-                                ),
-                            }}
+                            // InputProps={{
+                            //     endAdornment: (
+                            //         <InputAdornment position="end">
+                            //
+                            //         </InputAdornment>
+                            //     ),
+                            // }}
                         />
                         <SearchGray className={"search-icon"} style={{ fontSize: 24, color: "#B2B2B2" }} />
                     </div>

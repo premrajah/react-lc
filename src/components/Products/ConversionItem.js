@@ -16,10 +16,7 @@ const ConversionItem = (props) => {
     const [artifacts, setArtifacts] = useState([]);
 
     useEffect(() => {
-        // return history.listen((location) => {
 
-
-            // })
     }, item)
 
 

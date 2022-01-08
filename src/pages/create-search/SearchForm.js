@@ -332,10 +332,6 @@ if ((this.state.activeStep-1)==0){
             activeStep: this.state.activeStep - 1
         });
 
-
-
-
-
             this.setState({
 
                 progressBar: 50,
@@ -1088,9 +1084,6 @@ if ((this.state.activeStep-1)==0){
             });
 
 
-
-
-
         }
 
 
@@ -1153,6 +1146,7 @@ if ((this.state.activeStep-1)==0){
                                                 <TextFieldWrapper
                                                     onChange={(value)=>this.handleChange(value,"description")}
                                                     name={"description"}
+                                                    error={this.state.showFieldErrors&&this.state.errors["description"]}
                                                     id="outlined-basic"
                                                     multiline
                                                     rows={4}

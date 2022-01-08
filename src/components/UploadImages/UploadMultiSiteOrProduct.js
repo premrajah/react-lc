@@ -1,30 +1,68 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import * as Yup from 'yup';
 import {baseUrl, getImageAsBytes, MATCH_STRATEGY_OPTIONS, MERGE_STRATEGY_OPTIONS} from "../../Util/Constants";
 import axios from "axios/index";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import Button from "@mui/material/Button";
-import {Publish, Download} from "@mui/icons-material";
+import {Download, Publish} from "@mui/icons-material";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-// import {TextField} from "formik-material-ui";
 import EditSite from "../Sites/EditSite";
-import {validateInputs} from "../../Util/Validator";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SiteForm from "../Sites/SiteForm";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import * as XLSX from 'xlsx';
 
+let productProperties=[
+    {field:"name",required:true},
+    {field:"description",required:true},
+    {field:"external_reference",required:false},
+    {field:"condition",required:true},
+    {field:"purpose",required:true},
+    {field:"year_of_making",required:false},
+    {field:"category",required:true},
+    {field:"type",required:true},
+    {field:"state",required:true},
+    {field:"units",required:true},
+    {field:"volume",required:true},
+    {field:"brand",required:true},
+    {field:"model",required:false},
+    {field:"serial",required:false},
+    {field:"sku",required:false},
+    {field:"upc",required:false},
+    {field:"part_no",required:false},
+    {field:"line",required:false},
+    {field:"is_listable",required:false},
+]
+
+let siteProperties=[
+    {field:"name",required:true},
+    {field:"description",required:false},
+    {field:"external_reference",required:false},
+    {field:"contact",required:true},
+    {field:"address",required:true},
+    {field:"phone",required:false},
+    {field:"email",required:false},
+    {field:"others",required:false},
+    {field:"is_head_office",required:false},
+]
+
+
+// const getField=(field,required)=>{
+//
+//     return ({"field":field,required:required})
+//
+// }
 
 const UploadMultiSiteOrProduct = (props) => {
 
-    // {siteList, loadSites, multiUploadCallback, popUpType}
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [isProduct, setIsProduct] = useState(false);
     const [isSite, setIsSite] = useState(false);
+    const [showErrors, setShowErrors] = useState(false);
     const [fileName, setFileName] = useState(null);
-
-
     const [uploadSitesError, setUploadSitesError] = useState('');
     const [errorsArray, setErrorsArray] = useState([]);
     const [fields, setFields] = useState({});
@@ -34,11 +72,11 @@ const UploadMultiSiteOrProduct = (props) => {
     const [siteShowHide, setSiteShowHide] = useState(false);
     const [submitSiteError, setSubmitSiteError] = useState("");
     const [submitSiteErrorClassName, setSubmitSiteErrorClassName] = useState("")
-    const formikRef = useRef();
+
+
+
 
     useEffect(() => {
-
-
 
         if(props.popUpType=="isProduct") {
             props.loadSites();
@@ -71,29 +109,30 @@ const UploadMultiSiteOrProduct = (props) => {
     }, [])
 
     const handleReset = () => {
-        formikRef.current?.resetForm();
+
     }
 
 
    const handleValidation=()=> {
 
-
         let fieldsLocal = fields;
 
-
         let validations = [
-            // validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fieldsLocal),
-            // validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
-            // validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
-
-
+            validateFormatCreate("artifact", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            validateFormatCreate("merge_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
         ]
 
 
-        let {formIsValid, errorsLocal} = validateInputs(validations)
+       if (isProduct){
+           validations.push(   validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+           )
+       }
+        let result = validateInputs(validations)
 
-       setErrors(errorsLocal);
-        return formIsValid;
+       setErrors(result.errors);
+       console.log("errorsLocal",result.errors)
+        return result.formIsValid;
     }
 
     const  handleChange=(value, field) =>{
@@ -102,6 +141,22 @@ const UploadMultiSiteOrProduct = (props) => {
         if (field==="artifact"){
 
             setFileName(value.name)
+            let tmppath = URL.createObjectURL(value);
+
+
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                /* Parse data */
+                const bstr = evt.target.result;
+                const wb = XLSX.read(bstr, { type: 'binary' });
+                /* Get first worksheet */
+                const wsname = wb.SheetNames[0];
+                const ws = wb.Sheets[wsname];
+                /* Convert array of arrays */
+                const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
+                processData(data);
+            };
+            reader.readAsBinaryString(value);
 
         }
 
@@ -110,23 +165,175 @@ const UploadMultiSiteOrProduct = (props) => {
             fieldsLocal[field] = value;
 
             setFields(fieldsLocal)
+            handleValidation()
 
     }
 
 
 
+    // process CSV data
+    const processData = dataString => {
+        const dataStringLines = dataString.split(/\r\n|\n/);
+        const headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
+
+        const list = [];
+        for (let i = 1; i < dataStringLines.length; i++) {
+
+            const row = dataStringLines[i].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
+            if (headers && row.length == headers.length) {
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    let d = row[j];
+                    if (d.length > 0) {
+                        if (d[0] == '"')
+                            d = d.substring(1, d.length - 1);
+                        if (d[d.length - 1] == '"')
+                            d = d.substring(d.length - 2, 1);
+                    }
+                    if (headers[j]) {
+                        obj[headers[j]] = d;
+                    }
+                }
+
+                // remove the blank rows
+                if (Object.values(obj).filter(x => x).length > 0) {
+                    list.push(obj);
+                }
+            }
+        }
+
+
+        let errorFound=false
+
+        for (let i=0;i<headers.length;i++){
+
+            if (isProduct) {
+
+                if (!headers.length === productProperties[i].length) {
+                    let errorsFound = errors
+
+                    errorsFound.artifact = {
+                        error: true,
+                        message: "Invalid/Missing CSV columns. Download CSV template to check correct format and sequence of columns/fields"
+                    }
+                    setErrors(errorsFound)
+                    errorFound = true
+                    return
+                }
+                if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
+
+                    let errorsFound = errors
+
+                    errorsFound.artifact = {
+                        error: true,
+                        message: "Invalid/Missing CSV columns. Download CSV template to check correct format and sequence of columns/fields"
+                    }
+                    setErrors(errorsFound)
+                    errorFound = true
+
+                    return
+                }
+
+            }
+
+            if(isSite){
+
+                if (!headers.length === siteProperties[i].length) {
+                    let errorsFound = errors
+
+                    errorsFound.artifact = {
+                        error: true,
+                        message: "Invalid/Missing CSV columns. Download CSV template to check correct format and sequence of columns/fields"
+                    }
+                    setErrors(errorsFound)
+                    errorFound = true
+                    return
+                }
+                if (!(siteProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
+
+                    let errorsFound = errors
+
+                    errorsFound.artifact = {
+                        error: true,
+                        message: "Invalid/Missing CSV columns. Download CSV template to check correct format and sequence of columns/fields"
+                    }
+                    setErrors(errorsFound)
+                    errorFound = true
+
+                    return
+                }
+
+            }
+
+        }
+
+        if (!errorFound) {
+
+            let artifactError=null
+
+            for (let i = 0; i < list.length; i++) {
+
+                if (isProduct) {
+
+
+                    for (let k = 0; k < productProperties.length; k++) {
+
+                        if (!list[i][productProperties[k].field] && productProperties[k].required) {
+
+                            artifactError=(artifactError?artifactError+", ":"")+ "Entry:"+(i+1)+" Missing "+productProperties[k].field
+
+                         }
+                  }
+               }
+
+                if (isSite) {
+
+
+                    for (let k = 0; k < siteProperties.length; k++) {
+
+                        if (!list[i][siteProperties[k].field] && siteProperties[k].required) {
+
+                            artifactError=(artifactError?artifactError+", ":"")+ "Entry:"+(i+1)+" Missing "+siteProperties[k].field
+
+                        }
+                    }
+                }
+             }
+
+            if (artifactError) {
+
+                let errorsFound = errors
+                errorsFound.artifact = {
+                    error: true,
+                    message: artifactError
+                }
+                setErrors(errorsFound)
+                return
+
+            }
+        }
+        // prepare columns list from headers
+
+
+
+        // setData(list);
+        // setColumns(columns);
+    }
+
+
 
     const handleFormSubmitNew=(event)=>{
+
 
         let parentId;
         event.preventDefault();
         if (!handleValidation()) {
 
+
+            setShowErrors(true)
             return
 
         }
-
-
 
 
         const data = new FormData(event.target);
@@ -151,7 +358,6 @@ const UploadMultiSiteOrProduct = (props) => {
         getImageAsBytes(formData.artifact)
             .then(data => {
 
-
                 postArtifact(data, artifact, match_strategy, merge_strategy, siteId);
             })
             .catch(error => {
@@ -161,8 +367,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
     }
     const handleFormSubmit = (values, {setSubmitting}) => {
-
-
 
         const {artifact, match_strategy, merge_strategy, siteId} = values;
         setIsDisabled(true);
@@ -247,8 +451,6 @@ const UploadMultiSiteOrProduct = (props) => {
         axios.post(url, payload)
             .then(res => {
 
-
-                // alert("no errror")
                     setUploadSitesError(<span className="text-success"><b>Uploaded {isSite ? "Sites" : "Products"} Successfully!</b></span>);
                     setErrorsArray(res.data.errors)
                     setUploadArtifactError('');
@@ -272,8 +474,8 @@ const UploadMultiSiteOrProduct = (props) => {
         <div className="row mb-2">
             <div className="col">
                 <h4 className={"blue-text text-heading"}>{isSite && 'Multiple Sites Upload'}{isProduct && 'Multiple Products Upload'}</h4>
-                <span className="top-element text-capitlize text-underline">
-                   <Download style={{fontSize:"16px"}} /> <a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "products" : "sites"} csv template</a>
+                <span className="top-element  text-underline">
+                   <Download style={{fontSize:"16px"}} /><a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "" : ""} CSV template</a>
                 </span>
             </div>
         </div>
@@ -297,7 +499,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
 
-                            <div className="row mb-2 justify-content-center text-center bg-white rad-8 p-3 m-2 ">
+                            <div className="row  justify-content-center text-center bg-white rad-8 p-3 no-gutters ">
                                 <div className="col">
 
 
@@ -327,21 +529,26 @@ const UploadMultiSiteOrProduct = (props) => {
                                         {/*{formProps.errors.artifact && formProps.touched.artifact ? (<div className="text-danger">{formProps.errors.artifact}</div>) : null}*/}
                                     </div>
                                     {fileName &&<div className="text-blue">File: {fileName}</div>}
-                                    <div className="text-gray-light">(Click To Upload CSV File)</div>
+                                    <div className="text-gray-light text-14">(Click To Upload CSV File)</div>
 
 
                                 </div>
+
                             </div>
+                    {/*{errors["artifact"] && */}
+                    <p style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["artifact"]&&errors["artifact"].message}</p>
+                    {/*}*/}
+
 
                     {isProduct &&  <div className="row">
-                                <div className="col">
+                                <div className="col mt-2">
 
                                         <SelectArrayWrapper
 
                                             // initialValue={this.props.item&&this.props.item.site._key}
                                             option={"name"}
                                             valueKey={"_key"}
-                                            // error={this.state.errors["deliver"]}
+                                            error={showErrors&&errors["deliver"]}
                                             onChange={(value)=> {
 
                                                 handleChange(value,"deliver")
@@ -349,7 +556,7 @@ const UploadMultiSiteOrProduct = (props) => {
                                             }}
                                             select={"Select"}
                                             options={props.siteList} name={"deliver"}
-                                            title="Dispatch / Collection Address"/>
+                                            title="Dispatch/Collection Address"/>
 
 
                                         <p style={{ marginTop: "10px" }}>
@@ -388,55 +595,19 @@ const UploadMultiSiteOrProduct = (props) => {
                                             </div>
                                         )}
 
-
-                                    {/*<Field*/}
-                                    {/*    component={TextField}*/}
-                                    {/*    type="text"*/}
-                                    {/*    name="siteId"*/}
-                                    {/*    label="Pick a Site"*/}
-                                    {/*    select*/}
-                                    {/*    variant="outlined"*/}
-                                    {/*    helperText="Please select a Site"*/}
-                                    {/*    margin="normal"*/}
-                                    {/*    InputLabelProps={{*/}
-                                    {/*        shrink: true,*/}
-                                    {/*    }}*/}
-                                    {/*>*/}
-                                    {/*    <MenuItem value="">Pick a site</MenuItem>*/}
-                                    {/*    {siteList.length > 0 ? siteList.map((option) => (*/}
-                                    {/*        <MenuItem key={option._id} value={option._id}>*/}
-                                    {/*            {`${option.name} - (${option.address})`}*/}
-                                    {/*        </MenuItem>*/}
-                                    {/*    )) : <MenuItem value="">Loading...</MenuItem> }*/}
-                                    {/*</Field>*/}
                                 </div>
                             </div>}
 
-                            {/*{isProduct && <div className="row mb-2">*/}
-                            {/*    <div className="col">*/}
-                            {/*        <div className="row">*/}
-                            {/*            <div className="col-md-6 green-text" style={{cursor: "pointer"}} onClick={() => handleShowHideSite()}>Add Site {siteShowHide ? <span className='text-warning'><b>Close</b></span> : ""}</div>*/}
-                            {/*        </div>*/}
-                            {/*        <div className={submitSiteErrorClassName}><b>{submitSiteError}</b></div>*/}
-                            {/*        {siteShowHide && <div className="row">*/}
-                            {/*            <div className="col">*/}
-                            {/*                <div className="container p-4" style={{backgroundColor: "#f2f2f2", width: '70%'}}>*/}
-                            {/*                    <EditSite site={{}} submitCallback={(e) => handleEditSiteCallBack(e)} />*/}
-                            {/*                </div>*/}
-                            {/*            </div>*/}
-                            {/*        </div>}*/}
-                            {/*    </div>*/}
-                            {/*</div>}*/}
 
                             <div className="row mb-2">
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
                                         name="match_strategy"
-
+                                        error={showErrors&&errors["match_strategy"]}
                                         helperText="Select how to match"
                                         options={MATCH_STRATEGY_OPTIONS}
 
-
+                                        select={"Select"}
                                         onChange={(value)=> {
                                             handleChange(value,"match_strategy")
                                         }}
@@ -448,9 +619,9 @@ const UploadMultiSiteOrProduct = (props) => {
 
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
-
+                                        select={"Select"}
                                         name="merge_strategy"
-
+                                        error={showErrors&&errors["merge_strategy"]}
                                         helperText="Select how to merge"
                                         options={MERGE_STRATEGY_OPTIONS}
                                         onChange={(value)=> {

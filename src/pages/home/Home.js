@@ -5,12 +5,11 @@ import {Link} from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
-
 import FindProduct from "../../img/icons/Find-Product.svg";
-import AddProduct from "../../img/icons/Add-Product.svg";
+import AddProduct from "../../img/icons/add-product-icon.svg";
 import SellProduct from "../../img/icons/Sell-Products.svg";
-import NewListing from "../../img/icons/New-Listing.svg";
-import NewSearch from "../../img/icons/New-Search.svg";
+import NewListing from "../../img/icons/add-listing-icon.svg";
+import NewSearch from "../../img/icons/search-icon.svg";
 
 class Home extends Component {
     constructor(props) {
@@ -103,7 +102,7 @@ class Home extends Component {
                                                 href="https://loopcycle.io/"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                type="button"
+
                                                 style={{ textDecoration: "none" }}
                                                 className="mr-2  blue-btn-border mt-2 mb-2">
                                                 Learn more <NavigateNextIcon />

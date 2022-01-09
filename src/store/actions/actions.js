@@ -266,6 +266,7 @@ export const loadCurrentProduct = (data) => {
 
 export const loadCurrentProductSync = (data) => (dispatch) => {
 
+    try{
     axios
         .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
         )
@@ -287,6 +288,11 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
             }
         );
 
+    } catch(e) {
+        console.log(e)
+
+
+    }
 };
 
 export const resetProductPageOffset = () => {
@@ -326,27 +332,34 @@ export const loadCurrentSiteSync = (data) => (dispatch) => {
 export const loadProductsSync = (data) => (dispatch) => {
 
 
+    try {
+        axios
+            .get(baseUrl + "product/no-links?agg", {
+                headers: {
+                    Authorization: "Bearer " + data,
+                },
+            })
+            .then(
+                (response) => {
+                    let responseAll = response.data.data;
 
-    axios
-        .get(baseUrl + "product/no-links?agg", {
-            headers: {
-                Authorization: "Bearer " + data,
-            },
-        })
-        .then(
-            (response) => {
-                let responseAll = response.data.data;
+                    dispatch({type: PRODUCT_LIST, value: responseAll});
+                    // dispatch()
+                },
+                (error) => {
+                    // let status = error.response.status
 
-                dispatch({ type: PRODUCT_LIST, value: responseAll });
-                // dispatch()
-            },
-            (error) => {
-                // let status = error.response.status
+                    dispatch({type: PRODUCT_LIST, value: []});
+                }
+            )
+            .catch(error => {
+            });
 
-                dispatch({ type: PRODUCT_LIST, value: [] });
-            }
-        )
-        .catch(error => {});
+    } catch(e) {
+console.log(e)
+
+
+    }
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };

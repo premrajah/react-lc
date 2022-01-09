@@ -219,7 +219,6 @@ class ProductExpandItem extends Component {
 
     render() {
         const classes = withStyles();
-        const classesBottom = withStyles();
 
         return (
             <div className={"mt-3"}>
@@ -353,7 +352,6 @@ class ProductExpandItem extends Component {
                                                             .map((item) => (
                                                                 <option value={item._key}>
                                                                     {item.name}
-                                                                    {/*({item.sub_product_ids.length}Sub Products)*/}
                                                                 </option>
                                                             ))}
 

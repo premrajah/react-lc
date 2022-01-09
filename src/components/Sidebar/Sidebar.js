@@ -155,7 +155,12 @@ class Sidebar extends Component {
                                                 className="white-text list-group-item list-group-item-action">
                                                 Searches
                                             </Link>
-
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/sites"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Sites
+                                        </Link>
 
                                             <Link
                                                 onClick={this.toggleMenu}

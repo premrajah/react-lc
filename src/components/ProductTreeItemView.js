@@ -101,47 +101,47 @@ class ProductTreeItemView extends Component {
         this.getListing()
     }
 
-    async getSubProducts() {
+     getSubProducts() {
 
         if (this.props.item) {
             let currentProductId = this.props.item.id;
 
 
-            let response = await axios.get(baseUrl + "product/" + currentProductId + "/sub-product", {
-                headers: {
-                    Authorization: "Bearer " + this.props.token,
-                },
-            });
-
-            let responseAll = response.data.data;
-
-            this.setState({
-                products: responseAll,
-            });
-
-            this.setTree();
-
-
-            // axios
-            //     .get(baseUrl + "product/" + currentProductId + "/sub-product", {
-            //         headers: {
-            //             Authorization: "Bearer " + this.props.token,
-            //         },
-            //     })
-            //     .then(
-            //         (response) => {
-            //             var responseAll = response.data.data;
+            // let response =  axios.get(baseUrl + "product/" + currentProductId + "/sub-product", {
+            //     headers: {
+            //         Authorization: "Bearer " + this.props.token,
+            //     },
+            // });
             //
-            //             this.setState({
-            //                 products: responseAll,
-            //             });
+            // let responseAll = response.data.data;
             //
-            //             this.setTree();
-            //         },
-            //         (error) => {
-            //             // var status = error.response.status
-            //         }
-            //     );
+            // this.setState({
+            //     products: responseAll,
+            // });
+
+            // this.setTree();
+
+
+            axios
+                .get(baseUrl + "product/" + currentProductId + "/sub-product", {
+                    headers: {
+                        Authorization: "Bearer " + this.props.token,
+                    },
+                })
+                .then(
+                    (response) => {
+                        var responseAll = response.data.data;
+
+                        this.setState({
+                            products: responseAll,
+                        });
+
+                        this.setTree();
+                    },
+                    (error) => {
+                        // var status = error.response.status
+                    }
+                );
         }
 
     }
@@ -217,7 +217,7 @@ class ProductTreeItemView extends Component {
                             }
                         </>
                         }
-                            </div><span className={"tree-item-name"}>{this.props.item.name}</span></span>
+                            </div><span className={"tree-item-name"}>{this.props.item.name} {this.props.item.id}</span></span>
                             {this.state.tree.length>0 &&
                             <>
                             {/*<span className="mr-1">-</span>*/}

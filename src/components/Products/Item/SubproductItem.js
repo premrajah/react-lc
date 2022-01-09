@@ -8,15 +8,10 @@ import MoreMenu from "../../MoreMenu";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../../store/actions/actions";
 import {connect} from "react-redux";
-import {
-    useHistory,
-    BrowserRouter,
-    Route,
-} from "react-router-dom";
 import {capitalize} from "../../../Util/GlobalFunctions";
 
 const SubproductItem = (props) => {
-    const history = useHistory()
+
 
     const item=props.item
     const parentId= props.parentId
@@ -26,10 +21,11 @@ const SubproductItem = (props) => {
     useEffect(() => {
         // return history.listen((location) => {
 
+            if(item&&item._key)
             getArtifactsForProduct(item._key)
 
             // })
-    }, item._key)
+    }, item&&item._key)
 
     const getArtifactsForProduct = (key) => {
 

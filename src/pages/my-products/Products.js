@@ -436,7 +436,7 @@ class Products extends Component {
                                             this.state.filterValue?( this.state.filterValue==="name"?
                                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                    this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                                    this.state.filterValue==="brand"? site.sku.brand&& site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                                         this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                                             this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                                                 this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -448,7 +448,7 @@ class Products extends Component {
                                                             null):
                                                 (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                     site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                                    site.sku.brand&&site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                     site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                     site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                     site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||
@@ -471,7 +471,7 @@ class Products extends Component {
                             this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
+                                    this.state.filterValue==="brand"?  site.sku.brand&&site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                         this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                             this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
                                                 this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
@@ -483,7 +483,7 @@ class Products extends Component {
                                                                 null):
                                 (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                     site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
+                                    site.sku.brand&& site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                     site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                     site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                     site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||

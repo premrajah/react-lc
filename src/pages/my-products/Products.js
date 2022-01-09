@@ -394,19 +394,26 @@ class Products extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-md-12 ">
-                                <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
+                            <div className="col-md-12 btn-rows">
+                                <Link to="/products-service" className=" btn-sm btn-gray-border mr-2">
                                     <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Product Service</CustomPopover>
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/product-archive" className=" btn-sm btn-gray-border  mr-2">
                                    <CustomPopover text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
+                                <Link to="/product-tracked" className=" btn-sm btn-gray-border  mr-2">
                                     <CustomPopover text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}>Tracked</CustomPopover>
                                 </Link>
 
+                                <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">
+                                    {/*<CustomPopover*/}
+                                    {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
+                                    {/*>*/}
+                                        Product Issues
+                                {/*</CustomPopover>*/}
+                                </Link>
                                 <div style={{float:"right"}} className=" text-right pl-3-desktop">
                                     <CustomPopover text={"Open QR codes that are not associated with any product yet. You can scan these codes and then associate them to a product that currently exists."}><button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
                                     <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>

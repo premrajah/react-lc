@@ -28,7 +28,7 @@ class Help extends Component {
                     <PageHeader
                         pageIcon={SettingsWhite}
                         pageTitle="Help"
-                        subTitle=""
+                        subTitle={`Hi, ${this.props.userDetail.firstName}. What can we help you with?`}
                         bottomLine={""}
                     />
 

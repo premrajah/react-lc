@@ -88,6 +88,7 @@ class Products extends Component {
         })
         this.getTotalProducts()
 
+
     }
 
 

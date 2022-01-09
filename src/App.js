@@ -88,8 +88,11 @@ import ListFormNew from "./pages/create-listing/ListForm";
 // Refer: https://github.com/react-ga/react-ga for usage details
 // --- START
 import ReactGA from 'react-ga';
-import {gaTID} from "./Util/Constants";
+import {gaTID, REACT_APP_BRANCH_ENV} from "./Util/Constants";
+import RouteChangeTracker from './RouteChangeTracker'
+
 ReactGA.initialize(gaTID);
+ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
 ReactGA.pageview(window.location.pathname + window.location.search );
 // --- END
 
@@ -236,6 +239,11 @@ class App extends Component {
                     <CustomSnackbar />
                 </BrowserRouter>
                 </ThemeProvider>
+                // Added by Chandan For Google Analytics
+                // Refer: https://github.com/react-ga/react-ga for usage details
+                // --- START
+                <RouteChangeTracker />
+                // -- END
             </>
         );
     }

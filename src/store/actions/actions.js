@@ -2,7 +2,6 @@ import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 
-import {baseUrl, gaTID, REACT_APP_BRANCH_ENV} from "../../Util/Constants";
 import {
 
     LOAD_USER_DETAIL,
@@ -42,9 +41,13 @@ import {
     SITE_FORM_SHOW, PRODUCT_PAGE_RESET, PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG
 } from "../types";
 import {load} from "dotenv";
+
+// Added by Chandan For Google Analytics
+// Refer: https://github.com/react-ga/react-ga for usage details
+// --- START
 import ReactGA from "react-ga";
-
-
+import {baseUrl, gaTID, REACT_APP_BRANCH_ENV} from "../../Util/Constants";
+// -- END
 
 export const loadingSpinner = () => {
     return {

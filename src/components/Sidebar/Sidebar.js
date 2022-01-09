@@ -176,7 +176,12 @@ class Sidebar extends Component {
                                                 className="white-text list-group-item list-group-item-action">
                                                 Approvals
                                             </Link>
-
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/help"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Help
+                                        </Link>
                                             <Link
                                                 onClick={this.toggleMenu}
                                                 to={"/issues"}

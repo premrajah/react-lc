@@ -38,10 +38,10 @@ import Filter from "./views/browse-resources/Filter";
 import LoggedInRoute from "./Util/LoggedInRoute";
 import {connect} from "react-redux";
 import * as actionCreator from "./store/actions/actions";
-import EditAccount from "./views/account/EditAccount";
-import CompanyInfo from "./views/account/CompanyInfo";
-import PaymentMethod from "./views/account/PaymentMethod";
-import MyAccount from "./views/account/MyAccount";
+import EditAccount from "./pages/account/EditAccount";
+import CompanyInfo from "./pages/account/CompanyInfo";
+import PaymentMethod from "./pages/account/PaymentMethod";
+import MyAccount from "./pages/account/MyAccount";
 import ProductPopUp from "./views/create-product/create-product-popup";
 import NotFound from "./views/NotFound/index";
 import TermsAndConditions from "./components/Terms/TermsAndConditions";
@@ -74,7 +74,7 @@ import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./pages/cycles/CyclesRecords";
 import UploadMultiplePopUp from "./components/Products/UploadMultiplePopUp";
-import TransferScaling from "./views/account/TransferScaling";
+import TransferScaling from "./pages/account/TransferScaling";
 import MyCampaigns from "./pages/ad-campaigns/MyCampaigns";
 import CreateCampaign from "./pages/ad-campaigns/CreateCampaign";
 // import { ThemeProvider, createMuiTheme, makeStyles } from '@mui/styles';
@@ -90,6 +90,7 @@ import ListFormNew from "./pages/create-listing/ListForm";
 import ReactGA from 'react-ga';
 import {gaTID, REACT_APP_BRANCH_ENV} from "./Util/Constants";
 import RouteChangeTracker from './RouteChangeTracker'
+import Help from "./pages/help/Help";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -190,6 +191,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
+                        <LoggedInRoute exact path="/help" component={Help} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
@@ -239,11 +241,11 @@ class App extends Component {
                     <CustomSnackbar />
                 </BrowserRouter>
                 </ThemeProvider>
-                // Added by Chandan For Google Analytics
-                // Refer: https://github.com/react-ga/react-ga for usage details
-                // --- START
+                {/*// Added by Chandan For Google Analytics*/}
+                {/*// Refer: https://github.com/react-ga/react-ga for usage details*/}
+                {/*// --- START*/}
                 <RouteChangeTracker />
-                // -- END
+                {/*// -- END*/}
             </>
         );
     }

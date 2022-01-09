@@ -2,11 +2,10 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
 import {Link} from "react-router-dom";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 import PageHeader from "../../components/PageHeader";
+import Layout from "../../components/Layout/Layout";
 
 class MyAccount extends Component {
     constructor(props) {
@@ -35,17 +34,14 @@ class MyAccount extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
 
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={SettingsWhite}
                             pageTitle="Account"
                             subTitle="Finish setting up your account here"
-                            bottomLine={<hr />}
+                            bottomLine={""}
                         />
 
                         <div className="row">
@@ -90,8 +86,8 @@ class MyAccount extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

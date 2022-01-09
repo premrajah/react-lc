@@ -168,7 +168,7 @@ class QrCode extends Component {
         return (
             <>
 
-                    <div className="row border-box  bg-white rad-8 justify-content-center mt-4 ">
+                    <div className="row border-box no-gutters bg-white rad-8 justify-content-center mt-4 ">
                         <div className="col-3 zoom-in-cursor p-0 " onClick={this.callZoom}>
 
                             {this.props.item&&this.props.item.qr_artifact && (

@@ -13,7 +13,7 @@ import {capitalize} from "../../../Util/GlobalFunctions";
 const SubproductItem = (props) => {
 
 
-    const item=props.item
+   const   [item]=useState(props.item)
     const parentId= props.parentId
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
@@ -25,7 +25,7 @@ const SubproductItem = (props) => {
             getArtifactsForProduct(item._key)
 
             // })
-    }, item&&item._key)
+    }, [item])
 
     const getArtifactsForProduct = (key) => {
 

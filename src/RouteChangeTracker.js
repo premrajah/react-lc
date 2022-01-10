@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 const RouteChangeTracker = ({ history }) => {
 
     history.listen((location, action) => {
+        console.log("Tracker: Route Change : " + location.pathname);
         ReactGA.set({ page: location.pathname });
         ReactGA.pageview(location.pathname);
     });

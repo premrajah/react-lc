@@ -134,6 +134,14 @@ class App extends Component {
         this.props.loadUserDetail();
     }
 
+    componentWillMount() {
+        this.props.history.listen((location, action) => {
+            console.log("Listener: Route Change : " + location.pathname);
+            ReactGA.set({ page: location.pathname });
+            ReactGA.pageview(location.pathname);
+        })
+    }
+
     render() {
         return (
             <>

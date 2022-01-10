@@ -134,14 +134,6 @@ class App extends Component {
         this.props.loadUserDetail();
     }
 
-    componentWillMount() {
-        console.log("Listener: Route Change : " );
-        // history.listen((location, action) => {
-        //     ReactGA.set({ page: location.pathname });
-        //     ReactGA.pageview(location.pathname);
-        // })
-    }
-
     render() {
         return (
             <>
@@ -247,13 +239,13 @@ class App extends Component {
 
 
                     <CustomSnackbar />
+                    {/*// Added by Chandan For Google Analytics*/}
+                    {/*// Refer: https://github.com/react-ga/react-ga for usage details*/}
+                    {/*// --- START*/}
+                    <RouteChangeTracker />
+                    {/*// -- END*/}
                 </BrowserRouter>
                 </ThemeProvider>
-                {/*// Added by Chandan For Google Analytics*/}
-                {/*// Refer: https://github.com/react-ga/react-ga for usage details*/}
-                {/*// --- START*/}
-                <RouteChangeTracker />
-                {/*// -- END*/}
             </>
         );
     }

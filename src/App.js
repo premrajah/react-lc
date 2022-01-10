@@ -135,7 +135,7 @@ class App extends Component {
     }
 
     componentWillMount() {
-        console.log("Listener: Route Change : " + location.pathname);
+        console.log("Listener: Route Change : " );
         // history.listen((location, action) => {
         //     ReactGA.set({ page: location.pathname });
         //     ReactGA.pageview(location.pathname);

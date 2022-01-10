@@ -188,7 +188,7 @@ class ProductTreeItemView extends Component {
 
                         <span
                             data-id={this.props.item.id}
-                            onClick={!this.state.listingExist && this.setSelected}
+                            onClick={!this.state.listingExist ? this.setSelected:null}
                             className={
                                 !this.state.listingExist
                                     ? this.props.selected === this.props.item.id
@@ -196,7 +196,7 @@ class ProductTreeItemView extends Component {
                                         : "tree-view-item"
                                     : "tree-view-item text-mute"
                             }>
-                            <span className="mr-1">  <div className={"expand-square"}>
+                            <span className="mr-1">  <span className={"expand-square"}>
                         {this.state.tree.length > 0 &&
                         <>
                             {
@@ -217,7 +217,7 @@ class ProductTreeItemView extends Component {
                             }
                         </>
                         }
-                            </div><span className={"tree-item-name"}>{this.props.item.name} {this.props.item.id}</span></span>
+                            </span><span className={"tree-item-name"}>{this.props.item.name} {this.props.item.id}</span></span>
                             {this.state.tree.length>0 &&
                             <>
                             {/*<span className="mr-1">-</span>*/}

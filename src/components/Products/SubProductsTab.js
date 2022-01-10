@@ -51,8 +51,7 @@ class SubProductsTab extends Component {
                         {this.props.item.sub_products.map(
                             (item, index) => (
                                 <SubproductItem
-
-
+                                    
                                     smallImage={true}
                                     noLinking={this.props.noLinking}
                                     hideMoreMenu={this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id?false:true}

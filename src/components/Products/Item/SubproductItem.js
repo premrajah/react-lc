@@ -13,23 +13,27 @@ import {capitalize} from "../../../Util/GlobalFunctions";
 const SubproductItem = (props) => {
 
 
-   const   [item]=useState(props.item)
+   const   [item, setItem]=useState(props.item)
     const parentId= props.parentId
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
 
     useEffect(() => {
-        // return history.listen((location) => {
 
-            if(item&&item._key)
-            getArtifactsForProduct(item._key)
 
-            // })
+            if(item&&item._key) {
+                getArtifactsForProduct(item._key)
+            }
+
+            return () => {
+                setItem(null);
+            }
+
     }, [item])
 
     const getArtifactsForProduct = (key) => {
 
-            axios.get(`${baseUrl}product/${key}/artifact`)
+        axios.get(`${baseUrl}product/${key}/artifact`)
                 .then(res => {
                     const data = res.data.data;
                     setArtifacts(data);

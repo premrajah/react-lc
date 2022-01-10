@@ -215,10 +215,11 @@ class ProductTreeView extends Component {
                             </div>
                             <div className={"col-12"}>
                                 <div className={"row tree-view-menu"}>
-                                    {this.state.filteredList.map((item) => (
-                                        <>
-                                            <div className={"col-12"}>
+                                    {this.state.filteredList.map((item,index) => (
+
+                                            <div  key={item.id+index}  className={"col-12"}>
                                                 <ProductTreeItemView
+                                                    key={item.id}
                                                     selected={this.state.selectedProductId}
                                                     triggerCallback={(productId) =>
                                                         this.productSelected(productId)
@@ -227,7 +228,7 @@ class ProductTreeView extends Component {
                                                     token={this.props.userDetail.token}
                                                 />
                                             </div>
-                                        </>
+
                                     ))}
                                 </div>
                             </div>

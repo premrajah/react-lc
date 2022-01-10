@@ -55,6 +55,7 @@ const SelectArrayWrapper = (props) => {
                 disabled={disabled}
                 name={name}
                 className={error&&"border-red-error"}
+                defaultValue={defaultValue ? defaultValue : ""}
             >
                 {select&&
                 <option  value={""}>
@@ -66,7 +67,9 @@ const SelectArrayWrapper = (props) => {
                 </option>}
 
                 {options&&options.map((item, index) => (
-                    <option selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}   key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
+                    <option
+                        selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}
+                            key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
                         {(option?item[option]:item)}
                     </option>
                 ))}

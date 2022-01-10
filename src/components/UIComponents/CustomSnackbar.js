@@ -29,7 +29,7 @@ function CustomSnackbar(props) {
         <div >
 
             <Snackbar anchorOrigin={{ vertical:"bottom",horizontal: "right" }} open={props.snackbarMessage.show} autoHideDuration={props.snackbarMessage.duration?props.snackbarMessage.duration:4000} onClose={()=> props.showSnackbar({show:false})}>
-                <Alert variant="filled"  onClose={()=> props.showSnackbar({show:false})} severity={props.snackbarMessage.severity}>
+                <Alert variant="filled"  onClose={()=> props.showSnackbar({show:false})} severity={props.snackbarMessage.severity?props.snackbarMessage.severity:"info"}>
                     {props.snackbarMessage.message}
                 </Alert>
             </Snackbar>

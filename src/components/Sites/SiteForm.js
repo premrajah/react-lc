@@ -348,9 +348,7 @@ class SiteForm extends Component {
     updateParentSite = (parent, site,currentSite,removeParent) => {
 
 
-
-
-        if (!removeParent){
+        if (!removeParent&&parent&&site){
         axios
             .post(baseUrl + "site/parent", {"parent_site_id": parent, site_id: site}, {
                 headers: {

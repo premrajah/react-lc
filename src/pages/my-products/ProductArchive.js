@@ -186,6 +186,13 @@ class ProductArchive extends Component {
                                 <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
                                     Tracked
                                 </Link>
+                                <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">
+                                    {/*<CustomPopover*/}
+                                    {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
+                                    {/*>*/}
+                                    Product Issues
+                                    {/*</CustomPopover>*/}
+                                </Link>
                             </div>
                         </div>
                         <div className="row  justify-content-center search-container  pt-3 pb-3">

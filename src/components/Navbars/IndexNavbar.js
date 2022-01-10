@@ -360,6 +360,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account
                                         </Link>
+                                        <Link className={"dropdown-item"} to="/sites">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Sites
+                                        </Link>
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Products
@@ -368,10 +372,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Campaigns
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/sites">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Sites
-                                        </Link>
+
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
                                             Searches
@@ -397,7 +398,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Issues
                                         </Link>
-
+                                        <Link className={"dropdown-item"} to="/help">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Help
+                                        </Link>
 
 
                                         {/*<Link className={"dropdown-item"} to="">*/}

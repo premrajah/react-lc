@@ -199,7 +199,7 @@ componentDidMount() {
                 {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&&
 
                <div  className={
-                   " mt-4 text-right"}>
+                   " mt-4 text-right row justify-content-end"}>
                    <button
 
                     className={
@@ -212,10 +212,16 @@ componentDidMount() {
                                                     </span>
 
 
-                    {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&     <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
-                                                                                                                             onClick={this.editConversion}
-                    >Edit Conversions</span>}
                 </button>
+
+                   {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&   <button
+
+                       className={
+                           "btn-gray-border ml-2 "
+                       }><span style={{float:"right"}} className={"text-right ml-2"}  data-parent={this.props.item.product._key}
+                                                                                                                                onClick={this.editConversion}
+                       >Edit Conversions</span>
+                   </button>}
                </div> }
 
        <div className={"white-bg rad-8 p-3 mt-4"}>

@@ -155,7 +155,7 @@ body {
 }
 
 .text-mute {
-    opacity: 0.7;
+    opacity: 0.5;
 }
 
 .wrapper {
@@ -892,7 +892,7 @@ p,span{
 }
 
 .list-group .list-group-item {
-    padding: 0.75rem 15px;
+    padding: 0.75rem 0px;
 }
 
 /* Nav tabs  */
@@ -2161,8 +2161,17 @@ button.blue-btn-border
     padding-top: 0rem !important;
     padding-left: 1rem !important;
 }
+.ml-2-desktop{
+
+}
+.btn-rows a{
+    float: left;
+}
 @media only screen and (max-width: 991px) {
 
+    .ml-2-desktop{
+        margin-top: 0.5rem !important;
+    }
     .width-75{
         width: 75%;
     }

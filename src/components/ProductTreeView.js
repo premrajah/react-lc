@@ -38,6 +38,7 @@ class ProductTreeView extends Component {
             selectedProductId: productId,
         });
 
+        if (productId)
         this.props.triggerCallback(productId);
     }
 

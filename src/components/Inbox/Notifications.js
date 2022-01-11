@@ -26,6 +26,18 @@ class Notifications extends Component {
 
     state = {
         readNotificationAlert: false,
+        allNotifications: [],
+    }
+
+
+    getNotifications = () => {
+        axios.get(`${baseUrl}message/notif`)
+            .then(res =>  {
+                this.setState({allNotifications: res.data.data});
+            })
+            .catch(error => {
+                console.log('notif error ', error.message);
+            })
     }
 
     messageRead = (messageId) => {
@@ -170,7 +182,7 @@ class Notifications extends Component {
 
 
         return (
-            <Card key={message._ts_epoch_ms} variant="outlined" className="mb-2" style={{opacity: `${flags ? '0.5' : '1'}` }}>
+            <Card key={index} variant="outlined" className="mb-2" style={{opacity: `${flags ? '0.5' : '1'}` }}>
                 <CardContent>
                     <div className="row">
                         <div className="col-12">
@@ -208,8 +220,9 @@ class Notifications extends Component {
     };
 
     componentDidMount() {
-        this.props.getNotifications();
-        this.timer = setInterval(this.props.getNotifications, 10000);
+        // this.props.getNotifications();
+        this.getNotifications();
+        this.timer = setInterval(this.getNotifications, 10000);
     }
 
     componentWillUnmount() {
@@ -225,12 +238,12 @@ class Notifications extends Component {
                 </Snackbar>
 
                 <h5 className="blue-text mb-4">
-                    <span className="mr-3">Total {this.props.notifications.length <= 0 ? "..." : this.props.notifications.length}</span>
-                    <span className="text-muted">Read {this.props.notifications.length <= 0 ? "..." : this.handleReadUnreadLength(this.props.notifications)}</span>
+                    <span className="mr-3">Total {this.state.allNotifications.length <= 0 ? "..." : this.state.allNotifications.length}</span>
+                    <span className="text-muted">Read {this.state.allNotifications.length <= 0 ? "..." : this.handleReadUnreadLength(this.state.allNotifications)}</span>
                 </h5>
                 <div className="notification-content">
-                    {this.props.notifications.length > 0
-                        ? this.props.notifications.map((item, index) => {
+                    {this.state.allNotifications.length > 0
+                        ? this.state.allNotifications.map((item, index) => {
                               return this.checkNotifications(item, index);
                           })
                         : "No notifications... "}
@@ -250,7 +263,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
+        // getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
     };
 };
 

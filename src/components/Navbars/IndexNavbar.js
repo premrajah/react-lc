@@ -253,9 +253,9 @@ class ComponentsNavbar extends React.Component {
 
                         {!this.props.isLoggedIn && (
                             <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
-                                <Link className="nav-link mr-3  d-lg-block  green-text " color="default">
+                                <span className="nav-link mr-3  d-lg-block  green-text click-item" color="default">
                                     Sign Up
-                                </Link>
+                                </span>
                             </NavItem>
                         )}
 
@@ -265,7 +265,7 @@ class ComponentsNavbar extends React.Component {
                                     onClick={this.showLoginPopUp}
                                     type="button"
                                     className=" btn topBtn ">
-                                    <Link>Log In</Link>
+                                    <span>Log In</span>
                                 </button>
                             )}
                         </NavItem>
@@ -409,10 +409,10 @@ class ComponentsNavbar extends React.Component {
                                         {/*    Help*/}
                                         {/*</Link>*/}
 
-                                        <Link className={"dropdown-item click-item"} onClick={this.logOut}>
+                                        <span className={"dropdown-item click-item"} onClick={this.logOut}>
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Log Out
-                                        </Link>
+                                        </span>
                                     {/*</DropdownMenu>*/}
                                     </Menu>
 

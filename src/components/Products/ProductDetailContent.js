@@ -788,7 +788,7 @@ class ProductDetailContent extends Component {
                                                         allowScrollButtonsMobile
                                                         variant="scrollable"
                                                         scrollButtons="auto"
-                                                        textColor={"#27245C"}
+                                                        textColor="primary"
                                                         TabIndicatorProps={{
                                                             style: {
                                                                 backgroundColor: "#27245C",

@@ -214,33 +214,39 @@ class ListFormNew extends Component {
 
             window.scrollTo(0, 0);
 
-            if(this.handleValidationList(this.state.activeStep+1)){
+            if (this.state.activeStep!=2) {
+                if (this.handleValidationList(this.state.activeStep + 1)) {
+
+                    this.setState({
+                        nextBlue: true,
+
+                    });
+                } else {
+                    this.setState({
+                        nextBlue: false
+                    });
+
+                }
 
                 this.setState({
-                    nextBlue:true,
+                    activeStep: this.state.activeStep + 1,
+                    progressBar: 100,
+                    showFieldErrors: false
+                });
 
-                });
-            }else{
-                this.setState({
-                    nextBlue:false
-                });
 
             }
-
-            this.setState({
-                activeStep: this.state.activeStep + 1,
-                progressBar: 100,
-                showFieldErrors:false
-            });
 
 
 
          if (this.state.activeStep === 2) {
                 this.createListing();
-                //
-            } else if (this.state.activeStep === 3) {
-                this.props.history.push("/" + this.state.listResourceData._key);
+
             }
+         // else if (this.state.activeStep === 3) {
+         //     if ( this.state.listResourceData)
+         //        this.props.history.push("/" + this.state.listResourceData._key);
+         //    }
 
 
         }
@@ -629,21 +635,28 @@ class ListFormNew extends Component {
                 }
             )
             .then((res) => {
+
                 this.setState({
                     listResourceData: res.data.data,
                     page: 4,
+                });
+                this.setState({
+                    activeStep: this.state.activeStep + 1,
+                    progressBar: 100,
+                    showFieldErrors: false,
+                    createListingError:null
                 });
 
                 // this.props.history.push("/"+res.data.data._key)
             })
             .catch((error) => {
 
-
-                if (error&&error.response&&error.response.status){
+                console.log(error.response)
+                if (error&&error.response){
 
                     this.setState({
                         notFoundError:true,
-                        createListingError:"some error"
+                        createListingError:error.response.data.errors[0].message
                     })
                 }
 
@@ -962,6 +975,21 @@ class ListFormNew extends Component {
         this.toggleAddComponent();
     };
 
+
+    goToStepOne=()=>{
+
+
+            this.setState({
+                activeStep: 0,
+                createListingError:null
+            });
+
+        this.setState({
+
+            progressBar: 0,
+        });
+    }
+
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -1271,7 +1299,7 @@ class ListFormNew extends Component {
                                 previewImage={this.state.previewImage}
                                 site={this.state.siteSelected}
                                 userDetail={this.props.userDetail}
-                                fields={this.state.fields}
+                                item={this.state.fields}
                             />
                         </div>
 
@@ -1371,6 +1399,12 @@ class ListFormNew extends Component {
                                                     Post Listing
                                                 </button>
                                             )}
+
+
+
+
+
+
                                         </div>
                                     </div>
                                 </Toolbar>
@@ -1399,6 +1433,38 @@ class ListFormNew extends Component {
                             </div>
                         </>
                     )}
+
+
+                {this.state.createListingError && (
+                    <div className={"body-overlay"}>
+                        <div className={"modal-popup site-popup"}>
+                            <div className=" text-right ">
+                                <Close
+                                    onClick={this.goToStepOne}
+                                    className="blue-text"
+                                    style={{ fontSize: 32 }}
+                                />
+                            </div>
+
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    {this.state.createListingError}
+                                </div>
+                                <div className={"col-12"}>
+                                <button
+                                    onClick={this.goToStepOne}
+                                    type="button"
+                                    className={
+                                        "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2  "
+
+                                    }>
+                                    Edit Listing
+                                </button>
+                                </div>.
+                            </div>
+                        </div>
+                    </div>
+                )}
 
             </Layout>
         );

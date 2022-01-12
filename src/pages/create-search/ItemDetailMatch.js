@@ -227,10 +227,10 @@ class ItemDetailMatch extends Component {
                         <>
                             <div className="container " style={{ padding: "0" }}>
                                 <div className="row  pt-4 pb-4  justify-content-center">
-                                    <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                        <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item&&this.state.item.site.name}</span>
+                                    {/*<div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">*/}
+                                    {/*    <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item&&this.state.item.site.name}</span>*/}
 
-                                    </div>
+                                    {/*</div>*/}
                                 </div>
                                 <div className="row no-gutters  justify-content-center">
                                     <div className="col-md-4 col-sm-12 col-xs-12 ">

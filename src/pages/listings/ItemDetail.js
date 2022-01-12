@@ -551,7 +551,7 @@ class ItemDetail extends Component {
                                         />
                                     </Modal>
 
-                                    {this.state.item.org_id !== this.props.userDetail.orgId && (
+                                    {this.state.item.org._id !== this.props.userDetail.orgId && (
                                         <React.Fragment>
                                             <CssBaseline />
 

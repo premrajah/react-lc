@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
-import * as actionCreator from "../../store/actions/actions";
 import reactStringReplace from "react-string-replace";
 import {Card, CardContent, Snackbar} from "@mui/material";
 import NotIcon from "@mui/icons-material/Notifications";
@@ -11,6 +10,7 @@ import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import _ from 'lodash';
+import PaginationLayout from "../IntersectionOserver/PaginationLayout";
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
@@ -28,6 +28,11 @@ class Notifications extends Component {
         readNotificationAlert: false,
         allNotifications: [],
         allNotificationsCount: 0,
+        lastPageReached:false,
+        currentOffset:0,
+        productPageSize:50,
+        loadingResults:false,
+        count:0
     }
 
 
@@ -42,14 +47,23 @@ class Notifications extends Component {
     }
 
 
-    getNotifications = (offset, size) => {
-        axios.get(`${baseUrl}message/notif?offset=${offset?offset:"0"}&size=${size?size:"10"}`)
+    getNotifications = () => {
+        let newOffset=this.state.currentOffset
+        axios.get(`${baseUrl}message/notif?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then(res =>  {
-                this.setState({allNotifications: res.data.data});
+                this.setState({
+                    allNotifications: this.state.allNotifications.concat(res.data.data),
+                    loadingResults:false,
+                    lastPageReached:(res.data.data.length===0?true:false)
+                });
             })
             .catch(error => {
                 console.log('notif error ', error.message);
             })
+
+        this.setState({
+            currentOffset:newOffset+this.state.productPageSize
+        })
     }
 
     messageRead = (messageId) => {
@@ -233,9 +247,10 @@ class Notifications extends Component {
 
     componentDidMount() {
         // this.props.getNotifications();
+        this.setState({allNotifications:[]})
         this.getAllNotificationsCount();
-        this.getNotifications();
-        this.timer = setInterval(this.getNotifications, 10000);
+        // this.getNotifications();
+        // this.timer = setInterval(this.getNotifications, 10000);
     }
 
     componentWillUnmount() {
@@ -255,11 +270,13 @@ class Notifications extends Component {
                     <span className="text-muted">Read {this.state.allNotifications.length <= 0 ? "..." : this.handleReadUnreadLength(this.state.allNotifications)}</span>
                 </h5>
                 <div className="notification-content">
+                    <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.getNotifications} >
                     {this.state.allNotifications.length > 0
                         ? this.state.allNotifications.map((item, index) => {
                               return this.checkNotifications(item, index);
                           })
                         : "No notifications... "}
+                    </PaginationLayout>
                 </div>
             </div>
         );

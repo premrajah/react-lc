@@ -600,7 +600,7 @@ class SiteDetailContent extends Component {
                                                         <Tab label="Sub Site" value="2" />
 
                                                         {this.props.isLoggedIn  &&
-                                                        <Tab label="Sub Products" value="3" />
+                                                        <Tab label="Products" value="3" />
                                                         }
 
                                                     </TabList>

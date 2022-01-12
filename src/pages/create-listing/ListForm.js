@@ -999,7 +999,8 @@ class ListFormNew extends Component {
             <Layout>
 
                 <div className="container  pb-4 pt-4">
-                    {this.state.activeStep<3 &&      <PageHeader pageTitle="New Listing" subTitle={this.state.activeStep==0?"Basic Details":this.state.activeStep==1?"More Details":"Preview"} />}
+                    {this.state.activeStep<3 &&
+                    <PageHeader pageTitle="New Listing" subTitle={this.state.activeStep==0?"Basic Details":this.state.activeStep==1?"More Details":"Preview"} />}
 
                         <div className={this.state.activeStep === 0 ? "" : "d-none"}>
                             <div className="row add-listing-container   pb-5 pt-2">

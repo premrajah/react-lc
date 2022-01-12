@@ -30,6 +30,7 @@ import {capitalize} from "../../Util/GlobalFunctions";
 import Layout from "../../components/Layout/Layout";
 import TextField from "@mui/material/TextField";
 import clsx from "clsx";
+import {Link} from "react-router-dom";
 
 
 class ListFormNew extends Component {
@@ -1323,23 +1324,25 @@ class ListFormNew extends Component {
                                     </div>
                                 </div>
 
-                                <div className="row justify-content-center pb-4 pt-2 ">
+                                {this.state.listResourceData &&      <div className="row justify-content-center pb-4 pt-2 ">
                                     <div className="col-auto text-center">
-                                        <button
+                                        <Link
+
+                                            to={"/"+this.state.listResourceData.listing._key}
                                             onClick={this.handleNext}
                                             type="button"
                                             className={
                                                 "btn-next shadow-sm mr-2 btn btn-link blue-btn mt-2 mb-2"
                                             }>
                                             View Listing
-                                        </button>
+                                        </Link>
 
                                         <p className={"text-blue text-center"}>
                                             Your listing has been created. You will be notified when
                                             a match is found.
                                         </p>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </div>

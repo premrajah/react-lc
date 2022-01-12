@@ -15,6 +15,8 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import FormControl from "@mui/material/FormControl";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 
 
 class SiteForm extends Component {
@@ -564,7 +566,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     </div>
     </div>
 
-                            <div className={"row justify-content-center create-product-row pl-3 pb-3 pr-3"}>
+                            <div className={"row justify-content-start create-product-row pl-3 pb-3 pr-3"}>
 
                                 <form className={"full-width-field"} onSubmit={this.handleSubmit}>
 
@@ -725,7 +727,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <Close />
                         </button>
                     </div>
-                    <div className="row  justify-content-center mobile-menu-row p-3 m-2">
+                    <div className="row no-gutters  justify-content-start mobile-menu-row p-3 m-2">
 
                     <div className="col-12 p-0 ">
                         <h4 className={"blue-text text-heading text-left"}>
@@ -734,12 +736,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {/*link existing or new site*/}
 
-                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className=" text-mute small">
-                                <span onClick={this.toggleCreateNew} className="forgot-password-link green-text mr-2 "
-                                      data-parent="cWkY0KVYEM">Create New</span>:<span
+                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
+                                <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
+                                      data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                             onClick={this.toggleAddExisting}
-                            className="forgot-password-link green-text ml-2"
-                            data-parent="cWkY0KVYEM">Add Existing</span></p>
+                            className="btn-gray-border ml-2 click-item"
+                            data-parent="cWkY0KVYEM"> <AddLinkIcon /> Add Existing</span></p>
                         }
 
 
@@ -763,7 +765,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                 </div>
                             </div>
-                            <div className="row  ">
+                            <div className="row no-gutters ">
                                 <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
@@ -809,6 +811,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                 <div className="col-6 pl-1 ">
                                     <SelectArrayWrapper
+
                                         initialValue={this.props.showSiteForm.type==="edit"?
                                             (this.props.showSiteForm.item&&this.props.showSiteForm.item.parent_site&&this.props.showSiteForm.item.parent_site._key)
                                             :this.props.showSiteForm.parent}
@@ -897,7 +900,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 </div>}
 
                         {this.state.addExisting &&
-                        <div className="row   justify-content-left">
+                        <div className="row   justify-content-start">
 
                             <div className="col-12 " style={{ padding: "0!important" }}>
 
@@ -907,13 +910,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-12" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
                                         <div className="row mt-2">
-                                            <div className="col-10">
-                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
+                                            <div className="col-12">
 
-                                                <FormControl
-                                                    variant="outlined"
-                                                    className={classes.formControl}>
-                                                    <Select
+                                                <CustomizedSelect
+                                                        variant={"standard"}
+
                                                         name={`site[${index}]`}
                                                         // label={"Link a product"}
                                                         required={true}
@@ -931,8 +932,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         {this.props.siteList
                                                             .filter(
                                                                 (item) =>
-                                                                    item._key !==
-                                                                    this.props.showSiteForm.parent
+                                                                    (item._key !==
+                                                                    this.props.showSiteForm.parent)
                                                                          &&
                                                                     !(
                                                                         this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
@@ -950,7 +951,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                             ))}
 
 
-                                                    </Select>
+                                                    </CustomizedSelect>
                                              {this.props.siteList.length===0&&
                                                     <Spinner
                                                         as="span"
@@ -962,18 +963,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         className={"spinner-select"}
                                                     />}
                                                     {this.state.errorsLink["site"] && (
-                                                        <span className={"text-mute small"}>
+                                                        <span className={" small"}>
                                                             <span style={{ color: "red" }}>* </span>
                                                             {this.state.errorsLink["site"]}
                                                         </span>
                                                     )}
 
-                                                    {/*<FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?*/}
-
-                                                    {/*<span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>*/}
-
-                                                    {/*</FormHelperText>*/}
-                                                </FormControl>
 
 
                                             </div>
@@ -1014,7 +1009,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     </span>
                                 </div>
                                 </div>
-                                <div className="row   pt-2 ">
+                                <div className="row    pt-2 ">
 
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
@@ -1043,7 +1038,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                             { this.props.showSiteForm.type==="link-product" &&
-                            <div className="row   justify-content-left">
+                            <div className="row   justify-content-start">
                                 <div className="col-12 " style={{ padding: "0!important" }}>
                                     <form style={{ width: "100%" }} onSubmit={this.linkSubProducts}>
 
@@ -1098,7 +1093,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                                     className={"spinner-select"}
                                                                 />}
                                                                 {this.state.errorsLink["site"] && (
-                                                                    <span className={"text-mute small"}>
+                                                                    <span className={" small"}>
                                                             <span style={{ color: "red" }}>* </span>
                                                                         {this.state.errorsLink["site"]}
                                                         </span>

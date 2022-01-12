@@ -9,7 +9,7 @@ import NotIcon from "@mui/icons-material/Notifications";
 import moment from "moment/moment";
 import Org from "../Org/Org";
 import {Link} from "react-router-dom";
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import _ from 'lodash';
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
@@ -27,11 +27,23 @@ class Notifications extends Component {
     state = {
         readNotificationAlert: false,
         allNotifications: [],
+        allNotificationsCount: 0,
     }
 
 
-    getNotifications = () => {
-        axios.get(`${baseUrl}message/notif`)
+    getAllNotificationsCount = () => {
+        axios.get(`${baseUrl}message/notif/count`)
+            .then(res => {
+                this.setState({allNotificationsCount: res.data.data});
+            })
+            .catch(error => {
+                console.log('count error ', error.message);
+            })
+    }
+
+
+    getNotifications = (offset, size) => {
+        axios.get(`${baseUrl}message/notif?offset=${offset?offset:"0"}&size=${size?size:"10"}`)
             .then(res =>  {
                 this.setState({allNotifications: res.data.data});
             })
@@ -221,6 +233,7 @@ class Notifications extends Component {
 
     componentDidMount() {
         // this.props.getNotifications();
+        this.getAllNotificationsCount();
         this.getNotifications();
         this.timer = setInterval(this.getNotifications, 10000);
     }
@@ -238,7 +251,7 @@ class Notifications extends Component {
                 </Snackbar>
 
                 <h5 className="blue-text mb-4">
-                    <span className="mr-3">Total {this.state.allNotifications.length <= 0 ? "..." : this.state.allNotifications.length}</span>
+                    <span className="mr-3">{this.state.allNotifications.length <= 0 ? "..." : this.state.allNotifications.length} of {this.state.allNotificationsCount}</span>
                     <span className="text-muted">Read {this.state.allNotifications.length <= 0 ? "..." : this.handleReadUnreadLength(this.state.allNotifications)}</span>
                 </h5>
                 <div className="notification-content">

@@ -693,13 +693,7 @@ class ProductDetailContent extends Component {
                                             </>
                                         )}
 
-
-
-
                                     <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
-
-
-
 
                                 </div>
 

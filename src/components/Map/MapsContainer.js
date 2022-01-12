@@ -76,7 +76,7 @@ class MapsContainer extends Component {
                       scaledSize: new this.props.google.maps.Size(50,50)
 
                   }}
-                    animation= {this.props.google.maps.Animation.DROP}
+                    // animation= {this.props.google.maps.Animation.DROP}
                     position= {{"lat": item.location.lat,lng: item.location.lng }}
                         name={item.name}
                 />

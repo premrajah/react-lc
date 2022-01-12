@@ -1328,7 +1328,7 @@ class ListFormNew extends Component {
                                     <div className="col-auto text-center">
                                         <Link
 
-                                            to={"/"+this.state.listResourceData.listing._key}
+                                            to={"/"+this.state.listResourceData._key}
                                             onClick={this.handleNext}
                                             type="button"
                                             className={

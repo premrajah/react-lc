@@ -57,7 +57,7 @@ class WysiwygEditor extends Component{
         return <div className="">
             <Editor
 
-                placeholder="Enter message here..."
+                // placeholder="Enter message here..."
                 // toolbarOnFocus
                 toolbarClassName="wysiwyg-toolbar"
                 wrapperClassName="wysiwyg-wrapper"

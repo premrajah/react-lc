@@ -397,12 +397,11 @@ class ItemDetailMatch extends Component {
                                 </div>
                             </div>
                             <React.Fragment>
-                                <CssBaseline />
 
-                                <AppBar
-                                    position="fixed"
-                                    color="#ffffff"
-                                    className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <div
+
+                                    className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
+
                                     <Toolbar>
                                         <div
                                             className="row  justify-content-center search-container "
@@ -434,7 +433,7 @@ class ItemDetailMatch extends Component {
                                             )}
                                         </div>
                                     </Toolbar>
-                                </AppBar>
+                                </div>
                             </React.Fragment>
                             }
                             <Modal
@@ -563,10 +562,10 @@ function BottomAppBar(props) {
 
     return (
         <React.Fragment>
-            <CssBaseline />
 
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
+
+            <div >
+
                     <div
                         className="row  justify-content-center search-container "
                         style={{ margin: "auto" }}>
@@ -587,8 +586,8 @@ function BottomAppBar(props) {
                             </Link>
                         </div>
                     </div>
-                </Toolbar>
-            </AppBar>
+
+            </div>
         </React.Fragment>
     );
 }

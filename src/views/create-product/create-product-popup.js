@@ -63,6 +63,18 @@ class ProductPopUp extends Component {
                     </div>
                 </div>
 
+                <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
+                    <div className="col text-right">
+                    <button
+                        onClick={this.hidePopUp}
+                        className=" btn-gray-border  "
+                        data-dismiss="modal"
+                        aria-label="Close">
+                        Done
+                    </button>
+                    </div>
+                </div>
+
             </Modal>
         );
     }

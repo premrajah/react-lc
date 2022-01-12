@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
 import { Link } from "react-router-dom";
+import Layout from "../../components/Layout/Layout";
 
 class Statistics extends Component {
     constructor(props) {
@@ -24,10 +25,7 @@ class Statistics extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
 
                     <div className="container pt-4">
                         <div>
@@ -40,8 +38,8 @@ class Statistics extends Component {
                             style={{ width: "100%", minHeight: "800px", height: "auto" }}
                         />
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

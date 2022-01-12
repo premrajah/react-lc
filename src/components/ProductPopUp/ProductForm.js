@@ -813,7 +813,8 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
-                                    <SelectArrayWrapper  details="What is your product?"
+                                    <SelectArrayWrapper
+                                        details="What is your product?"
                                         initialValue={this.props.item&&this.props.item.product.type}
                                         option={"name"}
                                         valueKey={"name"}

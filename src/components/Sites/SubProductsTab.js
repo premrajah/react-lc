@@ -12,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import {withStyles} from "@mui/styles";
 import AddLinkIcon from "@mui/icons-material/AddLink";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 
 class SubProductsTab extends Component {
     slug;
@@ -218,7 +219,7 @@ class SubProductsTab extends Component {
                                 <SubproductItem
                                     noLinking={this.props.noLinking}
                                     hideMoreMenu={true}
-                                    key={index}
+                                    key={index+"_"+item._key}
                                     item={item}
                                     remove={true}
                                 />
@@ -241,104 +242,104 @@ class SubProductsTab extends Component {
                             <Close />
                         </button>
                     </div>
-                    <div className="row  justify-content-center mobile-menu-row pt-3 m-2">
+                    <div className="row  justify-content-start mobile-menu-row pt-3 m-2">
                         <div className="col-12  ">
-                            <h3 className={"blue-text text-heading text-center"}>
-                               Link Products</h3>
-                        </div>
+                            <h4 className={"blue-text text-heading "}>
+                               Link Products</h4>
 
-                        <div className="row   justify-content-left">
-                            <div className="col-12 " style={{ padding: "0!important" }}>
-                                <form style={{ width: "100%" }} onSubmit={this.linkSubProducts}>
+                            <div className="row   justify-content-left">
+                                <div className="col-12 " style={{ padding: "0!important" }}>
+                                    <form style={{ width: "100%" }} onSubmit={this.linkSubProducts}>
 
-                                    <div className="row   ">
-                                        <div className="col-12" style={{ padding: "0!important" }}>
-                                            {this.state.addCount.map((item, index) => (
-                                                <div className="row mt-2">
-                                                    <div className="col-10">
-                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
+                                        <div className="row   ">
+                                            <div className="col-12" style={{ padding: "0!important" }}>
+                                                {this.state.addCount.map((item, index) => (
+                                                    <div className="row mt-2">
+                                                        <div className="col-12">
+                                                            {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
-                                                        <FormControl
-                                                            variant="outlined"
-                                                            className={classes.formControl}>
-                                                            <Select
-                                                                name={`product[${index}]`}
-                                                                // label={"Link a product"}
-                                                                required={true}
-                                                                native
-                                                                onChange={this.handleChangeLinkSite.bind(
-                                                                    this,
-                                                                    "product"
-                                                                )}
-                                                                inputProps={{
-                                                                    // name: {`product[${index}]`},
-                                                                    id: "outlined-age-native-simple",
-                                                                }}>
-                                                                <option value={null}>Select</option>
-                                                                {this.props.productWithoutParentList
-                                                                    .filter(
-                                                                    (item) =>
-                                                                        !this.state.products.filter(
-                                                                            (subItem) =>
-                                                                                subItem._key ===
-                                                                                item._key
-                                                                        ).length > 0
-                                                                )
-                                                                    .map((item) => (
-                                                                        <option value={item._key}>
-                                                                            {item.name}
-                                                                        </option>
-                                                                    ))}
+                                                            <FormControl
+                                                                variant="outlined"
+                                                                className={classes.formControl}>
+                                                                <CustomizedSelect
+                                                                    variant="standard"
+                                                                    name={`product[${index}]`}
+                                                                    // label={"Link a product"}
+                                                                    required={true}
+                                                                    native
+                                                                    onChange={this.handleChangeLinkSite.bind(
+                                                                        this,
+                                                                        "product"
+                                                                    )}
+                                                                    inputProps={{
+                                                                        // name: {`product[${index}]`},
+                                                                        id: "outlined-age-native-simple",
+                                                                    }}>
+                                                                    <option value={null}>Select</option>
+                                                                    {this.props.productWithoutParentList
+                                                                        .filter(
+                                                                            (item) =>
+                                                                                !this.state.products.filter(
+                                                                                    (subItem) =>
+                                                                                        subItem._key ===
+                                                                                        item._key
+                                                                                ).length > 0
+                                                                        )
+                                                                        .map((item) => (
+                                                                            <option value={item._key}>
+                                                                                {item.name}
+                                                                            </option>
+                                                                        ))}
 
 
-                                                            </Select>
-                                                            {this.props.productWithoutParentList.length===0&&
-                                                            <Spinner
-                                                                as="span"
-                                                                animation="border"
-                                                                size="sm"
-                                                                role="status"
-                                                                aria-hidden="true"
-                                                                style={{color:"#07AD88"}}
-                                                                className={"spinner-select"}
-                                                            />}
-                                                            {this.state.errorsLink["site"] && (
-                                                                <span className={"text-mute small"}>
+                                                                </CustomizedSelect>
+                                                                {this.props.productWithoutParentList.length===0&&
+                                                                <Spinner
+                                                                    as="span"
+                                                                    animation="border"
+                                                                    size="sm"
+                                                                    role="status"
+                                                                    aria-hidden="true"
+                                                                    style={{color:"#07AD88"}}
+                                                                    className={"spinner-select"}
+                                                                />}
+                                                                {this.state.errorsLink["site"] && (
+                                                                    <span className={"text-mute small"}>
                                                             <span style={{ color: "red" }}>* </span>
-                                                                    {this.state.errorsLink["site"]}
+                                                                        {this.state.errorsLink["site"]}
                                                         </span>
+                                                                )}
+                                                            </FormControl>
+
+
+                                                        </div>
+
+
+
+                                                        <div
+                                                            className="col-2 text-center"
+                                                            style={{ display: "flex" }}>
+                                                            {item > 1 && (
+                                                                <>
+                                                                    {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+
+                                                                    <DeleteIcon
+                                                                        classname={"click-item"}
+                                                                        style={{
+                                                                            color: "#ccc",
+                                                                            margin: "auto",
+                                                                        }}
+                                                                        onClick={() => this.subtractCount()}
+                                                                    />
+                                                                </>
                                                             )}
-                                                        </FormControl>
-
-
+                                                        </div>
                                                     </div>
-
-
-
-                                                    <div
-                                                        className="col-2 text-center"
-                                                        style={{ display: "flex" }}>
-                                                        {item > 1 && (
-                                                            <>
-                                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-
-                                                                <DeleteIcon
-                                                                    classname={"click-item"}
-                                                                    style={{
-                                                                        color: "#ccc",
-                                                                        margin: "auto",
-                                                                    }}
-                                                                    onClick={() => this.subtractCount()}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row   pt-2 ">
-                                        <div className="col-12 mt-4 ">
+                                        <div className="row   pt-2 ">
+                                            <div className="col-12 mt-4 ">
                                     <span
                                         onClick={this.addCount}
                                         className={
@@ -347,28 +348,31 @@ class SubProductsTab extends Component {
                                         <AddIcon />
                                         Add
                                     </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row   pt-2 ">
+                                        <div className="row   pt-2 ">
 
-                                        <div className="col-12 mt-4 mobile-menu">
-                                            <div className="row text-center ">
-                                                <div className="col-12 text-center">
-                                                    <button
-                                                        style={{ margin: "auto", width: "200px" }}
-                                                        type={"submit"}
-                                                        className={
-                                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                        }>
-                                                        Submit
-                                                    </button>
+                                            <div className="col-12 mt-4 mobile-menu">
+                                                <div className="row text-center ">
+                                                    <div className="col-12 text-center">
+                                                        <button
+                                                            style={{ margin: "auto", width: "200px" }}
+                                                            type={"submit"}
+                                                            className={
+                                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                            }>
+                                                            Submit
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+
+
                     </div>
 
 

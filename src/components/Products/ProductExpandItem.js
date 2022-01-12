@@ -278,7 +278,7 @@ class ProductExpandItem extends Component {
                                         <div className="col-12">
                                             <p
                                                 style={{ margin: "10px 0px" }}
-                                                className={" text-mute small"}>
+                                                className={"  small"}>
                                                 <button
                                                     className={
                                                         " btn-gray-border  mr-2 "
@@ -288,7 +288,7 @@ class ProductExpandItem extends Component {
                                                      <AddIcon />
                                                     Create New
                                                 </button>
-                                                :
+
                                                 <button
                                                     className={
                                                         "btn-gray-border click-item ml-2"
@@ -367,7 +367,7 @@ class ProductExpandItem extends Component {
                                                         className={"spinner-select"}
                                                     />}
                                                     {this.state.errors["product"] && (
-                                                        <span className={"text-mute small"}>
+                                                        <span className={" small"}>
                                                             <span style={{ color: "red" }}>* </span>
                                                             {this.state.errors["product"]}
                                                         </span>
@@ -397,7 +397,7 @@ class ProductExpandItem extends Component {
                                                     InputProps={{ inputProps: { min: 0 } }}
                                                 />
                                                 {this.state.errors["volume"] && (
-                                                    <span className={"text-mute small"}>
+                                                    <span className={" small"}>
                                                         <span style={{ color: "red" }}>* </span>
                                                         {this.state.errors["volume"]}
                                                     </span>

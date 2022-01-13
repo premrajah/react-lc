@@ -195,7 +195,7 @@ class ProductsService extends Component {
                                     {/*<CustomPopover*/}
                                     {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
                                     {/*>*/}
-                                    Product Issues
+                                    Issues
                                     {/*</CustomPopover>*/}
                                 </Link>
                             </div>

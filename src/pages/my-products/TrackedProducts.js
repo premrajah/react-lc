@@ -115,7 +115,9 @@ class TrackedProducts extends Component {
                         this.setState({
                             items:this.state.items.concat(response.data.data),
                             loadingResults:false,
-                            lastPageReached:(response.data.data.length===0?true:false)
+                            lastPageReached:(response.data.data.length===0?true:false),
+                            currentOffset:newOffset+this.state.productPageSize
+
                         })
                     }
 
@@ -127,10 +129,7 @@ class TrackedProducts extends Component {
 
         });
 
-        this.setState({
 
-            currentOffset:newOffset+this.state.productPageSize
-        })
 
     }
 
@@ -160,7 +159,7 @@ class TrackedProducts extends Component {
                         <div className="row ">
                             <div className="col-12 d-flex justify-content-start">
                                 <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
-                                    Product Service
+                                    Service
                                 </Link>
 
                                 <Link to="/my-products" className="btn btn-sm btn-gray-border mr-2">
@@ -174,7 +173,7 @@ class TrackedProducts extends Component {
                                     {/*<CustomPopover*/}
                                     {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
                                     {/*>*/}
-                                    Product Issues
+                                    Issues
                                     {/*</CustomPopover>*/}
                                 </Link>
                             </div>

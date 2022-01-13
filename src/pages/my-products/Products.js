@@ -81,8 +81,6 @@ class Products extends Component {
 
     componentDidMount() {
 
-        // this.loadProductsWithoutParentPageWise()
-
         this.setState({
             items:[]
         })
@@ -126,7 +124,6 @@ class Products extends Component {
 
 
         axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
             .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then(
                 (response) => {
@@ -135,7 +132,9 @@ class Products extends Component {
                         this.setState({
                             items:this.state.items.concat(response.data.data),
                             loadingResults:false,
-                            lastPageReached:(response.data.data.length===0?true:false)
+                            lastPageReached:(response.data.data.length===0?true:false),
+                            currentOffset:newOffset+this.state.productPageSize
+
                         })
                     }
 
@@ -147,10 +146,7 @@ class Products extends Component {
 
         });
 
-        this.setState({
 
-            currentOffset:newOffset+this.state.productPageSize
-        })
 
     }
 
@@ -396,7 +392,7 @@ class Products extends Component {
                         <div className="row">
                             <div className="col-md-12 btn-rows">
                                 <Link to="/products-service" className=" btn-sm btn-gray-border mr-2">
-                                    <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Product Service</CustomPopover>
+                                    <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Service</CustomPopover>
                                 </Link>
 
                                 <Link to="/product-archive" className=" btn-sm btn-gray-border  mr-2">
@@ -411,7 +407,7 @@ class Products extends Component {
                                     {/*<CustomPopover*/}
                                     {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
                                     {/*>*/}
-                                        Product Issues
+                                        Issues
                                 {/*</CustomPopover>*/}
                                 </Link>
                                 <div style={{float:"right"}} className=" text-right pl-3-desktop">

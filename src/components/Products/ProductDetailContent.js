@@ -693,7 +693,13 @@ class ProductDetailContent extends Component {
                                             </>
                                         )}
 
+
+
+
                                     <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
+
+
+
 
                                 </div>
 
@@ -782,7 +788,7 @@ class ProductDetailContent extends Component {
                                                         allowScrollButtonsMobile
                                                         variant="scrollable"
                                                         scrollButtons="auto"
-                                                        textColor="primary"
+                                                        textColor={"#27245C"}
                                                         TabIndicatorProps={{
                                                             style: {
                                                                 backgroundColor: "#27245C",

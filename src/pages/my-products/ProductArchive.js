@@ -123,7 +123,6 @@ class ProductArchive extends Component {
 
 
         axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
             .get(`${baseUrl}product/past-owner/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then(
                 (response) => {

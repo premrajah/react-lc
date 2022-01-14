@@ -45,6 +45,35 @@ class Issues extends Component {
         this.getAllIssues();
     };
 
+    getTotalItems=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            .get(`${baseUrl}issues/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+    }
+
+
     componentDidMount() {
 
         this.setState({
@@ -104,7 +133,7 @@ class Issues extends Component {
                                               />
                                           );
                                       })
-                                    : "Good one! There hasn't been any issues so far"}
+                                    : "No results found"}
                             </div>
 
                         </div>

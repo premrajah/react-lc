@@ -8,21 +8,35 @@ import Layout from "../../components/Layout/Layout";
 import IssueItem from "../../components/issues/IssueItem";
 import {Link} from "react-router-dom";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class Issues extends Component {
     state = {
         allIssues: [],
+        items:[],
+        lastPageReached:false,
+        currentOffset:0,
+        productPageSize:50,
+        loadingResults:false,
+        count:0
     };
 
     getAllIssues = () => {
+
+        let newOffset=this.state.currentOffset
+
         axios
-            .get(`${baseUrl}issue`, {
-                headers: { Authorization: `Bearer ${this.props.userDetail.token}` },
-            })
+            .get(`${baseUrl}issue?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then((response) => {
+
+
                 this.setState({
-                    allIssues: _.orderBy(response.data.data, ["issue._ts_epoch_ms"], ["desc"]),
-                });
+                    items:_.orderBy(this.state.items.concat(response.data.data), ["issue._ts_epoch_ms"], ["desc"]),
+                    loadingResults:false,
+                    lastPageReached:(response.data.data.length===0?true:false),
+                    currentOffset:newOffset+this.state.productPageSize
+
+                })
             })
             .catch((error) => {});
     };
@@ -31,8 +45,41 @@ class Issues extends Component {
         this.getAllIssues();
     };
 
+    getTotalItems=()=>{
+
+
+        let newOffset=this.state.currentOffset
+
+
+        axios
+            .get(`${baseUrl}issues/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+    }
+
+
     componentDidMount() {
-        this.getAllIssues();
+
+        this.setState({
+            items:[]
+        })
+        // this.getAllIssues();
     }
 
     render() {
@@ -71,11 +118,13 @@ class Issues extends Component {
 
 
                         </div>
+                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.getAllIssues} >
 
                         <div className="row pt-3 pb-3">
+
                             <div className="col">
-                                {this.state.allIssues.length > 0
-                                    ? this.state.allIssues.map((issue, index) => {
+                                {this.state.items.length > 0
+                                    ? this.state.items.map((issue, index) => {
                                           return (
                                               <IssueItem
                                                   key={index}
@@ -84,9 +133,11 @@ class Issues extends Component {
                                               />
                                           );
                                       })
-                                    : "Good one! There hasn't been any issues so far"}
+                                    : "No results found"}
                             </div>
+
                         </div>
+                        </PaginationLayout>
                     </div>
 
             </Layout>

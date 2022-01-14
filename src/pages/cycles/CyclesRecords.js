@@ -21,11 +21,16 @@ class CyclesRecords extends Component {
 
         this.state = {
             timerEnd: false,
-            count: 0,
             nextIntervalFlag: false,
             loops: [],
             searchValue: '',
             filterValue: '',
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
         this.getCycles = this.getCycles.bind(this);
@@ -35,11 +40,7 @@ class CyclesRecords extends Component {
         this.props.showLoading(true);
 
         axios
-            .get(baseUrl + "cycle/expand", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "cycle/expand")
             .then(
                 (response) => {
                     var response = response.data.data;

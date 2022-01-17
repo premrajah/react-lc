@@ -617,15 +617,28 @@ const UploadMultiSiteOrProduct = (props) => {
             }
             catch(e){
 
-                console.log('>> ',e.response.data.errors[0].message)
-                if (e.response.data.errors.length>0) {
+                if (e.response.data.errors&&e.response.data.errors.length>0) {
                     e.response.data.errors.forEach(item => {
                         uploadError.push(<div className="d-flex flex-column">
                             <div><b>CSV Entry {k+1}</b>: {item.message}</div>
                         </div>)
                     })
-                }
+                }else{
 
+                    // alert(e.response.status)
+                    if (e.response.status===400) {
+
+                        uploadError.push(<div className="d-flex flex-column">
+                            <div><b>CSV Entry {k + 1}</b>: Invalid values for columns</div>
+                        </div>)
+
+                    }else{
+                        uploadError.push(<div className="d-flex flex-column">
+                            <div><b>CSV Entry {k + 1}</b>: {e.response.status} error received from server</div>
+                        </div>)
+
+                    }
+                }
 
 
                 // uploadError=e.response.data.errors.forEach(item => `${item.message}, `)

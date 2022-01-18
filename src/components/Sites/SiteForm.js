@@ -921,6 +921,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     <TextFieldWrapper
 
+                                        type="hidden"
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}

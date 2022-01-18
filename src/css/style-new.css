@@ -18,7 +18,10 @@
 
 }
 
-
+.icon-bg{
+    background: #EAEAEF;
+    border-radius: 50%;
+}
 
 .hourglass{
     /*display:block;*/
@@ -98,6 +101,7 @@
 .title-bold{
     font-weight: 700;
     font-family: var(--body-text-bold);
+    color: var(--lc-purple);
 
 }
 
@@ -2727,6 +2731,7 @@ button.blue-btn-border
     font-size: 14px;
     /*opacity: .5;*/
     padding: 5px 10px;
+    border-radius: 4px;
 }
 
 .custom-label {
@@ -3912,4 +3917,40 @@ input:active,input:focus{
 }
 .add-top-button{
     position: absolute;top: 0;right: 0;
+}
+
+.icon-title{
+
+    font-weight: 600;
+    font-size: 26px;
+    font-family: var(--primary-heading);
+}
+.icon-holder{
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    padding: 2%;
+}
+.icon-container{
+    display: flex;
+    text-align: center;
+
+}
+.icon-holder>img{
+    margin-top: 15%;
+    height: 100px;
+}
+.icon-container h3{
+    margin-bottom: 0!important;
+
+}
+.icon-container span{
+    width: 100%;
+    display: block;
+    text-align:center!important;
+    font-size: 14px;
+}
+.google-autocomplete>div{
+    height: 61px;
+    border: 1px solid #ced4da;
 }

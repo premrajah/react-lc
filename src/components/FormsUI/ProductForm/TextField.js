@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const TextFieldWrapper = ({name,title,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
+const TextFieldWrapper = ({name,type,title,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
     // const [field, mata] = useField(name)
     const classes = useStyles();
@@ -55,10 +55,11 @@ const TextFieldWrapper = ({name,title,details,detailsHeading,validators,label,on
                 <InfoIcon/></CustomPopover>}
             </div>}
 
-           <div className={"field-box mb-2"}>
+           <div className={type!="hidden"?"field-box mb-2":"d-none"}>
 
                <CustomizedInput
 
+                   type={type}
                   variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
 
            </div>

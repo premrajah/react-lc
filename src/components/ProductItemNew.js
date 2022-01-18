@@ -272,7 +272,7 @@ class ProductItemNew extends Component {
                                     )}
                                 </div>
                                 <div className={"col-7 pl-2  content-box-listing"}>
-                                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
+                                    <p style={{ fontSize: "18px" }} className="text-caps text-blue mb-1">
                                         {this.props.item.name}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">

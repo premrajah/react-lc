@@ -12,12 +12,13 @@ import FindResourceListingItem from "../../components/FindResourceListingItem";
 import SearchBar from "../../components/SearchBar";
 import * as actionCreator from "../../store/actions/actions";
 import ErrorBoundary from "../../components/ErrorBoundary";
-import FindProduct from "../../img/icons/Find-Product.svg";
+import BuyProduct from "../../img/icons/buy-products-icon-blue.png";
 import AddProduct from "../../img/icons/add-product-icon.svg";
-import SellProduct from "../../img/icons/Sell-Products.svg";
+import SellProduct from "../../img/icons/sell-products-icon-blue.png";
 import NewListing from "../../img/icons/add-listing-icon.svg";
 import NewSearch from "../../img/icons/search-icon.svg";
 import ResourceItem from "../../pages/create-search/ResourceItem";
+import BlueBorderLink from "../../components/FormsUI/ProductForm/BlueBorderLink";
 
 const currentTime = new Date();
 
@@ -88,35 +89,42 @@ class FindResourcePage extends Component {
 
                 <div className="container">
                     <div className="row mt-5" style={{ marginTop: "80px" }}>
-                        <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
-                            <div className="icon-holder">
-                                <Image className="p-4" src={FindProduct} rounded height="240px" />
-                            </div>
-                            <h1 className="mt-3 blue-text">Buy Products</h1>
-                            <p>
+                        <div className="col-12 web-only icon-container" >
+
+                            <div className="icon-bg icon-holder">
+                                <Image className="" src={BuyProduct} rounded
+
+                                />
+
+                            <h3 className="mt-2 blue-text icon-title">Buy Products</h3>
+                            <span className="text-gray-light">
                                 Search for a specific product and we’ll notify you <br/>when you get a match.
-                            </p>
-                            <Link to="/search-form" className="btn btn-green">
-                                New search
-                            </Link>
-                        </div>
-                        <div className="col-md-6 col-sm-12 mt-3 mb-3" align="center">
-                            <Image className="p-4" src={SellProduct} rounded height="240px" />
-                            <h1 className="mt-3 blue-text">Sell Products</h1>
-                            <p>
+                            </span>
+                            <BlueBorderLink title="New search" to="/search-form"  />
+
+
+                            </div>
+                            <div className="icon-bg icon-holder">
+                            <Image className="" src={SellProduct} rounded
+
+                            />
+                            <h3 className="mt-2 blue-text icon-title">Sell Products</h3>
+                            <span className="text-gray-light">
                                 List a new product for sale and we’ll notify you <br/>when you get a match.
 
-                            </p>
-                            <Link to="/list-form" className="btn btn-green">
-                                New Listing
-                            </Link>
+                            </span>
+                                <BlueBorderLink title="New Listing" to="/list-form"  />
+
+                            </div>
+
+
                         </div>
                     </div>
 
 
                     <div className="row mt-5 mb-2">
                         <div className="col">
-                            <h2 className="text-md-center blue-text">Browse all Listings</h2>
+                            <h4 className="blue-text text-heading">View All Listings</h4>
                         </div>
                     </div>
 

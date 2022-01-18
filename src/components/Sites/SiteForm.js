@@ -927,14 +927,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         error={this.state.errors["address"]}
                                         value={this.state.searchAddress?this.state.searchAddress.label:null}
 
-                                        name="address" title="Address" />
+                                        name="address" title="Address"
+
+                                    />
 
                                     <SearchPlaceAutocomplete
                                         // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleSearchAddress(value)}
                                         error={this.state.errors["address"]}
 
-                                        name="address" title="Search Address"
+                                        // name="address" title="Search Address"
 
 
                                     />

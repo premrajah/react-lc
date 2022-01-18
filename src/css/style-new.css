@@ -3950,3 +3950,7 @@ input:active,input:focus{
     text-align:center!important;
     font-size: 14px;
 }
+.google-autocomplete>div{
+    height: 61px;
+    border: 1px solid #ced4da;
+}

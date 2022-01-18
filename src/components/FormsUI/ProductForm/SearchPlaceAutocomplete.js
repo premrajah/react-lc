@@ -38,17 +38,24 @@ const SearchPlaceAutocomplete = (props) => {
 
     return (
         <>
-            {title&& <div className={"custom-label text-bold text-blue mb-0"}>
-                {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
-            </div>}
-            <div className={"field-box mb-2"}>
+
+            <div className={"field-box "}>
 
                 {/*{label && <InputLabel >{label}</InputLabel>}*/}
 
                 <GooglePlacesAutocomplete
+
                     selectProps={{
                         value,
+                        className:"google-autocomplete",
                         onChange: handleChange,
+                        styles: {
+                            input: (provided) => ({
+                                ...provided,
+                                borderRadius: "4px",
+                                // height: "1.4375em"
+                            }),
+                        }
                     }}
                     apiKey={"AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}/>
 

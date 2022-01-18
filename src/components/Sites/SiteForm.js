@@ -17,6 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 
 
 class SiteForm extends Component {
@@ -850,6 +851,20 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="row no-gutters ">
+                                <div className="col-12">
+
+                                    <SearchPlaceAutocomplete
+                                        // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                        onChange={(value)=>this.handleChange(value,"address")}
+                                        error={this.state.errors["address"]}
+
+                                        name="address" title="Search Address" />
+
+
                                 </div>
                             </div>
                             <div className="row no-gutters ">

@@ -24,9 +24,10 @@ const SearchPlaceAutocomplete = (props) => {
     const [value, setValue] = React.useState();
     const classes = useStyles();
     const handleChange = (event) => {
-        setValue(event.target.value);
+            console.log(event)
+            setValue(event);
            if (onChange)
-            onChange(event.target.value)
+            onChange(event)
     };
 
     useEffect(()=>{
@@ -44,7 +45,12 @@ const SearchPlaceAutocomplete = (props) => {
 
                 {/*{label && <InputLabel >{label}</InputLabel>}*/}
 
-                <GooglePlacesAutocomplete apiKey={"AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}/>
+                <GooglePlacesAutocomplete
+                    selectProps={{
+                        value,
+                        onChange: handleChange,
+                    }}
+                    apiKey={"AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}/>
 
                 {/*{error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}*/}
             </div>

@@ -18,6 +18,8 @@ import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import { geocodeByPlaceId } from 'react-google-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 
 
 class SiteForm extends Component {
@@ -44,7 +46,10 @@ class SiteForm extends Component {
             isSubmitButtonPressed: false,
             addCount: [],
             createNew:false,
-            addExisting:false
+            addExisting:false,
+            searchAddress:null,
+            latitude:null,
+            longitude:null,
 
         };
 
@@ -54,6 +59,8 @@ class SiteForm extends Component {
 
         this.checkListable = this.checkListable.bind(this);
     }
+
+
 
 
     addCount = () => {
@@ -147,9 +154,45 @@ class SiteForm extends Component {
 
         let fields = this.state.fields;
         fields[field] = value;
+        console.log(value)
         this.setState({fields});
 
     }
+
+    handleSearchAddress(value) {
+
+        if (value) {
+            console.log(value)
+
+            this.setState({
+                searchAddress: value
+            });
+
+            let fields = this.state.fields;
+            fields["address"] = value["label"];
+            console.log(value)
+            this.setState({fields});
+
+
+            geocodeByPlaceId(value.value.place_id)
+                .then(results => {
+
+
+                        console.log(results[0])
+                        console.log(results[0].geometry.viewport.Ab.g)
+                        console.log(results[0].geometry.viewport.Ra.g)
+
+
+                        this.setState({
+                            latitude: results[0].geometry.viewport.Ab.g,
+                            longitude: results[0].geometry.viewport.Ra.g,
+                        })
+                    }
+                )
+                .catch(error => console.error(error));
+        }
+    }
+
 
 
     handleChangeLinkSite(value, field) {
@@ -208,8 +251,29 @@ class SiteForm extends Component {
                 others: data.get("other"),
                 phone: data.get("phone"),
                 is_head_office: this.state.isHeadOffice,
-                parent_id: data.get("parent")
+                parent_id: data.get("parent"),
+
+            "geo_codes": [
+            {
+                "address_info": {
+                    "formatted_address":data.get("address"),
+                    "geometry": {
+                        "location": {
+                            "lat": this.state.latitude,
+                            "lng": this.state.longitude
+                        },
+                        "location_type": "APPROXIMATE",
+
+                    },
+                    "place_id": this.state.searchAddress.value.place_id,
+                    "types": this.state.searchAddress.value.types,
+                    "plus_code": null
+                },
+                "is_verified": true
             }
+        ]
+        }
+
         };
 
         parentId=data.get("parent")
@@ -567,13 +631,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     </div>
     </div>
 
-                            <div className={"row justify-content-start create-product-row pl-3 pb-3 pr-3"}>
+    <div className={"row justify-content-start create-product-row pl-3 pb-3 pr-3"}>
 
-                                <form className={"full-width-field"} onSubmit={this.handleSubmit}>
+            <form className={"full-width-field"} onSubmit={this.handleSubmit}>
 
-
-
-                                    <div className="row no-gutters">
+                      <div className="row ">
                                         <div className="col-12 ">
 
                                             <TextFieldWrapper
@@ -728,7 +790,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <Close />
                         </button>
                     </div>
-                    <div className="row no-gutters  justify-content-start mobile-menu-row p-3 m-2">
+                    <div className="row   justify-content-start mobile-menu-row p-3 m-2">
 
                     <div className="col-12 p-0 ">
                         <h4 className={"blue-text text-heading text-left"}>
@@ -857,12 +919,24 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <div className="row no-gutters ">
                                 <div className="col-12">
 
-                                    <SearchPlaceAutocomplete
-                                        // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                    <TextFieldWrapper
+
+                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}
+                                        value={this.state.searchAddress?this.state.searchAddress.label:null}
 
-                                        name="address" title="Search Address" />
+                                        name="address" title="Address" />
+
+                                    <SearchPlaceAutocomplete
+                                        // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                        onChange={(value)=>this.handleSearchAddress(value)}
+                                        error={this.state.errors["address"]}
+
+                                        name="address" title="Search Address"
+
+
+                                    />
 
 
                                 </div>
@@ -870,12 +944,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <div className="row no-gutters ">
                                 <div className="col-12">
 
-                                    <TextFieldWrapper
-                                        initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
-                                        onChange={(value)=>this.handleChange(value,"address")}
-                                        error={this.state.errors["address"]}
 
-                                       name="address" title="Address" />
 
 
                                 </div>

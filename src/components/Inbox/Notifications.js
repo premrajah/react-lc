@@ -158,13 +158,19 @@ class Notifications extends Component {
         const { message, orgs } = item;
         let text;
 
-        const flags =
-            orgs.length > 0 &&
-            orgs
-                .filter((org) => org.read_flag)
-                .filter((org) => org.org._id === this.props.userDetail.orgId)
-                .map((org) => org.read_flag)
-                .map((f) => f.flag)[0];
+        let flags;
+        orgs.forEach((e, i) => {
+            if(e.actor === "message_to") {
+                if(e.org.org._id === this.props.userDetail.orgId) {
+                    if(e.read_flag && e.read_flag !== null) {
+                        if(e.read_flag.flag && e.read_flag.flag !== null) {
+                            flags = e.read_flag.flag;
+                        }
+                    }
+                }
+            }
+        });
+
         const readTime =
             orgs.length > 0 &&
             orgs

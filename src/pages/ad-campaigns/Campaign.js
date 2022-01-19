@@ -516,7 +516,7 @@ class Campaign extends Component {
                             ).length===0&&
                             <div className="row  justify-content-center filter-row    pt-3 pb-3">
                                 <div   className="col">
-                                    <div>No products found!</div>
+                                    <div>No products found</div>
                                 </div>
                             </div>
 

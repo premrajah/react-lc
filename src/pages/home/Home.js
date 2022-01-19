@@ -78,19 +78,16 @@ class Home extends Component {
                                 <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className="blue-text primary-heading"
-                                                // style={{fontSize: "3em"}}
+                                            <h1 className="blue-text primary-heading primary-heading-font-size"
                                             >
-                                                Connect the dots
+                                                Trace and trust products <br/>wherever they go
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className="blue-text body-text-home" >
-                                                    Loopcycle’s product traceability platform redefines the management,
-                                                    recovery and resale of valuable secondary products, driving integrity
-                                                    within the reuse market.
+                                                <p className="blue-text body-description-text body-description-text-font-size" >
+                                                    We help commercial equipment manufacturers and operators trace, manage and recover physical assets throughout their lifecycle.
                                                 </p>
                                             </div>
                                         </div>

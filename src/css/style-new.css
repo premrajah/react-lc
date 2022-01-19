@@ -4,7 +4,7 @@
     --primary-heading: "poppins-semi-bold", sans-serif !important;
     --secondary-heading: "nunito-sans-reg", sans-serif !important;
     --body-text: "nunito-sans-reg", sans-serif !important;
-    --body-text-light: "nunito-sans-reg", sans-serif !important;
+    --body-text-light: "nunito-sans-light", sans-serif !important;
     --body-text-bold: "nunito-sans-bold", sans-serif !important;
 
     --lc-purple: #27245C;
@@ -118,11 +118,20 @@
 .primary-heading {
     font-family: var(--primary-heading);
 }
+.primary-heading-font-size {
+    font-size: 36px;
+}
 .secondary-heading {
     font-family: var(--secondary-heading);
 }
 .body-text {
     font-family: var(--body-text);
+}
+.body-description-text {
+    font-family: var(--body-text-light);
+}
+.body-description-text-font-size {
+    font-size: 22px;
 }
 
 

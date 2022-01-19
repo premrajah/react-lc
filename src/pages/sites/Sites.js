@@ -164,11 +164,11 @@ class Sites extends Component {
                                 <Link onClick={()=> {
                                     this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
                                 }}  className="btn-gray-border  mr-2  click-item">
-                                    Add Sites/Address
+                                    Add Sites / Address
                                 </Link>
 
                                 <Link onClick={this.toggleMultiSite} className="btn-gray-border    mr-2 click-item">
-                                    Upload Multiple Sites(CSV)
+                                    Upload Multiple Sites (CSV)
                                 </Link>
                             </div>
                         </div>

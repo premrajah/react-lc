@@ -725,13 +725,14 @@ class ProductForm extends Component {
 
                     <div className={!this.state.showSubmitSite?"":"d-none"}>
 
-                <div className="row   pt-2 ">
-                    <div className="col-7  ">
-                        <h4 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
+                <div className="row">
+                    <div className="col-md-8  col-xs-12">
+                        <h4 className={"blue-text text-heading pt-2"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
                     </div>
-                    <div className="col-5  ">
-                        <button className="btn btn-sm blue-btn" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
-                    </div>
+                        <div className="col-md-4  col-xs-12 desktop-right">
+                        <button className="btn btn-sm blue-btn pt-2" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
+                        </div>
+
                 </div>
 
 
@@ -945,7 +946,7 @@ class ProductForm extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="col-4 ">
+                                            <div className="col-md-4 col-xs-12 ">
                                                 <SelectArrayWrapper  details="The units the product is measured in"
                                                     select={"Select"}
                                                     initialValue={this.props.item&&this.props.item.product.units}
@@ -955,7 +956,7 @@ class ProductForm extends Component {
                                                     disabled={ (this.state.units.length > 0) ? false : true}
                                                     options={this.state.units} name={"units"} title="(Units)"/>
                                             </div>
-                                            <div className="col-4 ">
+                                            <div className="col-md-4 col-xs-12 ">
 
                                                 {!this.state.disableVolume&&   <TextFieldWrapper  details="The number of units there are of the product"
                                                     // readonly ={this.state.disableVolume}

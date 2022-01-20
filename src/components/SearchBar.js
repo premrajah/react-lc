@@ -23,7 +23,7 @@ class SearchBar extends Component {
     render() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
-            <div className="row">
+            <div className="row ">
                 <div className="col d-flex">
 
                     <div style={{width:  '100%'}} className={"search-box custom-select  rad-8"}>

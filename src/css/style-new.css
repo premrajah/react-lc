@@ -1912,7 +1912,7 @@ button.blue-btn-border
 }
 
 .content-box-listing p {
-    line-height: 18px;
+    /*line-height: 18px;*/
 }
 
 .content-box-listing .text-mute,
@@ -2224,7 +2224,13 @@ button.blue-btn-border
 .btn-rows a{
     float: left;
 }
+.desktop-right{
+    text-align: right;
+}
 @media only screen and (max-width: 991px) {
+    .desktop-right{
+        text-align: left;
+    }
 
     .ml-2-desktop{
         margin-top: 0.5rem !important;
@@ -3023,7 +3029,7 @@ background: white;
 }
 
 .btn-close.close-done {
-    right: 10px;
+    right: 0px;
     margin: 0px;
     position: absolute;
     cursor: pointer;
@@ -3950,7 +3956,7 @@ input:active,input:focus{
     padding: 2%;
 }
 .icon-container{
-    display: flex;
+    /*display: flex;*/
     text-align: center;
 
 }

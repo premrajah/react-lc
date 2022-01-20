@@ -199,17 +199,17 @@ class ComponentsNavbar extends React.Component {
                     </Nav>
 
                     <Nav className={"justify-content-end menu-align-right"}>
+                        <NavItem className={"web-only mr-3"}>
+                            <Link
+                                className="nav-link d-none d-lg-block wl-link-white "
+                                color="default"
+                                to={"/find-resources"}>
+                                Marketplace
+                            </Link>
+                        </NavItem>
+
                         {this.props.isLoggedIn && (
                             <>
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
-                                        className="nav-link d-none d-lg-block wl-link-white "
-                                        color="default"
-                                        to={"/find-resources"}>
-                                        Marketplace
-                                    </Link>
-                                </NavItem>
-
                                 <NavItem className={"web-only mr-3"}>
                                     <Link
                                         onClick={this.showProductSelection}

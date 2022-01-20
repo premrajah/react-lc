@@ -23,6 +23,11 @@ class Sidebar extends Component {
         document.body.classList.remove("sidemenu-open");
     };
 
+    showProductSelection=()=> {
+        document.body.classList.remove("sidemenu-open");
+        this.props.showProductPopUp({ type: "create_product", show: true });
+    }
+
     showSignUpPopUp = (event) => {
         document.body.classList.remove("sidemenu-open");
 
@@ -118,7 +123,13 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/find-resources"}
                                             className="white-text list-group-item list-group-item-action">
-                                            Browse Resources
+                                            Marketplace
+                                        </Link>
+                                        <Link
+                                            onClick={this.showProductSelection}
+                                            to={"/my-products"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Add Product
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
@@ -269,6 +280,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
     };
 };

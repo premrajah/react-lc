@@ -203,7 +203,7 @@ class App extends Component {
                         <LoggedOutRoute exact path="/login" component={LoginPage} />
                         <LoggedOutRoute exact path="/forgot-password" component={ForgotPasswordPage} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
-                        <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
+                        <Route exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/help" component={Help} />
@@ -240,7 +240,7 @@ class App extends Component {
                             component={ItemDetailMatch}
                         />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
-                        <LoggedInRoute exact path="/:slug" component={ItemDetail} />
+                        <Route exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />

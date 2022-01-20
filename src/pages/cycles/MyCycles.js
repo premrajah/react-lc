@@ -43,8 +43,8 @@ class MyCycles extends Component {
         this.props.showLoading(true);
 
         axios
-            // .get(baseUrl + "cycle/expand")
-            .get(`${baseUrl}cycle/expand?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .get(baseUrl + "cycle/expand")
+            // .get(`${baseUrl}cycle/expand?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
 
             .then(
                 (response) => {
@@ -71,7 +71,8 @@ class MyCycles extends Component {
         this.setState({
             items:[]
         })
-        this.getTotalCount()
+        this.getCycles()
+        // this.getTotalCount()
     }
 
     getTotalCount=()=>{
@@ -151,14 +152,14 @@ class MyCycles extends Component {
                                     ).filter(l => l.cycle.stage.toLowerCase() !== "closed").length
 
                                     }
-                                    <span className="ml-1 text-gray-light"> of {this.state.count} Cycles</span>
+                                    <span className="ml-1 text-gray-light"> Cycles</span>
                                 </p>
                             </div>
 
 
                         </div>
 
-                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.getCycles} >
+                        {/*<PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.getCycles} >*/}
 
 
                         {this.state.items&&this.state.items.filter((site)=>
@@ -176,7 +177,7 @@ class MyCycles extends Component {
                             <CycleItem item={item} key={index} />
                         )) }
 
-                        </PaginationLayout>
+                        {/*</PaginationLayout>*/}
                     </div>
 
             </Layout>

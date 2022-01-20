@@ -117,7 +117,7 @@ const AddedDocumentsDisplay = (props) => {
                                             // href={artifact.blob_url}
                                             target="_blank"
                                             rel="noopener noreferrer">
-                                            {artifact.blob_name}
+                                            {artifact.name}
                                         </span>
 
                                         </div>

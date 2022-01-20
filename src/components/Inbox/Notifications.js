@@ -207,7 +207,7 @@ class Notifications extends Component {
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
             <Link
                 key={i + Math.random() * 103}
-                to={`match/${match}`}
+                to={`matched/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 <u className="blue-text">Match</u>
             </Link>

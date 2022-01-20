@@ -1,24 +1,17 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Image} from "react-bootstrap";
-import {Link} from "react-router-dom";
 import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import Footer from "../../components/Footer/Footer";
 import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
-import SearchIcon from "../../img/resource_icons/icon_search_bottle.png";
-import BottleDollarIcon from "../../img/resource_icons/icon_bottle_dollar.png";
-import FindResourceListingItem from "../../components/FindResourceListingItem";
 import SearchBar from "../../components/SearchBar";
 import * as actionCreator from "../../store/actions/actions";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import BuyProduct from "../../img/icons/buy-products-icon-blue.png";
-import AddProduct from "../../img/icons/add-product-icon.svg";
 import SellProduct from "../../img/icons/sell-products-icon-blue.png";
-import NewListing from "../../img/icons/add-listing-icon.svg";
-import NewSearch from "../../img/icons/search-icon.svg";
-import ResourceItem from "../../pages/create-search/ResourceItem";
 import BlueBorderLink from "../../components/FormsUI/ProductForm/BlueBorderLink";
+import MarketplaceResourceItem from "../../components/Resources/MarketplaceResourceItem";
 
 const currentTime = new Date();
 
@@ -68,7 +61,7 @@ class FindResourcePage extends Component {
                   .map((item, index) => (
                       <ErrorBoundary key={index}>
                           {/*<FindResourceListingItem key={item.listing._id} item={item} />*/}
-                          <ResourceItem
+                          <MarketplaceResourceItem
                               // triggerCallback={() => this.callBackResult()}
                               // history={this.props.history}
                               link={"/" + item.listing._key}

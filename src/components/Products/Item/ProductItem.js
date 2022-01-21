@@ -267,7 +267,7 @@ class ProductItemNew extends Component {
                                 </div>
                                 <div className={this.props.biggerImage?"col-md-8 pl-3-desktop  content-box-listing":"col-md-10 pl-3-desktop  content-box-listing"}>
 
-                                        <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-75">
+                                        <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-70 ellipsis-end">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
                                                 className="badge badge-info ml-2">Listed</span>}  <small className={""}><small> - {this.props.item._key}</small></small></Link>
                                       </p>
@@ -291,7 +291,7 @@ class ProductItemNew extends Component {
                                                             </span>
                                     </span>
                                     </div>
-                                    <p  className=" text-capitalize  text-gray-light">
+                                    <p  className=" text-capitalize  text-gray-light mb-1">
 
                                         {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}
                                         {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}

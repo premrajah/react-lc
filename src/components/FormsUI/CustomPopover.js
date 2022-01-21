@@ -35,7 +35,7 @@ class CustomPopover extends React.Component {
         return (
             <OverlayTrigger
                 trigger={ ["hover", "focus"]}
-                placement={"right"}
+                placement={"bottom"}
                 overlay={this.orgPopover}
             >
                 <span>

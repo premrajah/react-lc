@@ -10,6 +10,8 @@ import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
 import {capitalize} from "../../Util/GlobalFunctions";
 import ErrorBoundary from "../ErrorBoundary";
+import OrgFull from "../Org/OrgFull";
+import OrgComponent from "../Org/OrgComponent";
 class MarketplaceResourceItem extends Component {
     constructor(props) {
         super(props);
@@ -33,8 +35,8 @@ class MarketplaceResourceItem extends Component {
     }
 
     readMore = (text) => {
-        return <>{text.length>180?
-            <>{text.substring(0, 180)}..<span className='text-pink'>Read More</span></>
+        return <>{text.length>130?
+            <>{text.substring(0, 130)}..<span className='text-pink'>Read More</span></>
             : <>text</>}
             </>
     };
@@ -85,10 +87,7 @@ class MarketplaceResourceItem extends Component {
     render() {
         return (
             <>
-
                     <>
-
-
                         <Link to={"/"+ this.props.item.listing._key }>
 
                             <div
@@ -103,10 +102,10 @@ class MarketplaceResourceItem extends Component {
                                     }
                                 </div>
                                 <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
-                                    <p  className="text-capitlize mb-2 item-title">
+                                    <p  className="text-capitlize mb-2 item-title width-70 ellipsis-end">
                                         {this.props.item.listing.name}
                                     </p>
-                                    <p style={{width:"90%"}}  className=" mb-2 text-gray-light mt-1 mb-2 width-75 mr-5 ">
+                                    <p   className=" mb-2 text-gray-light mt-1 mb-2 width-70 ">
 
                                             {this.readMore(this.props.item.listing.description)}
 
@@ -134,9 +133,12 @@ class MarketplaceResourceItem extends Component {
 
                                     </span>
                                     </div>
+                                    <div className={"text-gray-light mt-1 mb-2 width-75"}>
+Seller: <OrgComponent org={this.props.item.org} />
+                                    </div>
 
-                                    <div className={"add-top-button  pl-3-desktop"}>
-                                        <p className={"text-blue text-bold text-center"}>
+                                    <div className={"add-top-button    text-right"}>
+                                        <p className={"text-blue extra-bold p-0 mb-2"}>
                                             {this.props.item.listing.price &&
                                             this.props.item.listing.price.value ? (
                                                 <>GBP {this.props.item.listing.price.value}</>
@@ -144,12 +146,20 @@ class MarketplaceResourceItem extends Component {
                                                 "Free"
                                             )}
                                         </p>
-                                        <p className={"  status text-right"}>
+                                        <span className={" text-gray-light text-14  text-right"}>
+                                            Created on: <span className="text-bold">{moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                                        </span>
+                                        <br/>
+                                        <span className={" text-gray-light text-14  text-right"}>
+                                            Available: <span className="text-bold">{moment(this.props.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
+                                        </span>
+                                        <p className={"d-none  status text-right"}>
                                 <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
                                 </span>
                                         </p>
-                                        <p  className={" text-gray-light text-14 text-right"}>  {!this.props.hideMoreMenu&&  <MoreMenu
+                                        <p  className={" text-gray-light text-14 text-right d-none"}>
+                                            {!this.props.hideMoreMenu&&  <MoreMenu
                                             triggerCallback={(action) => this.callBackResult(action)}
                                             delete={true}
                                             edit={false}
@@ -158,17 +168,8 @@ class MarketplaceResourceItem extends Component {
                                         />}</p>
                                     </div>
 
-                                    <p className={" text-gray-light text-14 date-bottom text-right"}>
-                                        {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
-                                    </p>
-
 
                                 </div>
-
-
-
-
-
 
                             </div>
                         </Link>

@@ -19,6 +19,8 @@ import SiteForm from "../Sites/SiteForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
+import BlueBorderButton from "../FormsUI/ProductForm/BlueBorderButton";
+import BlueButton from "../FormsUI/ProductForm/BlueButton";
 
 
 class ProductForm extends Component {
@@ -765,7 +767,7 @@ class ProductForm extends Component {
                                         details="do you wish to list your product now or in the future ?"
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
-                                        name={"is_listable"} title="Allow product to be listed" />
+                                        name={"is_listable"} title="List the product for sale" />
 
                                 </div>
 
@@ -922,7 +924,7 @@ class ProductForm extends Component {
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
-                                                        "green-text forgot-password-link"
+                                                        " forgot-password-link"
                                                     }>
                                                     {this.state.showSubmitSite
                                                         ? "Hide add site"
@@ -991,20 +993,16 @@ class ProductForm extends Component {
                                         <span
                                             onClick={this.showMoreDetails}
                                             className={
-                                                "green-text forgot-password-link"
+                                                " forgot-password-link"
                                             }>
                                             {this.state.moreDetail
-                                                ? "Hide Details"
-                                                : "Add More details"} <CustomPopover text={"Optional fields for the product "}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                ? "Hide details"
+                                                : "Add more details"} <CustomPopover text={"Optional fields for the product "}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                         </span>
                                     </span>
                                 </div>
                             </div>
-
-
-
-                                    <div className={this.state.moreDetail?"col-12 mt-2": "d-none    "}>
-                                        <div className="row">
+                            <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper  details="Select when the product was manufactured "
 
@@ -1048,7 +1046,7 @@ class ProductForm extends Component {
 
                                             </div>
                                         </div>
-                                    </div>
+
 
 <div className={"row"}>
                             <div className="col-12 mt-2">
@@ -1211,31 +1209,36 @@ class ProductForm extends Component {
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
                                     0 ? (
-                                        <button
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
-                                            }>
-                                            Upload in progress ....
-                                        </button>
+                                            <BlueButton
+                                                title={"Upload in progress ...."}
+                                                type={"submit"}
+                                                loading={true}
+                                                disabled={true}
+                                                fullWidth
+                                            >
+                                            </BlueButton>
+
                                     ) : (
-                                        <button
-                                            type={"submit"}
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                            }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                            {this.props.item?"Update Product":"Add Product"}
-                                        </button>
+                                    <BlueButton
+                                        title={this.props.item?"Update Product":"Add Product"}
+                                        type={"submit"}
+                                        loading={this.props.loading}
+                                        disabled={this.state.isSubmitButtonPressed}
+                                        fullWidth
+                                    >
+                                    </BlueButton>
+
                                     )
                                 ) : (
-                                    <button
-                                        type={"submit"}
-                                        className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                        {this.props.item?"Update Product":"Add Product"}
-                                    </button>
+                                    <BlueButton
+                                    title={this.props.item?"Update Product":"Add Product"}
+                                    type={"submit"}
+                                    loading={this.props.loading}
+                                    disabled={this.state.isSubmitButtonPressed}
+                                    fullWidth
+                                    >
+                                    </BlueButton>
+
                                 )}
                             </div>
                     </div>

@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Image} from "react-bootstrap";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
+import HeaderDark from "../../views/header/HeaderDark";
+import Sidebar from "../../views/menu/Sidebar";
 import Footer from "../../components/Footer/Footer";
 import {PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
 import SearchBar from "../../components/SearchBar";
@@ -12,6 +12,7 @@ import BuyProduct from "../../img/icons/buy-products-icon-blue.png";
 import SellProduct from "../../img/icons/sell-products-icon-blue.png";
 import BlueBorderLink from "../../components/FormsUI/ProductForm/BlueBorderLink";
 import MarketplaceResourceItem from "../../components/Resources/MarketplaceResourceItem";
+import Layout from "../../components/Layout/Layout";
 
 const currentTime = new Date();
 
@@ -76,13 +77,11 @@ class FindResourcePage extends Component {
 
     render() {
         return (
-            <>
-                <HeaderDark />
-                <Sidebar />
+            <Layout>
 
                 <div className="container">
-                    <div className="row mt-5" style={{ marginTop: "80px" }}>
-                        <div className="col-12 web-only icon-container" >
+                    <div className="row mt-5 web-only " style={{ marginTop: "80px" }}>
+                        <div className="col-12  marketplce-icon-container icon-container" >
 
                             <div className="icon-bg icon-holder">
                                 <Image className="" src={BuyProduct} rounded
@@ -135,8 +134,7 @@ class FindResourcePage extends Component {
                     </div>
                 </div>
 
-                <Footer />
-            </>
+            </Layout>
         );
     }
 }

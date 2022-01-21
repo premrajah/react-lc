@@ -8,6 +8,9 @@ import {Alert, Spinner} from "react-bootstrap";
 import {IconButton, InputAdornment} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {Link} from "react-router-dom";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import BlueBorderButton from "../../components/FormsUI/ProductForm/BlueBorderButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,23 +74,6 @@ class Login extends Component {
             // errors["email"] = "Required";
         }
 
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                // errors["email"] = "Invalid email address";
-            }
-        }
 
         this.setState({ formValid: formIsValid });
 
@@ -95,46 +81,28 @@ class Login extends Component {
     }
 
     handleValidation() {
+
+
         let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
 
-        //Name
-        if (!fields["password"]) {
-            formIsValid = false;
-            errors["password"] = "Required";
-        }
 
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
+        let validations=[
 
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
+            validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
+        ]
 
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
+
+
+        let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
         return formIsValid;
     }
 
-    handleChange(field, e) {
+    handleChange(field, value) {
         let fields = this.state.fields;
-        fields[field] = e.target.value;
+        fields[field] = value;
         this.setState({ fields });
 
         this.handleValidationSubmitGreen();
@@ -220,69 +188,54 @@ class Login extends Component {
 
                     <div className="row no-gutters ">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Log In</h3>
+                            <h4 className={"blue-text text-heading"}>Log In</h4>
                         </div>
                     </div>
 
-                <div className="row justify-content-center no-gutters">
-                                <div className="col-12 mt-4">
+                <div className="row justify-content-center no-gutters mb-4">
+                                <div className="col-12 ">
 
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center">
                             <div className="col-12">
-                                <TextField
-                                    type={"email"}
-                                    onChange={this.handleChange.bind(this, "email")}
-                                    id="outlined-basic"
-                                    label="Email"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name={"email"}
-                                />
+                                {/*<TextField*/}
+                                {/*    type={"email"}*/}
+                                {/*    onChange={this.handleChange.bind(this, "email")}*/}
+                                {/*    id="outlined-basic"*/}
+                                {/*    label="Email"*/}
+                                {/*    variant="outlined"*/}
+                                {/*    fullWidth={true}*/}
+                                {/*    name={"email"}*/}
+                                {/*/>*/}
+                                <TextFieldWrapper
 
-                                {this.state.errors["email"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["email"]}
-                                    </span>
-                                )}
+
+                                    onChange={(value)=>this.handleChange("email",value)}
+                                    error={this.state.errors["email"]}
+                                    name="email" title="Email" />
+
+                                {/*{this.state.errors["email"] && (*/}
+                                {/*    <span className={"text-mute small"}>*/}
+                                {/*        <span style={{ color: "red" }}>* </span>*/}
+                                {/*        {this.state.errors["email"]}*/}
+                                {/*    </span>*/}
+                                {/*)}*/}
                             </div>
 
-                            <div className="col-12 mt-4">
-                                <TextField
-                                    type={this.state.showPassword ? "text" : "password"}
-                                    onChange={this.handleChange.bind(this, "password")}
-                                    id="outlined-basic"
-                                    label="Password"
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name={"password"}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    onClick={this.handleShowPassword}
-                                                    edge="end">
-                                                    {this.state.showPassword ? (
-                                                        <Visibility />
-                                                    ) : (
-                                                        <VisibilityOff />
-                                                    )}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                            <div className="col-12 ">
+                                <TextFieldWrapper
+
+                                    type="password"
+                                    onChange={(value)=>this.handleChange("password",value)}
+                                    error={this.state.errors["password"]}
+                                    name="password" title="Password"
+
                                 />
 
-                                {this.state.errors["password"] && (
-                                    <span className={"text-mute small"}>
-                                        <span style={{ color: "red" }}>* </span>
-                                        {this.state.errors["password"]}
-                                    </span>
-                                )}
+
                             </div>
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 mt-2 mb-2">
                                 {this.props.isPage ?
                                     <Link
                                         to={"/forgot-password"}
@@ -299,41 +252,30 @@ class Login extends Component {
                             </div>
 
                             {this.props.loginFailed && (
-                                <div className="col-12 mt-4">
+                                <div className="col-12 mt-2">
                                     <Alert key={"alert"} variant={"danger"}>
                                         {this.props.loginError}
                                     </Alert>
                                 </div>
                             )}
 
-                            <div className="col-12 mt-4">
-                                <button
+                            <div className="col-12 mt-2">
+                                <BlueBorderButton
+                                    title={this.props.loading ? "Wait.." : "Log In"}
                                     type={"submit"}
-                                    className={
-                                        this.state.formValid
-                                            ? "btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"
-                                            : "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
-                                    }>
-                                    {this.props.loading && (
-                                        <Spinner
-                                            as="span"
-                                            animation="border"
-                                            size="sm"
-                                            role="status"
-                                            aria-hidden="true"
-                                        />
-                                    )}
-
-                                    {this.props.loading ? "Wait.." : "Log In"}
-                                </button>
+                                    loading={this.props.loading}
+                                    disabled={!this.state.formValid}
+                                    fullWidth
+                                  >
+                                </BlueBorderButton>
                             </div>
 
-                            <div className="col-12 mt-4">
+                            <div className="col-12 mt-2">
                                 <p className={"or-text-divider"}>
                                     <span>or</span>
                                 </p>
                             </div>
-                            <div className="col-auto mt-4 justify-content-center">
+                            <div className="col-auto mt-4  justify-content-center">
                                 {this.props.isPage?
                                     <Link
                                         style={{padding: ".375rem .75rem"}}
@@ -343,12 +285,15 @@ class Login extends Component {
                                         Sign Up
                                     </Link>
 
-                                    :  <button
-                                    onClick={this.goToSignUp}
-                                    type="button"
-                                    className="mt-1 mb-4 btn topBtn  sign-up-btn">
-                                    Sign Up
-                                </button>}
+                                    :
+
+                                    <BlueBorderButton
+
+                                        title={"Sign Up"}
+                                        fullWidth
+                                        onClick={this.goToSignUp}
+                                    >
+                                    </BlueBorderButton>}
                             </div>
                         </div>
                     </form>

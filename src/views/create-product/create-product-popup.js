@@ -65,7 +65,7 @@ class ProductPopUp extends Component {
                     </div>
                 </div>
 
-                <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
+                {!this.props.showCreateSubProduct &&  <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
                     <div className="col text-right">
                     <button
                         onClick={this.hidePopUp}
@@ -75,7 +75,7 @@ class ProductPopUp extends Component {
                         Done
                     </button>
                     </div>
-                </div>
+                </div>}
 
             </Modal>
         );

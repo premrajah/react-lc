@@ -411,7 +411,7 @@ class Products extends Component {
                                 {/*</CustomPopover>*/}
                                 </Link>
                                 <div style={{float:"right"}} className=" text-right pl-3-desktop">
-                                    <CustomPopover text={"Open QR codes that are not associated with any product yet. You can scan these codes and then associate them to a product that currently exists."}><button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
+                                    <CustomPopover text={" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product, allowing you to print multiple stickers before assigning them to the products."}><button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
                                     <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                                 </div>
                             </div>

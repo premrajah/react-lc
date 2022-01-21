@@ -20,6 +20,9 @@ import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+import CloseButtonPopUp from "../FormsUI/ProductForm/CloseButtonPopUp";
+import BlueBorderButton from "../FormsUI/ProductForm/BlueBorderButton";
+import BlueButton from "../FormsUI/ProductForm/BlueButton";
 
 
 class SiteForm extends Component {
@@ -780,17 +783,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
+                        <div className="row   justify-content-end">
+                            <div className="col-auto mr-2 mt-2">
+                                <CloseButtonPopUp onClick={this.hidePopUp}>
+                                    <Close />
+                                </CloseButtonPopUp>
 
-                    <div className="m-1">
-                        <button
-                            onClick={this.hidePopUp}
-                            className="btn-close close-done"
-                            data-dismiss="modal"
-                            aria-label="Close">
-                            <Close />
-                        </button>
-                    </div>
-                    <div className="row   justify-content-start mobile-menu-row p-3 m-2">
+                            </div>
+                        </div>
+
+                    <div className="row   justify-content-start mobile-menu-row pr-3 pl-3 pb-3 ml-2 mb-3 mr-3">
 
                     <div className="col-12 p-0 ">
                         <h4 className={"blue-text text-heading text-left"}>
@@ -970,14 +972,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <div className={"row"}>
                             <div className="col-12 mt-4 mb-2">
 
-                                    <button
-                                        type={"submit"}
-                                        className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                        {this.props.showSiteForm.item?"Update Site":"Add Site"}
-                                    </button>
+                                <BlueButton
+                                    title={this.props.showSiteForm.item?"Update Site":"Add Site"}
+                                    type={"submit"}
+
+                                    disabled={this.state.isSubmitButtonPressed}
+                                    fullWidth
+                                >
+                                </BlueButton>
 
                             </div>
                             </div>

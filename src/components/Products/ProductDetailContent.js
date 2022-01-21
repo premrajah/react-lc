@@ -28,6 +28,7 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import CloseButtonPopUp from "../FormsUI/ProductForm/CloseButtonPopUp";
 
 
 class ProductDetailContent extends Component {
@@ -714,13 +715,13 @@ class ProductDetailContent extends Component {
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
-                                            <div className="col-8">
+                                            <div className="col-11">
                                                 <h4 className="text-capitalize product-title">
                                                     {this.state.item.product.name}
                                                 </h4>
                                             </div>
 
-                                            <div className="col-4 text-right">
+                                            <div className="col-1 text-right">
                                                 { (this.state.item.org._id ===
                                                 this.props.userDetail.orgId) && <MoreMenu
                                                     triggerCallback={(action) =>
@@ -903,18 +904,18 @@ class ProductDetailContent extends Component {
                             show={this.state.showProductEdit}
                             onHide={this.showProductEdit}
                             className={"custom-modal-popup popup-form"}>
-                            <div className="">
-                                <button
-                                    onClick={this.showProductEdit}
-                                    className="btn-close close"
-                                    data-dismiss="modal"
-                                    aria-label="Close">
-                                    <i className="fas fa-times"></i>
-                                </button>
+                            <div className="row   justify-content-end">
+                                <div className="col-auto mr-2 mt-2">
+                                    <CloseButtonPopUp onClick={this.showProductEdit}>
+                                        <Close />
+                                    </CloseButtonPopUp>
+
+                                </div>
                             </div>
 
 
-                            <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
+
+                            <div className="row  justify-content-center mobile-menu-row  pr-2 pl-2 pb-2">
                                 <div className="col mobile-menu">
                                     <div className="form-col-left col-12">
                             <ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />

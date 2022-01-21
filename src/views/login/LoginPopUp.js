@@ -12,6 +12,8 @@ import RecoverPassword from "./RecoverPassword";
 import SignUp from "./SignUp";
 import SuccessSignUp from "./SuccessSignUp";
 import ForgotPassword from "./ForgotPassword";
+import CloseButtonPopUp from "../../components/FormsUI/ProductForm/CloseButtonPopUp";
+import {Modal} from "react-bootstrap";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -68,18 +70,14 @@ class LoginPopUp extends Component {
             <>
                 <div className={"body-overlay"}>
                     <div className={"modal-popup"}>
-                        <div className=" text-right web-only">
-                            {/*<Link to={"/"}>*/}
+                        <div className="row   justify-content-end">
+                            <div className="col-auto mr-2 mt-2">
+                            <CloseButtonPopUp onClick={this.hideLoginPopUp} />
+                            </div>
 
-                                <Close
-                                    onClick={this.hideLoginPopUp}
-                                    className="blue-text"
-                                    style={{ fontSize: 32 }}
-                                />
-                            {/*</Link>*/}
                         </div>
-                        <div className="container  p-2 mobile-only"></div>
-                        <div className="container  pt-2 pb-3 mobile-only">
+
+                        <div className="container  pb-3 d-none">
                             <div className="row no-gutters">
                                 <div className="col-auto">
                                     <img src={LogoNew} alt="" className="header-logo" />

@@ -4,6 +4,7 @@ import {InputAdornment} from "@mui/material";
 import SearchGray from '@mui/icons-material/Search';
 
 import {capitalize} from "../Util/GlobalFunctions";
+import {capitalizeFirstLetter} from "../Util/Constants";
 
 class SearchBar extends Component {
 
@@ -28,7 +29,7 @@ class SearchBar extends Component {
 
                     <div style={{width:  '100%'}} className={"search-box custom-select  rad-8"}>
                         {/*<FormControl className={"filter-box"}   component="div">*/}
-                            <select style={{width:  'auto'}} label="Filter" className="filter-box  rad-4"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                            <select style={{width:  'auto'}} label="Filter" className="filter-box text-capitlize rad-4"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >
                                     Filter By
                                 </option>

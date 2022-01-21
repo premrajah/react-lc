@@ -16,6 +16,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import BlueButton from "../FormsUI/ProductForm/BlueButton";
 
 let productProperties=[
     {field:"name",required:true},
@@ -712,7 +713,7 @@ const UploadMultiSiteOrProduct = (props) => {
         <div className={!siteShowHide?"":"d-none"}>
         <div className="row mb-2">
             <div className="col">
-                <h4 className={"blue-text text-heading"}>{isSite && 'Multiple Sites Upload'}{isProduct && 'Multiple Products Upload'}</h4>
+                <h4 className={"blue-text text-heading"}>{isSite && 'Upload Multiple Sites'}{isProduct && 'Upload Multiple Products'}</h4>
                 <span className="top-element  text-underline">
                    <Download style={{fontSize:"16px"}} /><a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "" : ""} CSV template</a>
                 </span>
@@ -804,7 +805,7 @@ const UploadMultiSiteOrProduct = (props) => {
                                             <span
                                                 onClick={handleShowHideSite}
                                                 className={
-                                                    "green-text forgot-password-link text-mute small"
+                                                    "forgot-password-link text-mute small"
                                                 }>
                                                     {siteShowHide
                                                         ? "Hide add site"
@@ -875,9 +876,14 @@ const UploadMultiSiteOrProduct = (props) => {
 
                             <div className="row mt-4 mb-4">
                                 <div className="col">
-                                    <button disabled={isDisabled} type="submit" className="btn btn-block btn-green"
-                                            // onClick={formProps.submitForm}
-                                            style={{backgroundColor: '#07AD88'}} >Submit</button>
+                                    <BlueButton
+                                        title={"Submit"}
+                                        type={"submit"}
+
+                                        disabled={isDisabled}
+                                        fullWidth
+                                    >
+                                    </BlueButton>
                                 </div>
                             </div>
                         </form>

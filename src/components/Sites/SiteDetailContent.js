@@ -597,7 +597,7 @@ class SiteDetailContent extends Component {
 
                                                         <Tab label="Info" value="1"/>
 
-                                                        <Tab label="Sub Site" value="2" />
+                                                        <Tab label="Subsite" value="2" />
 
                                                         {this.props.isLoggedIn  &&
                                                         <Tab label="Products" value="3" />

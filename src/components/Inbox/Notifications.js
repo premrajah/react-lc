@@ -286,7 +286,7 @@ class Notifications extends Component {
                                                 <b>Track</b>
                                             </span>
                                         ) : (
-                                            <span
+                                            item.options.is_tracked && <span
                                                 className="ml-4 text-danger"
                                                 style={{ cursor: "pointer" }}
                                                 onClick={() => this.handleUnTrackProduct(message)}>

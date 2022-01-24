@@ -11,6 +11,7 @@ import {Link} from "react-router-dom";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import BlueBorderButton from "../../components/FormsUI/ProductForm/BlueBorderButton";
+import BlueButton from "../../components/FormsUI/ProductForm/BlueButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -260,14 +261,14 @@ class Login extends Component {
                             )}
 
                             <div className="col-12 mt-2">
-                                <BlueBorderButton
+                                <BlueButton
                                     title={this.props.loading ? "Wait.." : "Log In"}
                                     type={"submit"}
                                     loading={this.props.loading}
                                     disabled={!this.state.formValid}
                                     fullWidth
                                   >
-                                </BlueBorderButton>
+                                </BlueButton>
                             </div>
 
                             <div className="col-12 mt-2">

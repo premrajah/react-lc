@@ -16,6 +16,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {Link} from "react-router-dom";
 import BlueBorderButton from "../../components/FormsUI/ProductForm/BlueBorderButton";
+import BlueButton from "../../components/FormsUI/ProductForm/BlueButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -545,14 +546,14 @@ class SignUp extends Component {
                             )}
 
                             <div className="col-12 ">
-                                <BlueBorderButton
+                                <BlueButton
                                     title={this.props.loading ? "Wait.." : "Create Account"}
                                     type={"submit"}
                                     loading={this.props.loading}
 
                                     fullWidth
                                 >
-                                </BlueBorderButton>
+                                </BlueButton>
                             </div>
 
 

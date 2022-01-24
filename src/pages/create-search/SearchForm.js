@@ -1334,7 +1334,7 @@ if ((this.state.activeStep-1)==0){
                                                     options={this.props.siteList}
                                                     option={"name"}
                                                     select={"Select"}
-                                                    name={"deliver"} title="Deliver"
+                                                    name={"deliver"} title="Deliver to"
                                                     native
                                                   />
                                             <p style={{ marginTop: "10px" }}>

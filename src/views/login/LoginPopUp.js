@@ -12,7 +12,7 @@ import RecoverPassword from "./RecoverPassword";
 import SignUp from "./SignUp";
 import SuccessSignUp from "./SuccessSignUp";
 import ForgotPassword from "./ForgotPassword";
-import CloseButtonPopUp from "../../components/FormsUI/ProductForm/CloseButtonPopUp";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 import {Modal} from "react-bootstrap";
 
 const useStyles = makeStyles((theme) => ({

@@ -16,7 +16,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
-import BlueButton from "../FormsUI/ProductForm/BlueButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
 
 let productProperties=[
     {field:"name",required:true},

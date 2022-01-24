@@ -10,7 +10,7 @@ import * as actionCreator from "../../store/actions/actions";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import BuyProduct from "../../img/icons/buy-products-icon-blue.png";
 import SellProduct from "../../img/icons/sell-products-icon-blue.png";
-import BlueBorderLink from "../../components/FormsUI/ProductForm/BlueBorderLink";
+import BlueBorderLink from "../../components/FormsUI/Buttons/BlueBorderLink";
 import MarketplaceResourceItem from "../../components/Resources/MarketplaceResourceItem";
 import Layout from "../../components/Layout/Layout";
 

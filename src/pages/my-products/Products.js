@@ -124,8 +124,8 @@ class Products extends Component {
 
 
         axios
-            // .get(`${baseUrl}name=product&count=true&no_parento=true/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-            .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            .get(`${baseUrl}seek/entity?name=product&count=false&no_parent=true&offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+            // .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then(
                 (response) => {
                     if(response.status === 200) {

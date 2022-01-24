@@ -15,8 +15,8 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {Link} from "react-router-dom";
-import BlueBorderButton from "../../components/FormsUI/ProductForm/BlueBorderButton";
-import BlueButton from "../../components/FormsUI/ProductForm/BlueButton";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -20,9 +20,9 @@ import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
-import CloseButtonPopUp from "../FormsUI/ProductForm/CloseButtonPopUp";
-import BlueBorderButton from "../FormsUI/ProductForm/BlueBorderButton";
-import BlueButton from "../FormsUI/ProductForm/BlueButton";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
 
 
 class SiteForm extends Component {

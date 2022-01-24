@@ -19,8 +19,8 @@ import SiteForm from "../Sites/SiteForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
-import BlueBorderButton from "../FormsUI/ProductForm/BlueBorderButton";
-import BlueButton from "../FormsUI/ProductForm/BlueButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
 
 
 class ProductForm extends Component {

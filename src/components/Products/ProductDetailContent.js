@@ -28,7 +28,7 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import CloseButtonPopUp from "../FormsUI/ProductForm/CloseButtonPopUp";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 
 class ProductDetailContent extends Component {

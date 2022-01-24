@@ -10,8 +10,8 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import BlueBorderButton from "../../components/FormsUI/ProductForm/BlueBorderButton";
-import BlueButton from "../../components/FormsUI/ProductForm/BlueButton";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {

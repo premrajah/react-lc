@@ -5,7 +5,7 @@ import { baseUrl } from "../../Util/Constants";
 import history from "../../History/history";
 import TextField from "@mui/material/TextField";
 import axios from "axios/index";
-import BlueBorderButton from "../../components/FormsUI/ProductForm/BlueBorderButton";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 
 class ForgotPassword extends Component {
     constructor(props) {

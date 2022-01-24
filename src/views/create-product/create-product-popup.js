@@ -8,7 +8,7 @@ import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
 import IconButton from "@mui/material/IconButton";
 import {Close} from "@mui/icons-material";
-import CloseButtonPopUp from "../../components/FormsUI/ProductForm/CloseButtonPopUp";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 
 class ProductPopUp extends Component {
     componentDidMount() {}
@@ -65,7 +65,7 @@ class ProductPopUp extends Component {
                     </div>
                 </div>
 
-                {!this.props.showCreateSubProduct &&  <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
+                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&  <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
                     <div className="col text-right">
                     <button
                         onClick={this.hidePopUp}

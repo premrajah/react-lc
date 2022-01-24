@@ -15,6 +15,7 @@ import {makeStyles, withStyles} from "@mui/styles";
 import {Badge, Snackbar, Tooltip} from "@mui/material";
 import Alert from "@mui/lab/Alert";
 import Menu from '@mui/material/Menu';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 const LightTooltip = withStyles((theme) => ({
@@ -416,12 +417,20 @@ class ComponentsNavbar extends React.Component {
                             </NavItem>
                         )}
 
-
+                        {this.props.isLoggedIn && <NavItem className="mobile-only">
+                            <Link
+                                onClick={this.showProductSelection}
+                                to={"/my-products"}
+                                className="btn btn-link text-dark menu-btn"
+                                color="default">
+                                <AddBoxIcon className="white-text" style={{fontSize: 24}}/>
+                            </Link>
+                        </NavItem>}
 
                         <NavItem className={"mobile-only"}>
                             <button
                                 onClick={this.toggleMenu}
-                                className="btn   btn-link text-dark menu-btn">
+                                className="btn btn-link text-dark menu-btn">
                                 <MenuIcon className="white-text" style={{ fontSize: 32 }} />
                             </button>
                         </NavItem>

@@ -23,7 +23,6 @@ class Help extends Component {
     render() {
         return (
             <Layout>
-                {console.log(this.props.userDetail)}
                 <div className="container  pb-4 pt-4">
                     <PageHeader
                         pageIcon={SettingsWhite}

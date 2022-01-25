@@ -217,7 +217,7 @@ class ProductTreeItemView extends Component {
                             }
                         </>
                         }
-                            </span><span className={"tree-item-name"}>{this.props.item.name} {this.props.item.id}</span></span>
+                            </span><span className={"tree-item-name"}>{this.props.item.name}</span></span>
                             {this.state.tree.length>0 &&
                             <>
                             {/*<span className="mr-1">-</span>*/}

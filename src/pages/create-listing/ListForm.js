@@ -1149,7 +1149,7 @@ class ListFormNew extends Component {
                                                             options={this.props.siteList}
                                                             option={"name"}
                                                             select={"Select"}
-                                                            name={"deliver"} title="Deliver"
+                                                            name={"deliver"} title="Delivery From"
                                                             native
                                                         />
                                                         <p className={"text-g"} style={{ marginTop: "10px" }}>

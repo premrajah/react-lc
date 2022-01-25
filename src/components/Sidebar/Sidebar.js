@@ -112,12 +112,7 @@ class Sidebar extends Component {
                                             Home
                                         </Link>
 
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/account"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Account
-                                        </Link>
+
 
                                         <Link
                                             onClick={this.toggleMenu}
@@ -194,6 +189,12 @@ class Sidebar extends Component {
                                             </Link>
                                         <Link
                                             onClick={this.toggleMenu}
+                                            to={"/account"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Account
+                                        </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
                                             to={"/help"}
                                             className="white-text list-group-item list-group-item-action">
                                             Help
@@ -242,12 +243,7 @@ class Sidebar extends Component {
                                             Log Out
                                         </Link>
                                     )}
-                                    <Link
-                                        onClick={this.toggleMenu}
-                                        to={"/account"}
-                                        className="list-group-item list-group-item-action green-text">
-                                        My Loopcycle
-                                    </Link>
+
                                 </div>
                             </div>
                         </div>

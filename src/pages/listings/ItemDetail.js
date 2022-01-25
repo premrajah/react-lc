@@ -280,7 +280,7 @@ class ItemDetail extends Component {
             activeKey:"0"
         })
 
-        this.checkMatch();
+        // this.checkMatch();
         this.getResources();
 
         this.getMatches();
@@ -345,7 +345,7 @@ class ItemDetail extends Component {
                                                 <div className="row justify-content-start  ">
                                                     <div className="col-12 ">
                                                         <div className="row">
-                                                            <div className="col-8">
+                                                            <div className="col-11">
                                                                 <h5
                                                                     className={
                                                                         "text-capitalize product-title"
@@ -354,7 +354,7 @@ class ItemDetail extends Component {
                                                                 </h5>
                                                             </div>
 
-                                                            <div className="col-4 text-right">
+                                                            <div className="col-1 text-right">
                                                                 <MoreMenu
                                                                     triggerCallback={(action) =>
                                                                         this.callBackResult(action)

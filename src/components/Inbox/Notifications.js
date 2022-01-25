@@ -330,11 +330,11 @@ class Notifications extends Component {
                     <span className="mr-3">
                         {this.state.allNotifications.length <= 0
                             ? "..."
-                            : this.state.allNotifications.length}
+                            : <span className="mr-1">{this.state.allNotifications.length}</span>}
                         of {this.state.allNotificationsCount}
                     </span>
                     <span className="text-muted">
-                        Read{" "}
+                        <span className="mr-1">Read</span>
                         {this.state.allNotifications.length <= 0
                             ? "..."
                             : this.handleReadUnreadLength(this.state.allNotifications)}

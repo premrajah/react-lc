@@ -871,7 +871,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.external_reference}
                                         onChange={(value)=>this.handleChange(value,"external_reference")}
                                         error={this.state.errors["external_reference"]}
-                                        name="external_reference" title="Site Id" />
+                                        name="external_reference" title="External Reference" />
                                 </div>
 
                                 <div className="col-6 pl-1 ">
@@ -996,10 +996,10 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                    <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
 
                                 <div className="row   ">
-                                <div className="col-12" style={{ padding: "0!important" }}>
+                                <div className="col-12 p-0" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
                                         <div className="row mt-2">
-                                            <div className="col-12">
+                                            <div className="col-10">
 
                                                 <CustomizedSelect
                                                         variant={"standard"}
@@ -1087,7 +1087,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 </div>
                                 </div>
                                 <div className="row   pt-2 ">
-                                <div className="col-12 mt-4 ">
+                                <div className="col-12 mt-4 p-0 ">
                                     <span
                                         onClick={this.addCount}
                                         className={

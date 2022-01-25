@@ -176,11 +176,11 @@ class ProductTreeView extends Component {
     }
 
     getSubProducts() {
-        var currentProductId = "j2D6JU2oIU";
+        let currentProductId = "j2D6JU2oIU";
 
         axios.get(baseUrl + "product/" + currentProductId + "/sub-product/expand").then(
             (response) => {
-                var responseAll = response.data.data;
+                let responseAll = response.data.data;
 
                 this.setState({
                     products: responseAll,

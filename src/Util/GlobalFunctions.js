@@ -11,34 +11,32 @@ export const  capitalize=(sentence)=> {
 
 
 
-export const  seekEntityGet=(entity,count,offset,pageSize,no_parent, filters)=> {
+export const  seekAxiosGet= async (entity,count,offset,pageSize,no_parent, filters)=> {
 
 
-let url = `${baseUrl}seek/entity?name=${entity}&count=${count}
-         &no_parent=true&offset=${offset}&size=${pageSize}`;
-    axios
-        .get(url)
-        .then(
-            (response) => {
-                if(response.status === 200) {
+        try {
 
-                    this.setState({
-                        items:this.state.items.concat(response.data.data),
-                        loadingResults:false,
-                        // lastPageReached:(response.data.data.length===0?true:false),
-                        // currentOffset:newOffset+this.state.productPageSize
+            let url = `${baseUrl}seek?name=${entity}&count=${count}&offset=${offset}&size=${pageSize}`;
 
-                    })
-                }
-
-            },
-            (error) => {
+            if (no_parent){
+                url=`${url}&no_parent=true`
             }
-        )
-        .catch(error => {}).finally(()=>{
 
-    });
+            if (filters.length>0){
+                filters.forEach((filter)=>
 
-    // return
+                    url=url+"filters="+filter.key+":"+filter.value
+                )
+
+            }
+
+            return   await axios.get(url);
+            // console.log(resp.data);
+        } catch (err) {
+            // Handle Error Here
+            console.error(err);
+
+        }
+
 
 }

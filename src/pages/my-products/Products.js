@@ -22,6 +22,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class Products extends Component {
 
@@ -118,35 +119,47 @@ class Products extends Component {
 
     }
 
-    loadProductsWithoutParentPageWise=()=>{
+    loadProductsWithoutParentPageWise= async () => {
 
-        let newOffset=this.state.currentOffset
+        let newOffset = this.state.currentOffset
 
 
-        axios
-            .get(`${baseUrl}seek?name=product&count=false&no_parent=true&offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-            // .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
+        let result = await seekAxiosGet("product", false, newOffset, this.state.productPageSize, false, [])
 
-                        this.setState({
-                            items:this.state.items.concat(response.data.data),
-                            loadingResults:false,
-                            lastPageReached:(response.data.data.length===0?true:false),
-                            currentOffset:newOffset+this.state.productPageSize
+        if (result && result.data && result.data.data)
+            this.setState({
+                items: this.state.items.concat(result.data.data),
+                loadingResults: false,
+                lastPageReached: (result.data.data.length === 0 ? true : false),
+                currentOffset: newOffset + this.state.productPageSize
 
-                        })
-                    }
+            })
 
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
+        console.log(result)
 
-        });
-
+        // axios
+        //     .get(`${baseUrl}seek?name=product&count=false&no_parent=true&offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+        //     // .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+        //     .then(
+        //         (response) => {
+        //             if(response.status === 200) {
+        //
+        //                 this.setState({
+        //                     items:this.state.items.concat(response.data.data),
+        //                     loadingResults:false,
+        //                     lastPageReached:(response.data.data.length===0?true:false),
+        //                     currentOffset:newOffset+this.state.productPageSize
+        //
+        //                 })
+        //             }
+        //
+        //         },
+        //         (error) => {
+        //         }
+        //     )
+        //     .catch(error => {}).finally(()=>{
+        //
+        // });
 
 
     }

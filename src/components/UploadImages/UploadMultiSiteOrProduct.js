@@ -65,6 +65,8 @@ const UploadMultiSiteOrProduct = (props) => {
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [isProduct, setIsProduct] = useState(false);
+    const [showAdvanceStrategy, setShowAdvanceStrategy] = useState(false);
+
     const [isSite, setIsSite] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
     const [fileName, setFileName] = useState(null);
@@ -800,12 +802,12 @@ const UploadMultiSiteOrProduct = (props) => {
                                             title="Dispatch/Collection Address"/>
 
 
-                                        <p style={{ marginTop: "10px" }}>
+                                        <p style={{ marginTop: "10px" }} className="text-right">
                                             <span className="mr-1 text-gray-light">Do not see your address?</span>
                                             <span
                                                 onClick={handleShowHideSite}
                                                 className={
-                                                    "forgot-password-link text-mute small"
+                                                    "forgot-password-link  "
                                                 }>
                                                     {siteShowHide
                                                         ? "Hide add site"
@@ -840,7 +842,7 @@ const UploadMultiSiteOrProduct = (props) => {
                             </div>}
 
 
-                            <div className="row mb-2">
+                            <div className={`row ${showAdvanceStrategy?"":"d-none"}`}>
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
                                         name="match_strategy"
@@ -848,7 +850,7 @@ const UploadMultiSiteOrProduct = (props) => {
                                         helperText="Select how to match"
                                         options={MATCH_STRATEGY_OPTIONS}
 
-                                        select={"Select"}
+                                        // select={"Select"}
                                         onChange={(value)=> {
                                             handleChange(value,"match_strategy")
                                         }}
@@ -860,7 +862,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
-                                        select={"Select"}
+                                        // select={"Select"}
                                         name="merge_strategy"
                                         error={showErrors&&errors["merge_strategy"]}
                                         helperText="Select how to merge"
@@ -873,6 +875,18 @@ const UploadMultiSiteOrProduct = (props) => {
                                     />
                                 </div>
                             </div>
+                    <p style={{ marginTop: "10px" }} className=" mb-2">
+                        <span className="mr-1 text-gray-light"> </span>
+                        <span
+                            onClick={()=>setShowAdvanceStrategy(!showAdvanceStrategy)}
+                            className={
+                                "forgot-password-link "
+                            }>
+                                                    {!showAdvanceStrategy
+                                                        ? "Show advanced settings"
+                                                        : "Hide advanced settings"}
+                                                </span>
+                    </p>
 
                             <div className="row mt-4 mb-4">
                                 <div className="col">

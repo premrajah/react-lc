@@ -16,6 +16,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import _ from "lodash";
 import ImageCropper from "../../components/Cropper/ImageCropper";
 import Close from "@mui/icons-material/Close";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -791,23 +792,32 @@ class CompanyInfo extends Component {
 
 
                                             <div className="col-12 mt-3">
-                                                <button
+                                                <BlueButton
+                                                    title={this.state.loading ? "Wait.." : "Update"}
                                                     type={"submit"}
-                                                    className={
-                                                        "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
-                                                    }>
-                                                    {this.state.loading && (
-                                                        <Spinner
-                                                            as="span"
-                                                            animation="border"
-                                                            size="sm"
-                                                            role="status"
-                                                            aria-hidden="true"
-                                                        />
-                                                    )}
+                                                    loading={this.state.loading}
 
-                                                    {this.state.loading ? "Wait.." : "Save"}
-                                                </button>
+                                                    fullWidth
+                                                >
+                                                </BlueButton>
+
+                                                {/*<button*/}
+                                                {/*    type={"submit"}*/}
+                                                {/*    className={*/}
+                                                {/*        "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"*/}
+                                                {/*    }>*/}
+                                                {/*    {this.state.loading && (*/}
+                                                {/*        <Spinner*/}
+                                                {/*            as="span"*/}
+                                                {/*            animation="border"*/}
+                                                {/*            size="sm"*/}
+                                                {/*            role="status"*/}
+                                                {/*            aria-hidden="true"*/}
+                                                {/*        />*/}
+                                                {/*    )}*/}
+
+                                                {/*    {this.state.loading ? "Wait.." : "Save"}*/}
+                                                {/*</button>*/}
                                             </div>
                                         </div>
                                     </form>

@@ -124,7 +124,7 @@ class Products extends Component {
         let newOffset = this.state.currentOffset
 
 
-        let result = await seekAxiosGet("product", false, newOffset, this.state.productPageSize, false, [])
+        let result = await seekAxiosGet("product", false, newOffset, this.state.productPageSize, false, [],[])
 
         if (result && result.data && result.data.data)
             this.setState({
@@ -136,30 +136,6 @@ class Products extends Component {
             })
 
         console.log(result)
-
-        // axios
-        //     .get(`${baseUrl}seek?name=product&count=false&no_parent=true&offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-        //     // .get(`${baseUrl}product/no-parent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-        //     .then(
-        //         (response) => {
-        //             if(response.status === 200) {
-        //
-        //                 this.setState({
-        //                     items:this.state.items.concat(response.data.data),
-        //                     loadingResults:false,
-        //                     lastPageReached:(response.data.data.length===0?true:false),
-        //                     currentOffset:newOffset+this.state.productPageSize
-        //
-        //                 })
-        //             }
-        //
-        //         },
-        //         (error) => {
-        //         }
-        //     )
-        //     .catch(error => {}).finally(()=>{
-        //
-        // });
 
 
     }

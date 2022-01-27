@@ -10,6 +10,8 @@ import {Typography} from "@mui/material";
 import PageHeader from "../../components/PageHeader";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 
 class EditAccount extends Component {
     constructor(props) {
@@ -245,12 +247,12 @@ class EditAccount extends Component {
                             </Alert>
                         )}
 
-                        <div className="row">
+                        <div className="row d-none">
                             <div className="col-12">
                                 <span className={"text-bold"}>
-                                    <Typography>
-                                        Name: {this.state.firstName} {this.state.lastName}
-                                    </Typography>
+                                    <h4 className="text-capitalize product-title">
+                                        Welcome {this.state.firstName} {this.state.lastName}
+                                    </h4>
                                 </span>
                             </div>
                         </div>
@@ -262,100 +264,121 @@ class EditAccount extends Component {
 
                                     <form onSubmit={this.handleSubmit}>
                                         <div className="row no-gutters justify-content-center ">
-                                            <div className="col-6 pr-2 mt-4">
+                                            <div className="col-6 pr-2 mt-2">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.firstName}
                                                     onChange={(value)=>this.handleChange(value,"firstName")}
                                                     error={this.state.errors["firstName"]}
-                                                    name="firstName" label="First Name" />
+                                                    name="firstName" title="First Name" />
                                             </div>
 
-                                            <div className="col-6 mt-4 pl-2">
+                                            <div className="col-6 mt-2 pl-2">
                                                 <TextFieldWrapper
                                                     initialValue={this.state.lastName}
                                                     onChange={(value)=>this.handleChange(value,"lastName")}
                                                     error={this.state.errors["lastName"]}
-                                                    name="lastName" label="Last Name" />
+                                                    name="lastName" title="Last Name" />
                                             </div>
 
-                                            <div className="col-6 mt-4 pr-2">
+                                            <div className="col-6 mt-2 pr-2">
                                                 <TextFieldWrapper
                                                     initialValue={this.state.email}
                                                     onChange={(value)=>this.handleChange(value,"email")}
                                                     error={this.state.errors["email"]}
-                                                    name="email" label="Email" />
+                                                    name="email" title="Email" />
                                             </div>
 
-                                            <div className="col-6 mt-4 pl-2">
+                                            <div className="col-6 mt-2 pl-2">
                                                 <TextFieldWrapper
                                                     initialValue={this.state.phone}
                                                     onChange={(value)=>this.handleChange(value,"phone")}
                                                     error={this.state.errors["phone"]}
-                                                    name="phone" label="Phone" />
+                                                    name="phone" title="Phone" />
                                             </div>
 
-                                            <div className="col-12 mt-4 ">
+                                            <div className="col-12 mt-2 ">
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <TextFieldWrapper
                                                             initialValue={this.state.reason}
                                                             onChange={(value)=>this.handleChange(value,"reason")}
                                                             error={this.state.errors["reason"]}
-                                                            name="reason" label="Tell us, what’s the main reason for using Loopcycle?" />
+                                                            name="reason" title="Tell us, what’s the main reason for using Loopcycle?" />
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="col-12 mt-4">
+                                            <div className="col-12 mt-2">
                                                 <div className="row mb-2 d-flex flex-column">
-                                                    <div className="green-link-url" onClick={() => this.handleShowPasswordFields()}>Change Password</div>
+                                                    <div className="col-12">
+                                                    <div className="forgot-password-link" onClick={() => this.handleShowPasswordFields()}>Change Password</div>
                                                     <div className="text-warning"><b>{this.state.missMatchPasswords}</b></div>
                                                     <div>{this.state.passwordChangeErrors}</div>
+                                                    </div>
                                                 </div>
 
-                                                {this.state.showPasswordFields && <div className="row">
-                                                    <div className="col-md-4">
+                                                {this.state.showPasswordFields && <div className="row d-flex flex-row justify-content-center align-items-end">
+
+                                                    <div className="col-md-6">
                                                         <TextFieldWrapper
                                                             initialValue={this.state.password}
                                                             name="password"
-                                                            label="Password"
+                                                            title="Password"
                                                             error={this.state.errors["password"]}
                                                             onChange={(value) => this.setState({password: value})}
                                                             type="password"
                                                         />
                                                     </div>
-                                                    <div className="col-md-4">
+                                                    <div className="col-md-6">
                                                         <TextFieldWrapper
                                                             initialValue={this.state.repeatPassword}
                                                             name="repeatPassword"
-                                                            label="Repeat Password"
+                                                            title="Repeat Password"
                                                             error={this.state.errors["repeatPassword"]}
                                                             onChange={(value) => this.setState({repeatPassword: value})}
                                                             type="password"
                                                         />
                                                     </div>
 
-                                                    <div className="col-md-4">
-                                                        <button
+                                                    <div className="col-md-3 pt-2">
+                                                        <BlueBorderButton
+                                                            title={this.state.loading ? "Wait.." : "Update Password"}
+                                                            loading={this.state.loading}
+
+                                                            fullWidth
                                                             disabled={this.state.password === '' || this.state.repeatPassword === ''}
                                                             onClick={() => this.handleChangePassword()}
                                                             type="button"
-                                                            className="btn btn-block  btn-outline-warning sign-up-btn">
-                                                            Update Password
-                                                        </button>
+                                                        >
+                                                        </BlueBorderButton>
+                                                        {/*<button*/}
+                                                        {/*    disabled={this.state.password === '' || this.state.repeatPassword === ''}*/}
+                                                        {/*    onClick={() => this.handleChangePassword()}*/}
+                                                        {/*    type="button"*/}
+                                                        {/*    className="btn btn-block  btn-outline-warning sign-up-btn">*/}
+                                                        {/*    Update Password*/}
+                                                        {/*</button>*/}
                                                     </div>
                                                     <small className="text-muted">Password should be at least 8 characters including at least 3 of the following 4 types of characters: a lower-case letter, an upper-case letter, a number, a special character (such as !@#$%^&*).</small>
                                                 </div>}
 
                                             </div>
 
-                                            <div className="col-auto mt-4 justify-content-center">
-                                                <button
-                                                    type="submit"
-                                                    className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">
-                                                    Update
-                                                </button>
+                                            <div className="col-3 mt-2 justify-content-center">
+                                                {/*<button*/}
+                                                {/*    type="submit"*/}
+                                                {/*    className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">*/}
+                                                {/*    Update*/}
+                                                {/*</button>*/}
+                                                <BlueButton
+                                                    title={this.state.loading ? "Wait.." : "Update"}
+                                                    type={"submit"}
+                                                    loading={this.state.loading}
+
+                                                    fullWidth
+                                                >
+                                                </BlueButton>
                                             </div>
                                         </div>
                                     </form>

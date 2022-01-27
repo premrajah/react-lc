@@ -39,10 +39,10 @@ class Header extends React.Component {
 
     render() {
         return (
-            <>
+            <div id="back-to-top-anchor">
                 <Sidebar/>
                <IndexNavbar/>
-               </>
+               </div>
         );
     }
 }

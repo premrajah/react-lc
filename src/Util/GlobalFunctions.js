@@ -11,7 +11,7 @@ export const  capitalize=(sentence)=> {
 
 
 
-export const  seekAxiosGet= async (entity,count,offset,pageSize,no_parent, filters)=> {
+export const  seekAxiosGet= async (entity,count,offset,pageSize,no_parent, filters,keywords)=> {
 
 
         try {
@@ -29,8 +29,15 @@ export const  seekAxiosGet= async (entity,count,offset,pageSize,no_parent, filte
                 )
 
             }
+            if (keywords.length>0){
+                keywords.forEach((keyword)=>
 
-            return   await axios.get(url);
+                    url=url+"filters="+keyword.key+":"+keyword.value
+                )
+
+            }
+
+            return    axios.get(url);
             // console.log(resp.data);
         } catch (err) {
             // Handle Error Here

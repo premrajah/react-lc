@@ -9,11 +9,11 @@ import { makeStyles } from "@mui/styles";
 import Login from "./Login";
 import ResetPassword from "./ResetPassword";
 import RecoverPassword from "./RecoverPassword";
-import SignUp from "./SignUp";
 import SuccessSignUp from "./SuccessSignUp";
 import ForgotPassword from "./ForgotPassword";
 import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 import {Modal} from "react-bootstrap";
+import SignUp from "../../components/Login/SignUp";
 
 const useStyles = makeStyles((theme) => ({
     root: {

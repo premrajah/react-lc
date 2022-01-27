@@ -40,6 +40,7 @@ import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import QrCode from "./Products/QrCode";
+import {NavLink} from "reactstrap";
 class ProductDetailCycle extends Component {
     slug;
     search;
@@ -319,6 +320,13 @@ class ProductDetailCycle extends Component {
         }
     };
 
+
+    showLoginPopUp=()=> {
+
+        if (!this.props.isLoggedIn) {
+            this.props.showLoginPopUp(true);
+        }
+    }
     submitOrgId = (event) => {
         event.preventDefault();
 
@@ -608,10 +616,24 @@ class ProductDetailCycle extends Component {
 
                     <div className="container  mb-150  pb-5 pt-4">
                 <PageHeader
+                    paddingLeftZero
                     pageIcon={CubeBlue}
-                    pageTitle="Product Details(Provenance)"
+                    pageTitle="Product Details (Provenance)"
                     subTitle="See product details and provenance"
                 />
+              <div className="row   pb-4  justify-content-start">
+                <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
+                     <Link
+                         onClick={this.showLoginPopUp}
+                         to={this.props.isLoggedIn && `/product/${this.props.item.product._key}`}
+
+                     >Product Detail</Link>
+
+
+                    <span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span>
+                    <span className={"text-capitalize text-breadcrumb-light"}> {this.props.item.product.name}</span>
+                </div>
+                </div>
                 <div className="row   justify-content-center">
                     <div className="col-md-4 col-sm-12 col-xs-12 ">
                         <div className="row stick-left-box  ">
@@ -623,14 +645,12 @@ class ProductDetailCycle extends Component {
                                     <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                                 )}
 
-                                {/*<InfoTabContent item={this.props.item}/>*/}
-
 
                                 <QrCode hideRefresh={true} callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.props.item}/>
 
                             </div>
 
-                            {this.props.isLoggedIn &&
+                              {this.props.isLoggedIn &&
                                 !this.props.hideRegister &&
                                 this.props.userDetail.orgId !== this.props.item.org._id && (
                                     <>
@@ -721,17 +741,16 @@ class ProductDetailCycle extends Component {
                         <div className="row justify-content-start pb-3  ">
                             <div className="col-12 ">
                                 <div className="row">
-                                    <div className="col-8">
+                                    <div className="col-11">
                                         <h4 className={"blue-text text-heading"}>
 
 
-                                            <h4 className="text-capitalize product-title">  {this.props.isLoggedIn && <span className="mr-2">
-                                                <Link to={`/product/${this.props.item.product._key}`}><LinkIcon /></Link>
-                                            </span>}{this.props.item.product.name}</h4>
+                                            <h4 className="text-capitalize product-title">
+                                                {this.props.item.product.name}</h4>
                                         </h4>
                                     </div>
 
-                                    <div className="col-4 text-right">
+                                    <div className="col-1 text-right">
                                         {this.props.isLoggedIn && (
                                             <MoreMenu
                                                 triggerCallback={(action) =>

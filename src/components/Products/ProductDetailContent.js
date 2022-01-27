@@ -658,7 +658,7 @@ class ProductDetailContent extends Component {
                             )}
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
-                            <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                            <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
                                 <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
 
                             </div>

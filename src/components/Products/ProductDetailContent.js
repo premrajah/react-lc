@@ -251,6 +251,7 @@ class ProductDetailContent extends Component {
     showReleaseProduct() {
         this.setState({
             errorRelease: false,
+            showReleaseSuccess:false
         });
 
         this.getSites();

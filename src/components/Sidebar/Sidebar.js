@@ -112,8 +112,6 @@ class Sidebar extends Component {
                                             Home
                                         </Link>
 
-
-
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/find-resources"}
@@ -130,13 +128,27 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/search-form"}
                                             className="white-text list-group-item list-group-item-action">
-                                            Create A Search
+                                            New Search
+                                        </Link>
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/sites"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Sites
+                                        </Link>
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-products"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Products
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/list-form"}
                                             className="white-text list-group-item list-group-item-action">
-                                            Create A Listing
+                                            New Listing
                                         </Link>
 
                                             <Link
@@ -145,8 +157,18 @@ class Sidebar extends Component {
                                                 className="white-text list-group-item list-group-item-action">
                                                 Cycles
                                             </Link>
-
-
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-campaigns"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Campaigns
+                                        </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-search"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Searches
+                                        </Link>
                                             <Link
                                                 onClick={this.toggleMenu}
                                                 to={"/my-listings"}
@@ -155,31 +177,8 @@ class Sidebar extends Component {
                                             </Link>
 
 
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-search"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Searches
-                                            </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/sites"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Sites
-                                        </Link>
 
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-products"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Products
-                                            </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/my-campaigns"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Campaigns
-                                        </Link>
+                                       
 
                                             <Link
                                                 onClick={this.toggleMenu}

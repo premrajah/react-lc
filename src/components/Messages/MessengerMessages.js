@@ -54,16 +54,39 @@ class MessengerMessages extends Component {
             .get(`${baseUrl}message-group`)
             .then((response) => {
                 const data = response.data.data;
+                let returnedData = [];
 
-                this.setState({
-                    allMessageGroups: data,
-                    filteredMessageGroups: data,
-                });
+                data.map(d => {
+                    axios.get(encodeURI(`${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`))
+                    .then(res => {
+                        const rData = res.data.data;
+
+                        if(rData > 0) {
+                            returnedData.push(d);
+                        }
+                    })
+                        .then(() => {
+                            this.setState({
+                                allMessageGroups: returnedData,
+                                filteredMessageGroups: returnedData,
+                            });
+                        })
+                    .catch(error => {
+                        console.log('message data check error ', error.message)
+
+                    })
+                })
+
+
+
+
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
+                this.props.showSnackbar({show:true,severity:"warning",message:`Message group error ${error.message}`})
             });
     };
+
 
     getGroupMessageWithId = (id) => {
         if (!id) {
@@ -656,6 +679,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getMessages: (data) => dispatch(actionCreator.getMessages(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 

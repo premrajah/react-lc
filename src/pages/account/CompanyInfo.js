@@ -186,10 +186,10 @@ class CompanyInfo extends Component {
             errors["name"] = "Required";
         }
 
-        if (!this.state.description && !fields["description"]) {
-            formIsValid = false;
-            errors["description"] = "Required";
-        }
+        // if (!this.state.description && !fields["description"]) {
+        //     formIsValid = false;
+        //     errors["description"] = "Required";
+        // }
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -204,7 +204,7 @@ class CompanyInfo extends Component {
         let validations=[
 
             validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("description", [{check: Validators.requiredCheck, message: 'Required'}],fields),
+            // validateFormatCreate("description", [{check: Validators.requiredCheck, message: 'Required'}],fields),
         ]
 
 
@@ -290,11 +290,14 @@ class CompanyInfo extends Component {
     handleSubmitSite = (event) => {
         event.preventDefault();
 
-        this.setState({
-            loading: true,
-        });
 
         if (this.handleValidation()) {
+
+            this.setState({
+                loading: true,
+            });
+
+
             const form = event.currentTarget;
 
             this.setState({

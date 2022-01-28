@@ -46,7 +46,9 @@ class Products extends Component {
             currentOffset:0,
             productPageSize:50,
             loadingResults:false,
-            count:0
+            count:0,
+            filters:[],
+            keywords:[]
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -124,7 +126,8 @@ class Products extends Component {
         let newOffset = this.state.currentOffset
 
 
-        let result = await seekAxiosGet("product", false, newOffset, this.state.productPageSize, false, [],[])
+        let result = await seekAxiosGet("product", false, newOffset, this.state.productPageSize,
+            false, this.state.filters,this.state.keywords)
 
         if (result && result.data && result.data.data)
             this.setState({

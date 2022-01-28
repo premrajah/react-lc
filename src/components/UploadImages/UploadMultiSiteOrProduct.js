@@ -136,8 +136,9 @@ const UploadMultiSiteOrProduct = (props) => {
 
         let validations = [
             validateFormatCreate("artifact", [{check: Validators.required, message: 'Required'}], fieldsLocal),
-            validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
-            validateFormatCreate("merge_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // valid   // validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // validateFormatCreate("merge_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
         ]
 
 
@@ -840,9 +841,26 @@ const UploadMultiSiteOrProduct = (props) => {
 
                                 </div>
                             </div>}
+                    {!showAdvanceStrategy &&<div className={`row `}>
+
+                            <input
+                                type="hidden"
+                                name="match_strategy"
+                              value="exact_match"
+
+                            />
+                        <input
+                            type="hidden"
+                            name="merge_strategy"
+                            value="pick_first"
+
+                        />
 
 
-                            <div className={`row ${showAdvanceStrategy?"":"d-none"}`}>
+
+                    </div>}
+
+                    {showAdvanceStrategy &&     <div className={`row `}>
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
                                         name="match_strategy"
@@ -874,7 +892,7 @@ const UploadMultiSiteOrProduct = (props) => {
                                         title="Merge Strategy"
                                     />
                                 </div>
-                            </div>
+                            </div>}
                     <p style={{ marginTop: "10px" }} className=" mb-2">
                         <span className="mr-1 text-gray-light"> </span>
                         <span

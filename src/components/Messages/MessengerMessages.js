@@ -56,37 +56,43 @@ class MessengerMessages extends Component {
                 const data = response.data.data;
                 let returnedData = [];
 
-                data.map(d => {
-                    axios.get(encodeURI(`${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`))
-                    .then(res => {
-                        const rData = res.data.data;
+                data.map((d) => {
+                    axios
+                        .get(
+                            encodeURI(
+                                `${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`
+                            )
+                        )
+                        .then((res) => {
+                            const rData = res.data.data;
 
-                        if(rData > 0) {
-                            returnedData.push(d);
-                        }
-                    })
+                            if (rData > 0) {
+                                returnedData.push(d);
+                            }
+                        })
                         .then(() => {
                             this.setState({
                                 allMessageGroups: returnedData,
                                 filteredMessageGroups: returnedData,
                             });
                         })
-                    .catch(error => {
-                        console.log('message data check error ', error.message)
-
-                    })
-                })
-
-
-
-
+                        .catch((error) => {
+                            this.props.showSnackbar({
+                                show: true,
+                                severity: "warning",
+                                message: `Message data check error ${error.message}`,
+                            });
+                        });
+                });
             })
             .catch((error) => {
-                console.log("message-group-error ", error.message);
-                this.props.showSnackbar({show:true,severity:"warning",message:`Message group error ${error.message}`})
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: `Message group error ${error.message}`,
+                });
             });
     };
-
 
     getGroupMessageWithId = (id) => {
         if (!id) {
@@ -97,7 +103,6 @@ class MessengerMessages extends Component {
         }
 
         axios
-
             .get(`${baseUrl}message-group/${id}/message`)
 
             .then((response) => {
@@ -106,7 +111,11 @@ class MessengerMessages extends Component {
                 });
             })
             .catch((error) => {
-                console.log("group message error ", error.message);
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: `Group message error ${error.message}`,
+                });
             });
     };
 
@@ -142,7 +151,11 @@ class MessengerMessages extends Component {
                 selectOrgs: data.orgs,
             });
         } catch (error) {
-            console.log("org search error ", error.message);
+            this.props.showSnackbar({
+                show: true,
+                severity: "warning",
+                message: `Org search error ${error.message}`,
+            });
         }
     };
 
@@ -292,7 +305,11 @@ class MessengerMessages extends Component {
                 }
             })
             .catch((error) => {
-                console.log("postMessage error ", error.message);
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: `Post message error ${error.message}`,
+                });
             });
     };
 

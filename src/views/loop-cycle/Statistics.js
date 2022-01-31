@@ -34,7 +34,7 @@ class Statistics extends Component {
                     </div>
                     <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
                         <embed
-                            src="https://dash.makealoop.io"
+                            src={`https://dash.makealoop.io?token=${this.props.userDetail}`}
                             style={{ width: "100%", minHeight: "800px", height: "auto" }}
                         />
                     </div>

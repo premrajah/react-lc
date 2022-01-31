@@ -17,6 +17,7 @@ class SearchBar extends Component {
     };
 
     handleSearchFilter = (value) => {
+
         this.setState({filterDefaultValue: value});
         return this.props.onSearchFilter(value);
     }
@@ -34,7 +35,7 @@ class SearchBar extends Component {
                                     Filter By
                                 </option>
                                 {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
-                                    return <option   key={index} value={drop}>{capitalize(drop)}</option>
+                                    return <option   key={index} value={drop.key}>{drop.label}</option>
                                 }) : null}
                             </select>
                         {/*</FormControl>*/}

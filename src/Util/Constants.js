@@ -49,7 +49,20 @@ export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
-export const PRODUCTS_FILTER_VALUES = ["name", "condition", "brand", "category","type","state","year of manufacture","model","serial no."];
+
+export const PRODUCTS_FILTER_VALUES = [
+    {key:"name",label:"Name" },
+    {key:"condition",label:"Condition" },
+    {key:"brand",label:"Brand" },
+    {key:"category",label:"Category" },
+    {key:"type",label:"Type" },
+    {key:"state",label:"State" },
+    {key:"year_of_making",label:"Year Of Manufacture" },
+    {key:"model",label:"Model" },
+    {key:"serial",label:"Serial No." },
+   ];
+
+
 export const SITES_FILTER_VALUES = ["name","site id","address"];
 export const LISTING_FILTER_VALUES = ["name", "product name"];
 export const CYCLE_FILTER_VALUES = ["listing name", "search name","product name"];

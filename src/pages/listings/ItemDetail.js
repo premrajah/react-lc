@@ -343,12 +343,12 @@ marteplace
                                                     <div className="col-12 ">
                                                         <div className="row">
                                                             <div className="col-12">
-                                                                <h5
+                                                                <h4
                                                                     className={
-                                                                        "text-capitalize product-title"
+                                                                        "text-capitalize product-title width-80"
                                                                     }>
                                                                     {this.state.item.listing.name}
-                                                                </h5>
+                                                                </h4>
                                                                 <div className="top-right text-right">
                                                                     <MoreMenu
                                                                         triggerCallback={(action) =>

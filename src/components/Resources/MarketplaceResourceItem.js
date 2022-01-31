@@ -98,25 +98,25 @@ class MarketplaceResourceItem extends Component {
                                     this.props.item.artifacts.length > 0 ?
                                         <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.artifacts} />:
                                         this.props.artifacts && this.props.artifacts.length > 0?<ImageOnlyThumbnail images={this.props.artifacts} />:
-                                            <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
+                                            <img className={"img-fluid rad-8 img-list"} src={PlaceholderImg} alt="" />
                                     }
                                 </div>
                                 <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
                                     <p  className="text-capitlize mb-2 item-title width-70 ellipsis-end">
                                         {this.props.item.listing.name}
                                     </p>
-                                    <p   className=" mb-2 text-gray-light mt-1 mb-2 width-70 ">
+                                    <p   className=" mb-2 text-gray-light mt-1 mb-2 width-70 web-only ">
 
                                             {this.readMore(this.props.item.listing.description)}
 
                                     </p>
-                                    <p  className=" mb-2 text-gray-light mt-1 mb-2 width-75 ">
+                                    <p  className=" mb-2 text-gray-light mt-1 mb-2  ">
                                         {this.props.item.product && (
                                             <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
                                         )}
                                     </p>
 
-                                    <div className={"text-gray-light mt-1 mb-2 width-75"}>
+                                    <div className={"text-gray-light mt-1 mb-2"}>
                                         Category:
                                         <span
 
@@ -133,9 +133,16 @@ class MarketplaceResourceItem extends Component {
 
                                     </span>
                                     </div>
-                                    <div className={"text-gray-light mt-1 mb-2 width-75"}>
-Seller: <OrgComponent org={this.props.item.org} />
+
+                                    <div className={"text-gray-light mt-1 mb-2 "}>
+                                        Seller: <OrgComponent org={this.props.item.org} />
                                     </div>
+                                    <p className={"mobile-only mb-1 text-gray-light text-14  "}>
+                                        Available: <span className="text-bold">{moment(this.props.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
+                                    </p>
+                                    <p className={"mobile-only mb-1 text-gray-light text-14 "}>
+                                            Created on: <span className="text-bold">{moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                                        </p>
 
                                     <div className={"add-top-button    text-right"}>
                                         <p className={"text-blue extra-bold p-0 mb-2"}>
@@ -146,11 +153,11 @@ Seller: <OrgComponent org={this.props.item.org} />
                                                 "Free"
                                             )}
                                         </p>
-                                        <span className={" text-gray-light text-14  text-right"}>
+                                        <span className={"web-only text-gray-light text-14  text-right"}>
                                             Created on: <span className="text-bold">{moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}</span>
                                         </span>
                                         <br/>
-                                        <span className={" text-gray-light text-14  text-right"}>
+                                        <span className={"web-only text-gray-light text-14  text-right"}>
                                             Available: <span className="text-bold">{moment(this.props.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
                                         </span>
                                         <p className={"d-none  status text-right"}>

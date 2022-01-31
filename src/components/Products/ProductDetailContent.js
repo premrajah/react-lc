@@ -717,7 +717,7 @@ class ProductDetailContent extends Component {
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-12">
-                                                <h4 className="text-capitalize product-title">
+                                                <h4 className="text-capitalize product-title width-90">
                                                     {this.state.item.product.name}
                                                 </h4>
                                                 <div className="top-right text-right">

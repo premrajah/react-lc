@@ -2126,7 +2126,7 @@ button.blue-btn-border
 }
 
 .web-only {
-    display: block;
+    display: unset;
 }
 
 .mobile-only {
@@ -2257,8 +2257,8 @@ button.blue-btn-border
 
     .pl-3-desktop{
 
-        padding-left: 0rem !important;
-        padding-top: 1rem !important;
+        padding-left: 0.5rem !important;
+        padding-top: 0rem !important;
     }
 
     .img-list{
@@ -2384,6 +2384,12 @@ button.blue-btn-border
 }
 
 @media screen and (max-width: 768px) {
+    .pl-3-desktop{
+
+        padding-left: 0rem !important;
+        padding-top: 1rem !important;
+    }
+
     .footer nav {
         display: block;
         margin-bottom: 5px;
@@ -2574,12 +2580,18 @@ button.blue-btn-border
 }
 .width-70{
     width: 70%;
-    display: block;
+    /*display: block;*/
+    text-overflow: ellipsis;
+}
+
+.width-90{
+    width: 90%;
+    /*display: block;*/
     text-overflow: ellipsis;
 }
 .width-80{
     width: 80%;
-    display: block;
+    /*display: block;*/
     text-overflow: ellipsis;
 }
 .ellipsis-end{

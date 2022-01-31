@@ -70,7 +70,7 @@ class Products extends Component {
     handleSearch = (searchValue) => {
 
 
-      searchValue=  (searchValue.trim())
+      searchValue= (searchValue.trim())
 
 
         console.log("keyword",searchValue)

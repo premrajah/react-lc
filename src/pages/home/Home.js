@@ -70,12 +70,12 @@ class Home extends Component {
             <Layout>
 
                 <div className="wrapper ">
-                    <div className="container-fluid  pt-5">
+
 
                         <div className="container   ">
 
-                            <div className="row pt-5 pb-5 no-gutters">
-                                <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
+                            <div className="row d-flex pt-5 pb-5 no-gutters align-items-center justify-content-center">
+                                <div className="col-md-6 col-sm-12 col-xs-12  ">
                                     <div className="row no-gutters">
                                         <div className="col-12">
                                             <h1 className="blue-text primary-heading primary-heading-font-size"
@@ -93,7 +93,7 @@ class Home extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="row no-gutters mt-4 web-only">
+                                    <div className="row no-gutters mt-4 ">
                                         <div className="col-auto">
                                             <a
                                                 href="https://loopcycle.io/"
@@ -112,15 +112,9 @@ class Home extends Component {
                                     <img className="img-fluid" src={PhoneHome} alt="" />
                                 </div>
 
-                                <div className="col-12 mobile-only pt-4">
-                                    <p className="white-text">
-                                        Loopcycle uses artificial intelligence to match
-                                        organizations and blockchain technology is used to ensure
-                                        the transaction is secure and traceable.
-                                    </p>
-                                </div>
+
                             </div>
-                        </div>
+
 
                     </div>
                     <div className="container-fluid home-section-icons container-light-gray pt-5 pb-5  ">

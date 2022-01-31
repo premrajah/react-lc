@@ -506,7 +506,7 @@ class Products extends Component {
                         <div className="row  justify-content-center filter-row  pb-3">
                             <div className="col">
 
-                                <p  className="text-gray-light ml-2 ">Showing {this.state.items.length} Products
+                                <p  className="text-gray-light ml-2 ">Showing {this.state.items.length} of {this.state.count} Products
                                 {/*of {this.state.count}*/}
 
                                 </p>

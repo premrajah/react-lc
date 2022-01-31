@@ -311,8 +311,8 @@ class CompanyInfo extends Component {
             axios
                 .post(`${baseUrl}org`,
                     {
-                        id: this.state.org._key,
-                        update: {
+                        // id: this.state.org._key,
+                        // update: {
                             name: name,
                             description: description,
                             details:{
@@ -321,7 +321,7 @@ class CompanyInfo extends Component {
                                 "sector": data.get("businessField"),
                                 "no_of_staff": data.get("no_of_staff")
                             }
-                        },
+                        // },
                     }
                 )
                 .then((res) => {

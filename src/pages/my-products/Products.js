@@ -7,7 +7,7 @@ import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import DownloadIcon from '@mui/icons-material/GetApp';
 import MapIcon from '@mui/icons-material/Map';
 import {CSVLink} from "react-csv";
@@ -70,17 +70,18 @@ class Products extends Component {
     handleSearch = (searchValue) => {
 
 
-      searchValue=  encodeURI(searchValue.trim())
+      searchValue=  (searchValue.trim())
+
 
         console.log("keyword",searchValue)
         this.searchValue=searchValue
         this.setState({searchValue: searchValue});
-      if (searchValue) {
+
           this.clearList()
           this.setFilters()
           this.seekCount()
           this.loadProductsWithoutParentPageWise(true)
-      }
+
     }
 
 
@@ -127,7 +128,7 @@ class Products extends Component {
 
             }else{
 
-                PRODUCTS_FILTER_VALUES.forEach((item)=>
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
                     subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
                 )
 
@@ -504,7 +505,7 @@ class Products extends Component {
 
                         <div className="row  justify-content-center search-container  pt-3 pb-3">
                             <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
+                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES_KEY} />
                             </div>
                         </div>
 

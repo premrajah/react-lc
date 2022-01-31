@@ -80,7 +80,6 @@ class ProductForm extends Component {
             serial: null,
             startDate: null,
             endDate: null,
-
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],

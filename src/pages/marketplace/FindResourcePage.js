@@ -92,9 +92,9 @@ class FindResourcePage extends Component {
 
                                 />
 
-                            <h3 className="mt-2 blue-text icon-title">Buy Products</h3>
-                            <span className="text-gray-light">
-                                Search for a specific product and we’ll notify you <br/>when you get a match.
+                            <h3 className="mt-4 blue-text icon-title">Buy Products</h3>
+                            <span className="text-gray-light mt-2 mb-2">
+                                Search for a specific product and we’ll<br/>notify you when you get a match.
                             </span>
                             <BlueBorderLink title="New search" to="/search-form"  />
 
@@ -104,9 +104,9 @@ class FindResourcePage extends Component {
                             <Image className="" src={SellProduct} rounded
 
                             />
-                            <h3 className="mt-2 blue-text icon-title">Sell Products</h3>
-                            <span className="text-gray-light">
-                                List a new product for sale and we’ll notify you <br/>when you get a match.
+                            <h3 className="mt-4 blue-text icon-title">Sell Products</h3>
+                            <span className="text-gray-light mt-2 mb-2">
+                                List a new product for sale and we’ll <br/>notify you when you get a match.
 
                             </span>
                                 <BlueBorderLink title="New Listing" to="/list-form"  />

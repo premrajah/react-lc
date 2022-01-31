@@ -23,6 +23,8 @@
     border-radius: 50%;
 }
 
+/*padding: 10px 45px !important;*/
+
 .hourglass{
     /*display:block;*/
     background:var(--lc-bg);
@@ -71,7 +73,7 @@
 .text-pink-heading{
 
     color: var(--lc-pink);
-    font-size: 32px;
+    font-size: 30px;
     line-height: 40px;
     font-weight: 600;
 }
@@ -4007,7 +4009,7 @@ input:active,input:focus{
     width: 400px;
     height: 400px;
     margin: auto;
-    padding: 2%;
+    padding: 1%;
 }
 .icon-container{
     /*display: flex;*/
@@ -4015,7 +4017,7 @@ input:active,input:focus{
 
 }
 .icon-holder>img{
-    margin-top: 15%;
+    margin-top: 10%;
     height: 100px;
 }
 .icon-container h3{
@@ -4023,10 +4025,13 @@ input:active,input:focus{
 
 }
 .icon-container span{
-    width: 100%;
+    width: 80%;
     display: block;
-    text-align:center!important;
-    font-size: 14px;
+    text-align: center !important;
+    font-size: 16px;
+    margin: auto;
+    /*line-height: 20px;*/
+    line-height: 25px;
 }
 .google-autocomplete>div{
     height: 61px;

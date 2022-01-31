@@ -628,8 +628,6 @@ class ProductDetailCycle extends Component {
                          to={this.props.isLoggedIn && `/product/${this.props.item.product._key}`}
 
                      >Product Detail</Link>
-
-
                     <span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span>
                     <span className={"text-capitalize text-breadcrumb-light"}> {this.props.item.product.name}</span>
                 </div>
@@ -741,52 +739,53 @@ class ProductDetailCycle extends Component {
                         <div className="row justify-content-start pb-3  ">
                             <div className="col-12 ">
                                 <div className="row">
-                                    <div className="col-11">
+                                    <div className="col-12">
                                         <h4 className={"blue-text text-heading"}>
 
 
                                             <h4 className="text-capitalize product-title">
                                                 {this.props.item.product.name}</h4>
                                         </h4>
+                                        <div className="top-right text-right">
+                                            {this.props.isLoggedIn && (
+                                                <MoreMenu
+                                                    triggerCallback={(action) =>
+                                                        this.callBackResult(action)
+                                                    }
+                                                    report={
+                                                        this.props.userDetail.orgId ===
+                                                        this.props.item.org._id
+                                                            ? true
+                                                            : false
+                                                    }
+                                                    register={
+                                                        this.props.userDetail.orgId !==
+                                                        this.props.item.org._id
+                                                    }
+                                                />
+                                            )}
+
+                                            {!this.props.isLoggedIn && !this.state.orgIdAuth && (
+                                                <MoreMenu
+                                                    triggerCallback={(action) =>
+                                                        this.callBackResult(action)
+                                                    }
+                                                    selectCompany={true}
+                                                />
+                                            )}
+
+                                            {this.state.showApproveRelease && (
+                                                <MoreMenu
+                                                    triggerCallback={(action) =>
+                                                        this.callBackResult(action)
+                                                    }
+                                                    approveRelease={true}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
 
-                                    <div className="col-1 text-right">
-                                        {this.props.isLoggedIn && (
-                                            <MoreMenu
-                                                triggerCallback={(action) =>
-                                                    this.callBackResult(action)
-                                                }
-                                                report={
-                                                    this.props.userDetail.orgId ===
-                                                    this.props.item.org._id
-                                                        ? true
-                                                        : false
-                                                }
-                                                register={
-                                                    this.props.userDetail.orgId !==
-                                                    this.props.item.org._id
-                                                }
-                                            />
-                                        )}
 
-                                        {!this.props.isLoggedIn && !this.state.orgIdAuth && (
-                                            <MoreMenu
-                                                triggerCallback={(action) =>
-                                                    this.callBackResult(action)
-                                                }
-                                                selectCompany={true}
-                                            />
-                                        )}
-
-                                        {this.state.showApproveRelease && (
-                                            <MoreMenu
-                                                triggerCallback={(action) =>
-                                                    this.callBackResult(action)
-                                                }
-                                                approveRelease={true}
-                                            />
-                                        )}
-                                    </div>
                                 </div>
                             </div>
 

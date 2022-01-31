@@ -716,43 +716,42 @@ class ProductDetailContent extends Component {
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
-                                            <div className="col-11">
+                                            <div className="col-12">
                                                 <h4 className="text-capitalize product-title">
                                                     {this.state.item.product.name}
                                                 </h4>
-                                            </div>
-
-                                            <div className="col-1 text-right">
-                                                { (this.state.item.org._id ===
-                                                this.props.userDetail.orgId) && <MoreMenu
-                                                    triggerCallback={(action) =>
-                                                        this.callBackResult(action)
-                                                    }
-                                                    serviceAgent={
-                                                        this.state.item.service_agent._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    release={
-                                                        this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    duplicate={
-                                                        this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    edit={
-                                                        this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                />}
+                                                <div className="top-right text-right">
+                                                    { (this.state.item.org._id ===
+                                                        this.props.userDetail.orgId) && <MoreMenu
+                                                        triggerCallback={(action) =>
+                                                            this.callBackResult(action)
+                                                        }
+                                                        serviceAgent={
+                                                            this.state.item.service_agent._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+                                                        release={
+                                                            this.state.item.org._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+                                                        duplicate={
+                                                            this.state.item.org._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+                                                        edit={
+                                                            this.state.item.org._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -2240,6 +2240,8 @@ button.blue-btn-border
     display: flex;
 }
 @media only screen and (max-width: 991px) {
+
+
     .desktop-right{
         text-align: left;
     }
@@ -2390,6 +2392,10 @@ button.blue-btn-border
 }
 
 @media screen and (max-width: 576px) {
+    .mt-mobile{
+        margin-top: 10px;
+    }
+    
     .footer {
         text-align: center;
     }
@@ -4021,3 +4027,5 @@ input:active,input:focus{
 .badge-info{
     background: #07AD89;
 }
+
+

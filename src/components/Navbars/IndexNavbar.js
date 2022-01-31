@@ -241,16 +241,16 @@ class ComponentsNavbar extends React.Component {
                             </>
                         )}
 
-                        {!this.props.isLoggedIn && (
-                            <NavItem className="mr-3 ">
-                                <a
-                                    className="nav-link  d-lg-block"
-                                    color="default"
-                                    style={{ color: "#fff", cursor: "pointer" }}>
-                                    Join Demo
-                                </a>
-                            </NavItem>
-                        )}
+                        {/*{!this.props.isLoggedIn && (*/}
+                        {/*    <NavItem className="mr-3 ">*/}
+                        {/*        <a*/}
+                        {/*            className="nav-link  d-lg-block"*/}
+                        {/*            color="default"*/}
+                        {/*            style={{ color: "#fff", cursor: "pointer" }}>*/}
+                        {/*            Join Demo*/}
+                        {/*        </a>*/}
+                        {/*    </NavItem>*/}
+                        {/*)}*/}
 
                         {!this.props.isLoggedIn && (
                             <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>

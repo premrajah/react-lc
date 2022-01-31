@@ -486,17 +486,11 @@ class Products extends Component {
                                     <CustomPopover text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}>Tracked</CustomPopover>
                                 </Link>
 
-                                <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">
-                                    {/*<CustomPopover*/}
-                                    {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
-                                    {/*>*/}
-                                        Issues
-                                {/*</CustomPopover>*/}
-                                </Link>
-                                <div style={{float:"right"}} className=" text-right pl-3-desktop">
-                                    <CustomPopover text={" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product, allowing you to print multiple stickers before assigning them to the products."}><button className="btn btn-sm btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
+                                <Link to="/issues" className=" btn-sm btn-gray-border mr-2  ">Issues</Link>
+                                {/*<div  className=" text-right ">*/}
+                                    <CustomPopover text={" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product, allowing you to print multiple stickers before assigning them to the products."}><button className="btn btn-sm mt-mobile btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
                                     <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
-                                </div>
+                                {/*</div>*/}
                             </div>
 
 

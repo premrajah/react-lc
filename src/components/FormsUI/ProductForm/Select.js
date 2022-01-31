@@ -36,7 +36,7 @@ const SelectArrayWrapper = (props) => {
 
     return (
         <>
-            {title&& <div className={"custom-label text-bold text-blue mb-0"}>
+            {title&& <div className={"custom-label text-bold ellipsis-end text-blue mb-0"}>
                 {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
             </div>}
             <div className={"field-box mb-2"}>

@@ -923,7 +923,7 @@ class ProductForm extends Component {
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
-                                                        " forgot-password-link"
+                                                        " forgot-password-link ellipsis-end"
                                                     }>
                                                     {this.state.showSubmitSite
                                                         ? "Hide add site"

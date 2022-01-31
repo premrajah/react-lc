@@ -162,7 +162,7 @@ class ResourceItem extends Component {
                                 }
                             </div>
                             <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
-                                <p  className="text-capitlize mb-1 title-bold">
+                                <p  className="text-capitlize mb-1 title-bold width-75">
                                     {this.props.item.listing.name}
                                 </p>
                                 <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75 ">

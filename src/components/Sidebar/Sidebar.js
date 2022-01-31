@@ -128,36 +128,17 @@ class Sidebar extends Component {
                             <div className="row">
                                 <div className="col">
                                     <div className="list-group main-menu">
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Home
-                                        </Link>
+                                        {/*<Link*/}
+                                        {/*    onClick={this.toggleMenu}*/}
+                                        {/*    to={"/"}*/}
+                                        {/*    className="white-text list-group-item list-group-item-action">*/}
+                                        {/*    Home*/}
+                                        {/*</Link>*/}
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/account"}
                                             className="white-text list-group-item list-group-item-action">
                                             Account
-                                        </Link>
-
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/find-resources"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Marketplace
-                                        </Link>
-                                        <Link
-                                            onClick={this.showProductSelection}
-                                            to={"/my-products"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Add Product
-                                        </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/search-form"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            New Search
                                         </Link>
 
                                         <Link
@@ -175,19 +156,6 @@ class Sidebar extends Component {
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
-                                            to={"/list-form"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            New Listing
-                                        </Link>
-
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-cycles"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Cycles
-                                            </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
                                             to={"/my-campaigns"}
                                             className="white-text list-group-item list-group-item-action">
                                             Campaigns
@@ -198,21 +166,58 @@ class Sidebar extends Component {
                                             className="white-text list-group-item list-group-item-action">
                                             Searches
                                         </Link>
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-listings"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Listings
-                                            </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-listings"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Listings
+                                        </Link>
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-cycles"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Cycles
+                                        </Link>
 
 
 
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/approve"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Approvals
-                                            </Link>
+
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/approve"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Approvals
+                                        </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/find-resources"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Marketplace
+                                        </Link>
+                                        {/*<Link*/}
+                                        {/*    onClick={this.showProductSelection}*/}
+                                        {/*    to={"/my-products"}*/}
+                                        {/*    className="white-text list-group-item list-group-item-action">*/}
+                                        {/*    Add Product*/}
+                                        {/*</Link>*/}
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/search-form"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            New Search
+                                        </Link>
+
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/list-form"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            New Listing
+                                        </Link>
+
+
 
                                         <Link
                                             onClick={this.toggleMenu}

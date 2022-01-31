@@ -345,7 +345,7 @@ marteplace
                                                             <div className="col-12">
                                                                 <h4
                                                                     className={
-                                                                        "text-capitalize product-title width-80"
+                                                                        "text-capitalize product-title width-90"
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h4>

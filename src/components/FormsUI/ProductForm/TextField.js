@@ -50,7 +50,7 @@ const TextFieldWrapper = ({name,type,title,details,detailsHeading,validators,lab
     return(
         <>
 
-            {title&& <div className={"custom-label text-bold text-blue mb-0"}>
+            {title&& <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
                 {title}  {details&&<CustomPopover heading={detailsHeading}  text={details}>
                 <InfoIcon/></CustomPopover>}
             </div>}

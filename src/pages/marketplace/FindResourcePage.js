@@ -13,6 +13,8 @@ import SellProduct from "../../img/icons/sell-products-icon-blue.png";
 import BlueBorderLink from "../../components/FormsUI/Buttons/BlueBorderLink";
 import MarketplaceResourceItem from "../../components/Resources/MarketplaceResourceItem";
 import Layout from "../../components/Layout/Layout";
+import {Link} from "react-router-dom";
+import CustomPopover from "../../components/FormsUI/CustomPopover";
 
 const currentTime = new Date();
 
@@ -80,6 +82,8 @@ class FindResourcePage extends Component {
             <Layout>
 
                 <div className="container">
+
+
                     <div className="row mt-5 web-only " style={{ marginTop: "80px" }}>
                         <div className="col-12  marketplce-icon-container icon-container" >
 
@@ -115,9 +119,25 @@ class FindResourcePage extends Component {
 
 
                     <div className="row mt-5 mb-2">
-                        <div className="col">
+                        <div className="col-12">
                             <h4 className="blue-text text-heading">View All Listings</h4>
                         </div>
+                    </div>
+                    <div className="row mobile-only">
+                        <div className="col-12 ">
+                            <Link to="/search-form" className=" btn-sm btn-gray-border mr-2">
+                                New Search
+                            </Link>
+
+                            <Link to="/list-form" className=" btn-sm btn-gray-border  mr-2">
+                                New Listing
+                            </Link>
+
+
+                        </div>
+
+
+
                     </div>
 
                     <div className="row  justify-content-center search-container  pt-3 pb-4">

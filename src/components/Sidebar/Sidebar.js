@@ -90,13 +90,36 @@ class Sidebar extends Component {
                             <div className="mt-2 mb-3">
                                 <div className="row">
                                     <div className="col-auto">
-                                        <figure className="avatar avatar-60 border-0">
+
+                                        {this.props.image ?
+                                            <figure className="avatar avatar-60 ">
+                                            <span className={"word-user"}>
+                                                <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}>
+                                            <img
+                                                src={this.props.image}
+                                                alt=""
+                                                style={{
+                                                    maxHeight: "60px",
+                                                    maxWidth: "60px",
+                                                    objectFit: "cover",
+                                                    width: "60px",
+                                                    height: "60px",
+                                                }}
+                                            />
+                                        </div>
+                                            </span>
+                                            </figure>: <figure className="avatar avatar-60 border-0">
                                             <span className={"word-user-big"}>
                                                 {this.props.userDetail &&
                                                     this.props.userDetail.orgId &&
                                                     this.props.userDetail.orgId.substr(0, 2)}
                                             </span>
-                                        </figure>
+                                        </figure>}
                                     </div>
                                 </div>
                             </div>

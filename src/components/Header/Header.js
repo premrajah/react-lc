@@ -4,6 +4,8 @@ import * as actionCreator from "../../store/actions/actions";
 import IndexNavbar from "../Navbars/IndexNavbar";
 import history from "../../History/history";
 import Sidebar from "../Sidebar/Sidebar";
+import {baseUrl} from "../../Util/Constants";
+import axios from "axios";
 
 class Header extends React.Component {
     constructor(props) {
@@ -15,6 +17,7 @@ class Header extends React.Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
+            image:null
         };
         this.goToInbox = this.goToInbox.bind(this);
         this.showLoginPopUp = this.showLoginPopUp.bind(this);
@@ -37,11 +40,31 @@ class Header extends React.Component {
         }
     }
 
+    getArtifactForOrg = () => {
+        let url = `${baseUrl}org/${encodeURIComponent(this.props.userDetail.orgId)}/artifact`;
+        axios
+            .get(url)
+            .then(response => {
+                if (response.status === 200) {
+
+                    this.setState({
+                        image:response.data.data[0].blob_url
+                    })
+                }
+            })
+            .catch((error) => {});
+    };
+
+    componentDidMount() {
+        if (this.props.isLoggedIn)
+        this.getArtifactForOrg()
+    }
+
     render() {
         return (
             <div id="back-to-top-anchor">
-                <Sidebar/>
-               <IndexNavbar/>
+                <Sidebar image={this.state.image} />
+               <IndexNavbar image={this.state.image} />
                </div>
         );
     }
@@ -56,7 +79,7 @@ const mapStateToProps = (state) => {
         // loginFailed: state.loginFailed,
         // showLoginPopUp: state.showLoginPopUp,
         // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
-        // userDetail: state.userDetail,
+        userDetail: state.userDetail,
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
     };

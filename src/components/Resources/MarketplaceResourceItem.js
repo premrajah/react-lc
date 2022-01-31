@@ -88,7 +88,7 @@ class MarketplaceResourceItem extends Component {
         return (
             <>
                     <>
-                        <Link to={"/"+ this.props.item.listing._key }>
+                        <Link to={this.props.link?this.props.link:"/"+ this.props.item.listing._key}>
 
                             <div
                                 // onClick={this.goToPage}

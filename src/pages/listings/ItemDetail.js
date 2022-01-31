@@ -31,7 +31,7 @@ import {GoogleMap} from "../../components/Map/MapsContainer";
 class ItemDetail extends Component {
     slug;
     search;
-
+marteplace
     constructor(props) {
         super(props);
 
@@ -49,6 +49,8 @@ class ItemDetail extends Component {
         };
 
         this.slug = props.match.params.slug;
+        this.marketplace = props.match.params.marketplace;
+
         this.search = props.match.params.search;
 
         this.getResources = this.getResources.bind(this);
@@ -313,18 +315,13 @@ class ItemDetail extends Component {
 
                                         <div className="row  pt-4 pb-4  justify-content-start">
                                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                                <Link to={"/my-search"}>My Listings</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
-
+                                                <Link to={this.marketplace?"/find-resources":"/my-search"}>{this.marketplace?"All Listings":"My Listings"}</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
                                             </div>
                                         </div>
                                         <div className="row   justify-content-center  mb-4 pb-4">
 
-
                                             <div className="col-md-4 col-sm-12 col-xs-12 ">
-                                                {/*stick-left-box*/}
-                                                {/*{this.state.item.images.length > 0 ?*/}
-                                                {/*<ImagesSlider images={this.state.item.images} /> :*/}
-                                                {/*<img className={"img-fluid"} src={PlaceholderImg} alt="" />}*/}
+
 
                                                 <div className="row   stick-left-box ">
                                                     <div className="col-12 text-center ">
@@ -345,30 +342,28 @@ class ItemDetail extends Component {
                                                 <div className="row justify-content-start  ">
                                                     <div className="col-12 ">
                                                         <div className="row">
-                                                            <div className="col-11">
+                                                            <div className="col-12">
                                                                 <h5
                                                                     className={
                                                                         "text-capitalize product-title"
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h5>
+                                                                <div className="top-right text-right">
+                                                                    <MoreMenu
+                                                                        triggerCallback={(action) =>
+                                                                            this.callBackResult(action)
+                                                                        }
+                                                                        delete={true}
+                                                                        edit={true}
+                                                                        remove={false}
+                                                                        duplicate={false}
+                                                                    />
+
+                                                                </div>
                                                             </div>
 
-                                                            <div className="col-1 text-right">
-                                                                <MoreMenu
-                                                                    triggerCallback={(action) =>
-                                                                        this.callBackResult(action)
-                                                                    }
-                                                                    delete={true}
-                                                                    edit={true}
-                                                                    remove={false}
-                                                                    duplicate={false}
-                                                                />
 
-                                                                {/*<EditIcon className={"mr-2"} onClick={this.showEdit}  />*/}
-
-                                                                {/*<DeleteIcon className={""}   />*/}
-                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -420,7 +415,6 @@ class ItemDetail extends Component {
                                                 {this.state.item &&
                                                 <div className="row justify-content-start pb-3  tabs-detail">
                                                     <div className="col-12 ">
-
                                                         <Box sx={{ width: '100%', typography: 'body1' }}>
                                                             <TabContext value={this.state.activeKey}>
                                                                 <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>

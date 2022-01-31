@@ -192,7 +192,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={ListFormNew} />
-
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
                         <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
@@ -239,6 +238,7 @@ class App extends Component {
                         />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <Route exact path="/:slug" component={ItemDetail} />
+                        <Route exact path="/:slug/:marketplace" component={ItemDetail} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />

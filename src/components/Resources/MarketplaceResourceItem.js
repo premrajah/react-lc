@@ -105,7 +105,7 @@ class MarketplaceResourceItem extends Component {
                                     <p  className="text-capitlize mb-2 item-title width-70 ellipsis-end">
                                         {this.props.item.listing.name}
                                     </p>
-                                    <p   className=" mb-2 text-gray-light mt-1 mb-2 width-70 web-only ">
+                                    <p   className=" mb-2 text-gray-light mt-1 mb-2 width-70 d-block web-only ">
 
                                             {this.readMore(this.props.item.listing.description)}
 

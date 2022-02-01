@@ -73,6 +73,8 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
 
         url=url+`&count=${count}`
 
+
+
     if (offset===0||offset>0){
 
         url=url+`&offset=${offset}&size=${pageSize}`
@@ -90,31 +92,19 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
 }
 
 
-const CancelToken = axios.CancelToken;
-let cancel;
+
 
 export const  seekAxiosGet=  (url)=> {
 
 
-    if (cancel !== undefined) {
-        cancel();
-    }
-
-    return   axios.get(encodeURI(url),{ cancelToken: new CancelToken(function executor(c) {
-                // An executor function receives a cancel function as a parameter
-                cancel = c;
-            })}
+    return   axios.get(encodeURI(url),
             ).catch((error)=>{
 
-                if (axios.isCancel(error)) {
-                    console.log("previous request cancelled");
-                    return null
-                }else {
                     console.error(error);
 
 
                     return  fetchErrorMessage(error)
-                }
+
             });
             // console.log(resp.data);
 

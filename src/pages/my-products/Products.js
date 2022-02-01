@@ -77,10 +77,11 @@ class Products extends Component {
         this.searchValue=searchValue
         this.setState({searchValue: searchValue});
 
-          this.clearList()
-          this.setFilters()
-          this.seekCount()
-          this.loadProductsWithoutParentPageWise(true)
+        if (this.state.searchValue) {
+            this.timeoutSearch()
+        }
+
+
 
     }
 
@@ -162,14 +163,20 @@ class Products extends Component {
         this.seekCount()
 
     }
+    timeout =  0;
 
-     // countCancelToken = axios.CancelToken;
+    timeoutSearch(){
+        if(this.timeout) clearTimeout(this.timeout);
 
-    // dataCancelToken = axios.CancelToken;
-    //
-    // controllerData = new AbortController();
-    // controllerCount = new AbortController();
+        this.timeout = setTimeout(() => {
+            //search function
+            this.clearList()
+            this.setFilters()
+            this.seekCount()
+            this.loadProductsWithoutParentPageWise(true)
 
+        }, 2000);
+    }
 
     seekCount=async () => {
 
@@ -193,6 +200,7 @@ class Products extends Component {
 
 
     loadProductsWithoutParentPageWise= async (resetOffset) => {
+        // alert("call")
 
         let newOffset = this.state.offset
 

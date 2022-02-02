@@ -83,7 +83,7 @@ class FindResourcePage extends Component {
             <Layout>
                 <div className="container">
                     <div className="row mt-5 web-only " style={{ marginTop: "80px" }}>
-                        <div className="col-12  marketplce-icon-container icon-container">
+                        <div className="col-12  marketplce-icon-container icon-container mt-4">
                             <div className="icon-bg icon-holder">
                                 <Image className="" src={BuyProduct} rounded />
 

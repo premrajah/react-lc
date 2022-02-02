@@ -93,7 +93,7 @@ class Home extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="row no-gutters mt-4 ">
+                                    <div className="container no-gutters mt-4 ">
                                         <div className="col-auto">
                                             <a
                                                 href="https://loopcycle.io/"

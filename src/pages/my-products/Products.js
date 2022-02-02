@@ -89,8 +89,6 @@ class Products extends Component {
 
     handleSearchFilter = (filterValue) => {
 
-
-
         this.filterValue=filterValue
 
         console.log("active filter",filterValue)
@@ -100,6 +98,7 @@ class Products extends Component {
             this.clearList()
             this.setFilters()
             this.seekCount()
+            console.log("1")
             this.loadProductsWithoutParentPageWise(true)
         }
     }
@@ -110,6 +109,8 @@ class Products extends Component {
         this.setState({
             offset:0,
             items:[],
+            lastPageReached:false,
+            loadingResults: false,
         })
     }
 
@@ -173,7 +174,8 @@ class Products extends Component {
             this.clearList()
             this.setFilters()
             this.seekCount()
-            this.loadProductsWithoutParentPageWise(true)
+            console.log("2")
+            // this.loadProductsWithoutParentPageWise(true)
 
         }, 2000);
     }
@@ -200,7 +202,6 @@ class Products extends Component {
 
 
     loadProductsWithoutParentPageWise= async (resetOffset) => {
-        // alert("call")
 
         let newOffset = this.state.offset
 

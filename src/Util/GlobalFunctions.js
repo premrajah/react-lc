@@ -17,13 +17,8 @@ const addAndFilters=(filters)=>{
     let url=""
 
     filters.forEach((row,index)=> {
-
-            console.log(row)
             url = url + "("
 
-            console.log("****row********")
-            console.log(row)
-            console.log("****row********")
             row.filters && row.filters.forEach((item, index) => {
 
 
@@ -39,7 +34,7 @@ const addAndFilters=(filters)=>{
         }
     )
 
-return url
+    return url
 
 
 }
@@ -48,8 +43,6 @@ return url
 export const fetchErrorMessage=(e)=>{
 
     let errorString=""
-
-    // console.log('>> ',e.response.data.errors[0].message)
     if (e.response.data.errors&&e.response.data.errors.length>0) {
     e.response.data.errors.forEach(item => {
         errorString =errorString+" "+ item.message

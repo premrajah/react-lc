@@ -12,6 +12,8 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
+import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -260,15 +262,15 @@ class Login extends Component {
                                 </div>
                             )}
 
-                            <div className="col-12 mt-2">
-                                <BlueButton
+                            <div className="col-12 text-center mt-2">
+                                <GreenButton
                                     title={this.props.loading ? "Wait.." : "Log In"}
                                     type={"submit"}
                                     loading={this.props.loading}
                                     disabled={!this.state.formValid}
-                                    fullWidth
+
                                   >
-                                </BlueButton>
+                                </GreenButton>
                             </div>
 
                             <div className="col-12 mt-2">
@@ -288,13 +290,13 @@ class Login extends Component {
 
                                     :
 
-                                    <BlueBorderButton
+                                    <GreenBorderButton
 
                                         title={"Sign Up"}
-                                        fullWidth
+
                                         onClick={this.goToSignUp}
                                     >
-                                    </BlueBorderButton>}
+                                    </GreenBorderButton>}
                             </div>
                         </div>
                     </form>

@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 let productProperties=[
     {field:"name",required:true},
@@ -907,15 +908,15 @@ const UploadMultiSiteOrProduct = (props) => {
                     </p>
 
                             <div className="row mt-4 mb-4">
-                                <div className="col">
-                                    <BlueButton
+                                <div className="col text-center">
+                                    <GreenButton
                                         title={"Submit"}
                                         type={"submit"}
 
                                         disabled={isDisabled}
-                                        fullWidth
+
                                     >
-                                    </BlueButton>
+                                    </GreenButton>
                                 </div>
                             </div>
                         </form>

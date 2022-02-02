@@ -17,6 +17,8 @@ import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {Link} from "react-router-dom";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -434,15 +436,15 @@ class SignUp extends Component {
                                 </div>
                             )}
 
-                            <div className="col-12 ">
-                                <BlueButton
+                            <div className="col-12 text-center ">
+                                <GreenButton
                                     title={this.props.loading ? "Wait.." : "Create Account"}
                                     type={"submit"}
                                     loading={this.props.loading}
 
-                                    fullWidth
+
                                 >
-                                </BlueButton>
+                                </GreenButton>
                             </div>
 
 
@@ -469,12 +471,12 @@ class SignUp extends Component {
                                     </Link>
 
                                     :
-                                    <BlueBorderButton
+                                    <GreenBorderButton
                                         title={"Log In"}
                                         type={"submit"}
                                         onClick={this.goToSignIn}
                                     >
-                                    </BlueBorderButton>
+                                    </GreenBorderButton>
                                 }
 
                             </div>

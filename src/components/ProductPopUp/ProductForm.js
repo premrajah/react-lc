@@ -21,6 +21,7 @@ import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 
 class ProductForm extends Component {
@@ -1204,39 +1205,39 @@ class ProductForm extends Component {
                             </div>
 </div>
                                  <div className={"row"}>
-                            <div className="col-12  mb-2">
+                            <div className="col-12 text-center  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
                                     0 ? (
-                                            <BlueButton
+                                            <GreenButton
                                                 title={"Upload in progress ...."}
                                                 type={"submit"}
                                                 loading={true}
                                                 disabled={true}
-                                                fullWidth
+
                                             >
-                                            </BlueButton>
+                                            </GreenButton>
 
                                     ) : (
-                                    <BlueButton
+                                    <GreenButton
                                         title={this.props.item?"Update Product":"Add Product"}
                                         type={"submit"}
                                         loading={this.props.loading}
                                         disabled={this.state.isSubmitButtonPressed}
-                                        fullWidth
+
                                     >
-                                    </BlueButton>
+                                    </GreenButton>
 
                                     )
                                 ) : (
-                                    <BlueButton
+                                    <GreenButton
                                     title={this.props.item?"Update Product":"Add Product"}
                                     type={"submit"}
                                     loading={this.props.loading}
                                     disabled={this.state.isSubmitButtonPressed}
-                                    fullWidth
+
                                     >
-                                    </BlueButton>
+                                    </GreenButton>
 
                                 )}
                             </div>

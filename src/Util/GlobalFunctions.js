@@ -44,13 +44,13 @@ export const fetchErrorMessage=(e)=>{
 
     let errorString=""
     if (e.response.data.errors&&e.response.data.errors.length>0) {
-    e.response.data.errors.forEach(item => {
-        errorString =errorString+" "+ item.message
+        e.response.data.errors.forEach(item => {
+            errorString =errorString+" "+ item.message
 
-})
+        })
     }else{
 
-errorString=e.response.status +" error received from server"
+        errorString=e.response.status +" error received from server"
 
     }
     return errorString
@@ -64,7 +64,7 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
     let url = `${baseUrl}seek?name=${entity}`;
 
 
-        url=url+`&count=${count}`
+    url=url+`&count=${count}`
 
 
 
@@ -90,17 +90,13 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
 export const  seekAxiosGet=  (url)=> {
 
 
-    return   axios.get(encodeURI(url),
-            ).catch((error)=>{
+    return   axios.get(encodeURI(url)).catch((error)=>{
 
-                    console.error(error);
-
-
-                    return  fetchErrorMessage(error)
-
-            });
-            // console.log(resp.data);
+        console.error(error);
 
 
+        return  fetchErrorMessage(error)
+
+    });
 
 }

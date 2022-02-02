@@ -70,7 +70,7 @@ class Products extends Component {
     handleSearch = (searchValue) => {
 
 
-      searchValue= (searchValue.trim())
+        searchValue= (searchValue.trim())
 
 
         console.log("keyword",searchValue)
@@ -444,34 +444,34 @@ class Products extends Component {
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
-                            <div className="row no-gutters mb-2 pb-2 " style={{borderBottom: '1px solid #70707062'}}>
-                                <div className="col-7  ">
-                                    <a onClick={this.getSitesForProducts}  className="btn btn-sm btn-green"><MapIcon style={{fontSize:"20px"}} /> Locations</a>
+                            <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
+                                <div className="row no-gutters mb-2 pb-2 " style={{borderBottom: '1px solid #70707062'}}>
+                                    <div className="col-7  ">
+                                        <a onClick={this.getSitesForProducts}  className="btn btn-sm btn-green"><MapIcon style={{fontSize:"20px"}} /> Locations</a>
+                                    </div>
+                                    <div className="col-5 text-right">
+                                        <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><><DownloadIcon  style={{fontSize:"20px"}} /> CSV</></CSVLink>
+                                    </div>
+
                                 </div>
-                                <div className="col-5 text-right">
-                                    <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><><DownloadIcon  style={{fontSize:"20px"}} /> CSV</></CSVLink>
+                                <div className="row  no-gutters mb-1">
+                                    <div className="col blue-text">Selected Products</div>
+
+                                    <button className=" btn-pink " onClick={() => this.setState({selectedProducts: []})}><>Clear</></button>
                                 </div>
 
-                            </div>
-                            <div className="row  no-gutters mb-1">
-                                <div className="col blue-text">Selected Products</div>
-
-                                <button className=" btn-pink " onClick={() => this.setState({selectedProducts: []})}><>Clear</></button>
-                            </div>
-
-                            <div className="row" style={{overflowY:"auto",maxHeight:"250px",}}>
-                                <div className="col">
-                                    {this.state.selectedProducts.map((product, index) => (
+                                <div className="row" style={{overflowY:"auto",maxHeight:"250px",}}>
+                                    <div className="col">
+                                        {this.state.selectedProducts.map((product, index) => (
                                             <div key={index} onClick={() => this.removeFromSelectedProducts(index)} style={{cursor: 'pointer',
                                                 textOverflow: "ellipsis",
                                                 whiteSpace: "nowrap",
                                                 overflow: "hidden"}}><IndeterminateCheckBoxIcon style={{opacity:"0.5"}} className={"text-blue"} /> {product.product.name}</div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> : null }
+                        </div> : null }
 
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
@@ -488,7 +488,7 @@ class Products extends Component {
                                 </Link>
 
                                 <Link to="/product-archive" className=" btn-sm btn-gray-border  mr-2">
-                                   <CustomPopover text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
+                                    <CustomPopover text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
                                 </Link>
 
                                 <Link to="/product-tracked" className=" btn-sm btn-gray-border  mr-2">
@@ -496,8 +496,8 @@ class Products extends Component {
                                 </Link>
 
                                 <Link to="/issues" className=" btn-sm btn-gray-border mr-2  ">Issues</Link>
-                                    <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products."><button className="btn btn-sm mt-mobile btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
-                                    <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+                                <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products."><button className="btn btn-sm mt-mobile btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Cyclecodes</button></CustomPopover>
+                                <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
 
 
@@ -514,7 +514,7 @@ class Products extends Component {
                             <div className="col">
 
                                 <p  className="text-gray-light ml-2 ">Showing {this.state.items.length} of {this.state.count} Products
-                                {/*of {this.state.count}*/}
+                                    {/*of {this.state.count}*/}
 
                                 </p>
                             </div>
@@ -529,21 +529,21 @@ class Products extends Component {
                             loadMore={this.loadProductsWithoutParentPageWise} >
 
                             {this.state.items.map((item, index) => (
-                                    <div id={item._key} key={item._key}>
-                                        <ProductItem
-                                            index={index}
-                                            goToLink={true}
-                                            delete={false}
-                                            edit={false}
-                                            remove={false}
-                                            duplicate={false}
-                                            item={item}
-                                            hideMore
-                                            listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
-                                            showAddToListButton
-                                        />
-                                    </div>
-                                ))}
+                                <div id={item._key} key={item._key}>
+                                    <ProductItem
+                                        index={index}
+                                        goToLink={true}
+                                        delete={false}
+                                        edit={false}
+                                        remove={false}
+                                        duplicate={false}
+                                        item={item}
+                                        hideMore
+                                        listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
+                                        showAddToListButton
+                                    />
+                                </div>
+                            ))}
 
                         </PaginationLayout>
 
@@ -570,7 +570,7 @@ class Products extends Component {
                         </div>
 
                         <div className={"row justify-content-center"}>
-                <ProductsGoogleMap mapData={this.state.mapData} width="700px" height="400px"/>
+                            <ProductsGoogleMap mapData={this.state.mapData} width="700px" height="400px"/>
 
                         </div>
                     </ModalBody>
@@ -599,7 +599,7 @@ class Products extends Component {
                                 <h5
                                     style={{ textTransform: "Capitalize" }}
                                     className={"text-bold text-blue"}>
-                                  Download Multiple QR Codes
+                                    Download Multiple QR Codes
                                 </h5>
                             </div>
                         </div>
@@ -607,24 +607,24 @@ class Products extends Component {
                         <div className={"row justify-content-center"}>
                             <form onSubmit={this.downloadMultipleQrCodes}>
 
-                                        <div className="row mb-2 text-center">
+                                <div className="row mb-2 text-center">
 
 
-                                            <div className="col-12 ">
+                                    <div className="col-12 ">
 
-                                                <TextFieldWrapper
-                                                    // readonly ={this.state.disableVolume}
-                                                    initialValue={this.state.selectedItem&&this.state.selectedItem.factor+""}
-                                                    // value={this.state.disableVolume?"0":""}
-                                                    onChange={(value)=>this.handleChange(value,"count")}
-                                                    error={this.state.errors["count"]}
-                                                    name="count" title="Enter required number of Qr codes to be downloaded" />
+                                        <TextFieldWrapper
+                                            // readonly ={this.state.disableVolume}
+                                            initialValue={this.state.selectedItem&&this.state.selectedItem.factor+""}
+                                            // value={this.state.disableVolume?"0":""}
+                                            onChange={(value)=>this.handleChange(value,"count")}
+                                            error={this.state.errors["count"]}
+                                            name="count" title="Enter required number of Qr codes to be downloaded" />
 
-                                            </div>
+                                    </div>
 
 
 
-                                        </div>
+                                </div>
 
 
                                 <div className={"row"}>

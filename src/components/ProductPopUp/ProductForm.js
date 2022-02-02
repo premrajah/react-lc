@@ -767,7 +767,7 @@ class ProductForm extends Component {
                                         details="do you wish to list your product now or in the future ?"
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
-                                        name={"is_listable"} title="List the product for sale" />
+                                        name={"is_listable"} title="List for sale" />
 
                                 </div>
 

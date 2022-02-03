@@ -752,8 +752,8 @@ class ProductDetailCycle extends Component {
 
                                                     {this.props.userDetail.orgId ===
                                                     this.props.item.org._id
-                                                    ?     <span onClick={this.showReportModal} className="click-item">
-                                                <ReportIcon className="click-Item" /> Report
+                                                    ?     <span onClick={this.showReportModal} className="click-item d-flex flex-row align-items-center">
+                                                <ReportIcon className="click-Item mr-1" /> Report Issue
                                                 </span>:""}
 
                                                 <MoreMenu

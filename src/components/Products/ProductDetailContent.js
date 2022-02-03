@@ -35,6 +35,7 @@ import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 
 
 class ProductDetailContent extends Component {
@@ -778,6 +779,13 @@ class ProductDetailContent extends Component {
                                                     {this.state.item.product.name}
                                                 </h4>
                                                 <div className="top-right text-right">
+                                                    <div className="d-flex flex-row align-items-center justify-content-center ">
+
+                                                        {this.state.item.org._id ===
+                                                        this.props.userDetail.orgId
+                                                            ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
+                                                <ReportIcon className="click-Item mr-1" /> Release
+                                                </span>:""}
                                                     { (this.state.item.org._id ===
                                                         this.props.userDetail.orgId) && <MoreMenu
                                                         triggerCallback={(action) =>
@@ -789,12 +797,12 @@ class ProductDetailContent extends Component {
                                                                 ? true
                                                                 : false
                                                         }
-                                                        release={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
-                                                        }
+                                                        // release={
+                                                        //     this.state.item.org._id ===
+                                                        //     this.props.userDetail.orgId
+                                                        //         ? true
+                                                        //         : false
+                                                        // }
                                                         duplicate={
                                                             this.state.item.org._id ===
                                                             this.props.userDetail.orgId
@@ -807,7 +815,11 @@ class ProductDetailContent extends Component {
                                                                 ? true
                                                                 : false
                                                         }
-                                                    />}
+                                                    />
+
+                                                    }
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

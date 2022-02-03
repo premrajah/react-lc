@@ -283,7 +283,7 @@ class AutocompleteCustom extends Component {
                     placeholder={"Company (Type your company name here)"}
                     ref="itemInput"
                 />
-                {this.state.selected &&  <div className=" search-card m-1" style={{width: "100%"}}>
+                {this.state.selected &&  <div className=" search-card m-1 d-flex align-items-center" style={{width: "100%"}}>
                     <div className={"col-2"}>
                     <div className={"img-left p-1"}>
                         <img style={{height:"32px!important", width:"32px!important"}} className="card-img-top"
@@ -294,12 +294,10 @@ class AutocompleteCustom extends Component {
                     <div className={"col-8"} style={{padding: "0"}}>
                     <div className={"text-right"}>
                         <p style={{color:"#293842", fontWeight:"600",textAlign: "left"}}>{this.state.userInput}</p>
-                        {/*<p className={"selected-item"}>Rate and Review</p>*/}
-
                     </div>
 
                     </div>
-                    <div className={"col-2"}>
+                    <div className={"col-2 text-center"}>
                         <span onClick={this.resetSelection} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
                     </div>
                 </div>}

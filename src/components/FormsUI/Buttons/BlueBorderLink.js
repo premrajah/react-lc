@@ -1,11 +1,11 @@
 import React from 'react'
 import {Link} from "react-router-dom";
 
-const BlueBorderLink = ({children, ...otherProps}) => {
+const BlueBorderLink = ({children,fullWidth, ...otherProps}) => {
 
 
 
-    return <Link className={"mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue"} {...otherProps} >{otherProps.title}</Link>
+    return <Link className={` btn btn-link blue-btn-border btn-blue ${fullWidth?"fullWidth":""}`} {...otherProps} >{otherProps.title}</Link>
 
 
 }

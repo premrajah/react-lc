@@ -444,13 +444,16 @@ class Products extends Component {
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                            <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
+                            <div className="float-right mr-1 p-3" style={{width: '240px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
                                 <div className="row no-gutters mb-2 pb-2 " style={{borderBottom: '1px solid #70707062'}}>
-                                    <div className="col-7  ">
-                                        <a onClick={this.getSitesForProducts}  className="btn btn-sm btn-green"><MapIcon style={{fontSize:"20px"}} /> Locations</a>
-                                    </div>
-                                    <div className="col-5 text-right">
-                                        <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><><DownloadIcon  style={{fontSize:"20px"}} /> CSV</></CSVLink>
+                                    <div className="col-12  ">
+                                        <a onClick={this.getSitesForProducts}  className=" btn-sm btn-gray-border  mr-2">
+                                            {/*<MapIcon style={{fontSize:"20px"}} /> */}
+                                            Locations</a>
+
+                                        <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className=" btn-sm btn-gray-border  mr-2"><>
+                                            <DownloadIcon  style={{fontSize:"20px"}} />
+                                            CSV</></CSVLink>
                                     </div>
 
                                 </div>

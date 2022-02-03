@@ -204,7 +204,7 @@ class CompanyInfo extends Component {
         let validations=[
 
             validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
-            // validateFormatCreate("description", [{check: Validators.requiredCheck, message: 'Required'}],fields),
+            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'Invalid Input'},{check: Validators.required, message: 'Required'}],fields),
         ]
 
 

@@ -49,7 +49,8 @@ class ItemDetailPreview extends Component {
         this.setState({
             activeKey:"0"
         })
-
+        console.log("this.props.site")
+console.log(this.props.site)
     }
 
     render() {

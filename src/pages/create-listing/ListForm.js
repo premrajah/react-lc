@@ -436,6 +436,17 @@ class ListFormNew extends Component {
     handleChange=(value,field)=>{
 
 
+        if (field==="deliver") {
+
+            this.setState({
+                siteSelected:this.props.siteList.filter((site)=> site._key===value)[0]
+            })
+
+        }
+
+
+
+
         if (field==="startDate"){
             this.setState({
                 startDate:value

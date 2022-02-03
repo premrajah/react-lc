@@ -24,7 +24,7 @@ import AutocompleteCustom from "./AutocompleteCustom";
 import OrgTrailsTimeline from "./OrgTrailsTimeline";
 import SiteTrailsTimeline from "./SiteTrailsTimeline";
 import {FormControlLabel, Radio, RadioGroup} from "@mui/material";
-import LinkIcon from '@mui/icons-material/Link';
+import ReportIcon from '@mui/icons-material/Report';
 import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
 import ArtifactProductsTab from "./Products/ArtifactProductsTab";
@@ -640,7 +640,7 @@ class ProductDetailCycle extends Component {
                                 this.props.item.artifacts.length > 0 ? (
                                     <ImagesSlider images={this.props.item.artifacts} />
                                 ) : (
-                                    <img className={"img-fluid"} src={PlaceholderImg} alt="" />
+                                    <img className={"img-fluid  rad-8 bg-white p-2"} src={PlaceholderImg} alt="" />
                                 )}
 
 
@@ -748,6 +748,14 @@ class ProductDetailCycle extends Component {
 
                                         <div className="top-right text-right">
                                             {this.props.isLoggedIn && (
+                                                <div className="d-flex flex-row align-items-center justify-content-center ">
+
+                                                    {this.props.userDetail.orgId ===
+                                                    this.props.item.org._id
+                                                    ?     <span onClick={this.showReportModal} className="click-item">
+                                                <ReportIcon className="click-Item" /> Report
+                                                </span>:""}
+
                                                 <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
@@ -763,6 +771,7 @@ class ProductDetailCycle extends Component {
                                                         this.props.item.org._id
                                                     }
                                                 />
+                                                </div>
                                             )}
 
                                             {!this.props.isLoggedIn && !this.state.orgIdAuth && (

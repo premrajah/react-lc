@@ -787,7 +787,8 @@ class ProductDetailContent extends Component {
                                                 <ReportIcon className="click-Item mr-1" /> Release
                                                 </span>:""}
                                                     { (this.state.item.org._id ===
-                                                        this.props.userDetail.orgId) && <MoreMenu
+                                                        this.props.userDetail.orgId) &&
+                                                    <MoreMenu
                                                         triggerCallback={(action) =>
                                                             this.callBackResult(action)
                                                         }
@@ -797,12 +798,7 @@ class ProductDetailContent extends Component {
                                                                 ? true
                                                                 : false
                                                         }
-                                                        // release={
-                                                        //     this.state.item.org._id ===
-                                                        //     this.props.userDetail.orgId
-                                                        //         ? true
-                                                        //         : false
-                                                        // }
+
                                                         duplicate={
                                                             this.state.item.org._id ===
                                                             this.props.userDetail.orgId

@@ -758,7 +758,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     </div>
                                     <div className={"row"}>
-                                        <div className="col-12 mt-4 mb-2">
+                                        <div className="col-12  mb-2">
 
                                             <button
                                                 type={"submit"}
@@ -1086,7 +1086,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     ))}
                                 </div>
                                 </div>
-                                <div className="row   pt-2 ">
+                                <div className="row   ">
                                 <div className="col-12 mt-4 p-0 ">
                                     <span
                                         onClick={this.addCount}

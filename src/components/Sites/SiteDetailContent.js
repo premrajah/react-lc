@@ -21,6 +21,12 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import GlobalDialog from "../RightBar/GlobalDialog";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import SiteReleaseDialog from "./SiteReleaseDialog";
 
 
 class SiteDetailContent extends Component {
@@ -114,23 +120,7 @@ class SiteDetailContent extends Component {
             });
     };
 
-    companyDetails = (detail) => {
-        if (detail.org) {
-            this.setState({
-                org_id: detail.org,
-            });
-        } else {
-            axios.get(baseUrl + "org/company/" + detail.company).then(
-                (response) => {
-                    var responseAll = response.data.data;
 
-                    this.setState({
-                        org_id: responseAll._key,
-                    });
-                }
-            ).catch(error => {});
-        }
-    };
 
 
 
@@ -171,10 +161,11 @@ class SiteDetailContent extends Component {
 
         } else if (action === "delete") {
             this.deleteItem();
-        } else if (action === "duplicate") {
+        }
+        else if (action === "duplicate") {
             this.submitDuplicateProduct();
         } else if (action === "release") {
-            this.showReleaseProduct();
+            this.showReleaseSitePopUp();
         } else if (action === "serviceAgent") {
             this.showServiceAgent();
         }
@@ -187,7 +178,7 @@ class SiteDetailContent extends Component {
     }
 
     deleteItem() {
-        axios.delete(baseUrl + "listing/" + this.state.item.listing._key).then(
+        axios.delete(baseUrl + "site/" + this.state.item.site._key).then(
             (response) => {
                 // var responseAll = response.data.data;
                 // this.props.history.push("/my-products")
@@ -321,7 +312,18 @@ class SiteDetailContent extends Component {
         });
     }
 
+    showReleaseSitePopUp=()=> {
 
+        this.setState({
+            errorRelease: false,
+            showReleaseSuccess:false
+        });
+
+        this.getSites();
+        this.setState({
+            showReleaseProduct: !this.state.showReleaseProduct,
+        });
+    }
 
 
 
@@ -528,37 +530,14 @@ class SiteDetailContent extends Component {
                                             </div>
 
                                             <div className="col-4 text-right">
-                                                {/*{ (this.state.item.org._id ===*/}
-                                                {/*this.props.userDetail.orgId) &&*/}
-
                                                 <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
-                                                    // serviceAgent={
-                                                    //     this.state.item.service_agent._id ===
-                                                    //     this.props.userDetail.orgId
-                                                    //         ? true
-                                                    //         : false
-                                                    // }
-                                                    // release={
-                                                    //     this.state.item.org._id ===
-                                                    //     this.props.userDetail.orgId
-                                                    //         ? true
-                                                    //         : false
-                                                    // }
-                                                    // duplicate={
-                                                    //     this.state.item.org._id ===
-                                                    //     this.props.userDetail.orgId
-                                                    //         ? true
-                                                    //         : false
-                                                    // }
-                                                    edit={
-                                                        true
+                                                    release={true}
+                                                    edit={true}
 
-                                                    }
                                                 />
-                                                {/*}*/}
                                             </div>
                                         </div>
                                     </div>
@@ -632,473 +611,8 @@ class SiteDetailContent extends Component {
                             </div>
                         </div>
 
-                        <Modal
-                            size="lg"
-                            show={this.state.showProductEdit}
-                            onHide={this.showProductEdit}
-                            className={"custom-modal-popup popup-form"}>
-                            <div className="">
-                                <button
-                                    onClick={this.showProductEdit}
-                                    className="btn-close close"
-                                    data-dismiss="modal"
-                                    aria-label="Close">
-                                    <i className="fas fa-times"></i>
-                                </button>
-                            </div>
+                        {this.state.item && <SiteReleaseDialog item={this.props.item} showReleaseProduct={this.state.showReleaseProduct} />}
 
-
-                            <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
-                                <div className="col mobile-menu">
-                                    <div className="form-col-left col-12">
-                            {/*<ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />*/}
-                                    </div>
-                                </div>
-                            </div>
-
-                        </Modal>
-
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            show={this.state.showReleaseProduct}
-                            centered
-                            onHide={this.showReleaseProduct}
-                            animation={false}>
-                            <ModalBody>
-                                <div className=" text-right web-only">
-                                    <Close
-                                        onClick={this.showReleaseProduct}
-                                        className="blue-text click-item"
-                                        style={{ fontSize: 32 }}
-                                    />
-                                </div>
-
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "Capitalize" }}
-                                            className={"text-bold text-blue"}>
-                                            {/*Release Product: {this.state.item.product.name}*/}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {!this.state.showReleaseSuccess ? (
-                                    <>
-                                    <div style={{position:"relative"}} className="text_fild mb-3">
-                                        <AutocompleteCustom
-                                            orgs={true}
-                                            companies={true}
-                                            suggestions={this.state.orgNames}
-                                            selectedCompany={(action) =>
-                                                this.companyDetails(action)
-                                            }
-                                        />
-                                    </div>
-
-                                        <form onSubmit={this.submitReleaseProduct}>
-                                            <div className={"row justify-content-center p-2"}>
-                                                <div className={"col-12 text-center mt-2"}>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div className={"col-12 text-center mb-4"}>
-                                                            <input
-                                                                className={"d-none"}
-                                                                value={this.state.org_id}
-                                                                name={"org"}
-                                                            />
-
-                                                            <p>
-                                                                If the company you are looking for
-                                                                doesn't exist?
-                                                                <span
-                                                                    className={"green-link-url "}
-                                                                    onClick={this.showOrgForm}>
-                                                                    {this.state.showOrgForm
-                                                                        ? "Hide "
-                                                                        : "Add Company"}
-                                                                </span>
-                                                            </p>
-                                                        </div>
-
-                                                        {this.state.errorRelease && (
-                                                            <div
-                                                                className={
-                                                                    "row justify-content-center"
-                                                                }>
-                                                                <div
-                                                                    className={"col-12"}
-                                                                    style={{ textAlign: "center" }}>
-                                                                    <Alert
-                                                                        key={"alert"}
-                                                                        variant={"danger"}>
-                                                                        {this.state.errorRelease}
-                                                                    </Alert>
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        {!this.state.showOrgForm && (
-                                                            <div
-                                                                className={
-                                                                    "col-12 justify-content-center "
-                                                                }>
-                                                                <div
-                                                                    className={
-                                                                        "row justify-content-center"
-                                                                    }>
-                                                                    <div
-                                                                        className={"col-6"}
-                                                                        style={{
-                                                                            textAlign: "center",
-                                                                        }}>
-                                                                        <button
-                                                                            style={{
-                                                                                minWidth: "120px",
-                                                                            }}
-                                                                            className={
-                                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                            }
-                                                                            type={"submit"}>
-                                                                            Yes
-                                                                        </button>
-                                                                    </div>
-                                                                    <div
-                                                                        className={"col-6"}
-                                                                        style={{
-                                                                            textAlign: "center",
-                                                                        }}>
-                                                                        <p
-                                                                            onClick={
-                                                                                this
-                                                                                    .showReleaseProduct
-                                                                            }
-                                                                            className={
-                                                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                            }>
-                                                                            Cancel
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        {this.state.showOrgForm && (
-                                            <>
-                                                <div className={"row m-2 container-gray"}>
-                                                    <div className={"col-12 text-left mt-2 "}>
-                                                        <p className={"text-bold text-blue"}>
-                                                            Add Company's Email
-                                                        </p>
-                                                    </div>
-                                                    <div className={"col-12 text-center "}>
-                                                        <>
-                                                            <div
-                                                                className={
-                                                                    "row justify-content-center"
-                                                                }>
-                                                                <div
-                                                                    className={
-                                                                        "col-12 text-center mb-2"
-                                                                    }>
-                                                                    <TextField
-                                                                        id="outlined-basic"
-                                                                        onChange={this.handleChangeEmail.bind(
-                                                                            this,
-                                                                            "email"
-                                                                        )}
-                                                                        variant="outlined"
-                                                                        fullWidth={true}
-                                                                        name={"email"}
-                                                                        type={"email"}
-                                                                        value={this.state.email}
-                                                                    />
-                                                                </div>
-
-                                                                {this.state.emailError && (
-                                                                    <Alert
-                                                                        key={"alert"}
-                                                                        variant={"danger"}>
-                                                                        Invalid Email Address!
-                                                                    </Alert>
-                                                                )}
-
-                                                                <div
-                                                                    className={
-                                                                        "col-12 text-center mb-2"
-                                                                    }>
-                                                                    <button
-                                                                        onClick={
-                                                                            this.handleSubmitOrg
-                                                                        }
-                                                                        className={
-                                                                            "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                        }>
-                                                                        Submit
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )}
-                                    </>
-                                ) : (
-                                    <>
-                                        {!this.state.cancelReleaseSuccess && (
-                                            <div className={"row justify-content-center"}>
-                                                <div className={"col-10 text-center"}>
-                                                    <Alert key={"alert"} variant={"success"}>
-                                                        Your release request has been submitted
-                                                        successfully. Thanks
-                                                    </Alert>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {this.state.cancelReleaseSuccess && (
-                                            <div className={"row justify-content-center"}>
-                                                <div className={"col-10 text-center"}>
-                                                    <Alert key={"alert"} variant={"success"}>
-                                                        Your release request has been cancelled
-                                                        successfully. Thanks
-                                                    </Alert>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className={"row justify-content-center"}>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <button
-                                                    style={{ minWidth: "120px" }}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    <Link to={"/approve"}>Check Approval</Link>
-                                                </button>
-                                            </div>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <p
-                                                    onClick={this.actionSubmit}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    Cancel Release
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </ModalBody>
-                        </Modal>
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                            show={this.state.showServiceAgent}
-                            onHide={this.showServiceAgent}
-                            animation={false}>
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "Capitalize" }}
-                                            className={"text-bold text-blue "}>
-                                            {/*Change Service Agent For: {this.state.item.product.name}*/}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {!this.state.showServiceAgentSuccess ? (
-                                    <>
-                                        <AutocompleteCustom
-                                            orgs={true}
-                                            companies={true}
-                                            suggestions={this.state.orgNames}
-                                            selectedCompany={(action) =>
-                                                this.companyDetails(action)
-                                            }
-                                        />
-                                        <form onSubmit={this.submitServiceAgentProduct}>
-                                            <div className={"row justify-content-center p-2 mt-4"}>
-                                                <div className={"col-12 text-center mt-2"}>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div className={"col-12 text-center mb-4"}>
-                                                            <input
-                                                                className={"d-none"}
-                                                                value={this.state.org_id}
-                                                                name={"org"}
-                                                            />
-
-                                                            <p>
-                                                                If the company you are looking for
-                                                                doesn't exist?
-                                                                <span
-                                                                    className={"green-link-url "}
-                                                                    onClick={this.showOrgForm}>
-                                                                    {this.state.showOrgForm
-                                                                        ? "Hide "
-                                                                        : "Add Company"}
-                                                                </span>
-                                                            </p>
-
-                                                            {this.state.showOrgForm && (
-                                                                <>
-                                                                    <div
-                                                                        className={
-                                                                            "row m-2 container-gray"
-                                                                        }>
-                                                                        <div
-                                                                            className={
-                                                                                "col-12 text-left mt-2 "
-                                                                            }>
-                                                                            <p
-                                                                                className={
-                                                                                    "text-bold text-blue"
-                                                                                }>
-                                                                                Add Company's Email
-                                                                            </p>
-                                                                        </div>
-                                                                        <div
-                                                                            className={
-                                                                                "col-12 text-center "
-                                                                            }>
-                                                                            <>
-                                                                                <div
-                                                                                    className={
-                                                                                        "row justify-content-center"
-                                                                                    }>
-                                                                                    <div
-                                                                                        className={
-                                                                                            "col-12 text-center mb-2"
-                                                                                        }>
-                                                                                        <TextField
-                                                                                            id="outlined-basic"
-                                                                                            onChange={this.handleChangeEmail.bind(
-                                                                                                this,
-                                                                                                "email"
-                                                                                            )}
-                                                                                            variant="outlined"
-                                                                                            fullWidth={
-                                                                                                true
-                                                                                            }
-                                                                                            name={
-                                                                                                "email"
-                                                                                            }
-                                                                                            type={
-                                                                                                "text"
-                                                                                            }
-                                                                                            value={
-                                                                                                this
-                                                                                                    .state
-                                                                                                    .email
-                                                                                            }
-                                                                                        />
-                                                                                    </div>
-
-                                                                                    <div
-                                                                                        className={
-                                                                                            "col-12 text-center mb-2"
-                                                                                        }>
-                                                                                        <button
-                                                                                            onClick={
-                                                                                                this
-                                                                                                    .handleSubmitOrg
-                                                                                            }
-                                                                                            className={
-                                                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                                            }>
-                                                                                            Submit
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </>
-                                                                        </div>
-                                                                    </div>
-                                                                </>
-                                                            )}
-                                                        </div>
-
-                                                        {this.state.errorRelease && (
-                                                            <div
-                                                                className={
-                                                                    "row justify-content-center"
-                                                                }>
-                                                                <div
-                                                                    className={"col-12"}
-                                                                    style={{ textAlign: "center" }}>
-                                                                    <Alert
-                                                                        key={"alert"}
-                                                                        variant={"danger"}>
-                                                                        {this.state.errorRelease}
-                                                                    </Alert>
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        <div
-                                                            className={
-                                                                "col-12 justify-content-center "
-                                                            }>
-                                                            <div
-                                                                className={
-                                                                    "row justify-content-center"
-                                                                }>
-                                                                <div
-                                                                    className={"col-6"}
-                                                                    style={{ textAlign: "center" }}>
-                                                                    <button
-                                                                        style={{
-                                                                            minWidth: "120px",
-                                                                        }}
-                                                                        className={
-                                                                            "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                        }
-                                                                        type={"submit"}>
-                                                                        Yes
-                                                                    </button>
-                                                                </div>
-                                                                <div
-                                                                    className={"col-6"}
-                                                                    style={{ textAlign: "center" }}>
-                                                                    <p
-                                                                        onClick={
-                                                                            this.showServiceAgent
-                                                                        }
-                                                                        className={
-                                                                            "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                        }>
-                                                                        Cancel
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </>
-                                ) : (
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-10 text-center"}>
-                                            <Alert key={"alert"} variant={"success"}>
-                                                Your change service agent request has been submitted
-                                                successfully. Thanks
-                                            </Alert>
-                                        </div>
-                                    </div>
-                                )}
-                            </ModalBody>
-                        </Modal>
 
 
                     </>

@@ -3,6 +3,8 @@ import {Spinner} from "react-bootstrap";
 
 const BlueBorderButton = ({onClick,title,fullWidth,disabled,loading, ...otherProps}) => {
 
+    const { children } = otherProps
+
     return <button className={`${disabled?" btn-gray":" blue-btn-border  "}  ${fullWidth?"btn-block":""}`}
         onClick={onClick} {...otherProps}>
 
@@ -16,7 +18,7 @@ const BlueBorderButton = ({onClick,title,fullWidth,disabled,loading, ...otherPro
                 aria-hidden="true"
             />
         )}
-        {title}
+        {children} {title}
     </button>
 
 

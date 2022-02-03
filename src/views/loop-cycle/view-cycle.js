@@ -31,6 +31,21 @@ import NotFound from "../NotFound/index";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import OrgFull from "../../components/Org/OrgFull";
+import Layout from "../../components/Layout/Layout";
+import {Link} from "react-router-dom";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import InfoTabContent from "../../components/Cycles/InfoTabContent";
+import {GoogleMap} from "../../components/Map/MapsContainer";
+import OrgComponent from "../../components/Org/OrgComponent";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
+import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
 
 class ViewCycle extends Component {
     slug;
@@ -387,6 +402,16 @@ class ViewCycle extends Component {
             });
     }
 
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
+
     deliverCycle(event) {
         var action = this.state.action;
 
@@ -638,6 +663,10 @@ class ViewCycle extends Component {
     interval;
 
     componentDidMount() {
+        this.setState({
+            activeKey:"0"
+        })
+
         this.getResources();
         this.getOrgs();
         this.interval = setInterval(() => {
@@ -654,9 +683,8 @@ class ViewCycle extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div className={"pb-5 mb-5"}>
-                <Sidebar />
-                <HeaderDark />
+            <Layout>
+
 
                 {this.state.notFound ? (
                     <NotFound />
@@ -664,13 +692,18 @@ class ViewCycle extends Component {
                     <>
                         {this.state.item && (
                             <>
-                                <div className="container pt-5 mt-4" style={{ padding: "0" }}>
+                                <div className="container " style={{ padding: "0" }}>
+                                    <div className="row  pt-4 pb-4  justify-content-start">
+                                        <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                                            <Link to={"/my-cycles"}>My Cycles</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
+                                        </div>
+                                    </div>
                                     <div className="row no-gutters  justify-content-center  mb-4 pb-4">
                                         <div className="col-md-4 col-sm-12 col-xs-12 ">
                                             <div className="row   stick-left-box ">
                                                 <div className="col-12 ">
                                                     <img
-                                                        className={"img-fluid"}
+                                                        className={"img-fluid  rad-8 bg-white p-2"}
                                                         src={
                                                             this.state.image
                                                                 ? this.state.image
@@ -700,9 +733,9 @@ class ViewCycle extends Component {
                                         </div>
 
                                         <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
-                                            <div className="row justify-content-start pb-3 pt-4 ">
-                                                <div className="col-12 mt-2">
-                                                    <h5 className={"blue-text text-heading"}>
+                                            <div className="row justify-content-start ">
+                                                <div className="col-12 ">
+                                                    <h5 className={"text-capitalize product-title "}>
                                                         {this.state.item.listing.name}
                                                     </h5>
                                                 </div>
@@ -712,7 +745,7 @@ class ViewCycle extends Component {
                                                         <div className="col-7">
                                                             {/*<p> <span className={"green-text"}>{this.state.item.sender.name}</span></p>*/}
                                                             <div>
-                                                                <OrgFull
+                                                                <OrgComponent
                                                                     org={
                                                                         this.state.item.sender
                                                                     }
@@ -720,7 +753,7 @@ class ViewCycle extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="col-3 green-text text-heading text-right">
+                                                        <div className="col-5 blue-text text-blue text-bold  text-right">
                                                             {this.state.item.listing.price ? (
                                                                 <>
                                                                     GBP
@@ -737,7 +770,6 @@ class ViewCycle extends Component {
                                                 </div>
 
                                                 <div className={"col-12 pt-3"}>
-                                                    <div className={"listing-row-border"}></div>
 
                                                     <div className="row justify-content-start pb-3 pt-3 ">
                                                         <div className="col-auto">
@@ -751,150 +783,135 @@ class ViewCycle extends Component {
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    <div className={"listing-row-border"}></div>
+
                                                 </div>
                                             </div>
 
-                                            <div className="row  justify-content-start search-container  pb-4">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Category
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.state.item.listing.category}, {this.state.item.listing.type}, {this.state.item.listing.state}, {this.state.item.listing.volume}{this.state.item.listing.units}
-                                                    </p>
-                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.type}></p>*/}
-                                                    {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.listing.state}</p>*/}
+                                            {this.state.item &&
+                                            <div className="row justify-content-start pb-3  tabs-detail">
+                                                <div className="col-12 ">
+                                                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                                                        <TabContext value={this.state.activeKey}>
+                                                            <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                                <TabList
+                                                                    variant="scrollable"
+                                                                    scrollButtons="auto"
+                                                                    textColor={"#27245C"}
+                                                                    TabIndicatorProps={{
+                                                                        style: {
+                                                                            backgroundColor: "#27245C",
+                                                                            padding: '2px',
+                                                                        }
+                                                                    }}
+                                                                    onChange={this.setActiveKey}
+
+                                                                    aria-label="lab API tabs example">
+
+
+                                                                    <Tab label="Info" value="0"/>
+
+                                                                    <Tab label="Product" value="1" />
+                                                                    <Tab label="Listing" value="2" />
+                                                                    <Tab label="Search" value="3" />
+                                                                    <Tab label="Delivery From" value="4" />
+                                                                    <Tab label="Delivery To" value="5" />
+                                                                </TabList>
+                                                            </Box>
+
+                                                            <TabPanel value="0">
+
+                                                                <InfoTabContent item={this.state.item.listing}/>
+                                                            </TabPanel>
+
+                                                            {this.state.item.product &&  <TabPanel value="1">
+
+                                                                <>
+
+                                                                    <div className={"mt-4"}></div>
+                                                                    {this.state.item && (
+                                                                        <ProductExpandItem
+                                                                            hideMoreMenu={true}
+                                                                            hideAddAll={true}
+                                                                            productId={this.state.item.product.product._key}
+                                                                        />
+                                                                    )}
+                                                                </>
+
+                                                            </TabPanel>}
+
+                                                            <TabPanel value="2">
+                                                            </TabPanel>
+                                                            <TabPanel value="3">
+                                                            </TabPanel>
+
+                                                            {this.state.item.from_site &&
+                                                            <TabPanel value="4">
+                                                                <>
+
+                                                                    <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.state.item.from_site._key}>{this.state.item.from_site.name}</Link></span></p>
+                                                                    {this.state.item.from_site.geo_codes && this.state.item.from_site.geo_codes[0] &&
+
+                                                                    <div className={"bg-white rad-8 p-2"}>
+                                                                        <GoogleMap siteId={this.state.item.from_site._key} width={"100%"}
+                                                                                   height={"300px"} locations={[{
+                                                                            name: this.state.item.from_site.name,
+                                                                            location: this.state.item.from_site.geo_codes[0].address_info.geometry.location,
+                                                                            isCenter: true
+                                                                        }]}/>
+                                                                    </div>
+
+                                                                    }
+
+                                                                </>
+
+                                                            </TabPanel>}
+
+                                                            {this.state.item.to_site &&
+                                                            <TabPanel value="5">
+                                                                <>
+
+                                                                    <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.state.item.to_site._key}>{this.state.item.to_site.name}</Link></span></p>
+                                                                    {this.state.item.to_site.geo_codes && this.state.item.to_site.geo_codes[0] &&
+
+                                                                    <div className={"bg-white rad-8 p-2"}>
+                                                                        <GoogleMap siteId={this.state.item.to_site._key} width={"100%"}
+                                                                                   height={"300px"} locations={[{
+                                                                            name: this.state.item.to_site.name,
+                                                                            location: this.state.item.to_site.geo_codes[0].address_info.geometry.location,
+                                                                            isCenter: true
+                                                                        }]}/>
+                                                                    </div>
+
+                                                                    }
+
+                                                                </>
+
+                                                            </TabPanel>}
+
+                                                        </TabContext>
+                                                    </Box>
+
                                                 </div>
-                                            </div>
+                                            </div>}
 
-                                            {/*<div className="row  justify-content-start search-container  pb-4">*/}
 
-                                            {/*<div className={"col-auto"}>*/}
 
-                                            {/*<p style={{ fontSize: "18px" }} className="text-mute text-bold text-blue mb-1">Manufacturer</p>*/}
-                                            {/*<p style={{ fontSize: "18px" }} className="  mb-1">{this.state.item.sender.name} </p>*/}
-                                            {/*</div>*/}
-                                            {/*</div>*/}
 
-                                            <div className="row  justify-content-start search-container  pb-4">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Available From
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {moment(
-                                                            this.state.item &&
-                                                                this.state.item.listing
-                                                                    .available_from_epoch_ms
-                                                        ).format("DD MMM YYYY")}
-                                                    </p>
-                                                </div>
-                                            </div>
 
-                                            <div className="row  justify-content-start search-container  mt-2 mb-2 ">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Available Until
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-
-                                                        {this.state.item &&
-                                                            moment(
-                                                                this.state.item.listing
-                                                                    .expire_after_epoch_ms
-                                                            ).format("DD MMM YYYY")}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="row  justify-content-start search-container pt-2  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Delivery From
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.state.item.from_site &&
-                                                            this.state.item.from_site.name}
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.state.item.from_site &&
-                                                            this.state.item.from_site.address}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="row  justify-content-start search-container pt-2  pb-2">
-                                                <div className={"col-auto"}>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="text-mute text-bold text-blue mb-1">
-                                                        Delivery To
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.state.item.to_site &&
-                                                            this.state.item.to_site.name}
-                                                    </p>
-                                                    <p
-                                                        style={{ fontSize: "18px" }}
-                                                        className="  mb-1">
-                                                        {this.state.item.to_site &&
-                                                            this.state.item.to_site.address}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {this.state.item.product.product._key && (
                                                 <>
-                                                    <div className="row  justify-content-start search-container pt-2  pb-2">
-                                                        <div className={"col-auto"}>
-                                                            <p
-                                                                style={{ fontSize: "18px" }}
-                                                                className="text-mute text-bold text-blue mb-1">
-                                                                Product Linked
-                                                            </p>
-                                                        </div>
-                                                    </div>
 
-                                                    <ProductExpandItem
-                                                        hideMore={true}
-                                                        hideAddAll={true}
-                                                        productId={
-                                                            this.state.item.product.product._key
-                                                        }
-                                                    />
 
-                                                    <div className="row  pb-4 mb-4">
-                                                        <div className="col-1 ">
-                                                            <h5
+                                                    <div className="row  mt-3  pb-4 mb-4">
+                                                        <div className="col-6 ">
+                                                            <h4
                                                                 className={
-                                                                    "text-bold text-left text-blue"
+                                                                    " text-bold text-label text-blue mb-1"
                                                                 }>
                                                                 Steps
-                                                            </h5>
+                                                            </h4>
                                                         </div>
-                                                        <div className="col-7"></div>
-                                                        <div className="col-4">
+
+                                                        <div className="col-6 text-right">
                                                             {this.state.item.cycle.stage ===
                                                                 "progress" &&
                                                                 (this.state.item.receiver._id ===
@@ -903,19 +920,15 @@ class ViewCycle extends Component {
                                                                         this.props.userDetail
                                                                             .orgId) && (
                                                                     <div className=" col-auto text-right">
-                                                                        <button
+                                                                        <BlueBorderButton
+                                                                            title={this.state.item.receiver._id===this.props.userDetail.orgId?"Request a Step":"Add Step"}
                                                                             onClick={this.showStep}
                                                                             type="button"
-                                                                            className="shadow-sm mr-2 btn blue-btn-border">
-                                                                            <AddIcon
-                                                                                style={{
-                                                                                    color:
-                                                                                        "#27245C",
-                                                                                }}
-                                                                            />
-                                                                            {this.state.item.receiver._id===this.props.userDetail.orgId?"Request a Step":"Add Step"}
+                                                                           >
+                                                                            <AddIcon/>
 
-                                                                        </button>
+
+                                                                        </BlueBorderButton>
                                                                     </div>
                                                                 )}
                                                         </div>
@@ -925,7 +938,7 @@ class ViewCycle extends Component {
                                                         <>
                                                             {this.state.item.steps.map(
                                                                 (item, index) => (
-                                                                    <div className="row  step-box pb-4 pb-4 mb-4">
+                                                                    <div className="row rad-8 m-1 p-3 bg-white step-box pb-4 pb-4 mb-4">
                                                                         {/*<div className="col-1">*/}
                                                                         {/*<p className={"text-bold text-left text-blue"}>{index+1}.</p>*/}
 
@@ -1071,7 +1084,7 @@ class ViewCycle extends Component {
                                                         </>
                                                     )}
                                                 </>
-                                            )}
+
                                         </div>
                                     </div>
                                 </div>
@@ -1079,15 +1092,10 @@ class ViewCycle extends Component {
                                 {this.state.item &&
                                     this.state.item.cycle &&
                                     this.state.item.cycle.stage !== "closed" && (
-                                        <React.Fragment>
-                                            <CssBaseline />
 
                                             <div
-                                                position="fixed"
-                                                color="#ffffff"
-                                                className={
-                                                     "custom-bottom-fixed-appbar  custom-bottom-appbar"
-                                                }>
+                                                className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
+
                                                 <Toolbar>
                                                     <div className="container ">
                                                         <div
@@ -1128,7 +1136,7 @@ class ViewCycle extends Component {
                                                     </div>
                                                 </Toolbar>
                                             </div>
-                                        </React.Fragment>
+
                                     )}
 
                                 <Modal
@@ -1300,7 +1308,7 @@ class ViewCycle extends Component {
                                     <div className={"row"}>
                                         <div className="col-auto">
                                             <button
-                                                onClick={this.showPopUpStep}
+                                                onClick={this.showStep}
                                                 type="button"
                                                 className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                                 Add Step
@@ -1309,20 +1317,23 @@ class ViewCycle extends Component {
                                     </div>
                                 )}
 
-                                <Modal
-                                    className={"loop-popup"}
-                                    aria-labelledby="contained-modal-title-vcenter"
-                                    centered
-                                    show={this.state.showPopUpStep}
-                                    onHide={this.showPopUpStep}
-                                    animation={false}>
-                                    <ModalBody>
-                                        <div className={"row justify-content-center"}>
-                                            <div className={"col-10 text-center"}>
-                                                <p className={"text-bold"}>Create Step</p>
-                                            </div>
-                                        </div>
+                                {/*<Modal*/}
+                                {/*    className={"loop-popup"}*/}
+                                {/*    aria-labelledby="contained-modal-title-vcenter"*/}
+                                {/*    centered*/}
+                                {/*    show={this.state.showPopUpStep}*/}
+                                {/*    onHide={this.showPopUpStep}*/}
+                                {/*    animation={false}>*/}
+                                {/*    <ModalBody>*/}
+                                {/*        <div className={"row justify-content-center"}>*/}
+                                {/*            <div className={"col-10 text-center"}>*/}
+                                {/*                <p className={"text-bold"}>Create Step</p>*/}
+                                {/*            </div>*/}
+                                {/*        </div>*/}
 
+                                <GlobalDialog show={this.state.showPopUpStep}
+                                    hide={this.showStep}
+                                heading={"Create Step"}>
                                         <form onSubmit={this.handleSubmitStep}>
                                             <div className={"row justify-content-center"}>
                                                 <div className={"col-12 text-center mb-4"}>
@@ -1485,42 +1496,35 @@ class ViewCycle extends Component {
                                                     )}
                                                 </div>
 
-                                                {/*<div className={"col-12 text-center mb-4"}>*/}
-
-                                                {/*    <TextField id="outlined-basic" label="Note" variant="outlined" fullWidth={true} name={"note"} type={"text"} />*/}
-
-                                                {/*</div>*/}
-
                                                 <div className={"col-12 text-center mb-4"}>
                                                     <div className={"row justify-content-center"}>
                                                         <div
                                                             className={"col-6"}
                                                             style={{ textAlign: "center" }}>
-                                                            <button
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                }
+                                                            <GreenButton
+                                                               title={"Submit"}
                                                                 type={"submit"}>
                                                                 Submit
-                                                            </button>
+                                                            </GreenButton>
                                                         </div>
                                                         <div
                                                             className={"col-6"}
                                                             style={{ textAlign: "center" }}>
-                                                            <p
+                                                            <GreenBorderButton
+                                                                title={"Cancel"}
+                                                                type={"button"}
                                                                 onClick={this.showStep}
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                }>
+                                                               >
                                                                 Cancel
-                                                            </p>
+                                                            </GreenBorderButton>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                    </ModalBody>
-                                </Modal>
+                                </GlobalDialog>
+                                {/*    </ModalBody>*/}
+                                {/*</Modal>*/}
                             </>
                         )}
                     </>
@@ -1542,7 +1546,7 @@ class ViewCycle extends Component {
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold text-caps"}>
+                                <p className={"text-bold text-capitlize"}>
                                     {this.state.action === "delivered"
                                         ? "Deliver"
                                         : this.state.action === "received"
@@ -1552,9 +1556,11 @@ class ViewCycle extends Component {
                                         : this.state.action === "counter"
                                         ? "Counter"
                                         : this.state.action === "withdraw"
-                                        ? "Widthdraw"
-                                        : ""}
-                                    Action
+                                        ? "Withdraw"
+                                          : this.state.action === "settled"
+                                                            ? "Settle"
+                                        : this.state.action}
+
                                 </p>
                                 <p>Are you sure you want to proceed ?</p>
                             </div>
@@ -1564,23 +1570,24 @@ class ViewCycle extends Component {
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <button
+                                        <GreenButton
+                                            title={"Submit"}
                                             onClick={this.deliverCycle.bind(this)}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                            }
+
                                             type={"submit"}>
                                             Submit
-                                        </button>
+                                        </GreenButton>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <p
+                                        <GreenBorderButton
+                                            type={"button"}
+                                            title={"Cancel"}
                                             onClick={this.showPopUpAction}
                                             className={
                                                 "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
                                             }>
                                             Cancel
-                                        </p>
+                                        </GreenBorderButton>
                                     </div>
                                 </div>
                             </div>
@@ -1645,7 +1652,7 @@ class ViewCycle extends Component {
                         </div>
                     </ModalBody>
                 </Modal>
-            </div>
+            </Layout>
         );
     }
 }

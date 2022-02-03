@@ -68,7 +68,7 @@ class FindResourcePage extends Component {
                           <MarketplaceResourceItem
                               // triggerCallback={() => this.callBackResult()}
                               // history={this.props.history}
-                              link={"/" + item.listing._key + "/marketplace"}
+                              link={"/marketplace/" + item.listing._key }
                               item={item}
                               key={index}
                               hideMoreMenu

@@ -1659,6 +1659,14 @@ a.blue-btn-border
     background: transparent;
 }
 
+button.blue-btn-border svg{
+    fill:#3c3972 ;
+}
+
+button.blue-btn-border:hover svg{
+    color:#fff ;
+    fill: white!important;
+}
 button.blue-btn-border
 {
     border: 2px solid #3c3972;
@@ -3138,7 +3146,7 @@ background: white;
 
 .step-box {
     border: 1px solid #eee;
-    border-bottom: 7px solid #eee;
+    /*border-bottom: 7px solid #eee;*/
 }
 
 .text-caps {

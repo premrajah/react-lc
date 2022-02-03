@@ -4,7 +4,7 @@ import "./autocomplete-custom.css";
 import { baseUrl } from "../Util/Constants";
 import axios from "axios/index";
 import CompaniesHouseLogo from "../img/hmrc.png";
-import LoopcycleLogo from '../img/loopcycle_logo_31x31.png';
+import LoopcycleLogo from '../img/logo-small.png';
 import PencilIcon from '@mui/icons-material/Edit';
 
 class AutocompleteCustom extends Component {

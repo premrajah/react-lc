@@ -708,6 +708,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-6 pl-1 ">
 
                                             <PhoneInput
+                                                value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
+
                                                 onChange={this.handleChange.bind(this, "phone")}
                                                 inputClass={this.state.phoneNumberInValid?"is-invalid":""}
                                                 inputProps={{
@@ -924,6 +926,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                             </div>
 
                                             <PhoneInput
+
+                                                value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
                                                 onChange={this.handleChange.bind(this, "phone")}
                                                 inputClass={this.state.phoneNumberInValid?"is-invalid":""}
                                                 inputProps={{

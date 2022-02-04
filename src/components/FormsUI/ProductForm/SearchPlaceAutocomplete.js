@@ -25,11 +25,12 @@ const SearchPlaceAutocomplete = (props) => {
     const handleChange = (event) => {
             console.log(event)
             setValue(event);
-            setAddress("")
+
+            setAddress(address)
         setLatitude("")
         setLongitude("")
 
-        if (event) {
+        if (event&&event.value) {
 
 
             geocodeByPlaceId(event.value.place_id)
@@ -60,10 +61,29 @@ const SearchPlaceAutocomplete = (props) => {
 
 
 
+    const draggedLocation=(data)=>{
+
+        setAddress(address)
+        setLatitude(data.label)
+        setLongitude(data.longitude)
+
+        onChange({ address: address,
+            longitude: longitude,
+            latitude: latitude})
+    }
+
+
 
     useEffect(()=>{
-        if (onChange)
+        if (onChange) {
+
+            if (initialValue) {
+                setAddress(initialValue.address)
+                setLongitude(initialValue.geo_codes[0].address_info.geometry.location.lng)
+                setLatitude(initialValue.geo_codes[0].address_info.geometry.location.lat)
+            }
             onChange(initialValue)
+        }
     },[])
 
 
@@ -73,10 +93,11 @@ const SearchPlaceAutocomplete = (props) => {
             <div className={"field-box "}>
 
                 <GooglePlacesAutocomplete
-                    searchable
-                    isClearable={true}
+                    clearable={true}
+
                     selectProps={{
                         value,
+                        clearable:true,
                         className:"google-autocomplete",
                         onChange: handleChange,
                     }}
@@ -94,7 +115,7 @@ const SearchPlaceAutocomplete = (props) => {
                                latitude={latitude}
                                 longitude= {longitude}
 
-                    />
+                        setLocation={draggedLocation }/>
                 </div>
                     }
 

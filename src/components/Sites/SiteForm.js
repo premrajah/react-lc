@@ -166,8 +166,13 @@ class SiteForm extends Component {
     }
 
     handleSearchAddress(value) {
+        console.log("handle address call")
+        console.log(value)
 
-        if (value) {
+
+
+
+        if (value&&value.latitude&&value.longitude&&value.address) {
             console.log(value)
 
             this.setState({
@@ -209,30 +214,20 @@ class SiteForm extends Component {
 
 
     handleSubmit = (event) => {
-
-
         event.preventDefault();
         event.stopPropagation();
 
-
-
         let parentId;
 
-
-
         if (!this.handleValidation()) {
-
             return
-
         }
-
 
         this.setState({
             btnLoading: true,
         });
 
         const data = new FormData(event.target);
-
 
         const formData = {
 
@@ -736,7 +731,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-12">
 
                                             <SearchPlaceAutocomplete
-                                                // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+
+                                                initialValue={this.props.showSiteForm.item}
                                                 onChange={(value)=>this.handleSearchAddress(value)}
                                                 error={this.state.errors["address"]}
 
@@ -745,11 +741,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                             />
 
-                                            {/*<TextFieldWrapper*/}
-                                            {/*    onChange={(value)=>this.handleChange(value,"address")}*/}
-                                            {/*    error={this.state.errors["address"]}*/}
-
-                                            {/*    name="address" title="Address" />*/}
 
 
                                         </div>
@@ -886,9 +877,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     <SelectArrayWrapper
 
-
                                         initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
-
                                         option={"name"}
                                         valueKey={"_key"}
                                         error={this.state.errors["parent"]}
@@ -964,14 +953,9 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     />
                                     <SearchPlaceAutocomplete
-
-                                        // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                        initialValue={this.props.showSiteForm.item}
                                         onChange={(value)=>this.handleSearchAddress(value)}
                                         error={this.state.errors["address"]}
-
-                                        // name="address" title="Search Address"
-
-
                                     />
 
 

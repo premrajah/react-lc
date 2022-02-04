@@ -58,7 +58,11 @@ class MapsContainer extends Component {
 }
      moveMarker=(value)=>{
         console.log("market moved")
-        console.log(value)
+        console.log(value.map.getCenter().lat())
+         // console.log(value.onDragend())
+
+         if (this.props.setLocation)
+         this.props.setLocation({latitude:value.map.getCenter().lat(),longitude:value.map.getCenter().lng()})
     }
 
 
@@ -138,8 +142,6 @@ class MapsContainer extends Component {
                      // label={"som label"}
                      draggable={true}
                      onDragend={this.moveMarker.bind(this)}
-
-                     onClick={this.onMarkerClick}
                      icon={{
                          url :"/icon/blue-marker.png",
                          anchor: new this.props.google.maps.Point(25,25),
@@ -150,6 +152,7 @@ class MapsContainer extends Component {
                      position= {{"lat": this.state.markerLatitude,lng: this.state.markerLongitude }}
                      name={this.props.name}
                  />
+
 
          </Map>}
 </div>

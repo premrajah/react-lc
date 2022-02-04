@@ -200,6 +200,19 @@ class ComponentsNavbar extends React.Component {
                     </Nav>
 
                     <Nav className={"justify-content-end menu-align-right"}>
+                        {this.props.isLoggedIn && (
+                            <>
+                            <NavItem className={"web-only mr-3"}>
+                                <Link
+                                    onClick={this.showProductSelection}
+                                    to={"/my-products"}
+                                    className="nav-link d-none d-lg-block wl-link-white"
+                                    color="default">
+                                    Add Products
+                                </Link>
+                            </NavItem>
+                            </>
+                            )}
                         <NavItem className={"web-only mr-3"}>
                             <Link
                                 className="nav-link d-none d-lg-block wl-link-white "
@@ -211,16 +224,7 @@ class ComponentsNavbar extends React.Component {
 
                         {this.props.isLoggedIn && (
                             <>
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
-                                        onClick={this.showProductSelection}
-                                        to={"/my-products"}
-                                        className="nav-link d-none d-lg-block wl-link-white"
-                                        color="default">
-                                        Add Products
-                                    </Link>
-                                </NavItem>
-
+                              
                                 <NavItem className={"web-only mr-3"}>
                                     <Link
                                         to={"/search-form"}

@@ -67,41 +67,7 @@ class Products extends Component {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
-    handleSearch = (searchValue) => {
 
-
-        searchValue= (searchValue.trim())
-
-
-        // console.log("keyword",searchValue)
-        this.searchValue=searchValue
-        this.setState({searchValue: searchValue});
-
-        if (this.state.searchValue) {
-            this.timeoutSearch()
-        }
-
-
-
-    }
-
-
-
-    handleSearchFilter = (filterValue) => {
-
-        this.filterValue=filterValue
-
-        // console.log("active filter",filterValue)
-        this.setState({filterValue: filterValue});
-
-        if (this.state.searchValue) {
-            this.clearList()
-            this.setFilters()
-            this.seekCount()
-            console.log("1")
-            this.loadProductsWithoutParentPageWise(true)
-        }
-    }
 
 
     clearList=()=>{
@@ -114,13 +80,13 @@ class Products extends Component {
         })
     }
 
-    setFilters=()=>{
+    setFilters=(data)=>{
 
         let filters= []
         let subFilter=[]
 
-        let searchValue= this.searchValue
-        let activeFilter= this.filterValue
+        let searchValue= data.searchValue
+        let activeFilter= data.filterValue
 
         if (searchValue){
 
@@ -142,8 +108,6 @@ class Products extends Component {
         filters.push({filters:subFilter,operator:"||"})
 
 
-        this.filtersURL= createSeekURL(filters,"AND")
-
         this.filters= filters
 
     }
@@ -161,28 +125,14 @@ class Products extends Component {
 
     componentDidMount() {
 
-        this.seekCount()
 
     }
-    timeout =  0;
 
-    timeoutSearch(){
-        if(this.timeout) clearTimeout(this.timeout);
-
-        this.timeout = setTimeout(() => {
-            //search function
-            this.clearList()
-            this.setFilters()
-            this.seekCount()
-            console.log("2")
-            // this.loadProductsWithoutParentPageWise(true)
-
-        }, 2000);
-    }
 
     seekCount=async () => {
 
-        let url = createSeekURL("product", true, true, null, null, this.filters, "AND")
+        let url = createSeekURL("product", true, true, null, null,
+            this.filters, "AND")
 
 
         let result = await seekAxiosGet(url)
@@ -201,8 +151,18 @@ class Products extends Component {
 
 
 
-    loadProductsWithoutParentPageWise= async (resetOffset) => {
-        
+    loadProductsWithoutParentPageWise= async (data) => {
+
+        console.log(data)
+
+        if (data.reset){
+
+            this.clearList()
+        }
+        this.setFilters(data)
+
+        this.seekCount()
+
         this.setState({
 
             loadingResults: true
@@ -211,7 +171,7 @@ class Products extends Component {
         let newOffset = this.state.offset
 
 
-        let url = createSeekURL("product", true, false, resetOffset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+        let url = createSeekURL("product", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
 
         let result = await seekAxiosGet(url)
 
@@ -512,29 +472,15 @@ class Products extends Component {
 
                         </div>
 
-                        <div className="row  justify-content-center search-container  pt-3 pb-3">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES_KEY} />
-                            </div>
-                        </div>
-
-                        <div className="row  justify-content-center filter-row  pb-3">
-                            <div className="col">
-
-                                <p  className="text-gray-light ml-2 ">Showing {this.state.items.length} of {this.state.count} Products
-                                    {/*of {this.state.count}*/}
-
-                                </p>
-                            </div>
-
-                        </div>
 
                         <PaginationLayout
+
+                            dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={this.loadProductsWithoutParentPageWise} >
+                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
 
                             {this.state.items.map((item, index) => (
                                 <div id={item._key} key={item._key}>

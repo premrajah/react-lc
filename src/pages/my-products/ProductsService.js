@@ -8,7 +8,7 @@ import {makeStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
-import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import axios from "axios/index";
 import {withStyles} from "@mui/styles/index";
 // import ProductItem from "../../components/ProductItemNew";
@@ -201,79 +201,18 @@ class ProductsService extends Component {
                             </div>
                         </div>
 
-                        <div className="row  justify-content-center search-container  pt-3 pb-3">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
 
-                            </div>
-                        </div>
+                        <PaginationLayout
+                            onSearch={(sv) => this.handleSearch(sv)}
+                            onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                            dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                            count={this.state.count}
+                            visibleCount={this.state.items.length}
+                            loadingResults={this.state.loadingResults}
+                            lastPageReached={this.state.lastPageReached}
+                            loadMore={this.loadProductsWithoutParentPageWise} >
 
-                        <div className="row  justify-content-center filter-row  pb-3">
-                            <div className="col">
-                                <p  className="text-gray-light ml-2">
-                                    {this.state.items.filter((item)=> {
-
-                                        let site = item
-
-                                        return this.state.filterValue ? (this.state.filterValue === "name" ?
-                                            site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue === "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue === "brand" ? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue === "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue === "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue === "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                this.state.filterValue === "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                                    this.state.filterValue === "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                        this.state.filterValue === "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-
-
-                                                                            null) :
-                                            (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-                                    }).length} of {this.state.count} Products
-                                </p>
-                            </div>
-
-                        </div>
-                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
-
-                        {this.state.items.filter((item)=> {
-
-                            let site=item
-
-
-                        return    this.state.filterValue ? (this.state.filterValue === "name" ?
-                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                this.state.filterValue === "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                    this.state.filterValue === "brand" ? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                        this.state.filterValue === "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue === "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue === "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue === "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue === "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue === "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-
-
-                                                                null) :
-                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-                        } ).map((item) => (
+                        {this.state.items.map((item) => (
                             <>
                                 {/*<Link to={"/product/" + item.product._key}>*/}
 

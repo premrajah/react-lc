@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import SearchBar from "../SearchBar";
+import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 
 class PaginationLayout extends Component {
 
@@ -10,6 +12,8 @@ class PaginationLayout extends Component {
 
             isIntersecting:false,
             intersectionRatio:0,
+            searchValue: '',
+            filterValue: '',
 
         }
     }
@@ -17,7 +21,7 @@ class PaginationLayout extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!=this.props) {
-            console.log(this.props)
+            // console.log(this.props)
         }
     }
     componentDidMount() {
@@ -54,8 +58,8 @@ class PaginationLayout extends Component {
 
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
-            console.log("load more")
-            this.props.loadMore()
+
+          this.loadMore(false)
         }
 
 
@@ -65,12 +69,74 @@ class PaginationLayout extends Component {
 
     }
 
+    timeout =  0;
+
+
+    loadMore=(reset)=>{
+        this.props.loadMore(
+            {searchValue:this.state.searchValue,
+                searchFilter:this.state.filterValue, reset:reset}
+        )
+    }
+    timeoutSearch(){
+        if(this.timeout) clearTimeout(this.timeout);
+
+        this.timeout = setTimeout(() => {
+            this.loadMore(true)
+
+
+        }, 2000);
+    }
+
+
+    handleSearch = (searchValue) => {
+        searchValue= (searchValue.trim())
+
+
+        // console.log("keyword",searchValue)
+        this.searchValue=searchValue
+        this.setState({searchValue: searchValue});
+
+        if (this.state.searchValue) {
+            this.timeoutSearch()
+        }
+    }
+
+    handleSearchFilter = (filterValue) => {
+
+        this.filterValue=filterValue
+
+        // console.log("active filter",filterValue)
+        this.setState({filterValue: filterValue});
+
+        if (this.state.searchValue) {
+        this.loadMore(true)
+        }
+    }
+
     render() {
         const { children } = this.props
         return (
 
                 <>
 
+                    <div className="row  justify-content-center search-container  pt-3 pb-3">
+                        <div className={"col-12"}>
+                            <SearchBar onSearch={(sv) => this.handleSearch(sv)}
+                                       onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                                       dropDown dropDownValues={this.props.dropDownValues} />
+                        </div>
+                    </div>
+
+                    <div className="row  justify-content-center filter-row  pb-3">
+                        <div className="col">
+
+                            <p  className="text-gray-light ml-2 ">Showing {this.props.visibleCount} of {this.props.count} Products
+
+                            </p>
+                        </div>
+
+                    </div>
                     {children}
 
 

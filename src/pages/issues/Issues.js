@@ -207,7 +207,7 @@ class Issues extends Component {
 
                     <div className="container  pb-4 pt-4">
                         <PageHeader pageTitle="Issues" subTitle="Find product related issues here" />
-                        <div className="row">
+                        <div className="row mb-3">
                             <div className="col-md-12 btn-rows">
                                 <Link to="/my-products" className=" btn-sm btn-gray-border mr-2">
                                     <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Products</CustomPopover>
@@ -239,9 +239,9 @@ class Issues extends Component {
                         </div>
                         <PaginationLayout
                             hideSearch
-                            hideCount
+
                             dropDownValues={[]}
-                            count={this.state.count}
+                            count={this.state.items.length}
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}

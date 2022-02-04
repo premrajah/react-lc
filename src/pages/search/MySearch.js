@@ -11,7 +11,7 @@ import { makeStyles } from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
-import {baseUrl, LISTING_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, LISTING_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import axios from "axios/index";
 import SearchItem from "../../components/Searches/search-item";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,6 +21,8 @@ import PageHeader from "../../components/PageHeader";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import Layout from "../../components/Layout/Layout";
 import SearchBar from "../../components/SearchBar";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class MySearch extends Component {
     constructor(props) {
@@ -71,6 +73,123 @@ class MySearch extends Component {
     }
 
 
+    clearList=()=>{
+
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
+
+    setFilters=(data)=>{
+
+        let filters= []
+        let subFilter=[]
+
+        let searchValue= data.searchValue
+        let activeFilter= data.filterValue
+
+        if (searchValue){
+
+            if (activeFilter){
+
+                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+
+            }else{
+
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                )
+
+
+            }
+        }
+
+
+        filters.push({filters:subFilter,operator:"||"})
+
+
+        this.filters= filters
+
+    }
+
+    seekCount=async () => {
+
+        let url = createSeekURL("search", false, true, null, null,
+            this.filters, "AND")
+
+
+        let result = await seekAxiosGet(url)
+
+
+
+        this.setState({
+            count: result.data.data,
+
+        })
+
+
+
+    }
+
+    loadPageWise= async (data) => {
+
+        console.log(data)
+
+        if (data.reset){
+
+            this.clearList()
+        }
+        this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
+
+
+        let url = createSeekURL("search", false, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+
+        let result = await seekAxiosGet(url)
+
+
+        if (result && result.data && result.data.data) {
+
+            this.state.offset= newOffset + this.state.pageSize
+
+            this.setState({
+                items: this.state.items.concat(result.data.data),
+                loadingResults: false,
+                lastPageReached: (result.data.data.length === 0 ? true : false),
+                offset: newOffset + this.state.pageSize
+
+            })
+        }else{
+
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+
+                })
+
+            }
+        }
+
+        // console.log(result)
+
+
+    }
+
+
     render() {
         const classes = withStyles();
         const classesBottom = withStyles();
@@ -90,12 +209,12 @@ class MySearch extends Component {
                                 </Link>
                             </div>
                         </div>
-                        <div className="row pt-3 justify-content-center search-container   ">
+                        <div className="row d-none pt-3 justify-content-center search-container   ">
                             <div className={"col-12"}>
                                 <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={LISTING_FILTER_VALUES} />
                             </div>
                         </div>
-                        <div className="row  justify-content-center filter-row  pt-3 pb-3">
+                        <div className="row d-none justify-content-center filter-row  pt-3 pb-3">
                             <div className="col">
                                 <p  className="text-gray-light ml-2 ">
                                     {this.state.items&&this.state.items.filter((site)=>
@@ -118,17 +237,17 @@ class MySearch extends Component {
 
 
                         </div>
+                        <PaginationLayout
 
-                        {this.state.items&&this.state.items.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="product name"? site.product&&site.product.name
-                                        &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()): null):
-                                    (site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.product&& site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                                    )
+                            dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                            count={this.state.count}
+                            visibleCount={this.state.items.length}
+                            loadingResults={this.state.loadingResults}
+                            lastPageReached={this.state.lastPageReached}
+                            loadMore={this.loadPageWise} >
 
-                            ).filter(l => l.search.stage.toLowerCase() !== "agreed" && l.search.stage !== "expired").map((item, index) => (
+                        {this.state.items
+                            .map((item, index) => (
                             <SearchItem
                                 showMoreMenu={true}
                                 triggerCallback={() => this.callBackResult()}
@@ -136,6 +255,7 @@ class MySearch extends Component {
                                 key={index}
                             />
                         ))}
+                        </PaginationLayout>
                     </div>
             </Layout>
         );
@@ -181,6 +301,7 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+
     };
 };
 
@@ -191,6 +312,7 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(MySearch);

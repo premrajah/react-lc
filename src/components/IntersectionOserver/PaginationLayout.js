@@ -129,7 +129,7 @@ class PaginationLayout extends Component {
                         </div>
                     </div>}
 
-                    <div className="row  justify-content-center filter-row  pb-3">
+                    {!this.props.hideCount  &&     <div className="row  justify-content-center filter-row  pb-3">
                         <div className="col">
 
                             <p  className="text-gray-light ml-2 ">Showing {this.props.visibleCount} of {this.props.count} Products
@@ -137,7 +137,7 @@ class PaginationLayout extends Component {
                             </p>
                         </div>
 
-                    </div>
+                    </div>}
 
                     {children}
 

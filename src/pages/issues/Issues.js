@@ -239,12 +239,13 @@ class Issues extends Component {
                         </div>
                         <PaginationLayout
 
-                            onSearch={(sv) => this.handleSearch(sv)}
-                            onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+
                             dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
-                            loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+                            loadingResults={this.state.loadingResults}
+                            lastPageReached={this.state.lastPageReached}
+                            loadMore={this.loadProductsWithoutParentPageWise} >
 
                         <div className="row pt-3 pb-3">
 

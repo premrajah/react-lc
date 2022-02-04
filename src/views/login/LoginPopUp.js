@@ -69,7 +69,7 @@ class LoginPopUp extends Component {
         return (
             <>
                 <div className={"body-overlay"}>
-                    <div className={"modal-popup"}>
+                    <div className={"modal-popup full-screen-mobile-pop-up"}>
                         <div className="row   justify-content-end">
                             <div className="col-auto mr-2 mt-2">
                             <CloseButtonPopUp onClick={this.hideLoginPopUp} />
@@ -77,26 +77,7 @@ class LoginPopUp extends Component {
 
                         </div>
 
-                        <div className="container  pb-3 d-none">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <img src={LogoNew} alt="" className="header-logo" />
-                                    <img className={"text-logo-home-right"} src={LogoText} alt="" />
-                                </div>
-
-                                <div className="col text-right">
-                                    <Link to={"/"}>
-
-                                        <Close
-                                            onClick={this.hideLoginPopUp}
-                                            className="blue-text"
-                                            style={{ fontSize: 32 }}
-                                        />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        {this.props.loginPopUpStatus === 0 && <Login />}
+                        {this.props.loginPopUpStatus === 0 && <Login  />}
                         {this.props.loginPopUpStatus === 1 && <SignUp />}
                         {this.props.loginPopUpStatus === 2 && <ForgotPassword />}
 

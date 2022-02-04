@@ -23,6 +23,8 @@ import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 
 class SiteForm extends Component {
@@ -53,6 +55,7 @@ class SiteForm extends Component {
             searchAddress:null,
             latitude:null,
             longitude:null,
+            phoneNumberInValid:false
 
         };
 
@@ -704,10 +707,20 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         <div className="col-6 pl-1 ">
 
-                                            <TextFieldWrapper
-                                                onChange={(value)=>this.handleChange(value,"phone")}
-                                                error={this.state.errors["phone"]}
-                                                name="phone" title="Phone" />
+                                            <PhoneInput
+                                                onChange={this.handleChange.bind(this, "phone")}
+                                                inputClass={this.state.phoneNumberInValid?"is-invalid":""}
+                                                inputProps={{
+                                                    name: 'phone',
+                                                    // required: true,
+                                                    defaultErrorMessage:"Invalid",
+                                                    // minLength:9,
+                                                }}
+                                                country={'gb'}
+                                            />
+                                            {this.state.errors["phone"] &&
+                                            <span style="color: rgb(244, 67, 54);" className="text-danger">Required</span>}
+
                                         </div>
                                     </div>
 
@@ -737,11 +750,21 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     <div className="row no-gutters ">
                                         <div className="col-12">
 
-                                            <TextFieldWrapper
-                                                onChange={(value)=>this.handleChange(value,"address")}
+                                            <SearchPlaceAutocomplete
+                                                // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                                onChange={(value)=>this.handleSearchAddress(value)}
                                                 error={this.state.errors["address"]}
 
-                                                name="address" title="Address" />
+                                                // name="address" title="Search Address"
+
+
+                                            />
+
+                                            {/*<TextFieldWrapper*/}
+                                            {/*    onChange={(value)=>this.handleChange(value,"address")}*/}
+                                            {/*    error={this.state.errors["address"]}*/}
+
+                                            {/*    name="address" title="Address" />*/}
 
 
                                         </div>
@@ -897,17 +920,37 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     <div className="row no-gutters justify-content-center ">
 
                                         <div className="col-6 pr-2">
+                                            <div className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
+                                            </div>
 
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
-                                                    onChange={(value)=>this.handleChange(value,"phone")}
-                                                    error={this.state.errors["phone"]}
-                                                    name="phone" title="Phone" />
+                                            <PhoneInput
+                                                onChange={this.handleChange.bind(this, "phone")}
+                                                inputClass={this.state.phoneNumberInValid?"is-invalid":""}
+                                                inputProps={{
+                                                    name: 'phone',
+                                                    // required: true,
+                                                    defaultErrorMessage:"Invalid",
+                                                    // minLength:9,
+                                                }}
+                                                country={'gb'}
+                                            />
+                                            {this.state.errors["phone"] &&
+                                            <span style="color: rgb(244, 67, 54);" className="text-danger">Required</span>}
+
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"phone")}*/}
+                                                {/*    error={this.state.errors["phone"]}*/}
+                                                {/*    name="phone" title="Phone" />*/}
 
                                         </div>
                                         <div className="col-6 pl-2">
 
+
+
+
                                             <TextFieldWrapper
+
                                                 initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.email}
                                                 onChange={(value)=>this.handleChange(value,"email")}
                                                 error={this.state.errors["email"]}
@@ -946,6 +989,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                 </div>
                             </div>
+
+
                             <div className="row no-gutters ">
                                 <div className="col-12">
 

@@ -4066,3 +4066,10 @@ input:active,input:focus{
     color: #c9c9cb;
     font-size: 12px;
 }
+.react-tel-input{
+    height: 60px;
+}
+.react-tel-input input{
+    height: 60px!important;
+    width: 100%!important;
+}

@@ -73,7 +73,7 @@ class Products extends Component {
         searchValue= (searchValue.trim())
 
 
-        console.log("keyword",searchValue)
+        // console.log("keyword",searchValue)
         this.searchValue=searchValue
         this.setState({searchValue: searchValue});
 
@@ -91,7 +91,7 @@ class Products extends Component {
 
         this.filterValue=filterValue
 
-        console.log("active filter",filterValue)
+        // console.log("active filter",filterValue)
         this.setState({filterValue: filterValue});
 
         if (this.state.searchValue) {
@@ -188,12 +188,12 @@ class Products extends Component {
         let result = await seekAxiosGet(url)
 
 
-        if (result && result.data && result.data.data) {
+
             this.setState({
                 count: result.data.data,
 
             })
-        }
+
 
 
     }
@@ -202,6 +202,11 @@ class Products extends Component {
 
 
     loadProductsWithoutParentPageWise= async (resetOffset) => {
+        
+        this.setState({
+
+            loadingResults: true
+        })
 
         let newOffset = this.state.offset
 
@@ -236,7 +241,7 @@ class Products extends Component {
             }
         }
 
-        console.log(result)
+        // console.log(result)
 
 
     }

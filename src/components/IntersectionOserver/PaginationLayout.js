@@ -14,7 +14,12 @@ class PaginationLayout extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
+        if (prevProps!=this.props) {
+            console.log(this.props)
+        }
+    }
     componentDidMount() {
 
         this.loadNewPageSetUp()
@@ -49,6 +54,7 @@ class PaginationLayout extends Component {
 
 
         if (entry.intersectionRatio>this.state.intersectionRatio){
+            console.log("load more")
             this.props.loadMore()
         }
 
@@ -66,15 +72,34 @@ class PaginationLayout extends Component {
                 <>
 
                     {children}
-                        {!this.props.lastPageReached &&
-                        <div className={!this.props.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
-                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
-                               <LoaderAnimated />
 
+
+                        <div className={!this.props.lastPageReached &&!this.props.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                            <div  ref={loadingRef => (this.loadingRef = loadingRef)} className="col">
                             </div>
                         </div>
-                        }
+
+
+
+                    <div className={this.props.loadingResults?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                        <div   className="col">
+                            <LoaderAnimated />
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div className={!this.props.loadingResults&&this.props.count===0?"row  justify-content-center filter-row  pt-3 pb-3":"d-none"}>
+                        <div   className="col text-center">
+                            <div className="text-gray-light"> No results found!</div>
+
+                        </div>
+                    </div>
+
                 </>
+
 
 
         ) }

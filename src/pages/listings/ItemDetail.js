@@ -27,6 +27,7 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import InfoTabContent from "../../components/Listings/InfoTabContent";
 import {GoogleMap} from "../../components/Map/MapsContainer";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 
 class ItemDetail extends Component {
     slug;
@@ -160,7 +161,7 @@ marteplace
 
                 this.setState({
                     showPopUp: true,
-                    loopError: error.response.data.data.message,
+                    loopError: fetchErrorMessage(error),
                 });
             });
     }

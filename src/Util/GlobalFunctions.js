@@ -58,10 +58,10 @@ export const fetchErrorMessage=(e)=>{
 
 
 
-export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, filterType)=>{
+export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, filterType, extra)=>{
 
 
-    let url = `${baseUrl}seek?name=${entity}`;
+    let url = `${baseUrl}seek?name=${entity}${extra?"&"+extra:""}`;
 
 
     url=url+`&count=${count}`

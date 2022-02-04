@@ -29,8 +29,7 @@ class Products extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchValue: '',
-            filterValue: '',
+
             selectedProducts: [],
             showMultiUpload: false,
             isIntersecting:false,
@@ -47,7 +46,6 @@ class Products extends Component {
             pageSize:50,
             loadingResults:false,
             count:0,
-            filters:{andFilters:[],orFilters:[]},
 
 
         }
@@ -121,14 +119,6 @@ class Products extends Component {
     }
 
 
-
-
-    componentDidMount() {
-
-
-    }
-
-
     seekCount=async () => {
 
         let url = createSeekURL("product", true, true, null, null,
@@ -139,17 +129,14 @@ class Products extends Component {
 
 
 
-            this.setState({
-                count: result.data.data,
+        this.setState({
+            count: result.data.data,
 
-            })
+        })
 
 
 
     }
-
-
-
 
     loadProductsWithoutParentPageWise= async (data) => {
 
@@ -205,6 +192,14 @@ class Products extends Component {
 
 
     }
+
+    componentDidMount() {
+
+
+    }
+
+
+
 
 
     handleAddToProductsExportList = (returnedItem) => {

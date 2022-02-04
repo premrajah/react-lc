@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import PageHeader from "../../components/PageHeader";
 import axios from "axios";
 import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import _ from "lodash";
 import Layout from "../../components/Layout/Layout";
 import IssueItem from "../../components/issues/IssueItem";
 import {Link} from "react-router-dom";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class Issues extends Component {
     state = {
@@ -42,7 +43,7 @@ class Issues extends Component {
     };
 
     handleOnSubmittedIssue = () => {
-        this.getAllIssues();
+        // this.getAllIssues();
     };
 
     getTotalItems=()=>{
@@ -82,6 +83,122 @@ class Issues extends Component {
         // this.getAllIssues();
     }
 
+    clearList=()=>{
+
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
+
+    setFilters=(data)=>{
+
+        let filters= []
+        let subFilter=[]
+
+        let searchValue= data.searchValue
+        let activeFilter= data.filterValue
+
+        if (searchValue){
+
+            if (activeFilter){
+
+                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+
+            }else{
+
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                )
+
+
+            }
+        }
+
+
+        filters.push({filters:subFilter,operator:"||"})
+
+
+        this.filters= filters
+
+    }
+
+    seekCount=async () => {
+
+        let url = createSeekURL("product&relation=issue_on", true, true, null, null,
+            this.filters, "AND")
+
+
+        let result = await seekAxiosGet(url)
+
+
+
+        this.setState({
+            count: result.data.data,
+
+        })
+
+
+
+    }
+
+    loadProductsWithoutParentPageWise= async (data) => {
+
+        console.log(data)
+
+        if (data.reset){
+
+            this.clearList()
+        }
+        this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
+
+
+        let url = createSeekURL("product&relation=issue_on", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+
+        let result = await seekAxiosGet(url)
+
+
+        if (result && result.data && result.data.data) {
+
+            this.state.offset= newOffset + this.state.pageSize
+
+            this.setState({
+                items: this.state.items.concat(result.data.data),
+                loadingResults: false,
+                lastPageReached: (result.data.data.length === 0 ? true : false),
+                offset: newOffset + this.state.pageSize
+
+            })
+        }else{
+
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+
+                })
+
+            }
+        }
+
+        // console.log(result)
+
+
+    }
+
     render() {
         return (
             <Layout>
@@ -118,22 +235,30 @@ class Issues extends Component {
 
 
                         </div>
-                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.getAllIssues} >
+                        <PaginationLayout
+
+                            hideSearch
+                            onSearch={(sv) => this.handleSearch(sv)}
+                            onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                            dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                            count={this.state.count}
+                            visibleCount={this.state.items.length}
+
+                            loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
                         <div className="row pt-3 pb-3">
 
                             <div className="col">
-                                {this.state.items.length > 0
-                                    ? this.state.items.map((issue, index) => {
-                                          return (
+                                {this.state.items.map((issue, index) =>
+
                                               <IssueItem
                                                   key={index}
                                                   item={issue}
                                                   onSubmitted={this.handleOnSubmittedIssue}
                                               />
-                                          );
-                                      })
-                                    : "No results found"}
+
+                                )}
+
                             </div>
 
                         </div>

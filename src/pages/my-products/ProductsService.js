@@ -17,6 +17,7 @@ import SearchBar from "../../components/SearchBar";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class ProductsService extends Component {
 
@@ -30,8 +31,8 @@ class ProductsService extends Component {
             filterValue: '',
             items:[],
             lastPageReached:false,
-            currentOffset:0,
-            productPageSize:50,
+            offset:0,
+            pageSize:50,
             loadingResults:false,
             count:0
         };
@@ -71,95 +72,144 @@ class ProductsService extends Component {
             );
     }
 
-
-
     componentDidMount() {
-
-
         // this.props.loadParentSites();
         this.setState({
             items:[]
         })
+    }
 
-        this.getTotalCount()
+    clearList=()=>{
 
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
+
+    setFilters=(data)=>{
+
+        let filters= []
+        let subFilter=[]
+
+        let searchValue= data.searchValue
+        let activeFilter= data.filterValue
+
+        if (searchValue){
+
+            if (activeFilter){
+
+                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+
+            }else{
+
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                )
+
+
+            }
+        }
+
+
+        filters.push({filters:subFilter,operator:"||"})
+
+
+        this.filters= filters
 
     }
 
 
 
-    getTotalCount=()=>{
+    seekCount=async () => {
 
-        axios
-            .get(`${baseUrl}product/service-agent/count`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
+        let url = createSeekURL("product&relation=service_agent_for", true, true, null, null,
+            this.filters, "AND")
 
-                        this.setState({
-                            count:(response.data.data),
 
-                        })
-                    }
+        let result = await seekAxiosGet(url)
 
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
 
-        });
+
+        this.setState({
+            count: result.data.data,
+
+        })
 
 
 
     }
 
+    loadProductsWithoutParentPageWise= async (data) => {
 
-    loadProductsWithoutParentPageWise=()=>{
+        console.log(data)
+
+        if (data.reset){
+
+            this.clearList()
+        }
+        this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
 
 
-        let newOffset=this.state.currentOffset
+        let url = createSeekURL("product&relation=service_agent_for", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+
+        let result = await seekAxiosGet(url)
 
 
-        axios.get(`${baseUrl}product/service-agent/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
+        if (result && result.data && result.data.data) {
 
-                        this.setState({
-                            items:this.state.items.concat(response.data.data),
-                            loadingResults:false,
-                            lastPageReached:(response.data.data.length===0?true:false),
-                            currentOffset:newOffset+this.state.productPageSize
-                        })
-                    }
+            this.state.offset= newOffset + this.state.pageSize
 
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
+            this.setState({
+                items: this.state.items.concat(result.data.data),
+                loadingResults: false,
+                lastPageReached: (result.data.data.length === 0 ? true : false),
+                offset: newOffset + this.state.pageSize
 
-        });
+            })
+        }else{
 
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+
+                })
+
+            }
+        }
+
+        // console.log(result)
 
 
     }
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
+
 
 
     componentWillUnmount() {
-        clearInterval(this.interval);
+
     }
-
-
-    handleSearch = (searchValue) => {
-        this.setState({searchValue: searchValue});
-    }
-
-    handleSearchFilter = (filterValue) => {
-        this.setState({filterValue: filterValue});
-    }
-
 
 
 
@@ -291,6 +341,7 @@ const mapDispachToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductsService);

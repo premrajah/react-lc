@@ -85,7 +85,7 @@ class PaginationLayout extends Component {
             this.loadMore(true)
 
 
-        }, 2000);
+        }, 1500);
     }
 
 

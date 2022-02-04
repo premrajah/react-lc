@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import axios from "axios/index";
-import {baseUrl, PRODUCTS_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import {connect} from "react-redux";
 // import ProductRecordItem from "../../components/ProductRecordItem";
 import {Link} from "react-router-dom";
@@ -11,6 +11,7 @@ import ProductItem from "../../components/Products/Item/ProductItem";
 import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class ProductArchive extends Component {
 
@@ -25,8 +26,8 @@ class ProductArchive extends Component {
             products: [],
             items:[],
             lastPageReached:false,
-            currentOffset:0,
-            productPageSize:50,
+            offset:0,
+            pageSize:50,
             loadingResults:false,
             count:0
         };
@@ -78,84 +79,129 @@ class ProductArchive extends Component {
             items:[]
         })
 
-        this.getTotalCount()
+
+    }
 
 
+    clearList=()=>{
+
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
+
+    setFilters=(data)=>{
+
+        let filters= []
+        let subFilter=[]
+
+        let searchValue= data.searchValue
+        let activeFilter= data.filterValue
+
+        if (searchValue){
+
+            if (activeFilter){
+
+                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+
+            }else{
+
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                )
+
+
+            }
+        }
+
+
+        filters.push({filters:subFilter,operator:"||"})
+
+
+        this.filters= filters
 
     }
 
 
 
-    getTotalCount=()=>{
+    seekCount=async () => {
+
+        let url = createSeekURL("product&relation=past_owner", true, true, null, null,
+            this.filters, "AND")
+
+
+        let result = await seekAxiosGet(url)
 
 
 
-        axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}product/past-owner/count`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
+        this.setState({
+            count: result.data.data,
 
-                        this.setState({
-                            count:(response.data.data),
-
-                        })
-                    }
-
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
-
-        });
+        })
 
 
 
     }
 
+    loadProductsWithoutParentPageWise= async (data) => {
 
-    loadProductsWithoutParentPageWise=()=>{
+        console.log(data)
+
+        if (data.reset){
+
+            this.clearList()
+        }
+        this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
 
 
-        let newOffset=this.state.currentOffset
+        let url = createSeekURL("product&relation=past_owner", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+
+        let result = await seekAxiosGet(url)
 
 
-        axios
-            .get(`${baseUrl}product/past-owner/no-links?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
+        if (result && result.data && result.data.data) {
 
-                        this.setState({
-                            items:this.state.items.concat(response.data.data),
-                            loadingResults:false,
-                            lastPageReached:(response.data.data.length===0?true:false),
-                            currentOffset:newOffset+this.state.productPageSize
+            this.state.offset= newOffset + this.state.pageSize
 
-                        })
-                    }
+            this.setState({
+                items: this.state.items.concat(result.data.data),
+                loadingResults: false,
+                lastPageReached: (result.data.data.length === 0 ? true : false),
+                offset: newOffset + this.state.pageSize
 
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
+            })
+        }else{
 
-        });
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+
+                })
+
+            }
+        }
+
+        // console.log(result)
 
 
     }
 
 
-    handleSearch = (searchValue) => {
-        this.setState({searchValue: searchValue});
-    }
-
-    handleSearchFilter = (filterValue) => {
-        this.setState({filterValue: filterValue});
-    }
 
 
     render() {
@@ -192,78 +238,18 @@ class ProductArchive extends Component {
                                 </Link>
                             </div>
                         </div>
-                        <div className="row  justify-content-center search-container  pt-3 pb-3">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={PRODUCTS_FILTER_VALUES} />
-
-                            </div>
-                        </div>
-                        <div className="row  justify-content-center filter-row   pb-3">
-                            <div className="col">
-                                <p  className="text-gray-light ml-2"> Showing {this.state.items.filter((item)=> {
-
-                                        let site = item
-
-                                        return this.state.filterValue ? (this.state.filterValue === "name" ?
-                                            site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue === "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue === "brand" ?site.sku.brand&& site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue === "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue === "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue === "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                this.state.filterValue === "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                                    this.state.filterValue === "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                        this.state.filterValue === "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
 
 
-                                                                            null) :
-                                            (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.sku.brand&& site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                                site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+                    <PaginationLayout
+                        onSearch={(sv) => this.handleSearch(sv)}
+                        onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                        dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                        count={this.state.count}
+                        visibleCount={this.state.items.length}
+                        loadingResults={this.state.loadingResults}
+                        lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
-                                    }).length} of {this.state.count} Products
-                                </p>
-                            </div>
-
-                        </div>
-
-                    <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
-
-                    {this.state.items.filter((item)=> {
-
-                            let site=item
-
-
-                            return    this.state.filterValue ? (this.state.filterValue === "name" ?
-                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                this.state.filterValue === "condition" ? site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                    this.state.filterValue === "brand" ? site.sku.brand&&site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                        this.state.filterValue === "category" ? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue === "type" ? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue === "state" ? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue === "year of manufacture" ? site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue === "model" ? site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue === "serial no." ? site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-
-
-                                                                null) :
-                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.condition && site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.sku.brand&&  site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.year_of_making && site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.sku.model && site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                                    site.sku.serial && site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-                        } ).map((item) => (
+                    {this.state.items.map((item) => (
                             <>
 
                                 <ErrorBoundary>

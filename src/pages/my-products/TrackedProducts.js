@@ -16,6 +16,7 @@ import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import * as actionCreator from "../../store/actions/actions";
 
 
 
@@ -267,6 +268,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         test: null,
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
 

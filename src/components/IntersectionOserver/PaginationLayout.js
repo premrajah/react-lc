@@ -120,13 +120,14 @@ class PaginationLayout extends Component {
 
                 <>
 
+                    {!this.props.hideSearch  &&
                     <div className="row  justify-content-center search-container  pt-3 pb-3">
                         <div className={"col-12"}>
                             <SearchBar onSearch={(sv) => this.handleSearch(sv)}
                                        onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                                        dropDown dropDownValues={this.props.dropDownValues} />
                         </div>
-                    </div>
+                    </div>}
 
                     <div className="row  justify-content-center filter-row  pb-3">
                         <div className="col">
@@ -137,6 +138,7 @@ class PaginationLayout extends Component {
                         </div>
 
                     </div>
+
                     {children}
 
 

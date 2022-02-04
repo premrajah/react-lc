@@ -12,6 +12,7 @@ import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import * as actionCreator from "../../store/actions/actions";
 
 class ProductArchive extends Component {
 
@@ -288,6 +289,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         test: null,
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
 

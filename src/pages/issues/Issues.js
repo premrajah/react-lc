@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import * as actionCreator from "../../store/actions/actions";
 
 class Issues extends Component {
     state = {
@@ -80,7 +81,7 @@ class Issues extends Component {
         this.setState({
             items:[]
         })
-        // this.getAllIssues();
+        this.getAllIssues();
     }
 
     clearList=()=>{
@@ -127,7 +128,7 @@ class Issues extends Component {
 
     seekCount=async () => {
 
-        let url = createSeekURL("product&relation=issue_on", true, true, null, null,
+        let url = createSeekURL("Issue", false, true, null, null,
             this.filters, "AND")
 
 
@@ -145,6 +146,7 @@ class Issues extends Component {
     }
 
     loadProductsWithoutParentPageWise= async (data) => {
+        return
 
         console.log(data)
 
@@ -164,7 +166,7 @@ class Issues extends Component {
         let newOffset = this.state.offset
 
 
-        let url = createSeekURL("product&relation=issue_on", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+        let url = createSeekURL("Issue", false, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
 
         let result = await seekAxiosGet(url)
 
@@ -219,11 +221,11 @@ class Issues extends Component {
                                     <CustomPopover text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}>Tracked</CustomPopover>
                                 </Link>
 
-                                <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">
+                                <Link to="/products-service" className=" btn-sm btn-gray-border ml-2-desktop ">
                                     {/*<CustomPopover*/}
                                     {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
                                     {/*>*/}
-                                    Product Issues
+                                    Service
                                     {/*</CustomPopover>*/}
                                 </Link>
                                 <div style={{float:"right"}} className=" text-right pl-3-desktop">
@@ -237,13 +239,11 @@ class Issues extends Component {
                         </div>
                         <PaginationLayout
 
-                            hideSearch
                             onSearch={(sv) => this.handleSearch(sv)}
                             onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                             dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
-
                             loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
 
                         <div className="row pt-3 pb-3">
@@ -280,6 +280,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         test: null,
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
 

@@ -55,7 +55,7 @@ const SelectArrayWrapper = (props) => {
                 disabled={disabled}
                 name={name}
                 className={error&&"border-red-error"}
-                defaultValue={defaultValue ? defaultValue : ""}
+                // defaultValue={defaultValue ? defaultValue : ""}
             >
                 {select&&
                 <option  value={""}>

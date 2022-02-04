@@ -295,10 +295,6 @@ class SiteForm extends Component {
                     headers: {
                         Authorization: "Bearer " + this.props.userDetail.token,
                     },
-
-
-
-
                 }
             )
             .then((res) => {
@@ -319,18 +315,14 @@ class SiteForm extends Component {
                     }
                 }else{
 
-                     // for product form callback
+                    // for product form callback
                      this.props.submitCallback()
-
                 }
-
 
                 this.props.loadSites()
                 this.props.loadParentSites()
                 this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
-
-
 
 
             })
@@ -694,6 +686,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-6 pr-1">
                                             <SelectArrayWrapper
 
+                                                initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
+
                                                 option={"name"}
                                                 valueKey={"_key"}
                                                 error={this.state.errors["parent"]}
@@ -900,11 +894,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 </div>
 
                                 <div className="col-6 pl-1 ">
+
                                     <SelectArrayWrapper
 
-                                        initialValue={this.props.showSiteForm.type==="edit"?
-                                            (this.props.showSiteForm.item&&this.props.showSiteForm.item.parent_site&&this.props.showSiteForm.item.parent_site._key)
-                                            :this.props.showSiteForm.parent}
+                                    
+                                        initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
+
                                         option={"name"}
                                         valueKey={"_key"}
                                         error={this.state.errors["parent"]}

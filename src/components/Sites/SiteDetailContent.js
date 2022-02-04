@@ -503,7 +503,8 @@ class SiteDetailContent extends Component {
                                     {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
 
                                     <div className={"p-2 gray-border rad-8 bg-white"}>
-                                    <GoogleMap width={"100%"} height={"300px"} locations={[{
+                                    <GoogleMap width={"100%"} height={"300px"}
+                                               locations={[{
                                         name: this.props.item.site.name,
                                         location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                         isCenter: true

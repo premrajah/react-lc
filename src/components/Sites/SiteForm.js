@@ -171,30 +171,19 @@ class SiteForm extends Component {
             console.log(value)
 
             this.setState({
-                searchAddress: value
+                searchAddress: value.address
             });
 
             let fields = this.state.fields;
-            fields["address"] = value["label"];
+            fields["address"] = value.address;
             console.log(value)
             this.setState({fields});
 
-
-            geocodeByPlaceId(value.value.place_id)
-                .then(results => {
-
-
-                        console.log(results[0])
-                        console.log(results[0].geometry.viewport.Ab.g)
-                        console.log(results[0].geometry.viewport.Ra.g)
-
-
                         this.setState({
-                            latitude: results[0].geometry.viewport.Ab.g,
-                            longitude: results[0].geometry.viewport.Ra.g,
+                            latitude: value.latitude,
+                            longitude: value.longitude,
                         })
-                    }
-                )
+
                 .catch(error => console.error(error));
         }
     }
@@ -897,7 +886,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     <SelectArrayWrapper
 
-                                    
+
                                         initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
 
                                         option={"name"}
@@ -974,8 +963,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         name="address" title="Address"
 
                                     />
-
                                     <SearchPlaceAutocomplete
+
                                         // initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleSearchAddress(value)}
                                         error={this.state.errors["address"]}

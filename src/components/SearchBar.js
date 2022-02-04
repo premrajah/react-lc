@@ -29,16 +29,16 @@ class SearchBar extends Component {
                 <div className="col d-flex">
 
                     <div style={{width:  '100%'}} className={"search-box custom-select  rad-8"}>
-                        {/*<FormControl className={"filter-box"}   component="div">*/}
-                            <select style={{width:  'auto'}} label="Filter" className="filter-box text-capitlize rad-4"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+
+                        {dropDownValues&&dropDownValues.length > 0 &&   <select style={{width:  'auto'}} label="Filter" className="filter-box text-capitlize rad-4"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >
                                     Filter By
                                 </option>
                                 {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
                                     return <option   key={index} value={drop.key}>{drop.label}</option>
                                 }) : null}
-                            </select>
-                        {/*</FormControl>*/}
+                            </select>}
+
 
                         <input
                             type={"text"}

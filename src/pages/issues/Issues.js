@@ -238,9 +238,9 @@ class Issues extends Component {
 
                         </div>
                         <PaginationLayout
-
-
-                            dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                            hideSearch
+                            hideCount
+                            dropDownValues={[]}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}

@@ -1,54 +1,63 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
- function GlobalDialog() {
-    const [open, setOpen] = React.useState(false);
+ function GlobalDialog(props) {
 
-    const handleClickOpen = () => {
-        setOpen(true);
+     const { children } = props
+
+    const handleClose = (event,reason) => {
+         console.log(reason)
+
+        if (props.disableBackdropClick&&reason==="backdropClick"){
+
+        }else{
+            props.hide()
+        }
+
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     return (
-        <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Slide in alert dialog
-            </Button>
+
+
             <Dialog
-                open={open}
+                open={props.show}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
+                maxWidth={props.size?props.size:"sm"}
+                // className="p-3"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>{"Use Google's location service?"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
-                    </DialogContentText>
+                {/*<div className="container ">*/}
+
+                <div className=" row  justify-content-center align-items-center">
+                    <div className="col-10">
+                        <h4 className={"blue-text text-heading ellipsis-end mb-0"}>{props.heading}</h4>
+                    </div>
+                    <div className="col-2 text-right">
+                        {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}
+                    </div>
+                </div>
+                    <div className=" pd-3 pt-3 row  justify-content-center align-items-center">
+
+                        {children}
+                    </div>
+
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose}>Agree</Button>
-                </DialogActions>
+
             </Dialog>
-        </div>
+
     );
 }
 

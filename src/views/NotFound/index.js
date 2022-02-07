@@ -31,8 +31,7 @@ class NotFound extends Component {
     render() {
         return (
             <>
-                <Sidebar />
-                <HeaderDark />
+
                 <section className="not-found mb-4 mt-5 pt-5">
                     <div className="container mt-5 pt-5">
                         <div className="row justify-content-center">

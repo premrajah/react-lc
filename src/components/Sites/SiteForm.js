@@ -15,6 +15,16 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import FormControl from "@mui/material/FormControl";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import { geocodeByPlaceId } from 'react-google-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 
 class SiteForm extends Component {
@@ -41,7 +51,11 @@ class SiteForm extends Component {
             isSubmitButtonPressed: false,
             addCount: [],
             createNew:false,
-            addExisting:false
+            addExisting:false,
+            searchAddress:null,
+            latitude:null,
+            longitude:null,
+            phoneNumberInValid:false
 
         };
 
@@ -51,6 +65,8 @@ class SiteForm extends Component {
 
         this.checkListable = this.checkListable.bind(this);
     }
+
+
 
 
     addCount = () => {
@@ -144,9 +160,45 @@ class SiteForm extends Component {
 
         let fields = this.state.fields;
         fields[field] = value;
+        console.log(value)
         this.setState({fields});
 
     }
+
+    handleSearchAddress(value) {
+        console.log("handle address call")
+        console.log(value)
+
+
+try {
+
+
+    if (value && value.latitude && value.longitude && value.address) {
+        console.log(value)
+
+        this.setState({
+            searchAddress: value.address
+        });
+
+        let fields = this.state.fields;
+        fields["address"] = value.address;
+        console.log(value)
+        this.setState({fields});
+
+        this.setState({
+            latitude: value.latitude,
+            longitude: value.longitude,
+        })
+
+            .catch(error => console.error(error));
+    }
+
+}catch (e){
+    console.log("map error")
+            console.log(e)
+}
+    }
+
 
 
     handleChangeLinkSite(value, field) {
@@ -168,30 +220,20 @@ class SiteForm extends Component {
 
 
     handleSubmit = (event) => {
-
-
         event.preventDefault();
         event.stopPropagation();
 
-
-
         let parentId;
 
-
-
         if (!this.handleValidation()) {
-
             return
-
         }
-
 
         this.setState({
             btnLoading: true,
         });
 
         const data = new FormData(event.target);
-
 
         const formData = {
 
@@ -205,8 +247,29 @@ class SiteForm extends Component {
                 others: data.get("other"),
                 phone: data.get("phone"),
                 is_head_office: this.state.isHeadOffice,
-                parent_id: data.get("parent")
+                parent_id: data.get("parent"),
+
+            "geo_codes": [
+            {
+                "address_info": {
+                    "formatted_address":data.get("address"),
+                    "geometry": {
+                        "location": {
+                            "lat": this.state.latitude,
+                            "lng": this.state.longitude
+                        },
+                        "location_type": "APPROXIMATE",
+
+                    },
+                    "place_id": this.state.searchAddress.value.place_id,
+                    "types": this.state.searchAddress.value.types,
+                    "plus_code": null
+                },
+                "is_verified": true
             }
+        ]
+        }
+
         };
 
         parentId=data.get("parent")
@@ -222,10 +285,6 @@ class SiteForm extends Component {
                     headers: {
                         Authorization: "Bearer " + this.props.userDetail.token,
                     },
-
-
-
-
                 }
             )
             .then((res) => {
@@ -246,18 +305,14 @@ class SiteForm extends Component {
                     }
                 }else{
 
-                     // for product form callback
+                    // for product form callback
                      this.props.submitCallback()
-
                 }
-
 
                 this.props.loadSites()
                 this.props.loadParentSites()
                 this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
-
-
 
 
             })
@@ -564,13 +619,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     </div>
     </div>
 
-                            <div className={"row justify-content-center create-product-row pl-3 pb-3 pr-3"}>
+    <div className={"row justify-content-start create-product-row pl-3 pb-3 pr-3"}>
 
-                                <form className={"full-width-field"} onSubmit={this.handleSubmit}>
+            <form className={"full-width-field"} onSubmit={this.handleSubmit}>
 
-
-
-                                    <div className="row no-gutters">
+                      <div className="row ">
                                         <div className="col-12 ">
 
                                             <TextFieldWrapper
@@ -623,6 +676,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-6 pr-1">
                                             <SelectArrayWrapper
 
+                                                initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
+
                                                 option={"name"}
                                                 valueKey={"_key"}
                                                 error={this.state.errors["parent"]}
@@ -636,10 +691,22 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         <div className="col-6 pl-1 ">
 
-                                            <TextFieldWrapper
-                                                onChange={(value)=>this.handleChange(value,"phone")}
-                                                error={this.state.errors["phone"]}
-                                                name="phone" title="Phone" />
+                                            <PhoneInput
+                                                value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
+
+                                                onChange={this.handleChange.bind(this, "phone")}
+                                                inputClass={this.state.phoneNumberInValid?"is-invalid":""}
+                                                inputProps={{
+                                                    name: 'phone',
+                                                    // required: true,
+                                                    defaultErrorMessage:"Invalid",
+                                                    // minLength:9,
+                                                }}
+                                                country={'gb'}
+                                            />
+                                            {this.state.errors["phone"] &&
+                                            <span style="color: rgb(244, 67, 54);" className="text-danger">Required</span>}
+
                                         </div>
                                     </div>
 
@@ -669,11 +736,17 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     <div className="row no-gutters ">
                                         <div className="col-12">
 
-                                            <TextFieldWrapper
-                                                onChange={(value)=>this.handleChange(value,"address")}
+                                            <SearchPlaceAutocomplete
+
+                                                initialValue={this.props.showSiteForm.item}
+                                                onChange={(value)=>this.handleSearchAddress(value)}
                                                 error={this.state.errors["address"]}
 
-                                                name="address" title="Address" />
+                                                // name="address" title="Search Address"
+
+
+                                            />
+
 
 
                                         </div>
@@ -690,7 +763,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     </div>
                                     <div className={"row"}>
-                                        <div className="col-12 mt-4 mb-2">
+                                        <div className="col-12  mb-2">
 
                                             <button
                                                 type={"submit"}
@@ -715,17 +788,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
+                        <div className="row   justify-content-end">
+                            <div className="col-auto mr-2 mt-2">
+                                <CloseButtonPopUp onClick={this.hidePopUp}>
+                                    <Close />
+                                </CloseButtonPopUp>
 
-                    <div className="m-1">
-                        <button
-                            onClick={this.hidePopUp}
-                            className="btn-close close-done"
-                            data-dismiss="modal"
-                            aria-label="Close">
-                            <Close />
-                        </button>
-                    </div>
-                    <div className="row  justify-content-center mobile-menu-row p-3 m-2">
+                            </div>
+                        </div>
+
+                    <div className="row   justify-content-start mobile-menu-row pr-3 pl-3 pb-3 ml-2 mb-3 mr-3">
 
                     <div className="col-12 p-0 ">
                         <h4 className={"blue-text text-heading text-left"}>
@@ -734,12 +806,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {/*link existing or new site*/}
 
-                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className=" text-mute small">
-                                <span onClick={this.toggleCreateNew} className="forgot-password-link green-text mr-2 "
-                                      data-parent="cWkY0KVYEM">Create New</span>:<span
+                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
+                                <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
+                                      data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                             onClick={this.toggleAddExisting}
-                            className="forgot-password-link green-text ml-2"
-                            data-parent="cWkY0KVYEM">Add Existing</span></p>
+                            className="btn-gray-border ml-2 click-item"
+                            data-parent="cWkY0KVYEM"> <AddLinkIcon /> Add Existing</span></p>
                         }
 
 
@@ -763,7 +835,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                 </div>
                             </div>
-                            <div className="row  ">
+                            <div className="row no-gutters ">
                                 <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
@@ -804,14 +876,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.external_reference}
                                         onChange={(value)=>this.handleChange(value,"external_reference")}
                                         error={this.state.errors["external_reference"]}
-                                        name="external_reference" title="Site Id" />
+                                        name="external_reference" title="External Reference" />
                                 </div>
 
                                 <div className="col-6 pl-1 ">
+
                                     <SelectArrayWrapper
-                                        initialValue={this.props.showSiteForm.type==="edit"?
-                                            (this.props.showSiteForm.item&&this.props.showSiteForm.item.parent_site&&this.props.showSiteForm.item.parent_site._key)
-                                            :this.props.showSiteForm.parent}
+
+                                        initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
                                         option={"name"}
                                         valueKey={"_key"}
                                         error={this.state.errors["parent"]}
@@ -829,17 +901,39 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     <div className="row no-gutters justify-content-center ">
 
                                         <div className="col-6 pr-2">
+                                            <div className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
+                                            </div>
 
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
-                                                    onChange={(value)=>this.handleChange(value,"phone")}
-                                                    error={this.state.errors["phone"]}
-                                                    name="phone" title="Phone" />
+                                            <PhoneInput
+
+                                                value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
+                                                onChange={this.handleChange.bind(this, "phone")}
+                                                inputClass={this.state.phoneNumberInValid?"is-invalid":""}
+                                                inputProps={{
+                                                    name: 'phone',
+                                                    // required: true,
+                                                    defaultErrorMessage:"Invalid",
+                                                    // minLength:9,
+                                                }}
+                                                country={'gb'}
+                                            />
+                                            {this.state.errors["phone"] &&
+                                            <span style="color: rgb(244, 67, 54);" className="text-danger">Required</span>}
+
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"phone")}*/}
+                                                {/*    error={this.state.errors["phone"]}*/}
+                                                {/*    name="phone" title="Phone" />*/}
 
                                         </div>
                                         <div className="col-6 pl-2">
 
+
+
+
                                             <TextFieldWrapper
+
                                                 initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.email}
                                                 onChange={(value)=>this.handleChange(value,"email")}
                                                 error={this.state.errors["email"]}
@@ -849,15 +943,36 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     </div>
                                 </div>
                             </div>
+
                             <div className="row no-gutters ">
                                 <div className="col-12">
 
                                     <TextFieldWrapper
+
+                                        type="hidden"
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}
+                                        value={this.state.searchAddress?this.state.searchAddress.label:null}
 
-                                       name="address" title="Address" />
+                                        name="address" title="Address"
+
+                                    />
+                                    <SearchPlaceAutocomplete
+                                        initialValue={this.props.showSiteForm.item}
+                                        onChange={(value)=>this.handleSearchAddress(value)}
+                                        error={this.state.errors["address"]}
+                                    />
+
+
+                                </div>
+                            </div>
+
+
+                            <div className="row no-gutters ">
+                                <div className="col-12">
+
+
 
 
                                 </div>
@@ -880,14 +995,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <div className={"row"}>
                             <div className="col-12 mt-4 mb-2">
 
-                                    <button
-                                        type={"submit"}
-                                        className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                        {this.props.showSiteForm.item?"Update Site":"Add Site"}
-                                    </button>
+                                <BlueButton
+                                    title={this.props.showSiteForm.item?"Update Site":"Add Site"}
+                                    type={"submit"}
+
+                                    disabled={this.state.isSubmitButtonPressed}
+                                    fullWidth
+                                >
+                                </BlueButton>
 
                             </div>
                             </div>
@@ -897,23 +1012,21 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 </div>}
 
                         {this.state.addExisting &&
-                        <div className="row   justify-content-left">
+                        <div className="row   justify-content-start">
 
                             <div className="col-12 " style={{ padding: "0!important" }}>
 
                                    <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
 
                                 <div className="row   ">
-                                <div className="col-12" style={{ padding: "0!important" }}>
+                                <div className="col-12 p-0" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
                                         <div className="row mt-2">
                                             <div className="col-10">
-                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
-                                                <FormControl
-                                                    variant="outlined"
-                                                    className={classes.formControl}>
-                                                    <Select
+                                                <CustomizedSelect
+                                                        variant={"standard"}
+
                                                         name={`site[${index}]`}
                                                         // label={"Link a product"}
                                                         required={true}
@@ -931,8 +1044,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         {this.props.siteList
                                                             .filter(
                                                                 (item) =>
-                                                                    item._key !==
-                                                                    this.props.showSiteForm.parent
+                                                                    (item._key !==
+                                                                    this.props.showSiteForm.parent)
                                                                          &&
                                                                     !(
                                                                         this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
@@ -950,7 +1063,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                             ))}
 
 
-                                                    </Select>
+                                                    </CustomizedSelect>
                                              {this.props.siteList.length===0&&
                                                     <Spinner
                                                         as="span"
@@ -962,18 +1075,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         className={"spinner-select"}
                                                     />}
                                                     {this.state.errorsLink["site"] && (
-                                                        <span className={"text-mute small"}>
+                                                        <span className={" small"}>
                                                             <span style={{ color: "red" }}>* </span>
                                                             {this.state.errorsLink["site"]}
                                                         </span>
                                                     )}
 
-                                                    {/*<FormHelperText>Please select the product you wish to sell. <br/>Don’t see it on here?*/}
-
-                                                    {/*<span onClick={this.showProductSelection.bind(this)} className={"green-text forgot-password-link text-mute "}> Create a new product</span>*/}
-
-                                                    {/*</FormHelperText>*/}
-                                                </FormControl>
 
 
                                             </div>
@@ -1002,8 +1109,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     ))}
                                 </div>
                                 </div>
-                                <div className="row   pt-2 ">
-                                <div className="col-12 mt-4 ">
+                                <div className="row   ">
+                                <div className="col-12 mt-4 p-0 ">
                                     <span
                                         onClick={this.addCount}
                                         className={
@@ -1014,7 +1121,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     </span>
                                 </div>
                                 </div>
-                                <div className="row   pt-2 ">
+                                <div className="row    pt-2 ">
 
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
@@ -1043,7 +1150,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                             { this.props.showSiteForm.type==="link-product" &&
-                            <div className="row   justify-content-left">
+                            <div className="row   justify-content-start">
                                 <div className="col-12 " style={{ padding: "0!important" }}>
                                     <form style={{ width: "100%" }} onSubmit={this.linkSubProducts}>
 
@@ -1098,7 +1205,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                                     className={"spinner-select"}
                                                                 />}
                                                                 {this.state.errorsLink["site"] && (
-                                                                    <span className={"text-mute small"}>
+                                                                    <span className={" small"}>
                                                             <span style={{ color: "red" }}>* </span>
                                                                         {this.state.errorsLink["site"]}
                                                         </span>

@@ -4,6 +4,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreIcon from "@mui/icons-material/MoreHoriz";
 import { Modal, ModalBody } from "react-bootstrap";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import GreenBorderButton from "./FormsUI/Buttons/GreenBorderButton";
 
 class MoreMenu extends Component {
     constructor(props) {
@@ -342,7 +345,7 @@ class MoreMenu extends Component {
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-10 text-center"}>
                                         <p className={"text-bold text-caps"}>Remove</p>
-                                        <p>Are you sure you want to remove this as sub-product?</p>
+                                        <p>Are you sure you want to remove it ?</p>
                                     </div>
                                 </div>
 
@@ -352,25 +355,24 @@ class MoreMenu extends Component {
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <GreenButton
+                                                    fullWidth
                                                     onClick={this.removeAction}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }
+                                                   title={"Submit"}
                                                     type={"submit"}>
                                                     Submit
-                                                </button>
+                                                </GreenButton>
                                             </div>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <GreenBorderButton
+                                                    fullWidth
+                                                    title={"Cancel"}
                                                     onClick={this.removePopUp}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
+                                                    >
                                                     Cancel
-                                                </button>
+                                                </GreenBorderButton>
                                             </div>
                                         </div>
                                     </div>

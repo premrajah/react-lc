@@ -9,9 +9,11 @@ import { makeStyles } from "@mui/styles";
 import Login from "./Login";
 import ResetPassword from "./ResetPassword";
 import RecoverPassword from "./RecoverPassword";
-import SignUp from "./SignUp";
 import SuccessSignUp from "./SuccessSignUp";
 import ForgotPassword from "./ForgotPassword";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
+import {Modal} from "react-bootstrap";
+import SignUp from "../../components/Login/SignUp";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,38 +69,15 @@ class LoginPopUp extends Component {
         return (
             <>
                 <div className={"body-overlay"}>
-                    <div className={"modal-popup"}>
-                        <div className=" text-right web-only">
-                            {/*<Link to={"/"}>*/}
-
-                                <Close
-                                    onClick={this.hideLoginPopUp}
-                                    className="blue-text"
-                                    style={{ fontSize: 32 }}
-                                />
-                            {/*</Link>*/}
-                        </div>
-                        <div className="container  p-2 mobile-only"></div>
-                        <div className="container  pt-2 pb-3 mobile-only">
-                            <div className="row no-gutters">
-                                <div className="col-auto">
-                                    <img src={LogoNew} alt="" className="header-logo" />
-                                    <img className={"text-logo-home-right"} src={LogoText} alt="" />
-                                </div>
-
-                                <div className="col text-right">
-                                    <Link to={"/"}>
-
-                                        <Close
-                                            onClick={this.hideLoginPopUp}
-                                            className="blue-text"
-                                            style={{ fontSize: 32 }}
-                                        />
-                                    </Link>
-                                </div>
+                    <div className={"modal-popup full-screen-mobile-pop-up"}>
+                        <div className="row   justify-content-end">
+                            <div className="col-auto mr-2 mt-2">
+                            <CloseButtonPopUp onClick={this.hideLoginPopUp} />
                             </div>
+
                         </div>
-                        {this.props.loginPopUpStatus === 0 && <Login />}
+
+                        {this.props.loginPopUpStatus === 0 && <Login  />}
                         {this.props.loginPopUpStatus === 1 && <SignUp />}
                         {this.props.loginPopUpStatus === 2 && <ForgotPassword />}
 

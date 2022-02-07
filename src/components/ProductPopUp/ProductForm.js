@@ -19,6 +19,9 @@ import SiteForm from "../Sites/SiteForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 
 class ProductForm extends Component {
@@ -78,7 +81,6 @@ class ProductForm extends Component {
             serial: null,
             startDate: null,
             endDate: null,
-
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
@@ -725,13 +727,14 @@ class ProductForm extends Component {
 
                     <div className={!this.state.showSubmitSite?"":"d-none"}>
 
-                <div className="row   pt-2 ">
-                    <div className="col-7  ">
-                        <h4 className={"blue-text text-heading"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
+                <div className="row">
+                    <div className="col-md-8  col-xs-12">
+                        <h4 className={"blue-text text-heading pt-2"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
                     </div>
-                    <div className="col-5  ">
-                        <button className="btn btn-sm blue-btn" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
-                    </div>
+                        <div className="col-md-4  col-xs-12 desktop-right">
+                        <button className="btn btn-sm blue-btn pt-2" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
+                        </div>
+
                 </div>
 
 
@@ -764,7 +767,7 @@ class ProductForm extends Component {
                                         details="do you wish to list your product now or in the future ?"
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
-                                        name={"is_listable"} title="Allow product to be listed" />
+                                        name={"is_listable"} title="List for sale" />
 
                                 </div>
 
@@ -813,7 +816,8 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
-                                    <SelectArrayWrapper  details="What is your product?"
+                                    <SelectArrayWrapper
+                                        details="What is your product?"
                                         initialValue={this.props.item&&this.props.item.product.type}
                                         option={"name"}
                                         valueKey={"name"}
@@ -920,7 +924,7 @@ class ProductForm extends Component {
                                                 <span
                                                     onClick={this.showSubmitSite}
                                                     className={
-                                                        "green-text forgot-password-link"
+                                                        " forgot-password-link ellipsis-end"
                                                     }>
                                                     {this.state.showSubmitSite
                                                         ? "Hide add site"
@@ -944,7 +948,7 @@ class ProductForm extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="col-4 ">
+                                            <div className="col-md-4 col-xs-12 ">
                                                 <SelectArrayWrapper  details="The units the product is measured in"
                                                     select={"Select"}
                                                     initialValue={this.props.item&&this.props.item.product.units}
@@ -954,7 +958,7 @@ class ProductForm extends Component {
                                                     disabled={ (this.state.units.length > 0) ? false : true}
                                                     options={this.state.units} name={"units"} title="(Units)"/>
                                             </div>
-                                            <div className="col-4 ">
+                                            <div className="col-md-4 col-xs-12 ">
 
                                                 {!this.state.disableVolume&&   <TextFieldWrapper  details="The number of units there are of the product"
                                                     // readonly ={this.state.disableVolume}
@@ -989,20 +993,16 @@ class ProductForm extends Component {
                                         <span
                                             onClick={this.showMoreDetails}
                                             className={
-                                                "green-text forgot-password-link"
+                                                " forgot-password-link"
                                             }>
                                             {this.state.moreDetail
-                                                ? "Hide Details"
-                                                : "Add More details"} <CustomPopover text={"Optional fields for the product "}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                ? "Hide details"
+                                                : "Add more details"} <CustomPopover text={"Optional fields for the product "}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                         </span>
                                     </span>
                                 </div>
                             </div>
-
-
-
-                                    <div className={this.state.moreDetail?"col-12 mt-2": "d-none    "}>
-                                        <div className="row">
+                            <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper  details="Select when the product was manufactured "
 
@@ -1046,7 +1046,7 @@ class ProductForm extends Component {
 
                                             </div>
                                         </div>
-                                    </div>
+
 
 <div className={"row"}>
                             <div className="col-12 mt-2">
@@ -1205,35 +1205,40 @@ class ProductForm extends Component {
                             </div>
 </div>
                                  <div className={"row"}>
-                            <div className="col-12  mb-2">
+                            <div className="col-12 text-center  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >
                                     0 ? (
-                                        <button
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-gray login-btn"
-                                            }>
-                                            Upload in progress ....
-                                        </button>
+                                            <GreenButton
+                                                title={"Upload in progress ...."}
+                                                type={"submit"}
+                                                loading={true}
+                                                disabled={true}
+
+                                            >
+                                            </GreenButton>
+
                                     ) : (
-                                        <button
-                                            type={"submit"}
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                            }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                            {this.props.item?"Update Product":"Add Product"}
-                                        </button>
+                                    <GreenButton
+                                        title={this.props.item?"Update Product":"Add Product"}
+                                        type={"submit"}
+                                        loading={this.props.loading}
+                                        disabled={this.state.isSubmitButtonPressed}
+
+                                    >
+                                    </GreenButton>
+
                                     )
                                 ) : (
-                                    <button
-                                        type={"submit"}
-                                        className={
-                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                        }
-                                        disabled={this.state.isSubmitButtonPressed}>
-                                        {this.props.item?"Update Product":"Add Product"}
-                                    </button>
+                                    <GreenButton
+                                    title={this.props.item?"Update Product":"Add Product"}
+                                    type={"submit"}
+                                    loading={this.props.loading}
+                                    disabled={this.state.isSubmitButtonPressed}
+
+                                    >
+                                    </GreenButton>
+
                                 )}
                             </div>
                     </div>

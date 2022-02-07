@@ -84,7 +84,7 @@ class ResourceItem extends Component {
                         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
                         <div
                             onClick={this.goToPage}
-                            className="row no-gutters justify-content-center mt-4 mb-4 listing-row-border pb-4 click-item">
+                            className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
                             <div className={"col-md-2 col-xs-12 col-sm-12"}>
                                 {this.props.item.listing.artifacts &&
                                 this.props.item.listing.artifacts.length > 0 ? (
@@ -162,7 +162,7 @@ class ResourceItem extends Component {
                                 }
                             </div>
                             <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
-                                <p  className="text-capitlize mb-1 title-bold">
+                                <p  className="text-capitlize mb-1 title-bold width-75">
                                     {this.props.item.listing.name}
                                 </p>
                                 <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75 ">

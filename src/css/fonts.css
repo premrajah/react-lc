@@ -31,8 +31,13 @@
 }
 
 @font-face {
-    font-family: "nunito-sans-semi-bold";
+    font-family: "nunito-sans-extra-light";
     src: url("../fonts/nunito_sans/NunitoSans-ExtraLight.ttf");
+}
+
+@font-face {
+    font-family: "nunito-sans-light";
+    src: url("../fonts/nunito_sans/NunitoSans-Light.ttf");
 }
 
 /*---------*/

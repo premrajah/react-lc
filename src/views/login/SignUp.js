@@ -15,6 +15,8 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {Link} from "react-router-dom";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -294,10 +296,10 @@ class SignUp extends Component {
                         <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>Sign Up</h3>
+                            <h4 className={"blue-text text-heading"}>Sign Up</h4>
                         </div>
                     </div>
-                            <div className="row justify-content-center no-gutters">
+                      <div className="row justify-content-center no-gutters">
                                 <div className="col-12 ">
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
@@ -332,8 +334,8 @@ class SignUp extends Component {
                                     name="phone" title="Phone" />
                             </div>
 
-                            <div className="col-12 ">
-                                <div className={"custom-label text-bold text-blue mb-0"}>
+                            <div className="col-12 mb-2 ">
+                                <div className={"custom-label text-bold text-blue "}>
                                     Select Company
                                 </div>
                                 <AutocompleteCustom
@@ -512,20 +514,18 @@ class SignUp extends Component {
 
                             <div className="col-12  justify-content-center">
                                 <div className={""}>
-                                <p className={""}>
+                                <p className={"mt-1 mb-2"}>
                                     <CheckboxWrapper
                                         name={"agree"}
                                         onChange={(value)=>this.handleChange(value,"agree")}
                                         initialValue={false}
                                         // color="#07AD88"
-                                        style={{
-                                            color: this.state.errors["agree"] ? "red" : "#07AD88",
-                                        }}
+
                                         inputProps={{ "aria-label": "secondary checkbox" }}
                                     />
                                 {/*</div>*/}
                                 {/*<div className={"col-10"}>*/}
-                                <span className={"text-mute small"}>
+                                <span className={"small"}>
 
                                     I agree to the <span className={"forgot-password-link"}>
                                         <a href="/terms" target="_blank" rel="noopener noreferrer">
@@ -546,13 +546,14 @@ class SignUp extends Component {
                             )}
 
                             <div className="col-12 ">
-                                <button
+                                <BlueButton
+                                    title={this.props.loading ? "Wait.." : "Create Account"}
                                     type={"submit"}
-                                    className={
-                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                    }>
-                                    Create Account
-                                </button>
+                                    loading={this.props.loading}
+
+                                    fullWidth
+                                >
+                                </BlueButton>
                             </div>
 
 
@@ -561,15 +562,14 @@ class SignUp extends Component {
                                 </div>
                             </div>
 
-                            <div className="row justify-content-center no-gutters">
+                            <div className="row mb-4 justify-content-center no-gutters">
                                 <div className="col-12 mb-2 mt-2 ">
                                     <p className={"or-text-divider"}>
                                         <span>or</span>
                                     </p>
                                 </div>
-                            <div className="col-12  justify-content-center text-center">
+                            <div className="col-12 mt-2   justify-content-center text-center">
 
-                                {/*<div className="col-auto  ">*/}
                                 {this.props.isPage?
                                     <Link
                                         style={{padding: ".375rem .75rem"}}
@@ -579,13 +579,15 @@ class SignUp extends Component {
                                      Log In
                                     </Link>
 
-                                    :<button
+                                    :
+                                    <BlueBorderButton
+                                        title={"Log In"}
+                                        type={"submit"}
                                         onClick={this.goToSignIn}
-                                        type="button"
-                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
-                                        Log In
-                                    </button>}
-                                {/*</div>*/}
+                                    >
+                                    </BlueBorderButton>
+                                }
+
                             </div>
                             </div>
 

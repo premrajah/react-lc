@@ -17,7 +17,7 @@ class ImageHeader extends Component{
                     <ImagesSlider images={images} />
                 ) : (
                     <img
-                        className={"img-fluid  rad-8 bg-white p-2"}
+                        className={"img-fluid bg-white rad-8 bg-white p-2"}
                         src={PlaceholderImg}
                         alt=""
                     />

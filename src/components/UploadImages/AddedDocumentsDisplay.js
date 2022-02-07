@@ -23,10 +23,10 @@ const AddedDocumentsDisplay = (props) => {
         setDocKey(key);
     }
 
-    const handleDeleteDocument = () => {
+    const handleDeleteDocument = (key) => {
 
-        
-        let afterRemoveDoc = artifacts.filter(item => item._key !== docKey);
+
+        let afterRemoveDoc = artifacts.filter(item => item._key !== key);
         let artifactIds = [];
 
         afterRemoveDoc.forEach(item => artifactIds.push(item._key));
@@ -52,7 +52,8 @@ const AddedDocumentsDisplay = (props) => {
         } else if (action === "delete") {
 
             setDocKey(key);
-            handleDeleteDocument()
+
+            handleDeleteDocument(key)
 
         }
     }
@@ -83,11 +84,7 @@ const AddedDocumentsDisplay = (props) => {
         <>
             <div className="row">
                 <div className="col">
-                       <p className="mt-1 mb-3 text-bold tex text-gray-light">
-                        <div className={"custom-label text-bold text-blue mt-4 mb-4"}>
-                            Files Uploaded
-                        </div>
-                    </p>
+
                     {artifacts.length > 0 ? (
                         artifacts.map((artifact, index) => {
                             if (
@@ -102,6 +99,13 @@ const AddedDocumentsDisplay = (props) => {
                                 artifact.mime_type === "application/vnd.ms-excel"
                             ) {
                                 return (
+
+                                    <>
+                                        {index==0 &&  <p className=" custom-label text-bold text-blue mt-4 mb-4">
+
+                                            Files Uploaded
+
+                                        </p>}
                                     <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3 bg-white row">
 
                                         <div className={"col-10"}>
@@ -113,7 +117,7 @@ const AddedDocumentsDisplay = (props) => {
                                             // href={artifact.blob_url}
                                             target="_blank"
                                             rel="noopener noreferrer">
-                                            {artifact.blob_name}
+                                            {artifact.name}
                                         </span>
 
                                         </div>
@@ -145,6 +149,8 @@ const AddedDocumentsDisplay = (props) => {
                                         </div>
 
                                     </div>
+
+                                    </>
                                 );
                             }
                         })

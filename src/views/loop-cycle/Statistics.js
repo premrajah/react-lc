@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
 import { Link } from "react-router-dom";
+import Layout from "../../components/Layout/Layout";
 
 class Statistics extends Component {
     constructor(props) {
@@ -24,10 +25,7 @@ class Statistics extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
+            <Layout>
 
                     <div className="container pt-4">
                         <div>
@@ -36,12 +34,12 @@ class Statistics extends Component {
                     </div>
                     <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
                         <embed
-                            src="https://dash.makealoop.io"
+                            src={`https://dash.makealoop.io?token=${this.props.userDetail}`}
                             style={{ width: "100%", minHeight: "800px", height: "auto" }}
                         />
                     </div>
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }

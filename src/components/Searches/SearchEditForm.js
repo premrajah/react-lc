@@ -388,6 +388,9 @@ updateSite=(search,site)=>{
 
     updateProduct=(search,product)=>{
 
+
+        if (product)
+
         axios
             .post(baseUrl + "search/product", {"id":search,product_id:product}, {
                 headers: {

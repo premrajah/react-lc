@@ -179,7 +179,7 @@ class ProductItemNew extends Component {
             <>
                 {this.props.item && this.props.item.product ? (
                     <>
-                        <h1>hello</h1>
+                        
                         <div className="row no-gutters justify-content-center mt-4 mb-4 ">
                             <div className={"col-2 "}>
                                 {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ? (
@@ -261,7 +261,7 @@ class ProductItemNew extends Component {
                     </>
                 ) : (
                     <>
-                        <h1>Yello 2</h1>
+                        
                         <Link onClick={this.goToProduct} to={"/product/" + this.props.item._key}>
                             <div className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
                                 <div className={"col-2 "}>
@@ -272,7 +272,7 @@ class ProductItemNew extends Component {
                                     )}
                                 </div>
                                 <div className={"col-7 pl-2  content-box-listing"}>
-                                    <p style={{ fontSize: "18px" }} className="text-caps mb-1">
+                                    <p style={{ fontSize: "18px" }} className="text-caps text-blue mb-1">
                                         {this.props.item.name}
                                     </p>
                                     <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">

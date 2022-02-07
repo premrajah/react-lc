@@ -14,6 +14,7 @@ import PageHeader from "../../components/PageHeader";
 import {Link} from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import Layout from "../../components/Layout/Layout";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class MyCycles extends Component {
     constructor(props) {
@@ -21,31 +22,38 @@ class MyCycles extends Component {
 
         this.state = {
             timerEnd: false,
-            count: 0,
             nextIntervalFlag: false,
             loops: [],
             searchValue: '',
             filterValue: '',
+            items:[],
+            lastPageReached:false,
+            currentOffset:0,
+            productPageSize:50,
+            loadingResults:false,
+            count:0
         };
 
         this.getCycles = this.getCycles.bind(this);
     }
 
     getCycles() {
+        let newOffset=this.state.currentOffset
+
         this.props.showLoading(true);
 
         axios
-            .get(baseUrl + "cycle/expand", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "cycle/expand")
+            // .get(`${baseUrl}cycle/expand?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
+
             .then(
                 (response) => {
-                    var response = response.data.data;
 
                     this.setState({
-                        loops: response,
+                        items:this.state.items.concat(response.data.data),
+                        loadingResults:false,
+                        lastPageReached:(response.data.data.length===0?true:false),
+                        currentOffset:newOffset+this.state.productPageSize
                     });
 
                     this.props.showLoading(false);
@@ -60,9 +68,39 @@ class MyCycles extends Component {
 
 
     componentDidMount() {
-        this.getCycles();
+        this.setState({
+            items:[]
+        })
+        this.getCycles()
+        // this.getTotalCount()
     }
 
+    getTotalCount=()=>{
+
+        axios
+            // .get(`${baseUrl}product/no-parent/no-links`)
+            .get(`${baseUrl}cycle/count`)
+            .then(
+                (response) => {
+                    if(response.status === 200) {
+
+                        this.setState({
+                            count:(response.data.data),
+
+                        })
+                    }
+
+                },
+                (error) => {
+                }
+            )
+            .catch(error => {}).finally(()=>{
+
+        });
+
+
+
+    }
     handleSearch = (searchValue) => {
         this.setState({searchValue: searchValue});
     }
@@ -100,7 +138,7 @@ class MyCycles extends Component {
                         <div className="row  justify-content-center filter-row  pt-2 pb-2">
                             <div className="col">
                                 <p  className="text-gray-light ml-2 ">
-                                    {this.state.loops&&this.state.loops.filter((site)=>
+                                   Showing {this.state.items&&this.state.items.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue==="search name"?
                                             site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                             this.state.filterValue==="product name"? site.product&&site.product.name &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -114,14 +152,17 @@ class MyCycles extends Component {
                                     ).filter(l => l.cycle.stage.toLowerCase() !== "closed").length
 
                                     }
-                                    <span className="ml-1 text-gray-light"> Cycles Found</span>
+                                    <span className="ml-1 text-gray-light"> Cycles</span>
                                 </p>
                             </div>
 
 
                         </div>
 
-                        {this.state.loops&&this.state.loops.filter((site)=>
+                        {/*<PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.getCycles} >*/}
+
+
+                        {this.state.items&&this.state.items.filter((site)=>
                             this.state.filterValue?( this.state.filterValue==="search name"?
                                 site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="product name"? site.product&&site.product.name &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -136,7 +177,7 @@ class MyCycles extends Component {
                             <CycleItem item={item} key={index} />
                         )) }
 
-                        {/*{this.state.loops.length === 0 ? <div>Hurry up! You haven’t made any cycles yet</div> : <div></div>}*/}
+                        {/*</PaginationLayout>*/}
                     </div>
 
             </Layout>

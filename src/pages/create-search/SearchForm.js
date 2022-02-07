@@ -1306,7 +1306,7 @@ if ((this.state.activeStep-1)==0){
                                                             this
                                                         )}
                                                         className={
-                                                            "green-text forgot-password-link text-mute "
+                                                            " forgot-password-link text-mute "
                                                         }>
 
                                                         Create a new product
@@ -1334,7 +1334,7 @@ if ((this.state.activeStep-1)==0){
                                                     options={this.props.siteList}
                                                     option={"name"}
                                                     select={"Select"}
-                                                    name={"deliver"} title="Deliver"
+                                                    name={"deliver"} title="Deliver to"
                                                     native
                                                   />
                                             <p style={{ marginTop: "10px" }}>
@@ -1343,7 +1343,7 @@ if ((this.state.activeStep-1)==0){
                                                 <span
                                                     onClick={this.toggleSite}
                                                     className={
-                                                        "green-text forgot-password-link text-mute small"
+                                                        " forgot-password-link text-mute small"
                                                     }>
                                                     Add a site
                                                 </span>

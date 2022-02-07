@@ -5,6 +5,7 @@ import { baseUrl } from "../../Util/Constants";
 import history from "../../History/history";
 import TextField from "@mui/material/TextField";
 import axios from "axios/index";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -150,9 +151,9 @@ class ForgotPassword extends Component {
                         <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
                         <div className="col-12">
-                            <h3 className={"blue-text text-heading text-center"}>
+                            <h4 className={"blue-text text-heading "}>
                                 Forgot your password?
-                            </h3>
+                            </h4>
                         </div>
                     </div>
 
@@ -186,13 +187,15 @@ class ForgotPassword extends Component {
                             </div>
 
                             <div className="col-12 mt-4 mb-4">
-                                <button
-                                    type="submit"
-                                    className={
-                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                    }>
-                                    Submit email
-                                </button>
+                                <BlueBorderButton
+
+                                    title={"Submit Email"}
+                                    type={"submit"}
+                                    fullWidth
+
+                                >
+                                </BlueBorderButton>
+
                             </div>
                         </div>
                     </form>

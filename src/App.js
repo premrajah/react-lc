@@ -29,7 +29,6 @@ import SearchMatches from "./pages/create-search/search-matches";
 import AddDetail from "./pages/create-search/AddDetail";
 import DeliveryResource from "./views/delivery-resource/index";
 import CycleCode from "./views/delivery-resource/CycleCode";
-import BrowseResources from "./views/browse-resources/index";
 import MessageSeller from "./views/browse-resources/message-seller";
 import ItemDetailMatch from "./pages/create-search/ItemDetailMatch";
 import ItemDetailMatched from "./pages/create-search/ItemDetailMatched";
@@ -49,7 +48,7 @@ import Cookie from "./components/Terms/Cookie";
 import Privacy from "./components/Terms/Privacy";
 import AcceptableUse from "./components/Terms/AcceptableUse";
 import TermsAndService from "./components/Terms/TermsAndService";
-import FindResourcePage from "./views/browse-resources/FindResourcePage";
+import FindResourcePage from "./pages/marketplace/FindResourcePage";
 import ProductArchive from "./pages/my-products/ProductArchive";
 import ProductTreeView from "./components/ProductTreeView";
 import Approvals from "./pages/approvals/Approvals";
@@ -193,18 +192,16 @@ class App extends Component {
                         <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={ListFormNew} />
-                        <LoggedInRoute exact path="/list-form-old" component={ListForm} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
                         <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
                         <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
-                        <LoggedInRoute exact path="/list-form" component={ListForm} />
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedOutRoute exact path="/sign-up" component={SignUpPage} />
                         <LoggedOutRoute exact path="/login" component={LoginPage} />
                         <LoggedOutRoute exact path="/forgot-password" component={ForgotPasswordPage} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
-                        <LoggedInRoute exact path="/find-resources" component={FindResourcePage} />
+                        <Route exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <LoggedInRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/help" component={Help} />
@@ -212,7 +209,6 @@ class App extends Component {
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
                         <LoggedInRoute exact path="/transfer-scaling" component={TransferScaling} />
-                        <LoggedInRoute exact path="/resources" component={BrowseResources} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
@@ -233,16 +229,19 @@ class App extends Component {
                         />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
-
+                        <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
                         <LoggedInRoute
                             exact
                             path="/match/:search/:listing"
                             component={ItemDetailMatch}
                         />
+                        <Route exact path="/marketplace/:slug" component={ItemDetail} />
+
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
-                        <LoggedInRoute exact path="/:slug" component={ItemDetail} />
-                        <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
+                        <Route exact path="/:slug" component={ItemDetail} />
+
+
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />
 

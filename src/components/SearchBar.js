@@ -4,6 +4,7 @@ import {InputAdornment} from "@mui/material";
 import SearchGray from '@mui/icons-material/Search';
 
 import {capitalize} from "../Util/GlobalFunctions";
+import {capitalizeFirstLetter} from "../Util/Constants";
 
 class SearchBar extends Component {
 
@@ -16,6 +17,7 @@ class SearchBar extends Component {
     };
 
     handleSearchFilter = (value) => {
+
         this.setState({filterDefaultValue: value});
         return this.props.onSearchFilter(value);
     }
@@ -23,20 +25,20 @@ class SearchBar extends Component {
     render() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
-            <div className="row">
+            <div className="row ">
                 <div className="col d-flex">
 
                     <div style={{width:  '100%'}} className={"search-box custom-select  rad-8"}>
-                        {/*<FormControl className={"filter-box"}   component="div">*/}
-                            <select style={{width:  'auto'}} label="Filter" className="filter-box  rad-8"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+
+                        {dropDownValues&&dropDownValues.length > 0 &&   <select style={{width:  'auto'}} label="Filter" className="filter-box text-capitlize rad-4"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                 <option value="" >
                                     Filter By
                                 </option>
                                 {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
-                                    return <option   key={index} value={drop}>{capitalize(drop)}</option>
+                                    return <option   key={index} value={drop.key}>{drop.label}</option>
                                 }) : null}
-                            </select>
-                        {/*</FormControl>*/}
+                            </select>}
+
 
                         <input
                             type={"text"}

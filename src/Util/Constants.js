@@ -49,13 +49,49 @@ export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
-export const PRODUCTS_FILTER_VALUES = ["name", "condition", "brand", "category","type","state","year of manufacture","model","serial no."];
-export const SITES_FILTER_VALUES = ["name","site id","address"];
-export const LISTING_FILTER_VALUES = ["name", "product name"];
-export const CYCLE_FILTER_VALUES = ["listing name", "search name","product name"];
+
+export const PRODUCTS_FILTER_VALUES = [
+    {key:"name",label:"Name" },
+    {key:"description",label:"Description" },
+    {key:"condition",label:"Condition" },
+    {key:"sku.brand",label:"Brand" },
+    {key:"category",label:"Category" },
+    {key:"type",label:"Type" },
+    {key:"state",label:"State" },
+    {key:"year_of_making",label:"Year Of Manufacture" },
+    {key:"model",label:"Model" },
+    {key:"serial",label:"Serial No." },
+   ];
+export const PRODUCTS_FILTER_VALUES_KEY = [
+    {key:"name",label:"Name" },
+    {key:"description",label:"Description" },
+    {key:"condition",label:"Condition" },
+    {key:"sku.brand",label:"Brand" },
+    {key:"category",label:"Category" },
+    {key:"type",label:"Type" },
+    {key:"state",label:"State"},
+    {key:"year_of_making",label:"Year Of Manufacture"},
+    {key:"model",label:"Model"},
+    {key:"serial",label:"Serial No."},
+];
+
+
+export const SITES_FILTER_VALUES = [
+    {key:"name",label:"Name" },
+    {key:"site id",label:"Site ID" },
+    {key:"address",label:"Address" },
+    ];
+export const LISTING_FILTER_VALUES = [
+    {key:"name",label:"Name" },
+    {key:"product name",label:"Product Name" },];
+export const CYCLE_FILTER_VALUES = [
+    {key:"search name",label:"Search Name" },
+    {key:"listing name",label:"Listing Name" },
+    {key:"product Name",label:"Product Name" },
+   ];
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];
-export const MERGE_STRATEGY_OPTIONS = ["always_new", "always_fail", "pick_first", "pick_any"];
+export const MERGE_STRATEGY_OPTIONS = ["pick_first","always_new", "always_fail",  "pick_any"];
 export const ISSUES_PRIORITY = ["low", "medium", "high"];
 
 export const capitalizeFirstLetter = (string) => (

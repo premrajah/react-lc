@@ -6,6 +6,9 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
+import IconButton from "@mui/material/IconButton";
+import {Close} from "@mui/icons-material";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 
 class ProductPopUp extends Component {
     componentDidMount() {}
@@ -31,20 +34,19 @@ class ProductPopUp extends Component {
                 show={this.props.showProductPopUp}
                 onHide={this.hidePopUp}
                 className={"custom-modal-popup popup-form"}>
-                <div className="m-1">
-                    <button
-                        onClick={this.hidePopUp}
-                        className="btn-close close-done"
-                        data-dismiss="modal"
-                        aria-label="Close">
-                        <CloseIcon style={{ fontSize: "32px"}} />
-                    </button>
+                <div className="row   justify-content-end">
+                <div className="col-auto mr-2 mt-2">
+                    <CloseButtonPopUp onClick={this.hidePopUp}>
+                        <Close />
+                    </CloseButtonPopUp>
+
                 </div>
-                <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
+                </div>
+                <div className="row no-gutters  justify-content-center mobile-menu-row  pl-2 pr-2 pb-2">
                     <div className="col mobile-menu">
                         <div className="form-col-left col-12">
                             {this.props.showCreateSubProduct && (
-                                <ProductForm heading={"Create a Sub Product"} />
+                                <ProductForm heading="Add Subproduct" />
                             )}
 
                             {this.props.showCreateProduct && (
@@ -62,6 +64,18 @@ class ProductPopUp extends Component {
 
                     </div>
                 </div>
+
+                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&  <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
+                    <div className="col text-right">
+                    <button
+                        onClick={this.hidePopUp}
+                        className=" btn-gray-border  "
+                        data-dismiss="modal"
+                        aria-label="Close">
+                        Done
+                    </button>
+                    </div>
+                </div>}
 
             </Modal>
         );

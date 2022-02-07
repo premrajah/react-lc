@@ -529,7 +529,7 @@ class ViewSearch extends Component {
                                                     <div className="row justify-content-start ">
                                                         <div className="col-12 ">
                                                             <div className="row">
-                                                                <div className="col-8 text-left">
+                                                                <div className="col-11 text-left">
                                                                     <h4
                                                                         className={
                                                                             "text-capitalize product-title"
@@ -541,7 +541,7 @@ class ViewSearch extends Component {
                                                                         }
                                                                     </h4>
                                                                 </div>
-                                                                <div className="col-4 text-right">
+                                                                <div className="col-1 text-right">
                                                                     <MoreMenu
                                                                         triggerCallback={(action) =>
                                                                             this.callBackResult(

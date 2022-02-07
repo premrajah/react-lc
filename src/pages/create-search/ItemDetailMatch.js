@@ -17,6 +17,7 @@ import { Modal, ModalBody } from "react-bootstrap";
 import { withStyles } from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
+import Layout from "../../components/Layout/Layout";
 
 class ItemDetailMatch extends Component {
     listing;
@@ -219,14 +220,18 @@ class ItemDetailMatch extends Component {
         const classesBottom = withStyles();
 
         return (
-            <div>
-                <Sidebar />
-                <div className="accountpage">
-                    <HeaderDark />
+            <Layout>
+
 
                     {this.state.item && (
                         <>
                             <div className="container " style={{ padding: "0" }}>
+                                <div className="row  pt-4 pb-4  justify-content-center">
+                                    {/*<div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">*/}
+                                    {/*    <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item&&this.state.item.site.name}</span>*/}
+
+                                    {/*</div>*/}
+                                </div>
                                 <div className="row no-gutters  justify-content-center">
                                     <div className="col-md-4 col-sm-12 col-xs-12 ">
                                         {/*{this.state.item.images.length > 0 ?*/}
@@ -397,12 +402,11 @@ class ItemDetailMatch extends Component {
                                 </div>
                             </div>
                             <React.Fragment>
-                                <CssBaseline />
 
-                                <AppBar
-                                    position="fixed"
-                                    color="#ffffff"
-                                    className={classesBottom.appBar + "  custom-bottom-appbar"}>
+                                <div
+
+                                    className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
+
                                     <Toolbar>
                                         <div
                                             className="row  justify-content-center search-container "
@@ -434,7 +438,7 @@ class ItemDetailMatch extends Component {
                                             )}
                                         </div>
                                     </Toolbar>
-                                </AppBar>
+                                </div>
                             </React.Fragment>
                             }
                             <Modal
@@ -522,8 +526,8 @@ class ItemDetailMatch extends Component {
                             </Modal>
                         </>
                     )}
-                </div>
-            </div>
+
+            </Layout>
         );
     }
 }
@@ -563,10 +567,10 @@ function BottomAppBar(props) {
 
     return (
         <React.Fragment>
-            <CssBaseline />
 
-            <AppBar position="fixed" color="#ffffff" className={classes.appBar}>
-                <Toolbar>
+
+            <div >
+
                     <div
                         className="row  justify-content-center search-container "
                         style={{ margin: "auto" }}>
@@ -587,8 +591,8 @@ function BottomAppBar(props) {
                             </Link>
                         </div>
                     </div>
-                </Toolbar>
-            </AppBar>
+
+            </div>
         </React.Fragment>
     );
 }

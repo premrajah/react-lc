@@ -28,6 +28,14 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 
 
 class ProductDetailContent extends Component {
@@ -71,6 +79,7 @@ class ProductDetailContent extends Component {
             cancelReleaseSuccess: false,
             initialValues:{},
             activeKey:"1",
+            activeReleaseTabKey:"1",
             zoomQrCode:false
 
         };
@@ -88,7 +97,7 @@ class ProductDetailContent extends Component {
         this.callBackResult = this.callBackResult.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.showProductSelection = this.showProductSelection.bind(this);
-        this.showReleaseProduct = this.showReleaseProduct.bind(this);
+        // this.showReleaseProduct = this.showReleaseProduct.bind(this);
         this.showServiceAgent = this.showServiceAgent.bind(this);
         this.showOrgForm = this.showOrgForm.bind(this);
         this.handleSubmitOrg = this.handleSubmitOrg.bind(this);
@@ -108,6 +117,18 @@ class ProductDetailContent extends Component {
 
 
     }
+
+    setActiveReleaseTabKey=(event,key)=>{
+
+
+        this.setState({
+            activeReleaseTabKey:key
+        })
+
+
+    }
+
+
 
     actionSubmit = () => {
         var data = {
@@ -247,9 +268,11 @@ class ProductDetailContent extends Component {
         });
     }
 
-    showReleaseProduct() {
+    showReleaseProductPopUp=()=> {
+
         this.setState({
             errorRelease: false,
+            showReleaseSuccess:false
         });
 
         this.getSites();
@@ -280,7 +303,7 @@ class ProductDetailContent extends Component {
 
 
 
-                this.setActiveKey(null,"1")
+            this.setActiveKey(null,"1")
 
 
 
@@ -327,7 +350,7 @@ class ProductDetailContent extends Component {
         } else if (action === "duplicate") {
             this.submitDuplicateProduct();
         } else if (action === "release") {
-            this.showReleaseProduct();
+            this.showReleaseProductPopUp();
         } else if (action === "serviceAgent") {
             this.showServiceAgent();
         }
@@ -431,6 +454,51 @@ class ProductDetailContent extends Component {
                 });
             });
     };
+
+    submitReleaseInteranally = (event) => {
+        this.setState({
+            errorRegister: null,
+        });
+
+        event.preventDefault();
+
+        const form = event.currentTarget;
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        const site = data.get("site");
+
+
+        axios
+            .post(
+                baseUrl + "product/site",
+
+                {
+                    product_id: this.props.item.product._key,
+                    site_id: site,
+                },
+            )
+            .then((res) => {
+
+
+                this.showReleaseProductPopUp()
+                this.props.loadCurrentProduct(this.props.item.product._key)
+                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.props.item.product.name+" internally to new site is completed successfully. Thanks"})
+
+
+            })
+            .catch((error) => {
+
+            });
+
+
+
+    };
+
 
     submitServiceAgentProduct = (event) => {
         this.setState({
@@ -605,7 +673,7 @@ class ProductDetailContent extends Component {
             this.loadInfo();
         }
 
-            this.setActiveKey(null,"1")
+        this.setActiveKey(null,"1")
 
     }
 
@@ -646,7 +714,6 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-
                         {this.state.zoomQrCode&&  <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
                             {this.props.item&&this.props.item.qr_artifact && (
                                 <img
@@ -657,7 +724,7 @@ class ProductDetailContent extends Component {
                             )}
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
-                            <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
+                            <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
                                 <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
 
                             </div>
@@ -667,44 +734,37 @@ class ProductDetailContent extends Component {
 
                                 <div className="row ">
                                     <div className="col-12 ">
-                                <div className=" stick-left-box  ">
+                                        <div className=" stick-left-box  ">
 
 
-                                  <ImageHeader images={this.state.item.artifacts} />
+                                            <ImageHeader images={this.state.item.artifacts} />
 
 
-                                  {this.state.isLoggedIn &&
-                                        !this.state.hideRegister &&
-                                        this.state.userDetail.orgId !== this.state.item.org._id && (
-                                            <>
-                                                <div className={"col-12 pb-5 mb-5"}>
-                                                    <div className="row justify-content-start pb-3  ">
-                                                        <div className="col-12 ">
-                                                            <button
-                                                                onClick={this.showRegister}
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"
-                                                                }>
-                                                                Register this product
-                                                            </button>
+                                            {this.state.isLoggedIn &&
+                                            !this.state.hideRegister &&
+                                            this.state.userDetail.orgId !== this.state.item.org._id && (
+                                                <>
+                                                    <div className={"col-12 pb-5 mb-5"}>
+                                                        <div className="row justify-content-start pb-3  ">
+                                                            <div className="col-12 ">
+                                                                <button
+                                                                    onClick={this.showRegister}
+                                                                    className={
+                                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"
+                                                                    }>
+                                                                    Register this product
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </>
-                                        )}
+                                                </>
+                                            )}
+
+                                            <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
+                                        </div>
 
 
-
-
-                                    <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
-
-
-
-
-                                </div>
-
-
-                                </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -714,43 +774,49 @@ class ProductDetailContent extends Component {
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
-                                            <div className="col-8">
-                                                <h4 className="text-capitalize product-title">
+                                            <div className="col-12">
+                                                <h4 className="text-capitalize product-title width-90">
                                                     {this.state.item.product.name}
                                                 </h4>
-                                            </div>
+                                                <div className="top-right text-right">
+                                                    <div className="d-flex flex-row align-items-center justify-content-center ">
 
-                                            <div className="col-4 text-right">
-                                                { (this.state.item.org._id ===
-                                                this.props.userDetail.orgId) && <MoreMenu
-                                                    triggerCallback={(action) =>
-                                                        this.callBackResult(action)
-                                                    }
-                                                    serviceAgent={
-                                                        this.state.item.service_agent._id ===
+                                                        {this.state.item.org._id ===
                                                         this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
+                                                            ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
+                                                <ReportIcon className="click-Item mr-1" /> Release
+                                                </span>:""}
+                                                    { (this.state.item.org._id ===
+                                                        this.props.userDetail.orgId) &&
+                                                    <MoreMenu
+                                                        triggerCallback={(action) =>
+                                                            this.callBackResult(action)
+                                                        }
+                                                        serviceAgent={
+                                                            this.state.item.service_agent._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+
+                                                        duplicate={
+                                                            this.state.item.org._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+                                                        edit={
+                                                            this.state.item.org._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />
+
                                                     }
-                                                    release={
-                                                        this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    duplicate={
-                                                        this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    edit={
-                                                        this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ? true
-                                                            : false
-                                                    }
-                                                />}
+
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -788,7 +854,7 @@ class ProductDetailContent extends Component {
                                                         allowScrollButtonsMobile
                                                         variant="scrollable"
                                                         scrollButtons="auto"
-                                                        textColor="primary"
+                                                        textColor={"#27245C"}
                                                         TabIndicatorProps={{
                                                             style: {
                                                                 backgroundColor: "#27245C",
@@ -821,7 +887,7 @@ class ProductDetailContent extends Component {
 
                                                 <TabPanel value="1">
 
-                                                <InfoTabContent item={this.props.item}/>
+                                                    <InfoTabContent item={this.props.item}/>
 
                                                 </TabPanel>
 
@@ -836,19 +902,19 @@ class ProductDetailContent extends Component {
                                                 <TabPanel value="4">
                                                     <>
 
-                                                    <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
-                                                    {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
+                                                        <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
+                                                        {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
 
-                                                    <div className={"bg-white rad-8 p-2"}>
-                                                    <GoogleMap siteId={this.props.item.site._key} width={"100%"}
-                                                               height={"300px"} locations={[{
-                                                        name: this.props.item.site.name,
-                                                        location: this.props.item.site.geo_codes[0].address_info.geometry.location,
-                                                        isCenter: true
-                                                    }]}/>
-                                                    </div>
+                                                        <div className={"bg-white rad-8 p-2"}>
+                                                            <GoogleMap siteId={this.props.item.site._key} width={"100%"}
+                                                                       height={"300px"} locations={[{
+                                                                name: this.props.item.site.name,
+                                                                location: this.props.item.site.geo_codes[0].address_info.geometry.location,
+                                                                isCenter: true
+                                                            }]}/>
+                                                        </div>
 
-                                                    }
+                                                        }
 
                                                     </>
 
@@ -857,30 +923,30 @@ class ProductDetailContent extends Component {
 
                                                 {this.state.searches.length > 0 && (
                                                     <>
-                                                    <div className={"mt-4"}></div>
-                                                    <TabPanel value="5">
-                                                        {this.state.searches.map((item) => (
-                                                            <SearchItem smallImage={true} item={item}/>
-                                                        ))}
-                                                    </TabPanel>
+                                                        <div className={"mt-4"}></div>
+                                                        <TabPanel value="5">
+                                                            {this.state.searches.map((item) => (
+                                                                <SearchItem smallImage={true} item={item}/>
+                                                            ))}
+                                                        </TabPanel>
                                                     </>
                                                 )}
 
                                                 {this.state.listingLinked && (
 
                                                     <>
-                                                    <div className={"mt-4"}></div>
-                                                    <TabPanel value="6">
-                                                        {this.state.listingLinked && (
-                                                            <ResourceItem
-                                                                smallImage={true}
-                                                                history={this.props.history}
-                                                                item={this.state.listingLinked}
-                                                                artifacts={this.state.item.artifacts}
-                                                                hideMoreMenu={true}
-                                                            />
-                                                        )}
-                                                    </TabPanel>
+                                                        <div className={"mt-4"}></div>
+                                                        <TabPanel value="6">
+                                                            {this.state.listingLinked && (
+                                                                <ResourceItem
+                                                                    smallImage={true}
+                                                                    history={this.props.history}
+                                                                    item={this.state.listingLinked}
+                                                                    artifacts={this.state.item.artifacts}
+                                                                    hideMoreMenu={true}
+                                                                />
+                                                            )}
+                                                        </TabPanel>
                                                     </>
                                                 )}
                                                 <TabPanel value="7">
@@ -903,272 +969,416 @@ class ProductDetailContent extends Component {
                             show={this.state.showProductEdit}
                             onHide={this.showProductEdit}
                             className={"custom-modal-popup popup-form"}>
-                            <div className="">
-                                <button
-                                    onClick={this.showProductEdit}
-                                    className="btn-close close"
-                                    data-dismiss="modal"
-                                    aria-label="Close">
-                                    <i className="fas fa-times"></i>
-                                </button>
+                            <div className="row   justify-content-end">
+                                <div className="col-auto mr-2 mt-2">
+                                    <CloseButtonPopUp onClick={this.showProductEdit}>
+                                        <Close />
+                                    </CloseButtonPopUp>
+
+                                </div>
                             </div>
 
 
-                            <div className="row py-3 justify-content-center mobile-menu-row pt-3 p-2">
+
+                            <div className="row  justify-content-center mobile-menu-row  pr-2 pl-2 pb-2">
                                 <div className="col mobile-menu">
                                     <div className="form-col-left col-12">
-                            <ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />
+                                        <ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />
                                     </div>
                                 </div>
                             </div>
 
                         </Modal>
 
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
+                        <GlobalDialog
+                            heading={"Release Product: "+ this.state.item.product.name}
                             show={this.state.showReleaseProduct}
-                            centered
-                            onHide={this.showReleaseProduct}
-                            animation={false}>
-                            <ModalBody>
-                                <div style={{position: "absolute",
-                                    right: "20px"}} className=" text-right web-only">
-                                    <Close
-                                        onClick={this.showReleaseProduct}
-                                        className="blue-text click-item"
-                                        style={{ fontSize: 32 }}
-                                    />
+                            hide={this.showReleaseProductPopUp}
+                        >
+                            <>
+                                <div className={"col-6 d-none text-center"}>
+                                    <BlueButton
+                                        title={"Release Internally"}
+                                        type={"submit"}
+
+                                        fullWidth
+
+                                    >
+                                    </BlueButton>
                                 </div>
+                                <div className={"col-6  d-none text-center"}>
+                                    <BlueBorderButton
+                                        fullWidth
+                                        title={"Release Externally"}
+                                        type={"submit"}
 
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "Capitalize" }}
-                                            className={"text-bold text-blue"}>
-                                            Release Product: {this.state.item.product.name}
-                                        </p>
-                                    </div>
+                                    >
+                                    </BlueBorderButton>
                                 </div>
+                                <div className={"col-12 "}>
+                                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                                        <TabContext value={this.state.activeReleaseTabKey}>
+                                            <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                <TabList
+                                                    centered
+                                                    allowScrollButtonsMobile
+                                                    variant="centered"
 
-                                {!this.state.showReleaseSuccess ? (
-                                    <>
-                                    <div style={{position:"relative"}} className="text_fild mb-3">
-                                        <AutocompleteCustom
-                                            orgs={true}
-                                            companies={true}
-                                            suggestions={this.state.orgNames}
-                                            selectedCompany={(action) =>
-                                                this.companyDetails(action)
-                                            }
-                                        />
-                                    </div>
+                                                    scrollButtons="auto"
+                                                    textColor={"#27245C"}
+                                                    TabIndicatorProps={{
+                                                        style: {
+                                                            backgroundColor: "#27245C",
+                                                            padding: '2px',
+                                                        }
+                                                    }}
+                                                    onChange={this.setActiveReleaseTabKey}
 
-                                        <form onSubmit={this.submitReleaseProduct}>
-                                            <div className={"row justify-content-center p-2"}>
-                                                <div className={"col-12 text-center mt-2"}>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div className={"col-12 text-center mb-4"}>
-                                                            <input
-                                                                className={"d-none"}
-                                                                value={this.state.org_id}
-                                                                name={"org"}
-                                                            />
+                                                    aria-label="lab API tabs example">
 
-                                                            <p>
-                                                                If the company you are looking for
-                                                                doesn't exist?
-                                                                <span
-                                                                    className={"green-link-url "}
-                                                                    onClick={this.showOrgForm}>
-                                                                    {this.state.showOrgForm
-                                                                        ? "Hide "
-                                                                        : "Add Company"}
-                                                                </span>
-                                                            </p>
-                                                        </div>
+                                                    <Tab label="Release Internally" value="1" />
 
-                                                        {this.state.errorRelease && (
-                                                            <div
-                                                                className={
-                                                                    "row justify-content-center"
-                                                                }>
-                                                                <div
-                                                                    className={"col-12"}
-                                                                    style={{ textAlign: "center" }}>
-                                                                    <Alert
-                                                                        key={"alert"}
-                                                                        variant={"danger"}>
-                                                                        {this.state.errorRelease}
-                                                                    </Alert>
+                                                    <Tab label="Release Externally" value="2"/>
+
+
+
+                                                </TabList>
+                                            </Box>
+
+                                            <TabPanel value="1">
+
+                                                {/*<div className={"col-12 "}>*/}
+                                                <form onSubmit={this.submitReleaseInteranally}>
+                                                    <div className={"row no-gutters justify-content-center "}>
+                                                        <div className={"col-12  mt-3"}>
+                                                            <div className={"row no-gutters justify-content-center"}>
+                                                                <div className={"col-12  mb-4"}>
+
+                                                                    <SelectArrayWrapper
+                                                                        details="Select the site where your product is currently located."
+
+
+                                                                        option={"name"}
+                                                                        valueKey={"_key"}
+                                                                        // error={this.state.errors["deliver"]}
+                                                                        // onChange={(value)=> {
+                                                                        //
+                                                                        //     this.handleChangeProduct(value,"deliver")
+                                                                        //
+                                                                        // }}
+                                                                        select={"Select "}
+                                                                        options={this.state.sites} name={"site"}
+                                                                        title="Select release site"/>
+
                                                                 </div>
-                                                            </div>
-                                                        )}
 
-                                                        {!this.state.showOrgForm && (
-                                                            <div
-                                                                className={
-                                                                    "col-12 justify-content-center "
-                                                                }>
-                                                                <div
-                                                                    className={
-                                                                        "row justify-content-center"
-                                                                    }>
+                                                                {this.state.errorRelease && (
                                                                     <div
-                                                                        className={"col-6"}
-                                                                        style={{
-                                                                            textAlign: "center",
-                                                                        }}>
-                                                                        <button
-                                                                            style={{
-                                                                                minWidth: "120px",
-                                                                            }}
-                                                                            className={
-                                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                            }
-                                                                            type={"submit"}>
-                                                                            Yes
-                                                                        </button>
+                                                                        className={
+                                                                            "row justify-content-center"
+                                                                        }>
+                                                                        <div
+                                                                            className={"col-12"}
+                                                                            style={{ textAlign: "center" }}>
+                                                                            <Alert
+                                                                                key={"alert"}
+                                                                                variant={"danger"}>
+                                                                                {this.state.errorRelease}
+                                                                            </Alert>
+                                                                        </div>
                                                                     </div>
-                                                                    <div
-                                                                        className={"col-6"}
-                                                                        style={{
-                                                                            textAlign: "center",
-                                                                        }}>
-                                                                        <p
-                                                                            onClick={
-                                                                                this
-                                                                                    .showReleaseProduct
-                                                                            }
-                                                                            className={
-                                                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                            }>
-                                                                            Cancel
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        {this.state.showOrgForm && (
-                                            <>
-                                                <div className={"row m-2 container-gray"}>
-                                                    <div className={"col-12 text-left mt-2 "}>
-                                                        <p className={"text-bold text-blue"}>
-                                                            Add Company's Email
-                                                        </p>
-                                                    </div>
-                                                    <div className={"col-12 text-center "}>
-                                                        <>
-                                                            <div
-                                                                className={
-                                                                    "row justify-content-center"
-                                                                }>
-                                                                <div
-                                                                    className={
-                                                                        "col-12 text-center mb-2"
-                                                                    }>
-                                                                    <TextField
-                                                                        id="outlined-basic"
-                                                                        onChange={this.handleChangeEmail.bind(
-                                                                            this,
-                                                                            "email"
-                                                                        )}
-                                                                        variant="outlined"
-                                                                        fullWidth={true}
-                                                                        name={"email"}
-                                                                        type={"email"}
-                                                                        value={this.state.email}
-                                                                    />
-                                                                </div>
-
-                                                                {this.state.emailError && (
-                                                                    <Alert
-                                                                        key={"alert"}
-                                                                        variant={"danger"}>
-                                                                        Invalid Email Address!
-                                                                    </Alert>
                                                                 )}
 
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className={
+                                                            "row justify-content-center"
+                                                        }>
+                                                        <div
+                                                            className={"col-6"}
+                                                            style={{
+                                                                textAlign: "center",
+                                                            }}>
+                                                            <BlueButton
+                                                                fullWidth
+                                                                title={"Submit"}
+                                                                type={"submit"}>
+
+                                                            </BlueButton>
+                                                        </div>
+                                                        <div
+                                                            className={"col-6"}
+                                                            style={{
+                                                                textAlign: "center",
+                                                            }}>
+                                                            <BlueBorderButton
+                                                                type="button"
+                                                                fullWidth
+                                                                title={"Cancel"}
+
+
+                                                                onClick={
+                                                                    this
+                                                                        .showReleaseProductPopUp
+                                                                }
+                                                            >
+
+                                                            </BlueBorderButton>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                {/*</div>*/}
+
+                                            </TabPanel>
+                                            <TabPanel value="2">
+
+                                                {!this.state.showReleaseSuccess ? (
+                                                    <> <div className={"row "}>
+                                                        <div className={"col-12 mt-3 "}>
+
+                                                            <div style={{position:"relative"}} className="text_fild ">
                                                                 <div
-                                                                    className={
-                                                                        "col-12 text-center mb-2"
-                                                                    }>
-                                                                    <button
-                                                                        onClick={
-                                                                            this.handleSubmitOrg
-                                                                        }
-                                                                        className={
-                                                                            "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                        }>
-                                                                        Submit
-                                                                    </button>
+                                                                    className="custom-label text-bold ellipsis-end text-blue mb-0">Search release company
+                                                                </div>
+                                                                <AutocompleteCustom
+                                                                    orgs={true}
+                                                                    companies={true}
+                                                                    suggestions={this.state.orgNames}
+                                                                    selectedCompany={(action) =>
+                                                                        this.companyDetails(action)
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className={"col-12 "}>
+                                                            <form onSubmit={this.submitReleaseProduct}>
+                                                                <div className={"row justify-content-center "}>
+                                                                    <div className={"col-12 text-center mt-2"}>
+                                                                        <div className={"row no-gutters justify-content-center"}>
+                                                                            <div className={"col-12 text-center "}>
+                                                                                <input
+                                                                                    className={"d-none"}
+                                                                                    value={this.state.org_id}
+                                                                                    name={"org"}
+                                                                                />
+
+                                                                                <p className="d-none">
+                                                                                    If the company you are looking for
+                                                                                    doesn't exist?
+                                                                                    <span
+                                                                                        className={"green-link-url "}
+                                                                                        onClick={this.showOrgForm}>
+                                                                            {this.state.showOrgForm
+                                                                                ? "Hide "
+                                                                                : "Add Company"}
+                                                                        </span>
+                                                                                </p>
+                                                                            </div>
+
+                                                                            {this.state.errorRelease && (
+                                                                                <div
+                                                                                    className={
+                                                                                        "row justify-content-center"
+                                                                                    }>
+                                                                                    <div
+                                                                                        className={"col-12 mt-3"}
+                                                                                        style={{ textAlign: "center" }}>
+                                                                                        <Alert
+                                                                                            key={"alert"}
+                                                                                            variant={"danger"}>
+                                                                                            {this.state.errorRelease}
+                                                                                        </Alert>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+
+                                                                            {!this.state.showOrgForm && (
+                                                                                <div
+                                                                                    className={
+                                                                                        "col-12 justify-content-center mt-3 "
+                                                                                    }>
+                                                                                    <div
+                                                                                        className={
+                                                                                            "row justify-content-center"
+                                                                                        }>
+                                                                                        <div
+                                                                                            className={"col-6"}
+                                                                                            style={{
+                                                                                                textAlign: "center",
+                                                                                            }}>
+                                                                                            <BlueButton
+                                                                                                fullWidth
+                                                                                                title={"Submit"}
+                                                                                                type={"submit"}>
+
+                                                                                            </BlueButton>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            className={"col-6"}
+                                                                                            style={{
+                                                                                                textAlign: "center",
+                                                                                            }}>
+                                                                                            <BlueBorderButton
+                                                                                                type="button"
+                                                                                                fullWidth
+                                                                                                title={"Cancel"}
+                                                                                                onClick={
+                                                                                                    this
+                                                                                                        .showReleaseProductPopUp
+                                                                                                }
+                                                                                            >
+                                                                                                Cancel
+                                                                                            </BlueBorderButton>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+
+
+                                                        {this.state.showOrgForm && (
+                                                            <>
+                                                                <div className={"col-12 "}>
+                                                                    <div className={"row m-2 container-gray"}>
+                                                                        <div className={"col-12 text-left mt-2 "}>
+                                                                            <p className={"text-bold text-blue"}>
+                                                                                Add Company's Email
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className={"col-12 text-center "}>
+                                                                            <>
+                                                                                <div
+                                                                                    className={
+                                                                                        "row justify-content-center"
+                                                                                    }>
+                                                                                    <div
+                                                                                        className={
+                                                                                            "col-12 text-center mb-2"
+                                                                                        }>
+                                                                                        <TextField
+                                                                                            id="outlined-basic"
+                                                                                            onChange={this.handleChangeEmail.bind(
+                                                                                                this,
+                                                                                                "email"
+                                                                                            )}
+                                                                                            variant="outlined"
+                                                                                            fullWidth={true}
+                                                                                            name={"email"}
+                                                                                            type={"email"}
+                                                                                            value={this.state.email}
+                                                                                        />
+                                                                                    </div>
+
+                                                                                    {this.state.emailError && (
+                                                                                        <Alert
+                                                                                            key={"alert"}
+                                                                                            variant={"danger"}>
+                                                                                            Invalid Email Address!
+                                                                                        </Alert>
+                                                                                    )}
+
+                                                                                    <div
+                                                                                        className={
+                                                                                            "col-12 text-center mb-2"
+                                                                                        }>
+                                                                                        <button
+                                                                                            onClick={
+                                                                                                this.handleSubmitOrg
+                                                                                            }
+                                                                                            className={
+                                                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                                                            }>
+                                                                                            Submit
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        {!this.state.cancelReleaseSuccess && (
+                                                            <div className={"row justify-content-center"}>
+                                                                <div className={"col-12 mt-3 text-center"}>
+                                                                    <Alert key={"alert"} variant={"success"}>
+                                                                        Your release request has been submitted
+                                                                        successfully. Thanks
+                                                                    </Alert>
                                                                 </div>
                                                             </div>
-                                                        </>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )}
-                                    </>
-                                ) : (
-                                    <>
-                                        {!this.state.cancelReleaseSuccess && (
-                                            <div className={"row justify-content-center"}>
-                                                <div className={"col-10 text-center"}>
-                                                    <Alert key={"alert"} variant={"success"}>
-                                                        Your release request has been submitted
-                                                        successfully. Thanks
-                                                    </Alert>
-                                                </div>
-                                            </div>
-                                        )}
+                                                        )}
 
-                                        {this.state.cancelReleaseSuccess && (
-                                            <div className={"row justify-content-center"}>
-                                                <div className={"col-10 text-center"}>
-                                                    <Alert key={"alert"} variant={"success"}>
-                                                        Your release request has been cancelled
-                                                        successfully. Thanks
-                                                    </Alert>
-                                                </div>
-                                            </div>
-                                        )}
+                                                        {this.state.cancelReleaseSuccess && (
+                                                            <div className={"row justify-content-center"}>
+                                                                <div className={"col-12 text-center"}>
+                                                                    <Alert key={"alert"} variant={"success"}>
+                                                                        Your release request has been cancelled
+                                                                        successfully. Thanks
+                                                                    </Alert>
+                                                                </div>
+                                                            </div>
+                                                        )}
 
-                                        <div className={"row justify-content-center"}>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <button
-                                                    onClick={this.showReleaseProduct}
-                                                    style={{ minWidth: "120px" }}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }>
+                                                        <div className={"row justify-content-center"}>
+                                                            <div
+                                                                className={"col-6"}
+                                                                style={{ textAlign: "center" }}>
+                                                                <BlueButton
+                                                                    title={"OK"}
+                                                                    fullWidth
+                                                                    type="button"
+                                                                    onClick={this.showReleaseProductPopUp}
 
-                                                    Ok
-                                                </button>
-                                            </div>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <p
-                                                    onClick={this.actionSubmit}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    Cancel Release
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </ModalBody>
-                        </Modal>
+
+                                                                >
+
+                                                                    Ok
+                                                                </BlueButton>
+                                                            </div>
+                                                            <div
+                                                                className={"col-6"}
+                                                                style={{ textAlign: "center" }}>
+                                                                <BlueBorderLink
+                                                                    title={" Cancel Release"}
+                                                                    fullWidth
+                                                                    onClick={this.actionSubmit}
+
+                                                                >
+
+                                                                </BlueBorderLink>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                )}
+
+
+
+                                            </TabPanel>
+
+
+
+
+                                        </TabContext>
+                                    </Box>
+                                </div>
+
+
+                            </>
+
+                        </GlobalDialog>
+
                         <Modal
                             className={"loop-popup"}
                             aria-labelledby="contained-modal-title-vcenter"
@@ -1212,7 +1422,7 @@ class ProductDetailContent extends Component {
                                                                 If the company you are looking for
                                                                 doesn't exist?
                                                                 <span
-                                                                    className={"green-link-url "}
+                                                                    className={"forgot-password-link "}
                                                                     onClick={this.showOrgForm}>
                                                                     {this.state.showOrgForm
                                                                         ? "Hide "
@@ -1395,6 +1605,7 @@ const mapStateToProps = (state) => {
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
         showSubProductView: state.showSubProductView,
+        siteList: state.siteList,
     };
 };
 
@@ -1408,7 +1619,9 @@ const mapDispachToProps = (dispatch) => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
-
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        loadCurrentProduct: (data) =>
+            dispatch(actionCreator.loadCurrentProduct(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductDetailContent);

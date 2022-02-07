@@ -15,6 +15,7 @@ import {makeStyles, withStyles} from "@mui/styles";
 import {Badge, Snackbar, Tooltip} from "@mui/material";
 import Alert from "@mui/lab/Alert";
 import Menu from '@mui/material/Menu';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 const LightTooltip = withStyles((theme) => ({
@@ -201,24 +202,28 @@ class ComponentsNavbar extends React.Component {
                     <Nav className={"justify-content-end menu-align-right"}>
                         {this.props.isLoggedIn && (
                             <>
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
-                                        className="nav-link d-none d-lg-block wl-link-white "
-                                        color="default"
-                                        to={"/find-resources"}>
-                                        Marketplace
-                                    </Link>
-                                </NavItem>
+                            <NavItem className={"web-only mr-3"}>
+                                <Link
+                                    onClick={this.showProductSelection}
+                                    to={"/my-products"}
+                                    className="nav-link d-none d-lg-block wl-link-white"
+                                    color="default">
+                                    Add Products
+                                </Link>
+                            </NavItem>
+                            </>
+                            )}
+                        <NavItem className={"web-only mr-3"}>
+                            <Link
+                                className="nav-link d-none d-lg-block wl-link-white "
+                                color="default"
+                                to={"/find-resources"}>
+                                Marketplace
+                            </Link>
+                        </NavItem>
 
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
-                                        onClick={this.showProductSelection}
-                                        to={"/my-products"}
-                                        className="nav-link d-none d-lg-block wl-link-white"
-                                        color="default">
-                                        Add Products
-                                    </Link>
-                                </NavItem>
+                        {this.props.isLoggedIn && (
+                            <>
 
                                 <NavItem className={"web-only mr-3"}>
                                     <Link
@@ -240,16 +245,6 @@ class ComponentsNavbar extends React.Component {
                             </>
                         )}
 
-                        {!this.props.isLoggedIn && (
-                            <NavItem className="mr-3 ">
-                                <a
-                                    className="nav-link  d-lg-block"
-                                    color="default"
-                                    style={{ color: "#fff", cursor: "pointer" }}>
-                                    Join Demo
-                                </a>
-                            </NavItem>
-                        )}
 
                         {!this.props.isLoggedIn && (
                             <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
@@ -360,6 +355,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account
                                         </Link>
+
                                         <Link className={"dropdown-item"} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Sites
@@ -387,17 +383,12 @@ class ComponentsNavbar extends React.Component {
                                             Cycles
                                         </Link>
 
-
-
                                         <Link className={"dropdown-item"} to="/approve">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Approvals
                                         </Link>
 
-                                        <Link className={"dropdown-item"} to="/issues">
-                                            <i className="tim-icons icon-bullet-list-67" />
-                                            Issues
-                                        </Link>
+
                                         <Link className={"dropdown-item"} to="/help">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Help
@@ -419,12 +410,20 @@ class ComponentsNavbar extends React.Component {
                             </NavItem>
                         )}
 
-
+                        {this.props.isLoggedIn && <NavItem className="mobile-only">
+                            <Link
+                                onClick={this.showProductSelection}
+                                to={"/my-products"}
+                                className="btn btn-link text-dark menu-btn"
+                                color="default">
+                                <AddBoxIcon className="white-text" style={{fontSize: 24}}/>
+                            </Link>
+                        </NavItem>}
 
                         <NavItem className={"mobile-only"}>
                             <button
                                 onClick={this.toggleMenu}
-                                className="btn   btn-link text-dark menu-btn">
+                                className="btn btn-link text-dark menu-btn">
                                 <MenuIcon className="white-text" style={{ fontSize: 32 }} />
                             </button>
                         </NavItem>

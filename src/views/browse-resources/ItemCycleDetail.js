@@ -225,7 +225,7 @@ class ItemCycleDetail extends Component {
             <>
             {this.state.notFoundError ? (
                 <NotFound slug={this.slug} qrCodeNotFound={true} />
-                ) :  <Layout hideFooter={true}>
+                ) :  <Layout hideFooter={false}>
                     <div className={"container pb-5 mb-5"}>
                         {this.state.item && (
                             <>

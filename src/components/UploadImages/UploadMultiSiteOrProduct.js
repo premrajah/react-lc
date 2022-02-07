@@ -12,6 +12,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SiteForm from "../Sites/SiteForm";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import * as XLSX from 'xlsx';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 let productProperties=[
     {field:"name",required:true},
@@ -60,6 +66,8 @@ const UploadMultiSiteOrProduct = (props) => {
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadArtifactError, setUploadArtifactError] = useState('');
     const [isProduct, setIsProduct] = useState(false);
+    const [showAdvanceStrategy, setShowAdvanceStrategy] = useState(false);
+
     const [isSite, setIsSite] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
     const [fileName, setFileName] = useState(null);
@@ -67,14 +75,13 @@ const UploadMultiSiteOrProduct = (props) => {
     const [errorsArray, setErrorsArray] = useState([]);
     const [fields, setFields] = useState({});
     const [errors, setErrors] = useState({});
-
     // const [sites, setSites] = useState([]);
     const [siteShowHide, setSiteShowHide] = useState(false);
     const [submitSiteError, setSubmitSiteError] = useState("");
     const [submitSiteErrorClassName, setSubmitSiteErrorClassName] = useState("")
-
-
-
+    const [list,setList] = useState([]);
+    const [showProgress, setShowProgress] = useState(false);
+    const [showCompletion, setShowCompletion] = useState(false);
 
     useEffect(() => {
 
@@ -112,15 +119,27 @@ const UploadMultiSiteOrProduct = (props) => {
 
     }
 
+    const [progress, setProgress] = useState(0);
 
-   const handleValidation=()=> {
+    // React.useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+    //     }, 800);
+    //     return () => {
+    //         clearInterval(timer);
+    //     };
+    // }, []);
+
+
+    const handleValidation=()=> {
 
         let fieldsLocal = fields;
 
         let validations = [
             validateFormatCreate("artifact", [{check: Validators.required, message: 'Required'}], fieldsLocal),
-            validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
-            validateFormatCreate("merge_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // valid   // validateFormatCreate("match_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
+            // validateFormatCreate("merge_strategy", [{check: Validators.required, message: 'Required'}], fieldsLocal),
         ]
 
 
@@ -173,10 +192,11 @@ const UploadMultiSiteOrProduct = (props) => {
 
     // process CSV data
     const processData = dataString => {
+
         const dataStringLines = dataString.split(/\r\n|\n/);
         const headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
 
-        const list = [];
+        const listLocal = [];
         for (let i = 1; i < dataStringLines.length; i++) {
 
             const row = dataStringLines[i].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
@@ -197,17 +217,19 @@ const UploadMultiSiteOrProduct = (props) => {
 
                 // remove the blank rows
                 if (Object.values(obj).filter(x => x).length > 0) {
-                    list.push(obj);
+                    listLocal.push(obj);
                 }
             }
         }
+
+        setList(listLocal)
 
 
         let errorFound=false
 
         for (let i=0;i<headers.length;i++){
 
-            if (isProduct) {
+            if(isProduct){
 
                 if (!headers.length === productProperties[i].length) {
                     let errorsFound = errors
@@ -273,9 +295,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
             for (let i = 0; i < list.length; i++) {
 
-                if (isProduct) {
-
-
+                if(isProduct){
                     for (let k = 0; k < productProperties.length; k++) {
 
                         if (!list[i][productProperties[k].field] && productProperties[k].required) {
@@ -285,8 +305,7 @@ const UploadMultiSiteOrProduct = (props) => {
                          }
                   }
                }
-
-                if (isSite) {
+                if(isSite){
 
 
                     for (let k = 0; k < siteProperties.length; k++) {
@@ -366,21 +385,34 @@ const UploadMultiSiteOrProduct = (props) => {
             });
 
     }
-    const handleFormSubmit = (values, {setSubmitting}) => {
+    const handleFormSubmit = (event) => {
 
-        const {artifact, match_strategy, merge_strategy, siteId} = values;
+        let parentId;
+        event.preventDefault();
+        if (!handleValidation()) {
+
+            setShowErrors(true)
+            return
+        }
+
+        const data = new FormData(event.target);
+        const formData = {
+            artifact: data.get("artifact"),
+            match_strategy: data.get("match_strategy"),
+            merge_strategy: data.get("merge_strategy"),
+            siteId: data.get("deliver"),
+        };
+
+
+
+        const {artifact, match_strategy, merge_strategy, siteId} = formData;
         setIsDisabled(true);
-        setUploadArtifactError(<span className="text-success"><b>Processing...</b></span>)
 
-        getImageAsBytes(values.artifact)
-            .then(data => {
-                setSubmitting(false)
-                postArtifact(data, artifact, match_strategy, merge_strategy, siteId);
-            })
-            .catch(error => {
-                console.log('Convert as bytes error ', error.message);
-                setIsDisabled(false);
-            });
+        if (isProduct)
+        postSingleRowDataProduct(match_strategy,merge_strategy,siteId)
+
+        if (isSite)
+            postSingleRowDataSite(match_strategy,merge_strategy)
     }
 
     const postArtifact = (payload, file, match_strategy, merge_strategy, siteId) => {
@@ -433,6 +465,218 @@ const UploadMultiSiteOrProduct = (props) => {
             })
     }
 
+
+    const postSingleRowDataProduct = async (match_strategy, merge_strategy, siteId) => {
+
+
+        setShowCompletion(false)
+        setShowProgress(true)
+        let newProgress= 0
+        let errorsFound=errors
+        let uploadError=[];
+
+        for (let k = 0; k < list.length; k++) {
+
+            let listItem = list[k]
+            let payload = {
+                "match_strategy": match_strategy,
+                "merge_strategy": merge_strategy,
+                "site_id": siteId,
+                "row": {
+                    "name": listItem.name,
+                    "description": listItem.description,
+                    "external_reference": listItem.external_reference,
+                    "condition": listItem.condition,
+                    "purpose": listItem.purpose,
+                    "year_of_making": listItem.year_of_making,
+                    "category": listItem.category,
+                    "type": listItem.type,
+                    "state": listItem.state,
+                    "units": listItem.units,
+                    "volume": listItem.volume,
+                    "brand": listItem.brand,
+                    "model": listItem.model,
+                    "serial": listItem.serial,
+                    "sku": listItem.sku,
+                    "upc": listItem.upc,
+                    "part_no": listItem.part_no,
+                    "line": listItem.line,
+                    "is_listable": Boolean(listItem.is_listable.toLowerCase())
+                }
+            }
+
+            try {
+                const result = await axios.post(`${baseUrl}load/product`, payload);
+                console.log(result)
+            }
+            catch(e){
+
+                // console.log('>> ',e.response.data.errors[0].message)
+                if (e.response.data.errors&&e.response.data.errors.length>0) {
+                   e.response.data.errors.forEach(item => {
+                       uploadError.push(<div className="d-flex flex-column">
+                           <div><b>CSV Entry {k+1}</b>: {item.message}</div>
+                       </div>)
+                   })
+                }else{
+
+                    // alert(e.response.status)
+                    if (e.response.status===400) {
+
+                            uploadError.push(<div className="d-flex flex-column">
+                                <div><b>CSV Entry {k + 1}</b>: Invalid values for columns</div>
+                            </div>)
+
+                    }else{
+                        uploadError.push(<div className="d-flex flex-column">
+                            <div><b>CSV Entry {k + 1}</b>: {e.response.status} error received from server</div>
+                        </div>)
+
+                    }
+                }
+
+
+
+                    // uploadError=e.response.data.errors.forEach(item => `${item.message}, `)
+                    // console.log(e.response.data.errors[0])
+                    errorsFound.upload = {
+                        error: true,
+                        message: uploadError
+                    }
+                    setErrors(errorsFound)
+
+
+            }
+            // const {data}=await  result
+
+            // const getData = async () => {
+            //     await axios.post(`${baseUrl}load/product`,payload)
+            //         .then(res => {
+            //             console.log(res)
+            //
+            //
+            //         })
+            //         .catch(err => {
+            //             console.log(err)
+            //         });
+            // }
+            // getData()
+
+            newProgress= newProgress + parseInt(100/list.length)
+            setProgress(newProgress )
+
+
+
+        }
+
+
+        errorsFound.upload = {
+            error: true,
+            message: uploadError
+        }
+        setErrors(errorsFound)
+
+        setIsDisabled(false);
+        setShowProgress(false)
+
+        setShowCompletion(true)
+
+    }
+
+    const postSingleRowDataSite = async (match_strategy, merge_strategy) => {
+
+        setShowCompletion(false)
+        setShowProgress(true)
+        let newProgress= 0
+        let errorsFound=errors
+        let uploadError=[];
+
+        for (let k = 0; k < list.length; k++) {
+
+
+            let listItem = list[k]
+
+            let payload = {
+                "match_strategy": match_strategy,
+                "merge_strategy": merge_strategy,
+                "row": {
+                    "name": listItem.name,
+                    "description": listItem.description,
+                    "external_reference": listItem.external_reference,
+                    "contact": listItem.contact,
+                    "address": listItem.address,
+                    "phone": listItem.phone,
+                    "email": listItem.email,
+                    "others": listItem.others,
+                    "is_head_office": Boolean(listItem.is_head_office),
+
+                }
+            }
+
+            try {
+
+                const result = await axios.post(`${baseUrl}load/site`, payload);
+
+                console.log(result)
+
+            }
+            catch(e){
+
+                if (e.response.data.errors&&e.response.data.errors.length>0) {
+                    e.response.data.errors.forEach(item => {
+                        uploadError.push(<div className="d-flex flex-column">
+                            <div><b>CSV Entry {k+1}</b>: {item.message}</div>
+                        </div>)
+                    })
+                }else{
+
+                    // alert(e.response.status)
+                    if (e.response.status===400) {
+
+                        uploadError.push(<div className="d-flex flex-column">
+                            <div><b>CSV Entry {k + 1}</b>: Invalid values for columns</div>
+                        </div>)
+
+                    }else{
+                        uploadError.push(<div className="d-flex flex-column">
+                            <div><b>CSV Entry {k + 1}</b>: {e.response.status} error received from server</div>
+                        </div>)
+
+                    }
+                }
+
+
+                // uploadError=e.response.data.errors.forEach(item => `${item.message}, `)
+                // console.log(e.response.data.errors[0])
+                errorsFound.upload = {
+                    error: true,
+                    message: uploadError
+                }
+                setErrors(errorsFound)
+
+
+            }
+
+            newProgress= newProgress + parseInt(100/list.length)
+            setProgress(newProgress )
+
+
+
+        }
+
+
+        errorsFound.upload = {
+            error: true,
+            message: uploadError
+        }
+        setErrors(errorsFound)
+
+        setIsDisabled(false);
+        setShowProgress(false)
+        setShowCompletion(true)
+
+    }
+
     const handleShowHideSite = () => {
         props.loadSites();
         setSiteShowHide(!siteShowHide);
@@ -473,7 +717,7 @@ const UploadMultiSiteOrProduct = (props) => {
         <div className={!siteShowHide?"":"d-none"}>
         <div className="row mb-2">
             <div className="col">
-                <h4 className={"blue-text text-heading"}>{isSite && 'Multiple Sites Upload'}{isProduct && 'Multiple Products Upload'}</h4>
+                <h4 className={"blue-text text-heading"}>{isSite && 'Upload Multiple Sites'}{isProduct && 'Upload Multiple Products'}</h4>
                 <span className="top-element  text-underline">
                    <Download style={{fontSize:"16px"}} /><a href={isProduct ? '/downloads/products.csv' : '/downloads/sites.csv'} title={isProduct ? 'products.csv' : 'sites.csv'} download={isProduct ? 'products.csv' : 'sites.csv'}>Download {isProduct ? "" : ""} CSV template</a>
                 </span>
@@ -483,7 +727,7 @@ const UploadMultiSiteOrProduct = (props) => {
         <div className="row ">
             <div className="col">
 
-                <form onSubmit={handleFormSubmitNew}>
+                <form onSubmit={handleFormSubmit}>
                             <div className="row mb-2">
                                 <div className="col">
                                     <div>{uploadArtifactError}</div>
@@ -497,12 +741,8 @@ const UploadMultiSiteOrProduct = (props) => {
                                 </div>
                             </div>
 
-
-
                             <div className="row  justify-content-center text-center bg-white rad-8 p-3 no-gutters ">
-                                <div className="col">
-
-
+                                <div className="col-12">
                                     <Button
                                         // variant="contained"
                                         component="label"
@@ -533,11 +773,16 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
                                 </div>
+                                {showProgress &&  <div className="col-12 tex">
+                                     <LinearProgressWithLabel value={progress} />
+                                </div>}
 
                             </div>
-                    {/*{errors["artifact"] && */}
+                    {showCompletion&&<div className={"text-blue text-center"}>CSV bulk upload completed.</div>}
                     <p style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["artifact"]&&errors["artifact"].message}</p>
-                    {/*}*/}
+                    <div style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["upload"]&&errors["upload"].message}</div>
+
+
 
 
                     {isProduct &&  <div className="row">
@@ -559,12 +804,12 @@ const UploadMultiSiteOrProduct = (props) => {
                                             title="Dispatch/Collection Address"/>
 
 
-                                        <p style={{ marginTop: "10px" }}>
+                                        <p style={{ marginTop: "10px" }} className="text-right">
                                             <span className="mr-1 text-gray-light">Do not see your address?</span>
                                             <span
                                                 onClick={handleShowHideSite}
                                                 className={
-                                                    "green-text forgot-password-link text-mute small"
+                                                    "forgot-password-link  "
                                                 }>
                                                     {siteShowHide
                                                         ? "Hide add site"
@@ -597,9 +842,26 @@ const UploadMultiSiteOrProduct = (props) => {
 
                                 </div>
                             </div>}
+                    {!showAdvanceStrategy &&<div className={`row `}>
+
+                            <input
+                                type="hidden"
+                                name="match_strategy"
+                              value="exact_match"
+
+                            />
+                        <input
+                            type="hidden"
+                            name="merge_strategy"
+                            value="pick_first"
+
+                        />
 
 
-                            <div className="row mb-2">
+
+                    </div>}
+
+                    {showAdvanceStrategy &&     <div className={`row `}>
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
                                         name="match_strategy"
@@ -607,7 +869,7 @@ const UploadMultiSiteOrProduct = (props) => {
                                         helperText="Select how to match"
                                         options={MATCH_STRATEGY_OPTIONS}
 
-                                        select={"Select"}
+                                        // select={"Select"}
                                         onChange={(value)=> {
                                             handleChange(value,"match_strategy")
                                         }}
@@ -619,7 +881,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
                                 <div className="col-md-6">
                                     <SelectArrayWrapper
-                                        select={"Select"}
+                                        // select={"Select"}
                                         name="merge_strategy"
                                         error={showErrors&&errors["merge_strategy"]}
                                         helperText="Select how to merge"
@@ -631,13 +893,30 @@ const UploadMultiSiteOrProduct = (props) => {
                                         title="Merge Strategy"
                                     />
                                 </div>
-                            </div>
+                            </div>}
+                    <p style={{ marginTop: "10px" }} className=" mb-2">
+                        <span className="mr-1 text-gray-light"> </span>
+                        <span
+                            onClick={()=>setShowAdvanceStrategy(!showAdvanceStrategy)}
+                            className={
+                                "forgot-password-link "
+                            }>
+                                                    {!showAdvanceStrategy
+                                                        ? "Show advanced settings"
+                                                        : "Hide advanced settings"}
+                                                </span>
+                    </p>
 
                             <div className="row mt-4 mb-4">
-                                <div className="col">
-                                    <button disabled={isDisabled} type="submit" className="btn btn-block btn-green"
-                                            // onClick={formProps.submitForm}
-                                            style={{backgroundColor: '#07AD88'}} >Submit</button>
+                                <div className="col text-center">
+                                    <GreenButton
+                                        title={"Submit"}
+                                        type={"submit"}
+
+                                        disabled={isDisabled}
+
+                                    >
+                                    </GreenButton>
                                 </div>
                             </div>
                         </form>
@@ -681,6 +960,31 @@ const UploadMultiSiteOrProduct = (props) => {
 
     </>
 };
+function LinearProgressWithLabel(props) {
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <Typography variant="body2" color="text.secondary">{`${Math.round(
+                    props.value,
+                )}%`}</Typography>
+            </Box>
+        </Box>
+    );
+}
+
+LinearProgressWithLabel.propTypes = {
+    /**
+     * The value of the progress indicator for the determinate and buffer variants.
+     * Value between 0 and 100.
+     */
+    value: PropTypes.number.isRequired,
+};
+
+
+
 
 const mapStateToProps = (state) => {
     return {

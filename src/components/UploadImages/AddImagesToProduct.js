@@ -131,7 +131,7 @@ class AddImagesToProduct extends Component {
                         const payload = data;
 
                         try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
+                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
                                 .then(res => {
 
                                     let images = [...this.state.images];

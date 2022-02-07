@@ -79,7 +79,7 @@ class MyListings extends Component {
                         <PageHeader
                             pageIcon={ProductBlue}
                             pageTitle="Listings"
-                            subTitle="All your created listings can be found here. You can accept or decline a match to complete a loop"
+                            subTitle="All your listings can be found here. You can accept or decline a match to start a loop"
                         />
 
                         <div className="row ">

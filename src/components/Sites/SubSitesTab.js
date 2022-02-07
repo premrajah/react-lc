@@ -51,7 +51,8 @@ class SubSitesTab extends Component {
                         subSites:responseAll
                     })
 
-
+                    console.log("subsites")
+                    console.log(responseAll)
                 },
                 (error) => {
                     // this.setState({
@@ -111,10 +112,11 @@ class SubSitesTab extends Component {
                             (item, index) => (
                                 <SitePageItem
 
-
+                                   moreMenu
+                                   showRemove
                                     key={index}
                                     item={item}
-                                    parentId={this.props.item._key}
+                                    parentId={this.props.item.site._key}
 
                                 />
                             )

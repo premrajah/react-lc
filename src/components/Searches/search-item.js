@@ -115,7 +115,7 @@ class SearchItem extends Component {
                         )}
                     </div>
                     <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop content-box-listing"}>
-                        <p  className="text-capitlize mb-1 title-bold width-75">
+                        <p  className="text-capitlize mb-1 title-bold width-80 d-block">
                             {this.props.item.search.name}
                         </p>
                         <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75">

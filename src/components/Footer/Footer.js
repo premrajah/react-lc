@@ -18,7 +18,13 @@ class Footer extends React.Component {
     showLoginPopUp() {
         if (!this.props.isLoggedIn) {
             this.props.showLoginPopUp(true);
+        }else{
+            this.showProductSelection()
         }
+    }
+    showProductSelection=()=> {
+
+        this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
     render() {
@@ -217,6 +223,7 @@ const mapStateToProps = (state) => {
 const mapDispachToProps = (dispatch) => {
     return {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(Footer);

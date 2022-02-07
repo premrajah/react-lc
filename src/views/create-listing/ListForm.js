@@ -813,7 +813,7 @@ class ListForm extends Component {
                                                     fullWidth={true}
                                                 />
                                                 {this.state.errors["title"] && (
-                                                    <span className={"text-mute small"}>
+                                                    <span className={" small"}>
                                                         <span style={{ color: "red" }}>* </span>
                                                         {this.state.errors["title"]}
                                                     </span>
@@ -841,7 +841,7 @@ class ListForm extends Component {
                                                     fullWidth={true}
                                                 />
                                                 {this.state.errors["description"] && (
-                                                    <span className={"text-mute small"}>
+                                                    <span className={" small"}>
                                                         <span style={{ color: "red" }}>* </span>
                                                         {this.state.errors["description"]}
                                                     </span>
@@ -858,7 +858,7 @@ class ListForm extends Component {
                                                     <span onClick={this.showProductSelection}
                                                           style={{float:"right"}}
                                                           className={
-                                                              "green-text forgot-password-link text-mute small"
+                                                              " forgot-password-link  small"
                                                           }>
                                                     Add New product
                                                 </span>
@@ -915,7 +915,7 @@ class ListForm extends Component {
                                                 />
 
                                                 {this.state.errors["product"] && (
-                                                    <span className={"text-mute small"}>
+                                                    <span className={" small"}>
                                                         <span style={{ color: "red" }}>* </span>
                                                         {this.state.errors["product"]}
                                                     </span>
@@ -979,7 +979,7 @@ class ListForm extends Component {
                                                         </FormControl>
 
                                                         {this.state.errors["deliver"] && (
-                                                            <span className={"text-mute small"}>
+                                                            <span className={" small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
@@ -991,7 +991,7 @@ class ListForm extends Component {
                                                             style={{ margin: "10px 0" }}
                                                             onClick={this.toggleSite}
                                                             className={
-                                                                "green-text forgot-password-link text-mute small"
+                                                                " forgot-password-link  small"
                                                             }>
                                                             Add New Site
                                                         </p>
@@ -1035,7 +1035,7 @@ class ListForm extends Component {
                                                         {/*</MuiPickersUtilsProvider>*/}
 
                                                         {this.state.errors["startDate"] && (
-                                                            <span className={"text-mute small"}>
+                                                            <span className={" small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
@@ -1079,7 +1079,7 @@ class ListForm extends Component {
                                                         {/*</MuiPickersUtilsProvider>*/}
 
                                                         {this.state.errors["endDate"] && (
-                                                            <span className={"text-mute small"}>
+                                                            <span className={" small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
@@ -1155,7 +1155,7 @@ class ListForm extends Component {
                                                                             ] && (
                                                                             <span
                                                                                 className={
-                                                                                    "text-mute small"
+                                                                                    " small"
                                                                                 }>
                                                                                 <span
                                                                                     style={{
@@ -1358,10 +1358,10 @@ function ComponentItem({ title, subTitle, serialNo, imageName }) {
                 <p style={{ fontSize: "18px" }} className=" mb-1">
                     {title}
                 </p>
-                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                <p style={{ fontSize: "16px" }} className=" mb-1">
                     {subTitle}
                 </p>
-                <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                <p style={{ fontSize: "16px" }} className=" mb-1">
                     Serial No: {serialNo}
                 </p>
             </div>

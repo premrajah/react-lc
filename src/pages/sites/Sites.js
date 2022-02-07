@@ -12,6 +12,7 @@ import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiS
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import SitePageItem from "../../components/Sites/SitePageItem";
+import PaginationLayoutOld from "../../components/IntersectionOserver/PaginationLayoutOld";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 
 class Sites extends Component {
@@ -23,14 +24,12 @@ class Sites extends Component {
             filterValue: '',
             selectedProducts: [],
             showMultiUpload: false,
-
             items:[],
             lastPageReached:false,
             currentOffset:0,
             productPageSize:50,
             loadingResults:false,
             count:0
-
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -54,12 +53,12 @@ class Sites extends Component {
 
         // this.props.loadParentSites();
 
-        this.getTotalCount()
+
 
         this.setState({
             items:[]
         })
-
+        this.getTotalCount()
     }
 
 
@@ -101,8 +100,7 @@ class Sites extends Component {
         axios
             // .get(`${baseUrl}product/no-parent/no-links`)
             .get(`${baseUrl}site/no-parent?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
-            .then(
-                (response) => {
+            .then((response) => {
                     if(response.status === 200) {
 
                         this.setState({
@@ -164,11 +162,11 @@ class Sites extends Component {
                                 <Link onClick={()=> {
                                     this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
                                 }}  className="btn-gray-border  mr-2  click-item">
-                                    Add Sites/Address
+                                    Add Sites / Address
                                 </Link>
 
                                 <Link onClick={this.toggleMultiSite} className="btn-gray-border    mr-2 click-item">
-                                    Upload Multiple Sites(CSV)
+                                    Upload Multiple Sites (CSV)
                                 </Link>
                             </div>
                         </div>
@@ -180,18 +178,15 @@ class Sites extends Component {
 
                         <div className="row  justify-content-center filter-row   pb-3">
                             <div className="col">
-                                <p style={{ fontSize: "18px" }} className="text-gray-light ">Showing {this.state.items.filter((site)=>
+                                <p style={{ fontSize: "18px" }}
+                                   className="text-gray-light ">Showing {this.state.items.filter((site)=>
                                         this.state.filterValue?( this.state.filterValue==="name"?
                                             site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                             this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                                 this.state.filterValue==="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
                                             (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                                                 site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-
-
-                                    ).length
+                                                site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))).length
                                     }
                                     <span className="ml-1 "> of {this.state.count} Sites</span>
                                 </p>
@@ -200,26 +195,28 @@ class Sites extends Component {
                         </div>
 
 
-                        <PaginationLayout loadingResults={this.state.loadingResults} lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+                        <PaginationLayout
+                            hideSearch
+                            hideCount
+                            loadingResults={this.state.loadingResults}
+                            lastPageReached={this.state.lastPageReached}
+                            loadMore={this.loadProductsWithoutParentPageWise} >
 
-                        {this.state.items.filter((site)=>
+                        {this.state.items&&this.state.items
+                            .filter((site)=>
                                 this.state.filterValue?( this.state.filterValue==="name"?
                                 site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
                                 this.state.filterValue==="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
                                 (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
                             site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                            site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+                            site.address.toLowerCase().includes(this.state.searchValue.toLowerCase())))
 
-                            )
-
-                            .map((site, index) => (
+                            .map((site, index) =>
                             <React.Fragment key={index}>
                                 <SitePageItem  showEdit={true} item={site}/>
                             </React.Fragment>
-                        ))}
-
-
+                        )}
                         </PaginationLayout>
 
                     </div>

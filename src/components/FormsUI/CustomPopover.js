@@ -10,10 +10,9 @@ class CustomPopover extends React.Component {
 
      orgPopover = (
         <Popover >
-            <div className={"p-2 text-sentence"}>
+            <div className={"p-2 text-sentence "}>
 
                 {this.props.heading &&  <span className={"title-bold"} style={{ textTransform: "capitalize" }}>{this.props.heading}</span>}
-
                 {this.props.text && (
                     <>
 
@@ -35,7 +34,7 @@ class CustomPopover extends React.Component {
         return (
             <OverlayTrigger
                 trigger={ ["hover", "focus"]}
-                placement={"right"}
+                placement={"bottom"}
                 overlay={this.orgPopover}
             >
                 <span>

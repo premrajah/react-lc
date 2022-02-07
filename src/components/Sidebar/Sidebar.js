@@ -23,6 +23,11 @@ class Sidebar extends Component {
         document.body.classList.remove("sidemenu-open");
     };
 
+    showProductSelection=()=> {
+        document.body.classList.remove("sidemenu-open");
+        this.props.showProductPopUp({ type: "create_product", show: true });
+    }
+
     showSignUpPopUp = (event) => {
         document.body.classList.remove("sidemenu-open");
 
@@ -85,13 +90,36 @@ class Sidebar extends Component {
                             <div className="mt-2 mb-3">
                                 <div className="row">
                                     <div className="col-auto">
-                                        <figure className="avatar avatar-60 border-0">
+
+                                        {this.props.image ?
+                                            <figure className="avatar avatar-60 ">
+                                            <span className={"word-user"}>
+                                                <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}>
+                                            <img
+                                                src={this.props.image}
+                                                alt=""
+                                                style={{
+                                                    maxHeight: "60px",
+                                                    maxWidth: "60px",
+                                                    objectFit: "cover",
+                                                    width: "60px",
+                                                    height: "60px",
+                                                }}
+                                            />
+                                        </div>
+                                            </span>
+                                            </figure>: <figure className="avatar avatar-60 border-0">
                                             <span className={"word-user-big"}>
                                                 {this.props.userDetail &&
                                                     this.props.userDetail.orgId &&
                                                     this.props.userDetail.orgId.substr(0, 2)}
                                             </span>
-                                        </figure>
+                                        </figure>}
                                     </div>
                                 </div>
                             </div>
@@ -100,13 +128,12 @@ class Sidebar extends Component {
                             <div className="row">
                                 <div className="col">
                                     <div className="list-group main-menu">
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Home
-                                        </Link>
-
+                                        {/*<Link*/}
+                                        {/*    onClick={this.toggleMenu}*/}
+                                        {/*    to={"/"}*/}
+                                        {/*    className="white-text list-group-item list-group-item-action">*/}
+                                        {/*    Home*/}
+                                        {/*</Link>*/}
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/account"}
@@ -116,83 +143,89 @@ class Sidebar extends Component {
 
                                         <Link
                                             onClick={this.toggleMenu}
-                                            to={"/find-resources"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Browse Resources
-                                        </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/search-form"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Create A Search
-                                        </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/list-form"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Create A Listing
-                                        </Link>
-
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-cycles"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Cycles
-                                            </Link>
-
-
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-listings"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Listings
-                                            </Link>
-
-
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-search"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Searches
-                                            </Link>
-                                        <Link
-                                            onClick={this.toggleMenu}
                                             to={"/sites"}
                                             className="white-text list-group-item list-group-item-action">
                                             Sites
                                         </Link>
 
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/my-products"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Products
-                                            </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-products"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Products
+                                        </Link>
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/my-campaigns"}
                                             className="white-text list-group-item list-group-item-action">
                                             Campaigns
                                         </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-search"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Searches
+                                        </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-listings"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Listings
+                                        </Link>
 
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/approve"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Approvals
-                                            </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/my-cycles"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Cycles
+                                        </Link>
+
+
+
+
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/approve"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Approvals
+                                        </Link>
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/find-resources"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            Marketplace
+                                        </Link>
+                                        {/*<Link*/}
+                                        {/*    onClick={this.showProductSelection}*/}
+                                        {/*    to={"/my-products"}*/}
+                                        {/*    className="white-text list-group-item list-group-item-action">*/}
+                                        {/*    Add Product*/}
+                                        {/*</Link>*/}
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/search-form"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            New Search
+                                        </Link>
+
+
+                                        <Link
+                                            onClick={this.toggleMenu}
+                                            to={"/list-form"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            New Listing
+                                        </Link>
+
+
+
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/help"}
                                             className="white-text list-group-item list-group-item-action">
                                             Help
                                         </Link>
-                                            <Link
-                                                onClick={this.toggleMenu}
-                                                to={"/issues"}
-                                                className="white-text list-group-item list-group-item-action">
-                                                Issues
-                                            </Link>
+
 
 
                                     </div>
@@ -236,12 +269,7 @@ class Sidebar extends Component {
                                             Log Out
                                         </Link>
                                     )}
-                                    <Link
-                                        onClick={this.toggleMenu}
-                                        to={"/account"}
-                                        className="list-group-item list-group-item-action green-text">
-                                        My Loopcycle
-                                    </Link>
+
                                 </div>
                             </div>
                         </div>
@@ -274,6 +302,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
     };
 };

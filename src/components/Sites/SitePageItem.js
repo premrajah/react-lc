@@ -12,6 +12,7 @@ import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import IconButton from '@mui/material/IconButton';
 import moment from "moment/moment";
+import MoreMenu from "../MoreMenu";
 
 const SitePageItem = (  props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
@@ -46,6 +47,42 @@ const SitePageItem = (  props) => {
 
     }
 
+   const callBackResult=(action) =>{
+
+        if (action === "remove") {
+            removeSiteSelection();
+        }
+        // else if (action === "delete") {
+        //     this.deleteItem();
+        // } else if (action === "duplicate") {
+        //     this.submitDuplicateProduct();
+        // } else if (action === "release") {
+        //     this.showReleaseProductPopUp();
+        // } else if (action === "serviceAgent") {
+        //     this.showServiceAgent();
+        // }
+    }
+
+
+     const removeSiteSelection=(event)=> {
+
+
+        // alert(props.parentId)
+        axios.delete(`${baseUrl}site/${props.item._key}/parent`)
+            .then(res => {
+// alert(this.props.parentId)
+                    props.loadCurrentSite(props.parentId)
+                    props.showSnackbar({show: true, severity: "success", message: "Site removed successfully. Thanks"})
+
+
+            })
+            .catch(error => {
+
+            })
+
+
+    }
+
     const deleteSiteSelection=(event)=> {
 
         axios.delete(`${baseUrl}site/${props.item._key}`)
@@ -53,9 +90,9 @@ const SitePageItem = (  props) => {
                 if (res.status === 200) {
 
 
-                      this.props.loadSites()
-                    this.hidePopUp()
-                    this.props.showSnackbar({show: true, severity: "success", message: "Site Deleted successfully. Thanks"})
+                    //   this.props.loadSites()
+                    // this.hidePopUp()
+                    // this.props.showSnackbar({show: true, severity: "success", message: "Site Deleted successfully. Thanks"})
 
                 }
             })
@@ -117,11 +154,18 @@ const SitePageItem = (  props) => {
                            {/*    {"data hrere"}*/}
                            {/*</p>*/}
 
-                           <div>
+                           <div className="d-flex align-items-center">
                                <IconButton className={"mr-1"}><MapIcon  fontSize="24px" onClick={() => handleMapModal()} /></IconButton>
                                {props.showEdit &&
                                <IconButton> <EditIcon className={" "}  fontSize="24px" onClick={() => editSiteSelection()} /></IconButton>}
+                               {props.moreMenu&& <MoreMenu
+                                   triggerCallback={(action) =>
+                                       callBackResult(action)
+                                   }
+                                   remove={props.showRemove?true:false}
+                                   // edit={props.showEdit ?true:false}
 
+                               />}
 
                            </div>
 
@@ -213,6 +257,7 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
+
 
     };
 };

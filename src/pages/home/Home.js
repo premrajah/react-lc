@@ -70,33 +70,30 @@ class Home extends Component {
             <Layout>
 
                 <div className="wrapper ">
-                    <div className="container-fluid  pt-5">
+
 
                         <div className="container   ">
 
-                            <div className="row pt-5 pb-5 no-gutters">
-                                <div className="col-md-6 col-sm-12 col-xs-12  pt-4">
+                            <div className="row d-flex pt-5 pb-5 no-gutters align-items-center justify-content-center">
+                                <div className="col-md-6 col-sm-12 col-xs-12  ">
                                     <div className="row no-gutters">
                                         <div className="col-12">
-                                            <h1 className="blue-text primary-heading"
-                                                // style={{fontSize: "3em"}}
+                                            <h1 className="blue-text primary-heading primary-heading-font-size"
                                             >
-                                                Connect the dots
+                                                Trace and trust products <br/>wherever they go
                                             </h1>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="row no-gutters">
-                                                <p className="blue-text body-text-home" >
-                                                    Loopcycle’s product traceability platform redefines the management,
-                                                    recovery and resale of valuable secondary products, driving integrity
-                                                    within the reuse market.
+                                                <p className="blue-text body-description-text body-description-text-font-size" >
+                                                    We help commercial equipment manufacturers and operators trace, manage and recover physical assets throughout their lifecycle.
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="row no-gutters mt-4 web-only">
+                                    <div className="container no-gutters mt-4 ">
                                         <div className="col-auto">
                                             <a
                                                 href="https://loopcycle.io/"
@@ -115,15 +112,9 @@ class Home extends Component {
                                     <img className="img-fluid" src={PhoneHome} alt="" />
                                 </div>
 
-                                <div className="col-12 mobile-only pt-4">
-                                    <p className="white-text">
-                                        Loopcycle uses artificial intelligence to match
-                                        organizations and blockchain technology is used to ensure
-                                        the transaction is secure and traceable.
-                                    </p>
-                                </div>
+
                             </div>
-                        </div>
+
 
                     </div>
                     <div className="container-fluid home-section-icons container-light-gray pt-5 pb-5  ">
@@ -145,7 +136,7 @@ class Home extends Component {
                                 <button
                                     onClick={this.goToResources}
                                     type="button"
-                                    className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue ">
+                                    className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue ">
                                     Browse all listings <NavigateNextIcon />
                                 </button>
                             </div>

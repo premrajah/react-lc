@@ -16,7 +16,14 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
-
+import Layout from "../../components/Layout/Layout";
+import PageHeader from "../../components/PageHeader";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import InfoTabContent from "../../components/Sites/InfoTabContent";
+import SubSitesTab from "../../components/Sites/SubSitesTab";
+import SubProductsTab from "../../components/Sites/SubProductsTab";
+import TabPanel from '@mui/lab/TabPanel';
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -103,7 +110,7 @@ class SearchMatches extends Component {
         this.getListingForSearch = this.getListingForSearch.bind(this);
     }
 
-    loadMatches() {
+        loadMatches() {
         axios
             .get(baseUrl + "match/search/" + this.slug, {
                 headers: {
@@ -149,6 +156,7 @@ class SearchMatches extends Component {
 
 
     componentDidMount() {
+        this.setActiveKey(null,"1")
         this.loadMatches();
         this.getListingForSearch();
     }
@@ -165,228 +173,117 @@ class SearchMatches extends Component {
         });
     }
 
-    classes = useStylesSelect;
+    setActiveKey=(event,key)=>{
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
+
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
+
 
         return (
-            <>
-                <Sidebar />
+            <Layout>
 
-                <HeaderDark />
+                <div className="container  pb-4 pt-4">
+                    <PageHeader pageTitle="Matches"
+                                subTitle="Your search matches" />
 
-                <div className="container  p-2">
-                    <div className="row  pb-2 pt-5 ">
-                        {/*<div className="col-auto">*/}
-                        {/*<h3 className={"blue-text text-heading"}>Matches*/}
-                        {/*</h3>*/}
+                    <div className="row justify-content-start pb-3  tabs-detail">
+                        <div className="col-12 mt-2">
+                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                <TabContext value={this.state.activeKey}>
+                                    <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                        <TabList
+                                            variant="scrollable"
+                                            scrollButtons="auto"
+                                            textColor={"#27245C"}
+                                            allowScrollButtonsMobile
+                                            TabIndicatorProps={{
+                                                style: {
+                                                    backgroundColor: "#27245C",
+                                                    padding: '2px',
+                                                }
+                                            }}
+                                            onChange={this.setActiveKey} >
 
-                        {/*</div>*/}
-                    </div>
-                </div>
-                <div className="container  p-2">
-                    <div className="row  pb-2 pt-2 ">
-                        <div className="col-12 text-center">
-                            <h3 className={"blue-text text-heading text-center"}>Matches</h3>
+                                            <Tab label="Suggested" value="1"/>
+
+                                            <Tab label="Confirmed" value="2" />
+
+
+                                        </TabList>
+                                    </Box>
+
+
+                                    <TabPanel value="1">
+
+                                        {this.state.listingsForSearch.length==0&&
+                                        <div className="row text-center">
+                                            <div className={"col-12 pt-4"}>
+                                                No results founds</div> </div>
+                                        }
+                                        {this.state.listingsForSearch.map((item) => (
+                                            <>
+                                                {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
+
+                                                <ResourceItem
+                                                    history={this.props.history}
+                                                    link={"/match/" + this.slug + "/" + item.listing.listing._key}
+                                                    searchId={this.slug}
+                                                    item={item}
+                                                />
+
+                                                {/* </Link>*/}
+                                            </>
+                                        ))}
+
+                                    </TabPanel>
+                                    <TabPanel value="2">
+                                        {this.state.matches.length==0&&
+                                        <div className="row text-center">
+                                            <div className={"col-12 pt-4"}>
+                                            No results founds</div> </div>
+                                        }
+                                        {this.state.matches.map((item) => (
+                                            <>
+                                                <Link to={"/matched/" + item.match._key}>
+                                                    <MatchItem item={item} />
+                                                </Link>
+                                            </>
+                                        ))}
+
+                                    </TabPanel>
+
+
+
+
+                                </TabContext>
+                            </Box>
+
                         </div>
                     </div>
+                    {/*<div className="row ">*/}
+                    {/*    <div className={"tab-content-listing col-12"}>*/}
+                    {/*        <NavTabs*/}
+                    {/*            history={this.props.history}*/}
+                    {/*            matches={this.state.matches}*/}
+                    {/*            slug={this.slug}*/}
+                    {/*            suggesstions={this.state.listingsForSearch}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
-                <div className="container  p-2">
-                    <div className="row  pb-2 pt-2 ">
-                        <div className={"tab-content-listing col-12"}>
-                            <NavTabs
-                                history={this.props.history}
-                                matches={this.state.matches}
-                                slug={this.slug}
-                                suggesstions={this.state.listingsForSearch}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </>
+            </Layout>
         );
     }
 }
 
-const useStylesBottomBar = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
-const useStylesSelect = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(0),
-        width: "100%",
-        // minWidth: auto,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(0),
-    },
-}));
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`nav-tabpanel-${index}`}
-            aria-labelledby={`nav-tab-${index}`}
-            {...other}>
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `nav-tab-${index}`,
-        "aria-controls": `nav-tabpanel-${index}`,
-    };
-}
-
-function LinkTab(props) {
-    return (
-        <Tab
-            component="a"
-            onClick={(event) => {
-                event.preventDefault();
-            }}
-            {...props}
-        />
-    );
-}
-
-function NavTabs(props) {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    return (
-        <div className={""}>
-            <AppBar position="static" style={{ boxShadhow: "none" }} elevation={0}>
-                <StyledTabs
-                    style={{
-                        backgroundColor: "#ffffff",
-                        color: "#07AD88!important",
-                        boxShadow: "none",
-                    }}
-                    // indicatorColor="secondary"
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="nav tabs example">
-                    {/*{props.matches.length>0 &&*/}
-
-                    {/*}*/}
-
-                    {/*{props.suggesstions.length > 0 &&*/}
-
-                    <LinkTab
-                        label={"Suggested (" + props.suggesstions.length + ")"}
-                        href="/drafts"
-                        {...a11yProps(1)}
-                    />
-                    <LinkTab
-                        label={"Confirmed (" + props.matches.length + ")"}
-                        href="/drafts"
-                        {...a11yProps(0)}
-                    />
-
-                    {/*}*/}
-                </StyledTabs>
-            </AppBar>
-
-            {/*{props.suggesstions.length>0 &&*/}
-            <TabPanel value={value} index={0}>
-                <div className={"container"}>
-                    {props.suggesstions.map((item) => (
-                        <>
-                            {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
-
-                            <ResourceItem
-                                history={props.history}
-                                link={"/match/" + props.slug + "/" + item.listing.listing._key}
-                                searchId={props.slug}
-                                item={item}
-                            />
-
-                            {/* </Link>*/}
-                        </>
-                    ))}
-
-                    {props.suggesstions.length === 0 && (
-                        <div className={" column-empty-message"}>
-                            <p>This search currently has no suggestions</p>
-                        </div>
-                    )}
-                </div>
-            </TabPanel>
-            {/*}*/}
-            {/*{props.matches.length>0 &&*/}
-
-            <TabPanel value={value} index={1}>
-                <div className={"container"}>
-                    {props.matches.map((item) => (
-                        <>
-                            <Link to={"/matched/" + item.match._key}>
-                                <MatchItem item={item} />
-                            </Link>
-                        </>
-                    ))}
-
-                    {props.matches.length === 0 && (
-                        <div className={" column-empty-message"}>
-                            <p>This search currently has no matches</p>
-                        </div>
-                    )}
-                </div>
-            </TabPanel>
-
-            {/*}*/}
-        </div>
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

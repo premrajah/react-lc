@@ -371,7 +371,7 @@ this.props.toggleRightBar()
                         {this.state.campaignMode ==2 && this.state.editItem && <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 
                     </RightSidebar>
-                    <div className="container  mb-150  pb-5 pt-4">
+                    <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="Ad Campaigns"

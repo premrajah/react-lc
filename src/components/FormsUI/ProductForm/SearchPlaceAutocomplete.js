@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {makeStyles} from '@mui/styles';
 import GooglePlacesAutocomplete, {geocodeByPlaceId} from 'react-google-places-autocomplete';
 import {GoogleMap} from "../../Map/MapsContainer";
+import CloseButtonPopUp from "../Buttons/CloseButtonPopUp";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -87,23 +88,27 @@ const SearchPlaceAutocomplete = (props) => {
     },[])
 
 
+  const  setClear=()=>{
+
+        setValue(null)
+
+    }
+
     return (
         <>
 
             <div className={"field-box "}>
 
                 <GooglePlacesAutocomplete
-                    clearable={true}
 
                     selectProps={{
                         value,
-                        clearable:true,
+                        isClearable:{setClear},
                         className:"google-autocomplete",
                         onChange: handleChange,
                     }}
                     apiKey={"AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}/>
-
-
+                   
 
                 {latitude &&longitude &&
                 <div className="mt-2">

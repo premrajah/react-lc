@@ -3,6 +3,7 @@ import {makeStyles} from '@mui/styles';
 import GooglePlacesAutocomplete, {geocodeByPlaceId} from 'react-google-places-autocomplete';
 import {GoogleMap} from "../../Map/MapsContainer";
 import CloseButtonPopUp from "../Buttons/CloseButtonPopUp";
+import ErrorBoundary from "../../ErrorBoundary";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,19 +18,18 @@ const useStyles = makeStyles((theme) => ({
 const SearchPlaceAutocomplete = (props) => {
 
     const {label,title,option,initialValue,detailsHeading,details,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
-
     const [value, setValue] = React.useState();
     const [latitude, setLatitude] = React.useState();
     const [longitude, setLongitude] = React.useState();
     const [address, setAddress] = React.useState()
-    const classes = useStyles();
+
     const handleChange = (event) => {
             console.log(event)
             setValue(event);
 
-            setAddress(address)
-        setLatitude("")
-        setLongitude("")
+        //     setAddress(address)
+        // setLatitude("")
+        // setLongitude("")
 
         if (event&&event.value) {
 
@@ -64,13 +64,20 @@ const SearchPlaceAutocomplete = (props) => {
 
     const draggedLocation=(data)=>{
 
-        setAddress(address)
-        setLatitude(data.label)
-        setLongitude(data.longitude)
 
-        onChange({ address: address,
-            longitude: longitude,
-            latitude: latitude})
+        if (data.latitude&&data.longitude){
+
+            setLatitude(data.latitude)
+            setLongitude(data.longitude)
+
+
+            onChange({ address: address,
+                longitude: longitude,
+                latitude: latitude})
+
+
+        }
+
     }
 
 
@@ -108,14 +115,14 @@ const SearchPlaceAutocomplete = (props) => {
                         onChange: handleChange,
                     }}
                     apiKey={"AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}/>
-                   
+
 
                 {latitude &&longitude &&
                 <div className="mt-2">
                 <GoogleMap
                     width={"100%"} height={"300px"}
 
-
+                                name={address}
                                searchLocation={true}
                                latitude={latitude}
                                 longitude= {longitude}
@@ -124,9 +131,6 @@ const SearchPlaceAutocomplete = (props) => {
                 </div>
                     }
 
-
-
-                {/*{error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}*/}
             </div>
         </>
     );

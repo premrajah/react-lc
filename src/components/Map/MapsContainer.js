@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {GoogleApiWrapper, InfoWindow, Map, Marker, Polyline} from 'google-maps-react';
 
+
+
 class MapsContainer extends Component {
     constructor(props) {
         super(props);
@@ -13,7 +15,8 @@ class MapsContainer extends Component {
             selectedPlace: {},
             markerLatitude:"",
             markerLongitude:"",
-            markerName:""
+            markerName:"",
+
         }
     }
 
@@ -139,7 +142,9 @@ class MapsContainer extends Component {
              zoom={14}
          >
                  <Marker
-                     // label={"som label"}
+
+
+                     // label={"<span>som label</span>"}
                      draggable={true}
                      onDragend={this.moveMarker.bind(this)}
                      icon={{
@@ -148,10 +153,18 @@ class MapsContainer extends Component {
                          scaledSize: new this.props.google.maps.Size(50,50)
 
                      }}
-                     animation= {this.props.google.maps.Animation.DROP}
+                     // animation= {this.props.google.maps.Animation.DROP}
                      position= {{"lat": this.state.markerLatitude,lng: this.state.markerLongitude }}
-                     name={this.props.name}
+                     // name={this.props.name}
                  />
+             <InfoWindow
+             visible={true}
+             >
+
+                 <div>
+                     <span>Drag Me</span>
+                 </div>
+             </InfoWindow>
 
 
          </Map>}

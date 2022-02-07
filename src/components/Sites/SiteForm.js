@@ -170,27 +170,33 @@ class SiteForm extends Component {
         console.log(value)
 
 
+try {
 
 
-        if (value&&value.latitude&&value.longitude&&value.address) {
-            console.log(value)
+    if (value && value.latitude && value.longitude && value.address) {
+        console.log(value)
 
-            this.setState({
-                searchAddress: value.address
-            });
+        this.setState({
+            searchAddress: value.address
+        });
 
-            let fields = this.state.fields;
-            fields["address"] = value.address;
-            console.log(value)
-            this.setState({fields});
+        let fields = this.state.fields;
+        fields["address"] = value.address;
+        console.log(value)
+        this.setState({fields});
 
-                        this.setState({
-                            latitude: value.latitude,
-                            longitude: value.longitude,
-                        })
+        this.setState({
+            latitude: value.latitude,
+            longitude: value.longitude,
+        })
 
-                .catch(error => console.error(error));
-        }
+            .catch(error => console.error(error));
+    }
+
+}catch (e){
+    console.log("map error")
+            console.log(e)
+}
     }
 
 

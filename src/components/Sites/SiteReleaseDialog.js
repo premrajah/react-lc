@@ -59,6 +59,7 @@ class SiteReleaseDialog extends Component {
 
 
     submitReleaseProduct = (event) => {
+
         this.setState({
             errorRegister: null,
         });
@@ -75,13 +76,11 @@ class SiteReleaseDialog extends Component {
 
         const site = data.get("org");
 
-        axios
-            .post(
-                baseUrl + "release",
-
+        axios.post(
+                baseUrl + "site-release",
                 {
                     org_id: site,
-                    // product_id: this.props.item.site.product._key,
+                    site_id: this.props.item.site._key,
                 }
             )
             .then((res) => {
@@ -140,7 +139,7 @@ class SiteReleaseDialog extends Component {
                         <GlobalDialog
                             heading={"Release Site: "+ this.props.item.site.name}
                             show={this.props.showReleaseProduct}
-                            hide={this.props.showReleaseProductPopUp}
+                            hide={this.props.hide}
                         >
                             <>
                                 <div className={"col-12 "}>
@@ -237,11 +236,11 @@ class SiteReleaseDialog extends Component {
                                                                                                 fullWidth
                                                                                                 title={"Cancel"}
                                                                                                 onClick={
-                                                                                                    this
-                                                                                                        .showReleaseProductPopUp
+                                                                                                    this.
+                                                                                                        props.hide
                                                                                                 }
                                                                                             >
-                                                                                                Cancel
+
                                                                                             </BlueBorderButton>
                                                                                         </div>
                                                                                     </div>

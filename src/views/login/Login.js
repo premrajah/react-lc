@@ -264,9 +264,9 @@ class Login extends Component {
 
                             <div className="col-12 text-center mt-2">
                                 <GreenButton
-                                    title={this.props.loading ? "Wait.." : "Log In"}
+                                    title={"Log In"}
                                     type={"submit"}
-                                    loading={this.props.loading}
+
                                     disabled={!this.state.formValid}
 
                                   >

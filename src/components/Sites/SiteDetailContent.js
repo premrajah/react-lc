@@ -5,12 +5,8 @@ import {Link} from "react-router-dom";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
-import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteCustom";
-import Close from "@mui/icons-material/Close";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
 import {GoogleMap} from "../Map/MapsContainer";
@@ -21,11 +17,6 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import GlobalDialog from "../RightBar/GlobalDialog";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import SiteReleaseDialog from "./SiteReleaseDialog";
 
 
@@ -613,7 +604,7 @@ class SiteDetailContent extends Component {
                             </div>
                         </div>
 
-                        {this.state.item && <SiteReleaseDialog item={this.props.item} showReleaseProduct={this.state.showReleaseProduct} />}
+                        {this.state.item && <SiteReleaseDialog hide={this.showReleaseSitePopUp} item={this.props.item} showReleaseProduct={this.state.showReleaseProduct} />}
 
 
 

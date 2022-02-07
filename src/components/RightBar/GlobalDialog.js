@@ -14,10 +14,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
      const { children } = props
 
-    const handleClose = () => {
+    const handleClose = (event,reason) => {
+         console.log(reason)
 
-        props.hide()
+        if (props.disableBackdropClick&&reason==="backdropClick"){
+
+        }else{
+            props.hide()
+        }
+
     };
+
 
     return (
 
@@ -27,6 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
+                maxWidth={props.size?props.size:"sm"}
                 // className="p-3"
                 aria-describedby="alert-dialog-slide-description"
             >
@@ -38,7 +46,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                         <h4 className={"blue-text text-heading ellipsis-end mb-0"}>{props.heading}</h4>
                     </div>
                     <div className="col-2 text-right">
-                      <CloseButtonPopUp onClick={handleClose}/>
+                        {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}
                     </div>
                 </div>
                     <div className=" pd-3 pt-3 row  justify-content-center align-items-center">

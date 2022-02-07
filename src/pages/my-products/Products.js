@@ -451,7 +451,8 @@ class Products extends Component {
                                 </Link>
 
                                 <Link to="/product-archive" className=" btn-sm btn-gray-border  mr-2">
-                                    <CustomPopover text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
+                                    <CustomPopover
+                                        text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
                                 </Link>
 
                                 <Link to="/product-tracked" className=" btn-sm btn-gray-border  mr-2">

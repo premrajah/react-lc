@@ -1125,7 +1125,7 @@ class ProductDetailContent extends Component {
                                                                         .showReleaseProductPopUp
                                                                 }
                                                             >
-                                                                Cancel
+
                                                             </BlueBorderButton>
                                                         </div>
                                                     </div>

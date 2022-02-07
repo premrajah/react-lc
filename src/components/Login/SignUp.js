@@ -441,8 +441,6 @@ class SignUp extends Component {
                                     title={this.props.loading ? "Wait.." : "Create Account"}
                                     type={"submit"}
                                     loading={this.props.loading}
-
-
                                 >
                                 </GreenButton>
                             </div>

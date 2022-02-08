@@ -59,13 +59,33 @@ class MapsContainer extends Component {
           }
 
 }
-     moveMarker=(value)=>{
-        console.log("market moved")
-        console.log(value.map.getCenter().lat())
-         // console.log(value.onDragend())
+     moveMarker= (coord) => {
 
-         if (this.props.setLocation)
-         this.props.setLocation({latitude:value.map.getCenter().lat(),longitude:value.map.getCenter().lng()})
+
+         const { latLng } = coord;
+
+         const lat = latLng.lat();
+         const lng = latLng.lng();
+
+         console.log(lat,lng)
+
+         this.setState({
+             markerLatitude:lat,
+             markerLongitude:lng,
+             markerName:this.props.name
+
+         })
+
+          if (this.props.setLocation)
+          this.props.setLocation({latitude:lat,longitude: lng})
+
+
+        // console.log("market moved")
+        // console.log(value.map.getCenter().lat())
+        //  // console.log(value.onDragend())
+        //
+        //  if (this.props.setLocation)
+        //  this.props.setLocation({latitude:value.map.getCenter().lat(),longitude:value.map.getCenter().lng()})
     }
 
 
@@ -139,14 +159,13 @@ class MapsContainer extends Component {
                  lng: this.props.longitude,
              }}
 
-             zoom={14}
+             zoom={12}
          >
                  <Marker
-
-
                      // label={"<span>som label</span>"}
                      draggable={true}
-                     onDragend={this.moveMarker.bind(this)}
+                     // onDragend={this.moveMarker.bind(this)}
+                     onDragend={(t, map, coord) => this.moveMarker(coord)}
                      icon={{
                          url :"/icon/blue-marker.png",
                          anchor: new this.props.google.maps.Point(25,25),

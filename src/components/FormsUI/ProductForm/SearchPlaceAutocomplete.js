@@ -1,64 +1,35 @@
 import React, {useEffect} from 'react';
-import {makeStyles} from '@mui/styles';
 import GooglePlacesAutocomplete, {geocodeByPlaceId} from 'react-google-places-autocomplete';
 import {GoogleMap} from "../../Map/MapsContainer";
-import CloseButtonPopUp from "../Buttons/CloseButtonPopUp";
-import ErrorBoundary from "../../ErrorBoundary";
+import LocationSearchAutocomplete from "./LocationSearchAutocomplete";
+import TextFieldWrapper from "./TextField";
 
-
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
 
 const SearchPlaceAutocomplete = (props) => {
 
     const {label,title,option,initialValue,detailsHeading,details,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
-    const [value, setValue] = React.useState();
     const [latitude, setLatitude] = React.useState();
     const [longitude, setLongitude] = React.useState();
     const [address, setAddress] = React.useState()
 
-    const handleChange = (event) => {
-            console.log(event)
-            setValue(event);
+    const handleChange = (data) => {
+            console.log(data)
+        setLatitude("")
+        setLongitude("")
+        setAddress("")
 
-        //     setAddress(address)
-        // setLatitude("")
-        // setLongitude("")
+        setTimeout(function() {
 
-        if (event&&event.value) {
+            setLatitude(data.latitude)
+            setLongitude(data.longitude)
+            setAddress(data.address)
 
+            props.onChange(data)
 
-            geocodeByPlaceId(event.value.place_id)
-                .then(results => {
-
-                    setLongitude(results[0].geometry.viewport.Ra.g)
-                    setLatitude(results[0].geometry.viewport.Ab.g)
-
-                    setAddress(value["label"])
-
-                    if (onChange) {
-                        onChange(
-                            {
-                                address: value["label"],
-                                longitude: results[0].geometry.viewport.Ra.g,
-                                latitude: results[0].geometry.viewport.Ab.g
-                            })
-
-                    }
-                    }
-                )
-                .catch(error => console.error(error));
-        }
+        }, 500);
 
 
     };
-
 
 
 
@@ -95,30 +66,32 @@ const SearchPlaceAutocomplete = (props) => {
     },[])
 
 
-  const  setClear=()=>{
+  // const  setClear=()=>{
+  //
+  //       setValue(null)
+  //
+  //   }
 
-        setValue(null)
 
-    }
 
     return (
         <>
 
+
             <div className={"field-box "}>
 
-                <GooglePlacesAutocomplete
 
-                    selectProps={{
-                        value,
-                        isClearable:{setClear},
-                        className:"google-autocomplete",
-                        onChange: handleChange,
-                    }}
-                    apiKey={"AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM"}/>
-
+                 <div className={"text-gray-light  mb-0 ellipsis-end"}>
+                    Search for your location by typing name or postal code.
+                </div>
+                <LocationSearchAutocomplete setLocation={handleChange} />
 
                 {latitude &&longitude &&
                 <div className="mt-2">
+
+                <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
+                      Drag the marker to specify exact location
+                    </div>
                 <GoogleMap
                     width={"100%"} height={"300px"}
 

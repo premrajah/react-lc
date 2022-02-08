@@ -55,7 +55,8 @@ class SiteForm extends Component {
             searchAddress:null,
             latitude:null,
             longitude:null,
-            phoneNumberInValid:false
+            phoneNumberInValid:false,
+            showMapSelection:false
 
         };
 
@@ -107,6 +108,14 @@ class SiteForm extends Component {
         this.setState({
             addExisting: !this.state.addExisting,
             createNew: false,
+        });
+    }
+
+    toggleMapSelection = () => {
+
+        this.setState({
+            showMapSelection: !this.state.showMapSelection,
+
         });
     }
 
@@ -169,12 +178,9 @@ class SiteForm extends Component {
         console.log("handle address call")
         console.log(value)
 
-
-try {
-
+   try {
 
     if (value && value.latitude && value.longitude && value.address) {
-        console.log(value)
 
         this.setState({
             searchAddress: value.address
@@ -182,7 +188,6 @@ try {
 
         let fields = this.state.fields;
         fields["address"] = value.address;
-        console.log(value)
         this.setState({fields});
 
         this.setState({
@@ -194,8 +199,8 @@ try {
     }
 
 }catch (e){
-    console.log("map error")
-            console.log(e)
+    // console.log("map error")
+    //         console.log(e)
 }
     }
 
@@ -261,8 +266,8 @@ try {
                         "location_type": "APPROXIMATE",
 
                     },
-                    "place_id": this.state.searchAddress.value.place_id,
-                    "types": this.state.searchAddress.value.types,
+                    "place_id": "",
+                    "types": [],
                     "plus_code": null
                 },
                 "is_verified": true
@@ -355,7 +360,26 @@ try {
                 others: data.get("other"),
                 phone: data.get("phone"),
                 is_head_office: this.state.isHeadOffice,
-                parent_id: data.get("parent")
+                parent_id: data.get("parent"),
+                "geo_codes": [
+                    {
+                        "address_info": {
+                            "formatted_address":data.get("address"),
+                            "geometry": {
+                                "location": {
+                                    "lat": this.state.latitude,
+                                    "lng": this.state.longitude
+                                },
+                                "location_type": "APPROXIMATE",
+
+                            },
+                            "place_id": "",
+                            "types": [],
+                            "plus_code": null
+                        },
+                        "is_verified": true
+                    }
+                ]
             }
         };
         axios.post(`${baseUrl}site`,formData)
@@ -375,18 +399,6 @@ try {
                         this.updateParentSite(data.get("parent"), res.data.data._key,item._key,false)
                     }
 
-
-
-
-
-                    //
-                    // }else{
-                    //
-                    //     this.props.loadCurrentSite(item._key)
-                    // }
-                    // else{
-                    //     this.props.loadSites()
-                    // }
                     this.hidePopUp()
                     this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
 
@@ -610,6 +622,9 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         return (
             <>
 
+
+
+
                 {this.props.removePopUp?
 <>
     <div className="row">
@@ -734,18 +749,26 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         </div>
                                     </div>
                                     <div className="row no-gutters ">
+
                                         <div className="col-12">
+                                            <TextFieldWrapper
 
-                                            <SearchPlaceAutocomplete
 
+                                                initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
+                                                onChange={(value)=>this.handleChange(value,"address")}
+                                                error={this.state.errors["address"]}
+                                                value={this.state.searchAddress?this.state.searchAddress:null}
+
+                                                name="address" title="Address"
+
+                                            />
+                                            <span onClick={this.toggleMapSelection} className="forgot-password-link ">Search address</span>
+
+                                            {this.state.showMapSelection && <SearchPlaceAutocomplete
                                                 initialValue={this.props.showSiteForm.item}
                                                 onChange={(value)=>this.handleSearchAddress(value)}
                                                 error={this.state.errors["address"]}
-
-                                                // name="address" title="Search Address"
-
-
-                                            />
+                                            />}
 
 
 
@@ -949,20 +972,24 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     <TextFieldWrapper
 
-                                        type="hidden"
+
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}
-                                        value={this.state.searchAddress?this.state.searchAddress.label:null}
+                                        value={this.state.fields["address"]?this.state.fields["address"]:this.state.searchAddress?this.state.searchAddress:null}
 
                                         name="address" title="Address"
 
                                     />
+                                    <span onClick={this.toggleMapSelection} className="forgot-password-link ">{this.state.showMapSelection?"Hide Search":"Search address on map"}</span>
+
+                                    {this.state.showMapSelection &&
+
                                     <SearchPlaceAutocomplete
                                         initialValue={this.props.showSiteForm.item}
                                         onChange={(value)=>this.handleSearchAddress(value)}
                                         error={this.state.errors["address"]}
-                                    />
+                                    />}
 
 
                                 </div>

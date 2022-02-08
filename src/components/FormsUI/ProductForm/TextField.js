@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const TextFieldWrapper = ({name,type,title,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
+const TextFieldWrapper = ({name,type,title,explanation,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
     // const [field, mata] = useField(name)
     const classes = useStyles();
@@ -53,6 +53,9 @@ const TextFieldWrapper = ({name,type,title,details,detailsHeading,validators,lab
             {title&& <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
                 {title}  {details&&<CustomPopover heading={detailsHeading}  text={details}>
                 <InfoIcon/></CustomPopover>}
+            </div>}
+            {explanation&& <div className={"text-gray-light  mb-0 ellipsis-end"}>
+                {explanation}
             </div>}
 
            <div className={type!="hidden"?"field-box mb-2":"d-none"}>

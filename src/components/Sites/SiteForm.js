@@ -905,8 +905,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-6 pl-1 ">
 
                                     <SelectArrayWrapper
-
-                                        initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
+                                        initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key?this.props.showSiteForm.parent._key:this.props.showSiteForm.parent}
                                         option={"name"}
                                         valueKey={"_key"}
                                         error={this.state.errors["parent"]}

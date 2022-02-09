@@ -364,6 +364,8 @@ class SignUp extends Component {
                                     Select Company
                                 </div>
                                 <AutocompleteCustom
+
+                                    email={this.state.fields["email"]}
                                     orgs={true}
                                     companies={true}
                                     suggestions={this.state.orgNames}

@@ -385,6 +385,15 @@ class AutocompleteCustom extends Component {
             if (filteredSuggestions.length) {
                 suggestionsListComponent = (
                     <ul class="suggestions">
+                        <li>
+                            <div  className=" no-gutters row">
+
+                                <div className="col-12 text-right">
+                                    <div onClick={this.toggleCompanyCreateForm} className="text-blue text-bold">Add Company <IconBtn  /> </div>
+                                </div>
+                            </div>
+                        </li>
+
                         {filteredSuggestions.map((suggestion, index) => {
                             let className;
 
@@ -394,6 +403,8 @@ class AutocompleteCustom extends Component {
                             }
 
                             return (
+
+
                                 <li
                                     className={className}
                                     data-company={suggestion.company}
@@ -402,7 +413,7 @@ class AutocompleteCustom extends Component {
                                     key={suggestion}
                                     data-image={suggestion.company?CompaniesHouseLogo:LoopcycleLogo}
                                     onClick={onClick}>
-                                    <div className="d-flex justify-content-start align-items-start">
+                                    <div className="d-flex justify-content-start align-items-center">
                                         {suggestion.company ? (
                                             <div className="mr-1">
                                                 <img className={"company-logo-select"} src={CompaniesHouseLogo} alt="company logo" />
@@ -427,24 +438,25 @@ class AutocompleteCustom extends Component {
 
                     </ul>
                 );
-            } else {
-                suggestionsListComponent = (
-                    <>
-                        {!this.state.loading &&  <ul className="suggestions">
-                            <li>
-                            <div  className=" no-gutters row">
-                                <div className="col-7">
-                               No matching results found
-                                </div>
-                                <div className="col-5 text-right">
-                                    <div onClick={this.toggleCompanyCreateForm} className="text-blue text-bold">Add Company <IconBtn  /> </div>
-                                </div>
-                            </div>
-                            </li>
-                        </ul>}
-                        </>
-                );
             }
+            // else {
+            //     suggestionsListComponent = (
+            //         <>
+            //             {!this.state.loading &&  <ul className="suggestions">
+            //                 <li>
+            //                 <div  className=" no-gutters row">
+            //                     <div className="col-7">
+            //                    No matching results found
+            //                     </div>
+            //                     <div className="col-5 text-right">
+            //                         <div onClick={this.toggleCompanyCreateForm} className="text-blue text-bold">Add Company <IconBtn  /> </div>
+            //                     </div>
+            //                 </div>
+            //                 </li>
+            //             </ul>}
+            //             </>
+            //     );
+            // }
         }
 
         return (
@@ -538,7 +550,7 @@ class AutocompleteCustom extends Component {
                         <div className="col-6">
                             <TextFieldWrapper
 
-                                // initialValue={this.state.emai}
+                                initialValue={this.props.email}
                                 onChange={(value) => this.handleChange(value, "email")}
                                 error={this.state.errors["email"]}
                                 name="email" title="Email"/>

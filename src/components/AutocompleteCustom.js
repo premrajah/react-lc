@@ -6,6 +6,15 @@ import axios from "axios/index";
 import CompaniesHouseLogo from "../img/hmrc.png";
 import LoopcycleLogo from '../img/logo-small.png';
 import PencilIcon from '@mui/icons-material/Edit';
+import IconBtn from "./FormsUI/Buttons/IconBtn";
+import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
+import CheckboxWrapper from "./FormsUI/ProductForm/Checkbox";
+import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
+import PhoneInput from "react-phone-input-2";
+import SearchPlaceAutocomplete from "./FormsUI/ProductForm/SearchPlaceAutocomplete";
+import BlueButton from "./FormsUI/Buttons/BlueButton";
+import {validateFormatCreate, validateInputs, Validators} from "../Util/Validator";
+import CloseButtonPopUp from "./FormsUI/Buttons/CloseButtonPopUp";
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -16,7 +25,90 @@ class AutocompleteCustom extends Component {
         suggestions: [],
     };
 
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            // The active selection's index
+            activeSuggestion: 0,
+            // The suggestions that match the user's input
+            filteredSuggestions: [],
+            // Whether or not the suggestion list is shown
+            showSuggestions: false,
+            // What the user has entered
+            userInput: "",
+            orgs: [],
+            orgNames: [],
+            selectedOrgId:null,
+            selectedOrgName:null,
+            loading:false,
+            showCompanyCreateForm:false,
+            newCompany:false,
+
+            fields: {},
+            errors: {},
+        };
+    }
+    toggleCompanyCreateForm=(e)=> {
+
+        this.setState({
+            activeSuggestion: 0,
+            filteredSuggestions: [],
+            showSuggestions: false,
+            // userInput: e.currentTarget.innerText,
+            // selected:true,
+
+        });
+
+
+
+        this.setState({
+
+            showCompanyCreateForm: !this.state.showCompanyCreateForm
+
+        })
+
+    }
+
+    toggleCompanyCreateForm2=(e)=>{
+
+        this.setState({
+
+            newCompany:!this.state.newCompany
+
+        })
+
+        this.setState({
+            activeSuggestion: 0,
+            filteredSuggestions: [],
+            showSuggestions: false,
+            // userInput: e.currentTarget.innerText,
+            selected:true,
+            image:e.currentTarget.dataset.image
+
+        });
+
+        axios.get(baseUrl + "org/name?name="+this.state.userInput+"&email=some@domain.com").then(
+            (response) => {
+
+                this.setState({
+                    loading:false
+                })
+
+            },
+            (error) => {}
+        );
+
+
+        // this.props.selectedCompany({
+        //     new:true,
+        //     name: this.state.userInput,
+        //     company: null,
+        //     org: null,
+        //
+        // });
+
+    }
 
 
     componentDidMount() {
@@ -42,8 +134,16 @@ class AutocompleteCustom extends Component {
     }
 
     changeInput = (key) => {
+        this.setState({
+            loading:true
+        })
         axios.get(baseUrl + "org/search?o=0&s=20&q=" + key).then(
             (response) => {
+
+                this.setState({
+                    loading:false
+                })
+
                 let responseAll = response.data.data;
 
                 this.setState({
@@ -88,26 +188,89 @@ class AutocompleteCustom extends Component {
         );
     };
 
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            // The active selection's index
-            activeSuggestion: 0,
-            // The suggestions that match the user's input
-            filteredSuggestions: [],
-            // Whether or not the suggestion list is shown
-            showSuggestions: false,
-            // What the user has entered
-            userInput: "",
-            orgs: [],
-            orgNames: [],
-            selectedOrgId:null,
-            selectedOrgName:null,
-        };
+
+    handleValidation() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
+
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        return formIsValid;
     }
 
+    handleChange(value, field) {
 
+        let fields = this.state.fields;
+        fields[field] = value;
+        console.log(value)
+        this.setState({fields});
+
+    }
+
+    handleSubmitCompany = (event) => {
+
+
+        let parentId;
+
+        if (!this.handleValidation()) {
+            return
+        }
+
+        this.setState({
+            btnLoading: true,
+        });
+
+
+
+             const   name= this.state.fields["name"]
+             const  email=this.state.fields["email"]
+
+
+        this.setState({isSubmitButtonPressed: true})
+
+        // return false
+        axios
+                .get(baseUrl + "org/name?name="+name+"&email="+email)
+            .then((res) => {
+
+                this.setState({
+                    activeSuggestion: 0,
+                    filteredSuggestions: [],
+                    showSuggestions: false,
+                    userInput:  res.data.data.name,
+                    selected:true,
+                    image:LoopcycleLogo,
+                    showCompanyCreateForm:false,
+                    newCompany:false,
+
+                });
+
+                this.props.selectedCompany({
+                    name: res.data.data.name,
+                    company: null,
+                    org: res.data.data._key,
+
+                });
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            });
+
+
+    };
 
     onChange = (e) => {
 
@@ -199,13 +362,12 @@ class AutocompleteCustom extends Component {
             image: null,
         });
 
-        // this.props.setSelectedItem({
-        //     name: null,
-        //     type: null,
-        //     _id: null,
-        //     image: null,
-        //
-        // });
+        this.props.selectedCompany({
+            name: null,
+            company: null,
+            org:null,
+
+        });
 
     }
 
@@ -260,13 +422,27 @@ class AutocompleteCustom extends Component {
                                 </li>
                             );
                         })}
+
+
+
                     </ul>
                 );
             } else {
                 suggestionsListComponent = (
-                    <div style={{position:"absolute"}} class="no-suggestions">
-                        <em>No suggestions, you're on your own!</em>
-                    </div>
+                    <>
+                        {!this.state.loading &&  <ul className="suggestions">
+                            <li>
+                            <div  className=" no-gutters row">
+                                <div className="col-7">
+                               No matching results found
+                                </div>
+                                <div className="col-5 text-right">
+                                    <div onClick={this.toggleCompanyCreateForm} className="text-blue text-bold">Add Company <IconBtn  /> </div>
+                                </div>
+                            </div>
+                            </li>
+                        </ul>}
+                        </>
                 );
             }
         }
@@ -283,7 +459,8 @@ class AutocompleteCustom extends Component {
                     placeholder={"Company (Type your company name here)"}
                     ref="itemInput"
                 />
-                {this.state.selected &&  <div className=" search-card m-1 d-flex align-items-center" style={{width: "100%"}}>
+                {!this.state.showCompanyCreateForm&&!this.state.newCompany&&this.state.selected &&
+                <div className=" search-card p-0 m-1 d-flex align-items-center" style={{width: "100%"}}>
                     <div className={"col-2"}>
                     <div className={"img-left p-1"}>
                         <img style={{height:"32px!important", width:"32px!important"}} className="card-img-top"
@@ -302,7 +479,89 @@ class AutocompleteCustom extends Component {
                     </div>
                 </div>}
 
+
+                {!this.state.showCompanyCreateForm&&this.state.newCompany &&
+                <div className=" search-card p-0 m-1 d-flex align-items-center" style={{width: "100%"}}>
+                    <div className={"col-2"}>
+                        <div className={"img-left p-1"}>
+                            <img style={{height:"32px!important", width:"32px!important"}} className="card-img-top"
+                                 src={LoopcycleLogo} alt="" />
+
+                        </div>
+                    </div>
+                    <div className={"col-8"} style={{padding: "0"}}>
+                        <div className={"text-right"}>
+                            <p style={{color:"#293842", fontWeight:"600",textAlign: "left"}}>{this.state.userInput}</p>
+                        </div>
+
+                    </div>
+                    <div className={"col-2 text-center"}>
+                        <span onClick={()=>{
+                            this.resetSelection()
+                            this.toggleCompanyCreateForm()
+                        }} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
+                    </div>
+                </div>}
+
+
                 {suggestionsListComponent}
+
+
+                {this.state.showCompanyCreateForm &&
+                <div className="container-light-gray p-2 rad-8 mt-3"
+                      // onSubmit={(e)=> {
+                      //     e.preventDefault()
+                      //     e.stopPropagation()
+                      //     this.handleSubmitCompany()
+                      // }} method="GET"
+                >
+                    <div className="row ">
+
+                        <div className="col-6">
+                        </div>
+                        <div className="col-6 text-right">
+                            <CloseButtonPopUp onClick={this.toggleCompanyCreateForm}/>
+                        </div>
+                    </div>
+
+                    <div className="row ">
+
+                        <div className="col-6">
+
+                            <TextFieldWrapper
+                                initialValue={this.state.userInput}
+                                onChange={(value) => this.handleChange(value, "name")}
+                                error={this.state.errors["name"]}
+                                name="name" title="Name"/>
+
+                        </div>
+                        <div className="col-6">
+                            <TextFieldWrapper
+
+                                // initialValue={this.state.emai}
+                                onChange={(value) => this.handleChange(value, "email")}
+                                error={this.state.errors["email"]}
+                                name="email" title="Email"/>
+                        </div>
+                    </div>
+
+                    <div className={"row justify-content-center"}>
+                        <div className="col-4 mt-4 mb-2">
+
+                            <BlueButton
+                                title={"Add Company"}
+                                type={"button"}
+                                loading={this.state.loading}
+                                fullWidth
+                                onClick={this.handleSubmitCompany}
+                            >
+                            </BlueButton>
+
+                        </div>
+                    </div>
+
+                </div>
+                }
             </Fragment>
         );
     }

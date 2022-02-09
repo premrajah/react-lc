@@ -402,7 +402,7 @@ class AutocompleteCustom extends Component {
                                     key={suggestion}
                                     data-image={suggestion.company?CompaniesHouseLogo:LoopcycleLogo}
                                     onClick={onClick}>
-                                    <div className="d-flex justify-content-start align-items-center">
+                                    <div className="d-flex justify-content-start align-items-start">
                                         {suggestion.company ? (
                                             <div className="mr-1">
                                                 <img className={"company-logo-select"} src={CompaniesHouseLogo} alt="company logo" />

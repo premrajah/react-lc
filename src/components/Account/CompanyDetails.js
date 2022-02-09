@@ -227,7 +227,7 @@ class CompanyDetails extends Component {
         let validations=[
 
             validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'Invalid Input'},{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'Invalid Input'}],fields),
         ]
 
 
@@ -338,7 +338,7 @@ class CompanyDetails extends Component {
 
                                 "industry": data.get("industry"),
                                 "sector": data.get("businessField"),
-                                "no_of_staff": data.get("no_of_staff")
+                                "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
                             }
                         // },
                     }

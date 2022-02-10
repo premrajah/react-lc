@@ -688,7 +688,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     </div>
 
                                     <div className="row no-gutters">
-                                        <div className="col-6 pr-1">
+                                        <div className="col-6 pr-2">
                                             <SelectArrayWrapper
 
                                                 initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
@@ -704,8 +704,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         </div>
 
-                                        <div className="col-6 pl-1 ">
+                                        <div className="col-6 pl-2 ">
 
+
+                                            <div className="custom-label text-bold ellipsis-end text-blue mb-0">
+                                                Phone
+                                            </div>
                                             <PhoneInput
                                                 value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
 

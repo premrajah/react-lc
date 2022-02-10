@@ -1179,7 +1179,7 @@ p,span{
 /* avatar */
 
 .avatar {
-    border-radius: 50%;
+    border-radius: 10%;
     display: inline-block;
     margin: 0px auto;
     background-color: #ffffff;

@@ -238,7 +238,7 @@ class ProductsService extends Component {
                                     Records
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border mr-2">
                                     Tracked
                                 </Link>
                                 <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">

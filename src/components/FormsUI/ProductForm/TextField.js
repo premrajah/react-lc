@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const TextFieldWrapper = ({name,type,title,explanation,details,detailsHeading,validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
+const TextFieldWrapper = ({name,type,title,explanation,details,detailsHeading,
+                              validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
 
     // const [field, mata] = useField(name)
     const classes = useStyles();
@@ -61,9 +62,10 @@ const TextFieldWrapper = ({name,type,title,explanation,details,detailsHeading,va
            <div className={type!="hidden"?"field-box mb-2":"d-none"}>
 
                <CustomizedInput
-
+disabled={disabled}
                    type={type}
-                  variant="outlined" label={label} value={field} className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
+                  variant="outlined" label={label} value={field}
+                   className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
 
            </div>
             {error && <span style={{color:"#f44336",fontSize:"12px!important"}} className='text-danger'>{error.message}</span>}

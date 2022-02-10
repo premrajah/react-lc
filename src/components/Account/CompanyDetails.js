@@ -752,6 +752,7 @@ class CompanyDetails extends Component {
                                             <div className="col-6  mt-3">
 
                                                 <TextFieldWrapper
+                                                    disabled={true}
                                                     initialValue={this.state.companyName}
                                                     onChange={(value)=>this.handleChange(value,"companyName")}
                                                     error={this.state.errors["companyName"]}

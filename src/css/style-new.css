@@ -22,7 +22,21 @@
     background: #EAEAEF;
     border-radius: 50%;
 }
+.MuiTabs-root button{
+    font-size: 16px!important;
+    font-family: var(--primary-heading);
+}
+.MuiTabs-indicator{
+    border-radius: 2px!important;
+}
+.alert.alert-success.show{
+    background: #b8ddd1;
+    color: #07ad89;
 
+}
+.alert.show{
+    border: none;
+}
 /*padding: 10px 45px !important;*/
 
 .hourglass{
@@ -3153,7 +3167,8 @@ background: white;
     /*font-size: 20px;*/
 }
 .text-label{
-    font-size: 18px;
+    font-size: 16px!important;
+    font-weight: 700;
 }
 /*.MuiTimelineContent-root {*/
 /*flex: 1;*/

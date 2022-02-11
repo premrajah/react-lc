@@ -18,6 +18,8 @@ import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import Layout from "../../components/Layout/Layout";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
 
 class CompanyDetails extends Component {
     constructor(props) {
@@ -52,9 +54,10 @@ class CompanyDetails extends Component {
             units: [],
             croppedImageData:null,
             showCropper:false,
-            files:[]
-
-
+            files:[],
+            industries:["Commercial kitchen equipment","Commercial laundry equipment","Hospitality","Healthcare"],
+            reasons:["Register new products","Access Marketplace"],
+            businessFields:["Manufacturer","Dealer","Operator"],
 
         };
 
@@ -775,21 +778,38 @@ class CompanyDetails extends Component {
 
                                             <div className="col-6 mt-3">
 
-                                                <TextFieldWrapper
+                                                {/*<TextFieldWrapper*/}
+
+                                                {/*    initialValue={this.state.industry}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"industry")}*/}
+                                                {/*    error={this.state.errors["industry"]}*/}
+                                                {/*    name="industry" title="Industry" />*/}
+
+                                                <AutoCompleteComboBox
                                                     initialValue={this.state.industry}
+                                                    name="industry"
                                                     onChange={(value)=>this.handleChange(value,"industry")}
-                                                    error={this.state.errors["industry"]}
-                                                    name="industry" title="Industry" />
+                                                    options={this.state.industries}
+                                                    title="Industry"
+                                                />
 
 
                                             </div>
                                             <div className="col-6 mt-3">
 
-                                                <TextFieldWrapper
+                                                <AutoCompleteComboBox
                                                     initialValue={this.state.sector}
+                                                    name="businessField"
                                                     onChange={(value)=>this.handleChange(value,"businessField")}
-                                                    error={this.state.errors["businessField"]}
-                                                    name="businessField" title="Field of Business" />
+                                                    options={this.state.businessFields}
+                                                    title="Field of Business"
+                                                />
+
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    initialValue={this.state.sector}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"businessField")}*/}
+                                                {/*    error={this.state.errors["businessField"]}*/}
+                                                {/*    name="businessField" title="Field of Business" />*/}
 
 
                                             </div>

@@ -12,6 +12,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 
 class EditAccount extends Component {
     constructor(props) {
@@ -300,11 +301,15 @@ class EditAccount extends Component {
                                             <div className="col-12 mt-2 ">
                                                 <div className="row">
                                                     <div className="col-12">
-                                                        <TextFieldWrapper
+                                                        <AutoCompleteComboBox
                                                             initialValue={this.state.reason}
+
                                                             onChange={(value)=>this.handleChange(value,"reason")}
+                                                            options={this.state.reasons}
                                                             error={this.state.errors["reason"]}
-                                                            name="reason" title="Tell us, what’s the main reason for using Loopcycle?" />
+                                                            name="reason" title="Tell us, what’s the main reason for using Loopcycle?"
+                                                        />
+
                                                     </div>
                                                 </div>
                                             </div>

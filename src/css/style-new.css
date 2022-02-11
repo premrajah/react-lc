@@ -2619,6 +2619,22 @@ button.blue-btn-border
     text-overflow: ellipsis;
 }
 
+.custom-autocomplete{
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%!important;
+
+}
+.custom-autocomplete input{
+
+    border-radius: 4px;
+
+    padding: 18.5px 14px!important;
+}
+
+
 .text-blue {
     color: #27245c;
 }

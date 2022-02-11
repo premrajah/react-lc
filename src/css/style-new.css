@@ -2200,7 +2200,7 @@ button.blue-btn-border
 .btn-gray-border-small{
 
     border-radius: 5px;
-    height: 25px;
+    /*height: 25px;*/
     border: 2px solid #e5e5eb;
     color: #000000;
     font-size: 14px;

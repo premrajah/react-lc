@@ -62,7 +62,7 @@ const TextFieldWrapper = ({name,type,title,explanation,details,detailsHeading,
            <div className={type!="hidden"?"field-box mb-2":"d-none"}>
 
                <CustomizedInput
-disabled={disabled}
+                   disabled={disabled}
                    type={type}
                   variant="outlined" label={label} value={field}
                    className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />

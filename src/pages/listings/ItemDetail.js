@@ -28,7 +28,6 @@ import TabPanel from "@mui/lab/TabPanel";
 import InfoTabContent from "../../components/Listings/InfoTabContent";
 import {GoogleMap} from "../../components/Map/MapsContainer";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
-import OrgFull from "../../components/Org/OrgFull";
 
 class ItemDetail extends Component {
     slug;
@@ -376,7 +375,7 @@ console.log(this.props.match)
                                                         <div className="row">
                                                             <div className="col-7">
                                                                 <div>
-                                                                    <OrgFull
+                                                                    <OrgComponent
                                                                         org={
                                                                             this.state.item.org
                                                                         }

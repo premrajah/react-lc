@@ -3926,8 +3926,10 @@ input:active,input:focus{
 }
 
 .message-row{
-    height: 600px;
+    /*height: 600px;*/
+    height: auto;
 }
+
 .message-column {
 
     flex: 1;
@@ -4103,4 +4105,21 @@ input:active,input:focus{
 .react-tel-input input{
     height: 60px!important;
     width: 100%!important;
+}
+.custom-vertical-tabs button{
+    align-items: baseline;
+    text-transform: capitalize;
+    border: 1px solid transparent;
+}
+.custom-vertical-tabs{
+    /*border: 1px solid #eee;*/
+    background: white;
+    border-radius: 8px!important;
+}
+.custom-vertical-tabs button.Mui-selected{
+    align-items: baseline;
+    text-transform: capitalize;
+    background: #f9fbfc;
+    border: 1px solid #eee;
+
 }

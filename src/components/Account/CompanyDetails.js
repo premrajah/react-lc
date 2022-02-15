@@ -675,7 +675,7 @@ class CompanyDetails extends Component {
                                 />}
 
                                     <label
-                                        className={"edit-icon"}
+                                        className={"edit-icon d-flex"}
                                         htmlFor="fileInput-2">
 
                                         <EditIcon className={""} style={{

@@ -6,33 +6,61 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as actionCreator from "../../store/actions/actions";
 import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import EditAccount from "./EditAccount";
+import CompanyInfo from "./CompanyInfo";
+import TransferScaling from "./TransferScaling";
+import Statistics from "../../views/loop-cycle/Statistics";
+import ChangePassword from "../../components/Account/ChangePassword";
+import ManageUser from "../../components/Account/ManageUser";
+import ManageRole from "../../components/Account/ManageRole";
 
-class MyAccount extends Component {
-    constructor(props) {
-        super(props);
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
-        this.state = {
-            timerEnd: false,
-            count: 0,
-            nextIntervalFlag: false,
-            activePage: 1,
-        };
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
+            aria-labelledby={`vertical-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
 
-        this.logOut = this.logOut.bind(this);
-    }
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
 
-    logOut = (event) => {
-        document.body.classList.remove("sidemenu-open");
-        this.props.logOut();
+function a11yProps(index) {
+    return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+    };
+}
+
+export default function MyAccount() {
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
     };
 
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
 
-    interval;
 
-    render() {
         return (
             <Layout>
 
@@ -46,63 +74,61 @@ class MyAccount extends Component {
 
                         <div className="row">
                             <div className="col-md-12">
-                                <div className="list-group main-menu accountpage-list">
-                                    <Link
-                                        to="/edit-account"
-                                        className="list-group-item list-group-item-action ">
-                                        Personal Info <NavigateNextIcon />
-                                    </Link>
 
-                                    <Link
-                                        to="/company-info"
-                                        className="list-group-item list-group-item-action ">
-                                        Company Info <NavigateNextIcon />
-                                    </Link>
-                                    <Link
-                                        to="/transfer-scaling"
-                                        className="list-group-item list-group-item-action "
+                                    <div className="row">
+                                        <div className="col-md-3">
+                                            <Tabs
+                                                className={"custom-vertical-tabs"}
+                                        orientation="vertical"
+                                        variant="scrollable"
+                                        value={value}
+                                        onChange={handleChange}
+                                        aria-label="Vertical tabs example"
+                                        sx={{ borderRight: 1, borderColor: 'divider' }}
                                     >
-                                        Transfer Scaling <NavigateNextIcon />
-                                    </Link>
+                                        <Tab label="Personal Info" {...a11yProps(0)} />
+                                        <Tab label="Company Info" {...a11yProps(1)} />
+                                                <Tab label="Change Password" {...a11yProps(2)} />
+                                        <Tab label="Transfer Scaling" {...a11yProps(4)} />
+                                        <Tab label="Statistics" {...a11yProps(4)} />
+                                        <Tab label="Manage Users" {...a11yProps(5)} />
+                                        <Tab label="Manage Roles" {...a11yProps(6)} />
 
-                                    <Link
-                                        to="/statistics"
-                                        className="list-group-item list-group-item-action "
-                                    >
-                                        Statistics <NavigateNextIcon />
-                                    </Link>
-                                </div>
-
-                                <div className="row d-none">
-                                    <div className="col-12">
-                                        <button
-                                            style={{ width: "100%" }}
-                                            onClick={this.logOut}
-                                            className=" mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                            Logout
-                                        </button>
+                                    </Tabs>
+                                        </div>
+                                        <div className="col-md-9  p-0 rad-8 bg-white">
+                                        <TabPanel value={value} index={0}>
+                                        <EditAccount />
+                                    </TabPanel>
+                                    <TabPanel value={value} index={1}>
+                                       <CompanyInfo/>
+                                    </TabPanel>
+                                            <TabPanel value={value} index={2}>
+                                                <ChangePassword />
+                                            </TabPanel>
+                                    <TabPanel value={value} index={3}>
+                                        <TransferScaling />
+                                    </TabPanel>
+                                    <TabPanel value={value} index={4}>
+                                        <Statistics />
+                                    </TabPanel>
+                                    <TabPanel value={value} index={5}>
+                                       <ManageUser/>
+                                    </TabPanel>
+                                    <TabPanel value={value} index={6}>
+                                        <ManageRole/>
+                                    </TabPanel>
+                                        </div>
                                     </div>
-                                </div>
+
+
                             </div>
                         </div>
+
                     </div>
 
             </Layout>
         );
-    }
+
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.isLoggedIn,
-        userDetail: state.userDetail,
-    };
-};
-
-const mapDispachToProps = (dispatch) => {
-    return {
-        logOut: (data) => dispatch(actionCreator.logOut(data)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispachToProps)(MyAccount);

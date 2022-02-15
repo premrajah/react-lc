@@ -25,13 +25,10 @@ class Statistics extends Component {
 
     render() {
         return (
-            <Layout>
 
-                    <div className="container pt-4">
-                        <div>
-                            <Link to={"/account"}>Account </Link> > Statistics
-                        </div>
-                    </div>
+
+                    <div className="container ">
+
                     <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
                         <embed
                             src={`https://dash.makealoop.io?token=${this.props.userDetail}`}
@@ -39,7 +36,7 @@ class Statistics extends Component {
                         />
                     </div>
 
-            </Layout>
+                    </div>
         );
     }
 }

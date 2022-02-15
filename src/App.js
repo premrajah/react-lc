@@ -237,11 +237,8 @@ class App extends Component {
                             component={ItemDetailMatch}
                         />
                         <Route exact path="/marketplace/:slug" component={ItemDetail} />
-
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <Route exact path="/:slug" component={ItemDetail} />
-
-
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />
 

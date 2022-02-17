@@ -139,40 +139,7 @@ class SiteForm extends Component {
     }
 
 
-    handleValidation() {
 
-
-        let fields = this.state.fields;
-
-
-        let validations = [
-            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("phone", [ {
-                check: Validators.number,
-                message: 'This field should be a number.'
-            }], fields),
-            validateFormatCreate("contact", [{check: Validators.required, message: 'Required'}], fields),
-
-
-        ]
-
-
-        let {formIsValid, errors} = validateInputs(validations)
-
-        this.setState({errors: errors});
-        return formIsValid;
-    }
-
-    handleChange(value, field) {
-
-        let fields = this.state.fields;
-        fields[field] = value;
-        console.log(value)
-        this.setState({fields});
-
-    }
 
     handleSearchAddress(value) {
         console.log("handle address call")
@@ -222,7 +189,40 @@ class SiteForm extends Component {
 
     }
 
+    handleValidation() {
 
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("phone", [ {
+                check: Validators.number,
+                message: 'This field should be a number.'
+            }], fields),
+            validateFormatCreate("contact", [{check: Validators.required, message: 'Required'}], fields),
+
+
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+    handleChange(value, field) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        console.log(value)
+        this.setState({fields});
+
+    }
 
     handleSubmit = (event) => {
         event.preventDefault();

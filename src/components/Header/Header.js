@@ -71,7 +71,7 @@ class Header extends React.Component {
 
 
                     let orgCache=response.data.data
-                    if (!orgCache.first_login){
+                    if (!(orgCache&&orgCache.first_login)){
                         this.showDetailsPopUp()
                     }
 

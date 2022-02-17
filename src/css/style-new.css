@@ -4123,3 +4123,11 @@ input:active,input:focus{
     border: 1px solid #eee;
 
 }
+.parent-checkbox-container-custom{
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+
+}
